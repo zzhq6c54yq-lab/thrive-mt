@@ -47,7 +47,7 @@ const emergencyResources = [
   { name: "National Suicide Prevention Lifeline", contact: "988", description: "Available 24/7" },
   { name: "Crisis Text Line", contact: "Text HOME to 741741", description: "Available 24/7" },
   { name: "Emergency Services", contact: "911", description: "For immediate emergencies" },
-  { name: "Montana Crisis Line", contact: "1-800-273-8255", description: "Local support" },
+  { name: "Crisis Line", contact: "1-800-273-8255", description: "Local support" },
 ];
 
 const Index = () => {
@@ -75,7 +75,6 @@ const Index = () => {
           </div>
           <h1 className="intro-logo-text text-6xl md:text-8xl mb-8">
             <span className="text-white">Thrive</span>
-            <span className="copper-text"> MT</span>
           </h1>
           <p className="intro-tagline text-xl md:text-2xl text-gray-300">
             because life should be more than just surviving
@@ -145,7 +144,7 @@ const Index = () => {
               className="group"
               onClick={() => setScreenState('main')}
             >
-              Continue to Thrive MT
+              Continue to Thrive
               <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
             </Button>
           </div>
@@ -168,7 +167,7 @@ const Index = () => {
               className="group"
               onClick={() => setScreenState('main')}
             >
-              Continue to Thrive MT
+              Continue to Thrive
               <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
             </Button>
           </div>
@@ -199,7 +198,7 @@ const Index = () => {
               className="group bg-[#ea384c] hover:bg-[#ea384c]/90"
               onClick={() => setScreenState('main')}
             >
-              Continue to Thrive MT
+              Continue to Thrive
               <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
             </Button>
           </div>
@@ -214,13 +213,13 @@ const Index = () => {
       <section className="container px-4 pt-32 pb-20">
         <div className="max-w-3xl mx-auto text-center animate-fade-up">
           <span className="px-3 py-1 text-sm font-medium tracking-wider rounded-full bg-primary/10 text-primary inline-block mb-4 uppercase">
-            Welcome to Thrive MT
+            Welcome to Thrive
           </span>
           <h1 className="text-4xl sm:text-5xl tracking-tight mb-6 bg-clip-text">
             Your Mental Health Journey Starts Here
           </h1>
           <p className="text-lg text-muted-foreground mb-8 leading-relaxed">
-            Access professional therapy and mental wellness tools from anywhere in Montana. 
+            Access professional therapy and mental wellness tools from anywhere. 
             Get the support you need, when you need it.
           </p>
           <Button className="group">
@@ -253,7 +252,7 @@ const Index = () => {
         <div className="max-w-3xl mx-auto text-center">
           <h2 className="text-3xl mb-6">Ready to Take the First Step?</h2>
           <p className="text-muted-foreground mb-8">
-            Join thousands of Montanans who have found their path to better mental health. 
+            Join thousands who have found their path to better mental health. 
             Our licensed therapists are here to support you.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
