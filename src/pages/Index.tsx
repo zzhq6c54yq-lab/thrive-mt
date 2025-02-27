@@ -27,9 +27,32 @@ const features = [
   },
 ];
 
+const positiveAffirmations = [
+  "You are capable of amazing things.",
+  "Every day is a new opportunity.",
+  "You are strong, resilient, and worthy of happiness.",
+  "Your potential is limitless.",
+  "Small steps lead to big changes.",
+];
+
+const encouragementMessages = [
+  "It's okay to have off days. Tomorrow is a new beginning.",
+  "Remember to be kind to yourself today.",
+  "You don't have to have everything figured out right now.",
+  "Progress isn't always linear, and that's okay.",
+  "You're doing better than you think you are.",
+];
+
+const emergencyResources = [
+  { name: "National Suicide Prevention Lifeline", contact: "988", description: "Available 24/7" },
+  { name: "Crisis Text Line", contact: "Text HOME to 741741", description: "Available 24/7" },
+  { name: "Emergency Services", contact: "911", description: "For immediate emergencies" },
+  { name: "Montana Crisis Line", contact: "1-800-273-8255", description: "Local support" },
+];
+
 const Index = () => {
-  const [screenState, setScreenState] = useState<'intro' | 'mood' | 'main'>('intro');
-  const [selectedMood, setSelectedMood] = useState<string | null>(null);
+  const [screenState, setScreenState] = useState<'intro' | 'mood' | 'moodResponse' | 'main'>('intro');
+  const [selectedMood, setSelectedMood] = useState<'happy' | 'neutral' | 'sad' | null>(null);
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -73,7 +96,7 @@ const Index = () => {
             <button 
               onClick={() => {
                 setSelectedMood('happy');
-                setScreenState('main');
+                setScreenState('moodResponse');
               }}
               className="mood-button group"
             >
@@ -82,7 +105,7 @@ const Index = () => {
             <button 
               onClick={() => {
                 setSelectedMood('neutral');
-                setScreenState('main');
+                setScreenState('moodResponse');
               }}
               className="mood-button group"
             >
@@ -91,7 +114,7 @@ const Index = () => {
             <button 
               onClick={() => {
                 setSelectedMood('sad');
-                setScreenState('main');
+                setScreenState('moodResponse');
               }}
               className="mood-button group"
             >
@@ -101,6 +124,88 @@ const Index = () => {
         </div>
       </div>
     );
+  }
+
+  if (screenState === 'moodResponse') {
+    // Content based on selected mood
+    if (selectedMood === 'happy') {
+      return (
+        <div className="min-h-screen flex flex-col items-center justify-center bg-[#F2FCE2] animate-fade-in">
+          <div className="text-center max-w-2xl mx-auto px-4">
+            <Smile className="w-20 h-20 mx-auto mb-8 text-[#B87333]" />
+            <h2 className="text-3xl md:text-4xl mb-8">Positive Affirmations</h2>
+            <div className="space-y-4 mb-10">
+              {positiveAffirmations.map((affirmation, index) => (
+                <p key={index} className="text-xl md:text-2xl font-light">
+                  {affirmation}
+                </p>
+              ))}
+            </div>
+            <Button 
+              className="group"
+              onClick={() => setScreenState('main')}
+            >
+              Continue to Thrive MT
+              <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
+            </Button>
+          </div>
+        </div>
+      );
+    } else if (selectedMood === 'neutral') {
+      return (
+        <div className="min-h-screen flex flex-col items-center justify-center bg-[#F1F0FB] animate-fade-in">
+          <div className="text-center max-w-2xl mx-auto px-4">
+            <Meh className="w-20 h-20 mx-auto mb-8 text-[#B87333]" />
+            <h2 className="text-3xl md:text-4xl mb-8">Words of Encouragement</h2>
+            <div className="space-y-4 mb-10">
+              {encouragementMessages.map((message, index) => (
+                <p key={index} className="text-xl md:text-2xl font-light">
+                  {message}
+                </p>
+              ))}
+            </div>
+            <Button 
+              className="group"
+              onClick={() => setScreenState('main')}
+            >
+              Continue to Thrive MT
+              <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
+            </Button>
+          </div>
+        </div>
+      );
+    } else if (selectedMood === 'sad') {
+      return (
+        <div className="min-h-screen flex flex-col items-center justify-center bg-[#221F26] text-white animate-fade-in">
+          <div className="text-center max-w-2xl mx-auto px-4">
+            <Frown className="w-20 h-20 mx-auto mb-8 text-[#ea384c]" />
+            <h2 className="text-3xl md:text-4xl mb-8">Emergency Resources</h2>
+            <p className="text-xl mb-6">
+              If you're experiencing a mental health crisis, please reach out to one of these resources immediately:
+            </p>
+            <div className="space-y-6 mb-10">
+              {emergencyResources.map((resource, index) => (
+                <div key={index} className="p-4 border border-[#ea384c]/20 rounded-lg bg-[#ea384c]/10">
+                  <h3 className="text-xl font-medium">{resource.name}</h3>
+                  <p className="text-2xl font-bold text-[#ea384c] my-2">{resource.contact}</p>
+                  <p className="text-sm opacity-80">{resource.description}</p>
+                </div>
+              ))}
+            </div>
+            <p className="mb-8 text-lg">
+              You're not alone. Help is available, and reaching out is a sign of strength.
+            </p>
+            <Button 
+              className="group bg-[#ea384c] hover:bg-[#ea384c]/90"
+              onClick={() => setScreenState('main')}
+            >
+              Continue to Thrive MT
+              <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
+            </Button>
+          </div>
+        </div>
+      );
+    }
   }
 
   return (
