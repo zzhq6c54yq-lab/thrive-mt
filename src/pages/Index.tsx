@@ -42,17 +42,6 @@ const Index = () => {
     return (
       <div className="min-h-screen flex flex-col items-center justify-center bg-[#1a1a1f]">
         <div className="text-center max-w-2xl mx-auto px-4">
-          <div className="mb-8">
-            <img 
-              src="/lovable-uploads/10d9c6f1-9335-46e4-8942-4d4c198d3f5b.png" 
-              alt="Thrive Logo" 
-              className="w-40 md:w-48 mx-auto intro-logo-icon"
-              style={{ 
-                filter: 'brightness(0) saturate(100%) invert(78%) sepia(51%) saturate(916%) hue-rotate(337deg) brightness(101%) contrast(96%) drop-shadow(0 0 10px rgba(245, 194, 66, 0.7))',
-                mixBlendMode: 'normal'
-              }}
-            />
-          </div>
           <h1 className="intro-logo-text text-6xl md:text-8xl mb-8">
             <span className="text-white">Thrive</span>
             <span className="text-[#F5C242] gold-element"> MT</span>
