@@ -44,7 +44,7 @@ const Index = () => {
         <div className="text-center max-w-2xl mx-auto px-4">
           <div className="mb-16">
             <img 
-              src="/lovable-uploads/bce2b3d1-dbc0-4e7c-a7d1-98811182fe0a.png" 
+              src="/lovable-uploads/10d9c6f1-9335-46e4-8942-4d4c198d3f5b.png" 
               alt="Thrive Logo" 
               className="w-32 md:w-40 mx-auto intro-logo-icon"
             />
