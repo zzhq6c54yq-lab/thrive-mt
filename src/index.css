@@ -100,6 +100,11 @@
   opacity: 0;
 }
 
+.intro-logo-image {
+  animation: fadeInText 2.5s ease-out 3s forwards;
+  opacity: 0;
+}
+
 .app-content {
   animation: fadeInText 1.5s ease-out 4.5s forwards;
   opacity: 0;

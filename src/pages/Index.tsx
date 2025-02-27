@@ -51,6 +51,13 @@ const Index = () => {
           <p className="intro-tagline text-md md:text-lg text-gray-400 mt-3 italic">
             because life should be more than just surviving
           </p>
+          <div className="intro-logo-image mt-10">
+            <img 
+              src="/lovable-uploads/776b4638-0382-4cd8-bb25-0a7e36accaf1.png" 
+              alt="Thrive MT Logo" 
+              className="h-28 md:h-40 mx-auto opacity-80"
+            />
+          </div>
         </div>
       </div>
     );
