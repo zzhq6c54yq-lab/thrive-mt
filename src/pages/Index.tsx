@@ -2,6 +2,7 @@
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { ArrowRight, MessageCircle, Brain, Calendar, Shield } from "lucide-react";
+import { useState, useEffect } from "react";
 
 const features = [
   {
@@ -27,8 +28,33 @@ const features = [
 ];
 
 const Index = () => {
+  const [showIntro, setShowIntro] = useState(true);
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setShowIntro(false);
+    }, 3000); // Show intro for 3 seconds
+
+    return () => clearTimeout(timer);
+  }, []);
+
+  if (showIntro) {
+    return (
+      <div className="min-h-screen flex flex-col items-center justify-center bg-black">
+        <div className="text-center">
+          <h1 className="intro-logo text-5xl md:text-7xl font-bold mb-4 text-[#F5C242]">
+            Thrive MT
+          </h1>
+          <p className="intro-text text-lg md:text-xl text-gray-300">
+            Your path to mental wellness
+          </p>
+        </div>
+      </div>
+    );
+  }
+
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-background app-content">
       {/* Hero Section */}
       <section className="container px-4 pt-32 pb-20">
         <div className="max-w-3xl mx-auto text-center animate-fade-up">

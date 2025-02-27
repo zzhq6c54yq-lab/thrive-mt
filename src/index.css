@@ -34,6 +34,9 @@
     --ring: 240 5.9% 10%;
 
     --radius: 0.75rem;
+    
+    /* Custom colors */
+    --gold: 43 74% 49%;
   }
 
   * {
@@ -58,4 +61,41 @@
 /* Enhance card hover states */
 .card {
   @apply transition-all duration-300;
+}
+
+/* Custom animations */
+@keyframes fadeInLogo {
+  0% {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes fadeInText {
+  0% {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.intro-logo {
+  animation: fadeInLogo 1.5s ease-out forwards;
+}
+
+.intro-text {
+  animation: fadeInText 1.5s ease-out 0.5s forwards;
+  opacity: 0;
+}
+
+.app-content {
+  animation: fadeInText 0.8s ease-out 2s forwards;
+  opacity: 0;
 }
