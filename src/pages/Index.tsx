@@ -44,10 +44,9 @@ const Index = () => {
         <div className="text-center max-w-2xl mx-auto px-4">
           <div className="mb-16">
             <img 
-              src="/lovable-uploads/d2ecdcd2-9a78-40ea-8a8a-ef13092b5ea1.png" 
+              src="/lovable-uploads/bce2b3d1-dbc0-4e7c-a7d1-98811182fe0a.png" 
               alt="Thrive Logo" 
               className="w-32 md:w-40 mx-auto intro-logo-icon"
-              style={{ filter: "brightness(0) saturate(100%) invert(70%) sepia(53%) saturate(1352%) hue-rotate(360deg) brightness(103%) contrast(102%)" }}
             />
           </div>
           <h1 className="intro-logo-text text-6xl md:text-8xl mb-8">
