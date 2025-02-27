@@ -87,15 +87,20 @@
 }
 
 .intro-logo {
-  animation: fadeInLogo 1.5s ease-out forwards;
+  animation: fadeInLogo 2.5s ease-out forwards;
 }
 
 .intro-text {
-  animation: fadeInText 1.5s ease-out 0.5s forwards;
+  animation: fadeInText 2.5s ease-out 1s forwards;
+  opacity: 0;
+}
+
+.intro-tagline {
+  animation: fadeInText 2.5s ease-out 2s forwards;
   opacity: 0;
 }
 
 .app-content {
-  animation: fadeInText 0.8s ease-out 2s forwards;
+  animation: fadeInText 1.5s ease-out 4.5s forwards;
   opacity: 0;
 }

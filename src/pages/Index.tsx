@@ -33,7 +33,7 @@ const Index = () => {
   useEffect(() => {
     const timer = setTimeout(() => {
       setShowIntro(false);
-    }, 3000); // Show intro for 3 seconds
+    }, 6000); // Show intro for 6 seconds (extended to accommodate slower animations)
 
     return () => clearTimeout(timer);
   }, []);
@@ -47,6 +47,9 @@ const Index = () => {
           </h1>
           <p className="intro-text text-lg md:text-xl text-gray-300">
             Your path to mental wellness
+          </p>
+          <p className="intro-tagline text-md md:text-lg text-gray-400 mt-3 italic">
+            because life should be more than just surviving
           </p>
         </div>
       </div>
