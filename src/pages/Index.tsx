@@ -48,7 +48,9 @@ const Index = () => {
               alt="Copper Outline Logo" 
               className="w-40 md:w-48 mx-auto intro-logo-icon"
               style={{ 
-                filter: 'drop-shadow(0 0 8px rgba(184, 115, 51, 0.6))'
+                filter: 'drop-shadow(0 0 8px rgba(184, 115, 51, 0.6))',
+                backgroundColor: 'transparent',
+                mixBlendMode: 'normal'
               }}
             />
           </div>
