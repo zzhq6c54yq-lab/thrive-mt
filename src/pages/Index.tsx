@@ -1,4 +1,3 @@
-
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { ArrowRight, MessageCircle, Brain, Calendar, Shield } from "lucide-react";
@@ -11,7 +10,7 @@ const features = [
     icon: MessageCircle,
   },
   {
-    title: "Mental Wellness Tools",
+    title: "Mental Wellness Tools", 
     description: "Access evidence-based resources and exercises for your mental health journey.",
     icon: Brain,
   },
@@ -33,32 +32,29 @@ const Index = () => {
   useEffect(() => {
     const timer = setTimeout(() => {
       setShowIntro(false);
-    }, 6000); // Show intro for 6 seconds (extended to accommodate slower animations)
+    }, 6000);
 
     return () => clearTimeout(timer);
   }, []);
 
   if (showIntro) {
     return (
-      <div className="min-h-screen flex flex-col items-center justify-center bg-black">
-        <div className="text-center">
-          <h1 className="intro-logo text-5xl md:text-7xl mb-4 text-[#F5C242] font-bold">
-            THRIVE MT
-          </h1>
-          <p className="intro-text text-sm md:text-base text-gray-300">
-            YOUR PATH TO MENTAL WELLNESS
-          </p>
-          <p className="intro-tagline text-md md:text-lg text-gray-400 mt-3">
-            because life should be more than just surviving
-          </p>
-          <div className="intro-logo-image mt-10">
+      <div className="min-h-screen flex flex-col items-center justify-center bg-[#1a1a1f]">
+        <div className="text-center max-w-2xl mx-auto px-4">
+          <div className="mb-16">
             <img 
-              src="/lovable-uploads/776b4638-0382-4cd8-bb25-0a7e36accaf1.png" 
-              alt="Thrive MT Logo" 
-              className="h-28 md:h-40 mx-auto logo-glow"
+              src="/lovable-uploads/d2ecdcd2-9a78-40ea-8a8a-ef13092b5ea1.png" 
+              alt="Thrive Logo" 
+              className="w-32 md:w-40 mx-auto intro-logo-icon"
               style={{ filter: "brightness(0) saturate(100%) invert(70%) sepia(53%) saturate(1352%) hue-rotate(360deg) brightness(103%) contrast(102%)" }}
             />
           </div>
+          <h1 className="intro-logo-text text-6xl md:text-8xl mb-8 text-white">
+            Thrive
+          </h1>
+          <p className="intro-tagline text-xl md:text-2xl text-gray-300">
+            because life should be more than just surviving
+          </p>
         </div>
       </div>
     );
