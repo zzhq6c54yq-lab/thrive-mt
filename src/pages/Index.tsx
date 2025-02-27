@@ -47,16 +47,11 @@ const Index = () => {
               src="/lovable-uploads/f2c6ac08-6331-4884-950d-7f94d68ff15f.png" 
               alt="Copper Outline Logo" 
               className="w-40 md:w-48 mx-auto intro-logo-icon"
-              style={{ 
-                filter: 'drop-shadow(0 0 8px rgba(184, 115, 51, 0.6))',
-                backgroundColor: 'transparent',
-                mixBlendMode: 'normal'
-              }}
             />
           </div>
           <h1 className="intro-logo-text text-6xl md:text-8xl mb-8">
             <span className="text-white">Thrive</span>
-            <span className="text-[#B87333] gold-element"> MT</span>
+            <span className="copper-text"> MT</span>
           </h1>
           <p className="intro-tagline text-xl md:text-2xl text-gray-300">
             because life should be more than just surviving

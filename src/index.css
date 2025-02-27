@@ -100,7 +100,7 @@
   }
 }
 
-@keyframes shimmer {
+@keyframes copperShimmer {
   0% {
     filter: brightness(1) drop-shadow(0 0 4px rgba(184, 115, 51, 0.4));
   }
@@ -112,24 +112,15 @@
   }
 }
 
-@keyframes copperShimmer {
-  0% {
-    filter: drop-shadow(0 0 4px rgba(184, 115, 51, 0.4));
-  }
-  50% {
-    filter: drop-shadow(0 0 12px rgba(184, 115, 51, 0.8));
-  }
-  100% {
-    filter: drop-shadow(0 0 4px rgba(184, 115, 51, 0.4));
-  }
-}
-
 .intro-logo-icon {
   animation: fadeInLogo 2s ease-out forwards, copperShimmer 3s ease-in-out 2s infinite;
+  filter: drop-shadow(0 0 8px rgba(184, 115, 51, 0.6));
 }
 
-.gold-element {
-  animation: shimmer 3s ease-in-out infinite;
+.copper-text {
+  color: #B87333;
+  text-shadow: 0 0 8px rgba(184, 115, 51, 0.6);
+  animation: copperShimmer 3s ease-in-out infinite;
 }
 
 .intro-logo-text {
