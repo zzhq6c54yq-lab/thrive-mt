@@ -1,7 +1,7 @@
 
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
-import { ArrowRight, MessageCircle, Brain, Calendar, Shield } from "lucide-react";
+import { ArrowRight, MessageCircle, Brain, Calendar, Shield, Smile, Meh, Frown } from "lucide-react";
 import { useState, useEffect } from "react";
 
 const features = [
@@ -28,17 +28,18 @@ const features = [
 ];
 
 const Index = () => {
-  const [showIntro, setShowIntro] = useState(true);
+  const [screenState, setScreenState] = useState<'intro' | 'mood' | 'main'>('intro');
+  const [selectedMood, setSelectedMood] = useState<string | null>(null);
 
   useEffect(() => {
     const timer = setTimeout(() => {
-      setShowIntro(false);
-    }, 12000); // Changed from 6000 to 12000 milliseconds (12 seconds)
+      setScreenState('mood');
+    }, 12000);
 
     return () => clearTimeout(timer);
   }, []);
 
-  if (showIntro) {
+  if (screenState === 'intro') {
     return (
       <div className="min-h-screen flex flex-col items-center justify-center bg-[#1a1a1f]">
         <div className="text-center max-w-2xl mx-auto px-4">
@@ -56,6 +57,47 @@ const Index = () => {
           <p className="intro-tagline text-xl md:text-2xl text-gray-300">
             because life should be more than just surviving
           </p>
+        </div>
+      </div>
+    );
+  }
+
+  if (screenState === 'mood') {
+    return (
+      <div className="min-h-screen flex flex-col items-center justify-center bg-[#1a1a1f] animate-fade-in">
+        <div className="text-center max-w-2xl mx-auto px-4">
+          <h2 className="text-4xl md:text-5xl text-white mb-12">
+            How are you feeling today?
+          </h2>
+          <div className="flex justify-center gap-8 md:gap-16">
+            <button 
+              onClick={() => {
+                setSelectedMood('happy');
+                setScreenState('main');
+              }}
+              className="mood-button group"
+            >
+              <Smile className="w-16 h-16 md:w-20 md:h-20 text-[#B87333] transition-transform duration-300 group-hover:scale-110" />
+            </button>
+            <button 
+              onClick={() => {
+                setSelectedMood('neutral');
+                setScreenState('main');
+              }}
+              className="mood-button group"
+            >
+              <Meh className="w-16 h-16 md:w-20 md:h-20 text-[#B87333] transition-transform duration-300 group-hover:scale-110" />
+            </button>
+            <button 
+              onClick={() => {
+                setSelectedMood('sad');
+                setScreenState('main');
+              }}
+              className="mood-button group"
+            >
+              <Frown className="w-16 h-16 md:w-20 md:h-20 text-[#B87333] transition-transform duration-300 group-hover:scale-110" />
+            </button>
+          </div>
         </div>
       </div>
     );

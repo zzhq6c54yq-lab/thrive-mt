@@ -138,6 +138,15 @@
 }
 
 .app-content {
-  animation: fadeInText 1.5s ease-out 4.5s forwards;
+  animation: fadeInText 1.5s ease-out 0.5s forwards;
   opacity: 0;
+}
+
+.mood-button {
+  @apply p-6 rounded-full transition-transform duration-300 hover:scale-110;
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.mood-button:hover svg {
+  filter: drop-shadow(0 0 8px rgba(184, 115, 51, 0.6));
 }
