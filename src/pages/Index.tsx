@@ -47,7 +47,7 @@ const Index = () => {
               src="/lovable-uploads/10d9c6f1-9335-46e4-8942-4d4c198d3f5b.png" 
               alt="Thrive Logo" 
               className="w-40 md:w-48 mx-auto intro-logo-icon gold-element"
-              style={{ filter: 'brightness(1.2) hue-rotate(-10deg)' }}
+              style={{ filter: 'brightness(1.2) hue-rotate(-10deg)', mixBlendMode: 'screen' }}
             />
           </div>
           <h1 className="intro-logo-text text-6xl md:text-8xl mb-8">
@@ -63,7 +63,7 @@ const Index = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-[#26262f] to-background app-content">
+    <div className="min-h-screen bg-white app-content">
       {/* Hero Section */}
       <section className="container px-4 pt-32 pb-20">
         <div className="max-w-3xl mx-auto text-center animate-fade-up">
