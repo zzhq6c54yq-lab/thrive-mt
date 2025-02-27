@@ -44,7 +44,7 @@ const Index = () => {
         <div className="text-center max-w-2xl mx-auto px-4">
           <div className="mb-8">
             <img 
-              src="/lovable-uploads/11170587-bb45-4563-93d6-add9916cea87.png" 
+              src="/lovable-uploads/f2c6ac08-6331-4884-950d-7f94d68ff15f.png" 
               alt="Copper Outline Logo" 
               className="w-40 md:w-48 mx-auto intro-logo-icon"
               style={{ 
