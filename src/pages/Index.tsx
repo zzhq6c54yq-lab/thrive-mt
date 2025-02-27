@@ -42,20 +42,20 @@ const Index = () => {
     return (
       <div className="min-h-screen flex flex-col items-center justify-center bg-black">
         <div className="text-center">
-          <h1 className="intro-logo text-5xl md:text-7xl font-bold mb-4 text-[#F5C242]">
-            Thrive MT
+          <h1 className="intro-logo text-5xl md:text-7xl mb-4 text-[#F5C242]">
+            THRIVE MT
           </h1>
-          <p className="intro-text text-lg md:text-xl text-gray-300">
-            Your path to mental wellness
+          <p className="intro-text text-sm md:text-base text-gray-300">
+            YOUR PATH TO MENTAL WELLNESS
           </p>
-          <p className="intro-tagline text-md md:text-lg text-gray-400 mt-3 italic">
+          <p className="intro-tagline text-md md:text-lg text-gray-400 mt-3">
             because life should be more than just surviving
           </p>
           <div className="intro-logo-image mt-10">
             <img 
               src="/lovable-uploads/776b4638-0382-4cd8-bb25-0a7e36accaf1.png" 
               alt="Thrive MT Logo" 
-              className="h-28 md:h-40 mx-auto opacity-80"
+              className="h-28 md:h-40 mx-auto"
             />
           </div>
         </div>
@@ -68,10 +68,10 @@ const Index = () => {
       {/* Hero Section */}
       <section className="container px-4 pt-32 pb-20">
         <div className="max-w-3xl mx-auto text-center animate-fade-up">
-          <span className="px-3 py-1 text-sm font-medium rounded-full bg-primary/10 text-primary inline-block mb-4">
+          <span className="px-3 py-1 text-sm font-medium tracking-wider rounded-full bg-primary/10 text-primary inline-block mb-4 uppercase">
             Welcome to Thrive MT
           </span>
-          <h1 className="text-4xl sm:text-5xl font-bold tracking-tight mb-6 bg-clip-text">
+          <h1 className="text-4xl sm:text-5xl tracking-tight mb-6 bg-clip-text">
             Your Mental Health Journey Starts Here
           </h1>
           <p className="text-lg text-muted-foreground mb-8 leading-relaxed">
@@ -95,7 +95,7 @@ const Index = () => {
                 className="p-6 backdrop-blur-sm bg-background/50 border border-border/50 hover:border-primary/50 transition-colors duration-300"
               >
                 <feature.icon className="h-8 w-8 mb-4 text-primary/80" />
-                <h3 className="text-xl font-semibold mb-3">{feature.title}</h3>
+                <h3 className="text-xl mb-3">{feature.title}</h3>
                 <p className="text-muted-foreground">{feature.description}</p>
               </Card>
             ))}
@@ -106,7 +106,7 @@ const Index = () => {
       {/* Call to Action Section */}
       <section className="container px-4 py-20">
         <div className="max-w-3xl mx-auto text-center">
-          <h2 className="text-3xl font-bold mb-6">Ready to Take the First Step?</h2>
+          <h2 className="text-3xl mb-6">Ready to Take the First Step?</h2>
           <p className="text-muted-foreground mb-8">
             Join thousands of Montanans who have found their path to better mental health. 
             Our licensed therapists are here to support you.
