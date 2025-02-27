@@ -40,13 +40,13 @@ const Index = () => {
 
   if (showIntro) {
     return (
-      <div className="min-h-screen flex flex-col items-center justify-center bg-[#1a1a1f]">
+      <div className="min-h-screen flex flex-col items-center justify-center bg-gradient-to-b from-[#1a1a1f] to-[#26262f]">
         <div className="text-center max-w-2xl mx-auto px-4">
-          <div className="mb-16">
+          <div className="mb-8">
             <img 
               src="/lovable-uploads/10d9c6f1-9335-46e4-8942-4d4c198d3f5b.png" 
               alt="Thrive Logo" 
-              className="w-32 md:w-40 mx-auto intro-logo-icon"
+              className="w-40 md:w-48 mx-auto intro-logo-icon"
             />
           </div>
           <h1 className="intro-logo-text text-6xl md:text-8xl mb-8">
@@ -62,7 +62,7 @@ const Index = () => {
   }
 
   return (
-    <div className="min-h-screen bg-background app-content">
+    <div className="min-h-screen bg-gradient-to-b from-[#26262f] to-background app-content">
       {/* Hero Section */}
       <section className="container px-4 pt-32 pb-20">
         <div className="max-w-3xl mx-auto text-center animate-fade-up">
