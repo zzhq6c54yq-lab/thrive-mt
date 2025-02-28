@@ -3,27 +3,32 @@ import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { ArrowRight, MessageCircle, Brain, Calendar, Shield, Smile, Meh, Frown } from "lucide-react";
 import { useState, useEffect } from "react";
+import { Link, useNavigate } from "react-router-dom";
 
 const features = [
   {
     title: "Real-Time Therapy",
     description: "Connect with licensed therapists instantly through secure video sessions.",
     icon: MessageCircle,
+    path: "/real-time-therapy"
   },
   {
     title: "Mental Wellness Tools", 
     description: "Access evidence-based resources and exercises for your mental health journey.",
     icon: Brain,
+    path: "/mental-wellness-tools"
   },
   {
     title: "Flexible Scheduling",
     description: "Book therapy sessions that fit your schedule, with 24/7 availability.",
     icon: Calendar,
+    path: "/scheduling"
   },
   {
     title: "Private & Secure",
     description: "Your mental health journey, protected with end-to-end encryption.",
     icon: Shield,
+    path: "/privacy-security"
   },
 ];
 
@@ -85,6 +90,7 @@ const Index = () => {
   const [selectedMood, setSelectedMood] = useState<'happy' | 'neutral' | 'sad' | null>(null);
   const [selectedQualities, setSelectedQualities] = useState<string[]>([]);
   const [selectedGoals, setSelectedGoals] = useState<string[]>([]);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -356,7 +362,8 @@ const Index = () => {
             {features.map((feature, index) => (
               <Card 
                 key={index}
-                className="p-6 backdrop-blur-sm bg-background/50 border border-border/50 hover:border-primary/50 transition-colors duration-300"
+                className="p-6 backdrop-blur-sm bg-background/50 border border-border/50 hover:border-primary/50 transition-colors duration-300 cursor-pointer"
+                onClick={() => navigate(feature.path)}
               >
                 <feature.icon className="h-8 w-8 mb-4 text-primary/80" />
                 <h3 className="text-xl mb-3">{feature.title}</h3>
@@ -376,7 +383,11 @@ const Index = () => {
             Our licensed therapists are here to support you.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Button variant="default" className="group">
+            <Button 
+              variant="default" 
+              className="group"
+              onClick={() => navigate("/real-time-therapy")}
+            >
               Connect with a Therapist
               <MessageCircle className="ml-2 h-4 w-4" />
             </Button>
