@@ -1,6 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
-import { ArrowRight, MessageCircle, Brain, Calendar, Shield, Smile, Meh, Frown, User, Mail, Lock } from "lucide-react";
+import { ArrowRight, MessageCircle, Brain, Calendar, Shield, Smile, Meh, Frown, User, Mail, Lock, MonitorSmartphone } from "lucide-react";
 import { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useToast } from "@/hooks/use-toast";
@@ -166,6 +166,13 @@ const Index = () => {
           <p className="intro-tagline text-xl md:text-2xl text-gray-300">
             because life should be more than just surviving
           </p>
+          <Button 
+            className="mt-10 group bg-[#B87333] hover:bg-[#B87333]/80"
+            onClick={() => setScreenState('mood')}
+          >
+            Begin Your Journey
+            <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
+          </Button>
         </div>
       </div>
     );
@@ -207,6 +214,13 @@ const Index = () => {
               <Frown className="w-16 h-16 md:w-20 md:h-20 text-[#B87333] transition-transform duration-300 group-hover:scale-110" />
             </button>
           </div>
+          <Button 
+            className="mt-10 group bg-[#B87333] hover:bg-[#B87333]/80 flex items-center gap-2"
+            onClick={() => window.open('', '_blank')}
+          >
+            <MonitorSmartphone className="h-4 w-4" />
+            Screen Mode
+          </Button>
         </div>
       </div>
     );
@@ -233,6 +247,13 @@ const Index = () => {
               Continue to Register
               <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
             </Button>
+            <Button 
+              className="ml-4 group bg-[#B87333] hover:bg-[#B87333]/80 flex items-center gap-2"
+              onClick={() => window.open('', '_blank')}
+            >
+              <MonitorSmartphone className="h-4 w-4" />
+              Screen Mode
+            </Button>
           </div>
         </div>
       );
@@ -255,6 +276,13 @@ const Index = () => {
             >
               Continue to Register
               <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
+            </Button>
+            <Button 
+              className="ml-4 group bg-[#B87333] hover:bg-[#B87333]/80 flex items-center gap-2"
+              onClick={() => window.open('', '_blank')}
+            >
+              <MonitorSmartphone className="h-4 w-4" />
+              Screen Mode
             </Button>
           </div>
         </div>
@@ -286,6 +314,13 @@ const Index = () => {
             >
               Continue to Register
               <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
+            </Button>
+            <Button 
+              className="ml-4 group bg-[#B87333] hover:bg-[#B87333]/80 flex items-center gap-2"
+              onClick={() => window.open('', '_blank')}
+            >
+              <MonitorSmartphone className="h-4 w-4" />
+              Screen Mode
             </Button>
           </div>
         </div>
@@ -378,6 +413,15 @@ const Index = () => {
               </p>
             </div>
           </Card>
+          <div className="text-center mt-6">
+            <Button 
+              className="group bg-[#B87333] hover:bg-[#B87333]/80 flex items-center gap-2"
+              onClick={() => window.open('', '_blank')}
+            >
+              <MonitorSmartphone className="h-4 w-4" />
+              Screen Mode
+            </Button>
+          </div>
         </div>
       </div>
     );
@@ -443,8 +487,15 @@ const Index = () => {
               onClick={() => setScreenState('main')}
               disabled={selectedQualities.length === 0 && selectedGoals.length === 0}
             >
-              Continue to Thrive
+              Continue to Thrive MT
               <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
+            </Button>
+            <Button 
+              className="ml-4 mt-4 md:mt-0 group bg-[#B87333]/20 hover:bg-[#B87333]/30 flex items-center gap-2"
+              onClick={() => window.open('', '_blank')}
+            >
+              <MonitorSmartphone className="h-4 w-4" />
+              Screen Mode
             </Button>
           </div>
         </div>
@@ -458,7 +509,7 @@ const Index = () => {
       <section className="container px-4 pt-32 pb-20">
         <div className="max-w-3xl mx-auto text-center animate-fade-up">
           <span className="px-3 py-1 text-sm font-medium tracking-wider rounded-full bg-primary/10 text-primary inline-block mb-4 uppercase">
-            Welcome to Thrive
+            Welcome to Thrive MT
           </span>
           <h1 className="text-4xl sm:text-5xl tracking-tight mb-6 bg-clip-text">
             Your Mental Health Journey Starts Here
@@ -470,6 +521,13 @@ const Index = () => {
           <Button className="group">
             Start Your Journey
             <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
+          </Button>
+          <Button 
+            className="ml-4 group bg-[#B87333] hover:bg-[#B87333]/80 flex items-center gap-2"
+            onClick={() => window.open('', '_blank')}
+          >
+            <MonitorSmartphone className="h-4 w-4" />
+            Screen Mode
           </Button>
         </div>
       </section>
@@ -506,7 +564,7 @@ const Index = () => {
         <div className="max-w-3xl mx-auto text-center">
           <h2 className="text-3xl mb-6">Ready to Take the First Step?</h2>
           <p className="text-muted-foreground mb-8">
-            Join thousands who have found their path to better mental health. 
+            Join thousands who have found their path to better mental health with Thrive MT. 
             Our licensed therapists are here to support you.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
@@ -527,6 +585,13 @@ const Index = () => {
             >
               Explore Resources
               <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
+            </Button>
+            <Button 
+              className="group bg-[#B87333] hover:bg-[#B87333]/80 flex items-center gap-2"
+              onClick={() => window.open('', '_blank')}
+            >
+              <MonitorSmartphone className="h-4 w-4" />
+              Screen Mode
             </Button>
           </div>
         </div>
