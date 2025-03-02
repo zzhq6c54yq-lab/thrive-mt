@@ -1,9 +1,9 @@
-
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
-import { ArrowRight, MessageCircle, Brain, Calendar, Shield, Smile, Meh, Frown } from "lucide-react";
+import { ArrowRight, MessageCircle, Brain, Calendar, Shield, Smile, Meh, Frown, User, Mail, Lock } from "lucide-react";
 import { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import { useToast } from "@/hooks/use-toast";
 
 const features = [
   {
@@ -86,11 +86,17 @@ const visionBoardGoals = [
 ];
 
 const Index = () => {
-  const [screenState, setScreenState] = useState<'intro' | 'mood' | 'moodResponse' | 'visionBoard' | 'main'>('intro');
+  const [screenState, setScreenState] = useState<'intro' | 'mood' | 'moodResponse' | 'register' | 'visionBoard' | 'main'>('intro');
   const [selectedMood, setSelectedMood] = useState<'happy' | 'neutral' | 'sad' | null>(null);
   const [selectedQualities, setSelectedQualities] = useState<string[]>([]);
   const [selectedGoals, setSelectedGoals] = useState<string[]>([]);
+  const [userInfo, setUserInfo] = useState({
+    name: '',
+    email: '',
+    password: '',
+  });
   const navigate = useNavigate();
+  const { toast } = useToast();
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -114,6 +120,30 @@ const Index = () => {
         ? prev.filter(g => g !== id) 
         : [...prev, id]
     );
+  };
+
+  const handleUserInfoChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    setUserInfo(prev => ({ ...prev, [name]: value }));
+  };
+
+  const handleRegister = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!userInfo.name || !userInfo.email || !userInfo.password) {
+      toast({
+        title: "Registration Error",
+        description: "Please fill in all fields to continue.",
+        variant: "destructive"
+      });
+      return;
+    }
+    
+    toast({
+      title: "Registration Successful",
+      description: "Welcome to Thrive MT! Your journey to better mental health begins now.",
+    });
+    
+    setScreenState('visionBoard');
   };
 
   if (screenState === 'intro') {
@@ -183,7 +213,6 @@ const Index = () => {
   }
 
   if (screenState === 'moodResponse') {
-    // Content based on selected mood
     if (selectedMood === 'happy') {
       return (
         <div className="min-h-screen flex flex-col items-center justify-center bg-[#F2FCE2] animate-fade-in">
@@ -199,9 +228,9 @@ const Index = () => {
             </div>
             <Button 
               className="group"
-              onClick={() => setScreenState('visionBoard')}
+              onClick={() => setScreenState('register')}
             >
-              Create Your Vision
+              Continue to Register
               <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
             </Button>
           </div>
@@ -222,9 +251,9 @@ const Index = () => {
             </div>
             <Button 
               className="group"
-              onClick={() => setScreenState('visionBoard')}
+              onClick={() => setScreenState('register')}
             >
-              Create Your Vision
+              Continue to Register
               <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
             </Button>
           </div>
@@ -253,15 +282,105 @@ const Index = () => {
             </p>
             <Button 
               className="group bg-[#ea384c] hover:bg-[#ea384c]/90"
-              onClick={() => setScreenState('visionBoard')}
+              onClick={() => setScreenState('register')}
             >
-              Create Your Vision
+              Continue to Register
               <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
             </Button>
           </div>
         </div>
       );
     }
+  }
+
+  if (screenState === 'register') {
+    return (
+      <div className="min-h-screen flex flex-col items-center justify-center bg-gradient-to-b from-[#1a1a1f] to-[#2a2a3f] text-white animate-fade-in">
+        <div className="w-full max-w-md mx-auto px-4">
+          <div className="text-center mb-8">
+            <h2 className="text-4xl font-light text-white mb-2">Join <span className="text-[#B87333]">Thrive</span><span className="text-white">MT</span></h2>
+            <p className="text-gray-300">Create your account to continue your journey</p>
+          </div>
+          
+          <Card className="p-6 bg-white/10 backdrop-blur-md border-white/20">
+            <form onSubmit={handleRegister} className="space-y-6">
+              <div>
+                <label htmlFor="name" className="block text-sm font-medium text-gray-200 mb-1">Name</label>
+                <div className="relative">
+                  <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                    <User className="h-5 w-5 text-gray-400" />
+                  </div>
+                  <input
+                    type="text"
+                    id="name"
+                    name="name"
+                    value={userInfo.name}
+                    onChange={handleUserInfoChange}
+                    className="pl-10 w-full bg-white/5 border border-white/10 rounded-md py-2 px-3 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#B87333] focus:border-transparent"
+                    placeholder="Enter your name"
+                  />
+                </div>
+              </div>
+              
+              <div>
+                <label htmlFor="email" className="block text-sm font-medium text-gray-200 mb-1">Email</label>
+                <div className="relative">
+                  <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                    <Mail className="h-5 w-5 text-gray-400" />
+                  </div>
+                  <input
+                    type="email"
+                    id="email"
+                    name="email"
+                    value={userInfo.email}
+                    onChange={handleUserInfoChange}
+                    className="pl-10 w-full bg-white/5 border border-white/10 rounded-md py-2 px-3 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#B87333] focus:border-transparent"
+                    placeholder="Enter your email"
+                  />
+                </div>
+              </div>
+              
+              <div>
+                <label htmlFor="password" className="block text-sm font-medium text-gray-200 mb-1">Password</label>
+                <div className="relative">
+                  <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                    <Lock className="h-5 w-5 text-gray-400" />
+                  </div>
+                  <input
+                    type="password"
+                    id="password"
+                    name="password"
+                    value={userInfo.password}
+                    onChange={handleUserInfoChange}
+                    className="pl-10 w-full bg-white/5 border border-white/10 rounded-md py-2 px-3 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#B87333] focus:border-transparent"
+                    placeholder="Create a password"
+                  />
+                </div>
+              </div>
+              
+              <Button 
+                type="submit"
+                className="w-full bg-[#B87333] hover:bg-[#B87333]/80 text-white py-2 rounded-md transition-colors"
+              >
+                Register & Continue
+              </Button>
+            </form>
+            
+            <div className="mt-6 text-center">
+              <p className="text-sm text-gray-400">
+                Already have an account?{" "}
+                <button 
+                  onClick={() => setScreenState('visionBoard')} 
+                  className="text-[#B87333] hover:underline"
+                >
+                  Skip for now
+                </button>
+              </p>
+            </div>
+          </Card>
+        </div>
+      </div>
+    );
   }
 
   if (screenState === 'visionBoard') {
