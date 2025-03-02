@@ -1,3 +1,4 @@
+
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { ArrowRight, MessageCircle, Brain, Calendar, Shield, Smile, Meh, Frown, User, Mail, Lock, ArrowLeft } from "lucide-react";
@@ -196,7 +197,7 @@ const Index = () => {
     return (
       <div className="min-h-screen flex flex-col items-center justify-center bg-[#1a1a1f] animate-fade-in">
         <div className="text-center max-w-2xl mx-auto px-4">
-          <h2 className="text-4xl md:text-5xl text-white mb-12">
+          <h2 className="text-2xl md:text-3xl text-white mb-8">
             How are you feeling today?
           </h2>
           <div className="flex justify-center gap-8 md:gap-16">
