@@ -1,6 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
-import { ArrowRight, MessageCircle, Brain, Calendar, Shield, Smile, Meh, Frown, User, Mail, Lock, MonitorSmartphone } from "lucide-react";
+import { ArrowRight, MessageCircle, Brain, Calendar, Shield, Smile, Meh, Frown, User, Mail, Lock, ArrowLeft } from "lucide-react";
 import { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useToast } from "@/hooks/use-toast";
@@ -146,6 +146,20 @@ const Index = () => {
     setScreenState('visionBoard');
   };
 
+  const handlePrevious = () => {
+    if (screenState === 'mood') {
+      setScreenState('intro');
+    } else if (screenState === 'moodResponse') {
+      setScreenState('mood');
+    } else if (screenState === 'register') {
+      setScreenState('moodResponse');
+    } else if (screenState === 'visionBoard') {
+      setScreenState('register');
+    } else if (screenState === 'main') {
+      setScreenState('visionBoard');
+    }
+  };
+
   if (screenState === 'intro') {
     return (
       <div className="min-h-screen flex flex-col items-center justify-center bg-[#1a1a1f]">
@@ -216,10 +230,10 @@ const Index = () => {
           </div>
           <Button 
             className="mt-10 group bg-[#B87333] hover:bg-[#B87333]/80 flex items-center gap-2"
-            onClick={() => window.open('', '_blank')}
+            onClick={handlePrevious}
           >
-            <MonitorSmartphone className="h-4 w-4" />
-            Screen Mode
+            <ArrowLeft className="h-4 w-4" />
+            Previous
           </Button>
         </div>
       </div>
@@ -249,10 +263,10 @@ const Index = () => {
             </Button>
             <Button 
               className="ml-4 group bg-[#B87333] hover:bg-[#B87333]/80 flex items-center gap-2"
-              onClick={() => window.open('', '_blank')}
+              onClick={handlePrevious}
             >
-              <MonitorSmartphone className="h-4 w-4" />
-              Screen Mode
+              <ArrowLeft className="h-4 w-4" />
+              Previous
             </Button>
           </div>
         </div>
@@ -279,10 +293,10 @@ const Index = () => {
             </Button>
             <Button 
               className="ml-4 group bg-[#B87333] hover:bg-[#B87333]/80 flex items-center gap-2"
-              onClick={() => window.open('', '_blank')}
+              onClick={handlePrevious}
             >
-              <MonitorSmartphone className="h-4 w-4" />
-              Screen Mode
+              <ArrowLeft className="h-4 w-4" />
+              Previous
             </Button>
           </div>
         </div>
@@ -317,10 +331,10 @@ const Index = () => {
             </Button>
             <Button 
               className="ml-4 group bg-[#B87333] hover:bg-[#B87333]/80 flex items-center gap-2"
-              onClick={() => window.open('', '_blank')}
+              onClick={handlePrevious}
             >
-              <MonitorSmartphone className="h-4 w-4" />
-              Screen Mode
+              <ArrowLeft className="h-4 w-4" />
+              Previous
             </Button>
           </div>
         </div>
@@ -416,10 +430,10 @@ const Index = () => {
           <div className="text-center mt-6">
             <Button 
               className="group bg-[#B87333] hover:bg-[#B87333]/80 flex items-center gap-2"
-              onClick={() => window.open('', '_blank')}
+              onClick={handlePrevious}
             >
-              <MonitorSmartphone className="h-4 w-4" />
-              Screen Mode
+              <ArrowLeft className="h-4 w-4" />
+              Previous
             </Button>
           </div>
         </div>
@@ -492,10 +506,10 @@ const Index = () => {
             </Button>
             <Button 
               className="ml-4 mt-4 md:mt-0 group bg-[#B87333]/20 hover:bg-[#B87333]/30 flex items-center gap-2"
-              onClick={() => window.open('', '_blank')}
+              onClick={handlePrevious}
             >
-              <MonitorSmartphone className="h-4 w-4" />
-              Screen Mode
+              <ArrowLeft className="h-4 w-4" />
+              Previous
             </Button>
           </div>
         </div>
@@ -524,10 +538,10 @@ const Index = () => {
           </Button>
           <Button 
             className="ml-4 group bg-[#B87333] hover:bg-[#B87333]/80 flex items-center gap-2"
-            onClick={() => window.open('', '_blank')}
+            onClick={handlePrevious}
           >
-            <MonitorSmartphone className="h-4 w-4" />
-            Screen Mode
+            <ArrowLeft className="h-4 w-4" />
+            Previous
           </Button>
         </div>
       </section>
@@ -588,10 +602,10 @@ const Index = () => {
             </Button>
             <Button 
               className="group bg-[#B87333] hover:bg-[#B87333]/80 flex items-center gap-2"
-              onClick={() => window.open('', '_blank')}
+              onClick={handlePrevious}
             >
-              <MonitorSmartphone className="h-4 w-4" />
-              Screen Mode
+              <ArrowLeft className="h-4 w-4" />
+              Previous
             </Button>
           </div>
         </div>
