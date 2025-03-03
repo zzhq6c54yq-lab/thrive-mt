@@ -1,3 +1,4 @@
+
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { ArrowRight, MessageCircle, Brain, Calendar, Shield, Smile, Meh, Frown, User, Mail, Lock, ArrowLeft, Annoyed, HeartCrack, Angry } from "lucide-react";
@@ -408,44 +409,6 @@ const Index = () => {
       return (
         <div className="min-h-screen flex flex-col items-center justify-center bg-[#221F26] text-white animate-fade-in">
           <div className="text-center max-w-2xl mx-auto px-4">
-            <Frown className="w-20 h-20 mx-auto mb-8 text-[#ea384c]" />
-            <h2 className="text-3xl md:text-4xl mb-8">Emergency Resources</h2>
-            <p className="text-xl mb-6">
-              If you're experiencing a mental health crisis, please reach out to one of these resources immediately:
-            </p>
-            <div className="space-y-6 mb-10">
-              {emergencyResources.map((resource, index) => (
-                <div key={index} className="p-4 border border-[#ea384c]/20 rounded-lg bg-[#ea384c]/10">
-                  <h3 className="text-xl font-medium">{resource.name}</h3>
-                  <p className="text-2xl font-bold text-[#ea384c] my-2">{resource.contact}</p>
-                  <p className="text-sm opacity-80">{resource.description}</p>
-                </div>
-              ))}
-            </div>
-            <p className="mb-8 text-lg">
-              You're not alone. Help is available, and reaching out is a sign of strength.
-            </p>
-            <Button 
-              className="group bg-[#ea384c] hover:bg-[#ea384c]/90"
-              onClick={() => setScreenState('register')}
-            >
-              Continue to Register
-              <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
-            </Button>
-            <Button 
-              className="ml-4 group bg-[#B87333] hover:bg-[#B87333]/80 flex items-center gap-2"
-              onClick={handlePrevious}
-            >
-              <ArrowLeft className="h-4 w-4" />
-              Previous
-            </Button>
-          </div>
-        </div>
-      );
-    } else if (selectedMood === 'overwhelmed') {
-      return (
-        <div className="min-h-screen flex flex-col items-center justify-center bg-[#221F26] text-white animate-fade-in">
-          <div className="text-center max-w-2xl mx-auto px-4">
             <Angry className="w-20 h-20 mx-auto mb-8 text-[#ea384c]" />
             <h2 className="text-3xl md:text-4xl mb-8">When It's All Too Much</h2>
             <p className="text-xl mb-6">
@@ -475,6 +438,44 @@ const Index = () => {
               onClick={() => setScreenState('register')}
             >
               Continue When Ready
+              <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
+            </Button>
+            <Button 
+              className="ml-4 group bg-[#B87333] hover:bg-[#B87333]/80 flex items-center gap-2"
+              onClick={handlePrevious}
+            >
+              <ArrowLeft className="h-4 w-4" />
+              Previous
+            </Button>
+          </div>
+        </div>
+      );
+    } else if (selectedMood === 'overwhelmed') {
+      return (
+        <div className="min-h-screen flex flex-col items-center justify-center bg-[#221F26] text-white animate-fade-in">
+          <div className="text-center max-w-2xl mx-auto px-4">
+            <Frown className="w-20 h-20 mx-auto mb-8 text-[#ea384c]" />
+            <h2 className="text-3xl md:text-4xl mb-8">Emergency Resources</h2>
+            <p className="text-xl mb-6">
+              If you're experiencing a mental health crisis, please reach out to one of these resources immediately:
+            </p>
+            <div className="space-y-6 mb-10">
+              {emergencyResources.map((resource, index) => (
+                <div key={index} className="p-4 border border-[#ea384c]/20 rounded-lg bg-[#ea384c]/10">
+                  <h3 className="text-xl font-medium">{resource.name}</h3>
+                  <p className="text-2xl font-bold text-[#ea384c] my-2">{resource.contact}</p>
+                  <p className="text-sm opacity-80">{resource.description}</p>
+                </div>
+              ))}
+            </div>
+            <p className="mb-8 text-lg">
+              You're not alone. Help is available, and reaching out is a sign of strength.
+            </p>
+            <Button 
+              className="group bg-[#ea384c] hover:bg-[#ea384c]/90"
+              onClick={() => setScreenState('register')}
+            >
+              Continue to Register
               <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
             </Button>
             <Button 
