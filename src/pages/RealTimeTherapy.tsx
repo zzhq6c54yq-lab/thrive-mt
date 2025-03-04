@@ -2,7 +2,8 @@
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { ArrowLeft, MessageCircle, CheckCircle, Info } from "lucide-react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import HomeButton from "@/components/HomeButton";
 
 const insuranceProviders = [
   "Blue Cross Blue Shield",
@@ -42,15 +43,24 @@ const importantFacts = [
 ];
 
 const RealTimeTherapy = () => {
+  const navigate = useNavigate();
+
+  const handleFindTherapist = () => {
+    navigate('/therapist-questionnaire');
+  };
+
   return (
     <div className="min-h-screen bg-white">
       {/* Header */}
       <div className="bg-[#1a1a1f] text-white py-12">
         <div className="container px-4 max-w-6xl mx-auto">
-          <Link to="/" className="inline-flex items-center text-[#B87333] hover:text-[#B87333]/80 mb-6">
-            <ArrowLeft className="mr-2 h-4 w-4" />
-            Back to Home
-          </Link>
+          <div className="flex justify-between items-center mb-6">
+            <Link to="/" className="inline-flex items-center text-[#B87333] hover:text-[#B87333]/80 mb-6">
+              <ArrowLeft className="mr-2 h-4 w-4" />
+              Back to Home
+            </Link>
+            <HomeButton />
+          </div>
           <h1 className="text-4xl md:text-5xl font-light mb-4">Real-Time Therapy</h1>
           <p className="text-xl text-gray-300 max-w-3xl">
             Connect with licensed therapists through secure video sessions that fit your schedule and needs.
@@ -72,6 +82,7 @@ const RealTimeTherapy = () => {
                   key={index} 
                   variant="outline"
                   className="rounded-full hover:bg-[#B87333]/10 hover:text-[#B87333] hover:border-[#B87333]"
+                  onClick={handleFindTherapist}
                 >
                   {keyword}
                 </Button>
@@ -109,7 +120,12 @@ const RealTimeTherapy = () => {
                   <span>Continue regular sessions to build a therapeutic relationship</span>
                 </li>
               </ul>
-              <Button className="mt-6 bg-[#B87333] hover:bg-[#B87333]/90">Find Your Therapist</Button>
+              <Button 
+                className="mt-6 bg-[#B87333] hover:bg-[#B87333]/90"
+                onClick={handleFindTherapist}
+              >
+                Find Your Therapist
+              </Button>
             </div>
           </div>
         </section>
@@ -153,7 +169,10 @@ const RealTimeTherapy = () => {
             <p className="text-lg mb-6 max-w-3xl mx-auto">
               Ready to take the first step on your mental health journey?
             </p>
-            <Button className="bg-[#B87333] hover:bg-[#B87333]/90 px-8">
+            <Button 
+              className="bg-[#B87333] hover:bg-[#B87333]/90 px-8"
+              onClick={handleFindTherapist}
+            >
               Schedule Your First Session
             </Button>
           </div>

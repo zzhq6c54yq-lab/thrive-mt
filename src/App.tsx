@@ -9,11 +9,12 @@ import RealTimeTherapy from "./pages/RealTimeTherapy";
 import MentalWellnessTools from "./pages/MentalWellnessTools";
 import ToolDetail from "./pages/ToolDetail";
 import NotFound from "./pages/NotFound";
+import TherapistQuestionnaire from "./pages/TherapistQuestionnaire";
+import TherapistMatches from "./pages/TherapistMatches";
 import HomeButton from "./components/HomeButton";
 
 const queryClient = new QueryClient();
 
-// Now let's also update the App component to automatically add the HomeButton to the ToolDetail page
 const App = () => (
   <QueryClientProvider client={queryClient}>
     <TooltipProvider>
@@ -25,6 +26,8 @@ const App = () => (
           <Route path="/real-time-therapy" element={<RealTimeTherapy />} />
           <Route path="/mental-wellness-tools" element={<MentalWellnessTools />} />
           <Route path="/mental-wellness-tools/:toolId" element={<ToolDetail />} />
+          <Route path="/therapist-questionnaire" element={<TherapistQuestionnaire />} />
+          <Route path="/therapist-matches" element={<TherapistMatches />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>
