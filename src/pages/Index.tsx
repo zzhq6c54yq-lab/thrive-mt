@@ -176,6 +176,10 @@ const Index = () => {
     }
   };
 
+  const handleSkip = () => {
+    setScreenState('main');
+  };
+
   return (
     <>
       <WhatsNewDialog open={showWhatsNew} onOpenChange={setShowWhatsNew} />
@@ -200,13 +204,21 @@ const Index = () => {
             <p className="intro-tagline text-xl md:text-2xl text-gray-300">
               because life should be more than just surviving
             </p>
-            <Button 
-              className="mt-10 group bg-[#B87333] hover:bg-[#B87333]/80 hero-button"
-              onClick={() => setScreenState('mood')}
-            >
-              Begin Your Journey
-              <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
-            </Button>
+            <div className="mt-10 flex justify-center gap-4">
+              <Button 
+                className="group bg-[#B87333] hover:bg-[#B87333]/80 hero-button"
+                onClick={() => setScreenState('mood')}
+              >
+                Begin Your Journey
+                <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
+              </Button>
+              <Button 
+                className="group bg-transparent border border-[#B87333] text-[#B87333] hover:bg-[#B87333]/10"
+                onClick={handleSkip}
+              >
+                Skip to Main
+              </Button>
+            </div>
           </div>
         </div>
       )}
@@ -282,13 +294,21 @@ const Index = () => {
                 <span className="text-xs text-white mt-1 block">Overwhelmed</span>
               </button>
             </div>
-            <Button 
-              className="mt-10 group bg-[#B87333] hover:bg-[#B87333]/80 flex items-center gap-2 hero-button"
-              onClick={handlePrevious}
-            >
-              <ArrowLeft className="h-4 w-4" />
-              Previous
-            </Button>
+            <div className="mt-10 flex justify-center gap-4">
+              <Button 
+                className="group bg-[#B87333] hover:bg-[#B87333]/80 flex items-center gap-2 hero-button"
+                onClick={handlePrevious}
+              >
+                <ArrowLeft className="h-4 w-4" />
+                Previous
+              </Button>
+              <Button 
+                className="group bg-transparent border border-[#B87333] text-[#B87333] hover:bg-[#B87333]/10"
+                onClick={handleSkip}
+              >
+                Skip to Main
+              </Button>
+            </div>
           </div>
         </div>
       )}
@@ -383,7 +403,7 @@ const Index = () => {
               <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
             </Button>
             <Button 
-              className="ml-4 group bg-[#B87333] hover:bg-[#B87333]/80 flex items-center gap-2"
+              className="ml-4 group bg-[#B87333]/20 hover:bg-[#B87333]/30 flex items-center gap-2"
               onClick={handlePrevious}
             >
               <ArrowLeft className="h-4 w-4" />
@@ -417,7 +437,7 @@ const Index = () => {
               <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
             </Button>
             <Button 
-              className="ml-4 group bg-[#B87333] hover:bg-[#B87333]/80 flex items-center gap-2"
+              className="ml-4 group bg-[#B87333]/20 hover:bg-[#B87333]/30 flex items-center gap-2"
               onClick={handlePrevious}
             >
               <ArrowLeft className="h-4 w-4" />
@@ -674,21 +694,28 @@ const Index = () => {
                   ? `You've selected ${selectedQualities.length} qualities and ${selectedGoals.length} goals.`
                   : "Select at least one quality or goal to help tailor your therapy and mental health resources."}
               </p>
-              <Button 
-                className="group bg-[#B87333] hover:bg-[#B87333]/80 text-white hero-button"
-                onClick={() => setScreenState('main')}
-                disabled={selectedQualities.length === 0 && selectedGoals.length === 0}
-              >
-                Continue to Thrive MT
-                <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
-              </Button>
-              <Button 
-                className="ml-4 group bg-[#B87333]/20 hover:bg-[#B87333]/30 flex items-center gap-2"
-                onClick={handlePrevious}
-              >
-                <ArrowLeft className="h-4 w-4" />
-                Previous
-              </Button>
+              <div className="flex justify-center gap-4">
+                <Button 
+                  className="group bg-[#B87333] hover:bg-[#B87333]/80 text-white hero-button"
+                  onClick={() => setScreenState('main')}
+                >
+                  Continue to Thrive MT
+                  <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
+                </Button>
+                <Button 
+                  className="group bg-[#B87333]/20 hover:bg-[#B87333]/30 flex items-center gap-2"
+                  onClick={handlePrevious}
+                >
+                  <ArrowLeft className="h-4 w-4" />
+                  Previous
+                </Button>
+                <Button 
+                  className="group bg-transparent border border-[#B87333] text-[#B87333] hover:bg-[#B87333]/10"
+                  onClick={handleSkip}
+                >
+                  Skip to Main
+                </Button>
+              </div>
             </div>
           </div>
         </div>
