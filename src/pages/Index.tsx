@@ -93,7 +93,7 @@ const visionBoardGoals = [
 ];
 
 const Index = () => {
-  const [showCoPayCredit, setShowCoPayCredit] = useState(true);
+  const [showCoPayCredit, setShowCoPayCredit] = useState(false);
   const [screenState, setScreenState] = useState<'intro' | 'mood' | 'moodResponse' | 'register' | 'visionBoard' | 'main'>('intro');
   const [selectedMood, setSelectedMood] = useState<'happy' | 'ok' | 'neutral' | 'down' | 'sad' | 'overwhelmed' | null>(null);
   const [selectedQualities, setSelectedQualities] = useState<string[]>([]);
@@ -121,6 +121,12 @@ const Index = () => {
       return () => clearTimeout(timer);
     }
   }, [location.state, screenState]);
+
+  useEffect(() => {
+    if (screenState === 'main') {
+      setShowCoPayCredit(true);
+    }
+  }, [screenState]);
 
   const toggleQuality = (id: string) => {
     setSelectedQualities(prev => 
