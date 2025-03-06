@@ -1,3 +1,4 @@
+
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { ArrowLeft, Book, Calendar, HeartHandshake, Users, MessageCircle, Video } from "lucide-react";
@@ -43,6 +44,7 @@ const MySponsor = () => {
   const [traditionsOpen, setTraditionsOpen] = useState(false);
   const [meetingsOpen, setMeetingsOpen] = useState(false);
   const [thriveVirtualOpen, setThriveVirtualOpen] = useState(false);
+  const [sponsorType, setSponsorType] = useState<'aa_sponsor' | 'na_sponsor'>('na_sponsor');
 
   const showTraditions = () => {
     setTraditionsOpen(true);
@@ -78,6 +80,31 @@ const MySponsor = () => {
           <p className="text-gray-300">Your digital support system for recovery</p>
         </div>
 
+        <div className="mb-6">
+          <Card className="p-4 border border-[#B87333]/20 bg-white/5">
+            <h3 className="text-lg font-medium mb-2">Choose Your Sponsor Type</h3>
+            <p className="text-sm text-gray-300 mb-3">Henry can support you as either an AA or NA sponsor</p>
+            <div className="flex gap-3">
+              <Button 
+                variant={sponsorType === 'aa_sponsor' ? 'bronze' : 'outline_copper'}
+                onClick={() => setSponsorType('aa_sponsor')}
+                className="flex-1"
+              >
+                <MessageCircle className="h-4 w-4 mr-2" />
+                AA Sponsor
+              </Button>
+              <Button 
+                variant={sponsorType === 'na_sponsor' ? 'bronze' : 'outline_copper'}
+                onClick={() => setSponsorType('na_sponsor')}
+                className="flex-1"
+              >
+                <MessageCircle className="h-4 w-4 mr-2" />
+                NA Sponsor
+              </Button>
+            </div>
+          </Card>
+        </div>
+
         <Tabs defaultValue="sponsor" className="space-y-6">
           <TabsList className="bg-white/5 border border-[#B87333]/20">
             <TabsTrigger value="sponsor" className="data-[state=active]:bg-[#B87333]">
@@ -93,7 +120,7 @@ const MySponsor = () => {
           <TabsContent value="sponsor" className="space-y-4">
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
               <div className="lg:col-span-2">
-                <SponsorChatbot />
+                <SponsorChatbot contextType={sponsorType} />
               </div>
               <div className="space-y-4">
                 <Card className="p-4 border border-[#B87333]/20 bg-white/5">
@@ -147,7 +174,7 @@ const MySponsor = () => {
                       onClick={showMeetings}
                     >
                       <Calendar className="h-4 w-4 mr-2" />
-                      Find NA/AA Meetings
+                      {sponsorType === 'aa_sponsor' ? 'Find AA Meetings' : 'Find NA Meetings'}
                     </Button>
                     <Button 
                       variant="outline" 
@@ -205,7 +232,7 @@ const MySponsor = () => {
                     onClick={showMeetings}
                   >
                     <Calendar className="h-4 w-4 mr-2" />
-                    Find NA/AA Meetings
+                    {sponsorType === 'aa_sponsor' ? 'Find AA Meetings' : 'Find NA Meetings'}
                   </Button>
                   <Button 
                     variant="outline" 
@@ -226,10 +253,10 @@ const MySponsor = () => {
         <DialogContent className="bg-[#1a1a1f] border border-[#B87333]/20 text-white max-w-4xl max-h-[80vh] overflow-y-auto">
           <DialogHeader>
             <DialogTitle className="text-2xl font-light">
-              The <span className="text-[#B87333]">12 Traditions</span> of NA
+              The <span className="text-[#B87333]">12 Traditions</span> of {sponsorType === 'aa_sponsor' ? 'AA' : 'NA'}
             </DialogTitle>
             <DialogDescription className="text-gray-300">
-              Guiding principles that help NA groups function effectively
+              Guiding principles that help {sponsorType === 'aa_sponsor' ? 'AA' : 'NA'} groups function effectively
             </DialogDescription>
           </DialogHeader>
           <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3 mt-4">
@@ -247,10 +274,10 @@ const MySponsor = () => {
         <DialogContent className="bg-[#1a1a1f] border border-[#B87333]/20 text-white max-w-4xl">
           <DialogHeader>
             <DialogTitle className="text-2xl font-light">
-              Find NA <span className="text-[#B87333]">Meetings</span>
+              Find {sponsorType === 'aa_sponsor' ? 'AA' : 'NA'} <span className="text-[#B87333]">Meetings</span>
             </DialogTitle>
             <DialogDescription className="text-gray-300">
-              Connect with your local NA community or join virtual meetings worldwide
+              Connect with your local {sponsorType === 'aa_sponsor' ? 'AA' : 'NA'} community or join virtual meetings worldwide
             </DialogDescription>
           </DialogHeader>
           <div className="grid gap-4 md:grid-cols-2 mt-4">
@@ -262,11 +289,19 @@ const MySponsor = () => {
               <Button 
                 className="w-full bg-[#B87333] hover:bg-[#B87333]/80"
                 onClick={() => {
-                  window.open("https://www.na.org/meetingsearch/", "_blank");
-                  toast({
-                    title: "Opening NA Meeting Search",
-                    description: "Redirecting you to the official NA meeting search page",
-                  });
+                  if (sponsorType === 'aa_sponsor') {
+                    window.open("https://www.aa.org/find-aa", "_blank");
+                    toast({
+                      title: "Opening AA Meeting Search",
+                      description: "Redirecting you to the official AA meeting search page",
+                    });
+                  } else {
+                    window.open("https://www.na.org/meetingsearch/", "_blank");
+                    toast({
+                      title: "Opening NA Meeting Search",
+                      description: "Redirecting you to the official NA meeting search page",
+                    });
+                  }
                 }}
               >
                 Search Local Meetings
@@ -280,11 +315,19 @@ const MySponsor = () => {
               <Button 
                 className="w-full bg-[#B87333] hover:bg-[#B87333]/80"
                 onClick={() => {
-                  window.open("https://virtual-na.org/", "_blank");
-                  toast({
-                    title: "Opening Virtual NA Meetings",
-                    description: "Redirecting you to the virtual NA meetings page",
-                  });
+                  if (sponsorType === 'aa_sponsor') {
+                    window.open("https://aa-intergroup.org/meetings/", "_blank");
+                    toast({
+                      title: "Opening Virtual AA Meetings",
+                      description: "Redirecting you to the virtual AA meetings page",
+                    });
+                  } else {
+                    window.open("https://virtual-na.org/", "_blank");
+                    toast({
+                      title: "Opening Virtual NA Meetings",
+                      description: "Redirecting you to the virtual NA meetings page",
+                    });
+                  }
                 }}
               >
                 Join Virtual Meetings
@@ -305,54 +348,110 @@ const MySponsor = () => {
             </DialogDescription>
           </DialogHeader>
           <div className="grid gap-4 md:grid-cols-2 mt-4">
-            <Card className="p-4 border border-[#B87333]/20 bg-white/5">
-              <h4 className="text-lg font-medium mb-2">NA Meetings</h4>
-              <p className="text-sm text-gray-300 mb-4">
-                Narcotics Anonymous meetings led by peers and facilitated by Henry.
-              </p>
-              <div className="space-y-2">
-                <div className="text-sm text-gray-300 p-2 border border-[#B87333]/20 rounded-md">
-                  <p className="font-semibold text-white">Daily Meeting</p>
-                  <p>7:00 PM - 8:00 PM</p>
-                  <p>Open Discussion</p>
+            {sponsorType === 'na_sponsor' && (
+              <Card className="p-4 border border-[#B87333]/20 bg-white/5">
+                <h4 className="text-lg font-medium mb-2">NA Meetings</h4>
+                <p className="text-sm text-gray-300 mb-4">
+                  Narcotics Anonymous meetings led by peers and facilitated by Henry.
+                </p>
+                <div className="space-y-2">
+                  <div className="text-sm text-gray-300 p-2 border border-[#B87333]/20 rounded-md">
+                    <p className="font-semibold text-white">Daily Meeting</p>
+                    <p>7:00 PM - 8:00 PM</p>
+                    <p>Open Discussion</p>
+                  </div>
+                  <div className="text-sm text-gray-300 p-2 border border-[#B87333]/20 rounded-md">
+                    <p className="font-semibold text-white">Step Work Meeting</p>
+                    <p>Saturdays, 10:00 AM - 11:30 AM</p>
+                    <p>Focus: Working through the 12 Steps</p>
+                  </div>
                 </div>
-                <div className="text-sm text-gray-300 p-2 border border-[#B87333]/20 rounded-md">
-                  <p className="font-semibold text-white">Step Work Meeting</p>
-                  <p>Saturdays, 10:00 AM - 11:30 AM</p>
-                  <p>Focus: Working through the 12 Steps</p>
+                <Button 
+                  className="w-full bg-[#B87333] hover:bg-[#B87333]/80 mt-4"
+                  onClick={() => joinVirtualMeeting("NA")}
+                >
+                  Join Meeting Now
+                </Button>
+              </Card>
+            )}
+            {sponsorType === 'aa_sponsor' && (
+              <Card className="p-4 border border-[#B87333]/20 bg-white/5">
+                <h4 className="text-lg font-medium mb-2">AA Meetings</h4>
+                <p className="text-sm text-gray-300 mb-4">
+                  Alcoholics Anonymous meetings led by peers and facilitated by Henry.
+                </p>
+                <div className="space-y-2">
+                  <div className="text-sm text-gray-300 p-2 border border-[#B87333]/20 rounded-md">
+                    <p className="font-semibold text-white">Evening Meeting</p>
+                    <p>8:30 PM - 9:30 PM</p>
+                    <p>Speaker & Discussion</p>
+                  </div>
+                  <div className="text-sm text-gray-300 p-2 border border-[#B87333]/20 rounded-md">
+                    <p className="font-semibold text-white">Morning Meditation</p>
+                    <p>Weekdays, 7:30 AM - 8:30 AM</p>
+                    <p>Focus: Meditation and Daily Reflections</p>
+                  </div>
                 </div>
-              </div>
-              <Button 
-                className="w-full bg-[#B87333] hover:bg-[#B87333]/80 mt-4"
-                onClick={() => joinVirtualMeeting("NA")}
-              >
-                Join Meeting Now
-              </Button>
-            </Card>
-            <Card className="p-4 border border-[#B87333]/20 bg-white/5">
-              <h4 className="text-lg font-medium mb-2">AA Meetings</h4>
-              <p className="text-sm text-gray-300 mb-4">
-                Alcoholics Anonymous meetings led by peers and facilitated by Henry.
-              </p>
-              <div className="space-y-2">
-                <div className="text-sm text-gray-300 p-2 border border-[#B87333]/20 rounded-md">
-                  <p className="font-semibold text-white">Evening Meeting</p>
-                  <p>8:30 PM - 9:30 PM</p>
-                  <p>Speaker & Discussion</p>
+                <Button 
+                  className="w-full bg-[#B87333] hover:bg-[#B87333]/80 mt-4"
+                  onClick={() => joinVirtualMeeting("AA")}
+                >
+                  Join Meeting Now
+                </Button>
+              </Card>
+            )}
+            {sponsorType === 'aa_sponsor' && (
+              <Card className="p-4 border border-[#B87333]/20 bg-white/5">
+                <h4 className="text-lg font-medium mb-2">Big Book Study</h4>
+                <p className="text-sm text-gray-300 mb-4">
+                  Focused sessions on the AA Big Book with guidance from Henry.
+                </p>
+                <div className="space-y-2">
+                  <div className="text-sm text-gray-300 p-2 border border-[#B87333]/20 rounded-md">
+                    <p className="font-semibold text-white">Big Book Basics</p>
+                    <p>Tuesdays, 6:00 PM - 7:00 PM</p>
+                    <p>Focus: First 164 pages</p>
+                  </div>
+                  <div className="text-sm text-gray-300 p-2 border border-[#B87333]/20 rounded-md">
+                    <p className="font-semibold text-white">Personal Stories</p>
+                    <p>Thursdays, 7:00 PM - 8:00 PM</p>
+                    <p>Focus: Learning from shared experiences</p>
+                  </div>
                 </div>
-                <div className="text-sm text-gray-300 p-2 border border-[#B87333]/20 rounded-md">
-                  <p className="font-semibold text-white">Morning Meditation</p>
-                  <p>Weekdays, 7:30 AM - 8:30 AM</p>
-                  <p>Focus: Meditation and Daily Reflections</p>
+                <Button 
+                  className="w-full bg-[#B87333] hover:bg-[#B87333]/80 mt-4"
+                  onClick={() => joinVirtualMeeting("Big Book Study")}
+                >
+                  Join Study Now
+                </Button>
+              </Card>
+            )}
+            {sponsorType === 'na_sponsor' && (
+              <Card className="p-4 border border-[#B87333]/20 bg-white/5">
+                <h4 className="text-lg font-medium mb-2">Basic Text Study</h4>
+                <p className="text-sm text-gray-300 mb-4">
+                  Focused sessions on the NA Basic Text with guidance from Henry.
+                </p>
+                <div className="space-y-2">
+                  <div className="text-sm text-gray-300 p-2 border border-[#B87333]/20 rounded-md">
+                    <p className="font-semibold text-white">Recovery Principles</p>
+                    <p>Wednesdays, 6:00 PM - 7:00 PM</p>
+                    <p>Focus: Core chapters</p>
+                  </div>
+                  <div className="text-sm text-gray-300 p-2 border border-[#B87333]/20 rounded-md">
+                    <p className="font-semibold text-white">Personal Stories</p>
+                    <p>Fridays, 7:00 PM - 8:00 PM</p>
+                    <p>Focus: Learning from shared experiences</p>
+                  </div>
                 </div>
-              </div>
-              <Button 
-                className="w-full bg-[#B87333] hover:bg-[#B87333]/80 mt-4"
-                onClick={() => joinVirtualMeeting("AA")}
-              >
-                Join Meeting Now
-              </Button>
-            </Card>
+                <Button 
+                  className="w-full bg-[#B87333] hover:bg-[#B87333]/80 mt-4"
+                  onClick={() => joinVirtualMeeting("Basic Text Study")}
+                >
+                  Join Study Now
+                </Button>
+              </Card>
+            )}
           </div>
         </DialogContent>
       </Dialog>
