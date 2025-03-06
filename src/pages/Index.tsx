@@ -224,7 +224,6 @@ const Index = () => {
   const [isSubDialogOpen, setIsSubDialogOpen] = useState(false);
   const [selectedQualities, setSelectedQualities] = useState<string[]>([]);
   const [selectedGoals, setSelectedGoals] = useState<string[]>([]);
-  const [showMoodDialog, setShowMoodDialog] = useState(false);
 
   useEffect(() => {
     setSelfPacedWorkshops(selfPacedClasses);
@@ -254,7 +253,6 @@ const Index = () => {
       setShowEmergencyResources(false);
     }
     
-    setShowMoodDialog(false);
     setCurrentMoodResponse(mood);
     setShowMoodResponse(true);
     
@@ -268,7 +266,6 @@ const Index = () => {
   const proceedToMainContent = () => {
     setShowMoodScreen(false);
     setShowVisionBoard(false);
-    setShowMoodDialog(false);
     setShowMoodResponse(false);
   };
 
@@ -279,7 +276,6 @@ const Index = () => {
 
   const goBackToMainContent = () => {
     setShowVisionBoard(false);
-    setShowMoodDialog(false);
   };
 
   const handleToolClick = (path: string) => {
@@ -341,7 +337,7 @@ const Index = () => {
       return (
         <div className="min-h-screen bg-[#1a1a20] flex flex-col items-center justify-center text-white px-4">
           <div className="w-full max-w-4xl bg-[#2a2a30] rounded-lg p-8 shadow-xl">
-            <h1 className="text-3xl font-bold mb-6 text-center">
+            <h1 className="text-3xl font-bold mb-6 text-center copper-text">
               {currentMood ? `You're feeling ${currentMoodResponse}` : "How are you feeling today?"}
             </h1>
             
@@ -399,7 +395,7 @@ const Index = () => {
               <Button
                 key={mood.label}
                 variant="ghost"
-                className="flex flex-col items-center justify-center py-6 px-4 rounded-xl hover:scale-110 transition-all"
+                className="flex flex-col items-center justify-center py-3 px-4 rounded-xl hover:scale-110 transition-all"
                 onClick={() => handleMoodSelection(mood.label)}
               >
                 <div className="mb-2 text-[#B87333] flex items-center justify-center h-14">
