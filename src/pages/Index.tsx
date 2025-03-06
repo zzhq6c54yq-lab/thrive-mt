@@ -256,8 +256,8 @@ const Index = () => {
     
     toast({
       title: `You're feeling ${mood}`,
-      description: moodAffirmations[mood as keyof typeof moodAffirmations] || "Thank you for sharing how you feel. Your awareness is a powerful step toward well-being.",
-      duration: 5000,
+      description: "Thank you for sharing how you feel.",
+      duration: 3000,
     });
   };
 

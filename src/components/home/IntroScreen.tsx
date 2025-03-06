@@ -9,15 +9,15 @@ const IntroScreen: React.FC<IntroScreenProps> = ({ onComplete }) => {
   const [startFadeOut, setStartFadeOut] = useState(false);
   
   useEffect(() => {
-    // Start the fade out effect after 5 seconds
+    // Start the fade out effect after 8 seconds (increased from 5)
     const fadeOutTimer = setTimeout(() => {
       setStartFadeOut(true);
-    }, 5000);
+    }, 8000);
     
-    // Complete the transition after 8 seconds total
+    // Complete the transition after 12 seconds total (increased from 8)
     const completeTimer = setTimeout(() => {
       onComplete();
-    }, 8000);
+    }, 12000);
     
     return () => {
       clearTimeout(fadeOutTimer);
