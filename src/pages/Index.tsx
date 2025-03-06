@@ -817,10 +817,6 @@ const Index = () => {
                   <Card 
                     key={index}
                     className={`p-6 border ${workshop.color} transition-all duration-300 hover:shadow-md cursor-pointer`}
-                    onClick={() => toast({
-                      title: "Workshop Selected",
-                      description: `You've selected the ${workshop.title} workshop.`
-                    })}
                   >
                     <div className="flex items-center justify-between mb-4">
                       <workshop.icon className={`h-10 w-10 ${workshop.color.split(' ').pop()}`} />
@@ -833,6 +829,11 @@ const Index = () => {
                     <p className="text-gray-600 mb-4">{workshop.description}</p>
                     <Button 
                       className="w-full bg-white border border-gray-200 text-gray-800 hover:bg-gray-50 group"
+                      onClick={() => navigate(`/workshop/${
+                        workshop.title === "Stress Management" ? "stress-management" : 
+                        workshop.title === "Mindful Communication" ? "mindful-communication" : 
+                        "emotional-regulation"
+                      }`)}
                     >
                       <Play className="h-4 w-4 mr-2 text-green-500" />
                       Start Workshop
