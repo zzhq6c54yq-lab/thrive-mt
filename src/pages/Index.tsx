@@ -108,10 +108,10 @@ const subscriptionPlans = [
   {
     title: "Free",
     price: "$0",
+    coPayCredit: "5%",
     features: [
       { text: "Basic mental wellness tools" },
-      { text: "Limited real-time therapy sessions" },
-      { text: "Basic AI sponsor assistance" },
+      { text: "Limited AI sponsor assistance" },
       { text: "Access to community support forums" },
       { text: "Daily mood tracking" }
     ],
@@ -121,10 +121,10 @@ const subscriptionPlans = [
   {
     title: "Gold",
     price: "$5",
+    coPayCredit: "15%",
     features: [
       { text: "All Free features" },
       { text: "Advanced mental wellness tools" },
-      { text: "Weekly therapy sessions" },
       { text: "Enhanced AI sponsor capabilities" },
       { text: "Guided meditation library" },
       { text: "Priority community support" }
@@ -135,9 +135,9 @@ const subscriptionPlans = [
   {
     title: "Platinum",
     price: "$10",
+    coPayCredit: "25%",
     features: [
       { text: "All Gold features" },
-      { text: "Unlimited therapy sessions" },
       { text: "Premium mental wellness tools" },
       { text: "Advanced emotional intelligence training" },
       { text: "Personalized wellness plan" },
@@ -995,15 +995,17 @@ const Index = () => {
               </p>
             </div>
 
-            <div className="mb-10">
+            <div className="mb-10 flex flex-col items-center">
               <Button 
                 variant="outline_copper"
-                className="group mb-8 mx-auto flex items-center"
+                className="group mb-4 mx-auto flex items-center"
                 onClick={() => setShowHenryDialog(true)}
               >
                 <Bot className="mr-2 h-5 w-5 text-[#B87333]" />
                 Meet H.E.N.R.Y., Your AI Companion
               </Button>
+              
+              <SubscriptionInfoDialog />
             </div>
             
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
@@ -1012,6 +1014,7 @@ const Index = () => {
                   key={index}
                   title={plan.title}
                   price={plan.price}
+                  coPayCredit={plan.coPayCredit}
                   features={plan.features}
                   recommended={plan.recommended}
                   buttonVariant={plan.buttonVariant as any}

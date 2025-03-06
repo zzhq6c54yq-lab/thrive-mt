@@ -4,7 +4,7 @@ import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { useToast } from '@/hooks/use-toast';
 import ToolActionButton from './ToolActionButton';
-import { Lock } from 'lucide-react';
+import { Lock, Percent } from 'lucide-react';
 
 interface InteractiveToolContentProps {
   toolName: string;
@@ -109,7 +109,11 @@ const InteractiveToolContent: React.FC<InteractiveToolContentProps> = ({ toolNam
                   <Lock className="h-4 w-4 text-[#CD7F32] mr-2" />
                   Gold Features
                 </h4>
-                <p className="text-sm text-gray-300 mb-3">Unlock with Gold subscription ($5/month)</p>
+                <p className="text-sm text-gray-300 mb-1">Unlock with Gold subscription ($5/month)</p>
+                <div className="flex items-center gap-1 text-sm text-[#B87333] mb-3">
+                  <Percent className="h-3 w-3" />
+                  <span>15% co-pay credit</span>
+                </div>
                 <ul className="text-sm text-gray-300 space-y-2">
                   <li>• Advanced analytics and insights</li>
                   <li>• Extended practice sessions</li>
@@ -124,7 +128,11 @@ const InteractiveToolContent: React.FC<InteractiveToolContentProps> = ({ toolNam
                   <Lock className="h-4 w-4 text-[#B87333] mr-2" />
                   Platinum Features
                 </h4>
-                <p className="text-sm text-gray-300 mb-3">Unlock with Platinum subscription ($10/month)</p>
+                <p className="text-sm text-gray-300 mb-1">Unlock with Platinum subscription ($10/month)</p>
+                <div className="flex items-center gap-1 text-sm text-[#B87333] mb-3">
+                  <Percent className="h-3 w-3" />
+                  <span>25% co-pay credit</span>
+                </div>
                 <ul className="text-sm text-gray-300 space-y-2">
                   <li>• One-on-one coaching sessions</li>
                   <li>• Expert-led masterclasses</li>

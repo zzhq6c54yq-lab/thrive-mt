@@ -2,7 +2,7 @@
 import React from 'react';
 import { Button } from '@/components/ui/button';
 import { useToast } from '@/hooks/use-toast';
-import { Lock } from 'lucide-react';
+import { Lock, Percent } from 'lucide-react';
 
 interface ToolActionButtonProps {
   label: string;
@@ -25,9 +25,10 @@ const ToolActionButton: React.FC<ToolActionButtonProps> = ({
 
   const handleAction = () => {
     if (disabledForFree) {
+      const creditInfo = requiredTier === 'Gold' ? '15%' : '25%';
       toast({
         title: "Premium Feature",
-        description: `This feature requires a ${requiredTier} subscription. Upgrade your account to access all features.`,
+        description: `This feature requires a ${requiredTier} subscription with ${creditInfo} co-pay credit. Upgrade your account to access all features.`,
       });
       return;
     }

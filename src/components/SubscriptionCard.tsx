@@ -13,6 +13,7 @@ interface SubscriptionCardProps {
   title: string;
   price: string;
   features: SubscriptionFeature[];
+  coPayCredit?: string;
   recommended?: boolean;
   buttonVariant?: "default" | "destructive" | "outline" | "secondary" | "ghost" | "link" | "copper" | "outline_copper" | "bronze" | "animated_bronze" | "animated_copper" | "neutral";
   buttonText?: string;
@@ -22,6 +23,7 @@ const SubscriptionCard: React.FC<SubscriptionCardProps> = ({
   title,
   price,
   features,
+  coPayCredit,
   recommended = false,
   buttonVariant = "outline_copper",
   buttonText = "Upgrade Now"
@@ -58,6 +60,13 @@ const SubscriptionCard: React.FC<SubscriptionCardProps> = ({
           <span className="text-3xl font-bold text-white">{price}</span>
           <span className="text-gray-400 ml-1">/month</span>
         </div>
+        
+        {coPayCredit && (
+          <div className="text-center mb-4 bg-[#3a3a40] rounded-md p-2">
+            <span className="text-[#B87333] font-semibold">{coPayCredit}</span>
+            <span className="text-gray-300 text-sm"> co-pay credit</span>
+          </div>
+        )}
         
         <ul className="space-y-2">
           {features.map((feature, index) => (
