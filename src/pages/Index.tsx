@@ -193,6 +193,19 @@ const moodAffirmations = {
   "Overwhelmed": "One step at a time. Break things down into smaller tasks. You don't have to carry everything at once."
 };
 
+const emergencySupport = {
+  "Sad": [
+    { name: "Crisis Text Line", contact: "Text HOME to 741741", description: "24/7 support" },
+    { name: "Warmline", contact: "1-855-642-6222", description: "Peer emotional support" }
+  ],
+  "Overwhelmed": [
+    { name: "National Suicide Prevention Lifeline", contact: "988", description: "24/7 support" },
+    { name: "Crisis Text Line", contact: "Text HOME to 741741", description: "24/7 support" },
+    { name: "Emergency Services", contact: "911", description: "For immediate emergencies" },
+    { name: "Crisis Line", contact: "1-800-273-8255", description: "Local support" }
+  ]
+};
+
 const Index = () => {
   const [showIntro, setShowIntro] = useState(true);
   const [showMoodScreen, setShowMoodScreen] = useState(false);
@@ -201,11 +214,14 @@ const Index = () => {
   const [randomAffirmation, setRandomAffirmation] = useState("");
   const [randomEncouragement, setRandomEncouragement] = useState("");
   const [moodFeedback, setMoodFeedback] = useState("");
+  const [showEmergencyResources, setShowEmergencyResources] = useState(false);
+  const [emergencyResourcesForMood, setEmergencyResourcesForMood] = useState<any[]>([]);
   const { toast } = useToast();
   const navigate = useNavigate();
   const [isSubDialogOpen, setIsSubDialogOpen] = useState(false);
   const [selectedQualities, setSelectedQualities] = useState<string[]>([]);
   const [selectedGoals, setSelectedGoals] = useState<string[]>([]);
+  const [showMoodDialog, setShowMoodDialog] = useState(false);
 
   useEffect(() => {
     setSelfPacedWorkshops(selfPacedClasses);
@@ -228,15 +244,25 @@ const Index = () => {
     setCurrentMood(mood);
     setMoodFeedback(moodAffirmations[mood as keyof typeof moodAffirmations] || "Thank you for sharing how you feel.");
     
+    if (mood === "Sad" || mood === "Overwhelmed") {
+      setEmergencyResourcesForMood(emergencySupport[mood as keyof typeof emergencySupport] || []);
+      setShowEmergencyResources(true);
+    } else {
+      setShowEmergencyResources(false);
+    }
+    
+    setShowMoodDialog(true);
+    
     toast({
       title: `You're feeling ${mood}`,
       description: moodAffirmations[mood as keyof typeof moodAffirmations] || "Thank you for sharing how you feel.",
       duration: 5000,
     });
+  };
 
-    setTimeout(() => {
-      setShowMoodScreen(false);
-    }, 5000);
+  const proceedToMainContent = () => {
+    setShowMoodScreen(false);
+    setShowMoodDialog(false);
   };
 
   const handleToolClick = (path: string) => {
@@ -264,10 +290,6 @@ const Index = () => {
       title: "Vision Board Updated",
       description: "Your personal vision board has been saved.",
     });
-  };
-
-  const proceedToMainContent = () => {
-    setShowMoodScreen(false);
   };
 
   if (showIntro) {
@@ -298,20 +320,19 @@ const Index = () => {
 
   if (showMoodScreen) {
     return (
-      <div className="min-h-screen bg-[#1a1a20] flex items-center justify-center text-white px-4">
+      <div className="min-h-screen bg-[#1a1a20] flex flex-col items-center justify-center text-white px-4">
         <div className="w-full max-w-4xl bg-[#2a2a30] rounded-lg p-8 shadow-xl">
           <h1 className="text-4xl font-bold mb-8 text-center">How are you feeling today?</h1>
           
-          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-5 mb-10">
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-6 mb-10">
             {[
-              { emoji: <Smile className="h-16 w-16" />, label: "Happy" },
-              { emoji: <Meh className="h-16 w-16" />, label: "Just ok" },
-              { emoji: <Meh className="h-16 w-16" />, label: "Neutral" },
-              { emoji: <Frown className="h-16 w-16 rotate-180" />, label: "Not great" },
-              { emoji: <Frown className="h-16 w-16" />, label: "Sad" },
-              { emoji: <Annoyed className="h-16 w-16" />, label: "Anxious" },
-              { emoji: <Angry className="h-16 w-16" />, label: "Angry" },
-              { emoji: <HeartCrack className="h-16 w-16" />, label: "Overwhelmed" },
+              { emoji: <Smile className="h-20 w-20" />, label: "Happy" },
+              { emoji: <Meh className="h-20 w-20" />, label: "Just ok" },
+              { emoji: <Meh className="h-20 w-20" />, label: "Neutral" },
+              { emoji: <Frown className="h-20 w-20 rotate-180" />, label: "Not great" },
+              { emoji: <Frown className="h-20 w-20" />, label: "Sad" },
+              { emoji: <Annoyed className="h-20 w-20" />, label: "Anxious" },
+              { emoji: <HeartCrack className="h-20 w-20" />, label: "Overwhelmed" },
             ].map((mood) => (
               <Button
                 key={mood.label}
@@ -323,7 +344,7 @@ const Index = () => {
                 }`}
                 onClick={() => handleMoodSelection(mood.label)}
               >
-                <div className="bg-[#2a2a30] p-6 rounded-full mb-3 flex items-center justify-center text-[#B87333]">
+                <div className="bg-[#2a2a30] p-5 rounded-full mb-4 flex items-center justify-center text-[#B87333]">
                   {mood.emoji}
                 </div>
                 <span className="text-lg font-medium text-center">{mood.label}</span>
@@ -331,22 +352,57 @@ const Index = () => {
             ))}
           </div>
 
-          {currentMood && (
-            <div className="animate-fade-in mb-8">
-              <div className="bg-[#3a3a40] p-6 rounded-lg text-center">
-                <p className="text-xl text-white mb-3">Thank you for sharing how you feel.</p>
-                <p className="text-[#B87333] text-lg italic">{moodFeedback}</p>
+          <Dialog open={showMoodDialog} onOpenChange={setShowMoodDialog}>
+            <DialogContent className="bg-[#2a2a30] border-[#3a3a40] text-white">
+              <DialogHeader>
+                <DialogTitle className="text-2xl">
+                  {currentMood ? `You're feeling ${currentMood}` : "How are you feeling today?"}
+                </DialogTitle>
+                <DialogDescription>
+                  {moodFeedback}
+                </DialogDescription>
+              </DialogHeader>
+              
+              {showEmergencyResources && (
+                <div className="mt-4 space-y-4">
+                  <h3 className="text-xl font-semibold text-[#B87333]">Resources that might help:</h3>
+                  <div className="grid grid-cols-1 gap-3">
+                    {emergencyResourcesForMood.map((resource, index) => (
+                      <div key={index} className="border border-[#3a3a40] rounded-lg p-4 bg-[#1a1a20]">
+                        <h4 className="font-semibold">{resource.name}</h4>
+                        <p className="text-[#B87333] font-bold">{resource.contact}</p>
+                        <p className="text-sm text-gray-400">{resource.description}</p>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
+              
+              <div className="flex justify-between mt-6">
+                <Button variant="outline" onClick={() => setShowMoodDialog(false)}>
+                  <ArrowLeft className="mr-2 h-4 w-4" /> Back
+                </Button>
+                <Button variant="bronze" onClick={proceedToMainContent}>
+                  Continue to Dashboard
+                </Button>
               </div>
-            </div>
-          )}
-
-          <div className="text-center mt-6">
+            </DialogContent>
+          </Dialog>
+          
+          <div className="flex justify-between mt-8">
+            <Button 
+              variant="outline" 
+              onClick={() => setShowIntro(true)}
+              className="flex items-center"
+            >
+              <ArrowLeft className="mr-2 h-4 w-4" /> Back
+            </Button>
             <Button 
               onClick={proceedToMainContent} 
               variant="bronze" 
               size="lg"
             >
-              Continue to Dashboard
+              Skip to Dashboard
             </Button>
           </div>
         </div>
