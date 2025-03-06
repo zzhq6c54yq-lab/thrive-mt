@@ -1,3 +1,4 @@
+
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { ArrowRight, MessageCircle, Brain, Calendar, Shield, Smile, Meh, Frown, User, Mail, Lock, ArrowLeft, Annoyed, HeartCrack, Angry, HeartHandshake, Bot, Video, Clock, Users, Bell, BellRing, Crown, Star, BookOpen, Lightbulb, Flame } from "lucide-react";
@@ -326,25 +327,25 @@ const Index = () => {
           
           <div className="flex flex-wrap justify-center gap-10 mb-12">
             {[
-              { emoji: <Smile className="h-24 w-24 stroke-[1.5]" />, label: "Happy" },
-              { emoji: <Meh className="h-24 w-24 stroke-[1.5]" />, label: "Just ok" },
-              { emoji: <Meh className="h-24 w-24 stroke-[1.5]" />, label: "Neutral" },
-              { emoji: <Frown className="h-24 w-24 stroke-[1.5] rotate-180" />, label: "Not great" },
-              { emoji: <Frown className="h-24 w-24 stroke-[1.5]" />, label: "Sad" },
-              { emoji: <Annoyed className="h-24 w-24 stroke-[1.5]" />, label: "Anxious" },
-              { emoji: <HeartCrack className="h-24 w-24 stroke-[1.5]" />, label: "Overwhelmed" },
+              { emoji: <Smile className="h-24 w-24 stroke-[4.5]" />, label: "Happy" },
+              { emoji: <Meh className="h-24 w-24 stroke-[4.5]" />, label: "Just ok" },
+              { emoji: <Meh className="h-24 w-24 stroke-[4.5]" />, label: "Neutral" },
+              { emoji: <Frown className="h-24 w-24 stroke-[4.5] rotate-180" />, label: "Not great" },
+              { emoji: <Frown className="h-24 w-24 stroke-[4.5]" />, label: "Sad" },
+              { emoji: <Annoyed className="h-24 w-24 stroke-[4.5]" />, label: "Anxious" },
+              { emoji: <HeartCrack className="h-24 w-24 stroke-[4.5]" />, label: "Overwhelmed" },
             ].map((mood) => (
               <Button
                 key={mood.label}
                 variant="ghost"
                 className={`flex flex-col items-center justify-center py-6 px-4 rounded-xl hover:scale-110 transition-all ${
                   currentMood === mood.label
-                    ? `text-[#B87333] scale-110`
-                    : "text-white hover:text-[#B87333]"
+                    ? `copper-text scale-110`
+                    : "text-white hover:copper-text"
                 }`}
                 onClick={() => handleMoodSelection(mood.label)}
               >
-                <div className="mb-3 text-current">
+                <div className={`mb-3 ${currentMood === mood.label ? 'copper-text' : 'text-current'}`}>
                   {mood.emoji}
                 </div>
                 <span className="text-lg font-medium">{mood.label}</span>
@@ -380,7 +381,7 @@ const Index = () => {
               
               <div className="flex justify-between mt-6">
                 <Button variant="outline" onClick={() => setShowMoodDialog(false)}>
-                  <ArrowLeft className="mr-2 h-4 w-4" /> Back
+                  <ArrowLeft className="mr-2 h-4 w-4" /> Previous
                 </Button>
                 <Button variant="bronze" onClick={proceedToMainContent}>
                   Continue to Dashboard
@@ -395,7 +396,7 @@ const Index = () => {
               onClick={() => setShowIntro(true)}
               className="flex items-center"
             >
-              <ArrowLeft className="mr-2 h-4 w-4" /> Back
+              <ArrowLeft className="mr-2 h-4 w-4" /> Previous
             </Button>
             <Button 
               onClick={proceedToMainContent} 
