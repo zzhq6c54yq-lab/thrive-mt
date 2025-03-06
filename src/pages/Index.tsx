@@ -8,7 +8,7 @@ import { useToast } from "@/hooks/use-toast";
 import CoPayCreditPopup from "@/components/CoPayCreditPopup";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger, DialogClose } from "@/components/ui/dialog";
 import SponsorChatbot from "@/components/SponsorChatbot";
-import { generateTodayClasses, VirtualClass } from "@/data/toolCategories";
+import { VirtualClass } from "@/data/toolCategories";
 import { format } from "date-fns";
 import { Badge } from "@/components/ui/badge";
 import SubscriptionCard from "@/components/SubscriptionCard";
@@ -149,6 +149,40 @@ const subscriptionPlans = [
   }
 ];
 
+// Manual mock for virtual classes to avoid date issues
+const mockTodayClasses = [
+  {
+    id: 1,
+    title: "Mindfulness Meditation",
+    description: "Learn techniques to stay present and reduce anxiety",
+    category: "Meditation",
+    startTime: new Date(new Date().setHours(10, 0, 0, 0)),
+    endTime: new Date(new Date().setHours(11, 0, 0, 0)),
+    participants: 24,
+    instructor: "Dr. Sarah Chen"
+  },
+  {
+    id: 2,
+    title: "Anxiety Management",
+    description: "Practical strategies to manage anxiety in daily life",
+    category: "Stress Relief",
+    startTime: new Date(new Date().setHours(14, 30, 0, 0)),
+    endTime: new Date(new Date().setHours(15, 30, 0, 0)),
+    participants: 18,
+    instructor: "Michael Rodriguez, LMFT"
+  },
+  {
+    id: 3,
+    title: "Supportive Group Session",
+    description: "Share experiences and build connection in a safe space",
+    category: "Support Group",
+    startTime: new Date(new Date().setHours(18, 0, 0, 0)),
+    endTime: new Date(new Date().setHours(19, 0, 0, 0)),
+    participants: 12,
+    instructor: "Lisa Thompson, PhD"
+  }
+];
+
 const Index = () => {
   const [todayClasses, setTodayClasses] = useState<VirtualClass[]>([]);
   const [currentMood, setCurrentMood] = useState<string | null>(null);
@@ -159,8 +193,8 @@ const Index = () => {
   const [isSubDialogOpen, setIsSubDialogOpen] = useState(false);
 
   useEffect(() => {
-    // Generate today's classes
-    setTodayClasses(generateTodayClasses());
+    // Use mock classes instead of the generator function
+    setTodayClasses(mockTodayClasses);
     
     // Select random affirmation and encouragement
     const randomAffIndex = Math.floor(Math.random() * positiveAffirmations.length);
