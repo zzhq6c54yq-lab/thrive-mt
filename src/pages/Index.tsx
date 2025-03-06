@@ -206,7 +206,7 @@ const Index = () => {
     
     const timer = setTimeout(() => {
       setShowIntro(false);
-    }, 3500);
+    }, 8000);
     
     return () => clearTimeout(timer);
   }, []);
@@ -255,10 +255,10 @@ const Index = () => {
             <span className="copper-text">N</span>
           </div>
           <h1 className="intro-logo-text text-4xl md:text-6xl font-bold mb-4">
-            <span className="copper-text">New</span> <span className="text-white">Beginning</span>
+            <span className="copper-text">Thrive MT New</span> <span className="text-white">Beginning</span>
           </h1>
           <p className="intro-tagline text-xl md:text-2xl text-[#B87333] mb-4">
-            Recovery starts with a single step
+            because life should be more then just surviving
           </p>
         </div>
       </div>
