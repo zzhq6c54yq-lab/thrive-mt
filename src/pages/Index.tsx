@@ -340,7 +340,7 @@ const Index = () => {
                 className="flex flex-col items-center justify-center py-6 px-4 rounded-xl hover:scale-110 transition-all"
                 onClick={() => handleMoodSelection(mood.label)}
               >
-                <div className="mb-3 text-[#B87333] flex items-center justify-center h-16">
+                <div className="mb-2 text-[#B87333] flex items-center justify-center h-12">
                   {mood.emoji}
                 </div>
                 <span className="text-lg font-medium">{mood.label}</span>
@@ -616,4 +616,3 @@ const Index = () => {
 };
 
 export default Index;
-
