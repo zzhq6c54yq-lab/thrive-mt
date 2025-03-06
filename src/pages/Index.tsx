@@ -326,13 +326,13 @@ const Index = () => {
           
           <div className="flex flex-wrap justify-center gap-10 mb-12">
             {[
-              { emoji: <Smile className="h-24 w-24 stroke-[4.5]" />, label: "Happy" },
-              { emoji: <Meh className="h-24 w-24 stroke-[4.5]" />, label: "Just ok" },
-              { emoji: <Meh className="h-24 w-24 stroke-[4.5]" />, label: "Neutral" },
-              { emoji: <Frown className="h-24 w-24 stroke-[4.5] rotate-180" />, label: "Not great" },
-              { emoji: <Frown className="h-24 w-24 stroke-[4.5]" />, label: "Sad" },
-              { emoji: <Annoyed className="h-24 w-24 stroke-[4.5]" />, label: "Anxious" },
-              { emoji: <HeartCrack className="h-24 w-24 stroke-[4.5]" />, label: "Overwhelmed" },
+              { emoji: <Smile className="h-24 w-24 stroke-[1.5]" />, label: "Happy" },
+              { emoji: <Meh className="h-24 w-24 stroke-[1.5]" />, label: "Just ok" },
+              { emoji: <Meh className="h-24 w-24 stroke-[1.5]" />, label: "Neutral" },
+              { emoji: <Frown className="h-24 w-24 stroke-[1.5] rotate-180" />, label: "Not great" },
+              { emoji: <Frown className="h-24 w-24 stroke-[1.5]" />, label: "Sad" },
+              { emoji: <Annoyed className="h-24 w-24 stroke-[1.5]" />, label: "Anxious" },
+              { emoji: <HeartCrack className="h-24 w-24 stroke-[1.5]" />, label: "Overwhelmed" },
             ].map((mood) => (
               <Button
                 key={mood.label}
@@ -387,11 +387,11 @@ const Index = () => {
           
           <div className="flex justify-between mt-8">
             <Button 
-              variant="outline" 
+              variant="ghost" 
               onClick={() => setShowIntro(true)}
-              className="flex items-center"
+              className="text-[#B87333] p-2"
             >
-              <ArrowLeft className="mr-2 h-4 w-4" /> Previous
+              <ArrowLeft className="h-6 w-6" />
             </Button>
             <Button 
               onClick={proceedToMainContent} 
