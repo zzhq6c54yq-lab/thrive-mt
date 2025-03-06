@@ -1,3 +1,4 @@
+
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { ArrowRight, MessageCircle, Brain, Calendar, Shield, Smile, Meh, Frown, User, Mail, Lock, ArrowLeft, Annoyed, HeartCrack, Angry, HeartHandshake, Bot, Video, Clock, Users, Bell, BellRing, Crown, Star, BookOpen, Lightbulb, Flame } from "lucide-react";
@@ -326,11 +327,11 @@ const Index = () => {
           
           <div className="flex flex-wrap justify-center gap-10 mb-12">
             {[
-              { emoji: <Smile className="h-12 w-12 stroke-[2.25]" />, label: "Happy" },
-              { emoji: <Meh className="h-12 w-12 stroke-[2.25]" />, label: "Just ok" },
+              { emoji: <Smile className="h-12 w-12 stroke-[2.25]" />, label: "Content" },
+              { emoji: <Meh className="h-12 w-12 stroke-[2.25]" />, label: "Moderate" },
               { emoji: <Meh className="h-12 w-12 stroke-[2.25]" />, label: "Neutral" },
-              { emoji: <Frown className="h-12 w-12 stroke-[2.25] rotate-180" />, label: "Not great" },
-              { emoji: <Frown className="h-12 w-12 stroke-[2.25]" />, label: "Sad" },
+              { emoji: <Frown className="h-12 w-12 stroke-[2.25] rotate-180" />, label: "Uneasy" },
+              { emoji: <Frown className="h-12 w-12 stroke-[2.25]" />, label: "Distressed" },
               { emoji: <Annoyed className="h-12 w-12 stroke-[2.25]" />, label: "Anxious" },
               { emoji: <HeartCrack className="h-12 w-12 stroke-[2.25]" />, label: "Overwhelmed" },
             ].map((mood) => (
@@ -376,10 +377,10 @@ const Index = () => {
               
               <div className="flex justify-between mt-6">
                 <Button variant="outline" onClick={() => setShowMoodDialog(false)}>
-                  <ArrowLeft className="mr-2 h-4 w-4" /> Previous
+                  <ArrowLeft className="mr-2 h-4 w-4" /> Back
                 </Button>
                 <Button variant="bronze" onClick={proceedToMainContent}>
-                  Continue to Dashboard
+                  Continue
                 </Button>
               </div>
             </DialogContent>
@@ -398,7 +399,7 @@ const Index = () => {
               variant="bronze" 
               size="lg"
             >
-              Skip to Dashboard
+              Continue to Dashboard
             </Button>
           </div>
         </div>
