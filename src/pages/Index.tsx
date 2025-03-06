@@ -99,18 +99,14 @@ const visionBoardGoals = [
 
 const Index = () => {
   const [showCoPayCredit, setShowCoPayCredit] = useState(false);
-  const [screenState, setScreenState<'intro' | 'mood' | 'moodResponse' | 'register' | 'visionBoard' | 'main'>('intro');
-  const [selectedMood, setSelectedMood: React.useState<'happy' | 'ok' | 'neutral' | 'down' | 'sad' | 'overwhelmed' | null>(null) = useState(null);
-  const [selectedQualities, setSelectedQualities: React.useState<string[]>([]) = useState([]);
-  const [selectedGoals, setSelectedGoals: React.useState<string[]>([]) = useState([]);
-  const [showHenryDialog, setShowHenryDialog: React.useState<boolean>(false) = useState(false);
-  const [henryDialogStep, setHenryDialogStep: React.useState<number>(0) = useState(0);
-  const [showHenryChatDialog, setShowHenryChatDialog: React.useState<boolean>(false) = useState(false);
-  const [userInfo, setUserInfo: React.useState<{ name: string; email: string; password: string; }>({
-    name: '',
-    email: '',
-    password: '',
-  }) = useState({
+  const [screenState, setScreenState] = useState<'intro' | 'mood' | 'moodResponse' | 'register' | 'visionBoard' | 'main'>('intro');
+  const [selectedMood, setSelectedMood] = useState<'happy' | 'ok' | 'neutral' | 'down' | 'sad' | 'overwhelmed' | null>(null);
+  const [selectedQualities, setSelectedQualities] = useState<string[]>([]);
+  const [selectedGoals, setSelectedGoals] = useState<string[]>([]);
+  const [showHenryDialog, setShowHenryDialog] = useState<boolean>(false);
+  const [henryDialogStep, setHenryDialogStep] = useState<number>(0);
+  const [showHenryChatDialog, setShowHenryChatDialog] = useState<boolean>(false);
+  const [userInfo, setUserInfo] = useState<{ name: string; email: string; password: string; }>({
     name: '',
     email: '',
     password: '',
@@ -257,7 +253,6 @@ const Index = () => {
   };
 
   useEffect(() => {
-    // Generate today's schedule on page load
     const todayClasses = generateTodayClasses();
     setClasses(todayClasses);
   }, []);
@@ -309,7 +304,6 @@ const Index = () => {
     const reminderTime = new Date(classTime.getTime() - minutes * 60000);
     const now = new Date();
     
-    // Check if reminder time has already passed
     if (reminderTime < now) {
       toast({
         title: "Cannot set reminder",
@@ -319,13 +313,11 @@ const Index = () => {
       return;
     }
     
-    // Use the browser's notification API
     if ('Notification' in window) {
       Notification.requestPermission().then(permission => {
         if (permission === 'granted') {
           const timeDiff = reminderTime.getTime() - now.getTime();
           
-          // Set timeout for the notification
           setTimeout(() => {
             new Notification(`Class Starting Soon: ${selectedClass.title}`, {
               body: `Your class begins in ${minutes} minutes. Get ready to join!`,
@@ -333,7 +325,6 @@ const Index = () => {
             });
           }, timeDiff);
           
-          // Add to set of reminders
           setReminderSet(prev => new Set(prev).add(selectedClass.id));
           
           toast({
@@ -735,3 +726,5 @@ const Index = () => {
               </p>
               <p className="text-xl md:text-2xl font-light transition-all duration-300 hover:scale-105" style={{animation: 'fadeInText 1s ease-out forwards', opacity: 0, animationDelay: '0.4s'}}>
                 You don't have to be at your best or
+
+</initial_code>
