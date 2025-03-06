@@ -1,4 +1,3 @@
-
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { ArrowRight, MessageCircle, Brain, Calendar, Shield, Smile, Meh, Frown, User, Mail, Lock, ArrowLeft, Annoyed, HeartCrack, Angry, HeartHandshake, Bot, Video, Clock, Users, Bell, BellRing, Crown, Star, BookOpen, Lightbulb, Flame } from "lucide-react";
@@ -184,6 +183,16 @@ const selfPacedClasses: VirtualClass[] = [
   }
 ];
 
+const moodAffirmations = {
+  "Happy": "Your happiness radiates to those around you. Keep shining and sharing your joy!",
+  "Just ok": "It's perfectly fine to be okay. Small steps lead to big progress, and you're doing great.",
+  "Neutral": "Finding balance is a strength. Take this moment of calm to appreciate how far you've come.",
+  "Not great": "Every feeling is temporary. Tomorrow brings new opportunities and possibilities.",
+  "Sad": "It's okay to feel down sometimes. Be gentle with yourself - brighter days are ahead.",
+  "Anxious": "Take a deep breath. Focus on what you can control right now. You've overcome challenges before.",
+  "Overwhelmed": "One step at a time. Break things down into smaller tasks. You don't have to carry everything at once."
+};
+
 const Index = () => {
   const [showIntro, setShowIntro] = useState(true);
   const [showMoodScreen, setShowMoodScreen] = useState(false);
@@ -197,16 +206,6 @@ const Index = () => {
   const [isSubDialogOpen, setIsSubDialogOpen] = useState(false);
   const [selectedQualities, setSelectedQualities] = useState<string[]>([]);
   const [selectedGoals, setSelectedGoals] = useState<string[]>([]);
-
-  // Mapping of moods to positive affirmations
-  const moodAffirmations = {
-    "Happy": "Your happiness radiates to those around you. Keep shining!",
-    "Okay": "It's okay to be okay! Small steps lead to big progress.",
-    "Sad": "It's okay to feel down sometimes. Remember, every cloud has a silver lining.",
-    "Anxious": "Take a deep breath. You've overcome challenges before, and you can do it again.",
-    "Angry": "Your feelings are valid. When you're ready, channel that energy into something positive.",
-    "Stressed": "One step at a time. You're stronger than you think and capable of handling this."
-  };
 
   useEffect(() => {
     setSelfPacedWorkshops(selfPacedClasses);
@@ -230,11 +229,11 @@ const Index = () => {
     setMoodFeedback(moodAffirmations[mood as keyof typeof moodAffirmations] || "Thank you for sharing how you feel.");
     
     toast({
-      title: "Mood Tracked",
-      description: `Your mood has been recorded as ${mood}.`,
+      title: `You're feeling ${mood}`,
+      description: moodAffirmations[mood as keyof typeof moodAffirmations] || "Thank you for sharing how you feel.",
+      duration: 5000,
     });
 
-    // Set a timeout to transition to the main content
     setTimeout(() => {
       setShowMoodScreen(false);
     }, 5000);
@@ -300,34 +299,36 @@ const Index = () => {
   if (showMoodScreen) {
     return (
       <div className="min-h-screen bg-[#1a1a20] flex flex-col items-center justify-center text-white px-4">
-        <div className="w-full max-w-3xl bg-[#2a2a30] rounded-lg p-8 shadow-lg animate-fade-in">
+        <div className="w-full max-w-4xl bg-[#2a2a30] rounded-lg p-8 shadow-lg animate-fade-in">
           <h1 className="text-3xl md:text-4xl font-bold mb-6 text-center">How are you feeling today?</h1>
           
           <p className="text-center text-gray-300 mb-8 text-lg">{randomEncouragement}</p>
           
-          <div className="grid grid-cols-2 md:grid-cols-3 gap-4 mb-8">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-6 mb-8">
             {[
-              { emoji: <Smile className="h-8 w-8" />, label: "Happy", color: "bg-green-600" },
-              { emoji: <Meh className="h-8 w-8" />, label: "Okay", color: "bg-blue-600" },
-              { emoji: <Frown className="h-8 w-8" />, label: "Sad", color: "bg-indigo-600" },
-              { emoji: <Annoyed className="h-8 w-8" />, label: "Anxious", color: "bg-yellow-600" },
-              { emoji: <Angry className="h-8 w-8" />, label: "Angry", color: "bg-red-600" },
-              { emoji: <HeartCrack className="h-8 w-8" />, label: "Stressed", color: "bg-purple-600" },
+              { emoji: <Smile className="h-12 w-12" />, label: "Happy", color: "bg-green-600" },
+              { emoji: <Meh className="h-12 w-12" />, label: "Just ok", color: "bg-blue-600" },
+              { emoji: <Meh className="h-12 w-12" />, label: "Neutral", color: "bg-gray-500" },
+              { emoji: <Frown className="h-12 w-12 rotate-180" />, label: "Not great", color: "bg-yellow-600" },
+              { emoji: <Frown className="h-12 w-12" />, label: "Sad", color: "bg-indigo-600" },
+              { emoji: <Annoyed className="h-12 w-12" />, label: "Anxious", color: "bg-purple-600" },
+              { emoji: <Angry className="h-12 w-12" />, label: "Angry", color: "bg-red-600" },
+              { emoji: <HeartCrack className="h-12 w-12" />, label: "Overwhelmed", color: "bg-pink-600" },
             ].map((mood) => (
               <Button
                 key={mood.label}
                 variant="ghost"
-                className={`flex flex-col items-center p-6 rounded-lg border hover:border-[#B87333] hover:bg-[#1a1a20] transition-all ${
+                className={`flex flex-col items-center p-8 rounded-lg border hover:border-[#B87333] hover:bg-[#1a1a20] transition-all ${
                   currentMood === mood.label
                     ? `border-[#B87333] bg-[#1a1a20]`
                     : "border-gray-700"
                 }`}
                 onClick={() => handleMoodSelection(mood.label)}
               >
-                <div className={`${mood.color} p-4 rounded-full mb-3`}>
+                <div className={`${mood.color} p-6 rounded-full mb-4`}>
                   {mood.emoji}
                 </div>
-                <span className="text-lg">{mood.label}</span>
+                <span className="text-lg font-medium">{mood.label}</span>
               </Button>
             ))}
           </div>
@@ -468,11 +469,13 @@ const Index = () => {
           <div className="flex flex-wrap gap-3 justify-center">
             {[
               { emoji: <Smile className="h-6 w-6" />, label: "Happy", color: "bg-green-600" },
-              { emoji: <Meh className="h-6 w-6" />, label: "Okay", color: "bg-blue-600" },
+              { emoji: <Meh className="h-6 w-6" />, label: "Just ok", color: "bg-blue-600" },
+              { emoji: <Meh className="h-6 w-6" />, label: "Neutral", color: "bg-gray-500" },
+              { emoji: <Frown className="h-6 w-6 rotate-180" />, label: "Not great", color: "bg-yellow-600" },
               { emoji: <Frown className="h-6 w-6" />, label: "Sad", color: "bg-indigo-600" },
-              { emoji: <Annoyed className="h-6 w-6" />, label: "Anxious", color: "bg-yellow-600" },
+              { emoji: <Annoyed className="h-6 w-6" />, label: "Anxious", color: "bg-purple-600" },
               { emoji: <Angry className="h-6 w-6" />, label: "Angry", color: "bg-red-600" },
-              { emoji: <HeartCrack className="h-6 w-6" />, label: "Stressed", color: "bg-purple-600" },
+              { emoji: <HeartCrack className="h-6 w-6" />, label: "Overwhelmed", color: "bg-pink-600" },
             ].map((mood) => (
               <Button
                 key={mood.label}
