@@ -1,3 +1,4 @@
+
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { ArrowRight, MessageCircle, Brain, Calendar, Shield, Smile, Meh, Frown, User, Mail, Lock, ArrowLeft, Annoyed, HeartCrack, Angry, HeartHandshake, Bot, Video, Clock, Users, Bell, BellRing, Crown, Star, BookOpen, Lightbulb, Flame } from "lucide-react";
@@ -191,6 +192,8 @@ const Index = () => {
   const { toast } = useToast();
   const navigate = useNavigate();
   const [isSubDialogOpen, setIsSubDialogOpen] = useState(false);
+  const [selectedQualities, setSelectedQualities] = useState<string[]>([]);
+  const [selectedGoals, setSelectedGoals] = useState<string[]>([]);
 
   useEffect(() => {
     setSelfPacedWorkshops(selfPacedClasses);
@@ -213,6 +216,29 @@ const Index = () => {
 
   const handleToolClick = (path: string) => {
     navigate(path);
+  };
+
+  const toggleQuality = (qualityId: string) => {
+    setSelectedQualities(prev => 
+      prev.includes(qualityId) 
+        ? prev.filter(id => id !== qualityId) 
+        : [...prev, qualityId]
+    );
+  };
+
+  const toggleGoal = (goalId: string) => {
+    setSelectedGoals(prev => 
+      prev.includes(goalId) 
+        ? prev.filter(id => id !== goalId) 
+        : [...prev, goalId]
+    );
+  };
+
+  const saveVisionBoard = () => {
+    toast({
+      title: "Vision Board Updated",
+      description: "Your personal vision board has been saved.",
+    });
   };
 
   return (
@@ -350,6 +376,54 @@ const Index = () => {
               </Button>
             ))}
           </div>
+        </div>
+
+        <div className="mb-12 bg-[#2a2a30] rounded-lg p-6">
+          <h2 className="text-2xl font-bold mb-4 flex items-center">
+            <BookOpen className="mr-2 h-6 w-6 text-[#B87333]" />
+            My Vision Board
+          </h2>
+          <p className="text-gray-400 mb-6">
+            Select the qualities you want to embody and goals you're working toward.
+          </p>
+
+          <div className="mb-6">
+            <h3 className="font-semibold mb-3 text-lg">I want to be:</h3>
+            <div className="flex flex-wrap gap-2">
+              {visionBoardQualities.map((quality) => (
+                <Button
+                  key={quality.id}
+                  variant={selectedQualities.includes(quality.id) ? "copper" : "outline_copper"}
+                  size="sm"
+                  onClick={() => toggleQuality(quality.id)}
+                  className="mb-2"
+                >
+                  {quality.label}
+                </Button>
+              ))}
+            </div>
+          </div>
+
+          <div className="mb-6">
+            <h3 className="font-semibold mb-3 text-lg">I'm working on:</h3>
+            <div className="flex flex-wrap gap-2">
+              {visionBoardGoals.map((goal) => (
+                <Button
+                  key={goal.id}
+                  variant={selectedGoals.includes(goal.id) ? "copper" : "outline_copper"}
+                  size="sm"
+                  onClick={() => toggleGoal(goal.id)}
+                  className="mb-2"
+                >
+                  {goal.label}
+                </Button>
+              ))}
+            </div>
+          </div>
+
+          <Button onClick={saveVisionBoard} variant="bronze" className="w-full">
+            Save My Vision Board
+          </Button>
         </div>
 
         <div className="bg-[#2a2a30] rounded-lg p-6">
