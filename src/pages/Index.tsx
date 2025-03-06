@@ -1,4 +1,3 @@
-
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { ArrowRight, MessageCircle, Brain, Calendar, Shield, Smile, Meh, Frown, User, Mail, Lock, ArrowLeft, Annoyed, HeartCrack, Angry, HeartHandshake, Bot, Video, Clock, Users, Bell, BellRing, Crown, Star, BookOpen, Lightbulb, Flame } from "lucide-react";
@@ -329,7 +328,7 @@ const Index = () => {
             {[
               { emoji: <Smile className="h-12 w-12 stroke-[2.25]" />, label: "Content" },
               { emoji: <Meh className="h-12 w-12 stroke-[2.25]" />, label: "Moderate" },
-              { emoji: <Meh className="h-12 w-12 stroke-[2.25]" />, label: "Neutral" },
+              { emoji: <Meh className="h-12 w-12 stroke-[2.25] rotate-180" />, label: "Neutral" },
               { emoji: <Frown className="h-12 w-12 stroke-[2.25] rotate-180" />, label: "Uneasy" },
               { emoji: <Frown className="h-12 w-12 stroke-[2.25]" />, label: "Distressed" },
               { emoji: <Annoyed className="h-12 w-12 stroke-[2.25]" />, label: "Anxious" },
