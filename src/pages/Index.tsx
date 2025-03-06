@@ -184,25 +184,25 @@ const selfPacedClasses: VirtualClass[] = [
 ];
 
 const moodAffirmations = {
-  "Happy": "Your happiness radiates to those around you. Keep shining and sharing your joy!",
-  "Just ok": "It's perfectly fine to be okay. Small steps lead to big progress, and you're doing great.",
-  "Neutral": "Finding balance is a strength. Take this moment of calm to appreciate how far you've come.",
-  "Not great": "Every feeling is temporary. Tomorrow brings new opportunities and possibilities.",
-  "Sad": "It's okay to feel down sometimes. Be gentle with yourself - brighter days are ahead.",
-  "Anxious": "Take a deep breath. Focus on what you can control right now. You've overcome challenges before.",
-  "Overwhelmed": "One step at a time. Break things down into smaller tasks. You don't have to carry everything at once."
+  "Content": "Your positive energy creates a ripple effect of joy! Embrace this wonderful feeling and share it with others.",
+  "Moderate": "Finding balance is a strength. You're doing great, and each step forward is a victory worth celebrating!",
+  "Neutral": "Being centered gives you clarity. This balanced state allows you to make mindful choices and appreciate the present moment.",
+  "Uneasy": "It's okay to feel uncertain sometimes. Remember your inner strength - you've navigated challenges before and grown from them!",
+  "Distressed": "Every feeling is temporary and valid. Be gentle with yourself today - brighter moments are always on the horizon.",
+  "Anxious": "Take a deep breath and remember you are stronger than you think. This feeling will pass, and you have the tools to navigate it.",
+  "Overwhelmed": "You don't have to carry everything at once. Break things into smaller steps, celebrate each victory, and remember how resilient you truly are."
 };
 
 const emergencySupport = {
-  "Sad": [
-    { name: "Crisis Text Line", contact: "Text HOME to 741741", description: "24/7 support" },
+  "Distressed": [
+    { name: "Crisis Text Line", contact: "Text HOME to 741741", description: "24/7 compassionate support" },
     { name: "Warmline", contact: "1-855-642-6222", description: "Peer emotional support" }
   ],
   "Overwhelmed": [
-    { name: "National Suicide Prevention Lifeline", contact: "988", description: "24/7 support" },
-    { name: "Crisis Text Line", contact: "Text HOME to 741741", description: "24/7 support" },
-    { name: "Emergency Services", contact: "911", description: "For immediate emergencies" },
-    { name: "Crisis Line", contact: "1-800-273-8255", description: "Local support" }
+    { name: "National Suicide Prevention Lifeline", contact: "988", description: "24/7 caring support" },
+    { name: "Crisis Text Line", contact: "Text HOME to 741741", description: "24/7 compassionate support" },
+    { name: "Emergency Services", contact: "911", description: "For immediate assistance" },
+    { name: "Crisis Line", contact: "1-800-273-8255", description: "Supportive local resources" }
   ]
 };
 
@@ -217,6 +217,8 @@ const Index = () => {
   const [moodFeedback, setMoodFeedback] = useState("");
   const [showEmergencyResources, setShowEmergencyResources] = useState(false);
   const [emergencyResourcesForMood, setEmergencyResourcesForMood] = useState<any[]>([]);
+  const [showMoodResponse, setShowMoodResponse] = useState(false);
+  const [currentMoodResponse, setCurrentMoodResponse] = useState("");
   const { toast } = useToast();
   const navigate = useNavigate();
   const [isSubDialogOpen, setIsSubDialogOpen] = useState(false);
@@ -243,20 +245,22 @@ const Index = () => {
 
   const handleMoodSelection = (mood: string) => {
     setCurrentMood(mood);
-    setMoodFeedback(moodAffirmations[mood as keyof typeof moodAffirmations] || "Thank you for sharing how you feel.");
+    setMoodFeedback(moodAffirmations[mood as keyof typeof moodAffirmations] || "Thank you for sharing how you feel. Remember that all emotions are valid, and recognizing them is an important step in your well-being journey.");
     
-    if (mood === "Sad" || mood === "Overwhelmed") {
+    if (mood === "Distressed" || mood === "Overwhelmed") {
       setEmergencyResourcesForMood(emergencySupport[mood as keyof typeof emergencySupport] || []);
       setShowEmergencyResources(true);
     } else {
       setShowEmergencyResources(false);
     }
     
-    setShowMoodDialog(true);
+    setShowMoodDialog(false);
+    setCurrentMoodResponse(mood);
+    setShowMoodResponse(true);
     
     toast({
       title: `You're feeling ${mood}`,
-      description: moodAffirmations[mood as keyof typeof moodAffirmations] || "Thank you for sharing how you feel.",
+      description: moodAffirmations[mood as keyof typeof moodAffirmations] || "Thank you for sharing how you feel. Your awareness is a powerful step toward well-being.",
       duration: 5000,
     });
   };
@@ -265,6 +269,7 @@ const Index = () => {
     setShowMoodScreen(false);
     setShowVisionBoard(false);
     setShowMoodDialog(false);
+    setShowMoodResponse(false);
   };
 
   const goToVisionBoard = () => {
@@ -313,7 +318,7 @@ const Index = () => {
             <img 
               src="/lovable-uploads/7d06dcc4-22d6-4a52-8d1a-ad5febe60afb.png" 
               alt="Thrive MT Logo" 
-              className="h-40 w-auto mx-auto" 
+              className="h-64 w-auto mx-auto" 
               style={{ filter: "brightness(0) saturate(100%) invert(100%) sepia(43%) saturate(1352%) hue-rotate(337deg) brightness(89%) contrast(91%)" }}
             />
           </div>
@@ -332,6 +337,50 @@ const Index = () => {
   }
 
   if (showMoodScreen) {
+    if (showMoodResponse) {
+      return (
+        <div className="min-h-screen bg-[#1a1a20] flex flex-col items-center justify-center text-white px-4">
+          <div className="w-full max-w-4xl bg-[#2a2a30] rounded-lg p-8 shadow-xl">
+            <h1 className="text-3xl font-bold mb-6 text-center">
+              {currentMood ? `You're feeling ${currentMoodResponse}` : "How are you feeling today?"}
+            </h1>
+            
+            <p className="mb-8 text-center text-lg">
+              {moodFeedback}
+            </p>
+            
+            {showEmergencyResources && (
+              <div className="mt-4 space-y-4 mb-8">
+                <h3 className="text-xl font-semibold text-[#B87333]">Resources that might help:</h3>
+                <div className="grid grid-cols-1 gap-3">
+                  {emergencyResourcesForMood.map((resource, index) => (
+                    <div key={index} className="border border-[#3a3a40] rounded-lg p-4 bg-[#1a1a20]">
+                      <h4 className="font-semibold">{resource.name}</h4>
+                      <p className="text-[#B87333] font-bold">{resource.contact}</p>
+                      <p className="text-sm text-gray-400">{resource.description}</p>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+            
+            <div className="flex justify-between mt-6">
+              <Button 
+                variant="ghost" 
+                onClick={() => setShowMoodResponse(false)}
+                className="text-[#B87333] p-2"
+              >
+                <ArrowLeft className="h-6 w-6" />
+              </Button>
+              <Button onClick={proceedToMainContent} variant="bronze">
+                Continue <ArrowRight className="ml-2 h-4 w-4" />
+              </Button>
+            </div>
+          </div>
+        </div>
+      );
+    }
+    
     return (
       <div className="min-h-screen bg-[#1a1a20] flex flex-col items-center justify-center text-white px-4">
         <div className="w-full max-w-4xl bg-[#2a2a30] rounded-lg p-8 shadow-xl">
@@ -353,50 +402,13 @@ const Index = () => {
                 className="flex flex-col items-center justify-center py-6 px-4 rounded-xl hover:scale-110 transition-all"
                 onClick={() => handleMoodSelection(mood.label)}
               >
-                <div className="mb-1 text-[#B87333] flex items-center justify-center h-10">
+                <div className="mb-2 text-[#B87333] flex items-center justify-center h-14">
                   {mood.emoji}
                 </div>
                 <span className="text-lg font-medium">{mood.label}</span>
               </Button>
             ))}
           </div>
-
-          <Dialog open={showMoodDialog} onOpenChange={setShowMoodDialog}>
-            <DialogContent className="bg-[#2a2a30] border-[#3a3a40] text-white">
-              <DialogHeader>
-                <DialogTitle className="text-2xl">
-                  {currentMood ? `You're feeling ${currentMood}` : "How are you feeling today?"}
-                </DialogTitle>
-                <DialogDescription>
-                  {moodFeedback}
-                </DialogDescription>
-              </DialogHeader>
-              
-              {showEmergencyResources && (
-                <div className="mt-4 space-y-4">
-                  <h3 className="text-xl font-semibold text-[#B87333]">Resources that might help:</h3>
-                  <div className="grid grid-cols-1 gap-3">
-                    {emergencyResourcesForMood.map((resource, index) => (
-                      <div key={index} className="border border-[#3a3a40] rounded-lg p-4 bg-[#1a1a20]">
-                        <h4 className="font-semibold">{resource.name}</h4>
-                        <p className="text-[#B87333] font-bold">{resource.contact}</p>
-                        <p className="text-sm text-gray-400">{resource.description}</p>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              )}
-              
-              <div className="flex justify-between mt-6">
-                <Button variant="outline" onClick={() => setShowMoodDialog(false)}>
-                  <ArrowLeft className="h-4 w-4" />
-                </Button>
-                <Button variant="bronze" onClick={proceedToMainContent}>
-                  Continue
-                </Button>
-              </div>
-            </DialogContent>
-          </Dialog>
           
           <div className="flex justify-between mt-8">
             <Button 
@@ -407,11 +419,11 @@ const Index = () => {
               <ArrowLeft className="h-6 w-6" />
             </Button>
             <Button 
-              onClick={proceedToMainContent} 
+              onClick={goToVisionBoard} 
               variant="bronze" 
               size="lg"
             >
-              Continue to Dashboard
+              Continue <ArrowRight className="ml-2 h-4 w-4" />
             </Button>
           </div>
         </div>
@@ -520,6 +532,12 @@ const Index = () => {
                   />
                 ))}
               </div>
+              
+              <div className="flex justify-end mt-4">
+                <Button variant="ghost" onClick={() => setIsSubDialogOpen(false)}>
+                  <ArrowLeft className="h-4 w-4" />
+                </Button>
+              </div>
             </DialogContent>
           </Dialog>
           
@@ -595,11 +613,11 @@ const Index = () => {
           
           <div className="flex flex-wrap gap-3 justify-center">
             {[
-              { emoji: <Smile className="h-6 w-6" />, label: "Happy", color: "bg-[#2a2a30]" },
-              { emoji: <Meh className="h-6 w-6" />, label: "Just ok", color: "bg-[#2a2a30]" },
+              { emoji: <Smile className="h-6 w-6" />, label: "Content", color: "bg-[#2a2a30]" },
+              { emoji: <Meh className="h-6 w-6" />, label: "Moderate", color: "bg-[#2a2a30]" },
               { emoji: <Meh className="h-6 w-6" />, label: "Neutral", color: "bg-[#2a2a30]" },
-              { emoji: <Frown className="h-6 w-6 rotate-180" />, label: "Not great", color: "bg-[#2a2a30]" },
-              { emoji: <Frown className="h-6 w-6" />, label: "Sad", color: "bg-[#2a2a30]" },
+              { emoji: <Frown className="h-6 w-6 rotate-180" />, label: "Uneasy", color: "bg-[#2a2a30]" },
+              { emoji: <Frown className="h-6 w-6" />, label: "Distressed", color: "bg-[#2a2a30]" },
               { emoji: <Annoyed className="h-6 w-6" />, label: "Anxious", color: "bg-[#2a2a30]" },
               { emoji: <Angry className="h-6 w-6" />, label: "Angry", color: "bg-[#2a2a30]" },
               { emoji: <HeartCrack className="h-6 w-6" />, label: "Overwhelmed", color: "bg-[#2a2a30]" },
