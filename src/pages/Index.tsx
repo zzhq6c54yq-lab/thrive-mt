@@ -326,13 +326,13 @@ const Index = () => {
           
           <div className="flex flex-wrap justify-center gap-10 mb-12">
             {[
-              { emoji: <Smile className="h-24 w-24 stroke-[1.5]" />, label: "Happy" },
-              { emoji: <Meh className="h-24 w-24 stroke-[1.5]" />, label: "Just ok" },
-              { emoji: <Meh className="h-24 w-24 stroke-[1.5]" />, label: "Neutral" },
-              { emoji: <Frown className="h-24 w-24 stroke-[1.5] rotate-180" />, label: "Not great" },
-              { emoji: <Frown className="h-24 w-24 stroke-[1.5]" />, label: "Sad" },
-              { emoji: <Annoyed className="h-24 w-24 stroke-[1.5]" />, label: "Anxious" },
-              { emoji: <HeartCrack className="h-24 w-24 stroke-[1.5]" />, label: "Overwhelmed" },
+              { emoji: <Smile className="h-24 w-24 stroke-[2.25]" />, label: "Happy" },
+              { emoji: <Meh className="h-24 w-24 stroke-[2.25]" />, label: "Just ok" },
+              { emoji: <Meh className="h-24 w-24 stroke-[2.25]" />, label: "Neutral" },
+              { emoji: <Frown className="h-24 w-24 stroke-[2.25] rotate-180" />, label: "Not great" },
+              { emoji: <Frown className="h-24 w-24 stroke-[2.25]" />, label: "Sad" },
+              { emoji: <Annoyed className="h-24 w-24 stroke-[2.25]" />, label: "Anxious" },
+              { emoji: <HeartCrack className="h-24 w-24 stroke-[2.25]" />, label: "Overwhelmed" },
             ].map((mood) => (
               <Button
                 key={mood.label}
@@ -616,3 +616,4 @@ const Index = () => {
 };
 
 export default Index;
+
