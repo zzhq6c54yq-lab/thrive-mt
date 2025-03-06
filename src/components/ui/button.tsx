@@ -23,6 +23,7 @@ const buttonVariants = cva(
         outline_copper: "border border-[#B87333] text-[#B87333] hover:bg-[#B87333]/10",
         bronze: "bg-gradient-to-r from-[#CD7F32] to-[#B87333] text-white hover:opacity-90 shadow-md",
         animated_bronze: "bg-gradient-to-r from-[#CD7F32] to-[#B87333] text-white hover:opacity-90 shadow-md animate-pulse",
+        animated_copper: "bg-[#B87333] text-white hover:bg-[#B87333]/80 shadow-md animate-pulse",
       },
       size: {
         default: "h-10 px-4 py-2",
