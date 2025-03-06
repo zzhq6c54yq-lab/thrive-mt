@@ -112,7 +112,7 @@ const InteractiveToolContent: React.FC<InteractiveToolContentProps> = ({ toolNam
                 <p className="text-sm text-gray-300 mb-1">Unlock with Gold subscription ($5/month)</p>
                 <div className="flex items-center gap-1 text-sm text-[#B87333] mb-3">
                   <Percent className="h-3 w-3" />
-                  <span>15% co-pay credit</span>
+                  <span>5% co-pay credit</span>
                 </div>
                 <ul className="text-sm text-gray-300 space-y-2">
                   <li>• Advanced analytics and insights</li>
@@ -131,7 +131,7 @@ const InteractiveToolContent: React.FC<InteractiveToolContentProps> = ({ toolNam
                 <p className="text-sm text-gray-300 mb-1">Unlock with Platinum subscription ($10/month)</p>
                 <div className="flex items-center gap-1 text-sm text-[#B87333] mb-3">
                   <Percent className="h-3 w-3" />
-                  <span>25% co-pay credit</span>
+                  <span>10% co-pay credit</span>
                 </div>
                 <ul className="text-sm text-gray-300 space-y-2">
                   <li>• One-on-one coaching sessions</li>

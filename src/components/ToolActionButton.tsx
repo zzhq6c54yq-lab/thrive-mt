@@ -25,7 +25,7 @@ const ToolActionButton: React.FC<ToolActionButtonProps> = ({
 
   const handleAction = () => {
     if (disabledForFree) {
-      const creditInfo = requiredTier === 'Gold' ? '15%' : '25%';
+      const creditInfo = requiredTier === 'Gold' ? '5%' : '10%';
       toast({
         title: "Premium Feature",
         description: `This feature requires a ${requiredTier} subscription with ${creditInfo} co-pay credit. Upgrade your account to access all features.`,
