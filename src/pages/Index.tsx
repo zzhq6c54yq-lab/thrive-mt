@@ -322,32 +322,32 @@ const Index = () => {
     return (
       <div className="min-h-screen bg-[#1a1a20] flex flex-col items-center justify-center text-white px-4">
         <div className="w-full max-w-4xl bg-[#2a2a30] rounded-lg p-8 shadow-xl">
-          <h1 className="text-4xl font-bold mb-8 text-center">How are you feeling today?</h1>
+          <h1 className="text-4xl font-bold mb-12 text-center copper-text">How are you feeling today?</h1>
           
-          <div className="flex flex-wrap justify-center gap-6 mb-10">
+          <div className="flex flex-wrap justify-center gap-10 mb-12">
             {[
-              { emoji: <Smile className="h-20 w-20" />, label: "Happy" },
-              { emoji: <Meh className="h-20 w-20" />, label: "Just ok" },
-              { emoji: <Meh className="h-20 w-20" />, label: "Neutral" },
-              { emoji: <Frown className="h-20 w-20 rotate-180" />, label: "Not great" },
-              { emoji: <Frown className="h-20 w-20" />, label: "Sad" },
-              { emoji: <Annoyed className="h-20 w-20" />, label: "Anxious" },
-              { emoji: <HeartCrack className="h-20 w-20" />, label: "Overwhelmed" },
+              { emoji: <Smile className="h-24 w-24 stroke-[1.5]" />, label: "Happy" },
+              { emoji: <Meh className="h-24 w-24 stroke-[1.5]" />, label: "Just ok" },
+              { emoji: <Meh className="h-24 w-24 stroke-[1.5]" />, label: "Neutral" },
+              { emoji: <Frown className="h-24 w-24 stroke-[1.5] rotate-180" />, label: "Not great" },
+              { emoji: <Frown className="h-24 w-24 stroke-[1.5]" />, label: "Sad" },
+              { emoji: <Annoyed className="h-24 w-24 stroke-[1.5]" />, label: "Anxious" },
+              { emoji: <HeartCrack className="h-24 w-24 stroke-[1.5]" />, label: "Overwhelmed" },
             ].map((mood) => (
               <Button
                 key={mood.label}
                 variant="ghost"
-                className={`flex flex-col items-center justify-center p-6 rounded-lg border hover:border-[#B87333] hover:bg-[#1a1a20]/50 transition-all ${
+                className={`flex flex-col items-center justify-center py-6 px-4 rounded-xl hover:scale-110 transition-all ${
                   currentMood === mood.label
-                    ? `border-[#B87333] bg-[#1a1a20]/50`
-                    : "border-gray-700"
+                    ? `text-[#B87333] scale-110`
+                    : "text-white hover:text-[#B87333]"
                 }`}
                 onClick={() => handleMoodSelection(mood.label)}
               >
-                <div className="bg-[#2a2a30] p-5 rounded-full mb-4 flex items-center justify-center text-[#B87333]">
+                <div className="mb-3 text-current">
                   {mood.emoji}
                 </div>
-                <span className="text-lg font-medium text-center">{mood.label}</span>
+                <span className="text-lg font-medium">{mood.label}</span>
               </Button>
             ))}
           </div>
