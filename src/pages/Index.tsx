@@ -1,10 +1,11 @@
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
-import { ArrowRight, MessageCircle, Brain, Calendar, Shield, Smile, Meh, Frown, User, Mail, Lock, ArrowLeft, Annoyed, HeartCrack, Angry, HeartHandshake } from "lucide-react";
+import { ArrowRight, MessageCircle, Brain, Calendar, Shield, Smile, Meh, Frown, User, Mail, Lock, ArrowLeft, Annoyed, HeartCrack, Angry, HeartHandshake, UserRound } from "lucide-react";
 import { useState, useEffect } from "react";
 import { Link, useNavigate, useLocation } from "react-router-dom";
 import { useToast } from "@/hooks/use-toast";
 import CoPayCreditPopup from "@/components/CoPayCreditPopup";
+import HenryIntroDialog from "@/components/HenryIntroDialog";
 
 const features = [
   {
@@ -94,6 +95,7 @@ const visionBoardGoals = [
 
 const Index = () => {
   const [showCoPayCredit, setShowCoPayCredit] = useState(false);
+  const [showHenryIntro, setShowHenryIntro] = useState(false);
   const [screenState, setScreenState] = useState<'intro' | 'mood' | 'moodResponse' | 'register' | 'visionBoard' | 'main'>('intro');
   const [selectedMood, setSelectedMood] = useState<'happy' | 'ok' | 'neutral' | 'down' | 'sad' | 'overwhelmed' | null>(null);
   const [selectedQualities, setSelectedQualities] = useState<string[]>([]);
@@ -189,6 +191,7 @@ const Index = () => {
   return (
     <>
       <CoPayCreditPopup open={showCoPayCredit} onOpenChange={setShowCoPayCredit} />
+      <HenryIntroDialog open={showHenryIntro} onOpenChange={setShowHenryIntro} />
 
       {screenState === 'intro' && (
         <div className="min-h-screen flex flex-col items-center justify-center bg-[#1a1a1f] overflow-hidden relative">
@@ -744,17 +747,27 @@ const Index = () => {
                 Access professional therapy and mental wellness tools from anywhere. 
                 Get the support you need, when you need it.
               </p>
-              <Button className="group hero-button">
-                Start Your Journey
-                <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
-              </Button>
-              <Button 
-                className="ml-4 group bg-[#B87333] hover:bg-[#B87333]/80 flex items-center gap-2 hero-button"
-                onClick={handlePrevious}
-              >
-                <ArrowLeft className="h-4 w-4" />
-                Previous
-              </Button>
+              <div className="flex flex-wrap justify-center gap-4">
+                <Button className="group hero-button">
+                  Start Your Journey
+                  <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
+                </Button>
+                <Button 
+                  className="group bg-[#B87333] hover:bg-[#B87333]/80 flex items-center gap-2 hero-button"
+                  onClick={handlePrevious}
+                >
+                  <ArrowLeft className="h-4 w-4" />
+                  Previous
+                </Button>
+                <Button 
+                  variant="outline" 
+                  className="group border-[#B87333] text-[#B87333] hover:bg-[#B87333]/10 hero-button"
+                  onClick={() => setShowHenryIntro(true)}
+                >
+                  <UserRound className="mr-2 h-4 w-4" />
+                  Meet Henry
+                </Button>
+              </div>
             </div>
           </section>
 
