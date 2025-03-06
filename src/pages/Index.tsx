@@ -465,13 +465,20 @@ const Index = () => {
             <p className="intro-tagline text-xl md:text-2xl text-gray-300">
               because life should be more than just surviving
             </p>
-            <div className="mt-10 flex justify-center">
+            <div className="mt-10 flex justify-center gap-4">
               <Button 
                 className="group bg-[#B87333] hover:bg-[#B87333]/80 hero-button"
                 onClick={() => setScreenState('mood')}
               >
                 Begin Your Journey
                 <ArrowRight className="ml-2 h-4 w-4" />
+              </Button>
+              <Button 
+                variant="outline_copper"
+                className="group"
+                onClick={handleSkip}
+              >
+                Skip to Main
               </Button>
             </div>
           </div>
