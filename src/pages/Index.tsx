@@ -209,6 +209,7 @@ const emergencySupport = {
 const Index = () => {
   const [showIntro, setShowIntro] = useState(true);
   const [showMoodScreen, setShowMoodScreen] = useState(false);
+  const [showVisionBoard, setShowVisionBoard] = useState(false);
   const [selfPacedWorkshops, setSelfPacedWorkshops] = useState<VirtualClass[]>([]);
   const [currentMood, setCurrentMood] = useState<string | null>(null);
   const [randomAffirmation, setRandomAffirmation] = useState("");
@@ -262,6 +263,17 @@ const Index = () => {
 
   const proceedToMainContent = () => {
     setShowMoodScreen(false);
+    setShowVisionBoard(false);
+    setShowMoodDialog(false);
+  };
+
+  const goToVisionBoard = () => {
+    setShowMoodScreen(false);
+    setShowVisionBoard(true);
+  };
+
+  const goBackToMainContent = () => {
+    setShowVisionBoard(false);
     setShowMoodDialog(false);
   };
 
@@ -290,6 +302,7 @@ const Index = () => {
       title: "Vision Board Updated",
       description: "Your personal vision board has been saved.",
     });
+    setShowVisionBoard(false);
   };
 
   if (showIntro) {
@@ -300,7 +313,7 @@ const Index = () => {
             <img 
               src="/lovable-uploads/7d06dcc4-22d6-4a52-8d1a-ad5febe60afb.png" 
               alt="Thrive MT Logo" 
-              className="h-24 w-auto mx-auto" 
+              className="h-40 w-auto mx-auto" 
               style={{ filter: "brightness(0) saturate(100%) invert(100%) sepia(43%) saturate(1352%) hue-rotate(337deg) brightness(89%) contrast(91%)" }}
             />
           </div>
@@ -340,7 +353,7 @@ const Index = () => {
                 className="flex flex-col items-center justify-center py-6 px-4 rounded-xl hover:scale-110 transition-all"
                 onClick={() => handleMoodSelection(mood.label)}
               >
-                <div className="mb-2 text-[#B87333] flex items-center justify-center h-12">
+                <div className="mb-1 text-[#B87333] flex items-center justify-center h-10">
                   {mood.emoji}
                 </div>
                 <span className="text-lg font-medium">{mood.label}</span>
@@ -376,7 +389,7 @@ const Index = () => {
               
               <div className="flex justify-between mt-6">
                 <Button variant="outline" onClick={() => setShowMoodDialog(false)}>
-                  <ArrowLeft className="mr-2 h-4 w-4" /> Back
+                  <ArrowLeft className="h-4 w-4" />
                 </Button>
                 <Button variant="bronze" onClick={proceedToMainContent}>
                   Continue
@@ -401,6 +414,71 @@ const Index = () => {
               Continue to Dashboard
             </Button>
           </div>
+        </div>
+      </div>
+    );
+  }
+
+  if (showVisionBoard) {
+    return (
+      <div className="min-h-screen bg-[#1a1a20] flex flex-col items-center justify-center text-white p-4">
+        <div className="w-full max-w-4xl bg-[#2a2a30] rounded-lg p-8 shadow-xl">
+          <div className="flex justify-between items-center mb-6">
+            <Button 
+              variant="ghost" 
+              onClick={goBackToMainContent}
+              className="text-[#B87333] p-2"
+            >
+              <ArrowLeft className="h-6 w-6" />
+            </Button>
+            <h1 className="text-3xl font-bold text-center copper-text flex items-center">
+              <BookOpen className="mr-2 h-6 w-6 text-[#B87333]" />
+              My Vision Board
+            </h1>
+            <div className="w-10"></div> {/* Spacer for alignment */}
+          </div>
+          
+          <p className="text-gray-400 mb-8 text-center">
+            Select the qualities you want to embody and the goals you're working toward.
+          </p>
+
+          <div className="mb-8">
+            <h3 className="font-semibold mb-4 text-xl">I want to be:</h3>
+            <div className="flex flex-wrap gap-3">
+              {visionBoardQualities.map((quality) => (
+                <Button
+                  key={quality.id}
+                  variant={selectedQualities.includes(quality.id) ? "copper" : "outline_copper"}
+                  size="sm"
+                  onClick={() => toggleQuality(quality.id)}
+                  className="mb-2"
+                >
+                  {quality.label}
+                </Button>
+              ))}
+            </div>
+          </div>
+
+          <div className="mb-8">
+            <h3 className="font-semibold mb-4 text-xl">I'm working on:</h3>
+            <div className="flex flex-wrap gap-3">
+              {visionBoardGoals.map((goal) => (
+                <Button
+                  key={goal.id}
+                  variant={selectedGoals.includes(goal.id) ? "copper" : "outline_copper"}
+                  size="sm"
+                  onClick={() => toggleGoal(goal.id)}
+                  className="mb-2"
+                >
+                  {goal.label}
+                </Button>
+              ))}
+            </div>
+          </div>
+
+          <Button onClick={saveVisionBoard} variant="bronze" className="w-full">
+            Save My Vision Board
+          </Button>
         </div>
       </div>
     );
@@ -536,7 +614,7 @@ const Index = () => {
                 }`}
                 onClick={() => handleMoodSelection(mood.label)}
               >
-                <div className={`${mood.color} p-3 rounded-full mb-2 flex items-center justify-center text-[#B87333]`}>
+                <div className={`${mood.color} p-2 rounded-full mb-1 flex items-center justify-center text-[#B87333]`}>
                   {mood.emoji}
                 </div>
                 <span>{mood.label}</span>
@@ -545,59 +623,20 @@ const Index = () => {
           </div>
         </div>
 
-        <div className="mb-12 bg-[#2a2a30] rounded-lg p-6">
-          <h2 className="text-2xl font-bold mb-4 flex items-center">
-            <BookOpen className="mr-2 h-6 w-6 text-[#B87333]" />
-            My Vision Board
-          </h2>
-          <p className="text-gray-400 mb-6">
-            Select the qualities you want to embody and goals you're working toward.
-          </p>
-
-          <div className="mb-6">
-            <h3 className="font-semibold mb-3 text-lg">I want to be:</h3>
-            <div className="flex flex-wrap gap-2">
-              {visionBoardQualities.map((quality) => (
-                <Button
-                  key={quality.id}
-                  variant={selectedQualities.includes(quality.id) ? "copper" : "outline_copper"}
-                  size="sm"
-                  onClick={() => toggleQuality(quality.id)}
-                  className="mb-2"
-                >
-                  {quality.label}
-                </Button>
-              ))}
-            </div>
-          </div>
-
-          <div className="mb-6">
-            <h3 className="font-semibold mb-3 text-lg">I'm working on:</h3>
-            <div className="flex flex-wrap gap-2">
-              {visionBoardGoals.map((goal) => (
-                <Button
-                  key={goal.id}
-                  variant={selectedGoals.includes(goal.id) ? "copper" : "outline_copper"}
-                  size="sm"
-                  onClick={() => toggleGoal(goal.id)}
-                  className="mb-2"
-                >
-                  {goal.label}
-                </Button>
-              ))}
-            </div>
-          </div>
-
-          <Button onClick={saveVisionBoard} variant="bronze" className="w-full">
-            Save My Vision Board
-          </Button>
-        </div>
-
         <div className="bg-[#2a2a30] rounded-lg p-6">
-          <h2 className="text-2xl font-bold mb-4 flex items-center">
-            <Bell className="mr-2 h-6 w-6 text-[#B87333]" />
-            Emergency Resources
-          </h2>
+          <div className="flex justify-between items-center mb-6">
+            <h2 className="text-2xl font-bold flex items-center">
+              <Bell className="mr-2 h-6 w-6 text-[#B87333]" />
+              Emergency Resources
+            </h2>
+            <Button 
+              variant="copper"
+              onClick={goToVisionBoard}
+            >
+              My Vision Board <ArrowRight className="ml-2 h-4 w-4" />
+            </Button>
+          </div>
+          
           <p className="text-gray-400 mb-6">If you're experiencing a crisis, please reach out for immediate help:</p>
           
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
