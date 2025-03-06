@@ -1,10 +1,11 @@
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
-import { ArrowRight, MessageCircle, Brain, Calendar, Shield, Smile, Meh, Frown, User, Mail, Lock, ArrowLeft, Annoyed, HeartCrack, Angry, HeartHandshake } from "lucide-react";
+import { ArrowRight, MessageCircle, Brain, Calendar, Shield, Smile, Meh, Frown, User, Mail, Lock, ArrowLeft, Annoyed, HeartCrack, Angry, HeartHandshake, Bot } from "lucide-react";
 import { useState, useEffect } from "react";
 import { Link, useNavigate, useLocation } from "react-router-dom";
 import { useToast } from "@/hooks/use-toast";
 import CoPayCreditPopup from "@/components/CoPayCreditPopup";
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 
 const features = [
   {
@@ -731,7 +732,52 @@ const Index = () => {
         <div className="min-h-screen bg-white app-content relative">
           <div className="absolute inset-0 bg-[url('data:image/svg+xml;utf8,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%2240%22 height=%2240%22 viewBox=%220 0 40 40%22><circle cx=%222%22 cy=%222%22 r=%221%22 fill=%22%23B87333%22 fill-opacity=%220.02%22/></svg>')] opacity-30 fixed"></div>
           
-          {/* Hero Section */}
+          <div className="fixed bottom-6 right-6 z-50">
+            <Dialog>
+              <DialogTrigger asChild>
+                <Button 
+                  variant="copper" 
+                  className="rounded-full shadow-lg flex items-center gap-2 pl-3 pr-4 py-6 animate-bounce"
+                >
+                  <Bot className="h-5 w-5" />
+                  Meet Henry
+                </Button>
+              </DialogTrigger>
+              <DialogContent className="sm:max-w-md">
+                <DialogHeader>
+                  <DialogTitle className="flex items-center gap-2">
+                    <Bot className="h-5 w-5 text-[#B87333]" /> 
+                    <span>Meet Henry, Your AI Sponsor</span>
+                  </DialogTitle>
+                  <DialogDescription>
+                    Henry is your 24/7 AI companion on your recovery journey.
+                  </DialogDescription>
+                </DialogHeader>
+                <div className="flex flex-col space-y-4">
+                  <p>Hi, I'm Henry. I'm here to support you through your recovery journey, 24/7. I can:</p>
+                  <ul className="list-disc pl-5 space-y-2">
+                    <li>Guide you through NA & AA principles and steps</li>
+                    <li>Provide emotional support during difficult moments</li>
+                    <li>Facilitate virtual meetings with peers</li>
+                    <li>Remind you of your recovery goals and achievements</li>
+                    <li>Connect you with community resources when needed</li>
+                  </ul>
+                  <p>Remember, I'm here anytime you need support or someone to talk to.</p>
+                  <Button 
+                    variant="copper"
+                    className="w-full"
+                    onClick={() => {
+                      navigate("/my-sponsor");
+                    }}
+                  >
+                    Chat with Henry
+                    <MessageCircle className="ml-2 h-4 w-4" />
+                  </Button>
+                </div>
+              </DialogContent>
+            </Dialog>
+          </div>
+          
           <section className="container px-4 pt-32 pb-20 relative z-10">
             <div className="max-w-3xl mx-auto text-center animate-fade-up">
               <span className="px-3 py-1 text-sm font-medium tracking-wider rounded-full bg-primary/10 text-primary inline-block mb-4 uppercase">
@@ -758,7 +804,6 @@ const Index = () => {
             </div>
           </section>
 
-          {/* Features Section */}
           <section className="container px-4 py-20 bg-muted/30 relative z-10">
             <div className="max-w-6xl mx-auto">
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
@@ -790,7 +835,6 @@ const Index = () => {
             </div>
           </section>
 
-          {/* Call to Action Section */}
           <section className="container px-4 py-20 relative z-10">
             <div className="max-w-3xl mx-auto text-center">
               <h2 className="text-3xl mb-6 gradient-heading">Ready to Take the First Step?</h2>
