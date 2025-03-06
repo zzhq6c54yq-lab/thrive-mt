@@ -6,6 +6,7 @@ import FeaturedWorkshops from "./FeaturedWorkshops";
 import ToolsFeatures from "./ToolsFeatures";
 import EmergencyResources from "./EmergencyResources";
 import SubscriptionPlansDialog from "./SubscriptionPlansDialog";
+import SponsorChatbot from "@/components/SponsorChatbot";
 import { VirtualClass } from "@/data/toolCategories";
 
 interface DashboardProps {
@@ -53,6 +54,15 @@ const Dashboard: React.FC<DashboardProps> = ({
 
         <FeaturedWorkshops workshops={workshops} />
         <ToolsFeatures features={features} />
+
+        <div className="mt-12 mb-12">
+          <SponsorChatbot 
+            selectedMood={currentMood} 
+            contextType="mental_health" 
+            className="max-w-3xl mx-auto" 
+          />
+        </div>
+
         <EmergencyResources 
           resources={emergencyResources}
           onVisionBoardClick={onVisionBoardClick}
