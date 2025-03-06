@@ -4,6 +4,7 @@ import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { useToast } from '@/hooks/use-toast';
 import ToolActionButton from './ToolActionButton';
+import { Lock } from 'lucide-react';
 
 interface InteractiveToolContentProps {
   toolName: string;
@@ -92,6 +93,65 @@ const InteractiveToolContent: React.FC<InteractiveToolContentProps> = ({ toolNam
           toolName={toolName}
         />
       </div>
+
+      {/* Premium Features Section */}
+      <Card className="border-[#B87333]/30 mt-8">
+        <CardContent className="p-6">
+          <div className="flex items-center gap-2 mb-4">
+            <Lock className="text-[#B87333] h-5 w-5" />
+            <h3 className="text-2xl font-light">Premium Features</h3>
+          </div>
+          
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+            <Card className="bg-[#2a2a30] border-[#3a3a40]">
+              <CardContent className="p-4">
+                <h4 className="text-white font-semibold mb-2 flex items-center">
+                  <Lock className="h-4 w-4 text-[#CD7F32] mr-2" />
+                  Gold Features
+                </h4>
+                <p className="text-sm text-gray-300 mb-3">Unlock with Gold subscription ($5/month)</p>
+                <ul className="text-sm text-gray-300 space-y-2">
+                  <li>• Advanced analytics and insights</li>
+                  <li>• Extended practice sessions</li>
+                  <li>• Personalized recommendations</li>
+                </ul>
+              </CardContent>
+            </Card>
+            
+            <Card className="bg-[#2a2a30] border-[#3a3a40]">
+              <CardContent className="p-4">
+                <h4 className="text-white font-semibold mb-2 flex items-center">
+                  <Lock className="h-4 w-4 text-[#B87333] mr-2" />
+                  Platinum Features
+                </h4>
+                <p className="text-sm text-gray-300 mb-3">Unlock with Platinum subscription ($10/month)</p>
+                <ul className="text-sm text-gray-300 space-y-2">
+                  <li>• One-on-one coaching sessions</li>
+                  <li>• Expert-led masterclasses</li>
+                  <li>• Custom wellness plan creation</li>
+                </ul>
+              </CardContent>
+            </Card>
+          </div>
+          
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <ToolActionButton 
+              label="Access Gold Features" 
+              toolName={toolName}
+              variant="bronze"
+              disabledForFree={true}
+              requiredTier="Gold"
+            />
+            <ToolActionButton 
+              label="Access Platinum Features" 
+              toolName={toolName}
+              variant="animated_bronze"
+              disabledForFree={true}
+              requiredTier="Platinum"
+            />
+          </div>
+        </CardContent>
+      </Card>
     </div>
   );
 };

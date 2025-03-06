@@ -2,23 +2,36 @@
 import React from 'react';
 import { Button } from '@/components/ui/button';
 import { useToast } from '@/hooks/use-toast';
+import { Lock } from 'lucide-react';
 
 interface ToolActionButtonProps {
   label: string;
   toolName: string;
   className?: string;
   variant?: "default" | "destructive" | "outline" | "secondary" | "ghost" | "link" | "copper" | "outline_copper" | "bronze" | "animated_bronze" | "animated_copper" | "neutral";
+  disabledForFree?: boolean;
+  requiredTier?: 'Gold' | 'Platinum';
 }
 
 const ToolActionButton: React.FC<ToolActionButtonProps> = ({ 
   label, 
   toolName, 
   className = "",
-  variant = "copper"
+  variant = "copper",
+  disabledForFree = false,
+  requiredTier
 }) => {
   const { toast } = useToast();
 
   const handleAction = () => {
+    if (disabledForFree) {
+      toast({
+        title: "Premium Feature",
+        description: `This feature requires a ${requiredTier} subscription. Upgrade your account to access all features.`,
+      });
+      return;
+    }
+
     // In a real app, this would perform the actual tool action
     toast({
       title: `${toolName} - ${label}`,
@@ -32,6 +45,7 @@ const ToolActionButton: React.FC<ToolActionButtonProps> = ({
       onClick={handleAction}
       className={`hero-button ${className}`}
     >
+      {disabledForFree && <Lock className="mr-2 h-4 w-4" />}
       {label}
     </Button>
   );

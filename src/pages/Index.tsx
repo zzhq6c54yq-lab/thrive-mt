@@ -1,6 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
-import { ArrowRight, MessageCircle, Brain, Calendar, Shield, Smile, Meh, Frown, User, Mail, Lock, ArrowLeft, Annoyed, HeartCrack, Angry, HeartHandshake, Bot, Video, Clock, Users, Bell, BellRing } from "lucide-react";
+import { ArrowRight, MessageCircle, Brain, Calendar, Shield, Smile, Meh, Frown, User, Mail, Lock, ArrowLeft, Annoyed, HeartCrack, Angry, HeartHandshake, Bot, Video, Clock, Users, Bell, BellRing, Crown, Star } from "lucide-react";
 import { useState, useEffect } from "react";
 import { Link, useNavigate, useLocation } from "react-router-dom";
 import { useToast } from "@/hooks/use-toast";
@@ -10,6 +10,7 @@ import SponsorChatbot from "@/components/SponsorChatbot";
 import { generateTodayClasses, VirtualClass } from "@/data/toolCategories";
 import { format } from "date-fns";
 import { Badge } from "@/components/ui/badge";
+import SubscriptionCard from "@/components/SubscriptionCard";
 
 const features = [
   {
@@ -101,6 +102,50 @@ const visionBoardGoals = [
   { id: "finding-purpose", label: "Finding purpose" },
   { id: "building-confidence", label: "Building confidence" },
   { id: "work-life-balance", label: "Work-life balance" },
+];
+
+const subscriptionPlans = [
+  {
+    title: "Free",
+    price: "$0",
+    features: [
+      { text: "Basic mental wellness tools" },
+      { text: "Limited real-time therapy sessions" },
+      { text: "Basic AI sponsor assistance" },
+      { text: "Access to community support forums" },
+      { text: "Daily mood tracking" }
+    ],
+    buttonVariant: "outline",
+    buttonText: "Current Plan"
+  },
+  {
+    title: "Gold",
+    price: "$5",
+    features: [
+      { text: "All Free features" },
+      { text: "Advanced mental wellness tools" },
+      { text: "Weekly therapy sessions" },
+      { text: "Enhanced AI sponsor capabilities" },
+      { text: "Guided meditation library" },
+      { text: "Priority community support" }
+    ],
+    recommended: true,
+    buttonVariant: "bronze"
+  },
+  {
+    title: "Platinum",
+    price: "$10",
+    features: [
+      { text: "All Gold features" },
+      { text: "Unlimited therapy sessions" },
+      { text: "Premium mental wellness tools" },
+      { text: "Advanced emotional intelligence training" },
+      { text: "Personalized wellness plan" },
+      { text: "1-on-1 coaching sessions" },
+      { text: "24/7 crisis support" }
+    ],
+    buttonVariant: "animated_bronze"
+  }
 ];
 
 const Index = () => {
@@ -959,6 +1004,20 @@ const Index = () => {
                 <Bot className="mr-2 h-5 w-5 text-[#B87333]" />
                 Meet H.E.N.R.Y., Your AI Companion
               </Button>
+            </div>
+            
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+              {subscriptionPlans.map((plan, index) => (
+                <SubscriptionCard 
+                  key={index}
+                  title={plan.title}
+                  price={plan.price}
+                  features={plan.features}
+                  recommended={plan.recommended}
+                  buttonVariant={plan.buttonVariant as any}
+                  buttonText={plan.buttonText}
+                />
+              ))}
             </div>
             
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
