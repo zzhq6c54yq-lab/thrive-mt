@@ -1,4 +1,3 @@
-
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { ArrowRight, MessageCircle, Brain, Calendar, Shield, Smile, Meh, Frown, User, Mail, Lock, ArrowLeft, Annoyed, HeartCrack, Angry, HeartHandshake, Bot, Video, Clock, Users, Bell, BellRing, Crown, Star, BookOpen, Lightbulb, Flame } from "lucide-react";
@@ -254,7 +253,7 @@ const Index = () => {
         <div className="text-center">
           <div className="intro-logo-icon mb-4">
             <img 
-              src="/lovable-uploads/2958b490-4be2-4543-a123-e9ebfaca9fc9.png" 
+              src="/lovable-uploads/7d06dcc4-22d6-4a52-8d1a-ad5febe60afb.png" 
               alt="Thrive MT Logo" 
               className="h-24 w-auto mx-auto" 
               style={{ filter: "brightness(0) saturate(100%) invert(52%) sepia(19%) saturate(1096%) hue-rotate(356deg) brightness(92%) contrast(83%)" }}
