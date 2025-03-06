@@ -62,7 +62,6 @@ const MoodResponse: React.FC<MoodResponseProps> = ({
             onClick={onContinue} 
             variant="bronze"
             size="lg"
-            className="animate-pulse"
           >
             Continue your journey <ArrowRight className="ml-2 h-4 w-4" />
           </Button>
