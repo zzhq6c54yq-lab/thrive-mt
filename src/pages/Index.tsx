@@ -1,3 +1,4 @@
+
 import { Button } from "@/components/ui/button";
 import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -265,7 +266,7 @@ const Index = () => {
   };
 
   return (
-    <>
+    <div>
       <CoPayCreditPopup open={showCoPayCredit} onOpenChange={setShowCoPayCredit} />
       <HenryIntroDialog open={showHenryIntro} onOpenChange={setShowHenryIntro} />
 
@@ -600,4 +601,473 @@ const Index = () => {
                 </div>
               ))}
             </div>
-            <p className="mb-8 text-lg" style={{animation: 'fadeInText 1s ease-out forwards', opacity:
+            <Button 
+              className="group bg-[#ea384c] hover:bg-[#ea384c]/90 hero-button"
+              onClick={() => setScreenState('register')}
+            >
+              Continue When Ready
+              <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
+            </Button>
+            <Button 
+              className="ml-4 group bg-[#B87333] hover:bg-[#B87333]/80 flex items-center gap-2"
+              onClick={handlePrevious}
+            >
+              <ArrowLeft className="h-4 w-4" />
+              Previous
+            </Button>
+          </div>
+        </div>
+      )}
+
+      {screenState === 'register' && (
+        <div className="min-h-screen flex flex-col items-center justify-center bg-[#F8F9FA] animate-fade-in relative overflow-hidden">
+          <div className="absolute inset-0 bg-[url('data:image/svg+xml;utf8,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%2220%22 height=%2220%22 viewBox=%220 0 20 20%22><circle cx=%222%22 cy=%222%22 r=%221%22 fill=%22%23B87333%22 fill-opacity=%220.05%22/></svg>')] opacity-20"></div>
+          <div className="w-full max-w-md mx-auto px-4 py-8 z-10">
+            <h2 className="text-3xl font-bold text-center mb-8 gradient-heading">Create Your Account</h2>
+            <form onSubmit={handleRegister} className="space-y-6 bg-white p-6 rounded-lg shadow-md border border-[#B87333]/10">
+              <div>
+                <label htmlFor="name" className="block text-sm font-medium text-gray-700 mb-1">Full Name</label>
+                <div className="relative">
+                  <User className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-5 w-5" />
+                  <input
+                    id="name"
+                    name="name"
+                    type="text"
+                    value={userInfo.name}
+                    onChange={handleUserInfoChange}
+                    className="pl-10 w-full rounded-md border border-gray-300 py-2 px-3 focus:outline-none focus:ring-2 focus:ring-[#B87333]/50 focus:border-transparent"
+                    placeholder="Enter your full name"
+                  />
+                </div>
+              </div>
+              <div>
+                <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-1">Email</label>
+                <div className="relative">
+                  <Mail className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-5 w-5" />
+                  <input
+                    id="email"
+                    name="email"
+                    type="email"
+                    value={userInfo.email}
+                    onChange={handleUserInfoChange}
+                    className="pl-10 w-full rounded-md border border-gray-300 py-2 px-3 focus:outline-none focus:ring-2 focus:ring-[#B87333]/50 focus:border-transparent"
+                    placeholder="example@email.com"
+                  />
+                </div>
+              </div>
+              <div>
+                <label htmlFor="password" className="block text-sm font-medium text-gray-700 mb-1">Password</label>
+                <div className="relative">
+                  <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-5 w-5" />
+                  <input
+                    id="password"
+                    name="password"
+                    type="password"
+                    value={userInfo.password}
+                    onChange={handleUserInfoChange}
+                    className="pl-10 w-full rounded-md border border-gray-300 py-2 px-3 focus:outline-none focus:ring-2 focus:ring-[#B87333]/50 focus:border-transparent"
+                    placeholder="Create a secure password"
+                  />
+                </div>
+              </div>
+              <div className="pt-2">
+                <Button 
+                  type="submit"
+                  className="group w-full bg-[#B87333] hover:bg-[#B87333]/90 hero-button"
+                >
+                  Create Account
+                  <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
+                </Button>
+              </div>
+            </form>
+            <div className="mt-6 flex justify-center">
+              <Button 
+                className="group bg-[#B87333]/20 hover:bg-[#B87333]/30 flex items-center gap-2"
+                onClick={handlePrevious}
+              >
+                <ArrowLeft className="h-4 w-4" />
+                Previous
+              </Button>
+              <Button 
+                className="ml-4 group bg-transparent border border-[#B87333] text-[#B87333] hover:bg-[#B87333]/10"
+                onClick={handleSkip}
+              >
+                Skip to Main
+              </Button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {screenState === 'subscription' && (
+        <div className="min-h-screen flex flex-col items-center justify-center bg-[#F8F9FA] animate-fade-in relative overflow-hidden">
+          <div className="absolute inset-0 bg-[url('data:image/svg+xml;utf8,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%2220%22 height=%2220%22 viewBox=%220 0 20 20%22><circle cx=%222%22 cy=%222%22 r=%221%22 fill=%22%23B87333%22 fill-opacity=%220.05%22/></svg>')] opacity-20"></div>
+          <div className="w-full max-w-4xl mx-auto px-4 py-8 z-10">
+            <h2 className="text-3xl font-bold text-center mb-4 gradient-heading">Choose Your Subscription Plan</h2>
+            <p className="text-center text-gray-600 mb-8 max-w-lg mx-auto">
+              Select the plan that best fits your mental health journey needs
+            </p>
+            
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+              {subscriptionPlans.map((plan, index) => (
+                <div 
+                  key={index}
+                  className={`rounded-xl shadow-md border-2 transition-all duration-300 hover:shadow-lg overflow-hidden ${
+                    selectedPlan === plan.title 
+                      ? 'border-[#B87333] scale-105 shadow-lg' 
+                      : `border-transparent ${plan.color}`
+                  } ${plan.recommended ? 'md:-mt-4 md:mb-4' : ''}`}
+                  onClick={() => setSelectedPlan(plan.title)}
+                >
+                  {plan.recommended && (
+                    <div className="bg-[#B87333] text-white text-sm font-medium py-1 text-center">
+                      Recommended
+                    </div>
+                  )}
+                  <div className="p-6">
+                    <div className="flex justify-between items-center mb-4">
+                      <h3 className="text-xl font-bold">{plan.title}</h3>
+                      <plan.icon className="h-6 w-6" />
+                    </div>
+                    <div className="mb-4">
+                      <span className="text-2xl font-bold">{plan.price}</span>
+                    </div>
+                    <p className="text-sm text-gray-600 mb-4">
+                      {plan.description}
+                    </p>
+                    <ul className="space-y-2 mb-6">
+                      {plan.features.map((feature, featureIndex) => (
+                        <li key={featureIndex} className="flex items-start gap-2 text-sm">
+                          <Check className="h-5 w-5 text-[#B87333] shrink-0 mt-0.5" />
+                          <span>{feature}</span>
+                        </li>
+                      ))}
+                    </ul>
+                    <Button 
+                      className={`w-full group ${
+                        selectedPlan === plan.title
+                          ? 'bg-[#B87333] hover:bg-[#B87333]/90'
+                          : 'bg-gray-200 hover:bg-gray-300 text-gray-800'
+                      }`}
+                      onClick={() => setSelectedPlan(plan.title)}
+                    >
+                      {selectedPlan === plan.title ? 'Selected' : 'Select Plan'}
+                    </Button>
+                  </div>
+                </div>
+              ))}
+            </div>
+            
+            <div className="flex justify-center gap-4">
+              <Button 
+                className="group bg-[#B87333]/20 hover:bg-[#B87333]/30 flex items-center gap-2"
+                onClick={handlePrevious}
+              >
+                <ArrowLeft className="h-4 w-4" />
+                Previous
+              </Button>
+              <Button 
+                className="group bg-[#B87333] hover:bg-[#B87333]/90 hero-button"
+                onClick={() => setScreenState('visionBoard')}
+                disabled={!selectedPlan}
+              >
+                Continue
+                <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
+              </Button>
+              <Button 
+                className="group bg-transparent border border-[#B87333] text-[#B87333] hover:bg-[#B87333]/10"
+                onClick={handleSkip}
+              >
+                Skip to Main
+              </Button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {screenState === 'visionBoard' && (
+        <div className="min-h-screen flex flex-col items-center justify-center bg-[#F8F9FA] animate-fade-in relative overflow-hidden">
+          <div className="absolute inset-0 bg-[url('data:image/svg+xml;utf8,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%2220%22 height=%2220%22 viewBox=%220 0 20 20%22><circle cx=%222%22 cy=%222%22 r=%221%22 fill=%22%23B87333%22 fill-opacity=%220.05%22/></svg>')] opacity-20"></div>
+          <div className="w-full max-w-4xl mx-auto px-4 py-8 z-10">
+            <h2 className="text-3xl font-bold text-center mb-4 gradient-heading">Create Your Vision Board</h2>
+            <p className="text-center text-gray-600 mb-8 max-w-lg mx-auto">
+              Select the qualities you want to embody and goals you'd like to achieve
+            </p>
+            
+            <div className="mb-8">
+              <h3 className="text-xl font-medium mb-4">I want to feel...</h3>
+              <div className="flex flex-wrap gap-3 justify-center">
+                {visionBoardQualities.map((quality) => (
+                  <button
+                    key={quality.id}
+                    onClick={() => toggleQuality(quality.id)}
+                    className={`py-2 px-4 rounded-full transition-all text-sm ${
+                      selectedQualities.includes(quality.id)
+                        ? 'bg-[#B87333] text-white'
+                        : 'bg-white border border-gray-300 hover:border-[#B87333]/50'
+                    }`}
+                  >
+                    {quality.label}
+                  </button>
+                ))}
+              </div>
+            </div>
+            
+            <div className="mb-10">
+              <h3 className="text-xl font-medium mb-4">My goals include...</h3>
+              <div className="flex flex-wrap gap-3 justify-center">
+                {visionBoardGoals.map((goal) => (
+                  <button
+                    key={goal.id}
+                    onClick={() => toggleGoal(goal.id)}
+                    className={`py-2 px-4 rounded-full transition-all text-sm ${
+                      selectedGoals.includes(goal.id)
+                        ? 'bg-[#B87333] text-white'
+                        : 'bg-white border border-gray-300 hover:border-[#B87333]/50'
+                    }`}
+                  >
+                    {goal.label}
+                  </button>
+                ))}
+              </div>
+            </div>
+            
+            <div className="flex justify-center gap-4">
+              <Button 
+                className="group bg-[#B87333]/20 hover:bg-[#B87333]/30 flex items-center gap-2"
+                onClick={handlePrevious}
+              >
+                <ArrowLeft className="h-4 w-4" />
+                Previous
+              </Button>
+              <Button 
+                className="group bg-[#B87333] hover:bg-[#B87333]/90 hero-button"
+                onClick={() => setScreenState('main')}
+              >
+                Complete Setup
+                <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
+              </Button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {screenState === 'main' && (
+        <div className="min-h-screen bg-[#F8F9FA] pt-16 pb-24">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="flex flex-col items-center justify-center mb-16">
+              <img 
+                src="/lovable-uploads/f2c6ac08-6331-4884-950d-7f94d68ff15f.png" 
+                alt="Thrive MT Logo" 
+                className="h-16 mb-4"
+              />
+              <h1 className="text-4xl md:text-5xl font-bold text-center">
+                <span className="gradient-heading">Welcome to Thrive MT</span>
+              </h1>
+              <p className="mt-4 text-xl text-center text-gray-600 max-w-2xl">
+                Your journey to better mental health starts here. Explore our tools and resources.
+              </p>
+              <Button 
+                className="mt-6 group"
+                onClick={() => setShowHenryIntro(true)}
+              >
+                Meet Henry, Your Mental Health Guide
+                <UserRound className="ml-2 h-4 w-4" />
+              </Button>
+            </div>
+            
+            <div className="space-y-12">
+              <section>
+                <h2 className="text-2xl md:text-3xl font-bold mb-6 gradient-heading">
+                  Key Features
+                </h2>
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                  {features.map((feature, index) => (
+                    <Card key={index} className="group transition-all hover:shadow-lg">
+                      <CardHeader className="pb-2">
+                        <div className="flex items-start justify-between">
+                          <CardTitle>{feature.title}</CardTitle>
+                          <div className="bg-[#B87333]/10 p-2 rounded-full">
+                            <feature.icon className="h-5 w-5 text-[#B87333]" />
+                          </div>
+                        </div>
+                        <CardDescription className="mt-2">
+                          {feature.description}
+                        </CardDescription>
+                      </CardHeader>
+                      <CardFooter>
+                        <Link to={feature.path} className="text-[#B87333] text-sm font-medium inline-flex items-center group-hover:underline">
+                          Explore <ArrowRight className="ml-1 h-4 w-4 transition-transform group-hover:translate-x-1" />
+                        </Link>
+                      </CardFooter>
+                    </Card>
+                  ))}
+                </div>
+              </section>
+              
+              <section>
+                <h2 className="text-2xl md:text-3xl font-bold mb-6 gradient-heading">
+                  Workshops & Classes
+                </h2>
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                  {workshops.map((workshop, index) => (
+                    <Card key={index} className={`border ${workshop.color} transition-all hover:shadow-lg`}>
+                      <CardHeader>
+                        <div className="flex items-start justify-between">
+                          <CardTitle>{workshop.title}</CardTitle>
+                          <div className={`${workshop.color} p-2 rounded-full`}>
+                            <workshop.icon className="h-5 w-5" />
+                          </div>
+                        </div>
+                        <CardDescription className="mt-2">
+                          {workshop.description}
+                        </CardDescription>
+                      </CardHeader>
+                      <CardContent className="pb-2">
+                        <div className="flex items-center text-sm">
+                          <Clock className="mr-2 h-4 w-4 opacity-70" />
+                          <span>{workshop.time}</span>
+                        </div>
+                      </CardContent>
+                      <CardFooter>
+                        <Button variant="outline" size="sm" className="w-full">
+                          Join Workshop
+                          <Play className="ml-2 h-3 w-3" />
+                        </Button>
+                      </CardFooter>
+                    </Card>
+                  ))}
+                </div>
+                <div className="mt-6 text-center">
+                  <Link to="/workshops">
+                    <Button variant="outline">
+                      Browse All Workshops
+                      <ArrowRight className="ml-2 h-4 w-4" />
+                    </Button>
+                  </Link>
+                </div>
+              </section>
+
+              <section>
+                <h2 className="text-2xl md:text-3xl font-bold mb-6 gradient-heading">
+                  Virtual Classes & Meetings
+                </h2>
+                <Card>
+                  <CardHeader>
+                    <div className="flex items-start justify-between">
+                      <CardTitle>Today's Schedule</CardTitle>
+                      <div className="bg-[#B87333]/10 p-2 rounded-full">
+                        <Users className="h-5 w-5 text-[#B87333]" />
+                      </div>
+                    </div>
+                    <CardDescription>
+                      Join interactive mental health classes and AA/NA meetings in 30-minute increments
+                    </CardDescription>
+                  </CardHeader>
+                  <CardContent>
+                    <Tabs defaultValue="classes">
+                      <TabsList className="grid w-full grid-cols-2">
+                        <TabsTrigger value="classes">Mental Health Classes</TabsTrigger>
+                        <TabsTrigger value="meetings">AA/NA Meetings</TabsTrigger>
+                      </TabsList>
+                      <TabsContent value="classes" className="mt-4">
+                        <div className="space-y-4">
+                          <Button variant="outline" className="w-full justify-between" asChild>
+                            <Link to="/virtual-meetings">
+                              <div className="flex items-center">
+                                <span className="bg-emerald-100 text-emerald-800 text-xs px-2 py-1 rounded mr-3">9:00 AM</span>
+                                <span>Morning Meditation</span>
+                              </div>
+                              <ArrowRight className="h-4 w-4" />
+                            </Link>
+                          </Button>
+                          <Button variant="outline" className="w-full justify-between" asChild>
+                            <Link to="/virtual-meetings">
+                              <div className="flex items-center">
+                                <span className="bg-blue-100 text-blue-800 text-xs px-2 py-1 rounded mr-3">12:00 PM</span>
+                                <span>Stress Management</span>
+                              </div>
+                              <ArrowRight className="h-4 w-4" />
+                            </Link>
+                          </Button>
+                          <Button variant="outline" className="w-full justify-between" asChild>
+                            <Link to="/virtual-meetings">
+                              <div className="flex items-center">
+                                <span className="bg-purple-100 text-purple-800 text-xs px-2 py-1 rounded mr-3">3:00 PM</span>
+                                <span>Mindfulness Practice</span>
+                              </div>
+                              <ArrowRight className="h-4 w-4" />
+                            </Link>
+                          </Button>
+                          <Button variant="outline" className="w-full justify-between" asChild>
+                            <Link to="/virtual-meetings">
+                              <div className="flex items-center">
+                                <span className="bg-amber-100 text-amber-800 text-xs px-2 py-1 rounded mr-3">7:00 PM</span>
+                                <span>Evening Relaxation</span>
+                              </div>
+                              <ArrowRight className="h-4 w-4" />
+                            </Link>
+                          </Button>
+                        </div>
+                      </TabsContent>
+                      <TabsContent value="meetings" className="mt-4">
+                        <div className="space-y-4">
+                          <Button variant="outline" className="w-full justify-between" asChild>
+                            <Link to="/virtual-meetings">
+                              <div className="flex items-center">
+                                <span className="bg-blue-100 text-blue-800 text-xs px-2 py-1 rounded mr-3">10:00 AM</span>
+                                <span>AA Morning Check-in</span>
+                              </div>
+                              <ArrowRight className="h-4 w-4" />
+                            </Link>
+                          </Button>
+                          <Button variant="outline" className="w-full justify-between" asChild>
+                            <Link to="/virtual-meetings">
+                              <div className="flex items-center">
+                                <span className="bg-indigo-100 text-indigo-800 text-xs px-2 py-1 rounded mr-3">2:00 PM</span>
+                                <span>NA Discussion Group</span>
+                              </div>
+                              <ArrowRight className="h-4 w-4" />
+                            </Link>
+                          </Button>
+                          <Button variant="outline" className="w-full justify-between" asChild>
+                            <Link to="/virtual-meetings">
+                              <div className="flex items-center">
+                                <span className="bg-rose-100 text-rose-800 text-xs px-2 py-1 rounded mr-3">6:00 PM</span>
+                                <span>AA Step Work</span>
+                              </div>
+                              <ArrowRight className="h-4 w-4" />
+                            </Link>
+                          </Button>
+                          <Button variant="outline" className="w-full justify-between" asChild>
+                            <Link to="/virtual-meetings">
+                              <div className="flex items-center">
+                                <span className="bg-emerald-100 text-emerald-800 text-xs px-2 py-1 rounded mr-3">9:00 PM</span>
+                                <span>NA Evening Support</span>
+                              </div>
+                              <ArrowRight className="h-4 w-4" />
+                            </Link>
+                          </Button>
+                        </div>
+                      </TabsContent>
+                    </Tabs>
+                  </CardContent>
+                  <CardFooter>
+                    <Button className="w-full" asChild>
+                      <Link to="/virtual-meetings">
+                        View Full 24-Hour Schedule
+                        <ArrowRight className="ml-2 h-4 w-4" />
+                      </Link>
+                    </Button>
+                  </CardFooter>
+                </Card>
+              </section>
+            </div>
+          </div>
+        </div>
+      )}
+    </div>
+  );
+};
+
+export default Index;
