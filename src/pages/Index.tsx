@@ -1,8 +1,7 @@
-
 import { Button } from "@/components/ui/button";
 import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { ArrowRight, MessageCircle, Brain, Calendar, Shield, Smile, Meh, Frown, User, Mail, Lock, ArrowLeft, Annoyed, HeartCrack, Angry, HeartHandshake, UserRound, Play, Clock, Users } from "lucide-react";
+import { ArrowRight, MessageCircle, Brain, Calendar, Shield, Smile, Meh, Frown, User, Mail, Lock, ArrowLeft, Annoyed, HeartCrack, Angry, HeartHandshake, UserRound, Play, Clock, Users, Check, Package, BadgeDollarSign, BadgePercent, Trophy, Gem } from "lucide-react";
 import { useState, useEffect } from "react";
 import { Link, useNavigate, useLocation } from "react-router-dom";
 import { useToast } from "@/hooks/use-toast";
@@ -119,13 +118,62 @@ const workshops = [
   }
 ];
 
+const subscriptionPlans = [
+  {
+    title: "Basic",
+    price: "Free",
+    description: "Start your mental health journey with essential features",
+    features: [
+      "Access to essential mental wellness tools",
+      "Join virtual meetings and classes",
+      "Digital sponsor access",
+      "Limited workshop access"
+    ],
+    icon: Package,
+    color: "bg-gray-100 text-gray-800 border-gray-200",
+    recommended: false
+  },
+  {
+    title: "Gold",
+    price: "$5/month",
+    description: "Enhanced features for a more personalized experience",
+    features: [
+      "5% bonus on all co-pay credits",
+      "Access to all mental wellness tools",
+      "Extended workshop library",
+      "Priority access to virtual meetings",
+      "Personalized wellness plan"
+    ],
+    icon: Trophy,
+    color: "bg-[#FEF7CD] text-[#B87333] border-[#B87333]/30",
+    recommended: true
+  },
+  {
+    title: "Platinum",
+    price: "$10/month",
+    description: "Our most comprehensive mental health package",
+    features: [
+      "10% bonus on all co-pay credits",
+      "Unlimited access to all platform features",
+      "Premium workshop content",
+      "Early access to new features",
+      "Advanced analytics and insights",
+      "Personalized wellness roadmap"
+    ],
+    icon: Gem,
+    color: "bg-[#E5DEFF] text-[#7E69AB] border-[#7E69AB]/30",
+    recommended: false
+  }
+];
+
 const Index = () => {
   const [showCoPayCredit, setShowCoPayCredit] = useState(false);
   const [showHenryIntro, setShowHenryIntro] = useState(false);
-  const [screenState, setScreenState] = useState<'intro' | 'mood' | 'moodResponse' | 'register' | 'visionBoard' | 'main'>('intro');
+  const [screenState, setScreenState] = useState<'intro' | 'mood' | 'moodResponse' | 'register' | 'subscription' | 'visionBoard' | 'main'>('intro');
   const [selectedMood, setSelectedMood] = useState<'happy' | 'ok' | 'neutral' | 'down' | 'sad' | 'overwhelmed' | null>(null);
   const [selectedQualities, setSelectedQualities] = useState<string[]>([]);
   const [selectedGoals, setSelectedGoals] = useState<string[]>([]);
+  const [selectedPlan, setSelectedPlan] = useState<string | null>(null);
   const [userInfo, setUserInfo] = useState({
     name: '',
     email: '',
@@ -193,7 +241,7 @@ const Index = () => {
       description: "Welcome to Thrive MT! Your journey to better mental health begins now.",
     });
     
-    setScreenState('visionBoard');
+    setScreenState('subscription');
   };
 
   const handlePrevious = () => {
@@ -203,8 +251,10 @@ const Index = () => {
       setScreenState('mood');
     } else if (screenState === 'register') {
       setScreenState('moodResponse');
-    } else if (screenState === 'visionBoard') {
+    } else if (screenState === 'subscription') {
       setScreenState('register');
+    } else if (screenState === 'visionBoard') {
+      setScreenState('subscription');
     } else if (screenState === 'main') {
       setScreenState('visionBoard');
     }
@@ -550,453 +600,4 @@ const Index = () => {
                 </div>
               ))}
             </div>
-            <p className="mb-8 text-lg" style={{animation: 'fadeInText 1s ease-out forwards', opacity: 0, animationDelay: '1s'}}>
-              You're not alone. Help is available, and reaching out is a sign of strength.
-            </p>
-            <Button 
-              className="group bg-[#ea384c] hover:bg-[#ea384c]/90 hero-button"
-              onClick={() => setScreenState('register')}
-            >
-              Continue to Register
-              <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
-            </Button>
-            <Button 
-              className="ml-4 group bg-[#B87333] hover:bg-[#B87333]/80 flex items-center gap-2"
-              onClick={handlePrevious}
-            >
-              <ArrowLeft className="h-4 w-4" />
-              Previous
-            </Button>
-          </div>
-        </div>
-      )}
-
-      {screenState === 'register' && (
-        <div className="min-h-screen flex flex-col items-center justify-center bg-gradient-to-b from-[#1a1a1f] to-[#2a2a3f] text-white animate-fade-in relative overflow-hidden">
-          <div className="absolute inset-0 bg-[url('data:image/svg+xml;utf8,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%2240%22 height=%2240%22 viewBox=%220 0 40 40%22><circle cx=%222%22 cy=%222%22 r=%221%22 fill=%22%23B87333%22 fill-opacity=%220.05%22/></svg>')] opacity-20"></div>
-          <div className="w-full max-w-md mx-auto px-4 z-10">
-            <div className="text-center mb-8" style={{animation: 'fadeInText 1s ease-out forwards', opacity: 0}}>
-              <h2 className="text-4xl font-light text-white mb-2">Join <span className="gradient-heading">Thrive</span><span className="text-white">MT</span></h2>
-              <p className="text-gray-300">Create your account to continue your journey</p>
-            </div>
-            
-            <Card className="p-6 bg-white/10 backdrop-blur-md border-white/20 transition-all duration-300 hover:border-[#B87333]/30 hover:shadow-lg" style={{
-              boxShadow: '0 0 20px rgba(184, 115, 51, 0.1)',
-              animation: 'fadeInText 1s ease-out forwards',
-              opacity: 0,
-              animationDelay: '0.3s'
-            }}>
-              <form onSubmit={handleRegister} className="space-y-6">
-                <div>
-                  <label htmlFor="name" className="block text-sm font-medium text-gray-200 mb-1">Name</label>
-                  <div className="relative">
-                    <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                      <User className="h-5 w-5 text-gray-400" />
-                    </div>
-                    <input
-                      type="text"
-                      id="name"
-                      name="name"
-                      value={userInfo.name}
-                      onChange={handleUserInfoChange}
-                      className="pl-10 w-full bg-white/5 border border-white/10 rounded-md py-2 px-3 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#B87333] focus:border-transparent transition-all duration-300"
-                      placeholder="Enter your name"
-                    />
-                  </div>
-                </div>
-                
-                <div>
-                  <label htmlFor="email" className="block text-sm font-medium text-gray-200 mb-1">Email</label>
-                  <div className="relative">
-                    <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                      <Mail className="h-5 w-5 text-gray-400" />
-                    </div>
-                    <input
-                      type="email"
-                      id="email"
-                      name="email"
-                      value={userInfo.email}
-                      onChange={handleUserInfoChange}
-                      className="pl-10 w-full bg-white/5 border border-white/10 rounded-md py-2 px-3 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#B87333] focus:border-transparent transition-all duration-300"
-                      placeholder="Enter your email"
-                    />
-                  </div>
-                </div>
-                
-                <div>
-                  <label htmlFor="password" className="block text-sm font-medium text-gray-200 mb-1">Password</label>
-                  <div className="relative">
-                    <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                      <Lock className="h-5 w-5 text-gray-400" />
-                    </div>
-                    <input
-                      type="password"
-                      id="password"
-                      name="password"
-                      value={userInfo.password}
-                      onChange={handleUserInfoChange}
-                      className="pl-10 w-full bg-white/5 border border-white/10 rounded-md py-2 px-3 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#B87333] focus:border-transparent transition-all duration-300"
-                      placeholder="Create a password"
-                    />
-                  </div>
-                </div>
-                
-                <Button 
-                  type="submit"
-                  className="w-full bg-[#B87333] hover:bg-[#B87333]/80 text-white py-2 rounded-md transition-colors hero-button"
-                >
-                  Register & Continue
-                </Button>
-              </form>
-              
-              <div className="mt-6 text-center">
-                <p className="text-sm text-gray-400">
-                  Already have an account?{" "}
-                  <button 
-                    onClick={() => setScreenState('visionBoard')} 
-                    className="text-[#B87333] hover:underline transition-all duration-300 hover:text-[#B87333]/80"
-                  >
-                    Skip for now
-                  </button>
-                </p>
-              </div>
-            </Card>
-            <div className="text-center mt-6" style={{animation: 'fadeInText 1s ease-out forwards', opacity: 0, animationDelay: '0.6s'}}>
-              <Button 
-                className="group bg-[#B87333] hover:bg-[#B87333]/80 flex items-center gap-2 hero-button"
-                onClick={handlePrevious}
-              >
-                <ArrowLeft className="h-4 w-4" />
-                Previous
-              </Button>
-            </div>
-          </div>
-        </div>
-      )}
-
-      {screenState === 'visionBoard' && (
-        <div className="min-h-screen py-12 bg-gradient-to-b from-[#1a1a1f] to-[#2a2a3f] text-white animate-fade-in overflow-auto relative">
-          <div className="absolute inset-0 bg-[url('data:image/svg+xml;utf8,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%2240%22 height=%2240%22 viewBox=%220 0 40 40%22><circle cx=%222%22 cy=%222%22 r=%221%22 fill=%22%23B87333%22 fill-opacity=%220.02%22/></svg>')] opacity-20 fixed"></div>
-          <div className="max-w-4xl mx-auto px-4 relative z-10">
-            <h1 className="text-3xl md:text-5xl text-center mb-6 font-light gradient-heading">
-              My Vision Board
-            </h1>
-            <p className="text-lg md:text-xl text-center mb-10 text-gray-300" style={{animation: 'fadeInText 1s ease-out forwards', opacity: 0, animationDelay: '0.3s'}}>
-              The future version of myself that I am choosing now will be:
-            </p>
-            
-            <div className="mb-12" style={{animation: 'fadeInText 1s ease-out forwards', opacity: 0, animationDelay: '0.5s'}}>
-              <h2 className="text-2xl mb-6 text-[#B87333]">Qualities I Want to Embrace</h2>
-              <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
-                {visionBoardQualities.map((quality, index) => (
-                  <button
-                    key={quality.id}
-                    onClick={() => toggleQuality(quality.id)}
-                    className={`p-3 rounded-lg transition-all duration-300 text-lg vision-board-item ${
-                      selectedQualities.includes(quality.id)
-                        ? 'bg-[#B87333] text-white shadow-[0_0_15px_rgba(184,115,51,0.3)]'
-                        : 'bg-white/10 hover:bg-white/20 text-white'
-                    }`}
-                  >
-                    {quality.label}
-                  </button>
-                ))}
-              </div>
-            </div>
-            
-            <div className="mb-12" style={{animation: 'fadeInText 1s ease-out forwards', opacity: 0, animationDelay: '0.7s'}}>
-              <h2 className="text-2xl mb-6 text-[#B87333]">Goals I Want to Achieve</h2>
-              <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
-                {visionBoardGoals.map((goal, index) => (
-                  <button
-                    key={goal.id}
-                    onClick={() => toggleGoal(goal.id)}
-                    className={`p-3 rounded-lg transition-all duration-300 text-left vision-board-item ${
-                      selectedGoals.includes(goal.id)
-                        ? 'bg-[#B87333] text-white shadow-[0_0_15px_rgba(184,115,51,0.3)]'
-                        : 'bg-white/10 hover:bg-white/20 text-white'
-                    }`}
-                  >
-                    {goal.label}
-                  </button>
-                ))}
-              </div>
-            </div>
-            
-            <div className="text-center mt-12" style={{animation: 'fadeInText 1s ease-out forwards', opacity: 0, animationDelay: '0.9s'}}>
-              <p className="text-gray-300 mb-6">
-                {selectedQualities.length > 0 || selectedGoals.length > 0 
-                  ? `You've selected ${selectedQualities.length} qualities and ${selectedGoals.length} goals.`
-                  : "Select at least one quality or goal to help tailor your therapy and mental health resources."}
-              </p>
-              <div className="flex justify-center gap-4">
-                <Button 
-                  className="group bg-[#B87333] hover:bg-[#B87333]/80 text-white hero-button"
-                  onClick={() => setScreenState('main')}
-                >
-                  Continue to Thrive MT
-                  <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
-                </Button>
-                <Button 
-                  className="group bg-[#B87333]/20 hover:bg-[#B87333]/30 flex items-center gap-2"
-                  onClick={handlePrevious}
-                >
-                  <ArrowLeft className="h-4 w-4" />
-                  Previous
-                </Button>
-                <Button 
-                  className="group bg-transparent border border-[#B87333] text-[#B87333] hover:bg-[#B87333]/10"
-                  onClick={handleSkip}
-                >
-                  Skip to Main
-                </Button>
-              </div>
-            </div>
-          </div>
-        </div>
-      )}
-
-      {screenState === 'main' && (
-        <div className="min-h-screen bg-white app-content relative">
-          <div className="absolute inset-0 bg-[url('data:image/svg+xml;utf8,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%2240%22 height=%2240%22 viewBox=%220 0 40 40%22><circle cx=%222%22 cy=%222%22 r=%221%22 fill=%22%23B87333%22 fill-opacity=%220.02%22/></svg>')] opacity-30 fixed"></div>
-          
-          {/* Hero Section */}
-          <section className="container px-4 pt-32 pb-12 relative z-10">
-            <div className="max-w-3xl mx-auto text-center animate-fade-up">
-              <span className="px-3 py-1 text-sm font-medium tracking-wider rounded-full bg-primary/10 text-primary inline-block mb-4 uppercase">
-                Welcome to Thrive MT
-              </span>
-              <h1 className="text-4xl sm:text-5xl tracking-tight mb-6 gradient-heading">
-                Your Mental Health Journey Starts Here
-              </h1>
-              <p className="text-lg text-muted-foreground mb-8 leading-relaxed">
-                Access professional therapy and mental wellness tools from anywhere. 
-                Get the support you need, when you need it.
-              </p>
-              <div className="flex flex-wrap justify-center gap-4">
-                <Button className="group hero-button">
-                  Start Your Journey
-                  <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
-                </Button>
-                <Button 
-                  className="group bg-[#B87333] hover:bg-[#B87333]/80 flex items-center gap-2 hero-button"
-                  onClick={handlePrevious}
-                >
-                  <ArrowLeft className="h-4 w-4" />
-                  Previous
-                </Button>
-                <Button 
-                  variant="outline" 
-                  className="group border-[#B87333] text-[#B87333] hover:bg-[#B87333]/10 hero-button"
-                  onClick={() => setShowHenryIntro(true)}
-                >
-                  <UserRound className="mr-2 h-4 w-4" />
-                  Meet Henry
-                </Button>
-              </div>
-            </div>
-          </section>
-
-          {/* Workshops Section */}
-          <section className="container px-4 py-10 relative z-10">
-            <div className="max-w-6xl mx-auto">
-              <div className="flex justify-between items-center mb-6">
-                <h2 className="text-2xl font-medium">
-                  Active Mental Health Workshops For You
-                </h2>
-                <Button 
-                  variant="outline" 
-                  className="text-[#B87333] border-[#B87333] hover:bg-[#B87333]/10"
-                  onClick={() => setShowHenryIntro(true)}
-                >
-                  <UserRound className="mr-2 h-4 w-4" />
-                  Navigated by Henry
-                </Button>
-              </div>
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                {workshops.map((workshop, index) => (
-                  <Card 
-                    key={index}
-                    className={`p-6 border ${workshop.color} transition-all duration-300 hover:shadow-md cursor-pointer`}
-                  >
-                    <div className="flex items-center justify-between mb-4">
-                      <workshop.icon className={`h-10 w-10 ${workshop.color.split(' ').pop()}`} />
-                      <div className="flex items-center gap-2 text-gray-500 text-sm">
-                        <Clock className="h-4 w-4" />
-                        <span>{workshop.time}</span>
-                      </div>
-                    </div>
-                    <h3 className="text-xl font-medium mb-2">{workshop.title}</h3>
-                    <p className="text-gray-600 mb-4">{workshop.description}</p>
-                    <Button 
-                      className="w-full bg-white border border-gray-200 text-gray-800 hover:bg-gray-50 group"
-                      onClick={() => navigate(`/workshop/${
-                        workshop.title === "Stress Management" ? "stress-management" : 
-                        workshop.title === "Mindful Communication" ? "mindful-communication" : 
-                        "emotional-regulation"
-                      }`)}
-                    >
-                      <Play className="h-4 w-4 mr-2 text-green-500" />
-                      Start Workshop
-                      <ArrowRight className="ml-auto h-4 w-4 transition-transform group-hover:translate-x-1" />
-                    </Button>
-                  </Card>
-                ))}
-              </div>
-            </div>
-          </section>
-
-          {/* Virtual Classes & Meetings Section */}
-          <section className="container px-4 py-12 bg-muted/10 relative z-10">
-            <div className="max-w-6xl mx-auto">
-              <div className="flex justify-between items-center mb-6">
-                <h2 className="text-2xl font-medium">
-                  Virtual Classes & Meetings
-                </h2>
-                <Button 
-                  variant="outline" 
-                  className="text-[#B87333] border-[#B87333] hover:bg-[#B87333]/10"
-                  onClick={() => navigate('/virtual-meetings')}
-                >
-                  View All
-                  <ArrowRight className="ml-2 h-4 w-4" />
-                </Button>
-              </div>
-              
-              <Card className="border border-gray-200 shadow-sm">
-                <CardHeader className="cursor-pointer pb-3">
-                  <div className="flex justify-between items-center">
-                    <div>
-                      <CardTitle className="text-xl text-gray-800">24-Hour Schedule</CardTitle>
-                      <CardDescription>
-                        Join virtual classes and AA meetings in 30-minute increments
-                      </CardDescription>
-                    </div>
-                  </div>
-                </CardHeader>
-                
-                <CardContent>
-                  <div className="space-y-4">
-                    <p className="text-gray-600">
-                      Access virtual mental health classes and support group meetings throughout the day.
-                      All sessions are led by certified professionals and facilitators.
-                    </p>
-                    
-                    <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-4">
-                      <div className="p-4 border rounded-lg bg-blue-50/50 flex flex-col items-center text-center">
-                        <div className="p-2 rounded-full bg-blue-100 mb-2">
-                          <Brain className="h-5 w-5 text-blue-600" />
-                        </div>
-                        <h3 className="font-medium mb-1">Mental Health Classes</h3>
-                        <p className="text-sm text-gray-600">30-minute guided sessions with mental health experts</p>
-                      </div>
-                      
-                      <div className="p-4 border rounded-lg bg-purple-50/50 flex flex-col items-center text-center">
-                        <div className="p-2 rounded-full bg-purple-100 mb-2">
-                          <Users className="h-5 w-5 text-purple-600" />
-                        </div>
-                        <h3 className="font-medium mb-1">AA Meetings</h3>
-                        <p className="text-sm text-gray-600">60-minute support groups for alcohol recovery</p>
-                      </div>
-                      
-                      <div className="p-4 border rounded-lg bg-green-50/50 flex flex-col items-center text-center">
-                        <div className="p-2 rounded-full bg-green-100 mb-2">
-                          <HeartHandshake className="h-5 w-5 text-green-600" />
-                        </div>
-                        <h3 className="font-medium mb-1">NA Meetings</h3>
-                        <p className="text-sm text-gray-600">60-minute support groups for substance recovery</p>
-                      </div>
-                    </div>
-                    
-                    <div className="mt-6">
-                      <Button 
-                        className="w-full md:w-auto hero-button"
-                        onClick={() => navigate('/virtual-meetings')}
-                      >
-                        Browse Available Sessions
-                        <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
-                      </Button>
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
-            </div>
-          </section>
-
-          {/* Features Section */}
-          <section className="container px-4 py-16 bg-muted/30 relative z-10">
-            <div className="max-w-6xl mx-auto">
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-                {features.map((feature, index) => (
-                  <Card 
-                    key={index}
-                    className="p-6 backdrop-blur-sm bg-background/50 border border-border/50 hover:border-primary/50 transition-colors duration-300 cursor-pointer feature-card"
-                    onClick={() => {
-                      if (feature.path === "/mental-wellness-tools") {
-                        navigate(feature.path, {
-                          state: { qualities: selectedQualities, goals: selectedGoals }
-                        });
-                      } else {
-                        navigate(feature.path);
-                      }
-                    }}
-                    style={{
-                      animation: 'fadeInText 0.6s ease-out forwards',
-                      opacity: 0,
-                      animationDelay: `${index * 0.15}s`
-                    }}
-                  >
-                    <feature.icon className="h-8 w-8 mb-4 text-[#B87333]" />
-                    <h3 className="text-xl mb-3">{feature.title}</h3>
-                    <p className="text-muted-foreground">{feature.description}</p>
-                  </Card>
-                ))}
-              </div>
-            </div>
-          </section>
-
-          {/* Call to Action Section */}
-          <section className="container px-4 py-20 relative z-10">
-            <div className="max-w-3xl mx-auto text-center">
-              <h2 className="text-3xl mb-6 gradient-heading">Ready to Take the First Step?</h2>
-              <p className="text-muted-foreground mb-8">
-                Join thousands who have found their path to better mental health with Thrive MT. 
-                Our licensed therapists are here to support you.
-              </p>
-              <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                <Button 
-                  variant="default" 
-                  className="group hero-button"
-                  onClick={() => navigate("/real-time-therapy")}
-                >
-                  Connect with a Therapist
-                  <MessageCircle className="ml-2 h-4 w-4" />
-                </Button>
-                <Button 
-                  variant="outline" 
-                  className="group border-[#B87333]/50 text-[#B87333] hover:bg-[#B87333]/10 hero-button"
-                  onClick={() => navigate("/mental-wellness-tools", {
-                    state: { qualities: selectedQualities, goals: selectedGoals }
-                  })}
-                >
-                  Explore Resources
-                  <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
-                </Button>
-                <Button 
-                  className="group bg-[#B87333] hover:bg-[#B87333]/80 flex items-center gap-2 hero-button"
-                  onClick={handlePrevious}
-                >
-                  <ArrowLeft className="h-4 w-4" />
-                  Previous
-                </Button>
-              </div>
-            </div>
-          </section>
-        </div>
-      )}
-    </>
-  );
-};
-
-export default Index;
-
+            <p className="mb-8 text-lg" style={{animation: 'fadeInText 1s ease-out forwards', opacity:
