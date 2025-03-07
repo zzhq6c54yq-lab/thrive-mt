@@ -40,9 +40,10 @@ const Workshop: React.FC<WorkshopProps> = ({ workshopData }) => {
   const [activeSection, setActiveSection] = useState(0);
   const [isPlaying, setIsPlaying] = useState(false);
   const [completedExercises, setCompletedExercises] = useState<Record<string, boolean>>({});
+  const [audioProgress, setAudioProgress] = useState(0);
 
   const handleBack = () => {
-    navigate("/");
+    navigate("/workshops");
   };
 
   const toggleExerciseCompletion = (sectionIndex: number, exerciseIndex: number) => {
@@ -63,17 +64,36 @@ const Workshop: React.FC<WorkshopProps> = ({ workshopData }) => {
   const handlePrevSection = () => {
     if (activeSection > 0) {
       setActiveSection(prev => prev - 1);
+      setAudioProgress(0);
+      setIsPlaying(false);
+      
+      toast({
+        title: "Previous Section",
+        description: `Moved to: ${workshopData.sections[activeSection-1].title}`,
+      });
     }
   };
 
   const handleNextSection = () => {
     if (activeSection < workshopData.sections.length - 1) {
       setActiveSection(prev => prev + 1);
+      setAudioProgress(0);
+      setIsPlaying(false);
+      
+      toast({
+        title: "Next Section",
+        description: `Moved to: ${workshopData.sections[activeSection+1].title}`,
+      });
     } else {
       toast({
         title: "Workshop completed!",
         description: "Congratulations on completing this workshop!",
       });
+      
+      // Add a short delay before navigating back
+      setTimeout(() => {
+        navigate("/workshops", { state: { workshopCompleted: workshopData.id } });
+      }, 2000);
     }
   };
 
@@ -82,6 +102,35 @@ const Workshop: React.FC<WorkshopProps> = ({ workshopData }) => {
       title: "Henry is here to help!",
       description: "I can provide additional insights on this exercise. What would you like to know?",
     });
+  };
+  
+  const togglePlayPause = () => {
+    const newPlayingState = !isPlaying;
+    setIsPlaying(newPlayingState);
+    
+    if (newPlayingState) {
+      toast({
+        title: "Audio Started",
+        description: "The guided audio narration has started.",
+      });
+      
+      // Simulate audio progress
+      const interval = setInterval(() => {
+        setAudioProgress(prev => {
+          if (prev >= 100) {
+            clearInterval(interval);
+            setIsPlaying(false);
+            return 100;
+          }
+          return prev + 10;
+        });
+      }, 2000);
+    } else {
+      toast({
+        title: "Audio Paused",
+        description: "The guided audio narration has been paused.",
+      });
+    }
   };
 
   return (
@@ -191,6 +240,16 @@ const Workshop: React.FC<WorkshopProps> = ({ workshopData }) => {
                     </p>
                   </ScrollArea>
                   
+                  {/* Audio Progress Bar */}
+                  {isPlaying && (
+                    <div className="w-full bg-gray-200 rounded-full h-2.5 mb-4">
+                      <div 
+                        className="bg-[#B87333] h-2.5 rounded-full transition-all duration-500" 
+                        style={{ width: `${audioProgress}%` }}
+                      ></div>
+                    </div>
+                  )}
+                  
                   <div>
                     <h3 className="text-lg font-medium mb-4">Exercises</h3>
                     <div className="space-y-4">
@@ -233,7 +292,7 @@ const Workshop: React.FC<WorkshopProps> = ({ workshopData }) => {
                 <Button 
                   variant={isPlaying ? "secondary" : "default"}
                   className="flex items-center gap-2"
-                  onClick={() => setIsPlaying(!isPlaying)}
+                  onClick={togglePlayPause}
                 >
                   {isPlaying ? (
                     <>

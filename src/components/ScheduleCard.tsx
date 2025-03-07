@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Calendar, Clock, Users } from "lucide-react";
 import { format } from "date-fns";
 import { useToast } from "@/hooks/use-toast";
+import { useNavigate } from "react-router-dom";
 
 export interface Meeting {
   id: string;
@@ -23,12 +24,30 @@ interface ScheduleCardProps {
 
 const ScheduleCard: React.FC<ScheduleCardProps> = ({ meeting }) => {
   const { toast } = useToast();
+  const navigate = useNavigate();
   
   const handleJoin = () => {
+    if (meeting.availableSpots === 0) {
+      toast({
+        title: "Meeting is Full",
+        description: "Sorry, this meeting is already fully booked. Please try another time slot.",
+        variant: "destructive"
+      });
+      return;
+    }
+    
     toast({
       title: "Meeting Joined",
       description: `You've successfully joined "${meeting.title}". A confirmation has been sent to your email.`,
     });
+    
+    // In a real application, we would update the backend to reduce available spots
+    // For now, let's simulate navigation to a meeting room
+    setTimeout(() => {
+      navigate(`/virtual-meetings/room/${meeting.id}`, { 
+        state: { meetingDetails: meeting }
+      });
+    }, 1500);
   };
   
   const endTime = new Date(meeting.startTime.getTime() + meeting.duration * 60000);

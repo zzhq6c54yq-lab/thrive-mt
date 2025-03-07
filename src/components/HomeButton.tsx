@@ -3,6 +3,7 @@ import React from "react";
 import { Button } from "@/components/ui/button";
 import { House } from "lucide-react";
 import { useNavigate } from "react-router-dom";
+import { useToast } from "@/hooks/use-toast";
 
 interface HomeButtonProps {
   className?: string;
@@ -10,9 +11,15 @@ interface HomeButtonProps {
 
 const HomeButton: React.FC<HomeButtonProps> = ({ className = "" }) => {
   const navigate = useNavigate();
+  const { toast } = useToast();
 
   const handleHomeClick = () => {
     // Navigate to home and set the state to 'intro'
+    toast({
+      title: "Returning to Home",
+      description: "Taking you back to the home page"
+    });
+    
     navigate("/", { state: { returnToIntro: true } });
   };
 
