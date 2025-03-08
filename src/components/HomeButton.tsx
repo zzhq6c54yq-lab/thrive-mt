@@ -19,7 +19,7 @@ const HomeButton: React.FC<HomeButtonProps> = ({ className = "" }) => {
       description: "Taking you back to the main page"
     });
     
-    // Navigate to home but set the state to 'main' instead of 'intro'
+    // Always navigate to main screen directly
     navigate("/", { state: { screenState: 'main' } });
   };
 
