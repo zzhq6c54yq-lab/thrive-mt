@@ -19,7 +19,7 @@ const HomeButton: React.FC<HomeButtonProps> = ({ className = "" }) => {
     });
     
     // Always navigate to main screen directly
-    navigate("/", { state: { screenState: 'main' } });
+    navigate("/");
   };
 
   return (

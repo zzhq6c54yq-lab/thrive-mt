@@ -8,10 +8,19 @@ interface PageProps {
   title: string;
   children?: React.ReactNode;
   showBackButton?: boolean;
+  onBackClick?: () => void;
 }
 
-const Page: React.FC<PageProps> = ({ title, children, showBackButton = true }) => {
+const Page: React.FC<PageProps> = ({ title, children, showBackButton = true, onBackClick }) => {
   const navigate = useNavigate();
+  
+  const handleBack = () => {
+    if (onBackClick) {
+      onBackClick();
+    } else {
+      navigate("/");
+    }
+  };
   
   return (
     <div className="min-h-screen bg-white py-8 px-4">
@@ -21,7 +30,7 @@ const Page: React.FC<PageProps> = ({ title, children, showBackButton = true }) =
             <Button 
               variant="ghost" 
               className="flex items-center gap-2"
-              onClick={() => navigate(-1)}
+              onClick={handleBack}
             >
               <ArrowLeft className="h-4 w-4" />
               Back

@@ -1,4 +1,3 @@
-
 import React, { useState } from "react";
 import Page from "@/components/Page";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -12,13 +11,12 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { cn } from "@/lib/utils";
+import { useNavigate } from "react-router-dom";
 
-// Helper function to generate meetings for the next 7 days
 const generateMeetings = (): Meeting[] => {
   const meetings: Meeting[] = [];
   const today = startOfDay(new Date());
   
-  // Class names
   const classNames = [
     "Mindfulness Meditation", 
     "Stress Management", 
@@ -32,7 +30,6 @@ const generateMeetings = (): Meeting[] => {
     "Sleep Improvement"
   ];
   
-  // AA meeting names
   const aaMeetings = [
     "New Beginnings AA", 
     "Serenity Group", 
@@ -46,7 +43,6 @@ const generateMeetings = (): Meeting[] => {
     "Spiritual Awakening"
   ];
   
-  // Meeting descriptions
   const classDescriptions = [
     "Learn practical mindfulness techniques for everyday life.",
     "Develop strategies to manage stress in healthy ways.",
@@ -73,13 +69,11 @@ const generateMeetings = (): Meeting[] => {
     "Exploring the spiritual aspects of recovery."
   ];
   
-  // Generate meetings for each day
   for (let day = 0; day < 7; day++) {
     const currentDay = addDays(today, day);
     
-    // Generate classes (every 2 hours from 8am to 6pm)
     for (let hour = 8; hour <= 18; hour += 2) {
-      if (Math.random() > 0.3) { // 70% chance to have a meeting at this slot
+      if (Math.random() > 0.3) {
         const startTime = addHours(currentDay, hour);
         const randomClassIndex = Math.floor(Math.random() * classNames.length);
         const availableSpots = Math.floor(Math.random() * 15) + 1;
@@ -98,9 +92,8 @@ const generateMeetings = (): Meeting[] => {
       }
     }
     
-    // Generate AA meetings (every 3 hours from 9am to 9pm)
     for (let hour = 9; hour <= 21; hour += 3) {
-      if (Math.random() > 0.4) { // 60% chance to have a meeting
+      if (Math.random() > 0.4) {
         const startTime = addHours(currentDay, hour);
         const randomAAIndex = Math.floor(Math.random() * aaMeetings.length);
         const availableSpots = Math.floor(Math.random() * 20) + 1;
@@ -119,9 +112,8 @@ const generateMeetings = (): Meeting[] => {
       }
     }
     
-    // Generate some NA meetings (fewer, around evening time)
-    if (Math.random() > 0.5) { // 50% chance to have an NA meeting per day
-      const startTime = addHours(currentDay, 19); // 7pm
+    if (Math.random() > 0.5) {
+      const startTime = addHours(currentDay, 19);
       const randomAAIndex = Math.floor(Math.random() * aaMeetings.length);
       const availableSpots = Math.floor(Math.random() * 20) + 1;
       const totalSpots = 20;
@@ -146,8 +138,8 @@ const VirtualMeetings = () => {
   const allMeetings = generateMeetings();
   const [date, setDate] = useState<Date | undefined>(new Date());
   const [meetingType, setMeetingType] = useState<string>("all");
+  const navigate = useNavigate();
   
-  // Filter meetings based on selected date and type
   const filteredMeetings = allMeetings.filter(meeting => {
     const isSameDate = date ? 
       meeting.startTime.getDate() === date.getDate() && 
@@ -159,7 +151,6 @@ const VirtualMeetings = () => {
     return isSameDate && matchesType;
   });
   
-  // Group meetings by time slots (30-minute increments)
   const groupedMeetings: Record<string, Meeting[]> = {};
   
   filteredMeetings.forEach(meeting => {
@@ -170,15 +161,18 @@ const VirtualMeetings = () => {
     groupedMeetings[timeKey].push(meeting);
   });
   
-  // Create an array of time slots
   const timeSlots = Object.keys(groupedMeetings).sort((a, b) => {
     const timeA = new Date(`01/01/2022 ${a}`);
     const timeB = new Date(`01/01/2022 ${b}`);
     return timeA.getTime() - timeB.getTime();
   });
   
+  const handleBack = () => {
+    navigate("/");
+  };
+  
   return (
-    <Page title="Virtual Classes & Meetings" showBackButton={true}>
+    <Page title="Thrive MT Virtual Classes & Meetings" showBackButton={true} onBackClick={handleBack}>
       <div className="mb-8">
         <p className="text-gray-600 mb-6">
           Join live virtual classes and support group meetings from the comfort of your home. 

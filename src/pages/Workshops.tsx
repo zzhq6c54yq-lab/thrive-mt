@@ -1,6 +1,6 @@
 
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { workshopData } from "@/data/workshopData";
 import Page from "@/components/Page";
 import { 
@@ -15,9 +15,14 @@ import { ChevronDown, ChevronUp } from "lucide-react";
 
 const Workshops = () => {
   const [isExpanded, setIsExpanded] = useState(false);
+  const navigate = useNavigate();
+  
+  const handleBack = () => {
+    navigate("/");
+  };
 
   return (
-    <Page title="Mental Health Workshops" showBackButton={true}>
+    <Page title="Thrive MT Mental Health Workshops" showBackButton={true} onBackClick={handleBack}>
       <div className="space-y-6">
         <Card className="border border-gray-200 shadow-sm">
           <CardHeader className="cursor-pointer" onClick={() => setIsExpanded(!isExpanded)}>

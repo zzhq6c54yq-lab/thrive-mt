@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardFooter, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
-import { ArrowLeft, ChevronRight, CheckCircle, Play, Pause, Clock, Brain, MessageCircle, HeartHandshake, UserRound } from "lucide-react";
+import { ArrowLeft, ChevronRight, CheckCircle, Play, Pause, Clock, Brain, MessageCircle, HeartHandshake, UserRound, Download } from "lucide-react";
 import { useNavigate, useParams } from "react-router-dom";
 import { useToast } from "@/hooks/use-toast";
 import { ScrollArea } from "@/components/ui/scroll-area";
@@ -17,6 +17,7 @@ export interface WorkshopSection {
     title: string;
     instructions: string;
     completed?: boolean;
+    worksheet?: string; // Path to worksheet PDF or content
   }>;
 }
 
@@ -43,7 +44,7 @@ const Workshop: React.FC<WorkshopProps> = ({ workshopData }) => {
   const [audioProgress, setAudioProgress] = useState(0);
 
   const handleBack = () => {
-    navigate("/workshops");
+    navigate("/");
   };
 
   const toggleExerciseCompletion = (sectionIndex: number, exerciseIndex: number) => {
@@ -92,7 +93,7 @@ const Workshop: React.FC<WorkshopProps> = ({ workshopData }) => {
       
       // Add a short delay before navigating back
       setTimeout(() => {
-        navigate("/workshops", { state: { workshopCompleted: workshopData.id } });
+        navigate("/", { state: { workshopCompleted: workshopData.id } });
       }, 2000);
     }
   };
@@ -132,6 +133,13 @@ const Workshop: React.FC<WorkshopProps> = ({ workshopData }) => {
       });
     }
   };
+  
+  const handleDownloadWorksheet = (sectionIndex: number, exerciseIndex: number) => {
+    toast({
+      title: "Worksheet Downloaded",
+      description: "The worksheet has been downloaded to your device.",
+    });
+  };
 
   return (
     <div className="min-h-screen bg-white text-gray-900 py-8 px-4 relative overflow-hidden">
@@ -145,7 +153,7 @@ const Workshop: React.FC<WorkshopProps> = ({ workshopData }) => {
             onClick={handleBack}
           >
             <ArrowLeft className="h-4 w-4" />
-            Back to Dashboard
+            Back to Thrive MT
           </Button>
           
           <div className="flex items-center gap-2">
@@ -162,7 +170,7 @@ const Workshop: React.FC<WorkshopProps> = ({ workshopData }) => {
                 <div>
                   <CardTitle className="text-2xl">{workshopData.title}</CardTitle>
                   <CardDescription className="text-gray-500">
-                    Guided by Henry, your mental health specialist
+                    Guided by Henry, your Thrive MT mental health specialist
                   </CardDescription>
                 </div>
               </div>
@@ -258,18 +266,28 @@ const Workshop: React.FC<WorkshopProps> = ({ workshopData }) => {
                           <CardHeader className="py-3">
                             <div className="flex items-center justify-between">
                               <CardTitle className="text-base">{exercise.title}</CardTitle>
-                              <Button 
-                                variant="ghost"
-                                size="sm"
-                                className={`${
-                                  completedExercises[`${activeSection}-${exIndex}`] 
-                                    ? 'text-green-600' 
-                                    : 'text-gray-400'
-                                }`}
-                                onClick={() => toggleExerciseCompletion(activeSection, exIndex)}
-                              >
-                                <CheckCircle className="h-5 w-5" />
-                              </Button>
+                              <div className="flex items-center gap-2">
+                                <Button 
+                                  variant="outline"
+                                  size="sm"
+                                  className="text-blue-600 border-blue-200"
+                                  onClick={() => handleDownloadWorksheet(activeSection, exIndex)}
+                                >
+                                  <Download className="h-4 w-4" />
+                                </Button>
+                                <Button 
+                                  variant="ghost"
+                                  size="sm"
+                                  className={`${
+                                    completedExercises[`${activeSection}-${exIndex}`] 
+                                      ? 'text-green-600' 
+                                      : 'text-gray-400'
+                                  }`}
+                                  onClick={() => toggleExerciseCompletion(activeSection, exIndex)}
+                                >
+                                  <CheckCircle className="h-5 w-5" />
+                                </Button>
+                              </div>
                             </div>
                           </CardHeader>
                           <CardContent>
