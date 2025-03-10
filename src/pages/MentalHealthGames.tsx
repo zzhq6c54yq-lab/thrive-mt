@@ -209,7 +209,7 @@ const MentalHealthGames = () => {
       title: "Memory Match",
       description: "Improve your memory by matching pairs of cards. This activity enhances working memory and concentration.",
       icon: BrainIcon,
-      color: "bg-[#E5DEFF] text-[#9b87f5] border-[#9b87f5]/30",
+      color: "bg-[#E5DEFF] text-[#7152E5] border-[#9b87f5]/60",
       startFunction: startMemoryGame,
       benefits: ["Improves working memory", "Enhances concentration", "Reduces stress through focused attention", "Builds cognitive flexibility"]
     },
@@ -217,7 +217,7 @@ const MentalHealthGames = () => {
       title: "Emotion Sorting",
       description: "Sort different emotions into categories to improve emotional intelligence and recognition skills.",
       icon: Brain,
-      color: "bg-[#FDE1D3] text-[#F97316] border-[#F97316]/30",
+      color: "bg-[#FDE1D3] text-[#E05D00] border-[#F97316]/60",
       startFunction: startEmotionGame,
       benefits: ["Builds emotional vocabulary", "Improves emotion recognition", "Enhances self-awareness", "Supports emotional regulation"]
     },
@@ -225,7 +225,7 @@ const MentalHealthGames = () => {
       title: "Focus Training",
       description: "Click on the target while ignoring distractions to improve concentration and attention control.",
       icon: Target,
-      color: "bg-[#D3E4FD] text-[#0EA5E9] border-[#0EA5E9]/30",
+      color: "bg-[#D3E4FD] text-[#0A71C5] border-[#0EA5E9]/60",
       startFunction: startFocusGame,
       benefits: ["Enhances selective attention", "Improves response inhibition", "Builds mental endurance", "Reduces distractibility"]
     }
@@ -237,7 +237,7 @@ const MentalHealthGames = () => {
         <div className="max-w-6xl mx-auto px-4">
           <div className="mb-8 text-center">
             <h2 className="text-3xl font-bold mb-2">Interactive Mental Wellness Games</h2>
-            <p className="text-lg text-gray-600">
+            <p className="text-lg text-gray-800 dark:text-gray-200">
               Exercise your mind with games designed to boost cognitive skills and emotional intelligence.
             </p>
           </div>
@@ -250,20 +250,20 @@ const MentalHealthGames = () => {
               >
                 <CardHeader>
                   <game.icon className="h-10 w-10 mb-2" />
-                  <CardTitle>{game.title}</CardTitle>
-                  <CardDescription>{game.description}</CardDescription>
+                  <CardTitle className="text-gray-900 dark:text-white">{game.title}</CardTitle>
+                  <CardDescription className="text-gray-800 dark:text-gray-200 font-medium">{game.description}</CardDescription>
                 </CardHeader>
                 <CardContent>
-                  <h3 className="font-medium mb-2">Benefits:</h3>
+                  <h3 className="font-medium mb-2 text-gray-900 dark:text-white">Benefits:</h3>
                   <ul className="list-disc pl-5 space-y-1">
                     {game.benefits.map((benefit, i) => (
-                      <li key={i} className="text-sm">{benefit}</li>
+                      <li key={i} className="text-sm text-gray-800 dark:text-gray-200 font-medium">{benefit}</li>
                     ))}
                   </ul>
                 </CardContent>
                 <CardFooter>
                   <Button 
-                    className={`w-full bg-white text-gray-800 border hover:bg-gray-50`}
+                    className={`w-full bg-white dark:bg-gray-800 text-gray-800 dark:text-white border hover:bg-gray-50 dark:hover:bg-gray-700`}
                     onClick={game.startFunction}
                   >
                     Play Now
@@ -274,28 +274,28 @@ const MentalHealthGames = () => {
             ))}
           </div>
           
-          <div className="p-6 bg-[#F1F0FB] rounded-lg">
-            <h3 className="text-xl font-bold mb-3">Why Mental Health Games Matter</h3>
-            <p className="mb-4">
+          <div className="p-6 bg-[#F1F0FB] dark:bg-[#2D2A3E] rounded-lg">
+            <h3 className="text-xl font-bold mb-3 text-gray-900 dark:text-white">Why Mental Health Games Matter</h3>
+            <p className="mb-4 text-gray-800 dark:text-gray-200">
               Mental stimulation through targeted games can help improve cognitive functions and emotional regulation skills. 
               Regular engagement with cognitive exercises has been shown to:
             </p>
             <ul className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <li className="flex items-start gap-2">
                 <FlameKindling className="h-5 w-5 text-[#B87333] shrink-0 mt-0.5" />
-                <span>Reduce symptoms of anxiety and depression</span>
+                <span className="text-gray-800 dark:text-gray-200 font-medium">Reduce symptoms of anxiety and depression</span>
               </li>
               <li className="flex items-start gap-2">
                 <Activity className="h-5 w-5 text-[#B87333] shrink-0 mt-0.5" />
-                <span>Improve overall mental well-being</span>
+                <span className="text-gray-800 dark:text-gray-200 font-medium">Improve overall mental well-being</span>
               </li>
               <li className="flex items-start gap-2">
                 <Puzzle className="h-5 w-5 text-[#B87333] shrink-0 mt-0.5" />
-                <span>Enhance problem-solving abilities</span>
+                <span className="text-gray-800 dark:text-gray-200 font-medium">Enhance problem-solving abilities</span>
               </li>
               <li className="flex items-start gap-2">
                 <Dices className="h-5 w-5 text-[#B87333] shrink-0 mt-0.5" />
-                <span>Boost brain plasticity and cognitive flexibility</span>
+                <span className="text-gray-800 dark:text-gray-200 font-medium">Boost brain plasticity and cognitive flexibility</span>
               </li>
             </ul>
           </div>
@@ -304,14 +304,14 @@ const MentalHealthGames = () => {
         <div className="max-w-4xl mx-auto px-4">
           <div className="mb-8 text-center">
             <h2 className="text-3xl font-bold mb-2">Memory Match</h2>
-            <p className="text-gray-600 mb-2">Find all matching pairs of cards</p>
+            <p className="text-gray-800 dark:text-gray-200 font-medium mb-2">Find all matching pairs of cards</p>
             <div className="flex justify-center items-center gap-4 mb-4">
-              <span className="font-medium">Moves: {memoryMoves}</span>
-              <span className="font-medium">Matches: {matchedPairs}/8</span>
+              <span className="font-medium text-gray-800 dark:text-gray-200">Moves: {memoryMoves}</span>
+              <span className="font-medium text-gray-800 dark:text-gray-200">Matches: {matchedPairs}/8</span>
             </div>
             <Button 
               onClick={() => setActiveGame(null)}
-              className="bg-gray-200 text-gray-800 hover:bg-gray-300 mb-4"
+              className="bg-gray-200 text-gray-800 hover:bg-gray-300 dark:bg-gray-700 dark:text-white dark:hover:bg-gray-600 mb-4"
             >
               Back to Games
             </Button>
@@ -325,7 +325,7 @@ const MentalHealthGames = () => {
                 className={`aspect-square flex items-center justify-center text-4xl rounded-lg cursor-pointer transition-all duration-300 ${
                   card.flipped || card.matched 
                     ? "bg-[#9b87f5]/20 border-2 border-[#9b87f5]/50 rotate-0" 
-                    : "bg-[#9b87f5] text-[#9b87f5] rotate-y-180"
+                    : "bg-[#7152E5] text-[#7152E5] rotate-y-180"
                 }`}
               >
                 {(card.flipped || card.matched) && card.content}
@@ -337,11 +337,11 @@ const MentalHealthGames = () => {
         <div className="max-w-4xl mx-auto px-4">
           <div className="mb-8 text-center">
             <h2 className="text-3xl font-bold mb-2">Emotion Sorting</h2>
-            <p className="text-gray-600 mb-2">Categorize emotions to build emotional intelligence</p>
-            <div className="font-medium mb-4">Score: {score}</div>
+            <p className="text-gray-800 dark:text-gray-200 font-medium mb-2">Categorize emotions to build emotional intelligence</p>
+            <div className="font-medium mb-4 text-gray-800 dark:text-gray-200">Score: {score}</div>
             <Button 
               onClick={() => setActiveGame(null)}
-              className="bg-gray-200 text-gray-800 hover:bg-gray-300 mb-4"
+              className="bg-gray-200 text-gray-800 hover:bg-gray-300 dark:bg-gray-700 dark:text-white dark:hover:bg-gray-600 mb-4"
             >
               Back to Games
             </Button>
@@ -349,27 +349,27 @@ const MentalHealthGames = () => {
           
           {currentEmotion && (
             <div className="mb-10">
-              <Card className="text-center p-10 mb-8 border-[#F97316]/30 bg-[#FDE1D3]/50">
-                <h3 className="text-4xl font-bold mb-4">{currentEmotion}</h3>
-                <p className="text-xl">What type of emotion is this?</p>
+              <Card className="text-center p-10 mb-8 border-[#F97316]/50 bg-[#FDE1D3]/50">
+                <h3 className="text-4xl font-bold mb-4 text-gray-900 dark:text-white">{currentEmotion}</h3>
+                <p className="text-xl text-gray-800 dark:text-gray-200">What type of emotion is this?</p>
               </Card>
               
               <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                 <Button 
                   onClick={() => handleEmotionAnswer("positive")}
-                  className="p-6 bg-green-100 hover:bg-green-200 text-green-800 border border-green-300"
+                  className="p-6 bg-green-100 hover:bg-green-200 text-green-800 border border-green-300 font-medium"
                 >
                   Positive Emotion
                 </Button>
                 <Button 
                   onClick={() => handleEmotionAnswer("neutral")}
-                  className="p-6 bg-blue-100 hover:bg-blue-200 text-blue-800 border border-blue-300"
+                  className="p-6 bg-blue-100 hover:bg-blue-200 text-blue-800 border border-blue-300 font-medium"
                 >
                   Neutral Emotion
                 </Button>
                 <Button 
                   onClick={() => handleEmotionAnswer("negative")}
-                  className="p-6 bg-red-100 hover:bg-red-200 text-red-800 border border-red-300"
+                  className="p-6 bg-red-100 hover:bg-red-200 text-red-800 border border-red-300 font-medium"
                 >
                   Negative Emotion
                 </Button>
@@ -381,21 +381,21 @@ const MentalHealthGames = () => {
         <div className="max-w-4xl mx-auto px-4">
           <div className="mb-8 text-center">
             <h2 className="text-3xl font-bold mb-2">Focus Training</h2>
-            <p className="text-gray-600 mb-2">Click on the target and ignore distractions</p>
+            <p className="text-gray-800 dark:text-gray-200 font-medium mb-2">Click on the target and ignore distractions</p>
             <div className="flex justify-center items-center gap-4 mb-4">
-              <span className="font-medium">Level: {focusLevel}</span>
-              <span className="font-medium">Score: {focusScore}</span>
+              <span className="font-medium text-gray-800 dark:text-gray-200">Level: {focusLevel}</span>
+              <span className="font-medium text-gray-800 dark:text-gray-200">Score: {focusScore}</span>
             </div>
             <Button 
               onClick={() => setActiveGame(null)}
-              className="bg-gray-200 text-gray-800 hover:bg-gray-300 mb-4"
+              className="bg-gray-200 text-gray-800 hover:bg-gray-300 dark:bg-gray-700 dark:text-white dark:hover:bg-gray-600 mb-4"
             >
               Back to Games
             </Button>
           </div>
           
           <div 
-            className="relative w-full bg-gray-100 rounded-lg mb-10"
+            className="relative w-full bg-gray-100 dark:bg-gray-800 rounded-lg mb-10"
             style={{ height: "500px" }}
           >
             {/* Distractions */}

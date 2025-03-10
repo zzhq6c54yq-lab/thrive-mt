@@ -52,6 +52,11 @@ export default {
         card: {
           DEFAULT: 'hsl(var(--card))',
           foreground: 'hsl(var(--card-foreground))'
+        },
+        platinum: {
+          light: '#C8C8C9',
+          DEFAULT: '#9F9EA1',
+          dark: '#6F6E73'
         }
       },
       keyframes: {
@@ -72,11 +77,23 @@ export default {
           '100%': {
             opacity: '1'
           }
+        },
+        'platinum-glow': {
+          '0%': {
+            boxShadow: '0 0 5px rgba(159, 158, 161, 0.5), 0 0 10px rgba(159, 158, 161, 0.3)'
+          },
+          '50%': {
+            boxShadow: '0 0 10px rgba(159, 158, 161, 0.8), 0 0 20px rgba(159, 158, 161, 0.5), 0 0 30px rgba(159, 158, 161, 0.3)'
+          },
+          '100%': {
+            boxShadow: '0 0 5px rgba(159, 158, 161, 0.5), 0 0 10px rgba(159, 158, 161, 0.3)'
+          }
         }
       },
       animation: {
         'fade-up': 'fade-up 0.5s ease-out',
-        'fade-in': 'fade-in 0.5s ease-out'
+        'fade-in': 'fade-in 0.5s ease-out',
+        'platinum-pulse': 'platinum-glow 2s infinite ease-in-out'
       },
       borderRadius: {
         lg: 'var(--radius)',
