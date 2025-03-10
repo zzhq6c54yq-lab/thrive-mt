@@ -4,7 +4,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { Heart, Brain, Smile, Sparkles, ArrowRight } from "lucide-react";
+import { Heart, Brain, Smile, Sparkles, ArrowRight, Navigation } from "lucide-react";
 
 interface HenryButtonProps {
   className?: string;
@@ -17,27 +17,47 @@ const HenryButton: React.FC<HenryButtonProps> = ({
   isOpen,
   onOpenChange
 }) => {
+  const [showNavigationButton, setShowNavigationButton] = useState(false);
+  
+  const handleOpenChange = (open: boolean) => {
+    onOpenChange(open);
+    
+    // Show the navigation button once the dialog has been opened at least once
+    if (!open && !showNavigationButton) {
+      setShowNavigationButton(true);
+    }
+  };
+
   return (
     <>
-      <div className="relative group">
+      <div className="relative flex flex-col items-center cursor-pointer" onClick={() => handleOpenChange(true)}>
         <Avatar 
-          onClick={() => onOpenChange(true)}
-          className={`h-14 w-14 border-4 border-[#B87333]/50 cursor-pointer transition-all hover:scale-110 ${className}`}
+          className={`h-14 w-14 border-4 border-[#B87333]/50 transition-all hover:scale-110 ${className}`}
         >
           <AvatarImage src="/photo-1485827404703-89b55fcc595e.jpg" alt="Henry" />
           <AvatarFallback className="bg-[#B87333]/20 text-[#B87333] text-2xl">
             H
           </AvatarFallback>
         </Avatar>
-        <span className="absolute -bottom-6 left-1/2 transform -translate-x-1/2 whitespace-nowrap text-xs font-medium text-[#B87333] opacity-0 group-hover:opacity-100 transition-opacity duration-300 animate-pulse" 
+        <span className="mt-1 text-xs font-medium text-[#B87333] animate-pulse" 
           style={{ 
             textShadow: '0 0 5px rgba(184, 115, 51, 0.7), 0 0 10px rgba(184, 115, 51, 0.5)' 
           }}>
           Meet Henry
         </span>
       </div>
+      
+      {showNavigationButton && (
+        <Button 
+          className="mt-2 bg-[#B87333] hover:bg-[#B87333]/80 text-white text-xs px-2 py-1 h-auto"
+          onClick={() => handleOpenChange(true)}
+        >
+          <Navigation className="h-3 w-3 mr-1" />
+          Use Henry to navigate
+        </Button>
+      )}
 
-      <Dialog open={isOpen} onOpenChange={onOpenChange}>
+      <Dialog open={isOpen} onOpenChange={handleOpenChange}>
         <DialogContent className="sm:max-w-md bg-white/5 backdrop-blur-md border border-[#B87333]/20">
           <DialogHeader className="text-center">
             <div className="flex justify-center mb-2">
@@ -99,13 +119,25 @@ const HenryButton: React.FC<HenryButtonProps> = ({
             </div>
           </ScrollArea>
           
-          <DialogFooter className="sm:justify-center mt-4">
+          <DialogFooter className="sm:justify-center mt-4 flex flex-col gap-2">
             <Button 
-              className="group hero-button bg-[#B87333] hover:bg-[#B87333]/80"
-              onClick={() => onOpenChange(false)}
+              className="group hero-button bg-[#B87333] hover:bg-[#B87333]/80 w-full sm:w-auto"
+              onClick={() => handleOpenChange(false)}
             >
               Start Your Journey With Henry
               <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
+            </Button>
+            
+            <Button 
+              className="group bg-[#B87333]/80 hover:bg-[#B87333] w-full sm:w-auto"
+              onClick={() => {
+                handleOpenChange(false);
+                setShowNavigationButton(true);
+              }}
+              variant="secondary"
+            >
+              Use Henry to Navigate
+              <Navigation className="ml-2 h-4 w-4" />
             </Button>
           </DialogFooter>
         </DialogContent>
