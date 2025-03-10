@@ -1,7 +1,6 @@
 
 import React from "react";
 import { Button } from "@/components/ui/button";
-import { House } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { useToast } from "@/hooks/use-toast";
 
@@ -32,7 +31,11 @@ const HomeButton: React.FC<HomeButtonProps> = ({ className = "" }) => {
       aria-label="Return to main screen"
       title="Return to main screen"
     >
-      <House className="h-5 w-5 text-[#B87333]" />
+      <img 
+        src="/lovable-uploads/f2c6ac08-6331-4884-950d-7f94d68ff15f.png" 
+        alt="Thrive MT Logo" 
+        className="h-5 w-5"
+      />
     </Button>
   );
 };
