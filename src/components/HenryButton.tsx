@@ -19,15 +19,23 @@ const HenryButton: React.FC<HenryButtonProps> = ({
 }) => {
   return (
     <>
-      <Avatar 
-        onClick={() => onOpenChange(true)}
-        className={`h-14 w-14 border-4 border-[#B87333]/50 cursor-pointer transition-all hover:scale-110 ${className}`}
-      >
-        <AvatarImage src="/photo-1485827404703-89b55fcc595e.jpg" alt="Henry" />
-        <AvatarFallback className="bg-[#B87333]/20 text-[#B87333] text-2xl">
-          H
-        </AvatarFallback>
-      </Avatar>
+      <div className="relative group">
+        <Avatar 
+          onClick={() => onOpenChange(true)}
+          className={`h-14 w-14 border-4 border-[#B87333]/50 cursor-pointer transition-all hover:scale-110 ${className}`}
+        >
+          <AvatarImage src="/photo-1485827404703-89b55fcc595e.jpg" alt="Henry" />
+          <AvatarFallback className="bg-[#B87333]/20 text-[#B87333] text-2xl">
+            H
+          </AvatarFallback>
+        </Avatar>
+        <span className="absolute -bottom-6 left-1/2 transform -translate-x-1/2 whitespace-nowrap text-xs font-medium text-[#B87333] opacity-0 group-hover:opacity-100 transition-opacity duration-300 animate-pulse" 
+          style={{ 
+            textShadow: '0 0 5px rgba(184, 115, 51, 0.7), 0 0 10px rgba(184, 115, 51, 0.5)' 
+          }}>
+          Meet Henry
+        </span>
+      </div>
 
       <Dialog open={isOpen} onOpenChange={onOpenChange}>
         <DialogContent className="sm:max-w-md bg-white/5 backdrop-blur-md border border-[#B87333]/20">

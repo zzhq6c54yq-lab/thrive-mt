@@ -958,8 +958,37 @@ const Index = () => {
           </div>
 
           <div className="max-w-6xl mx-auto px-4 py-12">
-            <h2 className="text-3xl font-bold mb-8 text-center">Key Features</h2>
+            <h2 className="text-3xl font-bold mb-8 text-center">Monthly Feature</h2>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
+              {workshops.map((workshop, index) => (
+                <Card 
+                  key={index}
+                  className={`border ${workshop.color} hover:shadow-lg transition-all duration-300`}
+                >
+                  <CardHeader>
+                    <div className="flex justify-between items-center mb-2">
+                      <workshop.icon className={`h-10 w-10 ${workshop.color.split("border-")[1].split(" ")[0]}`} />
+                      <div className="flex items-center gap-1 text-gray-500">
+                        <Clock className="h-4 w-4" />
+                        <span className="text-sm">{workshop.time}</span>
+                      </div>
+                    </div>
+                    <CardTitle className="text-xl">{workshop.title}</CardTitle>
+                    <CardDescription>{workshop.description}</CardDescription>
+                  </CardHeader>
+                  <CardFooter>
+                    <Button className="w-full bg-white border hover:bg-gray-50">
+                      <Link to="/workshops" className="flex items-center gap-2 w-full justify-center">
+                        Join Workshop
+                        <Play className="h-4 w-4" />
+                      </Link>
+                    </Button>
+                  </CardFooter>
+                </Card>
+              ))}
+            </div>
             
+            <h2 className="text-3xl font-bold mb-8 text-center">Key Features</h2>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
               {features.map((feature, index) => (
                 <Card 
@@ -1027,38 +1056,6 @@ const Index = () => {
                   </Button>
                 </CardFooter>
               </Card>
-            </div>
-            
-            <div className="mb-12">
-              <h2 className="text-3xl font-bold mb-8 text-center">Upcoming Workshops</h2>
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                {workshops.map((workshop, index) => (
-                  <Card 
-                    key={index}
-                    className={`border ${workshop.color} hover:shadow-lg transition-all duration-300`}
-                  >
-                    <CardHeader>
-                      <div className="flex justify-between items-center mb-2">
-                        <workshop.icon className={`h-10 w-10 ${workshop.color.split("border-")[1].split(" ")[0]}`} />
-                        <div className="flex items-center gap-1 text-gray-500">
-                          <Clock className="h-4 w-4" />
-                          <span className="text-sm">{workshop.time}</span>
-                        </div>
-                      </div>
-                      <CardTitle className="text-xl">{workshop.title}</CardTitle>
-                      <CardDescription>{workshop.description}</CardDescription>
-                    </CardHeader>
-                    <CardFooter>
-                      <Button className="w-full bg-white border hover:bg-gray-50">
-                        <Link to="/workshops" className="flex items-center gap-2 w-full justify-center">
-                          Join Workshop
-                          <Play className="h-4 w-4" />
-                        </Link>
-                      </Button>
-                    </CardFooter>
-                  </Card>
-                ))}
-              </div>
             </div>
             
             <div className="flex justify-center">
