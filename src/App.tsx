@@ -13,6 +13,7 @@ import WorkshopDetail from "@/pages/WorkshopDetail";
 import Workshops from "@/pages/Workshops";
 import VirtualMeetings from "@/pages/VirtualMeetings";
 import ToolDetail from "@/pages/ToolDetail";
+import MentalHealthGames from "@/pages/MentalHealthGames";
 
 function App() {
   return (
@@ -30,6 +31,7 @@ function App() {
         <Route path="/workshops" element={<Workshops />} />
         <Route path="/workshop/:workshopId" element={<WorkshopDetail />} />
         <Route path="/virtual-meetings" element={<VirtualMeetings />} />
+        <Route path="/mental-health-games" element={<MentalHealthGames />} />
         <Route path="*" element={<NotFound />} />
       </Routes>
       <Toaster />
