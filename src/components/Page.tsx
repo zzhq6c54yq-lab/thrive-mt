@@ -18,7 +18,8 @@ const Page: React.FC<PageProps> = ({ title, children, showBackButton = true, onB
     if (onBackClick) {
       onBackClick();
     } else {
-      navigate("/");
+      // Navigate to home with main screenState to avoid showing intro screens
+      navigate("/", { state: { screenState: 'main' } });
     }
   };
   
