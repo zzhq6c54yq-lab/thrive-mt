@@ -18,7 +18,7 @@ const HomeButton: React.FC<HomeButtonProps> = ({ className = "" }) => {
       description: "Taking you back to the main page"
     });
     
-    // Navigate to main screen with the 'main' screenState to avoid intro screens
+    // Always navigate to main screen with the 'main' screenState to avoid intro screens
     navigate("/", { state: { screenState: 'main' } });
   };
 

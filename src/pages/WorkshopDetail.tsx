@@ -16,7 +16,8 @@ const WorkshopDetail = () => {
   }
   
   const handleBack = () => {
-    navigate("/");
+    // Take user to main menu instead of previous page
+    navigate("/", { state: { screenState: 'main' } });
   };
   
   return (
