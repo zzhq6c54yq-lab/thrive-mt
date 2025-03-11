@@ -4,7 +4,6 @@ import { ArrowLeft, CircleHelp } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useNavigate } from "react-router-dom";
 import HomeButton from "./HomeButton";
-import HenryIconButton from "./HenryIconButton";
 
 interface PageProps {
   title: string;
@@ -73,9 +72,6 @@ const Page: React.FC<PageProps> = ({ title, children, showBackButton = true, onB
           />
         </div>
       </div>
-      
-      {/* The floating Help (Henry) button */}
-      <HenryIconButton />
     </div>
   );
 };
