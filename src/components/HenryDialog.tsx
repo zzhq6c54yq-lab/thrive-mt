@@ -15,12 +15,13 @@ const HenryDialog: React.FC<HenryDialogProps> = ({ isOpen, onOpenChange }) => {
       <DialogContent className="sm:max-w-md sm:w-[400px] bg-black/85 backdrop-blur-md border border-[#B87333]/50 p-4">
         <div className="absolute right-2 top-2 z-10">
           <Button 
-            className="p-1 h-8 w-8 rounded-full bg-transparent hover:bg-white/10 text-white/70 hover:text-white"
+            className="h-8 w-8 rounded-full bg-[#403E43] hover:bg-[#8E9196] text-white transition-colors flex items-center justify-center"
             variant="ghost"
             size="icon"
             onClick={() => onOpenChange(false)}
+            aria-label="Close dialog"
           >
-            <X className="h-4 w-4" />
+            <X className="h-5 w-5" />
           </Button>
         </div>
         
