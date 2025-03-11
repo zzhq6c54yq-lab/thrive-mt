@@ -16,6 +16,7 @@ const HenryIconButton: React.FC<HenryIconButtonProps> = ({
   const location = useLocation();
   const state = location.state as { screenState?: string } | null;
   const [position, setPosition] = useState({ x: 0, y: 0 });
+  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
 
   // Don't show the button on initial screens
   if (!state?.screenState || state.screenState !== 'main') {
@@ -35,7 +36,7 @@ const HenryIconButton: React.FC<HenryIconButtonProps> = ({
       // Calculate position based on viewport
       setPosition({
         x: window.innerWidth - 100,
-        y: window.innerHeight / 2
+        y: window.innerHeight - 100
       });
     };
     
@@ -56,13 +57,13 @@ const HenryIconButton: React.FC<HenryIconButtonProps> = ({
     <Button
       variant="bronze"
       size="h-icon"
-      className={`rounded-full fixed z-50 flex items-center justify-center overflow-hidden transition-all duration-300 p-0 ${className}`}
+      className={`rounded-full fixed z-50 flex items-center justify-center overflow-hidden transition-all duration-300 p-0 shadow-lg hover:shadow-[0_0_15px_rgba(184,115,51,0.6)] ${className}`}
       onClick={handleClick}
       aria-label="Ask Henry for Help"
       title="Ask Henry for Help"
       style={{ 
-        top: `${position.y}px`, 
-        right: '20px'
+        bottom: '30px', 
+        right: '30px'
       }}
     >
       <div className="h-full w-full flex items-center justify-center">

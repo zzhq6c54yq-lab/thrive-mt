@@ -79,28 +79,31 @@ const HenryButton: React.FC<HenryButtonProps> = ({
 
   return (
     <Dialog open={isOpen} onOpenChange={onOpenChange}>
-      <DialogContent className="sm:max-w-md bg-black/85 backdrop-blur-md border border-[#B87333]/50">
-        <DialogHeader className="text-center relative">
+      <DialogContent className="sm:max-w-md sm:w-[400px] bg-black/85 backdrop-blur-md border border-[#B87333]/50 p-4" size="small">
+        <div className="absolute right-2 top-2 z-10">
           <Button 
-            className="absolute right-0 top-0 p-1 h-8 w-8 rounded-full bg-transparent hover:bg-white/10 text-white/70 hover:text-white"
+            className="p-1 h-8 w-8 rounded-full bg-transparent hover:bg-white/10 text-white/70 hover:text-white"
             variant="ghost"
             size="icon"
             onClick={() => onOpenChange(false)}
           >
             <X className="h-4 w-4" />
           </Button>
+        </div>
+        
+        <DialogHeader className="text-center relative mb-4">
           <div className="flex justify-center mb-2">
-            <div className="h-24 w-24 rounded-full flex items-center justify-center border-4 border-[#B87333]/50 bg-gradient-to-br from-[#B87333] to-[#E5C5A1] text-white">
-              <span className="text-3xl font-bold">H</span>
+            <div className="h-14 w-14 rounded-full flex items-center justify-center border-2 border-[#B87333]/50 bg-gradient-to-br from-[#B87333] to-[#E5C5A1] text-white">
+              <span className="text-2xl font-bold">H</span>
             </div>
           </div>
-          <DialogTitle className="text-2xl gradient-heading">Chat with Henry</DialogTitle>
-          <DialogDescription className="text-white/70">
+          <DialogTitle className="text-xl gradient-heading text-transparent bg-clip-text bg-gradient-to-r from-[#B87333] to-[#e5c5a1]">Chat with Henry</DialogTitle>
+          <DialogDescription className="text-white/70 text-sm">
             Your helpful navigator through Thrive MT
           </DialogDescription>
         </DialogHeader>
         
-        <ScrollArea className="h-[400px] overflow-auto pr-4" ref={scrollAreaRef}>
+        <ScrollArea className="h-[300px] overflow-auto pr-4 mb-3" ref={scrollAreaRef}>
           <div className="space-y-4">
             {messages.map((message, index) => (
               <div
@@ -129,12 +132,12 @@ const HenryButton: React.FC<HenryButtonProps> = ({
           </div>
         </ScrollArea>
         
-        <form onSubmit={handleSendMessage} className="flex gap-2 mt-4">
+        <form onSubmit={handleSendMessage} className="flex gap-2 mt-2">
           <Textarea
             value={input}
             onChange={(e) => setInput(e.target.value)}
             placeholder="Type your message..."
-            className="flex-1 min-h-[40px] bg-white/5 border-[#B87333]/20 focus-visible:ring-[#B87333] text-white"
+            className="flex-1 min-h-[40px] bg-white/5 border-[#B87333]/20 focus-visible:ring-[#B87333] text-white text-sm"
             onKeyDown={(e) => {
               if (e.key === "Enter" && !e.shiftKey) {
                 e.preventDefault();

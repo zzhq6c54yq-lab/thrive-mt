@@ -24,10 +24,6 @@ const Page: React.FC<PageProps> = ({ title, children, showBackButton = true, onB
       navigate("/", { state: { screenState: 'main' } });
     }
   };
-
-  const handleHenryClick = () => {
-    navigate("/", { state: { showHenry: true, screenState: 'main' } });
-  };
   
   return (
     <div className="min-h-screen bg-gradient-to-b from-[#1a1a1f] via-[#242432] to-[#272730] text-white py-8 px-4 relative">
@@ -78,8 +74,8 @@ const Page: React.FC<PageProps> = ({ title, children, showBackButton = true, onB
         </div>
       </div>
       
-      {/* The floating Henry help button */}
-      <HenryIconButton onClick={handleHenryClick} />
+      {/* The Henry button is now only rendered as a floating button */}
+      <HenryIconButton />
     </div>
   );
 };
