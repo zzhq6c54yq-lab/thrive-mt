@@ -1,11 +1,10 @@
-
 import React, { useState } from "react";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
-import { ScrollArea } from "@/components/ui/scroll-area";
-import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
-import { Send, X } from "lucide-react";
+import { X } from "lucide-react";
 import { toast } from "@/components/ui/use-toast";
+import MessageList from "./MessageList";
+import MessageInput from "./MessageInput";
 
 interface HelpDialogProps {
   isOpen: boolean;
@@ -15,7 +14,6 @@ interface HelpDialogProps {
 
 const HelpDialog: React.FC<HelpDialogProps> = ({ isOpen, onOpenChange, userName }) => {
   const [messages, setMessages] = useState<Array<{ text: string; isUser: boolean }>>([]);
-  const [input, setInput] = useState("");
 
   const getGreeting = () => {
     const hour = new Date().getHours();
@@ -37,11 +35,8 @@ const HelpDialog: React.FC<HelpDialogProps> = ({ isOpen, onOpenChange, userName 
     }
   };
 
-  const handleSendMessage = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!input.trim()) return;
-
-    setMessages(prev => [...prev, { text: input, isUser: true }]);
+  const handleSendMessage = (message: string) => {
+    setMessages(prev => [...prev, { text: message, isUser: true }]);
     
     setTimeout(() => {
       const responses = [
@@ -63,8 +58,6 @@ const HelpDialog: React.FC<HelpDialogProps> = ({ isOpen, onOpenChange, userName 
         duration: 3000,
       });
     }, 1000);
-    
-    setInput("");
   };
 
   return (
@@ -93,56 +86,8 @@ const HelpDialog: React.FC<HelpDialogProps> = ({ isOpen, onOpenChange, userName 
           </DialogDescription>
         </DialogHeader>
         
-        <ScrollArea className="h-[300px] overflow-auto pr-4 mb-3">
-          <div className="space-y-4">
-            {messages.map((message, index) => (
-              <div
-                key={index}
-                className={`flex ${message.isUser ? "justify-end" : "justify-start"}`}
-              >
-                <div
-                  className={`max-w-[80%] rounded-lg p-3 ${
-                    message.isUser
-                      ? "bg-[#B87333] text-white"
-                      : "bg-gray-700 text-white"
-                  }`}
-                >
-                  {!message.isUser && (
-                    <div className="flex items-center mb-1">
-                      <div className="h-6 w-6 rounded-full flex items-center justify-center bg-gradient-to-br from-[#B87333] to-[#E5C5A1] text-white mr-2">
-                        <span className="text-xs font-bold">H</span>
-                      </div>
-                      <span className="text-xs text-white/70">Henry</span>
-                    </div>
-                  )}
-                  <p className="text-sm">{message.text}</p>
-                </div>
-              </div>
-            ))}
-          </div>
-        </ScrollArea>
-        
-        <form onSubmit={handleSendMessage} className="flex gap-2 mt-2">
-          <Textarea
-            value={input}
-            onChange={(e) => setInput(e.target.value)}
-            placeholder="Type your message..."
-            className="flex-1 min-h-[40px] bg-white/5 border-[#B87333]/20 focus-visible:ring-[#B87333] text-white text-sm"
-            onKeyDown={(e) => {
-              if (e.key === "Enter" && !e.shiftKey) {
-                e.preventDefault();
-                handleSendMessage(e);
-              }
-            }}
-          />
-          <Button 
-            type="submit" 
-            size="icon"
-            className="h-10 w-10 bg-[#B87333] hover:bg-[#B87333]/80"
-          >
-            <Send className="h-4 w-4" />
-          </Button>
-        </form>
+        <MessageList messages={messages} />
+        <MessageInput onSendMessage={handleSendMessage} />
       </DialogContent>
     </Dialog>
   );
