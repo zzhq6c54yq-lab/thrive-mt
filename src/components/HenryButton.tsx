@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect, useRef } from "react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter } from "@/components/ui/dialog";
@@ -121,10 +120,9 @@ const HenryButton: React.FC<HenryButtonProps> = ({
               isGlowing ? 'animate-pulse shadow-[0_0_15px_rgba(184,115,51,0.5)]' : ''
             } ${className}`}
           >
-            <Avatar className="h-8 w-8 border-2 border-[#B87333]/30 group-hover:border-[#B87333]/70 transition-all">
-              <AvatarImage src="/photo-1485827404703-89b55fcc595e.jpg" alt="Henry" />
-              <AvatarFallback className="bg-[#B87333]/10 text-[#B87333] text-sm">H</AvatarFallback>
-            </Avatar>
+            <div className="h-8 w-8 rounded-full flex items-center justify-center border-2 border-[#B87333]/50 bg-[#B87333] text-white group-hover:border-[#B87333] transition-all">
+              <span className="text-md font-bold">H</span>
+            </div>
             <span className="pr-2 text-xs font-medium text-white opacity-70 group-hover:opacity-100">
               Need help?
             </span>
@@ -136,12 +134,9 @@ const HenryButton: React.FC<HenryButtonProps> = ({
         <DialogContent className="sm:max-w-md bg-black/85 backdrop-blur-md border border-[#B87333]/50">
           <DialogHeader className="text-center">
             <div className="flex justify-center mb-2">
-              <Avatar className="h-24 w-24 border-4 border-[#B87333]/50">
-                <AvatarImage src="/photo-1485827404703-89b55fcc595e.jpg" alt="Henry" />
-                <AvatarFallback className="bg-[#B87333]/20 text-[#B87333] text-2xl">
-                  H
-                </AvatarFallback>
-              </Avatar>
+              <div className="h-24 w-24 rounded-full flex items-center justify-center border-4 border-[#B87333]/50 bg-[#B87333] text-white">
+                <span className="text-3xl font-bold">H</span>
+              </div>
             </div>
             <DialogTitle className="text-2xl gradient-heading">Meet Henry</DialogTitle>
             <DialogDescription className="text-base text-white">

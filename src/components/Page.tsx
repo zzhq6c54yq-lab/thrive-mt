@@ -4,6 +4,7 @@ import { ArrowLeft } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useNavigate } from "react-router-dom";
 import HomeButton from "./HomeButton";
+import HenryIconButton from "./HenryIconButton";
 
 interface PageProps {
   title: string;
@@ -22,6 +23,10 @@ const Page: React.FC<PageProps> = ({ title, children, showBackButton = true, onB
       // Always navigate to home with main screenState to avoid showing intro screens
       navigate("/", { state: { screenState: 'main' } });
     }
+  };
+
+  const handleHenryClick = () => {
+    navigate("/", { state: { showHenry: true, screenState: 'main' } });
   };
   
   return (
@@ -53,6 +58,7 @@ const Page: React.FC<PageProps> = ({ title, children, showBackButton = true, onB
           
           <div className="flex items-center gap-2">
             <HomeButton className="bg-white/5 hover:bg-white/15" />
+            <HenryIconButton onClick={handleHenryClick} />
           </div>
         </div>
         

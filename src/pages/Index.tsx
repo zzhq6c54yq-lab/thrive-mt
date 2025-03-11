@@ -285,6 +285,12 @@ const Index = () => {
     }
   }, [mousePosition, showHenry]);
 
+  useEffect(() => {
+    if (location.state && location.state.showHenry) {
+      setShowHenry(true);
+    }
+  }, [location.state]);
+
   const toggleHenry = () => {
     setShowHenry(prev => !prev);
   };
@@ -412,13 +418,11 @@ const Index = () => {
     <div className="relative">
       <CoPayCreditPopup open={showCoPayCredit} onOpenChange={setShowCoPayCredit} />
       
-      {showHenry && (
-        <HenryButton 
-          isOpen={showHenry} 
-          onOpenChange={setShowHenry}
-          userName={userInfo.name}
-        />
-      )}
+      <HenryButton 
+        isOpen={showHenry} 
+        onOpenChange={setShowHenry}
+        userName={userInfo.name}
+      />
 
       {screenState === 'intro' && (
         <div className="min-h-screen flex flex-col items-center justify-center bg-[#1a1a1f] overflow-hidden relative">
@@ -1002,34 +1006,38 @@ const Index = () => {
 
       {screenState === 'main' && (
         <div className="min-h-screen animate-fade-in">
-          <div className="bg-black py-8 border-b border-[#B87333]/30">
+          <div className="bg-black py-12 border-b border-[#B87333]/30">
             <div className="max-w-6xl mx-auto px-4">
               <div className="flex flex-col md:flex-row items-center justify-between">
                 <div className="flex items-center mb-4 md:mb-0">
                   <img 
                     src="/lovable-uploads/f2c6ac08-6331-4884-950d-7f94d68ff15f.png" 
                     alt="Thrive MT Logo" 
-                    className="h-16 mr-3 filter drop-shadow-[0_0_3px_rgba(184,115,51,0.4)] intro-logo-icon"
+                    className="h-24 w-24 mr-5 filter drop-shadow-[0_0_8px_rgba(184,115,51,0.6)] intro-logo-icon"
                   />
                   <div>
-                    <h1 className="text-3xl md:text-4xl font-bold">
+                    <h1 className="text-4xl md:text-5xl font-bold mb-2">
+                      <span className="text-white">Welcome to </span>
                       <span className="gradient-heading">Thrive MT</span>
                     </h1>
                     <p className="gradient-heading text-sm md:text-base font-light">
-                      Your personalized mental wellness journey begins here
+                      {userInfo.name ? `${userInfo.name}'s personalized mental wellness journey begins here` : 
+                      "Your personalized mental wellness journey begins here"}
                     </p>
                   </div>
                 </div>
-                <Button 
-                  onClick={() => setShowHenry(true)}
-                  variant="henry"
-                  className="group flex items-center gap-2"
-                >
-                  <div className="h-6 w-6 rounded-full overflow-hidden border border-[#B87333]/50 group-hover:border-[#B87333] transition-all">
-                    <img src="/photo-1485827404703-89b55fcc595e.jpg" alt="Henry" className="h-full w-full object-cover" />
-                  </div>
-                  <span className="text-white group-hover:text-[#B87333]/90 transition-colors">Meet Henry</span>
-                </Button>
+                <div className="flex gap-3">
+                  <Button 
+                    onClick={() => setShowHenry(true)}
+                    variant="henry"
+                    className="group flex items-center gap-2"
+                  >
+                    <div className="h-8 w-8 rounded-full flex items-center justify-center bg-[#B87333] text-white border-2 border-[#B87333]/50 group-hover:border-[#B87333] transition-all">
+                      <span className="text-md font-bold">H</span>
+                    </div>
+                    <span className="text-white group-hover:text-[#B87333]/90 transition-colors">Meet Henry</span>
+                  </Button>
+                </div>
               </div>
             </div>
           </div>
@@ -1198,3 +1206,4 @@ const Index = () => {
 };
 
 export default Index;
+
