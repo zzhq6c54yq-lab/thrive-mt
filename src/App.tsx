@@ -18,6 +18,7 @@ import PersonalizedContent from "@/pages/PersonalizedContent";
 import CommunitySupport from "@/pages/CommunitySupport";
 import ResourceLibrary from "@/pages/ResourceLibrary";
 import ProgressReports from "@/pages/ProgressReports";
+import HelpButton from "@/components/HelpButton";
 
 function App() {
   return (
@@ -42,6 +43,7 @@ function App() {
         <Route path="/progress-reports" element={<ProgressReports />} />
         <Route path="*" element={<NotFound />} />
       </Routes>
+      <HelpButton />
       <Toaster />
     </Router>
   );

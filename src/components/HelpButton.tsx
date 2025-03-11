@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter } from "@/components/ui/dialog";
@@ -5,6 +6,7 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import { Textarea } from "@/components/ui/textarea";
 import { Send, X } from "lucide-react";
 import { toast } from "@/components/ui/use-toast";
+import { useLocation } from "react-router-dom";
 
 interface HelpButtonProps {
   userName?: string;
@@ -16,6 +18,20 @@ const HelpButton: React.FC<HelpButtonProps> = ({ userName }) => {
   const [input, setInput] = useState("");
   const [position, setPosition] = useState({ x: 0, y: 0 });
   const [isTransitioning, setIsTransitioning] = useState(false);
+  const location = useLocation();
+  
+  // Determine if the button should be visible based on the current route
+  const shouldShowButton = () => {
+    // Exclude initial screens and vision boards
+    const excludedPaths = [
+      '/initial-screen',
+      '/vision-board',
+      '/onboarding',
+    ];
+    
+    // Check if current path starts with any of the excluded paths
+    return !excludedPaths.some(path => location.pathname.startsWith(path));
+  };
   
   useEffect(() => {
     const updatePosition = (e: MouseEvent) => {
@@ -85,6 +101,9 @@ const HelpButton: React.FC<HelpButtonProps> = ({ userName }) => {
     
     setInput("");
   };
+
+  // If we shouldn't show the button, return null
+  if (!shouldShowButton()) return null;
 
   return (
     <>
