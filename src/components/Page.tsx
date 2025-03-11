@@ -1,4 +1,3 @@
-
 import React, { useState } from "react";
 import { ArrowLeft, CircleHelp, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -22,7 +21,6 @@ const Page: React.FC<PageProps> = ({ title, children, showBackButton = true, onB
     if (onBackClick) {
       onBackClick();
     } else {
-      // Always navigate to home with main screenState to avoid showing intro screens
       navigate("/", { state: { screenState: 'main' } });
     }
   };
@@ -69,17 +67,8 @@ const Page: React.FC<PageProps> = ({ title, children, showBackButton = true, onB
                 </Button>
               </PopoverTrigger>
               <PopoverContent className="w-80 p-0 bg-black/85 backdrop-blur-md border border-[#B87333]/50">
-                <div className="relative p-4">
-                  <Button 
-                    className="absolute right-2 top-2 p-1 h-6 w-6 rounded-full bg-transparent hover:bg-white/10 text-white/70 hover:text-white"
-                    variant="ghost"
-                    size="icon"
-                    onClick={() => setIsPopoverOpen(false)}
-                  >
-                    <X className="h-3 w-3" />
-                  </Button>
-                  
-                  <div className="flex flex-col items-center text-center gap-3">
+                <div className="p-6">
+                  <div className="flex flex-col items-center text-center gap-4">
                     <div className="h-16 w-16 rounded-full flex items-center justify-center border-2 border-[#B87333]/50 bg-gradient-to-br from-[#B87333] to-[#E5C5A1] text-white">
                       <span className="text-2xl font-bold">H</span>
                     </div>
@@ -97,13 +86,15 @@ const Page: React.FC<PageProps> = ({ title, children, showBackButton = true, onB
                       </p>
                     </div>
                     
-                    <div className="text-sm text-white/80 mt-1">
-                      <p className="mb-2">
-                        I'm your personal digital assistant designed to help you navigate Thrive MT. 
-                        I can answer questions, provide guidance, and connect you with the resources you need.
-                      </p>
+                    <div className="text-sm text-white/80">
                       <p>
-                        Use the floating help button <span className="inline-block h-4 w-4 bg-[#B87333] rounded-full text-[10px] font-bold text-center leading-4">H</span> to chat with me anytime!
+                        I'm your dedicated virtual assistant for the Thrive MT platform. 
+                        My purpose is to help you navigate through your mental wellness journey
+                        with personalized guidance and support.
+                      </p>
+                      <p className="mt-2">
+                        You can find me throughout the app ready to answer questions,
+                        provide resources, and assist you with any features you need help with.
                       </p>
                     </div>
                   </div>
