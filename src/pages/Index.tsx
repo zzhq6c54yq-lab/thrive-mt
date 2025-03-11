@@ -1,4 +1,3 @@
-
 import { Button } from "@/components/ui/button";
 import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -250,13 +249,9 @@ const Index = () => {
   useEffect(() => {
     if (screenState === 'main') {
       setShowCoPayCredit(true);
-      setShowHenry(true);
-    } else {
-      setShowHenry(false);
     }
   }, [screenState]);
 
-  // Add mouse move listener for Henry to follow cursor with smooth animation
   useEffect(() => {
     const handleMouseMove = (e: MouseEvent) => {
       setMousePosition({
@@ -272,26 +267,26 @@ const Index = () => {
     };
   }, []);
 
-  // Update Henry's position with smooth animation
   useEffect(() => {
     if (showHenry && henryRef.current) {
       const henryWidth = henryRef.current.offsetWidth;
       const henryHeight = henryRef.current.offsetHeight;
       
-      // Calculate target position with some offset from cursor
       const targetX = Math.max(20, Math.min(mousePosition.x - henryWidth/2, window.innerWidth - henryWidth - 20));
       const targetY = Math.max(20, Math.min(mousePosition.y + 100, window.innerHeight - henryHeight - 20));
       
-      // Smooth animation - lerp (linear interpolation)
       const lerp = (start: number, end: number, factor: number) => start + (end - start) * factor;
       
-      // Update position with smooth following (adjust the 0.05 for faster/slower following)
       setHenryPosition(prev => ({
         x: lerp(prev.x, targetX, 0.05),
         y: lerp(prev.y, targetY, 0.05)
       }));
     }
   }, [mousePosition, showHenry]);
+
+  const toggleHenry = () => {
+    setShowHenry(prev => !prev);
+  };
 
   const toggleQuality = (id: string) => {
     setSelectedQualities(prev => 
@@ -416,7 +411,6 @@ const Index = () => {
     <div className="relative">
       <CoPayCreditPopup open={showCoPayCredit} onOpenChange={setShowCoPayCredit} />
       
-      {/* Henry Button that follows mouse */}
       {showHenry && (
         <div 
           ref={henryRef}
@@ -435,7 +429,6 @@ const Index = () => {
         </div>
       )}
 
-      {/* Intro Screen */}
       {screenState === 'intro' && (
         <div className="min-h-screen flex flex-col items-center justify-center bg-[#1a1a1f] overflow-hidden relative">
           <div className="floating-bg"></div>
@@ -475,7 +468,6 @@ const Index = () => {
         </div>
       )}
 
-      {/* Mood Selection Screen */}
       {screenState === 'mood' && (
         <div className="min-h-screen flex flex-col items-center justify-center bg-[#1a1a1f] animate-fade-in relative overflow-hidden">
           <div className="floating-bg"></div>
@@ -566,7 +558,6 @@ const Index = () => {
         </div>
       )}
 
-      {/* Happy Mood Response */}
       {screenState === 'moodResponse' && selectedMood === 'happy' && (
         <div className="min-h-screen flex flex-col items-center justify-center bg-gradient-to-b from-[#F2FCE2] to-[#F2FCE2]/70 animate-fade-in relative overflow-hidden">
           <div className="absolute inset-0 bg-[url('data:image/svg+xml;utf8,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%2220%22 height=%2220%22 viewBox=%220 0 20 20%22><circle cx=%222%22 cy=%222%22 r=%221%22 fill=%22%23B87333%22 fill-opacity=%220.05%22/></svg>')] opacity-30"></div>
@@ -602,7 +593,6 @@ const Index = () => {
         </div>
       )}
 
-      {/* Ok Mood Response */}
       {screenState === 'moodResponse' && selectedMood === 'ok' && (
         <div className="min-h-screen flex flex-col items-center justify-center bg-gradient-to-b from-[#F1F0FB] to-[#F1F0FB]/70 animate-fade-in relative overflow-hidden">
           <div className="absolute inset-0 bg-[url('data:image/svg+xml;utf8,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%2220%22 height=%2220%22 viewBox=%220 0 20 20%22><circle cx=%222%22 cy=%222%22 r=%221%22 fill=%22%23B87333%22 fill-opacity=%220.05%22/></svg>')] opacity-30"></div>
@@ -638,7 +628,6 @@ const Index = () => {
         </div>
       )}
 
-      {/* Neutral Mood Response */}
       {screenState === 'moodResponse' && selectedMood === 'neutral' && (
         <div className="min-h-screen flex flex-col items-center justify-center bg-[#F1F0FB] animate-fade-in">
           <div className="text-center max-w-2xl mx-auto px-4">
@@ -669,7 +658,6 @@ const Index = () => {
         </div>
       )}
 
-      {/* Down Mood Response */}
       {screenState === 'moodResponse' && selectedMood === 'down' && (
         <div className="min-h-screen flex flex-col items-center justify-center bg-[#F5F5F7] animate-fade-in">
           <div className="text-center max-w-2xl mx-auto px-4">
@@ -704,7 +692,6 @@ const Index = () => {
         </div>
       )}
 
-      {/* Sad Mood Response */}
       {screenState === 'moodResponse' && selectedMood === 'sad' && (
         <div className="min-h-screen flex flex-col items-center justify-center bg-[#221F26] text-white animate-fade-in relative overflow-hidden">
           <div className="absolute inset-0 bg-[url('data:image/svg+xml;utf8,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%2220%22 height=%2220%22 viewBox=%220 0 20 20%22><circle cx=%222%22 cy=%222%22 r=%221%22 fill=%22%23ea384c%22 fill-opacity=%220.05%22/></svg>')] opacity-20"></div>
@@ -751,7 +738,6 @@ const Index = () => {
         </div>
       )}
 
-      {/* Overwhelmed Mood Response */}
       {screenState === 'moodResponse' && selectedMood === 'overwhelmed' && (
         <div className="min-h-screen flex flex-col items-center justify-center bg-[#1e1c24] text-white animate-fade-in">
           <div className="text-center max-w-2xl mx-auto px-4">
@@ -789,7 +775,6 @@ const Index = () => {
         </div>
       )}
 
-      {/* Registration Screen */}
       {screenState === 'register' && (
         <div className="min-h-screen flex flex-col items-center justify-center bg-[#F8F9FA] animate-fade-in">
           <div className="max-w-md w-full mx-auto px-4">
@@ -872,7 +857,6 @@ const Index = () => {
         </div>
       )}
 
-      {/* Subscription Screen */}
       {screenState === 'subscription' && (
         <div className="min-h-screen flex flex-col items-center justify-center bg-gradient-to-b from-[#1a1a1f] to-[#2a2a35] text-white animate-fade-in py-10">
           <div className="max-w-5xl w-full mx-auto px-4">
@@ -950,7 +934,6 @@ const Index = () => {
         </div>
       )}
 
-      {/* Vision Board Screen */}
       {screenState === 'visionBoard' && (
         <div className="min-h-screen flex flex-col items-center justify-center bg-[#F5F5F7] animate-fade-in py-10">
           <div className="max-w-4xl w-full mx-auto px-4">
@@ -1026,168 +1009,197 @@ const Index = () => {
         </div>
       )}
 
-      {/* Main Dashboard Screen */}
       {screenState === 'main' && (
-        <div className="min-h-screen bg-[#F5F7FA] pt-6 pb-20 animate-fade-in">
-          <div className="max-w-6xl mx-auto px-4">
-            <div className="text-center mb-10">
-              <h1 className="text-3xl md:text-4xl font-bold mb-3">Welcome to Thrive MT</h1>
-              <p className="text-xl text-gray-600">Your personalized mental wellness journey begins here</p>
-            </div>
-
-            <div className="mb-12">
-              <h2 className="text-2xl font-semibold mb-6 flex items-center">
-                <Calendar className="mr-2 h-6 w-6 text-[#B87333]" />
-                Monthly Featured Workshops
-              </h2>
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                {workshops.map((workshop) => (
-                  <Card key={workshop.id} className={`overflow-hidden hover:shadow-md transition-shadow duration-300 border-2 ${workshop.color}`}>
-                    <CardHeader className="p-4">
-                      <div className="flex justify-between items-start">
-                        <div>
-                          <CardTitle className="text-lg font-semibold">{workshop.title}</CardTitle>
-                          <CardDescription className="mt-1">{workshop.description}</CardDescription>
-                        </div>
-                        <div className={`p-2 rounded-full ${workshop.color}`}>
-                          <workshop.icon className="h-6 w-6" />
-                        </div>
-                      </div>
-                    </CardHeader>
-                    <CardContent className="p-4 pt-0">
-                      <div className="flex items-center text-sm text-gray-500 mb-4">
-                        <Clock className="mr-2 h-4 w-4" />
-                        {workshop.time}
-                      </div>
-                    </CardContent>
-                    <CardFooter className="p-4 pt-0 justify-end">
-                      <Button
-                        className={`text-white`}
-                        style={{ backgroundColor: workshop.accentColor }}
-                        onClick={() => navigate(`/workshop/${workshop.id}`)}
-                      >
-                        Join Now
-                      </Button>
-                    </CardFooter>
-                  </Card>
-                ))}
+        <div className="min-h-screen animate-fade-in">
+          <div className="bg-black py-8 border-b border-[#B87333]/30">
+            <div className="max-w-6xl mx-auto px-4">
+              <div className="flex flex-col md:flex-row items-center justify-between">
+                <div className="flex items-center mb-4 md:mb-0">
+                  <img 
+                    src="/lovable-uploads/f2c6ac08-6331-4884-950d-7f94d68ff15f.png" 
+                    alt="Thrive MT Logo" 
+                    className="h-12 mr-3 filter drop-shadow-[0_0_3px_rgba(184,115,51,0.4)]"
+                  />
+                  <div>
+                    <h1 className="text-3xl md:text-4xl font-bold">
+                      <span className="text-white">Thrive</span>
+                      <span className="gradient-heading ml-2">MT</span>
+                    </h1>
+                    <p className="text-[#B87333] text-sm md:text-base">
+                      Your personalized mental wellness journey begins here
+                    </p>
+                  </div>
+                </div>
+                <Button 
+                  onClick={toggleHenry}
+                  variant="gold"
+                  className="flex items-center gap-2"
+                >
+                  <div className="h-6 w-6 rounded-full overflow-hidden">
+                    <img src="/photo-1485827404703-89b55fcc595e.jpg" alt="Henry" className="h-full w-full object-cover" />
+                  </div>
+                  Meet Henry
+                </Button>
               </div>
             </div>
+          </div>
 
-            <h2 className="text-2xl font-semibold mb-6 flex items-center">
-              <Gem className="mr-2 h-6 w-6 text-[#B87333]" />
-              Mental Wellness Features
-            </h2>
-            
-            <Tabs defaultValue="all" className="mb-12">
-              <TabsList className="mb-6">
-                <TabsTrigger value="all">All Features</TabsTrigger>
-                <TabsTrigger value="recommended">Recommended For You</TabsTrigger>
-                <TabsTrigger value="popular">Most Popular</TabsTrigger>
-              </TabsList>
-              
-              <TabsContent value="all" className="space-y-6">
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                  {features.map((feature, index) => (
-                    <Card 
-                      key={index}
-                      className="overflow-hidden hover:shadow-md transition-all duration-300 hover:border-[#B87333]/50 cursor-pointer h-full"
-                      onClick={() => navigateToFeature(feature.path)}
-                    >
-                      <CardHeader>
-                        <div className="flex items-start justify-between">
+          <div className="bg-white py-10">
+            <div className="max-w-6xl mx-auto px-4">
+              <div className="mb-12">
+                <h2 className="text-2xl font-semibold mb-6 flex items-center text-gray-800">
+                  <Calendar className="mr-2 h-6 w-6 text-[#B87333]" />
+                  Monthly Featured Workshops
+                </h2>
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                  {workshops.map((workshop) => (
+                    <Card key={workshop.id} className={`overflow-hidden hover:shadow-md transition-shadow duration-300 border-2 ${workshop.color}`}>
+                      <CardHeader className="p-4">
+                        <div className="flex justify-between items-start">
                           <div>
-                            <CardTitle>{feature.title}</CardTitle>
-                            <CardDescription className="mt-2">{feature.description}</CardDescription>
+                            <CardTitle className="text-lg font-semibold">{workshop.title}</CardTitle>
+                            <CardDescription className="mt-1">{workshop.description}</CardDescription>
                           </div>
-                          <div className="bg-[#B87333]/10 p-2 rounded-full">
-                            <feature.icon className="h-6 w-6 text-[#B87333]" />
+                          <div className={`p-2 rounded-full ${workshop.color}`}>
+                            <workshop.icon className="h-6 w-6" />
                           </div>
                         </div>
                       </CardHeader>
-                      <CardFooter className="pt-0 flex justify-end">
-                        <Button 
-                          variant="ghost" 
-                          className="text-[#B87333] hover:text-[#B87333] hover:bg-[#B87333]/10"
-                          onClick={() => navigateToFeature(feature.path)}
+                      <CardContent className="p-4 pt-0">
+                        <div className="flex items-center text-sm text-gray-500 mb-4">
+                          <Clock className="mr-2 h-4 w-4" />
+                          {workshop.time}
+                        </div>
+                      </CardContent>
+                      <CardFooter className="p-4 pt-0 justify-end">
+                        <Button
+                          className={`text-white`}
+                          style={{ backgroundColor: workshop.accentColor }}
+                          onClick={() => navigate(`/workshop/${workshop.id}`)}
                         >
-                          Explore
-                          <ArrowRight className="ml-2 h-4 w-4" />
+                          Join Now
                         </Button>
                       </CardFooter>
                     </Card>
                   ))}
                 </div>
-              </TabsContent>
+              </div>
+
+              <h2 className="text-2xl font-semibold mb-6 flex items-center text-gray-800">
+                <Gem className="mr-2 h-6 w-6 text-[#B87333]" />
+                Mental Wellness Features
+              </h2>
               
-              <TabsContent value="recommended">
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                  {features.slice(0, 6).map((feature, index) => (
-                    <Card 
-                      key={index}
-                      className="overflow-hidden hover:shadow-md transition-all duration-300 hover:border-[#B87333]/50 cursor-pointer"
-                      onClick={() => navigateToFeature(feature.path)}
-                    >
-                      <CardHeader>
-                        <div className="flex items-start justify-between">
-                          <div>
-                            <CardTitle>{feature.title}</CardTitle>
-                            <CardDescription className="mt-2">{feature.description}</CardDescription>
+              <Tabs defaultValue="all" className="mb-12">
+                <TabsList className="mb-6">
+                  <TabsTrigger value="all">All Features</TabsTrigger>
+                  <TabsTrigger value="recommended">Recommended For You</TabsTrigger>
+                  <TabsTrigger value="popular">Most Popular</TabsTrigger>
+                </TabsList>
+                
+                <TabsContent value="all" className="space-y-6">
+                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    {features.map((feature, index) => (
+                      <Card 
+                        key={index}
+                        className="overflow-hidden hover:shadow-md transition-all duration-300 hover:border-[#B87333]/50 cursor-pointer h-full"
+                        onClick={() => navigateToFeature(feature.path)}
+                      >
+                        <CardHeader>
+                          <div className="flex items-start justify-between">
+                            <div>
+                              <CardTitle>{feature.title}</CardTitle>
+                              <CardDescription className="mt-2">{feature.description}</CardDescription>
+                            </div>
+                            <div className="bg-[#B87333]/10 p-2 rounded-full">
+                              <feature.icon className="h-6 w-6 text-[#B87333]" />
+                            </div>
                           </div>
-                          <div className="bg-[#B87333]/10 p-2 rounded-full">
-                            <feature.icon className="h-6 w-6 text-[#B87333]" />
+                        </CardHeader>
+                        <CardFooter className="pt-0 flex justify-end">
+                          <Button 
+                            variant="ghost" 
+                            className="text-[#B87333] hover:text-[#B87333] hover:bg-[#B87333]/10"
+                            onClick={() => navigateToFeature(feature.path)}
+                          >
+                            Explore
+                            <ArrowRight className="ml-2 h-4 w-4" />
+                          </Button>
+                        </CardFooter>
+                      </Card>
+                    ))}
+                  </div>
+                </TabsContent>
+                
+                <TabsContent value="recommended">
+                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    {features.slice(0, 6).map((feature, index) => (
+                      <Card 
+                        key={index}
+                        className="overflow-hidden hover:shadow-md transition-all duration-300 hover:border-[#B87333]/50 cursor-pointer"
+                        onClick={() => navigateToFeature(feature.path)}
+                      >
+                        <CardHeader>
+                          <div className="flex items-start justify-between">
+                            <div>
+                              <CardTitle>{feature.title}</CardTitle>
+                              <CardDescription className="mt-2">{feature.description}</CardDescription>
+                            </div>
+                            <div className="bg-[#B87333]/10 p-2 rounded-full">
+                              <feature.icon className="h-6 w-6 text-[#B87333]" />
+                            </div>
                           </div>
-                        </div>
-                      </CardHeader>
-                      <CardFooter className="pt-0 flex justify-end">
-                        <Button 
-                          variant="ghost" 
-                          className="text-[#B87333] hover:text-[#B87333] hover:bg-[#B87333]/10"
-                          onClick={() => navigateToFeature(feature.path)}
-                        >
-                          Explore
-                          <ArrowRight className="ml-2 h-4 w-4" />
-                        </Button>
-                      </CardFooter>
-                    </Card>
-                  ))}
-                </div>
-              </TabsContent>
-              
-              <TabsContent value="popular">
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                  {features.slice(3, 9).map((feature, index) => (
-                    <Card 
-                      key={index}
-                      className="overflow-hidden hover:shadow-md transition-all duration-300 hover:border-[#B87333]/50 cursor-pointer"
-                      onClick={() => navigateToFeature(feature.path)}
-                    >
-                      <CardHeader>
-                        <div className="flex items-start justify-between">
-                          <div>
-                            <CardTitle>{feature.title}</CardTitle>
-                            <CardDescription className="mt-2">{feature.description}</CardDescription>
+                        </CardHeader>
+                        <CardFooter className="pt-0 flex justify-end">
+                          <Button 
+                            variant="ghost" 
+                            className="text-[#B87333] hover:text-[#B87333] hover:bg-[#B87333]/10"
+                            onClick={() => navigateToFeature(feature.path)}
+                          >
+                            Explore
+                            <ArrowRight className="ml-2 h-4 w-4" />
+                          </Button>
+                        </CardFooter>
+                      </Card>
+                    ))}
+                  </div>
+                </TabsContent>
+                
+                <TabsContent value="popular">
+                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    {features.slice(3, 9).map((feature, index) => (
+                      <Card 
+                        key={index}
+                        className="overflow-hidden hover:shadow-md transition-all duration-300 hover:border-[#B87333]/50 cursor-pointer"
+                        onClick={() => navigateToFeature(feature.path)}
+                      >
+                        <CardHeader>
+                          <div className="flex items-start justify-between">
+                            <div>
+                              <CardTitle>{feature.title}</CardTitle>
+                              <CardDescription className="mt-2">{feature.description}</CardDescription>
+                            </div>
+                            <div className="bg-[#B87333]/10 p-2 rounded-full">
+                              <feature.icon className="h-6 w-6 text-[#B87333]" />
+                            </div>
                           </div>
-                          <div className="bg-[#B87333]/10 p-2 rounded-full">
-                            <feature.icon className="h-6 w-6 text-[#B87333]" />
-                          </div>
-                        </div>
-                      </CardHeader>
-                      <CardFooter className="pt-0 flex justify-end">
-                        <Button 
-                          variant="ghost" 
-                          className="text-[#B87333] hover:text-[#B87333] hover:bg-[#B87333]/10"
-                          onClick={() => navigateToFeature(feature.path)}
-                        >
-                          Explore
-                          <ArrowRight className="ml-2 h-4 w-4" />
-                        </Button>
-                      </CardFooter>
-                    </Card>
-                  ))}
-                </div>
-              </TabsContent>
-            </Tabs>
+                        </CardHeader>
+                        <CardFooter className="pt-0 flex justify-end">
+                          <Button 
+                            variant="ghost" 
+                            className="text-[#B87333] hover:text-[#B87333] hover:bg-[#B87333]/10"
+                            onClick={() => navigateToFeature(feature.path)}
+                          >
+                            Explore
+                            <ArrowRight className="ml-2 h-4 w-4" />
+                          </Button>
+                        </CardFooter>
+                      </Card>
+                    ))}
+                  </div>
+                </TabsContent>
+              </Tabs>
+            </div>
           </div>
         </div>
       )}
