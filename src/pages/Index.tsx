@@ -986,7 +986,7 @@ const Index = () => {
                   <CardFooter>
                     <Button className="w-full bg-white border hover:bg-gray-50">
                       <Link to="/workshops" className="flex items-center gap-2 w-full justify-center">
-                        Join {workshop.title}
+                        Join Now
                         <Play className="h-4 w-4" />
                       </Link>
                     </Button>
@@ -1082,4 +1082,3 @@ const Index = () => {
 };
 
 export default Index;
-
