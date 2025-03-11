@@ -38,12 +38,22 @@ export const useButtonVisibility = () => {
       }
     }
     
-    // If the current path is one of the feature routes, show the button
-    if (featureRoutes.includes(location.pathname)) {
+    // If the path is either the main menu or one of the feature routes, show the button
+    if (location.pathname === '/' || location.pathname === '/index' || featureRoutes.includes(location.pathname)) {
       return true;
     }
     
-    // Button should appear on all other screens not in initialScreens
+    // For all other screens, check if they are "after" the main menu by ensuring they don't contain
+    // any substrings that would indicate they are part of the initial onboarding flow
+    const onboardingSubpaths = ['initial', 'emotional', 'registration', 'pricing', 'vision', 'onboarding', 'cheese', 'creator'];
+    
+    for (const subpath of onboardingSubpaths) {
+      if (location.pathname.includes(subpath)) {
+        return false;
+      }
+    }
+    
+    // If we've made it here, the screen is likely after the main menu
     return true;
   };
 
