@@ -754,6 +754,7 @@ const Index = () => {
                     className="w-full pl-10 pr-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#B87333] focus:border-transparent"
                     placeholder="********"
                   />
+                  <div className="text-xs text-gray-500 mt-1 ml-1">Your password is securely masked</div>
                 </div>
               </div>
               <Button 
@@ -985,7 +986,7 @@ const Index = () => {
                   <CardFooter>
                     <Button className="w-full bg-white border hover:bg-gray-50">
                       <Link to="/workshops" className="flex items-center gap-2 w-full justify-center">
-                        Join Workshop
+                        Join {workshop.title}
                         <Play className="h-4 w-4" />
                       </Link>
                     </Button>
@@ -1081,3 +1082,4 @@ const Index = () => {
 };
 
 export default Index;
+
