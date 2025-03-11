@@ -21,6 +21,7 @@ const buttonVariants = cva(
         link: "text-primary underline-offset-4 hover:underline",
         gold: "bg-[#B87333] text-white hover:bg-[#B87333]/90 shadow-md",
         "gold-outline": "border-2 border-[#B87333] text-[#B87333] bg-transparent hover:bg-[#B87333]/10",
+        henry: "bg-[#221F26] text-white border border-[#B87333]/30 hover:border-[#B87333] shadow-lg transition-all duration-300 hover:shadow-[0_0_15px_rgba(184,115,51,0.3)] group-hover:bg-[#221F26]/90",
       },
       size: {
         default: "h-10 px-4 py-2",

@@ -1,61 +1,135 @@
-
-import React, { useState } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { Heart, Brain, Smile, Sparkles, ArrowRight, Info } from "lucide-react";
+import { Heart, Brain, Smile, Sparkles, ArrowRight, UserRound } from "lucide-react";
 
 interface HenryButtonProps {
   className?: string;
   isOpen: boolean;
   onOpenChange: (open: boolean) => void;
+  userName?: string;
 }
 
 const HenryButton: React.FC<HenryButtonProps> = ({ 
   className = "", 
   isOpen,
-  onOpenChange
+  onOpenChange,
+  userName
 }) => {
-  const [introShown, setIntroShown] = useState(false);
+  const [cursorPosition, setCursorPosition] = useState({ x: 0, y: 0 });
+  const [buttonPosition, setButtonPosition] = useState({ x: 0, y: 0 });
+  const [isVisible, setIsVisible] = useState(false);
+  const [isGlowing, setIsGlowing] = useState(false);
+  const henryRef = useRef<HTMLDivElement>(null);
+  const isMoving = useRef(false);
+  
+  useEffect(() => {
+    const handleMouseMove = (e: MouseEvent) => {
+      setCursorPosition({
+        x: e.clientX,
+        y: e.clientY
+      });
+    };
+
+    window.addEventListener('mousemove', handleMouseMove);
+    
+    const timer = setTimeout(() => {
+      setIsVisible(true);
+    }, 500);
+    
+    return () => {
+      window.removeEventListener('mousemove', handleMouseMove);
+      clearTimeout(timer);
+    };
+  }, []);
+
+  useEffect(() => {
+    if (!isVisible) return;
+    
+    if (isOpen) return;
+    
+    const targetX = Math.max(20, Math.min(cursorPosition.x + 20, window.innerWidth - 60));
+    const targetY = Math.max(20, Math.min(cursorPosition.y - 50, window.innerHeight - 60));
+    
+    const lerp = (start: number, end: number, factor: number) => {
+      return start + (end - start) * factor;
+    };
+    
+    if (!isMoving.current) {
+      isMoving.current = true;
+      
+      const moveHenry = () => {
+        setButtonPosition(prev => {
+          const newX = lerp(prev.x, targetX, 0.08);
+          const newY = lerp(prev.y, targetY, 0.08);
+          
+          const isCloseEnough = 
+            Math.abs(newX - targetX) < 0.5 && 
+            Math.abs(newY - targetY) < 0.5;
+            
+          if (isCloseEnough) {
+            isMoving.current = false;
+            return { x: targetX, y: targetY };
+          }
+          
+          requestAnimationFrame(moveHenry);
+          return { x: newX, y: newY };
+        });
+      };
+      
+      requestAnimationFrame(moveHenry);
+    }
+  }, [cursorPosition, isVisible, isOpen]);
+
+  useEffect(() => {
+    const glowInterval = setInterval(() => {
+      setIsGlowing(true);
+      setTimeout(() => setIsGlowing(false), 2000);
+    }, 5000);
+    
+    return () => clearInterval(glowInterval);
+  }, []);
 
   const handleOpen = () => {
     onOpenChange(true);
-    
-    // Only show the intro animation once per session
-    if (!introShown) {
-      setIntroShown(true);
+  };
+
+  const getGreeting = () => {
+    if (userName) {
+      return `Hi ${userName}! I'm Henry, your personal guide.`;
     }
+    return "Hi there! I'm Henry, your personal guide.";
   };
 
   return (
     <>
-      <div 
-        className={`relative flex flex-col items-center cursor-pointer ${introShown ? 'animate-none' : 'animate-bounce'}`} 
-        onClick={handleOpen}
-      >
-        <div className="absolute -top-3 -right-3">
-          {!introShown && (
-            <div className="bg-[#B87333] text-white text-xs rounded-full h-5 w-5 flex items-center justify-center animate-pulse">
-              <Info className="h-3 w-3" />
-            </div>
-          )}
-        </div>
-        <Avatar 
-          className={`h-14 w-14 border-4 border-[#B87333]/50 transition-all hover:scale-110 ${className} ${introShown ? '' : 'animate-pulse'}`}
-        >
-          <AvatarImage src="/photo-1485827404703-89b55fcc595e.jpg" alt="Henry" />
-          <AvatarFallback className="bg-[#B87333]/20 text-[#B87333] text-2xl">
-            H
-          </AvatarFallback>
-        </Avatar>
-        <span className="mt-1 text-xs font-medium text-[#B87333] animate-pulse" 
+      {isVisible && !isOpen && (
+        <div 
+          ref={henryRef}
+          className="fixed z-50 transition-all duration-300"
           style={{ 
-            textShadow: '0 0 5px rgba(184, 115, 51, 0.7), 0 0 10px rgba(184, 115, 51, 0.5)' 
-          }}>
-          Meet Henry
-        </span>
-      </div>
+            transform: `translate(${buttonPosition.x}px, ${buttonPosition.y}px)`,
+            opacity: isVisible ? 1 : 0,
+          }}
+        >
+          <div 
+            onClick={handleOpen}
+            className={`group cursor-pointer flex items-center gap-2 p-1.5 rounded-full bg-[#221F26]/80 backdrop-blur-md border border-[#B87333]/20 hover:border-[#B87333]/50 transition-all duration-300 ${
+              isGlowing ? 'animate-pulse shadow-[0_0_15px_rgba(184,115,51,0.5)]' : ''
+            } ${className}`}
+          >
+            <Avatar className="h-8 w-8 border-2 border-[#B87333]/30 group-hover:border-[#B87333]/70 transition-all">
+              <AvatarImage src="/photo-1485827404703-89b55fcc595e.jpg" alt="Henry" />
+              <AvatarFallback className="bg-[#B87333]/10 text-[#B87333] text-sm">H</AvatarFallback>
+            </Avatar>
+            <span className="pr-2 text-xs font-medium text-white opacity-70 group-hover:opacity-100">
+              Need help?
+            </span>
+          </div>
+        </div>
+      )}
 
       <Dialog open={isOpen} onOpenChange={onOpenChange}>
         <DialogContent className="sm:max-w-md bg-black/85 backdrop-blur-md border border-[#B87333]/50">
@@ -70,14 +144,14 @@ const HenryButton: React.FC<HenryButtonProps> = ({
             </div>
             <DialogTitle className="text-2xl gradient-heading">Meet Henry</DialogTitle>
             <DialogDescription className="text-base text-white">
-              Your personalized mental health specialist
+              {getGreeting()}
             </DialogDescription>
           </DialogHeader>
           
           <ScrollArea className="max-h-[60vh] overflow-auto pr-4">
             <div className="space-y-4 text-white">
               <p className="leading-relaxed">
-                Hi, I'm Henry! I'm here to help you navigate your mental health journey and provide personalized support as you explore Thrive MT.
+                I'm here to help you navigate your mental health journey and provide personalized support as you explore Thrive MT.
               </p>
               
               <div className="bg-white/10 p-4 rounded-lg">

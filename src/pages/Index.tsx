@@ -211,8 +211,6 @@ const subscriptionPlans = [
 const Index = () => {
   const [showCoPayCredit, setShowCoPayCredit] = useState(false);
   const [showHenry, setShowHenry] = useState(false);
-  const [henryPosition, setHenryPosition] = useState({ x: 0, y: 0 });
-  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
   const [screenState, setScreenState] = useState<'intro' | 'mood' | 'moodResponse' | 'register' | 'subscription' | 'visionBoard' | 'main'>('intro');
   const [selectedMood, setSelectedMood] = useState<'happy' | 'ok' | 'neutral' | 'down' | 'sad' | 'overwhelmed' | null>(null);
   const [selectedQualities, setSelectedQualities] = useState<string[]>([]);
@@ -226,7 +224,6 @@ const Index = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const { toast } = useToast();
-  const henryRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     if (location.state && location.state.screenState) {
@@ -413,21 +410,11 @@ const Index = () => {
       <CoPayCreditPopup open={showCoPayCredit} onOpenChange={setShowCoPayCredit} />
       
       {showHenry && (
-        <div 
-          ref={henryRef}
-          className="fixed z-50 transition-transform duration-100 ease-out"
-          style={{ 
-            left: `${henryPosition.x}px`, 
-            top: `${henryPosition.y}px`,
-            transform: 'translate(-50%, -50%)'
-          }}
-        >
-          <HenryButton 
-            className="" 
-            isOpen={showHenry} 
-            onOpenChange={setShowHenry}
-          />
-        </div>
+        <HenryButton 
+          isOpen={showHenry} 
+          onOpenChange={setShowHenry}
+          userName={userInfo.name}
+        />
       )}
 
       {screenState === 'intro' && (
@@ -1031,14 +1018,14 @@ const Index = () => {
                   </div>
                 </div>
                 <Button 
-                  onClick={toggleHenry}
-                  variant="gold"
-                  className="flex items-center gap-2"
+                  onClick={() => setShowHenry(true)}
+                  variant="henry"
+                  className="group flex items-center gap-2"
                 >
-                  <div className="h-6 w-6 rounded-full overflow-hidden">
+                  <div className="h-6 w-6 rounded-full overflow-hidden border border-[#B87333]/50 group-hover:border-[#B87333] transition-all">
                     <img src="/photo-1485827404703-89b55fcc595e.jpg" alt="Henry" className="h-full w-full object-cover" />
                   </div>
-                  Meet Henry
+                  <span className="text-white group-hover:text-[#B87333]/90 transition-colors">Meet Henry</span>
                 </Button>
               </div>
             </div>
