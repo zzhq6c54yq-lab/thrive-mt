@@ -8,6 +8,8 @@ export const useButtonVisibility = () => {
   const shouldShowButton = () => {
     // Initial setup screens where button should NOT appear
     const initialScreens = [
+      '/',  // Adding root path (initial screen)
+      '/index',
       '/initial-screen',
       '/vision-board',
       '/onboarding',
@@ -29,7 +31,7 @@ export const useButtonVisibility = () => {
       }
     }
     
-    // Button should appear on main menu ('/') and all subsequent screens
+    // Button should appear on all other screens
     return true;
   };
 
