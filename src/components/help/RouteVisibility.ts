@@ -26,11 +26,6 @@ export const useButtonVisibility = () => {
       '/workshops'
     ];
     
-    // If the current path is one of the feature routes, show the button
-    if (featureRoutes.includes(location.pathname)) {
-      return true;
-    }
-    
     // Check if current path is one of the initial screens (exact match)
     if (initialScreens.includes(location.pathname)) {
       return false;
@@ -43,7 +38,12 @@ export const useButtonVisibility = () => {
       }
     }
     
-    // Button should appear on all other screens
+    // If the current path is one of the feature routes, show the button
+    if (featureRoutes.includes(location.pathname)) {
+      return true;
+    }
+    
+    // Button should appear on all other screens not in initialScreens
     return true;
   };
 
