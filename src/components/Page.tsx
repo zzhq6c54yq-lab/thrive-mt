@@ -1,10 +1,11 @@
 
-import React from "react";
-import { ArrowLeft, CircleHelp } from "lucide-react";
+import React, { useState } from "react";
+import { ArrowLeft, CircleHelp, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useNavigate } from "react-router-dom";
 import HomeButton from "./HomeButton";
 import HenryIconButton from "./HenryIconButton";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 
 interface PageProps {
   title: string;
@@ -15,6 +16,7 @@ interface PageProps {
 
 const Page: React.FC<PageProps> = ({ title, children, showBackButton = true, onBackClick }) => {
   const navigate = useNavigate();
+  const [isPopoverOpen, setIsPopoverOpen] = useState(false);
   
   const handleBack = () => {
     if (onBackClick) {
@@ -23,10 +25,6 @@ const Page: React.FC<PageProps> = ({ title, children, showBackButton = true, onB
       // Always navigate to home with main screenState to avoid showing intro screens
       navigate("/", { state: { screenState: 'main' } });
     }
-  };
-  
-  const handleMeetHenry = () => {
-    navigate("/", { state: { screenState: 'main', showHenry: true } });
   };
   
   return (
@@ -57,17 +55,61 @@ const Page: React.FC<PageProps> = ({ title, children, showBackButton = true, onB
           </div>
           
           <div className="flex items-center gap-2">
-            <Button
-              variant="bronze"
-              size="sm"
-              className="flex items-center gap-2 hover:shadow-[0_0_10px_rgba(184,115,51,0.5)]"
-              onClick={handleMeetHenry}
-            >
-              <div className="h-6 w-6 rounded-full flex items-center justify-center bg-gradient-to-br from-[#B87333] to-[#E5C5A1] text-white font-semibold shadow-inner">
-                <span className="text-sm">H</span>
-              </div>
-              Meet H.E.N.R.Y
-            </Button>
+            <Popover open={isPopoverOpen} onOpenChange={setIsPopoverOpen}>
+              <PopoverTrigger asChild>
+                <Button
+                  variant="bronze"
+                  size="sm"
+                  className="flex items-center gap-2 hover:shadow-[0_0_10px_rgba(184,115,51,0.5)]"
+                >
+                  <div className="h-6 w-6 rounded-full flex items-center justify-center bg-gradient-to-br from-[#B87333] to-[#E5C5A1] text-white font-semibold shadow-inner">
+                    <span className="text-sm">H</span>
+                  </div>
+                  Meet H.E.N.R.Y
+                </Button>
+              </PopoverTrigger>
+              <PopoverContent className="w-80 p-0 bg-black/85 backdrop-blur-md border border-[#B87333]/50">
+                <div className="relative p-4">
+                  <Button 
+                    className="absolute right-2 top-2 p-1 h-6 w-6 rounded-full bg-transparent hover:bg-white/10 text-white/70 hover:text-white"
+                    variant="ghost"
+                    size="icon"
+                    onClick={() => setIsPopoverOpen(false)}
+                  >
+                    <X className="h-3 w-3" />
+                  </Button>
+                  
+                  <div className="flex flex-col items-center text-center gap-3">
+                    <div className="h-16 w-16 rounded-full flex items-center justify-center border-2 border-[#B87333]/50 bg-gradient-to-br from-[#B87333] to-[#E5C5A1] text-white">
+                      <span className="text-2xl font-bold">H</span>
+                    </div>
+                    
+                    <div>
+                      <h3 className="text-xl font-semibold text-transparent bg-clip-text bg-gradient-to-r from-[#B87333] to-[#e5c5a1]">
+                        H.E.N.R.Y
+                      </h3>
+                      <p className="text-sm text-white/70 mt-1">
+                        <span className="font-medium">H</span>elpful 
+                        <span className="font-medium"> E</span>lectronic 
+                        <span className="font-medium"> N</span>avigator 
+                        <span className="font-medium"> R</span>esponding 
+                        <span className="font-medium"> Y</span>es
+                      </p>
+                    </div>
+                    
+                    <div className="text-sm text-white/80 mt-1">
+                      <p className="mb-2">
+                        I'm your personal digital assistant designed to help you navigate Thrive MT. 
+                        I can answer questions, provide guidance, and connect you with the resources you need.
+                      </p>
+                      <p>
+                        Use the floating help button <span className="inline-block h-4 w-4 bg-[#B87333] rounded-full text-[10px] font-bold text-center leading-4">H</span> to chat with me anytime!
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </PopoverContent>
+            </Popover>
             <HomeButton className="bg-white/5 hover:bg-white/15" />
           </div>
         </div>
