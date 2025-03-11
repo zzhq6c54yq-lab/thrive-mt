@@ -22,9 +22,8 @@ const HelpButton: React.FC<HelpButtonProps> = ({ userName }) => {
   
   // Determine if the button should be visible based on the current route
   const shouldShowButton = () => {
-    // Define excluded paths - exact matches
+    // Define excluded paths where button should NOT appear
     const excludedPaths = [
-      // index route is NOT excluded
       '/initial-screen',
       '/vision-board',
       '/onboarding',
@@ -34,23 +33,23 @@ const HelpButton: React.FC<HelpButtonProps> = ({ userName }) => {
       '/creator'
     ];
     
-    // Check if current path is in excluded paths
+    // Check if current path is in excluded paths - exact matches
     if (excludedPaths.includes(location.pathname)) {
       return false;
     }
     
-    // Also check for paths that start with the excluded paths
+    // Also check for paths that start with the excluded paths (subpaths)
     for (const path of excludedPaths) {
       if (location.pathname.startsWith(`${path}/`)) {
         return false;
       }
     }
     
-    // Show the button on all other paths
+    // Button should appear on main menu ('/') and all other non-excluded paths
     return true;
   };
   
-  // Don't render the component at all if it shouldn't be shown
+  // If button shouldn't be shown, return null (don't render anything)
   if (!shouldShowButton()) {
     return null;
   }
