@@ -22,8 +22,8 @@ const HelpButton: React.FC<HelpButtonProps> = ({ userName }) => {
   
   // Determine if the button should be visible based on the current route
   const shouldShowButton = () => {
-    // Define excluded paths where button should NOT appear
-    const excludedPaths = [
+    // Initial setup screens where button should NOT appear
+    const initialScreens = [
       '/initial-screen',
       '/vision-board',
       '/onboarding',
@@ -33,19 +33,19 @@ const HelpButton: React.FC<HelpButtonProps> = ({ userName }) => {
       '/creator'
     ];
     
-    // Check if current path is in excluded paths - exact matches
-    if (excludedPaths.includes(location.pathname)) {
+    // Check if current path is one of the initial screens (exact match)
+    if (initialScreens.includes(location.pathname)) {
       return false;
     }
     
-    // Also check for paths that start with the excluded paths (subpaths)
-    for (const path of excludedPaths) {
-      if (location.pathname.startsWith(`${path}/`)) {
+    // Check if current path is a subpath of any initial screen
+    for (const screen of initialScreens) {
+      if (location.pathname.startsWith(`${screen}/`)) {
         return false;
       }
     }
     
-    // Button should appear on main menu ('/') and all other non-excluded paths
+    // Button should appear on main menu ('/') and all subsequent screens
     return true;
   };
   
