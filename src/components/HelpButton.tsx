@@ -24,7 +24,7 @@ const HelpButton: React.FC<HelpButtonProps> = ({ userName }) => {
   const shouldShowButton = () => {
     // Define excluded paths - exact matches
     const excludedPaths = [
-      '/',               // index route
+      // index route is NOT excluded
       '/initial-screen',
       '/vision-board',
       '/onboarding',
@@ -41,7 +41,7 @@ const HelpButton: React.FC<HelpButtonProps> = ({ userName }) => {
     
     // Also check for paths that start with the excluded paths
     for (const path of excludedPaths) {
-      if (path !== '/' && location.pathname.startsWith(`${path}/`)) {
+      if (location.pathname.startsWith(`${path}/`)) {
         return false;
       }
     }
