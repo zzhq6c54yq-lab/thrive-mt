@@ -108,6 +108,7 @@ const visionBoardGoals = [
 
 const workshops = [
   {
+    id: "stress-management",
     title: "Stress Management",
     description: "Learn effective techniques to manage daily stress and build resilience.",
     time: "45 minutes",
@@ -115,6 +116,7 @@ const workshops = [
     color: "bg-[#9b87f5]/10 border-[#9b87f5]/30 text-[#9b87f5]"
   },
   {
+    id: "mindful-communication",
     title: "Mindful Communication",
     description: "Develop mindfulness skills for healthier relationships and conversations.",
     time: "45 minutes",
@@ -122,6 +124,7 @@ const workshops = [
     color: "bg-[#F97316]/10 border-[#F97316]/30 text-[#F97316]"
   },
   {
+    id: "emotional-regulation",
     title: "Emotional Regulation",
     description: "Discover tools to understand and regulate your emotional responses.",
     time: "45 minutes",
@@ -985,7 +988,7 @@ const Index = () => {
                   </CardHeader>
                   <CardFooter>
                     <Button className="w-full bg-white border hover:bg-gray-50">
-                      <Link to="/workshops" className="flex items-center gap-2 w-full justify-center">
+                      <Link to={`/workshop/${workshop.id}`} className="flex items-center gap-2 w-full justify-center">
                         Join Now
                         <Play className="h-4 w-4" />
                       </Link>

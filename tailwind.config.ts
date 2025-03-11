@@ -54,7 +54,7 @@ export default {
           foreground: 'hsl(var(--card-foreground))'
         },
         platinum: {
-          light: '#C8C8C9',
+          light: '#E8E8EA',
           DEFAULT: '#9F9EA1',
           dark: '#6F6E73'
         }
