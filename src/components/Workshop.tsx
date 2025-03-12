@@ -1,14 +1,27 @@
+
 import React from "react";
+import { LucideIcon } from "lucide-react";
+
+export interface WorkshopData {
+  id: string;
+  title: string;
+  description: string;
+  icon: LucideIcon;
+  color: string;
+  duration: string;
+  sections: Array<{
+    title: string;
+    duration: string;
+    content: string;
+    exercises: Array<{
+      title: string;
+      instructions: string;
+    }>;
+  }>;
+}
 
 interface WorkshopProps {
-  workshopData: {
-    id: string;
-    title: string;
-    description: string;
-    icon: React.ComponentType<any>;
-    color: string;
-    duration: string;
-  };
+  workshopData: WorkshopData;
 }
 
 const Workshop: React.FC<WorkshopProps> = ({ workshopData }) => {
