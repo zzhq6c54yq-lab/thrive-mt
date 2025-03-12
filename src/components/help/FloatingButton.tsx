@@ -1,7 +1,8 @@
 
 import React, { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
-import { ArrowUp, ArrowDown } from "lucide-react";
+import { ArrowUp, ArrowDown, Home } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 
 interface FloatingButtonProps {
   onClick: () => void;
@@ -11,8 +12,8 @@ const FloatingButton: React.FC<FloatingButtonProps> = ({ onClick }) => {
   const [isScrolling, setIsScrolling] = useState(false);
   const [scrollDirection, setScrollDirection] = useState<'up' | 'down' | null>(null);
   const [scrollInterval, setScrollIntervalId] = useState<number | null>(null);
+  const navigate = useNavigate();
   
-  // Handle scroll functionality
   const startScrolling = (direction: 'up' | 'down') => {
     setIsScrolling(true);
     setScrollDirection(direction);
@@ -23,9 +24,9 @@ const FloatingButton: React.FC<FloatingButtonProps> = ({ onClick }) => {
     
     const intervalId = window.setInterval(() => {
       if (direction === 'up') {
-        window.scrollBy(0, -40); // Scroll up
+        window.scrollBy(0, -40);
       } else {
-        window.scrollBy(0, 40); // Scroll down
+        window.scrollBy(0, 40);
       }
     }, 50);
     
@@ -41,7 +42,10 @@ const FloatingButton: React.FC<FloatingButtonProps> = ({ onClick }) => {
     setScrollDirection(null);
   };
   
-  // Cleanup on unmount
+  const handleHomeClick = () => {
+    navigate("/", { state: { screenState: 'main' } });
+  };
+  
   useEffect(() => {
     return () => {
       if (scrollInterval) {
@@ -67,11 +71,11 @@ const FloatingButton: React.FC<FloatingButtonProps> = ({ onClick }) => {
       </Button>
       
       <Button
-        onClick={onClick}
+        onClick={handleHomeClick}
         className="h-14 w-14 rounded-full bg-gradient-to-br from-[#B87333] to-[#E5C5A1] text-white shadow-lg hover:shadow-xl transition-all duration-300 flex items-center justify-center"
         size="icon"
       >
-        <span className="text-2xl font-bold">H</span>
+        <Home className="h-6 w-6" />
       </Button>
       
       <Button
