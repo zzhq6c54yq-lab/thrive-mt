@@ -1,8 +1,7 @@
-
 import React from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Brain, Library, Users, Heart, GraduationCap, PlayCircle, Calendar, CalendarRange } from "lucide-react";
+import { Brain, Library, Users, Heart, GraduationCap, CalendarRange, Image } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 
 interface MainDashboardProps {
@@ -67,6 +66,22 @@ const MainDashboard: React.FC<MainDashboardProps> = ({
   return (
     <div className="min-h-screen bg-gradient-to-b from-gray-50 to-gray-100 py-12 px-4">
       <div className="container mx-auto max-w-6xl">
+        <div className="flex items-center justify-between mb-8">
+          <div className="flex items-center gap-3">
+            <Image className="h-12 w-12 text-[#B87333]" />
+            <div>
+              <h1 className="text-2xl font-bold text-[#B87333]">Thrive MT</h1>
+              <p className="text-sm text-gray-600">Your Mental Wellness Journey</p>
+            </div>
+          </div>
+          <Button 
+            onClick={onHenryToggle}
+            className="bg-gradient-to-br from-[#B87333] to-[#E5C5A1] hover:from-[#A56625] hover:to-[#D4B48F] text-white px-6"
+          >
+            {showHenry ? "Hide Henry" : "Meet Henry"}
+          </Button>
+        </div>
+
         <div className="mb-8 text-center">
           <h1 className="text-4xl font-bold mb-4">Welcome to Thrive MT, {displayName}!</h1>
           <p className="text-xl text-gray-600 max-w-2xl mx-auto">

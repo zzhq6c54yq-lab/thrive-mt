@@ -1,7 +1,6 @@
-
 import React, { useState } from "react";
 import { Button } from "@/components/ui/button";
-import { ArrowRight, ArrowLeft, Smile, Meh, Frown, HeartCrack, Angry, Annoyed, PhoneCall, MessageSquare, Headphones, SirenAlert } from "lucide-react";
+import { ArrowRight, ArrowLeft, Smile, Meh, Frown, HeartCrack, Angry, Annoyed, PhoneCall, MessageSquare, Headphones, AlertTriangle } from "lucide-react";
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 
 interface MoodResponseProps {
@@ -60,7 +59,7 @@ const MoodResponse: React.FC<MoodResponseProps> = ({ selectedMood, onContinue, o
             </div>
             
             <div className="flex items-start p-3 bg-[#F9F5FF] rounded-lg">
-              <SirenAlert className="text-[#B87333] mr-3 mt-1 h-5 w-5 flex-shrink-0" />
+              <AlertTriangle className="text-[#B87333] mr-3 mt-1 h-5 w-5 flex-shrink-0" />
               <div>
                 <h3 className="font-medium">Emergency Services</h3>
                 <p className="text-sm text-gray-600">For immediate help, please call 911</p>
