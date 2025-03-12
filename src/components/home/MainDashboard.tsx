@@ -5,6 +5,7 @@ import { Brain, Library, Users, Heart, GraduationCap, CalendarRange, LeafyGreen,
 import { useToast } from "@/hooks/use-toast";
 import { workshopData } from "@/data/workshopData";
 import { Link } from "react-router-dom";
+import FloatingButton from "@/components/help/FloatingButton";
 
 interface MainDashboardProps {
   userName: string;
