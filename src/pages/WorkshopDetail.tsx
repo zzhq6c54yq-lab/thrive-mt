@@ -6,7 +6,7 @@ import { workshopData } from "@/data/workshopData";
 import Page from "@/components/Page";
 import { useToast } from "@/hooks/use-toast";
 import { Button } from "@/components/ui/button";
-import { Volume, Volume2, ArrowLeft, Download, Calendar, Clock, Users, BookOpen, Brain, Hearts, Target, ListChecks, CheckCircle } from "lucide-react";
+import { Volume, Volume2, ArrowLeft, Download, Calendar, Clock, Users, BookOpen, Brain, Heart, Target, ListChecks, CheckCircle } from "lucide-react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Progress } from "@/components/ui/progress";
 import { Badge } from "@/components/ui/badge";
@@ -99,8 +99,8 @@ const WorkshopDetail = () => {
   );
 
   const completedExercisesCount = completedExercises.size;
-  const progressPercentage = totalExercisesCount > 0 
-    ? Math.round((completedExercisesCount / totalExercisesCount) * 100) 
+  const progressPercentage = totalExercises > 0 
+    ? Math.round((completedExercisesCount / totalExercises) * 100) 
     : 0;
 
   // Benefits based on workshop type

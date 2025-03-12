@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import Page from "@/components/Page";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Activity, Calendar, TrendingUp, Award, BarChart, Brain, Heart, Moon, ArrowUpRight, ClipboardList, BookOpen, CheckCircle, LineChart, PieChart, ListChecks, BookOpen as BookOpenIcon, Trophy } from "lucide-react";
+import { Activity, Calendar, TrendingUp, Award, BarChart, Brain, Heart, Moon, ArrowUpRight, ClipboardList, BookOpen, CheckCircle, LineChart, PieChart, ListChecks, BookOpen as BookOpenIcon, Trophy, Target } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import { workshopData } from "@/data/workshopData";
