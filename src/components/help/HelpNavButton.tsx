@@ -1,7 +1,7 @@
 
 import React, { useState } from "react";
 import { Button } from "@/components/ui/button";
-import { HelpCircle, Fingerprint } from "lucide-react";
+import { Fingerprint } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import HelpDialog from "./HelpDialog";
 
@@ -55,7 +55,11 @@ const HelpNavButton: React.FC = () => {
           className="h-16 w-16 rounded-full bg-gradient-to-br from-[#B87333] to-[#E5C5A1] text-white shadow-lg hover:shadow-xl transition-all duration-300 flex items-center justify-center group relative"
           size="icon"
         >
-          <HelpCircle className="h-8 w-8 group-hover:scale-110 transition-transform absolute" />
+          {/* Custom H with circle design */}
+          <div className="relative flex items-center justify-center w-full h-full">
+            <div className="absolute inset-1 rounded-full border-2 border-white/80"></div>
+            <span className="text-2xl font-bold">H</span>
+          </div>
           <Fingerprint className="h-8 w-8 opacity-0 group-hover:opacity-100 transition-opacity duration-300 absolute animate-pulse" />
           <span className="absolute -bottom-8 text-xs text-white bg-black/70 px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap">
             Swipe to scroll

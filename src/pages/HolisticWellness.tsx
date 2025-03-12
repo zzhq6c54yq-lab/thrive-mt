@@ -1,12 +1,16 @@
-import React from "react";
+
+import React, { useState } from "react";
 import { useToast } from "@/hooks/use-toast";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Leaf, Brain, Heart, Apple, Sunset, BadgeCheck, ArrowRight, Dumbbell, Waves, HandHeart } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import HomeButton from "@/components/HomeButton";
+import { useNavigate } from "react-router-dom";
 
 const HolisticWellness: React.FC = () => {
   const { toast } = useToast();
+  const navigate = useNavigate();
+  const [activeApproach, setActiveApproach] = useState<string | null>(null);
 
   const holisticApproaches = [
     {
@@ -18,7 +22,8 @@ const HolisticWellness: React.FC = () => {
         "Balanced nutrition with cultural considerations",
         "Adequate sleep and rest patterns",
         "Regular health check-ups and preventative care"
-      ]
+      ],
+      resourcePath: "/mental-wellness-tools"
     },
     {
       title: "Mental Health",
@@ -29,7 +34,8 @@ const HolisticWellness: React.FC = () => {
         "Mindfulness and meditation practices",
         "Stress management strategies",
         "Setting healthy boundaries"
-      ]
+      ],
+      resourcePath: "/mental-health-games"
     },
     {
       title: "Emotional Balance",
@@ -40,7 +46,8 @@ const HolisticWellness: React.FC = () => {
         "Journaling for emotional processing",
         "Healthy expression of feelings",
         "Building emotional resilience"
-      ]
+      ],
+      resourcePath: "/personalized-content"
     },
     {
       title: "Social Connection",
@@ -51,7 +58,8 @@ const HolisticWellness: React.FC = () => {
         "Community engagement and belonging",
         "Cultural connection and identity",
         "Healthy communication skills"
-      ]
+      ],
+      resourcePath: "/community-support"
     },
     {
       title: "Spiritual Growth",
@@ -62,7 +70,8 @@ const HolisticWellness: React.FC = () => {
         "Connection with nature and the world",
         "Mindfulness and meditative practices",
         "Finding purpose and meaning"
-      ]
+      ],
+      resourcePath: "/mindfulness"
     },
     {
       title: "Environmental Wellness",
@@ -73,22 +82,67 @@ const HolisticWellness: React.FC = () => {
         "Reducing environmental stressors",
         "Nature connection and eco-therapy",
         "Sustainable living practices"
-      ]
+      ],
+      resourcePath: "/resource-library"
     }
   ];
 
-  const handlePracticeClick = (practice: string) => {
+  const handlePracticeClick = (practice: string, approachTitle: string) => {
+    setActiveApproach(approachTitle);
     toast({
-      title: "Practice Selected",
+      title: `${approachTitle} Practice`,
       description: `You've selected: ${practice}`,
       duration: 2000,
     });
+  };
+
+  const handleExploreClick = (approachTitle: string, resourcePath: string) => {
+    toast({
+      title: "Exploring Practices",
+      description: `Loading ${approachTitle} resources...`,
+      duration: 1500,
+    });
+    
+    // Navigate to the associated resource page
+    navigate(resourcePath);
+  };
+
+  const handleAssessmentStart = () => {
+    toast({
+      title: "Assessment Starting",
+      description: "Preparing your personalized wellness assessment...",
+      duration: 2000,
+    });
+    
+    // In a real application, this would navigate to the assessment
+    // For now, we'll just simulate it with a toast
+    setTimeout(() => {
+      toast({
+        title: "Assessment Ready",
+        description: "Your holistic wellness profile is being prepared.",
+        duration: 3000,
+      });
+    }, 2500);
+  };
+
+  const navigateToMainMenu = () => {
+    navigate("/", { state: { screenState: 'main' } });
   };
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-gray-50 to-gray-100 pt-8 pb-16 px-4">
       <div className="fixed top-4 left-4 z-50">
         <HomeButton />
+      </div>
+      
+      <div className="fixed top-4 right-4 z-50">
+        <Button 
+          variant="outline" 
+          className="flex items-center gap-2 bg-white/20 backdrop-blur-sm hover:bg-white/30 border-white/10"
+          onClick={navigateToMainMenu}
+        >
+          <span>Main Menu</span>
+        </Button>
       </div>
       
       <div className="container mx-auto max-w-6xl">
@@ -109,7 +163,7 @@ const HolisticWellness: React.FC = () => {
           {holisticApproaches.map((approach, index) => (
             <Card 
               key={index}
-              className="overflow-hidden hover:shadow-lg transition-all duration-300 border-[#B87333]/20 hover:border-[#B87333] group"
+              className={`overflow-hidden hover:shadow-lg transition-all duration-300 border-[#B87333]/20 hover:border-[#B87333] group ${activeApproach === approach.title ? 'ring-2 ring-[#B87333]' : ''}`}
             >
               <CardHeader className="pb-2 relative">
                 <div className="absolute top-0 right-0 w-24 h-24 bg-[#B87333]/5 rounded-bl-full -z-0"></div>
@@ -129,7 +183,7 @@ const HolisticWellness: React.FC = () => {
                     <li 
                       key={practiceIndex} 
                       className="flex items-start gap-2 cursor-pointer hover:bg-[#B87333]/5 p-2 rounded-md transition-colors"
-                      onClick={() => handlePracticeClick(practice)}
+                      onClick={() => handlePracticeClick(practice, approach.title)}
                     >
                       <BadgeCheck className="h-5 w-5 text-[#B87333] mt-0.5 flex-shrink-0" />
                       <span className="text-gray-700">{practice}</span>
@@ -138,6 +192,7 @@ const HolisticWellness: React.FC = () => {
                 </ul>
                 <Button 
                   className="w-full bg-gradient-to-br from-[#B87333] to-[#E5C5A1] hover:from-[#A56625] hover:to-[#D4B48F] text-white group mt-2"
+                  onClick={() => handleExploreClick(approach.title, approach.resourcePath)}
                 >
                   <span>Explore Practices</span>
                   <ArrowRight className="h-4 w-4 ml-1 group-hover:translate-x-1 transition-transform" />
@@ -163,6 +218,7 @@ const HolisticWellness: React.FC = () => {
               </p>
               <Button 
                 className="bg-gradient-to-br from-[#B87333] to-[#E5C5A1] hover:from-[#A56625] hover:to-[#D4B48F] text-white shadow-md hover:shadow-lg"
+                onClick={handleAssessmentStart}
               >
                 Start Assessment
               </Button>

@@ -1,3 +1,4 @@
+
 import React, { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
@@ -135,33 +136,44 @@ const MainDashboard: React.FC<MainDashboardProps> = ({
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-gray-50 to-gray-100 py-0 px-0 flex flex-col">
-      <div className="w-full bg-black py-4 px-6 shadow-lg">
-        <div className="container mx-auto max-w-6xl">
-          <div className="flex items-center justify-center md:justify-between">
-            <div className="flex-1 text-center md:text-left">
-              <div className="flex items-center justify-center md:justify-start gap-6">
+      {/* Modern Header with animated gradient background */}
+      <div className="w-full bg-black relative overflow-hidden py-6 px-6 shadow-xl">
+        {/* Animated gradient overlay */}
+        <div className="absolute inset-0 bg-gradient-to-r from-black via-[#221F26] to-black opacity-80"></div>
+        
+        {/* Animated accent elements */}
+        <div className="absolute -top-10 -right-10 w-40 h-40 rounded-full bg-[#B87333]/20 blur-3xl animate-pulse"></div>
+        <div className="absolute -bottom-20 -left-20 w-60 h-60 rounded-full bg-[#B87333]/10 blur-3xl animate-pulse" style={{animationDelay: '1s'}}></div>
+        
+        <div className="container mx-auto max-w-6xl relative z-10">
+          <div className="flex flex-col md:flex-row items-center justify-between gap-6">
+            <div className="flex items-center justify-center md:justify-start gap-6">
+              <div className="relative">
+                <div className="absolute inset-0 bg-gradient-to-r from-[#B87333] to-[#E5C5A1] rounded-full blur-lg opacity-70 animate-pulse"></div>
                 <img 
                   src="/lovable-uploads/f2c6ac08-6331-4884-950d-7f94d68ff15f.png" 
                   alt="Thrive MT Logo" 
-                  className="h-40 w-40 filter drop-shadow-[0_0_15px_rgba(184,115,51,0.9)]"
+                  className="h-24 w-24 relative z-10 filter drop-shadow-[0_0_8px_rgba(184,115,51,0.7)]"
                 />
-                <div>
-                  <h1 className="text-4xl md:text-5xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-[#B87333] via-[#E5C5A1] to-[#B87333] tracking-tight">
-                    Welcome to Thrive MT, {displayName}!
-                  </h1>
-                  <p className="text-lg md:text-xl mt-2 text-transparent bg-clip-text bg-gradient-to-r from-[#E5C5A1] to-[#B87333]">
-                    Let's work on your personalized mental health journey together
-                  </p>
-                </div>
+              </div>
+              <div>
+                <h1 className="text-4xl md:text-5xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-[#B87333] via-[#E5C5A1] to-[#B87333] tracking-tight">
+                  Welcome to Thrive MT
+                </h1>
+                <p className="text-lg md:text-xl mt-2 text-transparent bg-clip-text bg-gradient-to-r from-[#E5C5A1] to-[#B87333]">
+                  Hey {displayName}! Let's work on your personalized mental health journey together
+                </p>
               </div>
             </div>
-            <Button 
-              onClick={onHenryToggle}
-              variant="bronze"
-              className="text-lg px-8 py-6 hidden md:flex"
-            >
-              {showHenry ? "Hide Henry" : "Meet Henry"}
-            </Button>
+            <div className="flex gap-4">
+              <Button 
+                onClick={onHenryToggle}
+                variant="bronze"
+                className="text-base px-6 py-2 backdrop-blur-md"
+              >
+                {showHenry ? "Hide Henry" : "Meet Henry"}
+              </Button>
+            </div>
           </div>
         </div>
       </div>
