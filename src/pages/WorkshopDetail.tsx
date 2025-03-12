@@ -6,9 +6,10 @@ import { workshopData } from "@/data/workshopData";
 import Page from "@/components/Page";
 import { useToast } from "@/hooks/use-toast";
 import { Button } from "@/components/ui/button";
-import { Volume, Volume2, ArrowLeft, Download, Calendar, Clock, Users, BookOpen } from "lucide-react";
+import { Volume, Volume2, ArrowLeft, Download, Calendar, Clock, Users, BookOpen, Brain, Hearts, Target, ListChecks, CheckCircle } from "lucide-react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Progress } from "@/components/ui/progress";
+import { Badge } from "@/components/ui/badge";
 
 const WorkshopDetail = () => {
   const { workshopId } = useParams();
@@ -18,6 +19,7 @@ const WorkshopDetail = () => {
   const [isMuted, setIsMuted] = useState(false);
   const initialTab = location.state?.activeTab || "overview";
   const [activeTab, setActiveTab] = useState(initialTab);
+  const [completedExercises, setCompletedExercises] = useState<Set<string>>(new Set());
   
   // Use the location state to set the initial tab
   useEffect(() => {
@@ -25,6 +27,16 @@ const WorkshopDetail = () => {
       setActiveTab(location.state.activeTab);
     }
   }, [location.state]);
+
+  // Load completed exercises from localStorage
+  useEffect(() => {
+    if (workshopId) {
+      const savedProgress = localStorage.getItem(`workshop-progress-${workshopId}`);
+      if (savedProgress) {
+        setCompletedExercises(new Set(JSON.parse(savedProgress)));
+      }
+    }
+  }, [workshopId]);
   
   const workshop = workshopData.find(w => w.id === workshopId);
   
@@ -85,6 +97,47 @@ const WorkshopDetail = () => {
   const totalExercises = workshop.sections.reduce(
     (count, section) => count + section.exercises.length, 0
   );
+
+  const completedExercisesCount = completedExercises.size;
+  const progressPercentage = totalExercisesCount > 0 
+    ? Math.round((completedExercisesCount / totalExercisesCount) * 100) 
+    : 0;
+
+  // Benefits based on workshop type
+  const getBenefits = () => {
+    switch(workshop.id) {
+      case "stress-management":
+        return [
+          "Reduce daily anxiety and tension",
+          "Develop practical coping mechanisms",
+          "Improve sleep quality",
+          "Enhance emotional resilience"
+        ];
+      case "mindful-communication":
+        return [
+          "Build stronger relationships",
+          "Express needs effectively",
+          "Navigate difficult conversations",
+          "Reduce misunderstandings"
+        ];
+      case "emotional-regulation":
+        return [
+          "Identify emotional patterns",
+          "Process difficult feelings",
+          "Develop healthier responses",
+          "Increase emotional awareness"
+        ];
+      default:
+        return [
+          "Improve overall mental wellbeing",
+          "Develop practical coping skills",
+          "Build emotional resilience",
+          "Connect mind and body"
+        ];
+    }
+  };
+
+  const benefits = getBenefits();
   
   return (
     <Page title={workshop.title} showBackButton={true} onBackClick={handleBack}>
@@ -105,6 +158,41 @@ const WorkshopDetail = () => {
           <TabsContent value="overview">
             <div className="space-y-6">
               <div className="flex flex-col space-y-4">
+                {/* Workshop progress indicator */}
+                <div className="bg-white rounded-lg border border-gray-200 p-6 shadow-sm">
+                  <div className="flex items-center justify-between mb-4">
+                    <div className="flex items-center gap-3">
+                      <div 
+                        className="p-3 rounded-full"
+                        style={{ backgroundColor: `${accentColor}20` }}
+                      >
+                        <workshop.icon className="h-6 w-6" style={{ color: accentColor }} />
+                      </div>
+                      <div>
+                        <h3 className="font-semibold text-lg">Your Progress</h3>
+                        <p className="text-sm text-gray-500">
+                          {completedExercisesCount} of {totalExercises} exercises completed
+                        </p>
+                      </div>
+                    </div>
+                    <Badge 
+                      className="text-xs"
+                      style={{ 
+                        backgroundColor: progressPercentage > 0 ? `${accentColor}20` : "bg-gray-100", 
+                        color: progressPercentage > 0 ? accentColor : "text-gray-500" 
+                      }}
+                    >
+                      {progressPercentage}% Complete
+                    </Badge>
+                  </div>
+                  <div>
+                    <Progress 
+                      value={progressPercentage} 
+                      className="h-2" 
+                    />
+                  </div>
+                </div>
+              
                 {/* Workshop video container */}
                 <div className="relative rounded-lg overflow-hidden bg-black aspect-video">
                   <video 
@@ -167,6 +255,27 @@ const WorkshopDetail = () => {
                       <p className="text-sm text-gray-500">Exercises</p>
                       <p className="font-medium">{totalExercises} activities</p>
                     </div>
+                  </div>
+                </div>
+                
+                {/* Workshop benefits */}
+                <div className="bg-white rounded-lg border border-gray-200 p-6 shadow-sm">
+                  <h3 className="text-xl font-bold mb-4">Benefits of This Workshop</h3>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                    {benefits.map((benefit, index) => (
+                      <div key={index} className="flex items-center gap-2">
+                        <div 
+                          className="p-1 rounded-full"
+                          style={{ backgroundColor: `${accentColor}20` }}
+                        >
+                          <CheckCircle 
+                            className="h-4 w-4"
+                            style={{ color: accentColor }}
+                          />
+                        </div>
+                        <span className="text-gray-700">{benefit}</span>
+                      </div>
+                    ))}
                   </div>
                 </div>
                 
@@ -235,7 +344,7 @@ const WorkshopDetail = () => {
                     className="bg-gradient-to-br from-[#B87333] to-[#E5C5A1] hover:from-[#A56625] hover:to-[#D4B48F] text-white"
                     onClick={() => setActiveTab("workshop")}
                   >
-                    Start Workshop
+                    {completedExercisesCount > 0 ? "Continue Workshop" : "Start Workshop"}
                   </Button>
                 </div>
               </div>
