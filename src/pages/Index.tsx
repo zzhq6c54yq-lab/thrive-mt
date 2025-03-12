@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect, useRef } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useToast } from "@/hooks/use-toast";
@@ -17,11 +18,11 @@ const Index = () => {
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
   const [henryPosition, setHenryPosition] = useState({ x: 0, y: 0 });
   const henryRef = useRef<HTMLDivElement>(null);
-  const [screenState, setScreenState<'intro' | 'mood' | 'moodResponse' | 'register' | 'subscription' | 'visionBoard' | 'main'>('intro');
-  const [selectedMood, setSelectedMood: 'happy' | 'ok' | 'neutral' | 'down' | 'sad' | 'overwhelmed' | null>(null);
-  const [selectedQualities, setSelectedQualities: string[]>([]);
-  const [selectedGoals, setSelectedGoals: string[]>([]);
-  const [selectedPlan, setSelectedPlan: string | null>(null);
+  const [screenState, setScreenState] = useState<'intro' | 'mood' | 'moodResponse' | 'register' | 'subscription' | 'visionBoard' | 'main'>('intro');
+  const [selectedMood, setSelectedMood] = useState<'happy' | 'ok' | 'neutral' | 'down' | 'sad' | 'overwhelmed' | null>(null);
+  const [selectedQualities, setSelectedQualities] = useState<string[]>([]);
+  const [selectedGoals, setSelectedGoals] = useState<string[]>([]);
+  const [selectedPlan, setSelectedPlan] = useState<string | null>(null);
   const [userInfo, setUserInfo] = useState({
     name: '',
     email: '',
@@ -278,6 +279,76 @@ const Index = () => {
         qualities: selectedQualities, 
         goals: selectedGoals 
       }});
+    }
+  };
+
+  const renderCurrentScreen = () => {
+    switch (screenState) {
+      case 'intro':
+        return <IntroScreen onContinue={() => setScreenState('mood')} />;
+      case 'mood':
+        return (
+          <MoodScreen
+            onMoodSelect={(mood) => {
+              setSelectedMood(mood);
+              setScreenState('moodResponse');
+            }}
+            onPrevious={() => setScreenState('intro')}
+          />
+        );
+      case 'moodResponse':
+        return (
+          <MoodResponse
+            selectedMood={selectedMood}
+            onContinue={() => setScreenState('register')}
+            onPrevious={() => setScreenState('mood')}
+          />
+        );
+      case 'register':
+        return (
+          <RegistrationScreen
+            userInfo={userInfo}
+            onUserInfoChange={handleUserInfoChange}
+            onSubmit={handleRegister}
+            onPrevious={() => setScreenState('moodResponse')}
+            onSkip={() => setScreenState('subscription')}
+          />
+        );
+      case 'subscription':
+        return (
+          <SubscriptionScreen
+            selectedPlan={selectedPlan}
+            onPlanSelect={handleSubscriptionSelect}
+            onContinue={() => setScreenState('visionBoard')}
+            onPrevious={() => setScreenState('register')}
+            onSkip={() => setScreenState('main')}
+          />
+        );
+      case 'visionBoard':
+        return (
+          <VisionBoard
+            selectedQualities={selectedQualities}
+            selectedGoals={selectedGoals}
+            onQualityToggle={toggleQuality}
+            onGoalToggle={toggleGoal}
+            onContinue={() => setScreenState('main')}
+            onPrevious={() => setScreenState('subscription')}
+            onSkip={() => setScreenState('main')}
+          />
+        );
+      case 'main':
+        return (
+          <MainDashboard
+            userName={userInfo.name}
+            showHenry={showHenry}
+            onHenryToggle={() => setShowHenry(prev => !prev)}
+            selectedQualities={selectedQualities}
+            selectedGoals={selectedGoals}
+            navigateToFeature={navigateToFeature}
+          />
+        );
+      default:
+        return null;
     }
   };
 
