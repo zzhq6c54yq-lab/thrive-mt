@@ -34,20 +34,44 @@ const Index = () => {
   useEffect(() => {
     if (location.state && location.state.screenState) {
       setScreenState(location.state.screenState);
-      window.history.replaceState({}, document.title);
+      
+      window.history.replaceState(
+        { ...window.history.state, screenState }, 
+        document.title
+      );
     } else if (location.state && location.state.returnToIntro) {
       setScreenState('intro');
-      window.history.replaceState({}, document.title);
+      
+      window.history.replaceState(
+        { ...window.history.state, screenState: 'intro' }, 
+        document.title
+      );
     } else {
+      window.history.replaceState(
+        { ...window.history.state, screenState: 'intro' }, 
+        document.title
+      );
+      
       const timer = setTimeout(() => {
         if (screenState === 'intro') {
           setScreenState('mood');
+          window.history.replaceState(
+            { ...window.history.state, screenState: 'mood' }, 
+            document.title
+          );
         }
       }, 7000);
 
       return () => clearTimeout(timer);
     }
   }, [location.state, screenState]);
+
+  useEffect(() => {
+    window.history.replaceState(
+      { ...window.history.state, screenState }, 
+      document.title
+    );
+  }, [screenState]);
 
   useEffect(() => {
     if (screenState === 'main') {
@@ -147,19 +171,23 @@ const Index = () => {
   };
 
   const handlePrevious = () => {
+    let newScreenState = 'intro';
+    
     if (screenState === 'mood') {
-      setScreenState('intro');
+      newScreenState = 'intro';
     } else if (screenState === 'moodResponse') {
-      setScreenState('mood');
+      newScreenState = 'mood';
     } else if (screenState === 'register') {
-      setScreenState('moodResponse');
+      newScreenState = 'moodResponse';
     } else if (screenState === 'subscription') {
-      setScreenState('register');
+      newScreenState = 'register';
     } else if (screenState === 'visionBoard') {
-      setScreenState('subscription');
+      newScreenState = 'subscription';
     } else if (screenState === 'main') {
-      setScreenState('visionBoard');
+      newScreenState = 'visionBoard';
     }
+    
+    setScreenState(newScreenState);
   };
 
   const handleSkip = () => {
@@ -296,3 +324,4 @@ const Index = () => {
 };
 
 export default Index;
+
