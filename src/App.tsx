@@ -43,6 +43,7 @@ function App() {
         <Route path="/progress-reports" element={<ProgressReports />} />
         <Route path="*" element={<NotFound />} />
       </Routes>
+      {/* HelpButton will handle its own visibility based on route */}
       <HelpButton />
       <Toaster />
     </Router>

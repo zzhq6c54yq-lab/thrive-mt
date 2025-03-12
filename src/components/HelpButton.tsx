@@ -12,12 +12,12 @@ const HelpButton: React.FC<HelpButtonProps> = ({ userName }) => {
   const [isOpen, setIsOpen] = useState(false);
   const shouldShow = useButtonVisibility();
   
-  // Add debug logging to see the value of shouldShow
+  // Debug logging for visibility
   useEffect(() => {
-    console.log("Help button visibility:", shouldShow);
+    console.log("Help button visibility decision:", shouldShow);
   }, [shouldShow]);
   
-  // If button shouldn't be shown, return null (don't render anything)
+  // Important: Early return if button shouldn't be shown
   if (!shouldShow) {
     return null;
   }
