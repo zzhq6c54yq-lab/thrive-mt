@@ -1,7 +1,7 @@
 
 import React, { useState } from "react";
 import { Button } from "@/components/ui/button";
-import { Fingerprint } from "lucide-react";
+import { MousePointer } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import HelpDialog from "./HelpDialog";
 
@@ -56,11 +56,13 @@ const HelpNavButton: React.FC = () => {
           size="icon"
         >
           {/* Custom H with circle design */}
-          <div className="relative flex items-center justify-center w-full h-full">
-            <div className="absolute inset-1 rounded-full border-2 border-white/80"></div>
+          <div className="relative flex items-center justify-center w-full h-full cursor-pointer">
+            <div className="absolute inset-0 rounded-full border-2 border-white/80 flex items-center justify-center">
+              <MousePointer className="h-4 w-4 text-white/60 absolute animate-bounce" style={{ top: '30%' }} />
+              <MousePointer className="h-4 w-4 text-white/60 absolute animate-bounce" style={{ bottom: '30%', animationDelay: '0.5s' }} />
+            </div>
             <span className="text-2xl font-bold">H</span>
           </div>
-          <Fingerprint className="h-8 w-8 opacity-0 group-hover:opacity-100 transition-opacity duration-300 absolute animate-pulse" />
           <span className="absolute -bottom-8 text-xs text-white bg-black/70 px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap">
             Swipe to scroll
           </span>

@@ -23,6 +23,10 @@ const Page: React.FC<PageProps> = ({ title, children, showBackButton = true, onB
       navigate("/", { state: { screenState: 'main' } });
     }
   };
+
+  const handleMainMenu = () => {
+    navigate("/", { state: { screenState: 'main' } });
+  };
   
   return (
     <div className="min-h-screen bg-gradient-to-b from-[#1a1a1f] via-[#242432] to-[#272730] text-white py-8 px-4 relative">
@@ -53,6 +57,13 @@ const Page: React.FC<PageProps> = ({ title, children, showBackButton = true, onB
           </div>
           
           <div className="flex items-center gap-3">
+            <Button
+              variant="outline"
+              className="bg-white/5 hover:bg-white/15 border-white/10 text-white/90"
+              onClick={handleMainMenu}
+            >
+              Main Menu
+            </Button>
             <HomeButton className="bg-white/5 hover:bg-white/15" />
           </div>
         </div>

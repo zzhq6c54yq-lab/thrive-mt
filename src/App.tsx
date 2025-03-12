@@ -46,6 +46,10 @@ function App() {
         <Route path="/family-support" element={<Page title="Family & Caregiver Support" />} />
         <Route path="/alternative-therapies" element={<Page title="Alternative Therapies" />} />
         <Route path="/mindfulness" element={<Page title="Mindfulness & Sleep" />} />
+        <Route path="/self-help-resources" element={<Page title="Self-Help Resources" />} />
+        <Route path="/journaling" element={<Page title="Journaling" />} />
+        <Route path="/crisis-support" element={<Page title="Crisis Support" />} />
+        <Route path="/progress-analytics" element={<Page title="Progress Analytics" />} />
         <Route path="*" element={<NotFound />} />
       </Routes>
       <HelpButton />
