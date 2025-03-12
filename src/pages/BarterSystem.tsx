@@ -55,7 +55,7 @@ const BarterSystem = () => {
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           {/* Left Column - Main Description */}
           <div className="lg:col-span-2 space-y-6">
-            <Card className="border-white/10 bg-white/5 shadow-lg hover:shadow-xl transition-all duration-300">
+            <Card className="border-white/10 bg-[#1a1a1f]/80 shadow-lg hover:shadow-xl transition-all duration-300">
               <CardContent className="p-6">
                 <p className="text-white/90 leading-relaxed mb-4">
                   To ensure that everyone has access to the support they need, we have developed a unique barter system 
@@ -75,7 +75,7 @@ const BarterSystem = () => {
               </CardContent>
             </Card>
 
-            <Card className="border-white/10 bg-white/5 shadow-lg hover:shadow-xl transition-all duration-300">
+            <Card className="border-white/10 bg-[#1a1a1f]/80 shadow-lg hover:shadow-xl transition-all duration-300">
               <CardHeader>
                 <CardTitle className="text-xl text-white">Equitable & Meaningful Service</CardTitle>
               </CardHeader>
@@ -94,7 +94,7 @@ const BarterSystem = () => {
               </CardContent>
             </Card>
 
-            <Card className="border-white/10 bg-white/5 shadow-lg hover:shadow-xl transition-all duration-300">
+            <Card className="border-white/10 bg-[#1a1a1f]/80 shadow-lg hover:shadow-xl transition-all duration-300">
               <CardHeader>
                 <CardTitle className="text-xl text-white">Our Commitment</CardTitle>
               </CardHeader>
@@ -121,7 +121,7 @@ const BarterSystem = () => {
 
           {/* Right Column - Info Cards & Application */}
           <div className="space-y-6">
-            <Card className="border-white/10 bg-white/5 shadow-lg hover:shadow-xl transition-all duration-300">
+            <Card className="border-white/10 bg-[#1a1a1f]/80 shadow-lg hover:shadow-xl transition-all duration-300">
               <CardHeader className="pb-2">
                 <CardTitle className="text-xl text-white">How It Works</CardTitle>
               </CardHeader>
@@ -192,7 +192,7 @@ const BarterSystem = () => {
               </CardContent>
             </Card>
 
-            <Card className="border-white/10 bg-white/5 shadow-lg hover:shadow-xl transition-all duration-300">
+            <Card className="border-white/10 bg-[#1a1a1f]/80 shadow-lg hover:shadow-xl transition-all duration-300">
               <CardHeader className="pb-2">
                 <CardTitle className="text-xl text-white">Contact Us</CardTitle>
                 <CardDescription className="text-white/70">
