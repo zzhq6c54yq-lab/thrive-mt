@@ -6,8 +6,33 @@ export const useButtonVisibility = () => {
   
   // Determine if the button should be visible based on the current route
   const shouldShowButton = () => {
-    // Initial screens where button should NEVER appear
-    const initialScreens = [
+    // Define the main menu routes where the button SHOULD start to appear
+    const mainMenuRoutes = [
+      '/',      // Main menu
+      '/index'  // Main menu alternate route
+    ];
+    
+    // Feature routes after the main menu where the button should also appear
+    const featureRoutes = [
+      '/mental-wellness-tools',
+      '/workshops',
+      '/real-time-therapy',
+      '/scheduling',
+      '/privacy-security',
+      '/my-sponsor',
+      '/therapist-questionnaire',
+      '/therapist-matches',
+      '/workshop',
+      '/virtual-meetings',
+      '/mental-health-games',
+      '/personalized-content',
+      '/community-support',
+      '/resource-library',
+      '/progress-reports'
+    ];
+    
+    // First screens before the main menu where button should NEVER appear
+    const preMainMenuScreens = [
       '/initial-screen',
       '/emotional-check',
       '/registration',
@@ -18,42 +43,35 @@ export const useButtonVisibility = () => {
       '/creator'
     ];
     
-    // Explicitly include routes where the button SHOULD appear
-    const featureRoutes = [
-      '/',  // Main menu
-      '/index',
-      '/mental-wellness-tools',
-      '/workshops'
-    ];
-    
-    // Check if current path is one of the initial screens (exact match)
-    if (initialScreens.includes(location.pathname)) {
-      return false;
-    }
-    
-    // Check if current path is a subpath of any initial screen
-    for (const screen of initialScreens) {
-      if (location.pathname.startsWith(`${screen}/`)) {
-        return false;
-      }
-    }
-    
-    // If the path is either the main menu or one of the feature routes, show the button
-    if (location.pathname === '/' || location.pathname === '/index' || featureRoutes.includes(location.pathname)) {
+    // Check if current path is exactly a main menu route - show button
+    if (mainMenuRoutes.includes(location.pathname)) {
       return true;
     }
     
-    // For all other screens, check if they are "after" the main menu by ensuring they don't contain
-    // any substrings that would indicate they are part of the initial onboarding flow
-    const onboardingSubpaths = ['initial', 'emotional', 'registration', 'pricing', 'vision', 'onboarding', 'cheese', 'creator'];
+    // Check if current path matches or is a sub-route of a feature route - show button
+    for (const route of featureRoutes) {
+      if (location.pathname === route || location.pathname.startsWith(`${route}/`)) {
+        return true;
+      }
+    }
     
-    for (const subpath of onboardingSubpaths) {
-      if (location.pathname.includes(subpath)) {
+    // Check if current path is or starts with a pre-main menu screen - hide button
+    for (const screen of preMainMenuScreens) {
+      if (location.pathname === screen || location.pathname.startsWith(`${screen}/`)) {
         return false;
       }
     }
     
-    // If we've made it here, the screen is likely after the main menu
+    // Check if the path contains any keywords indicating it's part of the pre-main menu flow
+    const preMainMenuKeywords = ['initial', 'emotional', 'registration', 'pricing', 'vision', 'onboarding', 'cheese', 'creator'];
+    
+    for (const keyword of preMainMenuKeywords) {
+      if (location.pathname.includes(keyword)) {
+        return false;
+      }
+    }
+    
+    // For any other routes, default to showing the button as they're likely post-main menu
     return true;
   };
 
