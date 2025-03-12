@@ -171,7 +171,7 @@ const Index = () => {
   };
 
   const handlePrevious = () => {
-    let newScreenState = 'intro';
+    let newScreenState: 'intro' | 'mood' | 'moodResponse' | 'register' | 'subscription' | 'visionBoard' | 'main' = 'intro';
     
     if (screenState === 'mood') {
       newScreenState = 'intro';
@@ -324,4 +324,3 @@ const Index = () => {
 };
 
 export default Index;
-
