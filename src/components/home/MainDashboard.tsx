@@ -1,4 +1,3 @@
-
 import React, { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
@@ -6,7 +5,7 @@ import { Brain, Library, Users, Heart, GraduationCap, CalendarRange, LeafyGreen,
 import { useToast } from "@/hooks/use-toast";
 import { workshopData } from "@/data/workshopData";
 import { Link } from "react-router-dom";
-import FloatingButton from "@/components/help/FloatingButton";
+import HelpNavButton from "@/components/help/HelpNavButton";
 
 interface MainDashboardProps {
   userName: string;
@@ -138,15 +137,22 @@ const MainDashboard: React.FC<MainDashboardProps> = ({
       <div className="w-full bg-black py-4 px-6 shadow-lg">
         <div className="container mx-auto max-w-6xl">
           <div className="flex items-center justify-center md:justify-between">
-            <div className="flex items-center justify-center">
-              <img 
-                src="/lovable-uploads/f2c6ac08-6331-4884-950d-7f94d68ff15f.png" 
-                alt="Thrive MT Logo" 
-                className="h-32 w-32 filter drop-shadow-[0_0_12px_rgba(184,115,51,0.9)]"
-              />
-              <h1 className="text-5xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-[#B87333] via-[#E5C5A1] to-[#B87333] tracking-tight ml-4">
-                Welcome {displayName}!
-              </h1>
+            <div className="flex-1 text-center md:text-left">
+              <div className="flex items-center justify-center md:justify-start gap-6">
+                <img 
+                  src="/lovable-uploads/f2c6ac08-6331-4884-950d-7f94d68ff15f.png" 
+                  alt="Thrive MT Logo" 
+                  className="h-32 w-32 filter drop-shadow-[0_0_12px_rgba(184,115,51,0.9)]"
+                />
+                <div>
+                  <h1 className="text-4xl md:text-5xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-[#B87333] via-[#E5C5A1] to-[#B87333] tracking-tight">
+                    Welcome to Thrive MT, {displayName}!
+                  </h1>
+                  <p className="text-lg md:text-xl mt-2 text-transparent bg-clip-text bg-gradient-to-r from-[#E5C5A1] to-[#B87333]">
+                    Let's work on your personalized mental health journey together
+                  </p>
+                </div>
+              </div>
             </div>
             <Button 
               onClick={onHenryToggle}
@@ -300,7 +306,7 @@ const MainDashboard: React.FC<MainDashboardProps> = ({
         </div>
       </footer>
 
-      <FloatingButton onClick={() => navigateToFeature("/")} />
+      <HelpNavButton />
     </div>
   );
 };

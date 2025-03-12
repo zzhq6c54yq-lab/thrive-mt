@@ -23,59 +23,59 @@ const MoodResponse: React.FC<MoodResponseProps> = ({ selectedMood, onContinue, o
   const renderEmergencyServices = () => {
     return (
       <Dialog open={showEmergencyServices} onOpenChange={setShowEmergencyServices}>
-        <DialogContent className="max-w-md">
+        <DialogContent className="max-w-md bg-red-50 border-2 border-red-500">
           <DialogHeader>
-            <DialogTitle className="text-xl font-semibold text-center">
-              Support Services Available
+            <DialogTitle className="text-xl font-semibold text-center text-red-700">
+              Emergency Support Services Available
             </DialogTitle>
-            <DialogDescription className="text-center pt-2">
-              We want you to know that help is available if you need it.
+            <DialogDescription className="text-center pt-2 text-red-600">
+              If you're experiencing a crisis, help is available right now.
             </DialogDescription>
           </DialogHeader>
           
           <div className="space-y-4 my-4">
-            <div className="flex items-start p-3 bg-[#F9F5FF] rounded-lg">
-              <PhoneCall className="text-[#B87333] mr-3 mt-1 h-5 w-5 flex-shrink-0" />
+            <div className="flex items-start p-3 bg-red-100 rounded-lg border border-red-300">
+              <PhoneCall className="text-red-600 mr-3 mt-1 h-5 w-5 flex-shrink-0" />
               <div>
-                <h3 className="font-medium">Crisis Helpline</h3>
-                <p className="text-sm text-gray-600">Talk with a trained counselor 24/7: 988</p>
+                <h3 className="font-medium text-red-700">Crisis Helpline</h3>
+                <p className="text-sm text-red-600">Call 988 - Available 24/7</p>
               </div>
             </div>
             
-            <div className="flex items-start p-3 bg-[#F9F5FF] rounded-lg">
-              <MessageSquare className="text-[#B87333] mr-3 mt-1 h-5 w-5 flex-shrink-0" />
+            <div className="flex items-start p-3 bg-red-100 rounded-lg border border-red-300">
+              <MessageSquare className="text-red-600 mr-3 mt-1 h-5 w-5 flex-shrink-0" />
               <div>
-                <h3 className="font-medium">Text Support</h3>
-                <p className="text-sm text-gray-600">Text HOME to 741741 to connect with a Crisis Counselor</p>
+                <h3 className="font-medium text-red-700">Text Support</h3>
+                <p className="text-sm text-red-600">Text HOME to 741741</p>
               </div>
             </div>
             
-            <div className="flex items-start p-3 bg-[#F9F5FF] rounded-lg">
-              <Headphones className="text-[#B87333] mr-3 mt-1 h-5 w-5 flex-shrink-0" />
+            <div className="flex items-start p-3 bg-red-100 rounded-lg border border-red-300">
+              <Headphones className="text-red-600 mr-3 mt-1 h-5 w-5 flex-shrink-0" />
               <div>
-                <h3 className="font-medium">Suicide Prevention Lifeline</h3>
-                <p className="text-sm text-gray-600">Call 1-800-273-8255 for support</p>
+                <h3 className="font-medium text-red-700">Suicide Prevention Lifeline</h3>
+                <p className="text-sm text-red-600">1-800-273-8255</p>
               </div>
             </div>
             
-            <div className="flex items-start p-3 bg-[#F9F5FF] rounded-lg">
-              <AlertTriangle className="text-[#B87333] mr-3 mt-1 h-5 w-5 flex-shrink-0" />
+            <div className="flex items-start p-3 bg-red-100 rounded-lg border border-red-300">
+              <AlertTriangle className="text-red-600 mr-3 mt-1 h-5 w-5 flex-shrink-0 animate-pulse" />
               <div>
-                <h3 className="font-medium">Emergency Services</h3>
-                <p className="text-sm text-gray-600">For immediate help, please call 911</p>
+                <h3 className="font-medium text-red-700">Emergency Services</h3>
+                <p className="text-sm text-red-600">Call 911 for immediate help</p>
               </div>
             </div>
           </div>
           
           <DialogFooter className="flex justify-center">
             <Button 
-              className="w-full bg-[#B87333] hover:bg-[#B87333]/90"
+              className="w-full bg-red-600 hover:bg-red-700 text-white"
               onClick={() => {
                 setShowEmergencyServices(false);
                 onContinue();
               }}
             >
-              Continue to Registration
+              Continue to Support Resources
             </Button>
           </DialogFooter>
         </DialogContent>
