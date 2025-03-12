@@ -13,13 +13,25 @@ import {
 } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { ChevronDown, ChevronUp, Play, Clock } from "lucide-react";
+import { useToast } from "@/hooks/use-toast";
 
 const Workshops = () => {
-  const [isExpanded, setIsExpanded] = useState(false);
+  const [isExpanded, setIsExpanded] = useState(true); // Default to expanded
   const navigate = useNavigate();
+  const { toast } = useToast();
   
   const handleBack = () => {
     navigate("/");
+  };
+
+  const handleJoinWorkshop = (workshopId: string) => {
+    toast({
+      title: "Joining Workshop",
+      description: "Taking you to the workshop content",
+      duration: 1500,
+    });
+    
+    navigate(`/workshop/${workshopId}`);
   };
 
   return (
@@ -81,21 +93,17 @@ const Workshops = () => {
                           {workshop.description}
                         </p>
                         
-                        <Link 
-                          to={`/workshop/${workshop.id}`} 
-                          className="block"
+                        <Button 
+                          className="w-full flex items-center justify-center gap-2 hover:shadow-md"
+                          style={{ 
+                            backgroundColor: accentColor,
+                            color: '#fff'
+                          }}
+                          onClick={() => handleJoinWorkshop(workshop.id)}
                         >
-                          <Button 
-                            className="w-full flex items-center justify-center gap-2 hover:shadow-md"
-                            style={{ 
-                              backgroundColor: accentColor,
-                              color: '#fff'
-                            }}
-                          >
-                            Join Now
-                            <Play className="h-4 w-4 ml-1" />
-                          </Button>
-                        </Link>
+                          Join Now
+                          <Play className="h-4 w-4 ml-1" />
+                        </Button>
                       </div>
                       
                       {/* Highlight effect on hover */}

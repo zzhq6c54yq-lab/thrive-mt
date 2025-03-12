@@ -1,4 +1,3 @@
-
 import React, { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
@@ -147,7 +146,7 @@ const MainDashboard: React.FC<MainDashboardProps> = ({
   const handleWorkshopJoin = (workshopId: string) => {
     toast({
       title: "Joining Workshop",
-      description: "Preparing your workshop experience...",
+      description: "Taking you to the workshop content",
       duration: 1500,
     });
     
@@ -156,41 +155,28 @@ const MainDashboard: React.FC<MainDashboardProps> = ({
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-gray-50 to-gray-100 py-0 px-0 flex flex-col">
-      {/* Modern Header with flowing animated design */}
       <div className="w-full relative overflow-hidden py-0">
-        {/* Animated gradient background */}
         <div className="absolute inset-0 bg-gradient-to-r from-[#181820] via-[#221F26] to-[#181820]"></div>
-        
-        {/* Flowing animated wave elements */}
         <div className="absolute inset-0 opacity-20">
           <div className="absolute top-0 left-0 right-0 h-16 bg-gradient-to-r from-[#B87333]/10 via-[#E5C5A1]/20 to-[#B87333]/10 transform -skew-y-3"></div>
           <div className="absolute top-10 left-0 right-0 h-24 bg-gradient-to-r from-[#E5C5A1]/5 via-[#B87333]/10 to-[#E5C5A1]/5 transform skew-y-2" style={{animationDelay: '0.5s'}}></div>
           <div className="absolute bottom-0 left-0 right-0 h-20 bg-gradient-to-r from-[#B87333]/10 via-[#E5C5A1]/15 to-[#B87333]/10 transform -skew-y-2"></div>
         </div>
-        
-        {/* Logo and content container */}
         <div className="container mx-auto max-w-6xl relative z-10">
           <div className="flex flex-col items-center pt-12 pb-16 px-6">
             <div className="flex flex-col md:flex-row items-center justify-between w-full">
-              {/* Logo and title section with enhanced natural look */}
               <div className="flex items-center gap-8 mb-6 md:mb-0">
                 <div className="relative group">
-                  {/* Pulsing glow effect */}
                   <div className="absolute inset-0 rounded-full bg-gradient-to-r from-[#B87333]/40 to-[#E5C5A1]/40 blur-xl animate-pulse"></div>
-                  {/* Rotating halo effect */}
                   <div className="absolute inset-[-8px] rounded-full border-2 border-[#B87333]/30 animate-spin" style={{animationDuration: '20s'}}></div>
-                  {/* Natural outline */}
                   <div className="absolute inset-[-4px] rounded-full bg-gradient-to-br from-[#B87333]/50 to-[#E5C5A1]/30 blur-sm"></div>
-                  {/* Logo */}
                   <img 
                     src="/lovable-uploads/f2c6ac08-6331-4884-950d-7f94d68ff15f.png" 
                     alt="Thrive MT Logo" 
                     className="relative h-28 w-28 object-contain filter drop-shadow-[0_0_8px_rgba(184,115,51,0.7)] transition-transform duration-500 group-hover:scale-110"
                   />
                 </div>
-                
                 <div className="text-center md:text-left">
-                  {/* Multi-line flowing text with animated gradient */}
                   <h1 className="text-4xl md:text-5xl font-bold tracking-tight">
                     <span className="block text-transparent bg-clip-text bg-gradient-to-r from-[#B87333] via-[#E5C5A1] to-[#B87333] animate-gradient-x" style={{backgroundSize: '200% auto'}}>
                       Welcome to
@@ -199,37 +185,27 @@ const MainDashboard: React.FC<MainDashboardProps> = ({
                       Thrive MT
                     </span>
                   </h1>
-                  
                   <p className="mt-3 text-xl text-transparent bg-clip-text bg-gradient-to-r from-[#E5C5A1]/90 to-[#B87333]/90">
                     Hey {displayName}! Let's work on your mental health journey
                   </p>
                 </div>
               </div>
-              
-              {/* Sneaker-design for "Meet Henry" button */}
               <div>
                 <Button 
                   onClick={onHenryToggle}
                   variant="outline"
                   className="relative px-10 py-3 bg-gradient-to-b from-[#222] to-[#111] border-[#B87333]/50 hover:border-[#B87333] group overflow-hidden"
                 >
-                  {/* Sneaker sole design */}
                   <div className="absolute bottom-0 left-0 right-0 h-1.5 bg-[#B87333]/80 rounded-b-md"></div>
-                  
-                  {/* Sneaker pattern elements */}
                   <div className="absolute top-1 left-1 w-2 h-2 rounded-full border border-[#B87333]/40"></div>
                   <div className="absolute top-1 right-1 w-2 h-2 rounded-full border border-[#B87333]/40"></div>
                   <div className="absolute -left-1 top-1/2 transform -translate-y-1/2 w-2 h-8 bg-[#B87333]/20 rounded-r-full"></div>
-                  
-                  {/* Icon and text */}
                   <div className="flex items-center gap-2">
                     <Footprints className="h-5 w-5 text-[#B87333] group-hover:scale-110 transition-transform" />
                     <span className="relative z-10 text-white">
                       {showHenry ? "Hide Henry" : "Meet Henry"}
                     </span>
                   </div>
-                  
-                  {/* Hover effect */}
                   <div className="absolute inset-0 bg-gradient-to-r from-[#B87333]/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
                 </Button>
               </div>
@@ -293,7 +269,6 @@ const MainDashboard: React.FC<MainDashboardProps> = ({
                             muted={isMuted}
                             poster={`https://picsum.photos/seed/${workshop.id}/640/360`}
                           >
-                            {/* Using a sample video URL - in production you would use actual workshop videos */}
                             <source src="https://interactive-examples.mdn.mozilla.net/media/cc0-videos/flower.mp4" type="video/mp4" />
                             Your browser does not support the video tag.
                           </video>
