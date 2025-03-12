@@ -343,7 +343,7 @@ const Index = () => {
     } else if (screenState === 'register') {
       setScreenState('moodResponse');
     } else if (screenState === 'subscription') {
-      setScreenState('moodResponse'); 
+      setScreenState('register');
     } else if (screenState === 'visionBoard') {
       setScreenState('subscription');
     } else if (screenState === 'main') {
@@ -352,13 +352,7 @@ const Index = () => {
   };
 
   const handleSkip = () => {
-    if (screenState === 'register' || screenState === 'moodResponse') {
-      setScreenState('subscription');
-    } else if (screenState === 'subscription') {
-      setScreenState('visionBoard');
-    } else {
-      setScreenState('main');
-    }
+    setScreenState('main');
   };
 
   const handleSubscriptionSelect = (planTitle: string) => {
@@ -451,12 +445,6 @@ const Index = () => {
                 Begin Your Journey
                 <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
               </Button>
-              <Button 
-                className="group bg-transparent border border-[#B87333] text-[#B87333] hover:bg-[#B87333]/10"
-                onClick={handleSkip}
-              >
-                Skip to Main
-              </Button>
             </div>
           </div>
         </div>
@@ -540,12 +528,6 @@ const Index = () => {
               >
                 <ArrowLeft className="h-4 w-4" />
                 Previous
-              </Button>
-              <Button 
-                className="group bg-transparent border border-[#B87333] text-[#B87333] hover:bg-[#B87333]/10"
-                onClick={handleSkip}
-              >
-                Skip to Main
               </Button>
             </div>
           </div>
@@ -842,9 +824,9 @@ const Index = () => {
               </Button>
               <Button 
                 variant="outline"
-                onClick={handleSkip}
+                onClick={() => setScreenState('subscription')}
               >
-                Skip for Now
+                Continue Without Registration
               </Button>
             </div>
           </div>

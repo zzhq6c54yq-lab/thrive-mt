@@ -1,9 +1,8 @@
-
 import { useEffect, useState } from "react";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Button } from "@/components/ui/button";
-import { ArrowRight, BookOpen, Film, Dumbbell, Star, Home, CheckCircle } from "lucide-react";
+import { ArrowRight, BookOpen, Film, Dumbbell, Star, Home, CheckCircle, Music, Brain, MessagesSquare, Clock, Calendar, Heart, Sparkles } from "lucide-react";
 import { useLocation, useNavigate, Link } from "react-router-dom";
 import { useToast } from "@/hooks/use-toast";
 import HomeButton from "@/components/HomeButton";
@@ -11,11 +10,13 @@ import HomeButton from "@/components/HomeButton";
 type ContentItem = {
   id: string;
   title: string;
-  type: "article" | "video" | "exercise";
+  type: "article" | "video" | "exercise" | "meditation" | "podcast" | "assessment";
   description: string;
   tags: string[];
   duration: string;
   completed: boolean;
+  featured?: boolean;
+  new?: boolean;
 };
 
 const PersonalizedContent = () => {
@@ -28,18 +29,17 @@ const PersonalizedContent = () => {
   const navigate = useNavigate();
   const { toast } = useToast();
 
+  const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
+
   useEffect(() => {
-    // Get user preferences and goals from location state or set defaults
     if (location.state?.qualities && location.state?.goals) {
       setUserPreferences(location.state.qualities);
       setUserGoals(location.state.goals);
     } else {
-      // Default preferences if none set
       setUserPreferences(["peaceful", "mindful"]);
       setUserGoals(["reducing-anxiety", "managing-stress"]);
     }
 
-    // Simulate loading data
     setTimeout(() => {
       setIsLoading(false);
     }, 1000);
@@ -47,13 +47,11 @@ const PersonalizedContent = () => {
 
   useEffect(() => {
     if (userPreferences.length > 0 && userGoals.length > 0) {
-      // Generate personalized content based on user preferences and goals
       generatePersonalizedContent();
     }
   }, [userPreferences, userGoals, isLoading]);
 
   const generatePersonalizedContent = () => {
-    // Sample content library
     const contentLibrary: ContentItem[] = [
       {
         id: "article-1",
@@ -135,17 +133,100 @@ const PersonalizedContent = () => {
         tags: ["setting-boundaries", "work-life-balance"],
         duration: "15 min activity",
         completed: false
+      },
+      {
+        id: "meditation-1",
+        title: "Morning Mindfulness Meditation",
+        type: "meditation",
+        description: "Start your day with this calming 10-minute mindfulness meditation practice.",
+        tags: ["peaceful", "mindful", "reducing-anxiety", "morning-routine"],
+        duration: "10 min audio",
+        completed: false,
+        featured: true
+      },
+      {
+        id: "meditation-2",
+        title: "Sleep Wind-Down Meditation",
+        type: "meditation",
+        description: "Prepare your mind and body for restful sleep with this guided meditation.",
+        tags: ["peaceful", "improving-sleep", "evening-routine"],
+        duration: "15 min audio",
+        completed: false
+      },
+      {
+        id: "podcast-1",
+        title: "Understanding Anxiety with Dr. Ellen Brown",
+        type: "podcast",
+        description: "Clinical psychologist Dr. Brown explains anxiety mechanisms and coping strategies.",
+        tags: ["educational", "reducing-anxiety", "professional-insights"],
+        duration: "45 min podcast",
+        completed: false
+      },
+      {
+        id: "podcast-2",
+        title: "The Science of Happiness",
+        type: "podcast",
+        description: "Research-backed strategies to increase your happiness and life satisfaction.",
+        tags: ["joyful", "science-based", "positive-psychology"],
+        duration: "35 min podcast",
+        completed: false,
+        new: true
+      },
+      {
+        id: "assessment-1",
+        title: "Stress Vulnerability Assessment",
+        type: "assessment",
+        description: "Discover your stress triggers and resilience factors with this interactive assessment.",
+        tags: ["managing-stress", "self-awareness", "resilient"],
+        duration: "10 min activity",
+        completed: false
+      },
+      {
+        id: "video-4",
+        title: "Anxiety Relief Breathing Techniques",
+        type: "video",
+        description: "Learn five evidence-based breathing exercises to manage anxiety in the moment.",
+        tags: ["reducing-anxiety", "quick-tools", "mindful"],
+        duration: "12 min video",
+        completed: false,
+        new: true
+      },
+      {
+        id: "article-4",
+        title: "Setting Healthy Digital Boundaries",
+        type: "article",
+        description: "How to create a healthier relationship with technology for better mental wellbeing.",
+        tags: ["setting-boundaries", "digital-wellness", "work-life-balance"],
+        duration: "8 min read",
+        completed: false
+      },
+      {
+        id: "exercise-4",
+        title: "Values Clarification Workshop",
+        type: "exercise",
+        description: "Interactive exercises to help you identify and align with your core values.",
+        tags: ["finding-purpose", "self-awareness", "focused"],
+        duration: "20 min activity",
+        completed: false,
+        featured: true
+      },
+      {
+        id: "exercise-5",
+        title: "5-Minute Mood Boosters",
+        type: "exercise",
+        description: "Quick activities you can do anytime to lift your mood and energy.",
+        tags: ["joyful", "energetic", "quick-tools"],
+        duration: "5 min activity",
+        completed: false
       }
     ];
 
-    // Filter content based on user preferences and goals
     const filteredContent = contentLibrary.filter(item => {
       return item.tags.some(tag => 
         userPreferences.includes(tag) || userGoals.includes(tag)
       );
     });
 
-    // Sort by relevance (number of matching tags)
     filteredContent.sort((a, b) => {
       const aRelevance = a.tags.filter(tag => 
         userPreferences.includes(tag) || userGoals.includes(tag)
@@ -154,6 +235,12 @@ const PersonalizedContent = () => {
       const bRelevance = b.tags.filter(tag => 
         userPreferences.includes(tag) || userGoals.includes(tag)
       ).length;
+      
+      if (a.featured && !b.featured) return -1;
+      if (!a.featured && b.featured) return 1;
+      
+      if (a.new && !b.new) return -1;
+      if (!a.new && b.new) return 1;
       
       return bRelevance - aRelevance;
     });
@@ -182,10 +269,44 @@ const PersonalizedContent = () => {
         return <Film className="h-5 w-5" />;
       case "exercise":
         return <Dumbbell className="h-5 w-5" />;
+      case "meditation":
+        return <Brain className="h-5 w-5" />;
+      case "podcast":
+        return <Music className="h-5 w-5" />;
+      case "assessment":
+        return <Sparkles className="h-5 w-5" />;
       default:
         return <Star className="h-5 w-5" />;
     }
   };
+
+  const getContentTypeColor = (type: string) => {
+    switch (type) {
+      case "article":
+        return "text-blue-500";
+      case "video":
+        return "text-purple-500";
+      case "exercise":
+        return "text-green-500";
+      case "meditation":
+        return "text-[#B87333]";
+      case "podcast":
+        return "text-pink-500";
+      case "assessment":
+        return "text-teal-500";
+      default:
+        return "text-gray-500";
+    }
+  };
+
+  const contentCategories = [
+    { id: "mindfulness", name: "Mindfulness & Meditation", icon: Brain },
+    { id: "anxiety-relief", name: "Anxiety Relief", icon: Heart },
+    { id: "sleep", name: "Better Sleep", icon: Clock },
+    { id: "relationships", name: "Healthy Relationships", icon: MessagesSquare },
+    { id: "daily-practices", name: "Daily Wellness Practices", icon: Calendar },
+    { id: "self-discovery", name: "Self-Discovery", icon: Sparkles }
+  ];
 
   return (
     <div className="min-h-screen bg-[#f9f9f9]">
@@ -197,7 +318,7 @@ const PersonalizedContent = () => {
           </div>
           <p className="text-lg text-gray-300 max-w-2xl">
             Content tailored just for you based on your preferences and goals. 
-            Discover articles, videos, and exercises that support your mental wellness journey.
+            Discover articles, videos, exercises, meditations, and more to support your mental wellness journey.
           </p>
         </div>
       </div>
@@ -210,12 +331,84 @@ const PersonalizedContent = () => {
           </div>
         ) : (
           <>
+            <div className="mb-12">
+              <h2 className="text-2xl font-bold mb-6 text-[#1a1a1f] flex items-center">
+                <Star className="w-6 h-6 mr-2 text-[#B87333]" />
+                Featured Content
+              </h2>
+              
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                {content.filter(item => item.featured).slice(0, 3).map((item) => (
+                  <Card key={item.id} className="hover:shadow-md transition-all duration-300 border-[#B87333]/20">
+                    <CardHeader className="pb-2">
+                      <div className="flex justify-between items-center">
+                        <div className="flex items-center">
+                          {getContentIcon(item.type)}
+                          <span className={`text-sm font-medium ml-2 ${getContentTypeColor(item.type)}`}>
+                            {item.type.charAt(0).toUpperCase() + item.type.slice(1)}
+                          </span>
+                        </div>
+                        {item.new && (
+                          <span className="px-2 py-0.5 bg-[#B87333] text-white text-xs rounded-full">New</span>
+                        )}
+                      </div>
+                      <CardTitle className="text-xl mt-2">{item.title}</CardTitle>
+                      <CardDescription>{item.description}</CardDescription>
+                    </CardHeader>
+                    <CardContent className="pb-2">
+                      <div className="flex items-center text-sm text-gray-500">
+                        <Clock className="h-4 w-4 mr-1" />
+                        {item.duration}
+                      </div>
+                    </CardContent>
+                    <CardFooter className="flex justify-between">
+                      <Button 
+                        className="bg-[#B87333]/10 hover:bg-[#B87333]/20 text-[#B87333]"
+                        onClick={() => setSelectedCategory(item.type)}
+                      >
+                        View Similar
+                      </Button>
+                      <Button 
+                        className="bg-[#B87333] hover:bg-[#B87333]/90"
+                        onClick={() => markAsCompleted(item.id)}
+                      >
+                        Start Now
+                      </Button>
+                    </CardFooter>
+                  </Card>
+                ))}
+              </div>
+            </div>
+            
+            <div className="mb-12">
+              <h2 className="text-2xl font-bold mb-6 text-[#1a1a1f] flex items-center">
+                <Heart className="w-6 h-6 mr-2 text-[#B87333]" />
+                Wellness Categories
+              </h2>
+              
+              <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
+                {contentCategories.map(category => (
+                  <Button
+                    key={category.id}
+                    variant="outline"
+                    className={`h-auto py-6 flex flex-col items-center justify-center border ${selectedCategory === category.id ? 'border-[#B87333] bg-[#B87333]/5' : 'hover:border-[#B87333]/50'}`}
+                    onClick={() => setSelectedCategory(category.id === selectedCategory ? null : category.id)}
+                  >
+                    <category.icon className="h-8 w-8 mb-2 text-[#B87333]" />
+                    <span className="text-center text-sm">{category.name}</span>
+                  </Button>
+                ))}
+              </div>
+            </div>
+
             <Tabs defaultValue="recommended" className="w-full" onValueChange={setActiveTab}>
               <TabsList className="mb-6 w-full justify-start max-w-md">
                 <TabsTrigger value="recommended" className="flex-1">Recommended</TabsTrigger>
                 <TabsTrigger value="articles" className="flex-1">Articles</TabsTrigger>
                 <TabsTrigger value="videos" className="flex-1">Videos</TabsTrigger>
                 <TabsTrigger value="exercises" className="flex-1">Exercises</TabsTrigger>
+                <TabsTrigger value="meditations" className="flex-1">Meditations</TabsTrigger>
+                <TabsTrigger value="podcasts" className="flex-1">Podcasts</TabsTrigger>
               </TabsList>
               
               <TabsContent value="recommended">
@@ -257,6 +450,30 @@ const PersonalizedContent = () => {
               <TabsContent value="exercises">
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                   {content.filter(item => item.type === "exercise").map((item) => (
+                    <ContentCard 
+                      key={item.id}
+                      item={item}
+                      markAsCompleted={markAsCompleted}
+                    />
+                  ))}
+                </div>
+              </TabsContent>
+              
+              <TabsContent value="meditations">
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                  {content.filter(item => item.type === "meditation").map((item) => (
+                    <ContentCard 
+                      key={item.id}
+                      item={item}
+                      markAsCompleted={markAsCompleted}
+                    />
+                  ))}
+                </div>
+              </TabsContent>
+              
+              <TabsContent value="podcasts">
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                  {content.filter(item => item.type === "podcast").map((item) => (
                     <ContentCard 
                       key={item.id}
                       item={item}
@@ -314,6 +531,9 @@ const ContentCard = ({ item, markAsCompleted }: ContentCardProps) => {
       case "article": return "Article";
       case "video": return "Video";
       case "exercise": return "Exercise";
+      case "meditation": return "Meditation";
+      case "podcast": return "Podcast";
+      case "assessment": return "Assessment";
       default: return "Content";
     }
   };
@@ -323,6 +543,9 @@ const ContentCard = ({ item, markAsCompleted }: ContentCardProps) => {
       case "article": return "bg-blue-50 border-blue-200";
       case "video": return "bg-purple-50 border-purple-200";
       case "exercise": return "bg-green-50 border-green-200";
+      case "meditation": return "bg-[#B87333]/5 border-[#B87333]/20";
+      case "podcast": return "bg-pink-50 border-pink-200";
+      case "assessment": return "bg-teal-50 border-teal-200";
       default: return "bg-gray-50 border-gray-200";
     }
   };
@@ -335,9 +558,17 @@ const ContentCard = ({ item, markAsCompleted }: ContentCardProps) => {
             {item.type === "article" && <BookOpen className="h-5 w-5 text-blue-500 mr-2" />}
             {item.type === "video" && <Film className="h-5 w-5 text-purple-500 mr-2" />}
             {item.type === "exercise" && <Dumbbell className="h-5 w-5 text-green-500 mr-2" />}
+            {item.type === "meditation" && <Brain className="h-5 w-5 text-[#B87333] mr-2" />}
+            {item.type === "podcast" && <Music className="h-5 w-5 text-pink-500 mr-2" />}
+            {item.type === "assessment" && <Sparkles className="h-5 w-5 text-teal-500 mr-2" />}
             <span className="text-sm font-medium">{getTypeLabel(item.type)}</span>
           </div>
-          <span className="text-xs text-gray-500">{item.duration}</span>
+          <div className="flex items-center">
+            {item.new && (
+              <span className="px-2 py-0.5 bg-[#B87333] text-white text-xs rounded-full mr-2">New</span>
+            )}
+            <span className="text-xs text-gray-500">{item.duration}</span>
+          </div>
         </div>
         <CardTitle className="text-xl">{item.title}</CardTitle>
         <CardDescription>{item.description}</CardDescription>
