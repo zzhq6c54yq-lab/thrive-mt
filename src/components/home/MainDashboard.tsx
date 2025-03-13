@@ -1,7 +1,8 @@
+
 import React, { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Brain, Library, Users, Heart, GraduationCap, CalendarRange, LeafyGreen, Moon, HandHeart, ListChecks, FlameKindling, Footprints, Play, Pause, Volume2, Volume, ExternalLink, WalletCards, Landmark, Handshake } from "lucide-react";
+import { Brain, Library, Users, Heart, GraduationCap, CalendarRange, LeafyGreen, Moon, HandHeart, ListChecks, FlameKindling, Footprints, Play, Pause, Volume2, Volume, ExternalLink, WalletCards, Landmark, Handshake, Calendar, Puzzle } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { workshopData } from "@/data/workshopData";
 import { Link, useNavigate } from "react-router-dom";
@@ -50,6 +51,12 @@ const MainDashboard: React.FC<MainDashboardProps> = ({
       description: "Connect with others and access culturally sensitive resources",
       icon: Users,
       path: "/community-support"
+    },
+    {
+      title: "Lifestyle Integration",
+      description: "Seamlessly blend mental wellness practices into your daily routine",
+      icon: Puzzle,
+      path: "/lifestyle-integration"
     },
     {
       title: "Mental Wellness Tools",

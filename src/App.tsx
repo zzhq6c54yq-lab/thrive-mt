@@ -21,6 +21,7 @@ import ProgressReports from "@/pages/ProgressReports";
 import HolisticWellness from "@/pages/HolisticWellness";
 import HelpNavButton from "@/components/help/HelpNavButton";
 import BarterSystem from "@/pages/BarterSystem";
+import LifestyleIntegration from "@/pages/LifestyleIntegration";
 
 function App() {
   return (
@@ -56,6 +57,7 @@ function App() {
         <Route path="/copay-credits" element={<Page title="Co-Pay Credits" />} />
         <Route path="/financial-assistance" element={<Page title="Financial Assistance Application" />} />
         <Route path="/contact" element={<Page title="Contact Support" />} />
+        <Route path="/lifestyle-integration" element={<LifestyleIntegration />} />
         <Route path="*" element={<NotFound />} />
       </Routes>
       <HelpNavButton />
