@@ -164,15 +164,25 @@ const MainDashboard: React.FC<MainDashboardProps> = ({
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-gray-50 to-gray-100 py-0 px-0 flex flex-col">
+    <div className="min-h-screen relative overflow-hidden bg-gradient-to-b from-[#f0f4f8] via-[#e6eef5] to-[#dde8f3] py-0 px-0 flex flex-col">
+      <div className="absolute inset-0 z-0 overflow-hidden">
+        <div className="absolute inset-0 bg-[url('data:image/svg+xml;utf8,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%2220%22 height=%2220%22 viewBox=%220 0 20 20%22><circle cx=%222%22 cy=%222%22 r=%221%22 fill=%22%23B87333%22 fill-opacity=%220.03%22/></svg>')] opacity-20"></div>
+        <div className="absolute top-[-20%] right-[-10%] w-[80%] h-[80%] rounded-full bg-gradient-to-br from-[#B87333]/5 to-transparent blur-3xl"></div>
+        <div className="absolute bottom-[-20%] left-[-10%] w-[80%] h-[80%] rounded-full bg-gradient-to-tr from-[#9b87f5]/5 to-transparent blur-3xl"></div>
+        <div className="absolute top-0 left-0 right-0 h-24 bg-gradient-to-r from-[#B87333]/3 via-[#E5C5A1]/5 to-[#B87333]/3 transform -skew-y-3"></div>
+        <div className="absolute top-10 left-0 right-0 h-32 bg-gradient-to-r from-[#E5C5A1]/2 via-[#B87333]/4 to-[#E5C5A1]/2 transform skew-y-2" style={{animationDelay: '0.5s'}}></div>
+        <div className="absolute bottom-0 left-0 right-0 h-28 bg-gradient-to-r from-[#B87333]/3 via-[#E5C5A1]/5 to-[#B87333]/3 transform -skew-y-2"></div>
+      </div>
+      
       <Header />
       
-      <div className="w-full relative overflow-hidden py-0">
+      <div className="w-full relative overflow-hidden py-0 z-10">
         <div className="absolute inset-0 bg-gradient-to-r from-[#181820] via-[#221F26] to-[#181820]"></div>
-        <div className="absolute inset-0 opacity-20">
-          <div className="absolute top-0 left-0 right-0 h-16 bg-gradient-to-r from-[#B87333]/10 via-[#E5C5A1]/20 to-[#B87333]/10 transform -skew-y-3"></div>
-          <div className="absolute top-10 left-0 right-0 h-24 bg-gradient-to-r from-[#E5C5A1]/5 via-[#B87333]/10 to-[#E5C5A1]/5 transform skew-y-2" style={{animationDelay: '0.5s'}}></div>
-          <div className="absolute bottom-0 left-0 right-0 h-20 bg-gradient-to-r from-[#B87333]/10 via-[#E5C5A1]/15 to-[#B87333]/10 transform -skew-y-2"></div>
+        <div className="absolute inset-0 opacity-30">
+          <div className="absolute top-0 left-0 right-0 h-20 bg-gradient-to-r from-[#B87333]/15 via-[#E5C5A1]/25 to-[#B87333]/15 transform -skew-y-3 animate-pulse" style={{animationDuration: '8s'}}></div>
+          <div className="absolute top-10 left-0 right-0 h-28 bg-gradient-to-r from-[#E5C5A1]/10 via-[#B87333]/15 to-[#E5C5A1]/10 transform skew-y-2 animate-pulse" style={{animationDuration: '12s', animationDelay: '0.5s'}}></div>
+          <div className="absolute inset-0 bg-[url('data:image/svg+xml;utf8,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%2220%22 height=%2220%22 viewBox=%220 0 20 20%22><circle cx=%222%22 cy=%222%22 r=%220.5%22 fill=%22%23ffffff%22 fill-opacity=%220.3%22/></svg>')] opacity-10"></div>
+          <div className="absolute bottom-0 left-0 right-0 h-24 bg-gradient-to-r from-[#B87333]/15 via-[#E5C5A1]/20 to-[#B87333]/15 transform -skew-y-2 animate-pulse" style={{animationDuration: '10s'}}></div>
         </div>
         <div className="container mx-auto max-w-6xl relative z-10">
           <div className="flex flex-col items-center pt-12 pb-16 px-6">
@@ -226,8 +236,9 @@ const MainDashboard: React.FC<MainDashboardProps> = ({
         </div>
       </div>
 
-      <div className="w-full bg-[#F8F8F8] border-y border-gray-200 py-4 px-4">
-        <div className="container mx-auto max-w-6xl">
+      <div className="w-full bg-gradient-to-r from-[#f8f8fa] via-[#f3f3f7] to-[#f8f8fa] border-y border-gray-200/60 py-4 px-4 shadow-sm relative z-10">
+        <div className="absolute inset-0 bg-[url('data:image/svg+xml;utf8,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%2240%22 height=%2240%22 viewBox=%220 0 40 40%22><path d=%22M0 20 L40 20%22 stroke=%22%23B87333%22 stroke-opacity=%220.03%22 stroke-width=%221%22/></svg>')] opacity-30"></div>
+        <div className="container mx-auto max-w-6xl relative">
           <h3 className="text-base font-semibold text-gray-800 mb-3">New Features</h3>
           <div className="flex flex-wrap justify-center sm:justify-between gap-4">
             <Button 
@@ -260,7 +271,7 @@ const MainDashboard: React.FC<MainDashboardProps> = ({
         </div>
       </div>
 
-      <div className="container mx-auto max-w-6xl px-4 pt-8 flex-grow">
+      <div className="container mx-auto max-w-6xl px-4 pt-8 flex-grow relative z-10">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
           <UpcomingAppointments />
           <InsightsSection />
@@ -455,8 +466,9 @@ const MainDashboard: React.FC<MainDashboardProps> = ({
         )}
       </div>
 
-      <footer className="w-full bg-black py-6 px-6 mt-8">
-        <div className="container mx-auto max-w-6xl flex flex-col items-center justify-center">
+      <footer className="w-full bg-gradient-to-b from-[#161618] to-black py-6 px-6 mt-8 relative z-10">
+        <div className="absolute inset-0 bg-[url('data:image/svg+xml;utf8,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%2220%22 height=%2220%22 viewBox=%220 0 20 20%22><circle cx=%222%22 cy=%222%22 r=%220.5%22 fill=%22%23B87333%22 fill-opacity=%220.05%22/></svg>')] opacity-20"></div>
+        <div className="container mx-auto max-w-6xl flex flex-col items-center justify-center relative">
           <div className="flex items-center gap-4 mb-2">
             <img 
               src="/lovable-uploads/f2c6ac08-6331-4884-950d-7f94d68ff15f.png" 
