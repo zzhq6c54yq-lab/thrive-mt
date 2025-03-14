@@ -1,5 +1,5 @@
 
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Game } from "@/data/gamesData";
 import { useToast } from "@/hooks/use-toast";
@@ -12,106 +12,91 @@ interface GameSequenceRecallProps {
 const GameSequenceRecall: React.FC<GameSequenceRecallProps> = ({ game, onComplete }) => {
   const { toast } = useToast();
   const [score, setScore] = useState(0);
-  const [gameStarted, setGameStarted] = useState(false);
   const [sequence, setSequence] = useState<number[]>([]);
   const [userSequence, setUserSequence] = useState<number[]>([]);
-  const [playingSequence, setPlayingSequence] = useState(false);
-  const [activeButton, setActiveButton] = useState<number | null>(null);
-  const [level, setLevel] = useState(1);
+  const [gameStarted, setGameStarted] = useState(false);
+  const [isShowingSequence, setIsShowingSequence] = useState(false);
+  const [currentRound, setCurrentRound] = useState(1);
   
-  const buttonColors = [
-    { base: "bg-red-200", active: "bg-red-500" },
-    { base: "bg-blue-200", active: "bg-blue-500" },
-    { base: "bg-green-200", active: "bg-green-500" },
-    { base: "bg-yellow-200", active: "bg-yellow-500" }
-  ];
-  
+  // Start the game with an initial sequence
   const startGame = () => {
     setGameStarted(true);
-    setLevel(1);
+    setCurrentRound(1);
     setScore(0);
-    generateSequence(level);
+    generateNewSequence();
+    
     toast({
       title: "Game Started",
-      description: "Watch the sequence, then repeat it by clicking the buttons in the same order.",
+      description: "Watch the sequence and repeat it back correctly!",
     });
   };
-
-  const generateSequence = (level: number) => {
-    const newSequence = [];
-    for (let i = 0; i < level + 2; i++) {
-      newSequence.push(Math.floor(Math.random() * 4));
-    }
+  
+  // Generate a new random sequence
+  const generateNewSequence = () => {
+    const newSequence = Array.from({ length: currentRound + 2 }, () => Math.floor(Math.random() * 9) + 1);
     setSequence(newSequence);
     setUserSequence([]);
-    playSequence(newSequence);
+    showSequence();
   };
-
-  const playSequence = (seq: number[]) => {
-    setPlayingSequence(true);
-    let i = 0;
-    
-    const interval = setInterval(() => {
-      if (i < seq.length) {
-        setActiveButton(seq[i]);
-        setTimeout(() => setActiveButton(null), 500);
-        i++;
-      } else {
-        clearInterval(interval);
-        setPlayingSequence(false);
-      }
-    }, 800);
+  
+  // Display the sequence to the user
+  const showSequence = () => {
+    setIsShowingSequence(true);
+    setTimeout(() => {
+      setIsShowingSequence(false);
+    }, (currentRound + 2) * 1000); // Show each digit for 1 second
   };
-
-  const handleButtonClick = (buttonIndex: number) => {
-    if (playingSequence) return;
+  
+  // Handle user input
+  const handleNumberClick = (number: number) => {
+    if (isShowingSequence) return;
     
-    // Highlight button briefly
-    setActiveButton(buttonIndex);
-    setTimeout(() => setActiveButton(null), 200);
-    
-    const newUserSequence = [...userSequence, buttonIndex];
+    const newUserSequence = [...userSequence, number];
     setUserSequence(newUserSequence);
     
-    // Check if the sequence is correct so far
-    if (buttonIndex !== sequence[userSequence.length]) {
-      // Wrong input
+    // Check if the user has completed the sequence
+    if (newUserSequence.length === sequence.length) {
+      checkSequence(newUserSequence);
+    }
+  };
+  
+  // Check if the user's sequence matches the original
+  const checkSequence = (userSeq: number[]) => {
+    const isCorrect = userSeq.every((num, idx) => num === sequence[idx]);
+    
+    if (isCorrect) {
+      // Success - move to next round
+      setScore(prevScore => prevScore + (currentRound * 10));
+      setCurrentRound(prevRound => prevRound + 1);
+      
       toast({
-        title: "Incorrect!",
-        description: "That's not the right sequence.",
+        title: "Correct Sequence!",
+        description: `Moving to round ${currentRound + 1}`,
+      });
+      
+      setTimeout(generateNewSequence, 1500);
+    } else {
+      // Failure - game over
+      toast({
+        title: "Wrong Sequence",
+        description: "Game over! Try again.",
         variant: "destructive"
       });
-      setTimeout(() => onComplete(score), 1000);
-      return;
-    }
-    
-    // Check if the sequence is complete
-    if (newUserSequence.length === sequence.length) {
-      // Correct sequence
-      const newScore = score + (level * 10);
-      setScore(newScore);
       
-      toast({
-        title: "Correct!",
-        description: "You remembered the sequence!",
-        variant: "success"
-      });
-      
-      // Move to next level or end game
-      if (level >= 3) {
-        setTimeout(() => onComplete(newScore), 1000);
-      } else {
-        setLevel(level + 1);
-        setTimeout(() => generateSequence(level + 1), 1000);
-      }
+      setGameStarted(false);
     }
+  };
+
+  // Complete the game (for demonstration purposes)
+  const completeGame = () => {
+    onComplete(score);
   };
 
   return (
     <div className="w-full text-center">
       {!gameStarted ? (
         <div className="space-y-4">
-          <p className="text-lg font-medium">Test your sequence memory!</p>
+          <p className="text-lg font-medium">Ready to test your memory?</p>
           <Button 
             onClick={startGame}
             style={{ backgroundColor: game.color, color: "#fff" }}
@@ -121,41 +106,49 @@ const GameSequenceRecall: React.FC<GameSequenceRecallProps> = ({ game, onComplet
         </div>
       ) : (
         <div className="space-y-6">
-          <div className="p-4">
-            <p className="text-sm text-gray-600 mb-4">
-              {playingSequence 
-                ? "Watch the sequence..." 
-                : "Now repeat the sequence by clicking the buttons in order."}
+          <div>
+            <p className="text-sm text-gray-500">Round</p>
+            <p className="text-lg font-bold">{currentRound}</p>
+          </div>
+          
+          <div className="p-4 bg-gray-50 rounded-lg">
+            <p className="text-sm text-gray-600 mb-2">
+              {isShowingSequence 
+                ? "Watch carefully..." 
+                : "Now repeat the sequence!"}
             </p>
             
-            <div className="grid grid-cols-2 gap-4 max-w-[240px] mx-auto">
-              {buttonColors.map((color, index) => (
-                <button
-                  key={index}
-                  className={`w-24 h-24 rounded-lg transition-colors duration-200 ${
-                    activeButton === index ? color.active : color.base
-                  }`}
-                  onClick={() => handleButtonClick(index)}
-                  disabled={playingSequence}
-                />
+            <div className="grid grid-cols-3 gap-2 max-w-xs mx-auto">
+              {[1, 2, 3, 4, 5, 6, 7, 8, 9].map((num) => (
+                <Button
+                  key={num}
+                  className="h-12 w-12"
+                  variant="outline"
+                  style={{
+                    backgroundColor: isShowingSequence && sequence[0] === num 
+                      ? game.color 
+                      : undefined
+                  }}
+                  onClick={() => handleNumberClick(num)}
+                  disabled={isShowingSequence}
+                >
+                  {num}
+                </Button>
               ))}
             </div>
           </div>
           
-          <div className="flex justify-between items-center px-4">
-            <div>
-              <p className="text-sm text-gray-500">Level</p>
-              <p className="text-lg font-bold">{level}/3</p>
-            </div>
-            <div>
-              <p className="text-sm text-gray-500">Score</p>
-              <p className="text-lg font-bold">{score}</p>
-            </div>
-            <div>
-              <p className="text-sm text-gray-500">Sequence</p>
-              <p className="text-lg font-bold">{userSequence.length}/{sequence.length}</p>
-            </div>
+          <div>
+            <p className="text-sm text-gray-500">Score</p>
+            <p className="text-lg font-bold">{score}</p>
           </div>
+          
+          <Button 
+            onClick={completeGame}
+            style={{ backgroundColor: game.color, color: "#fff" }}
+          >
+            Complete Game (Demo)
+          </Button>
         </div>
       )}
     </div>

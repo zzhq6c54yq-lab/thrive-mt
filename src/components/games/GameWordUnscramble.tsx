@@ -1,7 +1,6 @@
 
 import React, { useState } from "react";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
 import { Game } from "@/data/gamesData";
 import { useToast } from "@/hooks/use-toast";
 
@@ -12,42 +11,19 @@ interface GameWordUnscrambleProps {
 
 const GameWordUnscramble: React.FC<GameWordUnscrambleProps> = ({ game, onComplete }) => {
   const { toast } = useToast();
-  const [answer, setAnswer] = useState("");
   const [score, setScore] = useState(0);
   const [gameStarted, setGameStarted] = useState(false);
-  
-  // Placeholder scrambled word
-  const scrambledWord = "TALNEM";
-  const correctWord = "MENTAL";
   
   const startGame = () => {
     setGameStarted(true);
     toast({
       title: "Game Started",
-      description: "Unscramble the letters to form a meaningful word!",
+      description: "Unscramble the letters to form words!",
     });
   };
 
-  const submitAnswer = () => {
-    if (answer.toLowerCase() === correctWord.toLowerCase()) {
-      toast({
-        title: "Correct!",
-        description: "That's the right word!",
-        variant: "success"
-      });
-      setScore(score + 10);
-    } else {
-      toast({
-        title: "Incorrect",
-        description: `The correct word was "${correctWord}".`,
-        variant: "destructive"
-      });
-    }
-    
-    // In a real game, we'd show a new word, but for this demo, we'll just complete the game
-    setTimeout(() => {
-      onComplete(score + (answer.toLowerCase() === correctWord.toLowerCase() ? 10 : 0));
-    }, 1500);
+  const completeGame = () => {
+    onComplete(score);
   };
 
   return (
@@ -64,41 +40,22 @@ const GameWordUnscramble: React.FC<GameWordUnscrambleProps> = ({ game, onComplet
         </div>
       ) : (
         <div className="space-y-6">
-          <div className="p-6 bg-gray-50 rounded-lg">
-            <p className="text-sm text-gray-600 mb-4">Unscramble the letters to form a word:</p>
-            <div className="flex justify-center gap-2 mb-6">
-              {scrambledWord.split("").map((letter, index) => (
-                <div 
-                  key={index} 
-                  className="w-10 h-10 flex items-center justify-center font-bold text-lg bg-white border-2 rounded-md shadow-sm"
-                  style={{ borderColor: game.color }}
-                >
-                  {letter}
-                </div>
-              ))}
-            </div>
-            
-            <div className="flex gap-3">
-              <Input 
-                type="text" 
-                value={answer} 
-                onChange={(e) => setAnswer(e.target.value)} 
-                placeholder="Your answer"
-                className="text-center"
-              />
-              <Button 
-                onClick={submitAnswer}
-                style={{ backgroundColor: game.color, color: "#fff" }}
-              >
-                Submit
-              </Button>
-            </div>
+          <div className="p-4 bg-gray-50 rounded-lg">
+            <p className="text-sm text-gray-600 mb-2">This is a placeholder for the Word Unscramble game.</p>
+            <p className="text-sm text-gray-600">In a full implementation, scrambled letters would appear here for you to rearrange.</p>
           </div>
           
           <div>
             <p className="text-sm text-gray-500">Score</p>
             <p className="text-lg font-bold">{score}</p>
           </div>
+          
+          <Button 
+            onClick={completeGame}
+            style={{ backgroundColor: game.color, color: "#fff" }}
+          >
+            Complete Game (Demo)
+          </Button>
         </div>
       )}
     </div>

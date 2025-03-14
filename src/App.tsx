@@ -32,6 +32,7 @@ function App() {
         <Route path="/mental-wellness-tools" element={<MentalWellnessTools />} />
         <Route path="/mental-wellness-tools/:toolId" element={<ToolDetail />} />
         <Route path="/real-time-therapy" element={<RealTimeTherapy />} />
+        <Route path="/therapy" element={<RealTimeTherapy />} />
         <Route path="/scheduling" element={<Page title="Flexible Scheduling" />} />
         <Route path="/privacy-security" element={<Page title="Private & Secure" />} />
         <Route path="/my-sponsor" element={<MySponsor />} />

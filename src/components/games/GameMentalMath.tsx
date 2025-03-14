@@ -1,7 +1,6 @@
 
 import React, { useState } from "react";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
 import { Game } from "@/data/gamesData";
 import { useToast } from "@/hooks/use-toast";
 
@@ -14,93 +13,25 @@ const GameMentalMath: React.FC<GameMentalMathProps> = ({ game, onComplete }) => 
   const { toast } = useToast();
   const [score, setScore] = useState(0);
   const [gameStarted, setGameStarted] = useState(false);
-  const [answer, setAnswer] = useState("");
-  const [problem, setProblem] = useState("");
-  const [correctAnswer, setCorrectAnswer] = useState(0);
   
+  // This is a placeholder implementation
   const startGame = () => {
     setGameStarted(true);
-    generateProblem();
     toast({
       title: "Game Started",
-      description: "Solve the math problems as quickly as you can!",
+      description: "Solve math problems as quickly as you can!",
     });
   };
 
-  const generateProblem = () => {
-    const num1 = Math.floor(Math.random() * 20) + 1;
-    const num2 = Math.floor(Math.random() * 20) + 1;
-    const operators = ["+", "-", "×"];
-    const operator = operators[Math.floor(Math.random() * operators.length)];
-    
-    let result = 0;
-    switch (operator) {
-      case "+":
-        result = num1 + num2;
-        break;
-      case "-":
-        // Ensure positive results for simplicity
-        if (num1 >= num2) {
-          result = num1 - num2;
-        } else {
-          result = num2 - num1;
-          setProblem(`${num2} ${operator} ${num1} = ?`);
-          setCorrectAnswer(result);
-          return;
-        }
-        break;
-      case "×":
-        result = num1 * num2;
-        break;
-    }
-    
-    setProblem(`${num1} ${operator} ${num2} = ?`);
-    setCorrectAnswer(result);
-  };
-
-  const submitAnswer = () => {
-    const userAnswer = parseInt(answer, 10);
-    
-    if (userAnswer === correctAnswer) {
-      setScore(score + 10);
-      toast({
-        title: "Correct!",
-        description: "Good job!",
-        variant: "success"
-      });
-    } else {
-      toast({
-        title: "Incorrect",
-        description: `The correct answer was ${correctAnswer}.`,
-        variant: "destructive"
-      });
-    }
-    
-    setAnswer("");
-    
-    // After 5 correct answers, end the game, otherwise generate a new problem
-    if (score >= 40) { // 4 correct answers already, this would be the 5th
-      if (userAnswer === correctAnswer) {
-        setTimeout(() => onComplete(score + 10), 1000);
-      } else {
-        setTimeout(() => onComplete(score), 1000);
-      }
-    } else {
-      generateProblem();
-    }
-  };
-
-  const handleKeyDown = (e: React.KeyboardEvent) => {
-    if (e.key === "Enter") {
-      submitAnswer();
-    }
+  const completeGame = () => {
+    onComplete(score);
   };
 
   return (
     <div className="w-full text-center">
       {!gameStarted ? (
         <div className="space-y-4">
-          <p className="text-lg font-medium">Ready to exercise your brain?</p>
+          <p className="text-lg font-medium">Ready to test your mental math skills?</p>
           <Button 
             onClick={startGame}
             style={{ backgroundColor: game.color, color: "#fff" }}
@@ -110,32 +41,22 @@ const GameMentalMath: React.FC<GameMentalMathProps> = ({ game, onComplete }) => 
         </div>
       ) : (
         <div className="space-y-6">
-          <div className="p-6 bg-gray-50 rounded-lg">
-            <p className="text-lg font-bold mb-6">{problem}</p>
-            
-            <div className="flex gap-3">
-              <Input 
-                type="number" 
-                value={answer} 
-                onChange={(e) => setAnswer(e.target.value)} 
-                onKeyDown={handleKeyDown}
-                placeholder="Your answer"
-                className="text-center"
-              />
-              <Button 
-                onClick={submitAnswer}
-                style={{ backgroundColor: game.color, color: "#fff" }}
-              >
-                Submit
-              </Button>
-            </div>
+          <div className="p-4 bg-gray-50 rounded-lg">
+            <p className="text-sm text-gray-600 mb-2">This is a placeholder for the Mental Math game.</p>
+            <p className="text-sm text-gray-600">In a full implementation, math problems would appear here for you to solve.</p>
           </div>
           
           <div>
             <p className="text-sm text-gray-500">Score</p>
             <p className="text-lg font-bold">{score}</p>
-            <p className="text-xs text-gray-500 mt-1">Solve 5 problems to complete the game</p>
           </div>
+          
+          <Button 
+            onClick={completeGame}
+            style={{ backgroundColor: game.color, color: "#fff" }}
+          >
+            Complete Game (Demo)
+          </Button>
         </div>
       )}
     </div>
