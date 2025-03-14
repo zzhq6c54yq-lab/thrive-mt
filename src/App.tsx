@@ -23,6 +23,21 @@ import HelpNavButton from "@/components/help/HelpNavButton";
 import BarterSystem from "@/pages/BarterSystem";
 import LifestyleIntegration from "@/pages/LifestyleIntegration";
 import GamesAndQuizzes from "@/pages/GamesAndQuizzes";
+import Scheduling from "@/pages/Scheduling";
+import PrivacySecurity from "@/pages/PrivacySecurity";
+import FamilySupport from "@/pages/FamilySupport";
+import AlternativeTherapies from "@/pages/AlternativeTherapies";
+import MindfulnessSleep from "@/pages/MindfulnessSleep";
+import SelfHelpResources from "@/pages/SelfHelpResources";
+import Journaling from "@/pages/Journaling";
+import CrisisSupport from "@/pages/CrisisSupport";
+import ProgressAnalytics from "@/pages/ProgressAnalytics";
+import LeadBank from "@/pages/LeadBank";
+import CoPayCredits from "@/pages/CoPayCredits";
+import FinancialAssistance from "@/pages/FinancialAssistance";
+import ContactSupport from "@/pages/ContactSupport";
+import UserSettings from "@/pages/UserSettings";
+import UserProfile from "@/pages/UserProfile";
 
 function App() {
   return (
@@ -33,8 +48,8 @@ function App() {
         <Route path="/mental-wellness-tools/:toolId" element={<ToolDetail />} />
         <Route path="/real-time-therapy" element={<RealTimeTherapy />} />
         <Route path="/therapy" element={<RealTimeTherapy />} />
-        <Route path="/scheduling" element={<Page title="Flexible Scheduling" />} />
-        <Route path="/privacy-security" element={<Page title="Private & Secure" />} />
+        <Route path="/scheduling" element={<Scheduling />} />
+        <Route path="/privacy-security" element={<PrivacySecurity />} />
         <Route path="/my-sponsor" element={<MySponsor />} />
         <Route path="/therapist-questionnaire" element={<TherapistQuestionnaire />} />
         <Route path="/therapist-matches" element={<TherapistMatches />} />
@@ -47,22 +62,22 @@ function App() {
         <Route path="/resource-library" element={<ResourceLibrary />} />
         <Route path="/progress-reports" element={<ProgressReports />} />
         <Route path="/holistic-wellness" element={<HolisticWellness />} />
-        <Route path="/family-support" element={<Page title="Family & Caregiver Support" />} />
-        <Route path="/alternative-therapies" element={<Page title="Alternative Therapies" />} />
-        <Route path="/mindfulness" element={<Page title="Mindfulness & Sleep" />} />
-        <Route path="/self-help-resources" element={<Page title="Self-Help Resources" />} />
-        <Route path="/journaling" element={<Page title="Journaling" />} />
-        <Route path="/crisis-support" element={<Page title="Crisis Support" />} />
-        <Route path="/progress-analytics" element={<Page title="Progress Analytics" />} />
+        <Route path="/family-support" element={<FamilySupport />} />
+        <Route path="/alternative-therapies" element={<AlternativeTherapies />} />
+        <Route path="/mindfulness" element={<MindfulnessSleep />} />
+        <Route path="/self-help-resources" element={<SelfHelpResources />} />
+        <Route path="/journaling" element={<Journaling />} />
+        <Route path="/crisis-support" element={<CrisisSupport />} />
+        <Route path="/progress-analytics" element={<ProgressAnalytics />} />
         <Route path="/barter-system" element={<BarterSystem />} />
-        <Route path="/lead-bank" element={<Page title="Lead Bank" />} />
-        <Route path="/copay-credits" element={<Page title="Co-Pay Credits" />} />
-        <Route path="/financial-assistance" element={<Page title="Financial Assistance Application" />} />
-        <Route path="/contact" element={<Page title="Contact Support" />} />
+        <Route path="/lead-bank" element={<LeadBank />} />
+        <Route path="/copay-credits" element={<CoPayCredits />} />
+        <Route path="/financial-assistance" element={<FinancialAssistance />} />
+        <Route path="/contact" element={<ContactSupport />} />
         <Route path="/lifestyle-integration" element={<LifestyleIntegration />} />
         <Route path="/games-and-quizzes" element={<GamesAndQuizzes />} />
-        <Route path="/settings" element={<Page title="User Settings" />} />
-        <Route path="/profile" element={<Page title="User Profile" />} />
+        <Route path="/settings" element={<UserSettings />} />
+        <Route path="/profile" element={<UserProfile />} />
         <Route path="*" element={<NotFound />} />
       </Routes>
       <HelpNavButton />
