@@ -1,7 +1,6 @@
-
 import React from "react";
 import { Link } from "react-router-dom";
-import { ArrowLeft, CreditCard, Wallet, History, Gift, PlusCircle, Clock } from "lucide-react";
+import { ArrowLeft, CreditCard, Wallet, History, Gift, PlusCircle, Clock, Heart, Users, ClipboardCheck, Download } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import HomeButton from "@/components/HomeButton";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle, CardFooter } from "@/components/ui/card";
@@ -47,12 +46,8 @@ const CoPayCredits = () => {
       description: "Earn 25 credits per workshop",
       icon: Users,
       action: "Browse Workshops"
-    },
+    }
   ];
-
-  // Mock these icons since they're used in the component but not imported
-  const Heart = () => <div className="h-5 w-5 text-red-500"></div>;
-  const ClipboardCheck = () => <div className="h-5 w-5 text-green-500"></div>;
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-[#f8f9fa] to-[#eef1f5]">

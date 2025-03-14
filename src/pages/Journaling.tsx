@@ -1,4 +1,3 @@
-
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { ArrowLeft, BookOpen, List, Calendar, Clock, Save } from "lucide-react";
@@ -12,6 +11,7 @@ import { useToast } from "@/hooks/use-toast";
 const Journaling = () => {
   const { toast } = useToast();
   const [journalEntry, setJournalEntry] = useState("");
+  const [activeTab, setActiveTab] = useState("write");
 
   const handleSaveEntry = () => {
     if (journalEntry.trim()) {
@@ -37,6 +37,11 @@ const Journaling = () => {
     "Reflect on a recent accomplishment, no matter how small.",
     "What self-care activities would you like to prioritize this week?",
   ];
+
+  const handlePromptSelect = (prompt: string) => {
+    setJournalEntry(prompt + "\n\n");
+    setActiveTab("write");
+  };
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-[#f8f9fa] to-[#eef1f5]">
@@ -129,14 +134,7 @@ const Journaling = () => {
                     <Button 
                       variant="outline" 
                       className="w-full"
-                      onClick={() => {
-                        setJournalEntry(prompt + "\n\n");
-                        toast({
-                          title: "Prompt Selected",
-                          description: "The prompt has been added to your journal entry.",
-                        });
-                        document.querySelector('[data-value="write"]')?.click();
-                      }}
+                      onClick={() => handlePromptSelect(prompt)}
                     >
                       Use This Prompt
                     </Button>
@@ -158,9 +156,7 @@ const Journaling = () => {
                 <Button 
                   variant="outline" 
                   className="w-full"
-                  onClick={() => {
-                    document.querySelector('[data-value="write"]')?.click();
-                  }}
+                  onClick={() => setActiveTab("write")}
                 >
                   Write Your First Entry
                 </Button>
