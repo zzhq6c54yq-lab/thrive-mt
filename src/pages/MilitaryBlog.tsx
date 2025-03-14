@@ -282,7 +282,7 @@ const BlogPostCard: React.FC<BlogPostCardProps> = ({
       
       <CardFooter className="pt-0">
         <div className="w-full flex items-center justify-between">
-          <Button variant="bronze-outline" size="sm" className="text-sm">
+          <Button variant="outline" size="sm" className="text-sm">
             Read More
           </Button>
           
