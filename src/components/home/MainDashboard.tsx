@@ -24,7 +24,6 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import UpcomingAppointments from "@/components/dashboard/UpcomingAppointments";
 import InsightsSection from "@/components/dashboard/InsightsSection";
 import QuizzesSection from "@/components/dashboard/QuizzesSection";
-import HenryButton from "@/components/HenryButton";
 
 interface MainDashboardProps {
   userName: string;
