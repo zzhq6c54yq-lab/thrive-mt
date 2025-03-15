@@ -1,3 +1,4 @@
+
 import React, { useState } from "react";
 import { 
   Heart, 
@@ -24,6 +25,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import UpcomingAppointments from "@/components/dashboard/UpcomingAppointments";
 import InsightsSection from "@/components/dashboard/InsightsSection";
 import QuizzesSection from "@/components/dashboard/QuizzesSection";
+import HenryButton from "@/components/HenryButton";
 
 interface MainDashboardProps {
   userName: string;
@@ -52,13 +54,7 @@ const MainDashboard: React.FC<MainDashboardProps> = ({
         <div className="max-w-7xl mx-auto">
           <div className="flex justify-between items-center mb-6">
             <h1 className="text-3xl font-bold">Welcome back, {displayName}</h1>
-            <Button 
-              variant="ghost" 
-              onClick={onHenryToggle}
-              className="text-white hover:bg-white/10"
-            >
-              {showHenry ? "Hide Henry" : "Show Henry"}
-            </Button>
+            <HenryButton isActive={showHenry} onClick={onHenryToggle} />
           </div>
           <p className="text-lg text-blue-100">Your journey to better mental health continues today</p>
           
@@ -126,10 +122,10 @@ const MainDashboard: React.FC<MainDashboardProps> = ({
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
               <div className="md:col-span-2">
                 <UpcomingAppointments />
-                <QuizzesSection />
+                <QuizzesSection navigateToFeature={navigateToFeature} />
               </div>
               <div className="md:col-span-1">
-                <InsightsSection />
+                <InsightsSection goals={selectedGoals} />
               </div>
             </div>
             
@@ -166,13 +162,13 @@ const MainDashboard: React.FC<MainDashboardProps> = ({
                   </CardContent>
                 </Card>
                 
-                <Card className="hover:shadow-md transition-shadow cursor-pointer" onClick={() => navigateToFeature("/workplace-mental-health")}>
+                <Card className="hover:shadow-md transition-shadow cursor-pointer" onClick={() => navigateToFeature("/mindfulness")}>
                   <CardHeader className="p-4">
-                    <Briefcase className="h-6 w-6 text-amber-500" />
+                    <Flower2 className="h-6 w-6 text-amber-500" />
                   </CardHeader>
                   <CardContent className="p-4 pt-0">
-                    <CardTitle className="text-base">Small Business</CardTitle>
-                    <CardDescription className="text-xs mt-1">Work-life balance support</CardDescription>
+                    <CardTitle className="text-base">Mindfulness</CardTitle>
+                    <CardDescription className="text-xs mt-1">Present-moment awareness</CardDescription>
                   </CardContent>
                 </Card>
               </div>
