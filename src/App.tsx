@@ -44,6 +44,7 @@ import MilitaryResources from "@/pages/MilitaryResources";
 import MilitaryAffirmations from "@/pages/MilitaryAffirmations";
 import MilitaryBlog from "@/pages/MilitaryBlog";
 import DepartmentOfDefense from "@/pages/DepartmentOfDefense";
+import WorkplaceMentalHealth from "@/pages/WorkplaceMentalHealth";
 
 function App() {
   return (
@@ -92,6 +93,9 @@ function App() {
         <Route path="/military-affirmations" element={<MilitaryAffirmations />} />
         <Route path="/military-blog" element={<MilitaryBlog />} />
         <Route path="/department-of-defense" element={<DepartmentOfDefense />} />
+        
+        {/* Workplace Mental Health Section */}
+        <Route path="/workplace-mental-health" element={<WorkplaceMentalHealth />} />
         
         <Route path="*" element={<NotFound />} />
       </Routes>
