@@ -8,6 +8,12 @@ export const useButtonVisibility = () => {
   const shouldShowButton = () => {
     console.log("Current path for button visibility check:", location.pathname);
     
+    // Always hide on Department of Defense page
+    if (location.pathname === "/department-of-defense") {
+      console.log("Hiding button on DoD page");
+      return false;
+    }
+    
     // Check if the current path is the home path and there's a specific state related to screens
     if (location.pathname === "/" || location.pathname === "/index") {
       // Get state from location if available
