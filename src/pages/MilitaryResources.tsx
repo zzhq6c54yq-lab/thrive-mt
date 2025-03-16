@@ -1,180 +1,222 @@
-
-import React, { useState } from "react";
+import React from "react";
 import { Link } from "react-router-dom";
 import { 
-  ArrowLeft, BookOpen, ExternalLink, Search, 
-  Download, Shield, Heart, Users, Phone, FileText,
-  Bookmark, Filter, ChevronDown, Check, MessageSquare,
-  Wrench, CheckSquare
+  ArrowLeft, BookOpen, Download, FileText, 
+  ExternalLink, Bookmark, Search, Filter, 
+  Wrench
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Input } from "@/components/ui/input";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import HomeButton from "@/components/HomeButton";
-import {
-  DropdownMenu,
-  DropdownMenuCheckboxItem,
-  DropdownMenuContent,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-
-// Resource categories
-const resourceCategories = [
-  "PTSD & Trauma",
-  "Depression & Anxiety",
-  "Substance Recovery",
-  "Family Support",
-  "Career Transition",
-  "Benefits & Healthcare"
-];
 
 // Sample resources data
 const resources = [
   {
     id: 1,
-    title: "PTSD Coach Mobile App",
-    description: "Learn about and manage symptoms that often occur after trauma. Features self-assessment, education, and coping tools.",
-    type: "Tool",
-    category: "PTSD & Trauma",
+    title: "PTSD Coping Strategies",
+    description: "A comprehensive guide to understanding and managing PTSD symptoms for military personnel.",
+    category: "Mental Health",
+    type: "PDF",
+    size: "2.4 MB",
+    date: "June 15, 2023",
     url: "#",
     featured: true
   },
   {
     id: 2,
-    title: "Veterans Crisis Line Information",
-    description: "24/7 confidential crisis support for Veterans and their loved ones. Call, text, or chat online with caring responders.",
-    type: "Crisis Support",
-    category: "Depression & Anxiety",
+    title: "Transition Assistance Program Guide",
+    description: "Resources and information to help service members transition to civilian life successfully.",
+    category: "Career",
+    type: "PDF",
+    size: "3.1 MB",
+    date: "May 22, 2023",
     url: "#",
     featured: true
   },
   {
     id: 3,
-    title: "Substance Use Disorder Treatment Guide",
-    description: "Comprehensive guide to understanding and finding treatment for substance use disorders among veterans.",
-    type: "Guide",
-    category: "Substance Recovery",
+    title: "Military Family Support Networks",
+    description: "Directory of support groups and resources for military families across the country.",
+    category: "Family",
+    type: "PDF",
+    size: "1.8 MB",
+    date: "April 10, 2023",
     url: "#",
     featured: true
   },
   {
     id: 4,
-    title: "Military OneSource",
-    description: "Confidential services to help with mental health, financial, legal, and other aspects of military life.",
-    type: "Service",
-    category: "Family Support",
+    title: "Combat Stress Management",
+    description: "Techniques and strategies for managing stress related to combat experiences.",
+    category: "Mental Health",
+    type: "PDF",
+    size: "2.2 MB",
+    date: "March 5, 2023",
     url: "#",
     featured: false
   },
   {
     id: 5,
-    title: "VA Benefits Explained",
-    description: "Clear explanation of mental health benefits available to veterans through the VA healthcare system.",
-    type: "Guide",
-    category: "Benefits & Healthcare",
+    title: "VA Benefits Overview",
+    description: "Comprehensive guide to understanding and accessing your VA benefits.",
+    category: "Benefits",
+    type: "PDF",
+    size: "4.5 MB",
+    date: "February 18, 2023",
     url: "#",
     featured: false
   },
   {
     id: 6,
-    title: "Military-to-Civilian Resume Guide",
-    description: "Step-by-step guide to translating military experience into civilian resume language.",
-    type: "Guide",
-    category: "Career Transition",
+    title: "Military to Civilian Resume Guide",
+    description: "How to translate your military experience into civilian job qualifications.",
+    category: "Career",
+    type: "PDF",
+    size: "1.5 MB",
+    date: "January 30, 2023",
     url: "#",
     featured: false
   },
   {
     id: 7,
-    title: "Mindfulness Meditation for Veterans",
-    description: "Audio recordings of guided meditations specifically designed for veterans dealing with stress and trauma.",
-    type: "Tool",
-    category: "PTSD & Trauma",
+    title: "Deployment Readiness for Families",
+    description: "Preparing your family for the challenges of deployment.",
+    category: "Family",
+    type: "PDF",
+    size: "2.0 MB",
+    date: "January 15, 2023",
     url: "#",
     featured: false
   },
   {
     id: 8,
-    title: "Military Family Communication Workbook",
-    description: "Printable workbook with exercises to improve communication within military families.",
-    type: "Workbook",
-    category: "Family Support",
-    url: "#",
-    featured: false
-  },
-  {
-    id: 9,
-    title: "Understanding Military Trauma",
-    description: "Educational resource explaining the unique aspects of trauma related to military service.",
-    type: "Article",
-    category: "PTSD & Trauma",
-    url: "#",
-    featured: false
-  },
-  {
-    id: 10,
-    title: "Veteran Peer Support Directory",
-    description: "Find peer support groups led by veterans, searchable by location and focus area.",
-    type: "Directory",
-    category: "Depression & Anxiety",
-    url: "#",
-    featured: false
-  },
-  {
-    id: 11,
-    title: "Military Transition Readiness Assessment",
-    description: "Self-assessment tool to evaluate readiness for transition to civilian life with personalized recommendations.",
-    type: "Assessment",
-    category: "Career Transition",
-    url: "#",
-    featured: false
-  },
-  {
-    id: 12,
-    title: "Veterans Benefits Navigation Toolkit",
-    description: "Interactive guide to help veterans navigate and access their full range of benefits.",
-    type: "Toolkit",
-    category: "Benefits & Healthcare",
+    title: "Military Sexual Trauma Support",
+    description: "Resources and support options for those affected by military sexual trauma.",
+    category: "Mental Health",
+    type: "PDF",
+    size: "1.7 MB",
+    date: "December 10, 2022",
     url: "#",
     featured: false
   }
 ];
 
-const MilitaryResources = () => {
-  const [searchTerm, setSearchTerm] = useState("");
-  const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
-  
-  const filteredResources = resources.filter(resource => {
-    // Filter by search term
-    const matchesSearch = resource.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                         resource.description.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                         resource.type.toLowerCase().includes(searchTerm.toLowerCase());
-    
-    // Filter by selected categories (if any are selected)
-    const matchesCategory = selectedCategories.length === 0 || 
-                           selectedCategories.includes(resource.category);
-    
-    return matchesSearch && matchesCategory;
-  });
-  
-  const toggleCategory = (category: string) => {
-    setSelectedCategories(prev => 
-      prev.includes(category) 
-        ? prev.filter(c => c !== category) 
-        : [...prev, category]
-    );
-  };
+// External resources data
+const externalResources = [
+  {
+    id: 1,
+    title: "Veterans Crisis Line",
+    description: "24/7 confidential crisis support for Veterans and their loved ones.",
+    url: "https://www.veteranscrisisline.net/",
+    category: "Crisis Support"
+  },
+  {
+    id: 2,
+    title: "Military OneSource",
+    description: "Support for military personnel and their families for a wide range of concerns.",
+    url: "https://www.militaryonesource.mil/",
+    category: "General Support"
+  },
+  {
+    id: 3,
+    title: "National Center for PTSD",
+    description: "Information and resources for PTSD treatment and research.",
+    url: "https://www.ptsd.va.gov/",
+    category: "Mental Health"
+  },
+  {
+    id: 4,
+    title: "Wounded Warrior Project",
+    description: "Programs and services for veterans and service members who incurred physical or mental injuries.",
+    url: "https://www.woundedwarriorproject.org/",
+    category: "Support Services"
+  }
+];
 
+const ResourceCard: React.FC<{
+  title: string;
+  description: string;
+  category: string;
+  type: string;
+  size: string;
+  date: string;
+  url: string;
+}> = ({ title, description, category, type, size, date, url }) => {
+  return (
+    <Card className="bg-gradient-to-b from-[#1c2e4a] to-[#0A1929] border border-white/10 text-white transition-all duration-300 hover:shadow-lg hover:translate-y-[-5px] h-full flex flex-col">
+      <CardHeader className="pb-2">
+        <div className="flex justify-between items-start">
+          <div className="bg-[#B87333]/10 text-[#B87333] text-xs font-medium py-1 px-2 rounded-full w-fit mb-2">
+            {category}
+          </div>
+          <div className="flex items-center text-white/60 text-xs">
+            <FileText className="h-3 w-3 mr-1" />
+            {type} • {size}
+          </div>
+        </div>
+        <CardTitle className="text-white text-lg">{title}</CardTitle>
+      </CardHeader>
+      
+      <CardContent className="flex-grow">
+        <CardDescription className="text-gray-300 mb-4">
+          {description}
+        </CardDescription>
+        
+        <div className="text-gray-400 text-xs">
+          Added: {date}
+        </div>
+      </CardContent>
+      
+      <CardFooter className="pt-0">
+        <div className="w-full flex items-center justify-between">
+          <Button variant="gold" size="sm" className="text-sm">
+            <Download className="h-3 w-3 mr-2" />
+            Download
+          </Button>
+          
+          <Button variant="ghost" size="icon" className="h-8 w-8 text-gray-400 hover:text-[#B87333]">
+            <Bookmark className="h-4 w-4" />
+          </Button>
+        </div>
+      </CardFooter>
+    </Card>
+  );
+};
+
+const ExternalResourceCard: React.FC<{
+  title: string;
+  description: string;
+  category: string;
+  url: string;
+}> = ({ title, description, category, url }) => {
+  return (
+    <Card className="bg-gradient-to-b from-[#1c2e4a] to-[#0A1929] border border-white/10 text-white transition-all duration-300 hover:shadow-lg hover:translate-y-[-5px]">
+      <CardHeader className="pb-2">
+        <div className="bg-[#B87333]/10 text-[#B87333] text-xs font-medium py-1 px-2 rounded-full w-fit mb-2">
+          {category}
+        </div>
+        <CardTitle className="text-white text-lg">{title}</CardTitle>
+      </CardHeader>
+      
+      <CardContent>
+        <CardDescription className="text-gray-300 mb-4">
+          {description}
+        </CardDescription>
+      </CardContent>
+      
+      <CardFooter className="pt-0">
+        <Button variant="outline" size="sm" className="text-sm border-[#B87333]/30 text-[#B87333] hover:bg-[#B87333]/10">
+          <ExternalLink className="h-3 w-3 mr-2" />
+          Visit Website
+        </Button>
+      </CardFooter>
+    </Card>
+  );
+};
+
+const MilitaryResources: React.FC = () => {
   return (
     <div className="min-h-screen bg-[#0A1929] text-white">
       {/* Header */}
@@ -188,283 +230,186 @@ const MilitaryResources = () => {
             <HomeButton />
           </div>
           
-          <h1 className="text-4xl font-bold mb-4">Mental Health Resources</h1>
+          <h1 className="text-4xl font-bold mb-4">Military Resources</h1>
           <p className="text-xl text-gray-300 max-w-3xl">
-            Access a curated collection of resources specifically designed for military personnel, veterans, and their families.
+            Access specialized resources for service members, veterans, and military families.
           </p>
         </div>
       </div>
       
-      {/* Search and Filter Bar */}
-      <div className="bg-[#0F2942] border-y border-white/10 py-4">
-        <div className="container mx-auto px-4">
-          <div className="flex flex-col md:flex-row gap-4 items-center justify-between">
-            <div className="relative w-full md:w-auto">
+      {/* Search and Filter */}
+      <div className="container mx-auto px-4 py-8">
+        <div className="bg-white/5 backdrop-blur-sm rounded-lg p-4 mb-8">
+          <div className="flex flex-col md:flex-row gap-4">
+            <div className="relative flex-grow">
               <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400" />
               <Input 
-                className="pl-10 bg-[#1c2e4a] border-white/10 text-white w-full md:w-80"
                 placeholder="Search resources..." 
-                value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
+                className="pl-10 bg-white/10 border-white/10 text-white"
               />
             </div>
-            
-            <div className="flex gap-4 items-center w-full md:w-auto justify-end">
-              <DropdownMenu>
-                <DropdownMenuTrigger asChild>
-                  <Button variant="outline" className="bg-[#1c2e4a] border-white/10 text-white">
-                    <Filter className="mr-2 h-4 w-4" />
-                    Filter by Category
-                    <ChevronDown className="ml-2 h-4 w-4" />
-                  </Button>
-                </DropdownMenuTrigger>
-                <DropdownMenuContent className="w-56 bg-[#1c2e4a] border-white/10 text-white">
-                  <DropdownMenuLabel>Resource Categories</DropdownMenuLabel>
-                  <DropdownMenuSeparator className="bg-white/10" />
-                  {resourceCategories.map(category => (
-                    <DropdownMenuCheckboxItem
-                      key={category}
-                      checked={selectedCategories.includes(category)}
-                      onCheckedChange={() => toggleCategory(category)}
-                    >
-                      {category}
-                    </DropdownMenuCheckboxItem>
-                  ))}
-                </DropdownMenuContent>
-              </DropdownMenu>
-              
-              {selectedCategories.length > 0 && (
-                <Button 
-                  variant="ghost" 
-                  className="text-[#B87333] hover:text-[#B87333]/80 hover:bg-white/5"
-                  onClick={() => setSelectedCategories([])}
-                >
-                  Clear Filters
-                </Button>
-              )}
-            </div>
+            <Button variant="outline" className="border-white/20 text-white">
+              <Filter className="h-4 w-4 mr-2" />
+              Filters
+            </Button>
+            <Button variant="gold">
+              <Wrench className="h-4 w-4 mr-2" />
+              Resource Finder
+            </Button>
           </div>
         </div>
-      </div>
-      
-      {/* Crisis Resources - Always at the top */}
-      <div className="bg-[#B87333]/10 border-b border-[#B87333]/20">
-        <div className="container mx-auto px-4 py-6">
-          <div className="flex flex-col md:flex-row items-center gap-6 justify-between">
-            <div>
-              <h2 className="text-xl font-bold text-[#B87333] mb-2 flex items-center">
-                <Phone className="mr-2 h-5 w-5" />
-                Crisis Resources - Available 24/7
-              </h2>
-              <p className="text-gray-300">
-                If you're experiencing a mental health crisis, help is available right now.
-              </p>
-            </div>
-            
-            <div className="flex flex-wrap gap-3">
-              <Button variant="gold">
-                <Phone className="mr-2 h-4 w-4" />
-                Call 988 (Press 1)
-              </Button>
-              
-              <Button variant="outline" className="text-white border-white/20 hover:bg-white/10">
-                <MessageSquare className="mr-2 h-4 w-4" />
-                Text 838255
-              </Button>
-            </div>
-          </div>
-        </div>
-      </div>
-      
-      {/* Main Content */}
-      <div className="container mx-auto px-4 py-12">
-        {/* Featured Resources */}
-        <h2 className="text-2xl font-bold text-[#B87333] mb-6 flex items-center">
-          <Bookmark className="mr-2 h-5 w-5" />
-          Featured Resources
-        </h2>
         
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
-          {filteredResources.filter(r => r.featured).map(resource => (
-            <ResourceCard 
-              key={resource.id}
-              title={resource.title}
-              description={resource.description}
-              type={resource.type}
-              category={resource.category}
-              url={resource.url}
-              featured={resource.featured}
-            />
-          ))}
-        </div>
-        
-        {/* Tabbed Resources */}
+        {/* Main Content */}
         <Tabs defaultValue="all" className="w-full">
-          <TabsList className="bg-[#1c2e4a] mb-8 w-full justify-start overflow-x-auto flex-nowrap">
-            <TabsTrigger value="all" className="text-white data-[state=active]:bg-[#B87333]">All Resources</TabsTrigger>
-            <TabsTrigger value="ptsd" className="text-white data-[state=active]:bg-[#B87333]">PTSD & Trauma</TabsTrigger>
-            <TabsTrigger value="depression" className="text-white data-[state=active]:bg-[#B87333]">Depression & Anxiety</TabsTrigger>
-            <TabsTrigger value="substance" className="text-white data-[state=active]:bg-[#B87333]">Substance Recovery</TabsTrigger>
-            <TabsTrigger value="family" className="text-white data-[state=active]:bg-[#B87333]">Family Support</TabsTrigger>
-            <TabsTrigger value="career" className="text-white data-[state=active]:bg-[#B87333]">Career Transition</TabsTrigger>
-            <TabsTrigger value="benefits" className="text-white data-[state=active]:bg-[#B87333]">Benefits & Healthcare</TabsTrigger>
+          <TabsList className="grid grid-cols-4 gap-2 bg-black/30 mb-8 p-1 rounded-lg">
+            <TabsTrigger value="all" className="data-[state=active]:bg-[#B87333]/90">All Resources</TabsTrigger>
+            <TabsTrigger value="mental-health" className="data-[state=active]:bg-[#B87333]/90">Mental Health</TabsTrigger>
+            <TabsTrigger value="career" className="data-[state=active]:bg-[#B87333]/90">Career</TabsTrigger>
+            <TabsTrigger value="family" className="data-[state=active]:bg-[#B87333]/90">Family</TabsTrigger>
           </TabsList>
           
-          <TabsContent value="all">
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {filteredResources.length > 0 ? (
-                filteredResources.map(resource => (
-                  <ResourceCard 
-                    key={resource.id}
-                    title={resource.title}
-                    description={resource.description}
-                    type={resource.type}
-                    category={resource.category}
-                    url={resource.url}
-                    featured={resource.featured}
-                  />
-                ))
-              ) : (
-                <div className="col-span-3 text-center py-12 bg-[#1c2e4a]/50 rounded-lg border border-white/10">
-                  <div className="text-4xl mb-4">🔍</div>
-                  <h3 className="text-xl font-semibold mb-2">No Resources Found</h3>
-                  <p className="text-gray-400">
-                    Try adjusting your search or filters to find resources.
-                  </p>
-                  <Button 
-                    variant="ghost" 
-                    className="mt-4 text-[#B87333]"
-                    onClick={() => {
-                      setSearchTerm("");
-                      setSelectedCategories([]);
-                    }}
-                  >
-                    Reset All Filters
-                  </Button>
-                </div>
-              )}
-            </div>
-          </TabsContent>
-          
-          <TabsContent value="ptsd">
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {filteredResources.filter(r => r.category === "PTSD & Trauma").map(resource => (
+          <TabsContent value="all" className="animate-fade-in">
+            <h2 className="text-2xl font-bold text-[#B87333] mb-6">
+              Featured Resources
+            </h2>
+            
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
+              {resources.filter(resource => resource.featured).map(resource => (
                 <ResourceCard 
                   key={resource.id}
                   title={resource.title}
                   description={resource.description}
+                  category={resource.category}
                   type={resource.type}
+                  size={resource.size}
+                  date={resource.date}
+                  url={resource.url}
+                />
+              ))}
+            </div>
+            
+            <h2 className="text-2xl font-bold text-white mb-6 border-b border-white/10 pb-2">
+              All Resources
+            </h2>
+            
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
+              {resources.map(resource => (
+                <ResourceCard 
+                  key={resource.id}
+                  title={resource.title}
+                  description={resource.description}
+                  category={resource.category}
+                  type={resource.type}
+                  size={resource.size}
+                  date={resource.date}
+                  url={resource.url}
+                />
+              ))}
+            </div>
+            
+            <h2 className="text-2xl font-bold text-white mb-6 border-b border-white/10 pb-2">
+              External Resources
+            </h2>
+            
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              {externalResources.map(resource => (
+                <ExternalResourceCard 
+                  key={resource.id}
+                  title={resource.title}
+                  description={resource.description}
                   category={resource.category}
                   url={resource.url}
-                  featured={resource.featured}
                 />
               ))}
             </div>
           </TabsContent>
           
-          <TabsContent value="depression">
+          <TabsContent value="mental-health" className="animate-fade-in">
+            <h2 className="text-2xl font-bold text-white mb-6 border-b border-white/10 pb-2">
+              Mental Health Resources
+            </h2>
+            
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {filteredResources.filter(r => r.category === "Depression & Anxiety").map(resource => (
+              {resources.filter(resource => resource.category === "Mental Health").map(resource => (
                 <ResourceCard 
                   key={resource.id}
                   title={resource.title}
                   description={resource.description}
-                  type={resource.type}
                   category={resource.category}
+                  type={resource.type}
+                  size={resource.size}
+                  date={resource.date}
                   url={resource.url}
-                  featured={resource.featured}
                 />
               ))}
             </div>
           </TabsContent>
           
-          <TabsContent value="substance">
+          <TabsContent value="career" className="animate-fade-in">
+            <h2 className="text-2xl font-bold text-white mb-6 border-b border-white/10 pb-2">
+              Career Resources
+            </h2>
+            
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {filteredResources.filter(r => r.category === "Substance Recovery").map(resource => (
+              {resources.filter(resource => resource.category === "Career").map(resource => (
                 <ResourceCard 
                   key={resource.id}
                   title={resource.title}
                   description={resource.description}
-                  type={resource.type}
                   category={resource.category}
+                  type={resource.type}
+                  size={resource.size}
+                  date={resource.date}
                   url={resource.url}
-                  featured={resource.featured}
                 />
               ))}
             </div>
           </TabsContent>
           
-          <TabsContent value="family">
+          <TabsContent value="family" className="animate-fade-in">
+            <h2 className="text-2xl font-bold text-white mb-6 border-b border-white/10 pb-2">
+              Family Resources
+            </h2>
+            
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {filteredResources.filter(r => r.category === "Family Support").map(resource => (
+              {resources.filter(resource => resource.category === "Family").map(resource => (
                 <ResourceCard 
                   key={resource.id}
                   title={resource.title}
                   description={resource.description}
-                  type={resource.type}
                   category={resource.category}
-                  url={resource.url}
-                  featured={resource.featured}
-                />
-              ))}
-            </div>
-          </TabsContent>
-          
-          <TabsContent value="career">
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {filteredResources.filter(r => r.category === "Career Transition").map(resource => (
-                <ResourceCard 
-                  key={resource.id}
-                  title={resource.title}
-                  description={resource.description}
                   type={resource.type}
-                  category={resource.category}
+                  size={resource.size}
+                  date={resource.date}
                   url={resource.url}
-                  featured={resource.featured}
-                />
-              ))}
-            </div>
-          </TabsContent>
-          
-          <TabsContent value="benefits">
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {filteredResources.filter(r => r.category === "Benefits & Healthcare").map(resource => (
-                <ResourceCard 
-                  key={resource.id}
-                  title={resource.title}
-                  description={resource.description}
-                  type={resource.type}
-                  category={resource.category}
-                  url={resource.url}
-                  featured={resource.featured}
                 />
               ))}
             </div>
           </TabsContent>
         </Tabs>
         
-        {/* Submit Resource */}
+        {/* Resource Request */}
         <div className="mt-16 bg-gradient-to-r from-[#B87333]/20 to-transparent p-8 rounded-lg border border-[#B87333]/30">
           <div className="flex flex-col md:flex-row items-center justify-between gap-6">
             <div>
-              <h3 className="text-2xl font-bold text-white mb-2">Have a Resource to Share?</h3>
+              <h3 className="text-2xl font-bold text-white mb-2">Need a Specific Resource?</h3>
               <p className="text-gray-300">
-                If you know of helpful resources for military mental health, we welcome your suggestions.
+                Can't find what you're looking for? Let us know and we'll help you locate the right resources.
               </p>
             </div>
             
             <Button variant="gold" size="lg">
-              Submit Resource
+              Request Resource
             </Button>
           </div>
         </div>
       </div>
       
       {/* Footer */}
-      <footer className="bg-[#0F2942] border-t border-white/10 py-8">
+      <footer className="bg-[#0F2942] border-t border-white/10 py-8 mt-12">
         <div className="container mx-auto px-4 text-center">
           <p className="text-gray-400 mb-4">
-            Resources are regularly updated to ensure accuracy and relevance for our military community.
+            These resources are regularly updated to provide the most current information available.
           </p>
           
           <div className="flex justify-center gap-4">
@@ -484,87 +429,6 @@ const MilitaryResources = () => {
         </div>
       </footer>
     </div>
-  );
-};
-
-// Resource Card Component
-interface ResourceCardProps {
-  title: string;
-  description: string;
-  type: string;
-  category: string;
-  url: string;
-  featured: boolean;
-}
-
-const ResourceCard: React.FC<ResourceCardProps> = ({ 
-  title, 
-  description, 
-  type, 
-  category, 
-  url,
-  featured
-}) => {
-  // Determine icon based on resource type
-  const getIcon = () => {
-    switch (type) {
-      case "Tool":
-        return <Wrench className="h-4 w-4 text-[#B87333]" />;
-      case "Guide":
-      case "Workbook":
-        return <FileText className="h-4 w-4 text-[#B87333]" />;
-      case "Article":
-        return <BookOpen className="h-4 w-4 text-[#B87333]" />;
-      case "Directory":
-        return <Users className="h-4 w-4 text-[#B87333]" />;
-      case "Service":
-        return <Shield className="h-4 w-4 text-[#B87333]" />;
-      case "Crisis Support":
-        return <Phone className="h-4 w-4 text-[#B87333]" />;
-      case "Assessment":
-      case "Toolkit":
-        return <CheckSquare className="h-4 w-4 text-[#B87333]" />;
-      default:
-        return <Bookmark className="h-4 w-4 text-[#B87333]" />;
-    }
-  };
-
-  return (
-    <Card className={`
-      bg-gradient-to-b from-[#1c2e4a] to-[#0A1929] 
-      border ${featured ? 'border-[#B87333]/30' : 'border-white/10'} 
-      text-white transition-all duration-300 
-      hover:shadow-lg hover:translate-y-[-5px]
-      ${featured ? 'shadow-[0_0_10px_rgba(184,115,51,0.2)]' : ''}
-    `}>
-      <CardHeader>
-        <div className="flex justify-between items-start mb-2">
-          <div className="bg-[#B87333]/10 text-[#B87333] text-xs font-medium py-1 px-2 rounded-full">
-            {category}
-          </div>
-          <div className="bg-[#1c2e4a] text-white text-xs py-1 px-2 rounded-full flex items-center">
-            {getIcon()}
-            <span className="ml-1">{type}</span>
-          </div>
-        </div>
-        <CardTitle className="text-white">{title}</CardTitle>
-        <CardDescription className="text-gray-300 mt-2">
-          {description}
-        </CardDescription>
-      </CardHeader>
-      <CardFooter className="pt-2">
-        <Button 
-          variant={featured ? "gold" : "bronze"} 
-          className="w-full"
-          asChild
-        >
-          <a href={url} target="_blank" rel="noopener noreferrer">
-            <ExternalLink className="mr-2 h-4 w-4" />
-            Access Resource
-          </a>
-        </Button>
-      </CardFooter>
-    </Card>
   );
 };
 
