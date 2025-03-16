@@ -33,7 +33,7 @@ const useToast = () => {
       id, 
       title, 
       description, 
-      variant: mappedVariant as "default" | "destructive", 
+      variant, // Keep the original variant for potential custom styling
       duration 
     }]);
 
@@ -73,7 +73,7 @@ const toast = ({ title, description, variant = "default", duration = DEFAULT_TOA
     id, 
     title, 
     description, 
-    variant: mappedVariant as "default" | "destructive", 
+    variant, // Keep the original variant for potential custom styling
     duration 
   }]);
 
