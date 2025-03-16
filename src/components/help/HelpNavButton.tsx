@@ -13,9 +13,8 @@ const HelpNavButton: React.FC = () => {
   // Check if we're on the index page with a specific screen state
   // or on the Department of Defense page
   const isOnExcludedScreen = () => {
-    // Check if on DoD page - this must be exact
+    // Check if on DoD page
     if (location.pathname === "/department-of-defense") {
-      console.log("On DoD page, hiding help button");
       return true;
     }
     
@@ -26,13 +25,7 @@ const HelpNavButton: React.FC = () => {
       
       // These screens should not show the help button
       const excludedScreenStates = ['intro', 'mood', 'moodResponse', 'register', 'subscription', 'visionBoard'];
-      const shouldHide = !state || excludedScreenStates.includes(screenState || '');
-      
-      if (shouldHide) {
-        console.log("On excluded screen state, hiding help button:", screenState);
-      }
-      
-      return shouldHide;
+      return !state || excludedScreenStates.includes(screenState || '');
     }
     return false;
   };

@@ -151,37 +151,6 @@
   }
 }
 
-@keyframes fade-in {
-  from { opacity: 0; }
-  to { opacity: 1; }
-}
-
-@keyframes scale-in {
-  from { transform: scale(0.95); opacity: 0; }
-  to { transform: scale(1); opacity: 1; }
-}
-
-.animate-fade-in {
-  animation: fade-in 0.8s ease-in-out forwards;
-}
-
-.animate-scale-in {
-  animation: scale-in 0.8s ease-out forwards;
-}
-
-.animate-pulse {
-  animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
-}
-
-@keyframes pulse {
-  0%, 100% {
-    opacity: 1;
-  }
-  50% {
-    opacity: 0.5;
-  }
-}
-
 .intro-logo-icon {
   animation: fadeInLogo 2s ease-out forwards, copperShimmer 3s ease-in-out 2s infinite, floatAnimation 6s ease-in-out infinite;
   filter: drop-shadow(0 0 8px rgba(184, 115, 51, 0.6));

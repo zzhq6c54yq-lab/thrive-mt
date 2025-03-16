@@ -8,12 +8,6 @@ export const useButtonVisibility = () => {
   const shouldShowButton = () => {
     console.log("Current path for button visibility check:", location.pathname);
     
-    // Always hide on Department of Defense page
-    if (location.pathname === "/department-of-defense") {
-      console.log("Hiding button on DoD page");
-      return false;
-    }
-    
     // Check if the current path is the home path and there's a specific state related to screens
     if (location.pathname === "/" || location.pathname === "/index") {
       // Get state from location if available
@@ -31,8 +25,7 @@ export const useButtonVisibility = () => {
     
     // Now we will show buttons on all screens except for these specific ones
     const excludedScreens = [
-      '/creator', // Only exclude the creator screen
-      '/department-of-defense' // Make sure it's excluded here too for redundancy
+      '/creator' // Only exclude the creator screen
     ];
     
     // Check if the current path is in the excluded screens list
