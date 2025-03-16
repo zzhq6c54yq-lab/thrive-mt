@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from "react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Helmet } from "react-helmet";
@@ -26,18 +25,28 @@ const DepartmentOfDefense = () => {
   const navigate = useNavigate();
   const { toast } = useToast();
   const [activeTab, setActiveTab] = useState("dashboard");
-  const [showWelcome, setShowWelcome] = useState(true);
+  const [showInitialMessage, setShowInitialMessage] = useState(true);
+  const [showWelcome, setShowWelcome] = useState(false);
   const [currentQuote, setCurrentQuote] = useState(0);
 
   useEffect(() => {
-    // Auto-hide welcome screen after 4 seconds
+    // Show initial deep message for 4 seconds
+    if (showInitialMessage) {
+      const timer = setTimeout(() => {
+        setShowInitialMessage(false);
+        setShowWelcome(true);
+      }, 4000);
+      return () => clearTimeout(timer);
+    }
+    
+    // Then show welcome screen for 4 seconds
     if (showWelcome) {
       const timer = setTimeout(() => {
         setShowWelcome(false);
       }, 4000);
       return () => clearTimeout(timer);
     }
-  }, [showWelcome]);
+  }, [showInitialMessage, showWelcome]);
 
   useEffect(() => {
     // Rotate quotes every 8 seconds
@@ -57,6 +66,42 @@ const DepartmentOfDefense = () => {
       description: `${action} feature will be available soon`,
     });
   };
+
+  const handleTabChange = (value: string) => {
+    setActiveTab(value);
+  };
+
+  // Deep care-filled message screen
+  if (showInitialMessage) {
+    return (
+      <Page title="Department of Defense Mental Health Portal">
+        <div className="fixed inset-0 flex items-center justify-center bg-[#0A1929] z-50 animate-fade-in">
+          <div className="max-w-2xl mx-auto p-8 text-center">
+            <div className="bg-gradient-to-r from-[#0A1929] via-[#1c2e4a] to-[#0A1929] p-10 rounded-lg border-2 border-[#B87333] shadow-lg">
+              <h1 className="text-3xl md:text-4xl font-bold text-white mb-8">
+                <span className="text-[#B87333]">Your Service</span> Matters.<br />
+                <span className="text-[#B87333]">Your Health</span> Matters Even More.
+              </h1>
+              
+              <p className="text-xl text-gray-200 mb-8 leading-relaxed">
+                Behind every uniform is a person with unique experiences and challenges. 
+                This space is dedicated to supporting your mental wellbeing with the same commitment 
+                you've shown in your service to our nation.
+              </p>
+              
+              <p className="text-lg text-gray-300 mb-4 italic">
+                You are not alone on this journey.
+              </p>
+              
+              <div className="mt-6 animate-pulse">
+                <span className="text-[#B87333]">Loading your personalized resources...</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </Page>
+    );
+  }
 
   // Welcome screen that fades out
   if (showWelcome) {
@@ -144,6 +189,54 @@ const DepartmentOfDefense = () => {
             </div>
           </div>
 
+          {/* Persistent Menu Bar - Always visible under header */}
+          <div className="sticky top-0 z-30 bg-[#0A1929]/95 border-b border-[#B87333]/30 mb-6 pb-2 backdrop-blur-sm">
+            <TabsList className="grid grid-cols-6 w-full bg-[#0A1929]/50 p-1 border border-[#B87333]/30">
+              <TabsTrigger 
+                value="dashboard" 
+                onClick={() => handleTabChange("dashboard")}
+                className={`data-[state=active]:bg-[#B87333]/20 data-[state=active]:text-[#B87333] data-[state=active]:shadow ${activeTab === "dashboard" ? "bg-[#B87333]/20 text-[#B87333] shadow" : ""}`}
+              >
+                Dashboard
+              </TabsTrigger>
+              <TabsTrigger 
+                value="resources" 
+                onClick={() => handleTabChange("resources")}
+                className={`data-[state=active]:bg-[#B87333]/20 data-[state=active]:text-[#B87333] data-[state=active]:shadow ${activeTab === "resources" ? "bg-[#B87333]/20 text-[#B87333] shadow" : ""}`}
+              >
+                Resources
+              </TabsTrigger>
+              <TabsTrigger 
+                value="education" 
+                onClick={() => handleTabChange("education")}
+                className={`data-[state=active]:bg-[#B87333]/20 data-[state=active]:text-[#B87333] data-[state=active]:shadow ${activeTab === "education" ? "bg-[#B87333]/20 text-[#B87333] shadow" : ""}`}
+              >
+                Education
+              </TabsTrigger>
+              <TabsTrigger 
+                value="assessments" 
+                onClick={() => handleTabChange("assessments")}
+                className={`data-[state=active]:bg-[#B87333]/20 data-[state=active]:text-[#B87333] data-[state=active]:shadow ${activeTab === "assessments" ? "bg-[#B87333]/20 text-[#B87333] shadow" : ""}`}
+              >
+                Assessments
+              </TabsTrigger>
+              <TabsTrigger 
+                value="programs" 
+                onClick={() => handleTabChange("programs")}
+                className={`data-[state=active]:bg-[#B87333]/20 data-[state=active]:text-[#B87333] data-[state=active]:shadow ${activeTab === "programs" ? "bg-[#B87333]/20 text-[#B87333] shadow" : ""}`}
+              >
+                Programs
+              </TabsTrigger>
+              <TabsTrigger 
+                value="profile" 
+                onClick={() => handleTabChange("profile")}
+                className={`data-[state=active]:bg-[#B87333]/20 data-[state=active]:text-[#B87333] data-[state=active]:shadow ${activeTab === "profile" ? "bg-[#B87333]/20 text-[#B87333] shadow" : ""}`}
+              >
+                My Profile
+              </TabsTrigger>
+            </TabsList>
+          </div>
+
           <CrisisResourcesBar />
 
           {/* Quote of the Day */}
@@ -163,46 +256,7 @@ const DepartmentOfDefense = () => {
           </div>
 
           <div className="my-8">
-            <Tabs defaultValue="dashboard" className="w-full" onValueChange={setActiveTab}>
-              <TabsList className="grid grid-cols-6 mb-8 bg-[#0A1929]/50 p-1 border border-[#B87333]/30">
-                <TabsTrigger 
-                  value="dashboard" 
-                  className="data-[state=active]:bg-[#B87333]/20 data-[state=active]:text-[#B87333] data-[state=active]:shadow"
-                >
-                  Dashboard
-                </TabsTrigger>
-                <TabsTrigger 
-                  value="resources" 
-                  className="data-[state=active]:bg-[#B87333]/20 data-[state=active]:text-[#B87333] data-[state=active]:shadow"
-                >
-                  Resources
-                </TabsTrigger>
-                <TabsTrigger 
-                  value="education" 
-                  className="data-[state=active]:bg-[#B87333]/20 data-[state=active]:text-[#B87333] data-[state=active]:shadow"
-                >
-                  Education
-                </TabsTrigger>
-                <TabsTrigger 
-                  value="assessments" 
-                  className="data-[state=active]:bg-[#B87333]/20 data-[state=active]:text-[#B87333] data-[state=active]:shadow"
-                >
-                  Assessments
-                </TabsTrigger>
-                <TabsTrigger 
-                  value="programs" 
-                  className="data-[state=active]:bg-[#B87333]/20 data-[state=active]:text-[#B87333] data-[state=active]:shadow"
-                >
-                  Programs
-                </TabsTrigger>
-                <TabsTrigger 
-                  value="profile" 
-                  className="data-[state=active]:bg-[#B87333]/20 data-[state=active]:text-[#B87333] data-[state=active]:shadow"
-                >
-                  My Profile
-                </TabsTrigger>
-              </TabsList>
-
+            <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
               <TabsContent value="dashboard" className="space-y-8">
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                   <Card className="bg-gradient-to-b from-[#1c2e4a] to-[#0A1929] border-[#B87333]/30 text-white shadow-md">
@@ -583,711 +637,3 @@ const DepartmentOfDefense = () => {
                           <Briefcase className="h-5 w-5 text-[#B87333]" />
                         </div>
                         <div className="text-left">
-                          <div className="font-medium">Transition Support</div>
-                          <div className="text-sm text-gray-300">Civilian life adjustment resources</div>
-                        </div>
-                      </Button>
-                      <Button 
-                        variant="outline" 
-                        className="justify-start border-[#B87333]/30 text-white hover:bg-[#B87333]/10 h-auto py-3"
-                        onClick={() => handleNavigate("/military-resources")}
-                      >
-                        <div className="mr-3 p-2 bg-[#B87333]/20 rounded-full">
-                          <Users className="h-5 w-5 text-[#B87333]" />
-                        </div>
-                        <div className="text-left">
-                          <div className="font-medium">Family Support</div>
-                          <div className="text-sm text-gray-300">Resources for military families</div>
-                        </div>
-                      </Button>
-                      <Button 
-                        variant="outline" 
-                        className="justify-start border-[#B87333]/30 text-white hover:bg-[#B87333]/10 h-auto py-3"
-                        onClick={() => handleNavigate("/military-resources")}
-                      >
-                        <div className="mr-3 p-2 bg-[#B87333]/20 rounded-full">
-                          <Brain className="h-5 w-5 text-[#B87333]" />
-                        </div>
-                        <div className="text-left">
-                          <div className="font-medium">Resilience Building</div>
-                          <div className="text-sm text-gray-300">Mental fortitude techniques</div>
-                        </div>
-                      </Button>
-                    </div>
-                    <div className="mt-6">
-                      <Button 
-                        variant="gold" 
-                        className="w-full"
-                        onClick={() => handleNavigate("/military-resources")}
-                      >
-                        View All Military Resources
-                      </Button>
-                    </div>
-                  </CardContent>
-                </Card>
-
-                {/* New: Digital Library */}
-                <Card className="bg-gradient-to-b from-[#1c2e4a] to-[#0A1929] border-[#B87333]/30 text-white shadow-md">
-                  <CardHeader>
-                    <CardTitle className="flex items-center gap-2">
-                      <BookMarked className="h-5 w-5 text-[#B87333]" />
-                      Digital Library
-                    </CardTitle>
-                    <CardDescription className="text-gray-300">
-                      E-books, audiobooks, and research papers on military mental health
-                    </CardDescription>
-                  </CardHeader>
-                  <CardContent>
-                    <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                      {educationalContent.filter(c => c.type === "E-Book").slice(0, 3).map((resource, index) => (
-                        <div key={index} className="p-4 bg-[#0A1929] rounded-lg border border-[#B87333]/10 hover:border-[#B87333]/30 transition-all duration-300">
-                          <div className="flex justify-between items-start mb-2">
-                            <Badge variant="outline" className="bg-[#B87333]/10 text-[#B87333] border-none">
-                              {resource.type}
-                            </Badge>
-                            <Badge variant="outline" className="bg-transparent text-gray-400 border-gray-600">
-                              {resource.length}
-                            </Badge>
-                          </div>
-                          <h3 className="font-semibold text-white mb-2">{resource.title}</h3>
-                          <p className="text-sm text-gray-300 mb-4 line-clamp-2">{resource.description}</p>
-                          <Button 
-                            variant="outline" 
-                            size="sm"
-                            className="w-full border-[#B87333]/30 text-[#B87333] hover:bg-[#B87333]/10"
-                            onClick={() => handleButtonClick(`View ${resource.title}`)}
-                          >
-                            Read Now
-                          </Button>
-                        </div>
-                      ))}
-                    </div>
-                    <Button 
-                      variant="outline" 
-                      className="w-full mt-4 border-[#B87333]/30 text-[#B87333] hover:bg-[#B87333]/10"
-                      onClick={() => setActiveTab("education")}
-                    >
-                      Browse Full Library
-                    </Button>
-                  </CardContent>
-                </Card>
-              </TabsContent>
-
-              {/* New Education Tab */}
-              <TabsContent value="education" className="space-y-8">
-                <Card className="bg-gradient-to-b from-[#1c2e4a] to-[#0A1929] border-[#B87333]/30 text-white shadow-md">
-                  <CardHeader>
-                    <CardTitle className="flex items-center gap-2">
-                      <GraduationCap className="h-5 w-5 text-[#B87333]" />
-                      Educational Resources
-                    </CardTitle>
-                    <CardDescription className="text-gray-300">
-                      Learn about mental health topics relevant to military personnel
-                    </CardDescription>
-                  </CardHeader>
-                  <CardContent>
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                      <div>
-                        <h3 className="text-lg font-semibold text-[#B87333] mb-4">Featured Courses</h3>
-                        <div className="space-y-4">
-                          {educationalContent.filter(c => c.type === "Course").slice(0, 3).map((course, index) => (
-                            <div key={index} className="p-4 bg-[#0A1929] rounded-lg border border-[#B87333]/10 hover:border-[#B87333]/30 transition-all duration-300">
-                              <div className="flex justify-between items-center mb-2">
-                                <h4 className="font-medium text-white">{course.title}</h4>
-                                <Badge variant="outline" className="bg-transparent border-[#B87333]/30 text-[#B87333]">
-                                  {course.length}
-                                </Badge>
-                              </div>
-                              <p className="text-sm text-gray-300 mb-3 line-clamp-2">{course.description}</p>
-                              <div className="flex justify-between items-center">
-                                <Badge className="bg-[#B87333]/20 text-[#B87333] border-none">
-                                  {course.category}
-                                </Badge>
-                                <Button 
-                                  variant="outline" 
-                                  size="sm"
-                                  className="border-[#B87333]/30 text-[#B87333] hover:bg-[#B87333]/10"
-                                  onClick={() => handleButtonClick(`Enroll in ${course.title}`)}
-                                >
-                                  Enroll
-                                </Button>
-                              </div>
-                            </div>
-                          ))}
-                        </div>
-                      </div>
-                      
-                      <div>
-                        <h3 className="text-lg font-semibold text-[#B87333] mb-4">Quick Learning</h3>
-                        <div className="space-y-4">
-                          {educationalContent.filter(c => c.type === "Article" || c.type === "Video").slice(0, 4).map((resource, index) => (
-                            <div key={index} className="p-3 bg-[#0A1929] rounded-lg border border-[#B87333]/10 flex items-start">
-                              <div className="mr-3 p-2 bg-[#B87333]/20 rounded-full">
-                                {resource.type === "Video" ? (
-                                  <BookOpenIcon className="h-4 w-4 text-[#B87333]" />
-                                ) : (
-                                  <FileText className="h-4 w-4 text-[#B87333]" />
-                                )}
-                              </div>
-                              <div className="flex-1">
-                                <div className="flex justify-between items-center">
-                                  <h4 className="font-medium text-white text-sm">{resource.title}</h4>
-                                  <Badge variant="outline" className="text-xs bg-transparent border-none text-gray-400">
-                                    {resource.length}
-                                  </Badge>
-                                </div>
-                                <p className="text-xs text-gray-300 mt-1">{resource.category}</p>
-                              </div>
-                            </div>
-                          ))}
-                          <Button
-                            variant="outline"
-                            size="sm"
-                            className="w-full border-[#B87333]/30 text-[#B87333] hover:bg-[#B87333]/10"
-                            onClick={() => handleButtonClick("View all resources")}
-                          >
-                            View All Resources
-                          </Button>
-                        </div>
-                      </div>
-                    </div>
-                  </CardContent>
-                </Card>
-
-                {/* Success Stories */}
-                <Card className="bg-gradient-to-b from-[#1c2e4a] to-[#0A1929] border-[#B87333]/30 text-white shadow-md">
-                  <CardHeader>
-                    <CardTitle className="flex items-center gap-2">
-                      <Medal className="h-5 w-5 text-[#B87333]" />
-                      Success Stories
-                    </CardTitle>
-                    <CardDescription className="text-gray-300">
-                      Inspirational stories from military personnel who've overcome mental health challenges
-                    </CardDescription>
-                  </CardHeader>
-                  <CardContent>
-                    <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                      {successStories.map((story, index) => (
-                        <div key={index} className="p-4 bg-[#0A1929] rounded-lg border border-[#B87333]/10 hover:shadow-md hover:border-[#B87333]/30 transition-all duration-300">
-                          <h3 className="font-semibold text-[#B87333] text-lg mb-2">{story.title}</h3>
-                          <p className="text-gray-300 text-sm mb-3 line-clamp-3">{story.summary}</p>
-                          <div className="flex items-center justify-between">
-                            <Badge className="bg-[#B87333]/20 text-[#B87333] border-none">
-                              {story.serviceType}
-                            </Badge>
-                            <span className="text-xs text-gray-400">{story.readTime} min read</span>
-                          </div>
-                          <Button
-                            variant="outline"
-                            size="sm"
-                            className="w-full mt-3 border-[#B87333]/30 text-[#B87333] hover:bg-[#B87333]/10"
-                            onClick={() => handleButtonClick(`Read ${story.title}`)}
-                          >
-                            Read Full Story
-                          </Button>
-                        </div>
-                      ))}
-                    </div>
-                  </CardContent>
-                </Card>
-
-                {/* Interactive Learning Tools */}
-                <Card className="bg-gradient-to-b from-[#1c2e4a] to-[#0A1929] border-[#B87333]/30 text-white shadow-md">
-                  <CardHeader>
-                    <CardTitle className="flex items-center gap-2">
-                      <Puzzle className="h-5 w-5 text-[#B87333]" />
-                      Interactive Learning Tools
-                    </CardTitle>
-                    <CardDescription className="text-gray-300">
-                      Engage with mental health concepts through interactive activities
-                    </CardDescription>
-                  </CardHeader>
-                  <CardContent>
-                    <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                      <div className="p-4 bg-[#0A1929] rounded-lg border border-[#B87333]/10 hover:border-[#B87333]/30 transition-all duration-300">
-                        <div className="bg-[#B87333]/20 p-3 rounded-lg mb-3 flex justify-center">
-                          <Brain className="h-8 w-8 text-[#B87333]" />
-                        </div>
-                        <h3 className="font-semibold text-white text-center mb-2">Stress Response Simulator</h3>
-                        <p className="text-sm text-gray-300 mb-3 text-center">
-                          Interactive tool that visualizes how stress affects the mind and body during combat situations.
-                        </p>
-                        <Button 
-                          variant="outline"
-                          className="w-full border-[#B87333]/30 text-[#B87333] hover:bg-[#B87333]/10"
-                          onClick={() => handleButtonClick("Launch Stress Response Simulator")}
-                        >
-                          Launch Tool
-                        </Button>
-                      </div>
-                      
-                      <div className="p-4 bg-[#0A1929] rounded-lg border border-[#B87333]/10 hover:border-[#B87333]/30 transition-all duration-300">
-                        <div className="bg-[#B87333]/20 p-3 rounded-lg mb-3 flex justify-center">
-                          <CheckSquare className="h-8 w-8 text-[#B87333]" />
-                        </div>
-                        <h3 className="font-semibold text-white text-center mb-2">Coping Skills Trainer</h3>
-                        <p className="text-sm text-gray-300 mb-3 text-center">
-                          Practice and master coping techniques with real-time feedback and guided exercises.
-                        </p>
-                        <Button 
-                          variant="outline"
-                          className="w-full border-[#B87333]/30 text-[#B87333] hover:bg-[#B87333]/10"
-                          onClick={() => handleButtonClick("Launch Coping Skills Trainer")}
-                        >
-                          Launch Tool
-                        </Button>
-                      </div>
-                      
-                      <div className="p-4 bg-[#0A1929] rounded-lg border border-[#B87333]/10 hover:border-[#B87333]/30 transition-all duration-300">
-                        <div className="bg-[#B87333]/20 p-3 rounded-lg mb-3 flex justify-center">
-                          <Users className="h-8 w-8 text-[#B87333]" />
-                        </div>
-                        <h3 className="font-semibold text-white text-center mb-2">Communication Scenarios</h3>
-                        <p className="text-sm text-gray-300 mb-3 text-center">
-                          Practice difficult conversations with family and teammates through guided role-playing.
-                        </p>
-                        <Button 
-                          variant="outline"
-                          className="w-full border-[#B87333]/30 text-[#B87333] hover:bg-[#B87333]/10"
-                          onClick={() => handleButtonClick("Launch Communication Scenarios")}
-                        >
-                          Launch Tool
-                        </Button>
-                      </div>
-                    </div>
-                  </CardContent>
-                </Card>
-              </TabsContent>
-
-              <TabsContent value="assessments" className="space-y-8">
-                <Card className="bg-gradient-to-b from-[#1c2e4a] to-[#0A1929] border-[#B87333]/30 text-white shadow-md">
-                  <CardHeader>
-                    <CardTitle>Mental Health Assessments</CardTitle>
-                    <CardDescription className="text-gray-300">
-                      Self-evaluations and professional screening tools
-                    </CardDescription>
-                  </CardHeader>
-                  <CardContent>
-                    <div className="space-y-4">
-                      <div className="p-4 border border-[#B87333]/30 rounded-lg hover:bg-[#B87333]/10 cursor-pointer">
-                        <div className="flex justify-between items-center">
-                          <div>
-                            <h3 className="font-medium text-[#B87333]">PTSD Screening Assessment</h3>
-                            <p className="text-sm text-gray-300">5-10 minutes | Confidential</p>
-                          </div>
-                          <Badge variant="outline" className="bg-transparent border-[#B87333]/30 text-[#B87333]">
-                            Recommended
-                          </Badge>
-                        </div>
-                        <Button 
-                          variant="outline" 
-                          className="mt-4 border-[#B87333]/30 text-[#B87333] hover:bg-[#B87333]/10"
-                          onClick={() => handleButtonClick("PTSD Assessment")}
-                        >
-                          Start Assessment
-                        </Button>
-                      </div>
-                      
-                      <div className="p-4 border border-[#B87333]/30 rounded-lg hover:bg-[#B87333]/10 cursor-pointer">
-                        <div className="flex justify-between items-center">
-                          <div>
-                            <h3 className="font-medium text-white">Deployment Stress Inventory</h3>
-                            <p className="text-sm text-gray-300">10-15 minutes | Confidential</p>
-                          </div>
-                        </div>
-                        <Button 
-                          variant="outline" 
-                          className="mt-4 border-[#B87333]/30 text-[#B87333] hover:bg-[#B87333]/10"
-                          onClick={() => handleButtonClick("Deployment Stress Assessment")}
-                        >
-                          Start Assessment
-                        </Button>
-                      </div>
-                      
-                      <div className="p-4 border border-[#B87333]/30 rounded-lg hover:bg-[#B87333]/10 cursor-pointer">
-                        <div className="flex justify-between items-center">
-                          <div>
-                            <h3 className="font-medium text-white">Sleep Quality Evaluation</h3>
-                            <p className="text-sm text-gray-300">5 minutes | Confidential</p>
-                          </div>
-                        </div>
-                        <Button 
-                          variant="outline" 
-                          className="mt-4 border-[#B87333]/30 text-[#B87333] hover:bg-[#B87333]/10"
-                          onClick={() => handleButtonClick("Sleep Assessment")}
-                        >
-                          Start Assessment
-                        </Button>
-                      </div>
-                      
-                      {/* New assessments */}
-                      <div className="p-4 border border-[#B87333]/30 rounded-lg hover:bg-[#B87333]/10 cursor-pointer">
-                        <div className="flex justify-between items-center">
-                          <div>
-                            <h3 className="font-medium text-white">Moral Injury Assessment</h3>
-                            <p className="text-sm text-gray-300">15 minutes | Confidential</p>
-                          </div>
-                        </div>
-                        <Button 
-                          variant="outline" 
-                          className="mt-4 border-[#B87333]/30 text-[#B87333] hover:bg-[#B87333]/10"
-                          onClick={() => handleButtonClick("Moral Injury Assessment")}
-                        >
-                          Start Assessment
-                        </Button>
-                      </div>
-                      
-                      <div className="p-4 border border-[#B87333]/30 rounded-lg hover:bg-[#B87333]/10 cursor-pointer">
-                        <div className="flex justify-between items-center">
-                          <div>
-                            <h3 className="font-medium text-white">Family Relationship Evaluation</h3>
-                            <p className="text-sm text-gray-300">10 minutes | Confidential</p>
-                          </div>
-                        </div>
-                        <Button 
-                          variant="outline" 
-                          className="mt-4 border-[#B87333]/30 text-[#B87333] hover:bg-[#B87333]/10"
-                          onClick={() => handleButtonClick("Family Relationship Assessment")}
-                        >
-                          Start Assessment
-                        </Button>
-                      </div>
-                      
-                      <div className="p-4 border border-[#B87333]/30 rounded-lg hover:bg-[#B87333]/10 cursor-pointer">
-                        <div className="flex justify-between items-center">
-                          <div>
-                            <h3 className="font-medium text-white">Resilience Strength Finder</h3>
-                            <p className="text-sm text-gray-300">10-15 minutes | Confidential</p>
-                          </div>
-                        </div>
-                        <Button 
-                          variant="outline" 
-                          className="mt-4 border-[#B87333]/30 text-[#B87333] hover:bg-[#B87333]/10"
-                          onClick={() => handleButtonClick("Resilience Assessment")}
-                        >
-                          Start Assessment
-                        </Button>
-                      </div>
-                    </div>
-                  </CardContent>
-                </Card>
-              </TabsContent>
-
-              <TabsContent value="programs" className="space-y-8">
-                <Card className="bg-gradient-to-b from-[#1c2e4a] to-[#0A1929] border-[#B87333]/30 text-white shadow-md">
-                  <CardHeader>
-                    <CardTitle>Specialized Programs</CardTitle>
-                    <CardDescription className="text-gray-300">
-                      Tailored mental health programs for military personnel
-                    </CardDescription>
-                  </CardHeader>
-                  <CardContent>
-                    <div className="space-y-6">
-                      <div className="p-4 bg-[#0A1929] border border-[#B87333]/30 rounded-lg">
-                        <h3 className="text-xl font-semibold text-[#B87333]">Combat Trauma Recovery Program</h3>
-                        <p className="text-gray-300 mt-2">
-                          An 8-week structured program designed specifically for service members who have experienced combat-related trauma. Includes evidence-based therapy approaches and peer support.
-                        </p>
-                        <div className="mt-4 flex flex-wrap gap-2">
-                          <Badge variant="outline" className="bg-transparent border-[#B87333]/30 text-[#B87333]">
-                            Group Sessions
-                          </Badge>
-                          <Badge variant="outline" className="bg-transparent border-[#B87333]/30 text-[#B87333]">
-                            Virtual Options
-                          </Badge>
-                          <Badge variant="outline" className="bg-transparent border-[#B87333]/30 text-[#B87333]">
-                            Certificate
-                          </Badge>
-                        </div>
-                        <Button 
-                          variant="gold" 
-                          className="mt-4"
-                          onClick={() => handleButtonClick("Combat Trauma Recovery Program")}
-                        >
-                          Learn More & Enroll
-                        </Button>
-                      </div>
-                      
-                      <div className="p-4 bg-[#0A1929] border border-[#B87333]/30 rounded-lg">
-                        <h3 className="text-xl font-semibold text-white">Military-to-Civilian Transition</h3>
-                        <p className="text-gray-300 mt-2">
-                          A comprehensive program designed to support service members transitioning to civilian life. Addresses mental health aspects of transition, identity shifts, and building a new purpose.
-                        </p>
-                        <div className="mt-4 flex flex-wrap gap-2">
-                          <Badge variant="outline" className="bg-transparent border-[#B87333]/30 text-[#B87333]">
-                            1-on-1 Coaching
-                          </Badge>
-                          <Badge variant="outline" className="bg-transparent border-[#B87333]/30 text-[#B87333]">
-                            Resources
-                          </Badge>
-                          <Badge variant="outline" className="bg-transparent border-[#B87333]/30 text-[#B87333]">
-                            Community
-                          </Badge>
-                        </div>
-                        <Button 
-                          variant="outline" 
-                          className="mt-4 border-[#B87333]/30 text-[#B87333] hover:bg-[#B87333]/10"
-                          onClick={() => handleButtonClick("Transition Program")}
-                        >
-                          Learn More & Enroll
-                        </Button>
-                      </div>
-                      
-                      <div className="p-4 bg-[#0A1929] border border-[#B87333]/30 rounded-lg">
-                        <h3 className="text-xl font-semibold text-white">Military Family Resilience</h3>
-                        <p className="text-gray-300 mt-2">
-                          Supporting the entire family unit through the unique challenges of military life, including deployments, relocations, and reintegration.
-                        </p>
-                        <div className="mt-4 flex flex-wrap gap-2">
-                          <Badge variant="outline" className="bg-transparent border-[#B87333]/30 text-[#B87333]">
-                            Family Sessions
-                          </Badge>
-                          <Badge variant="outline" className="bg-transparent border-[#B87333]/30 text-[#B87333]">
-                            Children's Activities
-                          </Badge>
-                          <Badge variant="outline" className="bg-transparent border-[#B87333]/30 text-[#B87333]">
-                            Resources
-                          </Badge>
-                        </div>
-                        <Button 
-                          variant="outline" 
-                          className="mt-4 border-[#B87333]/30 text-[#B87333] hover:bg-[#B87333]/10"
-                          onClick={() => handleButtonClick("Family Resilience Program")}
-                        >
-                          Learn More & Enroll
-                        </Button>
-                      </div>
-                      
-                      {/* New Program */}
-                      <div className="p-4 bg-[#0A1929] border border-[#B87333]/30 rounded-lg">
-                        <h3 className="text-xl font-semibold text-white">Moral Injury Healing Path</h3>
-                        <p className="text-gray-300 mt-2">
-                          Specialized program addressing the unique spiritual and ethical wounds that can occur during military service, particularly in combat situations.
-                        </p>
-                        <div className="mt-4 flex flex-wrap gap-2">
-                          <Badge variant="outline" className="bg-transparent border-[#B87333]/30 text-[#B87333]">
-                            Spiritual Support
-                          </Badge>
-                          <Badge variant="outline" className="bg-transparent border-[#B87333]/30 text-[#B87333]">
-                            Guided Reflection
-                          </Badge>
-                          <Badge variant="outline" className="bg-transparent border-[#B87333]/30 text-[#B87333]">
-                            Peer Discussion
-                          </Badge>
-                        </div>
-                        <Button 
-                          variant="outline" 
-                          className="mt-4 border-[#B87333]/30 text-[#B87333] hover:bg-[#B87333]/10"
-                          onClick={() => handleButtonClick("Moral Injury Program")}
-                        >
-                          Learn More & Enroll
-                        </Button>
-                      </div>
-                      
-                      {/* New Program */}
-                      <div className="p-4 bg-[#0A1929] border border-[#B87333]/30 rounded-lg">
-                        <h3 className="text-xl font-semibold text-white">Sleep & Recovery Bootcamp</h3>
-                        <p className="text-gray-300 mt-2">
-                          An intensive 3-week program designed to reset disrupted sleep patterns and establish sustainable sleep hygiene practices for military personnel.
-                        </p>
-                        <div className="mt-4 flex flex-wrap gap-2">
-                          <Badge variant="outline" className="bg-transparent border-[#B87333]/30 text-[#B87333]">
-                            Sleep Tracking
-                          </Badge>
-                          <Badge variant="outline" className="bg-transparent border-[#B87333]/30 text-[#B87333]">
-                            Daily Practices
-                          </Badge>
-                          <Badge variant="outline" className="bg-transparent border-[#B87333]/30 text-[#B87333]">
-                            Expert Guidance
-                          </Badge>
-                        </div>
-                        <Button 
-                          variant="outline" 
-                          className="mt-4 border-[#B87333]/30 text-[#B87333] hover:bg-[#B87333]/10"
-                          onClick={() => handleButtonClick("Sleep Recovery Program")}
-                        >
-                          Learn More & Enroll
-                        </Button>
-                      </div>
-                    </div>
-                  </CardContent>
-                </Card>
-              </TabsContent>
-
-              <TabsContent value="profile" className="space-y-8">
-                <Card className="bg-gradient-to-b from-[#1c2e4a] to-[#0A1929] border-[#B87333]/30 text-white shadow-md">
-                  <CardHeader>
-                    <CardTitle className="flex items-center gap-2">
-                      <UserRound className="h-5 w-5 text-[#B87333]" />
-                      Military Profile
-                    </CardTitle>
-                    <CardDescription className="text-gray-300">
-                      Your personal military information and preferences
-                    </CardDescription>
-                  </CardHeader>
-                  <CardContent>
-                    <div className="space-y-6">
-                      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                        <div>
-                          <h3 className="text-lg font-medium text-[#B87333] mb-4">Service Information</h3>
-                          <div className="space-y-3">
-                            <div className="flex justify-between border-b border-gray-700 pb-2">
-                              <span className="text-gray-300">Name:</span>
-                              <span className="text-white">John Doe</span>
-                            </div>
-                            <div className="flex justify-between border-b border-gray-700 pb-2">
-                              <span className="text-gray-300">Service Branch:</span>
-                              <span className="text-white">Army</span>
-                            </div>
-                            <div className="flex justify-between border-b border-gray-700 pb-2">
-                              <span className="text-gray-300">Rank:</span>
-                              <span className="text-white">Sergeant</span>
-                            </div>
-                            <div className="flex justify-between border-b border-gray-700 pb-2">
-                              <span className="text-gray-300">Status:</span>
-                              <span className="text-white">Active Duty</span>
-                            </div>
-                            <div className="flex justify-between border-b border-gray-700 pb-2">
-                              <span className="text-gray-300">Years of Service:</span>
-                              <span className="text-white">6</span>
-                            </div>
-                            <div className="flex justify-between border-b border-gray-700 pb-2">
-                              <span className="text-gray-300">Deployment History:</span>
-                              <span className="text-white">2 deployments</span>
-                            </div>
-                          </div>
-                        </div>
-                        
-                        <div>
-                          <h3 className="text-lg font-medium text-[#B87333] mb-4">Program Preferences</h3>
-                          <div className="space-y-3">
-                            <div className="flex justify-between border-b border-gray-700 pb-2">
-                              <span className="text-gray-300">Primary Concerns:</span>
-                              <span className="text-white">PTSD, Sleep</span>
-                            </div>
-                            <div className="flex justify-between border-b border-gray-700 pb-2">
-                              <span className="text-gray-300">Session Format:</span>
-                              <span className="text-white">Virtual</span>
-                            </div>
-                            <div className="flex justify-between border-b border-gray-700 pb-2">
-                              <span className="text-gray-300">Counselor Preference:</span>
-                              <span className="text-white">Military Experience</span>
-                            </div>
-                            <div className="flex justify-between border-b border-gray-700 pb-2">
-                              <span className="text-gray-300">Communication:</span>
-                              <span className="text-white">Email, Text</span>
-                            </div>
-                            <div className="flex justify-between border-b border-gray-700 pb-2">
-                              <span className="text-gray-300">Program Interests:</span>
-                              <span className="text-white">Group Therapy, Mindfulness</span>
-                            </div>
-                            <div className="flex justify-between border-b border-gray-700 pb-2">
-                              <span className="text-gray-300">Support Network:</span>
-                              <span className="text-white">Family included</span>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                      
-                      <div className="flex gap-4 mt-6">
-                        <Button 
-                          variant="gold"
-                          onClick={() => handleButtonClick("Edit Profile")}
-                        >
-                          Edit Profile
-                        </Button>
-                        <Button 
-                          variant="outline" 
-                          className="border-[#B87333]/30 text-[#B87333] hover:bg-[#B87333]/10"
-                          onClick={() => handleButtonClick("Privacy Settings")}
-                        >
-                          Privacy Settings
-                        </Button>
-                      </div>
-                    </div>
-                  </CardContent>
-                </Card>
-                
-                <Card className="bg-gradient-to-b from-[#1c2e4a] to-[#0A1929] border-[#B87333]/30 text-white shadow-md">
-                  <CardHeader>
-                    <CardTitle className="flex items-center gap-2">
-                      <ListChecks className="h-5 w-5 text-[#B87333]" />
-                      Progress History
-                    </CardTitle>
-                    <CardDescription className="text-gray-300">
-                      Track your journey and achievements
-                    </CardDescription>
-                  </CardHeader>
-                  <CardContent>
-                    <div className="space-y-4">
-                      <div className="p-3 bg-[#0A1929] rounded-lg border border-[#B87333]/10">
-                        <div className="flex justify-between items-center">
-                          <div className="flex items-center">
-                            <div className="bg-[#B87333]/20 p-2 rounded-full mr-3">
-                              <BookOpen className="h-4 w-4 text-[#B87333]" />
-                            </div>
-                            <span className="font-medium text-white">Assessment Completed</span>
-                          </div>
-                          <Badge variant="outline" className="bg-transparent border-[#B87333]/30 text-[#B87333]">
-                            2 days ago
-                          </Badge>
-                        </div>
-                        <p className="text-sm text-gray-300 mt-2 ml-11">
-                          PTSD Screening Assessment
-                        </p>
-                      </div>
-                      
-                      <div className="p-3 bg-[#0A1929] rounded-lg border border-[#B87333]/10">
-                        <div className="flex justify-between items-center">
-                          <div className="flex items-center">
-                            <div className="bg-[#B87333]/20 p-2 rounded-full mr-3">
-                              <Calendar className="h-4 w-4 text-[#B87333]" />
-                            </div>
-                            <span className="font-medium text-white">Session Attended</span>
-                          </div>
-                          <Badge variant="outline" className="bg-transparent border-[#B87333]/30 text-[#B87333]">
-                            1 week ago
-                          </Badge>
-                        </div>
-                        <p className="text-sm text-gray-300 mt-2 ml-11">
-                          Group Mindfulness Practice
-                        </p>
-                      </div>
-                      
-                      <div className="p-3 bg-[#0A1929] rounded-lg border border-[#B87333]/10">
-                        <div className="flex justify-between items-center">
-                          <div className="flex items-center">
-                            <div className="bg-[#B87333]/20 p-2 rounded-full mr-3">
-                              <Award className="h-4 w-4 text-[#B87333]" />
-                            </div>
-                            <span className="font-medium text-white">Badge Earned</span>
-                          </div>
-                          <Badge variant="outline" className="bg-transparent border-[#B87333]/30 text-[#B87333]">
-                            2 weeks ago
-                          </Badge>
-                        </div>
-                        <p className="text-sm text-gray-300 mt-2 ml-11">
-                          Resilience Champion - 5 Sessions Completed
-                        </p>
-                      </div>
-                      
-                      <Button 
-                        variant="outline"
-                        className="w-full border-[#B87333]/30 text-[#B87333] hover:bg-[#B87333]/10"
-                        onClick={() => handleButtonClick("View Full History")}
-                      >
-                        View Full History
-                      </Button>
-                    </div>
-                  </CardContent>
-                </Card>
-              </TabsContent>
-            </Tabs>
-          </div>
-        </div>
-      </div>
-    </Page>
-  );
-};
-
-export default DepartmentOfDefense;
