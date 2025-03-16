@@ -5,7 +5,7 @@ import {
   ArrowLeft, BookOpen, ExternalLink, Search, 
   Download, Shield, Heart, Users, Phone, FileText,
   Bookmark, Filter, ChevronDown, Check, MessageSquare,
-  Tool as ToolIcon, CheckSquare
+  Wrench, CheckSquare
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
@@ -509,7 +509,7 @@ const ResourceCard: React.FC<ResourceCardProps> = ({
   const getIcon = () => {
     switch (type) {
       case "Tool":
-        return <ToolIcon className="h-4 w-4 text-[#B87333]" />;
+        return <Wrench className="h-4 w-4 text-[#B87333]" />;
       case "Guide":
       case "Workbook":
         return <FileText className="h-4 w-4 text-[#B87333]" />;
