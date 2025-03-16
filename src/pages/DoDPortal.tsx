@@ -45,10 +45,8 @@ const PortalIntroScreen: React.FC<{ onEnterPortal: () => void }> = ({ onEnterPor
         </p>
       </div>
       <Button 
-        variant="gold" 
-        size="lg" 
         onClick={onEnterPortal}
-        className="text-lg px-8 py-6 h-auto transition-all duration-300 transform hover:scale-105 shadow-[0_0_15px_rgba(184,115,51,0.3)]"
+        className="bg-[#B87333] hover:bg-[#9a6429] text-white text-lg px-8 py-6 h-auto transition-all duration-300 transform hover:scale-105 shadow-[0_0_15px_rgba(184,115,51,0.3)]"
       >
         Enter Portal
       </Button>

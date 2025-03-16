@@ -1,13 +1,23 @@
 
 import * as React from "react";
-import { Toast, ToastActionElement, ToastProps } from "@/components/ui/toast";
+import { Toast, ToastActionElement } from "@/components/ui/toast";
 
-type ToasterToast = ToastProps & {
+type ToastProps = {
+  title?: React.ReactNode;
+  description?: React.ReactNode;
+  variant?: "default" | "destructive";
+  duration?: number;
+};
+
+type ToasterToast = {
   id: string;
   title?: React.ReactNode;
   description?: React.ReactNode;
   action?: ToastActionElement;
   duration?: number;
+  variant?: "default" | "destructive";
+  open: boolean;
+  onOpenChange: (open: boolean) => void;
 };
 
 const TOAST_LIMIT = 5;
@@ -112,13 +122,6 @@ function dispatch(action: Action) {
   });
 }
 
-type ToastProps = {
-  title?: React.ReactNode;
-  description?: React.ReactNode;
-  variant?: "default" | "destructive";
-  duration?: number;
-};
-
 function useToast() {
   const [state, setState] = React.useState<ToasterToastState>(memoryState);
 
@@ -142,6 +145,7 @@ function useToast() {
           type: "UPDATE_TOAST",
           toast: { ...props, id },
         });
+        
       const dismiss = () => dispatch({ type: "DISMISS_TOAST", toastId: id });
 
       dispatch({
@@ -166,7 +170,7 @@ function useToast() {
   };
 }
 
-export { useToast, type ToasterToast };
+export { useToast, type ToasterToast, type ToastProps };
 
 // Export a simpler toast function for direct use
 export const toast = (props: ToastProps) => {
