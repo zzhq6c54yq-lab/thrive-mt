@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from "react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Helmet } from "react-helmet";
@@ -426,7 +427,7 @@ const DepartmentOfDefense = () => {
                       <CardTitle className="flex items-center gap-2">
                         <Award className="h-5 w-5 text-[#B87333]" />
                         Achievements & Goals
-                      CardTitle>
+                      </CardTitle>
                       <CardDescription className="text-gray-300">
                         Track your progress and set new goals
                       </CardDescription>
@@ -480,7 +481,7 @@ const DepartmentOfDefense = () => {
                       <CardTitle className="flex items-center gap-2">
                         <BarChart className="h-5 w-5 text-[#B87333]" />
                         Resources For You
-                      CardTitle>
+                      </CardTitle>
                       <CardDescription className="text-gray-300">
                         Personalized recommendations based on your profile
                       </CardDescription>
@@ -531,7 +532,7 @@ const DepartmentOfDefense = () => {
                     <CardTitle className="flex items-center gap-2">
                       <LifeBuoy className="h-5 w-5 text-[#B87333]" />
                       Quick Support Options
-                    CardTitle>
+                    </CardTitle>
                     <CardDescription className="text-gray-300">
                       Get help when you need it most
                     </CardDescription>
@@ -816,5 +817,47 @@ const DepartmentOfDefense = () => {
                         </div>
                         <div className="text-left">
                           <div className="font-medium">Mental Health Awards</div>
-                          <div className="text-sm text-gray-300">Recognition for mental health achievements</div
+                          <div className="text-sm text-gray-300">Recognition for mental health achievements</div>
+                        </div>
+                      </Button>
+                    </div>
+                  </CardContent>
+                </Card>
+              </TabsContent>
 
+              <TabsContent value="profile" className="space-y-8">
+                <Card className="bg-gradient-to-b from-[#1c2e4a] to-[#0A1929] border-[#B87333]/30 text-white shadow-md">
+                  <CardHeader>
+                    <CardTitle>My Profile</CardTitle>
+                    <CardDescription className="text-gray-300">
+                      View and update your personal information
+                    </CardDescription>
+                  </CardHeader>
+                  <CardContent>
+                    <div className="space-y-4">
+                      <Button 
+                        variant="outline" 
+                        className="w-full justify-start border-[#B87333]/30 text-white hover:bg-[#B87333]/10 h-auto py-3"
+                        onClick={() => handleButtonClick("View profile")}
+                      >
+                        <div className="mr-3 p-2 bg-[#B87333]/20 rounded-full">
+                          <UserRound className="h-5 w-5 text-[#B87333]" />
+                        </div>
+                        <div className="text-left">
+                          <div className="font-medium">Personal Information</div>
+                          <div className="text-sm text-gray-300">View and update your personal details</div>
+                        </div>
+                      </Button>
+                    </div>
+                  </CardContent>
+                </Card>
+              </TabsContent>
+            </Tabs>
+          </div>
+        </div>
+      </div>
+    </Page>
+  );
+};
+
+export default DepartmentOfDefense;
