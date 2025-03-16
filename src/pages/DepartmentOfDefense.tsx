@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from "react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Helmet } from "react-helmet";
@@ -31,12 +30,12 @@ const DepartmentOfDefense = () => {
   const [currentQuote, setCurrentQuote] = useState(0);
 
   useEffect(() => {
-    // Show initial deep message for 4 seconds
+    // Show initial deep message for 8 seconds instead of 4
     if (showInitialMessage) {
       const timer = setTimeout(() => {
         setShowInitialMessage(false);
         setShowWelcome(true);
-      }, 4000);
+      }, 8000); // Changed to 8000ms (8 seconds)
       return () => clearTimeout(timer);
     }
     
@@ -162,6 +161,7 @@ const DepartmentOfDefense = () => {
     );
   }
 
+  // Main content
   return (
     <Page title="Department of Defense Mental Health Portal">
       <Helmet>
@@ -258,6 +258,7 @@ const DepartmentOfDefense = () => {
 
           <div className="my-8">
             <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
+              {/* Dashboard tab content */}
               <TabsContent value="dashboard" className="space-y-8">
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                   <Card className="bg-gradient-to-b from-[#1c2e4a] to-[#0A1929] border-[#B87333]/30 text-white shadow-md">
@@ -427,7 +428,7 @@ const DepartmentOfDefense = () => {
                       <CardTitle className="flex items-center gap-2">
                         <Award className="h-5 w-5 text-[#B87333]" />
                         Achievements & Goals
-                      </CardTitle>
+                      CardTitle>
                       <CardDescription className="text-gray-300">
                         Track your progress and set new goals
                       </CardDescription>
@@ -481,7 +482,7 @@ const DepartmentOfDefense = () => {
                       <CardTitle className="flex items-center gap-2">
                         <BarChart className="h-5 w-5 text-[#B87333]" />
                         Resources For You
-                      </CardTitle>
+                      CardTitle>
                       <CardDescription className="text-gray-300">
                         Personalized recommendations based on your profile
                       </CardDescription>
@@ -532,7 +533,7 @@ const DepartmentOfDefense = () => {
                     <CardTitle className="flex items-center gap-2">
                       <LifeBuoy className="h-5 w-5 text-[#B87333]" />
                       Quick Support Options
-                    </CardTitle>
+                    CardTitle>
                     <CardDescription className="text-gray-300">
                       Get help when you need it most
                     </CardDescription>
@@ -580,6 +581,7 @@ const DepartmentOfDefense = () => {
                 </Card>
               </TabsContent>
 
+              {/* Resources tab content */}
               <TabsContent value="resources" className="space-y-8">
                 <Card className="bg-gradient-to-b from-[#1c2e4a] to-[#0A1929] border-[#B87333]/30 text-white shadow-md">
                   <CardHeader>
@@ -647,6 +649,7 @@ const DepartmentOfDefense = () => {
                 </Card>
               </TabsContent>
 
+              {/* Education tab content */}
               <TabsContent value="education" className="space-y-8">
                 <Card className="bg-gradient-to-b from-[#1c2e4a] to-[#0A1929] border-[#B87333]/30 text-white shadow-md">
                   <CardHeader>
@@ -714,6 +717,7 @@ const DepartmentOfDefense = () => {
                 </Card>
               </TabsContent>
 
+              {/* Assessments tab content */}
               <TabsContent value="assessments" className="space-y-8">
                 <Card className="bg-gradient-to-b from-[#1c2e4a] to-[#0A1929] border-[#B87333]/30 text-white shadow-md">
                   <CardHeader>
@@ -784,6 +788,7 @@ const DepartmentOfDefense = () => {
                 </Card>
               </TabsContent>
 
+              {/* Programs tab content */}
               <TabsContent value="programs" className="space-y-8">
                 <Card className="bg-gradient-to-b from-[#1c2e4a] to-[#0A1929] border-[#B87333]/30 text-white shadow-md">
                   <CardHeader>
@@ -825,6 +830,7 @@ const DepartmentOfDefense = () => {
                 </Card>
               </TabsContent>
 
+              {/* Profile tab content */}
               <TabsContent value="profile" className="space-y-8">
                 <Card className="bg-gradient-to-b from-[#1c2e4a] to-[#0A1929] border-[#B87333]/30 text-white shadow-md">
                   <CardHeader>
@@ -861,3 +867,4 @@ const DepartmentOfDefense = () => {
 };
 
 export default DepartmentOfDefense;
+
