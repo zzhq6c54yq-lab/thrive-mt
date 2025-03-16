@@ -11,7 +11,7 @@ const PortalHeader = () => {
       </div>
       <div>
         <h1 className="text-3xl font-bold text-white flex items-center">
-          Department of Defense Mental Health Portal
+          DoD Mental Health Portal
           <Badge variant="outline" className="ml-4 bg-[#0A1929] text-[#B87333] border-[#B87333]">
             Military Focus
           </Badge>

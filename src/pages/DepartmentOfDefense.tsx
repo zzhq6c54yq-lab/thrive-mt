@@ -62,6 +62,7 @@ const DepartmentOfDefense = () => {
 
   const handleTabChange = (value: string) => {
     setActiveTab(value);
+    console.log("Tab changed to:", value);
   };
 
   // Deep care-filled message screen
