@@ -25,8 +25,17 @@ const useToast = () => {
 
   // Function to add a toast
   const toast = ({ title, description, variant = "default", duration = DEFAULT_TOAST_DURATION }: ToastOptions) => {
+    // Map 'success' variant to 'default' with a green color for compatibility
+    const mappedVariant = variant === "success" ? "default" : variant;
+    
     const id = Math.random().toString(36).substring(2, 9);
-    setToasts((prev) => [...prev, { id, title, description, variant, duration }]);
+    setToasts((prev) => [...prev, { 
+      id, 
+      title, 
+      description, 
+      variant: mappedVariant as "default" | "destructive", 
+      duration 
+    }]);
 
     // Automatically remove toast after duration
     setTimeout(() => {
@@ -56,8 +65,17 @@ const updateToasts = (newToasts: Toast[]) => {
 };
 
 const toast = ({ title, description, variant = "default", duration = DEFAULT_TOAST_DURATION }: ToastOptions) => {
+  // Map 'success' variant to 'default' for compatibility
+  const mappedVariant = variant === "success" ? "default" : variant;
+  
   const id = Math.random().toString(36).substring(2, 9);
-  updateToasts([...toasts, { id, title, description, variant, duration }]);
+  updateToasts([...toasts, { 
+    id, 
+    title, 
+    description, 
+    variant: mappedVariant as "default" | "destructive", 
+    duration 
+  }]);
 
   // Automatically remove toast after duration
   setTimeout(() => {

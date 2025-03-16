@@ -9,7 +9,8 @@ import { useNavigate } from "react-router-dom";
 import { 
   Shield, UserRound, Phone, BookOpen, Calendar, Heart, Award, LifeBuoy, 
   BarChart, ListChecks, Briefcase, Footprints, Flag, Lightbulb, BookMarked,
-  GraduationCap, Medal, Puzzle, Users, BookOpen as BookOpenIcon, Brain, CheckSquare
+  GraduationCap, Medal, Puzzle, Users, BookOpen as BookOpenIcon, Brain, CheckSquare,
+  FileText
 } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 
