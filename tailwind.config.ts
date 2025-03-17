@@ -57,6 +57,11 @@ export default {
           light: '#E8E8EA',
           DEFAULT: '#9F9EA1',
           dark: '#6F6E73'
+        },
+        college: {
+          purple: '#8B5CF6',
+          pink: '#D946EF',
+          dark: '#1A1F2C'
         }
       },
       keyframes: {
