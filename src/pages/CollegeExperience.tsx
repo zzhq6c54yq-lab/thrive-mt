@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from "react";
 import Page from "@/components/Page";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
@@ -16,6 +17,7 @@ import {
 
 const CollegeExperience: React.FC = () => {
   const [searchTerm, setSearchTerm] = useState("");
+  const [activeTab, setActiveTab] = useState("resources");
   const navigate = useNavigate();
   const { toast } = useToast();
   const [isLoading, setIsLoading] = useState(true);
@@ -243,8 +245,8 @@ const CollegeExperience: React.FC = () => {
           <div className="bg-[#1A1F2C]/80 p-6 rounded-xl border border-[#8B5CF6]/30 mb-8">
             <h3 className="text-white font-medium mb-6 text-center text-xl">Navigate College Wellness Resources</h3>
             
-            {/* Tabs with more spacing */}
-            <Tabs defaultValue="resources" className="w-full">
+            {/* Fixed Tabs implementation - ensuring proper structure */}
+            <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
               <TabsList className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 w-full bg-transparent p-0">
                 <TabsTrigger 
                   value="resources" 
@@ -275,231 +277,232 @@ const CollegeExperience: React.FC = () => {
                   <span className="font-medium">Crisis Support</span>
                 </TabsTrigger>
               </TabsList>
-            </Tabs>
-          </div>
-          
-          <TabsContent value="resources" className="space-y-6 w-full mt-6">
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 w-full">
-              {filteredResources.map((resource, index) => (
-                <Card 
-                  key={index}
-                  className="border-[#8B5CF6]/30 bg-[#1A1F2C]/50 hover:bg-[#1A1F2C]/70 transition-colors cursor-pointer hover:border-[#8B5CF6]/60"
-                  onClick={() => handleResourceClick(resource.title, resource.path)}
-                >
-                  <CardHeader className="pb-2">
-                    <div className="flex justify-between items-start">
-                      <div className="p-2 rounded-lg bg-[#8B5CF6]/30">
-                        <resource.icon className="h-5 w-5 text-white" />
-                      </div>
-                      <span className="text-xs px-2 py-1 rounded-full border border-[#8B5CF6]/30 bg-[#8B5CF6]/20 text-white font-medium">
-                        {resource.category}
-                      </span>
-                    </div>
-                    <CardTitle className="mt-3 text-lg font-medium text-white">{resource.title}</CardTitle>
-                    <CardDescription className="text-[#D6BCFA]">{resource.description}</CardDescription>
-                  </CardHeader>
-                  <CardContent>
-                    <Button 
-                      variant="outline" 
-                      className="w-full bg-[#8B5CF6]/20 hover:bg-[#8B5CF6]/40 border-[#8B5CF6]/50 hover:text-white text-white flex items-center justify-center gap-2 group"
+              
+              {/* Content for each tab properly wrapped inside Tabs */}
+              <TabsContent value="resources" className="space-y-6 w-full mt-6">
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 w-full">
+                  {filteredResources.map((resource, index) => (
+                    <Card 
+                      key={index}
+                      className="border-[#8B5CF6]/30 bg-[#1A1F2C]/50 hover:bg-[#1A1F2C]/70 transition-colors cursor-pointer hover:border-[#8B5CF6]/60"
+                      onClick={() => handleResourceClick(resource.title, resource.path)}
                     >
-                      <span>Explore Resource</span>
-                      <ArrowRight className="h-4 w-4 group-hover:translate-x-1 transition-transform" />
-                    </Button>
-                  </CardContent>
-                </Card>
-              ))}
-            </div>
-            
-            {filteredResources.length === 0 && (
-              <div className="text-center py-8 w-full">
-                <p className="text-white font-medium">No resources found matching "{searchTerm}". Try a different search term.</p>
-              </div>
-            )}
-          </TabsContent>
-          
-          <TabsContent value="workshops" className="space-y-6 w-full mt-6">
-            <div className="bg-[#1A1F2C]/50 border border-[#8B5CF6]/30 rounded-lg p-4 mb-4 w-full">
-              <h3 className="text-lg font-medium mb-2 flex items-center gap-2 text-white">
-                <Calendar className="h-5 w-5 text-[#D946EF]" />
-                <span>Upcoming Mental Health Workshops</span>
-              </h3>
-              <p className="text-[#D6BCFA] mb-4 font-medium">
-                All workshops are free for enrolled students. Register early as spots fill quickly.
-              </p>
-              
-              <div className="space-y-4 w-full">
-                {upcomingWorkshops.map((workshop, index) => (
-                  <div 
-                    key={index} 
-                    className="border border-[#8B5CF6]/30 rounded-lg p-4 hover:bg-[#1A1F2C]/70 transition-colors w-full"
-                  >
-                    <div className="flex flex-col md:flex-row justify-between md:items-center">
-                      <div>
-                        <h4 className="font-medium text-[#D946EF]">{workshop.title}</h4>
-                        <p className="text-white text-sm">{workshop.description}</p>
-                        <div className="flex flex-wrap items-center gap-4 mt-2">
-                          <span className="text-xs flex items-center gap-1 text-[#D6BCFA]">
-                            <Calendar className="h-3 w-3" /> {workshop.date}
-                          </span>
-                          <span className="text-xs flex items-center gap-1 text-[#D6BCFA]">
-                            <Clock className="h-3 w-3" /> {workshop.time}
-                          </span>
-                          <span className="text-xs flex items-center gap-1 text-[#D6BCFA]">
-                            <MapPin className="h-3 w-3" /> {workshop.location}
+                      <CardHeader className="pb-2">
+                        <div className="flex justify-between items-start">
+                          <div className="p-2 rounded-lg bg-[#8B5CF6]/30">
+                            <resource.icon className="h-5 w-5 text-white" />
+                          </div>
+                          <span className="text-xs px-2 py-1 rounded-full border border-[#8B5CF6]/30 bg-[#8B5CF6]/20 text-white font-medium">
+                            {resource.category}
                           </span>
                         </div>
-                      </div>
-                      <div className="mt-4 md:mt-0">
+                        <CardTitle className="mt-3 text-lg font-medium text-white">{resource.title}</CardTitle>
+                        <CardDescription className="text-[#D6BCFA]">{resource.description}</CardDescription>
+                      </CardHeader>
+                      <CardContent>
                         <Button 
-                          className="bg-[#D946EF] hover:bg-[#D946EF]/80 text-white font-medium shadow-md transition-all duration-300 group"
+                          variant="outline" 
+                          className="w-full bg-[#8B5CF6]/20 hover:bg-[#8B5CF6]/40 border-[#8B5CF6]/50 hover:text-white text-white flex items-center justify-center gap-2 group"
                         >
-                          <span>Join Workshop</span>
-                          <Play className="ml-1 h-4 w-4 group-hover:scale-110 transition-transform" />
+                          <span>Explore Resource</span>
+                          <ArrowRight className="h-4 w-4 group-hover:translate-x-1 transition-transform" />
                         </Button>
-                        <div className="text-xs text-[#D6BCFA] mt-1 text-center">
-                          {typeof workshop.spots === 'number' ? `${workshop.spots} spots left` : workshop.spots}
+                      </CardContent>
+                    </Card>
+                  ))}
+                </div>
+                
+                {filteredResources.length === 0 && (
+                  <div className="text-center py-8 w-full">
+                    <p className="text-white font-medium">No resources found matching "{searchTerm}". Try a different search term.</p>
+                  </div>
+                )}
+              </TabsContent>
+              
+              <TabsContent value="workshops" className="space-y-6 w-full mt-6">
+                <div className="bg-[#1A1F2C]/50 border border-[#8B5CF6]/30 rounded-lg p-4 mb-4 w-full">
+                  <h3 className="text-lg font-medium mb-2 flex items-center gap-2 text-white">
+                    <Calendar className="h-5 w-5 text-[#D946EF]" />
+                    <span>Upcoming Mental Health Workshops</span>
+                  </h3>
+                  <p className="text-[#D6BCFA] mb-4 font-medium">
+                    All workshops are free for enrolled students. Register early as spots fill quickly.
+                  </p>
+                  
+                  <div className="space-y-4 w-full">
+                    {upcomingWorkshops.map((workshop, index) => (
+                      <div 
+                        key={index} 
+                        className="border border-[#8B5CF6]/30 rounded-lg p-4 hover:bg-[#1A1F2C]/70 transition-colors w-full"
+                      >
+                        <div className="flex flex-col md:flex-row justify-between md:items-center">
+                          <div>
+                            <h4 className="font-medium text-[#D946EF]">{workshop.title}</h4>
+                            <p className="text-white text-sm">{workshop.description}</p>
+                            <div className="flex flex-wrap items-center gap-4 mt-2">
+                              <span className="text-xs flex items-center gap-1 text-[#D6BCFA]">
+                                <Calendar className="h-3 w-3" /> {workshop.date}
+                              </span>
+                              <span className="text-xs flex items-center gap-1 text-[#D6BCFA]">
+                                <Clock className="h-3 w-3" /> {workshop.time}
+                              </span>
+                              <span className="text-xs flex items-center gap-1 text-[#D6BCFA]">
+                                <MapPin className="h-3 w-3" /> {workshop.location}
+                              </span>
+                            </div>
+                          </div>
+                          <div className="mt-4 md:mt-0">
+                            <Button 
+                              className="bg-[#D946EF] hover:bg-[#D946EF]/80 text-white font-medium shadow-md transition-all duration-300 group"
+                            >
+                              <span>Join Workshop</span>
+                              <Play className="ml-1 h-4 w-4 group-hover:scale-110 transition-transform" />
+                            </Button>
+                            <div className="text-xs text-[#D6BCFA] mt-1 text-center">
+                              {typeof workshop.spots === 'number' ? `${workshop.spots} spots left` : workshop.spots}
+                            </div>
+                          </div>
                         </div>
                       </div>
-                    </div>
+                    ))}
                   </div>
-                ))}
-              </div>
-              
-              <Button 
-                className="mt-4 w-full bg-gradient-to-r from-[#D946EF]/80 to-[#8B5CF6]/80 hover:from-[#D946EF] hover:to-[#8B5CF6] text-white font-medium shadow-md transition-all duration-300 border-none"
-              >
-                <span>View All Workshops</span>
-                <CalendarDays className="ml-2 h-4 w-4" />
-              </Button>
-            </div>
-          </TabsContent>
-          
-          <TabsContent value="services" className="space-y-6 w-full mt-6">
-            <div className="bg-[#1A1F2C]/50 border border-[#8B5CF6]/30 rounded-lg p-4 w-full">
-              <h3 className="text-lg font-medium mb-2 flex items-center gap-2 text-white">
-                <MapPin className="h-5 w-5 text-[#8B5CF6]" />
-                <span>Campus Mental Health Services</span>
-              </h3>
-              <p className="text-[#D6BCFA] mb-4 font-medium">
-                Services available to all enrolled students, typically covered by your student health fee.
-              </p>
-              
-              <div className="space-y-4 w-full">
-                {campusServices.map((service, index) => (
-                  <div 
-                    key={index} 
-                    className="border border-[#8B5CF6]/30 rounded-lg p-4 hover:bg-[#1A1F2C]/70 transition-colors w-full"
+                  
+                  <Button 
+                    className="mt-4 w-full bg-gradient-to-r from-[#D946EF]/80 to-[#8B5CF6]/80 hover:from-[#D946EF] hover:to-[#8B5CF6] text-white font-medium shadow-md transition-all duration-300 border-none"
                   >
-                    <h4 className="font-medium text-[#8B5CF6]">{service.title}</h4>
-                    <p className="text-white text-sm mt-1">{service.description}</p>
-                    <div className="mt-2 grid grid-cols-1 md:grid-cols-3 gap-2 text-sm">
-                      <div className="flex items-center gap-1 text-[#D6BCFA]">
-                        <Clock className="h-3 w-3" /> 
-                        <span>{service.hours}</span>
-                      </div>
-                      <div className="flex items-center gap-1 text-[#D6BCFA]">
-                        <User className="h-3 w-3" /> 
-                        <span>{service.contact}</span>
-                      </div>
-                      <div className="flex items-center gap-1 text-[#D6BCFA]">
-                        <MapPin className="h-3 w-3" /> 
-                        <span>{service.location}</span>
-                      </div>
-                    </div>
-                    <div className="mt-3">
-                      <Button 
-                        className="bg-[#8B5CF6] hover:bg-[#8B5CF6]/80 text-white shadow-md transition-all duration-300 group"
+                    <span>View All Workshops</span>
+                    <CalendarDays className="ml-2 h-4 w-4" />
+                  </Button>
+                </div>
+              </TabsContent>
+              
+              <TabsContent value="services" className="space-y-6 w-full mt-6">
+                <div className="bg-[#1A1F2C]/50 border border-[#8B5CF6]/30 rounded-lg p-4 w-full">
+                  <h3 className="text-lg font-medium mb-2 flex items-center gap-2 text-white">
+                    <MapPin className="h-5 w-5 text-[#8B5CF6]" />
+                    <span>Campus Mental Health Services</span>
+                  </h3>
+                  <p className="text-[#D6BCFA] mb-4 font-medium">
+                    Services available to all enrolled students, typically covered by your student health fee.
+                  </p>
+                  
+                  <div className="space-y-4 w-full">
+                    {campusServices.map((service, index) => (
+                      <div 
+                        key={index} 
+                        className="border border-[#8B5CF6]/30 rounded-lg p-4 hover:bg-[#1A1F2C]/70 transition-colors w-full"
                       >
-                        <span>Connect Now</span>
-                        <Plus className="ml-1 h-4 w-4 group-hover:rotate-90 transition-transform" />
+                        <h4 className="font-medium text-[#8B5CF6]">{service.title}</h4>
+                        <p className="text-white text-sm mt-1">{service.description}</p>
+                        <div className="mt-2 grid grid-cols-1 md:grid-cols-3 gap-2 text-sm">
+                          <div className="flex items-center gap-1 text-[#D6BCFA]">
+                            <Clock className="h-3 w-3" /> 
+                            <span>{service.hours}</span>
+                          </div>
+                          <div className="flex items-center gap-1 text-[#D6BCFA]">
+                            <User className="h-3 w-3" /> 
+                            <span>{service.contact}</span>
+                          </div>
+                          <div className="flex items-center gap-1 text-[#D6BCFA]">
+                            <MapPin className="h-3 w-3" /> 
+                            <span>{service.location}</span>
+                          </div>
+                        </div>
+                        <div className="mt-3">
+                          <Button 
+                            className="bg-[#8B5CF6] hover:bg-[#8B5CF6]/80 text-white shadow-md transition-all duration-300 group"
+                          >
+                            <span>Connect Now</span>
+                            <Plus className="ml-1 h-4 w-4 group-hover:rotate-90 transition-transform" />
+                          </Button>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                  
+                  <Button 
+                    className="mt-4 w-full bg-gradient-to-r from-[#8B5CF6]/80 to-[#6E59A5]/80 hover:from-[#8B5CF6] hover:to-[#6E59A5] text-white font-medium shadow-md transition-all duration-300 border-none"
+                  >
+                    <span>View All Campus Services</span>
+                    <Building className="ml-2 h-4 w-4" />
+                  </Button>
+                </div>
+              </TabsContent>
+              
+              <TabsContent value="crisis" className="space-y-4 w-full mt-6">
+                <div className="bg-[#F87171]/20 border border-[#F87171]/40 rounded-lg p-6 w-full">
+                  <h3 className="text-xl font-medium mb-2 text-white">Immediate Crisis Support</h3>
+                  <p className="mb-4 text-white font-medium">
+                    If you're experiencing a mental health emergency, please use one of these resources for immediate help:
+                  </p>
+                  
+                  <div className="space-y-4 w-full">
+                    <div className="bg-[#F87171]/30 rounded-lg p-4 w-full">
+                      <h4 className="font-medium text-white">Campus Crisis Line (24/7)</h4>
+                      <p className="text-2xl font-bold text-white mt-2">555-HELP (4357)</p>
+                      
+                      <Button 
+                        className="mt-3 bg-white text-[#F87171] hover:bg-white/90 font-medium shadow-md transition-all duration-300 group border-none"
+                      >
+                        <span>Call Now</span>
+                        <ArrowRight className="ml-1 h-4 w-4 group-hover:translate-x-1 transition-transform" />
+                      </Button>
+                    </div>
+                    
+                    <div className="bg-[#1A1F2C]/60 rounded-lg p-4 w-full">
+                      <h4 className="font-medium text-white">National Crisis Text Line</h4>
+                      <p className="text-white mt-1">Text HOME to 741741 to connect with a Crisis Counselor</p>
+                      
+                      <Button 
+                        className="mt-3 bg-[#F87171]/80 hover:bg-[#F87171] text-white font-medium shadow-md transition-all duration-300 group border-none"
+                      >
+                        <span>Text Now</span>
+                        <ArrowRight className="ml-1 h-4 w-4 group-hover:translate-x-1 transition-transform" />
+                      </Button>
+                    </div>
+                    
+                    <div className="bg-[#1A1F2C]/60 rounded-lg p-4 w-full">
+                      <h4 className="font-medium text-white">National Suicide Prevention Lifeline</h4>
+                      <p className="text-white mt-1">1-800-273-8255 (Available 24/7)</p>
+                      
+                      <Button 
+                        className="mt-3 bg-[#F87171]/80 hover:bg-[#F87171] text-white font-medium shadow-md transition-all duration-300 group border-none"
+                      >
+                        <span>Call Lifeline</span>
+                        <ArrowRight className="ml-1 h-4 w-4 group-hover:translate-x-1 transition-transform" />
+                      </Button>
+                    </div>
+                    
+                    <div className="bg-[#1A1F2C]/60 rounded-lg p-4 w-full">
+                      <h4 className="font-medium text-white">Emergency Services</h4>
+                      <p className="text-white mt-1">Call 911 or go to your nearest emergency room</p>
+                      
+                      <Button 
+                        className="mt-3 bg-[#F87171]/80 hover:bg-[#F87171] text-white font-medium shadow-md transition-all duration-300 group border-none"
+                      >
+                        <span>Emergency Services</span>
+                        <ArrowRight className="ml-1 h-4 w-4 group-hover:translate-x-1 transition-transform" />
                       </Button>
                     </div>
                   </div>
-                ))}
-              </div>
-              
-              <Button 
-                className="mt-4 w-full bg-gradient-to-r from-[#8B5CF6]/80 to-[#6E59A5]/80 hover:from-[#8B5CF6] hover:to-[#6E59A5] text-white font-medium shadow-md transition-all duration-300 border-none"
-              >
-                <span>View All Campus Services</span>
-                <Building className="ml-2 h-4 w-4" />
-              </Button>
-            </div>
-          </TabsContent>
-          
-          <TabsContent value="crisis" className="space-y-4 w-full mt-6">
-            <div className="bg-[#F87171]/20 border border-[#F87171]/40 rounded-lg p-6 w-full">
-              <h3 className="text-xl font-medium mb-2 text-white">Immediate Crisis Support</h3>
-              <p className="mb-4 text-white font-medium">
-                If you're experiencing a mental health emergency, please use one of these resources for immediate help:
-              </p>
-              
-              <div className="space-y-4 w-full">
-                <div className="bg-[#F87171]/30 rounded-lg p-4 w-full">
-                  <h4 className="font-medium text-white">Campus Crisis Line (24/7)</h4>
-                  <p className="text-2xl font-bold text-white mt-2">555-HELP (4357)</p>
                   
-                  <Button 
-                    className="mt-3 bg-white text-[#F87171] hover:bg-white/90 font-medium shadow-md transition-all duration-300 group border-none"
-                  >
-                    <span>Call Now</span>
-                    <ArrowRight className="ml-1 h-4 w-4 group-hover:translate-x-1 transition-transform" />
-                  </Button>
+                  <div className="mt-6 border-t border-white/20 pt-4 text-white w-full">
+                    <p className="font-medium">
+                      For non-emergency support, please contact the Student Counseling Center during business hours
+                      or schedule an appointment through the student portal.
+                    </p>
+                    
+                    <Button 
+                      className="mt-4 w-full bg-white/10 hover:bg-white/20 text-white font-medium shadow-md transition-all duration-300 border border-white/30"
+                    >
+                      <span>Schedule Counseling Appointment</span>
+                      <Calendar className="ml-2 h-4 w-4" />
+                    </Button>
+                  </div>
                 </div>
-                
-                <div className="bg-[#1A1F2C]/60 rounded-lg p-4 w-full">
-                  <h4 className="font-medium text-white">National Crisis Text Line</h4>
-                  <p className="text-white mt-1">Text HOME to 741741 to connect with a Crisis Counselor</p>
-                  
-                  <Button 
-                    className="mt-3 bg-[#F87171]/80 hover:bg-[#F87171] text-white font-medium shadow-md transition-all duration-300 group border-none"
-                  >
-                    <span>Text Now</span>
-                    <ArrowRight className="ml-1 h-4 w-4 group-hover:translate-x-1 transition-transform" />
-                  </Button>
-                </div>
-                
-                <div className="bg-[#1A1F2C]/60 rounded-lg p-4 w-full">
-                  <h4 className="font-medium text-white">National Suicide Prevention Lifeline</h4>
-                  <p className="text-white mt-1">1-800-273-8255 (Available 24/7)</p>
-                  
-                  <Button 
-                    className="mt-3 bg-[#F87171]/80 hover:bg-[#F87171] text-white font-medium shadow-md transition-all duration-300 group border-none"
-                  >
-                    <span>Call Lifeline</span>
-                    <ArrowRight className="ml-1 h-4 w-4 group-hover:translate-x-1 transition-transform" />
-                  </Button>
-                </div>
-                
-                <div className="bg-[#1A1F2C]/60 rounded-lg p-4 w-full">
-                  <h4 className="font-medium text-white">Emergency Services</h4>
-                  <p className="text-white mt-1">Call 911 or go to your nearest emergency room</p>
-                  
-                  <Button 
-                    className="mt-3 bg-[#F87171]/80 hover:bg-[#F87171] text-white font-medium shadow-md transition-all duration-300 group border-none"
-                  >
-                    <span>Emergency Services</span>
-                    <ArrowRight className="ml-1 h-4 w-4 group-hover:translate-x-1 transition-transform" />
-                  </Button>
-                </div>
-              </div>
-              
-              <div className="mt-6 border-t border-white/20 pt-4 text-white w-full">
-                <p className="font-medium">
-                  For non-emergency support, please contact the Student Counseling Center during business hours
-                  or schedule an appointment through the student portal.
-                </p>
-                
-                <Button 
-                  className="mt-4 w-full bg-white/10 hover:bg-white/20 text-white font-medium shadow-md transition-all duration-300 border border-white/30"
-                >
-                  <span>Schedule Counseling Appointment</span>
-                  <Calendar className="ml-2 h-4 w-4" />
-                </Button>
-              </div>
-            </div>
-          </TabsContent>
+              </TabsContent>
+            </Tabs>
+          </div>
         </div>
 
         {/* Quick access links */}
