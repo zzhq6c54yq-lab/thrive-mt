@@ -2,7 +2,7 @@
 import React from "react";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
-import { BadgePercent, Wallet, GiftIcon } from "lucide-react";
+import { BadgePercent, Wallet, GiftIcon, ShoppingBag } from "lucide-react";
 
 interface CoPayCreditPopupProps {
   open: boolean;
@@ -31,8 +31,8 @@ const CoPayCreditPopup = ({ open, onOpenChange }: CoPayCreditPopupProps) => {
             <div>
               <h3 className="font-semibold text-gray-900">Co-pay Credits</h3>
               <p className="text-gray-600 text-sm mt-1">
-                10% of every co-pay comes back as Co-pay credits to use for future appointments, 
-                updating your subscription plan, or at thrive-apparel.com
+                10% of every co-pay comes back as Co-pay credits (in dollar value) to use for future appointments, 
+                updating your subscription plan, or redeeming at thrive-apparel.com
               </p>
             </div>
           </div>
@@ -46,6 +46,23 @@ const CoPayCreditPopup = ({ open, onOpenChange }: CoPayCreditPopupProps) => {
               <p className="text-gray-600 text-sm mt-1">
                 Introducing Henry, our AI sponsor for N.A. or A.A. recovery support, available to guide you through your journey
               </p>
+            </div>
+          </div>
+          
+          <div className="flex items-start gap-4 bg-amber-50/80 p-4 rounded-lg border border-amber-100">
+            <div className="bg-[#B87333] p-2 rounded-full flex-shrink-0">
+              <ShoppingBag className="h-5 w-5 text-white" />
+            </div>
+            <div>
+              <h3 className="font-semibold text-gray-900">Thrive Apparel</h3>
+              <p className="text-gray-600 text-sm mt-1">
+                Use your earned co-pay credits at thrive-apparel.com for exclusive mental wellness merchandise and apparel
+              </p>
+              <a href="https://thrive-apparel.com" target="_blank" rel="noopener noreferrer">
+                <Button variant="gold-outline" size="sm" className="mt-2">
+                  Shop Now
+                </Button>
+              </a>
             </div>
           </div>
           
@@ -68,7 +85,8 @@ const CoPayCreditPopup = ({ open, onOpenChange }: CoPayCreditPopupProps) => {
         <div className="flex justify-end mt-6">
           <Button 
             onClick={() => onOpenChange(false)}
-            className="bg-[#B87333] hover:bg-[#B87333]/80 font-medium px-6 py-2 rounded-md shadow-md"
+            variant="gold"
+            className="font-medium px-6 py-2 rounded-md shadow-md text-black"
           >
             Get Started
           </Button>
