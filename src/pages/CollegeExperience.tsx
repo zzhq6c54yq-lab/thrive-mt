@@ -1,5 +1,4 @@
-
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Page from "@/components/Page";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -19,6 +18,17 @@ const CollegeExperience: React.FC = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const navigate = useNavigate();
   const { toast } = useToast();
+  const [isLoading, setIsLoading] = useState(true);
+
+  // Simulate loading and fix any rendering issues
+  useEffect(() => {
+    // Add a short timeout to ensure component mounts properly
+    const timer = setTimeout(() => {
+      setIsLoading(false);
+    }, 500);
+    
+    return () => clearTimeout(timer);
+  }, []);
 
   const handleResourceClick = (name: string, path: string) => {
     toast({
@@ -176,6 +186,17 @@ const CollegeExperience: React.FC = () => {
     resource.category.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
+  if (isLoading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-gradient-to-b from-[#1a1a1f] via-[#242432] to-[#272730]">
+        <div className="text-center">
+          <GraduationCap className="h-12 w-12 text-[#8B5CF6] animate-pulse mx-auto mb-4" />
+          <p className="text-white text-xl font-medium">Loading college resources...</p>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <Page title="College Mental Health Resources">
       <div className="space-y-8 w-full">
@@ -218,13 +239,13 @@ const CollegeExperience: React.FC = () => {
         </div>
 
         {/* Redesigned Navigation Section - Improved spacing and layout */}
-        <div className="w-full mb-8">
-          <div className="bg-[#1A1F2C]/80 p-5 rounded-xl border border-[#8B5CF6]/30 mb-4">
-            <h3 className="text-white font-medium mb-4 text-center text-lg">Navigate College Wellness Resources</h3>
+        <div className="w-full mb-12">
+          <div className="bg-[#1A1F2C]/80 p-6 rounded-xl border border-[#8B5CF6]/30 mb-8">
+            <h3 className="text-white font-medium mb-6 text-center text-xl">Navigate College Wellness Resources</h3>
             
             {/* Tabs with more spacing */}
             <Tabs defaultValue="resources" className="w-full">
-              <TabsList className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 w-full bg-transparent p-0">
+              <TabsList className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 w-full bg-transparent p-0">
                 <TabsTrigger 
                   value="resources" 
                   className="bg-[#1A1F2C] text-white border border-[#8B5CF6]/30 py-5 px-4 flex flex-col items-center gap-3 data-[state=active]:bg-[#8B5CF6] data-[state=active]:border-[#8B5CF6] hover:bg-[#8B5CF6]/20 transition-all duration-200"
@@ -534,10 +555,10 @@ const CollegeExperience: React.FC = () => {
             <span>Student Stories</span>
           </h3>
           
-          <div className="italic text-[#222222] font-medium bg-white/20 p-4 rounded-lg border-l-2 border-[#8B5CF6]/50 pl-4">
+          <div className="italic text-[#E0E0E0] font-medium bg-black/40 p-4 rounded-lg border-l-2 border-[#8B5CF6]/50 pl-4">
             "The mindfulness workshops helped me manage my anxiety during midterms. I went from 
             constant panic to being able to focus and perform much better on exams."
-            <div className="mt-2 text-sm text-[#403E43] font-semibold">— Junior, Psychology</div>
+            <div className="mt-2 text-sm text-[#D0D0D0] font-semibold">— Junior, Psychology</div>
           </div>
           
           <Button 

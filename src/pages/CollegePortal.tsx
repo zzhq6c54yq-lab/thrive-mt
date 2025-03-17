@@ -3,7 +3,7 @@ import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/hooks/use-toast";
-import { BookOpen, Brain, Calendar, CopyCheck, GraduationCap, HeartHandshake, MapPin, PartyPopper, Users } from "lucide-react";
+import { GraduationCap } from "lucide-react";
 
 // Welcome screens before the main portal
 const WelcomeScreen: React.FC = () => {
@@ -76,8 +76,11 @@ const CollegePortal: React.FC = () => {
       duration: 3000
     });
     
-    // Navigate to the college support page
-    navigate("/college-experience");
+    // Navigate to the college experience page
+    // Adding a small delay to ensure toast is visible before navigation
+    setTimeout(() => {
+      navigate("/college-experience");
+    }, 500);
   };
 
   const renderCurrentScreen = () => {
