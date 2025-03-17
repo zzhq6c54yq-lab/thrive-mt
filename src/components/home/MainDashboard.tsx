@@ -594,7 +594,7 @@ const MainDashboard: React.FC<MainDashboardProps> = ({
                             boxShadow: `0 0 20px ${iconColor}30`
                           }}
                         >
-                          <IconComponent className="h-7 w-7" style={{ color: iconColor }} />
+                          <IconComponent className="h-6 w-6" style={{ color: iconColor }} />
                         </div>
                         <h3 className="text-xl font-semibold text-white">
                           {feature.title}
@@ -674,7 +674,7 @@ const MainDashboard: React.FC<MainDashboardProps> = ({
                     
                     <div className="flex items-center p-4 relative">
                       <div 
-                        className="mr-4 p-2.5 rounded-md transition-transform group-hover:scale-110 group-hover:rotate-3"
+                        className="mr-4 p-2.5 rounded-md transition-all duration-300 group-hover:scale-125 group-hover:rotate-3"
                         style={{ 
                           background: `${color}20`,
                           border: `1px solid ${color}40` 
