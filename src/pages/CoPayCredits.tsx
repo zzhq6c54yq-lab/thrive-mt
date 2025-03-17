@@ -1,9 +1,9 @@
 
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
-import { ArrowLeft, Star, GiftIcon, CreditCard, Coins, Gift, Upload, ClipboardCheck, Download, Heart, User, Users, PiggyBank } from "lucide-react";
+import { ArrowLeft, Star, GiftIcon, CreditCard, Coins, Gift, Upload, ClipboardCheck, Download, Heart, User, Users, PiggyBank, Shield, BadgePercent, CreditCardIcon, Wallet, PercentIcon } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import HomeButton from "@/components/HomeButton";
+import Page from "@/components/Page";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle, CardFooter } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
@@ -13,6 +13,7 @@ import { useToast } from "@/hooks/use-toast";
 const CoPayCredits = () => {
   const { toast } = useToast();
   const [credits, setCredits] = useState(75);
+  const [activeTab, setActiveTab] = useState("how-it-works");
 
   const handleEarnCredits = (amount: number, source: string) => {
     setCredits(prev => prev + amount);
@@ -23,80 +24,130 @@ const CoPayCredits = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-[#f8f9fa] to-[#eef1f5]">
-      <div className="bg-gradient-to-r from-[#1a1a1f] to-[#212124] text-white py-12 relative">
-        <div className="absolute inset-0 opacity-20">
-          <div className="absolute top-0 left-0 right-0 h-20 bg-gradient-to-r from-amber-400/30 via-amber-300/20 to-amber-200/10 transform -skew-y-3"></div>
-          <div className="absolute top-10 left-0 right-0 h-28 bg-gradient-to-r from-amber-200/10 via-amber-300/20 to-amber-400/30 transform skew-y-3"></div>
-        </div>
-        <div className="container px-4 max-w-6xl mx-auto relative z-10">
-          <div className="flex justify-between items-center mb-6">
-            <Link to="/" className="inline-flex items-center text-amber-400 hover:text-amber-300 transition-colors">
-              <ArrowLeft className="mr-2 h-4 w-4" />
-              Back to Home
-            </Link>
-            <HomeButton />
+    <Page title="Co-Pay Credits Program" fullWidth={true}>
+      <div className="space-y-8 w-full">
+        {/* Hero Section */}
+        <div className="bg-gradient-to-r from-amber-500/20 to-amber-600/20 p-6 sm:p-8 rounded-xl w-full">
+          <div className="flex flex-col md:flex-row gap-6 items-center">
+            <div className="md:w-2/3">
+              <h2 className="text-2xl md:text-3xl font-light mb-4 text-white">Welcome to our Co-Pay Credits Program</h2>
+              <p className="text-white/90 mb-6">
+                Designed to reward our community for prioritizing their mental health and well-being. 
+                This innovative rewards system enables you to earn credits every time you invest in your 
+                health through therapy sessions, subscriptions, and purchases made at thrive-apparel.com.
+              </p>
+              <div className="flex flex-wrap gap-4">
+                <Button 
+                  className="bg-amber-500 hover:bg-amber-600 text-white"
+                  onClick={() => setActiveTab("earn")}
+                >
+                  Start Earning Credits
+                </Button>
+                <Button 
+                  variant="outline" 
+                  className="border-white/20 text-white hover:bg-white/10"
+                  onClick={() => setActiveTab("how-it-works")}
+                >
+                  Learn More
+                </Button>
+              </div>
+            </div>
+            <div className="md:w-1/3 flex justify-center">
+              <div className="relative w-64 h-64">
+                <div className="absolute inset-0 rounded-full bg-amber-500/30 animate-pulse blur-xl"></div>
+                <div className="absolute inset-4 rounded-full bg-gradient-to-br from-amber-400 to-amber-600 flex items-center justify-center shadow-lg">
+                  <div className="text-center text-white">
+                    <Wallet className="w-16 h-16 mx-auto mb-4 drop-shadow-lg" />
+                    <span className="text-4xl font-bold block">{credits}</span>
+                    <span className="text-sm font-medium opacity-80">Credits Available</span>
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
-          
-          <div className="flex items-center gap-4 mb-6">
-            <CreditCard className="h-8 w-8 text-amber-400" />
-            <h1 className="text-4xl md:text-5xl font-light">Copay Credits</h1>
-          </div>
-          <p className="text-xl text-gray-300 max-w-3xl">Earn and use credits to reduce or eliminate your therapy session copays.</p>
         </div>
-      </div>
 
-      <div className="container px-4 py-12 max-w-6xl mx-auto">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
-          <Card className="md:col-span-2 border-amber-200/40 bg-gradient-to-br from-amber-50 to-white">
-            <CardHeader className="pb-4">
-              <CardTitle className="text-2xl">Your Copay Credits</CardTitle>
+        {/* Credit Overview */}
+        <div className="grid grid-cols-1 md:grid-cols-12 gap-6">
+          <Card className="md:col-span-8 bg-white/5 backdrop-blur-sm border border-white/10">
+            <CardHeader>
+              <CardTitle className="text-xl flex items-center gap-2">
+                <BadgePercent className="h-5 w-5 text-amber-500" />
+                Your Co-Pay Credits
+              </CardTitle>
               <CardDescription>Use these credits to reduce your therapy session costs</CardDescription>
             </CardHeader>
-            <CardContent className="pb-3">
-              <div className="flex items-center justify-between mb-3">
+            <CardContent>
+              <div className="flex items-center justify-between mb-4">
                 <div>
                   <span className="text-4xl font-bold text-amber-500">{credits}</span>
-                  <span className="text-gray-500 ml-2">credits available</span>
+                  <span className="text-gray-400 ml-2">credits available</span>
                 </div>
                 <Button className="bg-amber-500 hover:bg-amber-600">Use Credits</Button>
               </div>
-              <Progress value={credits} max={100} className="h-3 bg-amber-100">
-                <div className="h-full bg-amber-500 rounded-full"></div>
-              </Progress>
-              <p className="text-sm text-gray-500 mt-3">
+              <div className="mb-3">
+                <Progress value={credits} max={100} className="h-3 bg-white/10">
+                  <div className="h-full bg-gradient-to-r from-amber-500 to-amber-600 rounded-full"></div>
+                </Progress>
+              </div>
+              <p className="text-sm text-gray-400 mb-6">
                 {credits >= 100 ? "You have enough credits for a free session!" : `${100 - credits} more credits needed for a free session`}
               </p>
+              
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-6">
+                <div className="bg-white/5 p-4 rounded-lg border border-white/10">
+                  <div className="flex items-center gap-3 mb-2">
+                    <div className="p-2 rounded-full bg-amber-500/20">
+                      <PercentIcon className="h-5 w-5 text-amber-500" />
+                    </div>
+                    <h4 className="font-medium">Basic Membership</h4>
+                  </div>
+                  <p className="text-sm text-gray-400 pl-10">Earn 5% back on every dollar spent on therapy costs and monthly subscriptions.</p>
+                </div>
+                
+                <div className="bg-gradient-to-br from-amber-500/20 to-amber-600/10 p-4 rounded-lg border border-amber-500/30">
+                  <div className="flex items-center gap-3 mb-2">
+                    <div className="p-2 rounded-full bg-amber-500/30">
+                      <Shield className="h-5 w-5 text-amber-400" />
+                    </div>
+                    <h4 className="font-medium">Platinum Membership</h4>
+                  </div>
+                  <p className="text-sm text-gray-400 pl-10">Enjoy greater rewards with 10% back on every dollar spent, designed for those who want to maximize benefits.</p>
+                </div>
+              </div>
             </CardContent>
           </Card>
           
-          <Card className="border-amber-200/40 bg-gradient-to-br from-amber-50 to-white">
-            <CardHeader className="pb-4">
-              <CardTitle>Credit History</CardTitle>
-              <CardDescription>Your recent transactions</CardDescription>
+          <Card className="md:col-span-4 bg-white/5 backdrop-blur-sm border border-white/10">
+            <CardHeader>
+              <CardTitle className="text-xl flex items-center gap-2">
+                <CreditCardIcon className="h-5 w-5 text-amber-500" />
+                Recent Activity
+              </CardTitle>
             </CardHeader>
-            <CardContent className="pb-0">
+            <CardContent className="max-h-[300px] overflow-y-auto">
               <div className="space-y-3">
                 {[
-                  { date: "Mar 12, 2024", action: "Used for session", amount: -25 },
-                  { date: "Mar 10, 2024", action: "Wellness challenge", amount: 15 },
-                  { date: "Mar 5, 2024", action: "Referral bonus", amount: 30 },
-                  { date: "Feb 28, 2024", action: "Used for session", amount: -25 }
+                  { date: "Apr 15, 2024", action: "Used for session", amount: -25 },
+                  { date: "Apr 10, 2024", action: "Wellness challenge", amount: 15 },
+                  { date: "Apr 5, 2024", action: "Referral bonus", amount: 30 },
+                  { date: "Mar 28, 2024", action: "Used for session", amount: -25 },
+                  { date: "Mar 20, 2024", action: "Monthly subscription", amount: 10 }
                 ].map((item, i) => (
-                  <div key={i} className="flex justify-between py-2 border-b last:border-0">
+                  <div key={i} className="flex justify-between py-3 border-b border-white/10 last:border-0">
                     <div>
-                      <div className="text-sm font-medium">{item.action}</div>
+                      <div className="text-sm font-medium text-white/80">{item.action}</div>
                       <div className="text-xs text-gray-500">{item.date}</div>
                     </div>
-                    <div className={`font-medium ${item.amount > 0 ? 'text-green-600' : 'text-red-600'}`}>
+                    <div className={`font-medium ${item.amount > 0 ? 'text-green-400' : 'text-amber-400'}`}>
                       {item.amount > 0 ? `+${item.amount}` : item.amount}
                     </div>
                   </div>
                 ))}
               </div>
             </CardContent>
-            <CardFooter className="pt-4">
-              <Button variant="outline" className="w-full text-amber-600 border-amber-200 hover:bg-amber-50">
+            <CardFooter className="pt-2">
+              <Button variant="outline" className="w-full text-amber-400 border-white/10 hover:bg-white/5">
                 <Download className="h-4 w-4 mr-2" />
                 View All Transactions
               </Button>
@@ -104,30 +155,108 @@ const CoPayCredits = () => {
           </Card>
         </div>
         
-        <Tabs defaultValue="earn" className="w-full">
-          <TabsList className="w-full justify-start mb-8">
-            <TabsTrigger value="earn" className="flex-1">Earn Credits</TabsTrigger>
-            <TabsTrigger value="redeem" className="flex-1">Redeem Credits</TabsTrigger>
-            <TabsTrigger value="info" className="flex-1">How It Works</TabsTrigger>
+        {/* Main Content Tabs */}
+        <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
+          <TabsList className="w-full grid grid-cols-3 bg-white/5 p-1">
+            <TabsTrigger value="how-it-works">How It Works</TabsTrigger>
+            <TabsTrigger value="earn">Earn Credits</TabsTrigger>
+            <TabsTrigger value="redeem">Redeem Credits</TabsTrigger>
           </TabsList>
           
-          <TabsContent value="earn" className="space-y-6">
+          <TabsContent value="how-it-works" className="mt-6">
+            <Card className="bg-white/5 backdrop-blur-sm border border-white/10">
+              <CardHeader>
+                <CardTitle className="text-xl">About Co-Pay Credits</CardTitle>
+                <CardDescription>Understanding our rewards program</CardDescription>
+              </CardHeader>
+              <CardContent className="space-y-6">
+                <div className="bg-white/5 p-6 rounded-lg border border-white/10">
+                  <h3 className="text-lg font-medium mb-4 text-amber-400">How It Works</h3>
+                  <p className="text-gray-300 mb-4">
+                    As a member of our program, you can earn back a percentage of your spending:
+                  </p>
+                  <ul className="space-y-3">
+                    <li className="flex items-start gap-3">
+                      <div className="p-1 rounded-full bg-amber-500/20 mt-1">
+                        <Star className="h-4 w-4 text-amber-500" />
+                      </div>
+                      <div>
+                        <span className="font-medium text-white">Basic Membership:</span>
+                        <p className="text-gray-400">Earn 5% back on every dollar spent. This applies to all therapy costs and monthly subscriptions.</p>
+                      </div>
+                    </li>
+                    <li className="flex items-start gap-3">
+                      <div className="p-1 rounded-full bg-amber-500/20 mt-1">
+                        <Star className="h-4 w-4 text-amber-500" />
+                      </div>
+                      <div>
+                        <span className="font-medium text-white">Platinum Membership:</span>
+                        <p className="text-gray-400">Enjoy even greater rewards with 10% back on every dollar spent. The platinum tier is designed for those who want to maximize their benefits.</p>
+                      </div>
+                    </li>
+                  </ul>
+                </div>
+                
+                <div className="bg-white/5 p-6 rounded-lg border border-white/10">
+                  <h3 className="text-lg font-medium mb-4 text-amber-400">Why Join?</h3>
+                  <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <div className="bg-white/5 p-4 rounded-lg border border-white/10">
+                      <div className="p-2 rounded-full bg-amber-500/20 w-12 h-12 flex items-center justify-center mb-4">
+                        <Heart className="h-6 w-6 text-amber-400" />
+                      </div>
+                      <h4 className="font-medium mb-2 text-white">Encourage Self-Care</h4>
+                      <p className="text-sm text-gray-400">Our program incentivizes you to invest in your mental well-being, making it easier to prioritize self-care.</p>
+                    </div>
+                    
+                    <div className="bg-white/5 p-4 rounded-lg border border-white/10">
+                      <div className="p-2 rounded-full bg-amber-500/20 w-12 h-12 flex items-center justify-center mb-4">
+                        <Gift className="h-6 w-6 text-amber-400" />
+                      </div>
+                      <h4 className="font-medium mb-2 text-white">Flexible Rewards</h4>
+                      <p className="text-sm text-gray-400">Use your co-pay credits on a variety of services, ensuring that you have the support you need when you need it.</p>
+                    </div>
+                    
+                    <div className="bg-white/5 p-4 rounded-lg border border-white/10">
+                      <div className="p-2 rounded-full bg-amber-500/20 w-12 h-12 flex items-center justify-center mb-4">
+                        <Users className="h-6 w-6 text-amber-400" />
+                      </div>
+                      <h4 className="font-medium mb-2 text-white">Community Support</h4>
+                      <p className="text-sm text-gray-400">Join a community that values mental health, where your investments not only benefit you but also support our mission to promote wellness.</p>
+                    </div>
+                  </div>
+                </div>
+                
+                <div className="p-6 rounded-lg bg-gradient-to-r from-amber-500/20 to-amber-600/10 border border-amber-500/30">
+                  <h3 className="text-lg font-medium mb-3 text-white">Getting Started</h3>
+                  <p className="text-gray-300 mb-4">
+                    Sign up today to start earning co-pay credits and take the first step towards a healthier, happier you. 
+                    These co-pay credits are not just a cash-back offer; they can be used to offset future expenses within our services.
+                  </p>
+                  <Button className="bg-amber-500 hover:bg-amber-600">
+                    Upgrade to Platinum
+                  </Button>
+                </div>
+              </CardContent>
+            </Card>
+          </TabsContent>
+          
+          <TabsContent value="earn" className="mt-6">
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-              <Card className="hover:shadow-md transition-all">
+              <Card className="bg-white/5 backdrop-blur-sm border border-white/10 hover:border-amber-500/30 transition-all">
                 <CardHeader>
                   <CardTitle className="flex items-center gap-2">
-                    <Heart className="h-5 w-5 text-pink-500" />
+                    <Heart className="h-5 w-5 text-amber-500" />
                     Complete Wellness Activities
                   </CardTitle>
                 </CardHeader>
                 <CardContent>
-                  <p className="text-gray-700 mb-4">
+                  <p className="text-gray-400 mb-4">
                     Earn credits by completing daily wellness challenges, practicing mindfulness, or tracking your mood.
                   </p>
-                  <div className="bg-amber-50 rounded-lg p-3 mb-4">
+                  <div className="bg-white/5 rounded-lg p-3 mb-4 border border-white/10">
                     <div className="flex justify-between items-center">
-                      <span className="font-medium">Daily Wellness Challenge</span>
-                      <span className="text-amber-600 font-bold">+5 credits</span>
+                      <span className="font-medium text-white/90">Daily Wellness Challenge</span>
+                      <span className="text-amber-400 font-bold">+5 credits</span>
                     </div>
                   </div>
                 </CardContent>
@@ -141,21 +270,21 @@ const CoPayCredits = () => {
                 </CardFooter>
               </Card>
               
-              <Card className="hover:shadow-md transition-all">
+              <Card className="bg-white/5 backdrop-blur-sm border border-white/10 hover:border-amber-500/30 transition-all">
                 <CardHeader>
                   <CardTitle className="flex items-center gap-2">
-                    <Users className="h-5 w-5 text-blue-500" />
+                    <Users className="h-5 w-5 text-amber-500" />
                     Refer Friends & Family
                   </CardTitle>
                 </CardHeader>
                 <CardContent>
-                  <p className="text-gray-700 mb-4">
+                  <p className="text-gray-400 mb-4">
                     Invite others to Thrive MT and earn credits when they sign up or attend their first session.
                   </p>
-                  <div className="bg-amber-50 rounded-lg p-3 mb-4">
+                  <div className="bg-white/5 rounded-lg p-3 mb-4 border border-white/10">
                     <div className="flex justify-between items-center">
-                      <span className="font-medium">New Member Referral</span>
-                      <span className="text-amber-600 font-bold">+30 credits</span>
+                      <span className="font-medium text-white/90">New Member Referral</span>
+                      <span className="text-amber-400 font-bold">+30 credits</span>
                     </div>
                   </div>
                 </CardContent>
@@ -169,21 +298,21 @@ const CoPayCredits = () => {
                 </CardFooter>
               </Card>
               
-              <Card className="hover:shadow-md transition-all">
+              <Card className="bg-white/5 backdrop-blur-sm border border-white/10 hover:border-amber-500/30 transition-all">
                 <CardHeader>
                   <CardTitle className="flex items-center gap-2">
-                    <ClipboardCheck className="h-5 w-5 text-green-500" />
+                    <ClipboardCheck className="h-5 w-5 text-amber-500" />
                     Participate in Research
                   </CardTitle>
                 </CardHeader>
                 <CardContent>
-                  <p className="text-gray-700 mb-4">
+                  <p className="text-gray-400 mb-4">
                     Contribute to mental health research by participating in surveys and studies.
                   </p>
-                  <div className="bg-amber-50 rounded-lg p-3 mb-4">
+                  <div className="bg-white/5 rounded-lg p-3 mb-4 border border-white/10">
                     <div className="flex justify-between items-center">
-                      <span className="font-medium">Quarterly Survey</span>
-                      <span className="text-amber-600 font-bold">+20 credits</span>
+                      <span className="font-medium text-white/90">Quarterly Survey</span>
+                      <span className="text-amber-400 font-bold">+20 credits</span>
                     </div>
                   </div>
                 </CardContent>
@@ -197,76 +326,31 @@ const CoPayCredits = () => {
                 </CardFooter>
               </Card>
             </div>
-            
-            <Card>
-              <CardHeader>
-                <CardTitle>More Ways to Earn</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  <div className="border rounded-lg p-4 flex items-start gap-3">
-                    <Users className="h-5 w-5 text-amber-500 mt-1" />
-                    <div>
-                      <h3 className="font-medium mb-1">Community Engagement</h3>
-                      <p className="text-sm text-gray-600">Participate in forums, group sessions, or peer support activities.</p>
-                      <p className="text-amber-600 font-medium text-sm mt-1">+5-15 credits per activity</p>
-                    </div>
-                  </div>
-                  
-                  <div className="border rounded-lg p-4 flex items-start gap-3">
-                    <Star className="h-5 w-5 text-amber-500 mt-1" />
-                    <div>
-                      <h3 className="font-medium mb-1">Therapy Milestone Rewards</h3>
-                      <p className="text-sm text-gray-600">Celebrate therapy milestones and consistent attendance.</p>
-                      <p className="text-amber-600 font-medium text-sm mt-1">+10-50 credits per milestone</p>
-                    </div>
-                  </div>
-                  
-                  <div className="border rounded-lg p-4 flex items-start gap-3">
-                    <Gift className="h-5 w-5 text-amber-500 mt-1" />
-                    <div>
-                      <h3 className="font-medium mb-1">Special Promotions</h3>
-                      <p className="text-sm text-gray-600">Seasonal or special event promotions with bonus credit opportunities.</p>
-                      <p className="text-amber-600 font-medium text-sm mt-1">Varies by promotion</p>
-                    </div>
-                  </div>
-                  
-                  <div className="border rounded-lg p-4 flex items-start gap-3">
-                    <Upload className="h-5 w-5 text-amber-500 mt-1" />
-                    <div>
-                      <h3 className="font-medium mb-1">Testimonials & Reviews</h3>
-                      <p className="text-sm text-gray-600">Share your experience to help others find mental health support.</p>
-                      <p className="text-amber-600 font-medium text-sm mt-1">+25 credits per approved review</p>
-                    </div>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
           </TabsContent>
           
-          <TabsContent value="redeem" className="space-y-6">
+          <TabsContent value="redeem" className="mt-6">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <Card className="hover:shadow-md transition-all border-amber-200/50">
-                <CardHeader className="bg-amber-50 rounded-t-lg">
+              <Card className="bg-white/5 backdrop-blur-sm border border-white/10 hover:border-amber-500/30 transition-all">
+                <CardHeader className="bg-gradient-to-r from-amber-500/20 to-amber-600/10 rounded-t-lg">
                   <CardTitle>Standard Session Credit</CardTitle>
                   <CardDescription>Reduce your copay for individual therapy</CardDescription>
                 </CardHeader>
                 <CardContent className="pt-6">
                   <div className="text-center mb-6">
                     <span className="text-4xl font-bold text-amber-500">25</span>
-                    <span className="text-gray-500 ml-2">credits</span>
+                    <span className="text-gray-400 ml-2">credits</span>
                   </div>
-                  <ul className="space-y-2 text-gray-700 mb-6">
+                  <ul className="space-y-2 text-gray-300 mb-6">
                     <li className="flex items-center">
-                      <Star className="h-4 w-4 text-amber-500 mr-2" />
+                      <Star className="h-4 w-4 text-amber-500 mr-2 flex-shrink-0" />
                       Reduce standard session copay by $25
                     </li>
                     <li className="flex items-center">
-                      <Star className="h-4 w-4 text-amber-500 mr-2" />
+                      <Star className="h-4 w-4 text-amber-500 mr-2 flex-shrink-0" />
                       Valid for any individual therapy session
                     </li>
                     <li className="flex items-center">
-                      <Star className="h-4 w-4 text-amber-500 mr-2" />
+                      <Star className="h-4 w-4 text-amber-500 mr-2 flex-shrink-0" />
                       No limit on usage (with available credits)
                     </li>
                   </ul>
@@ -278,27 +362,27 @@ const CoPayCredits = () => {
                 </CardFooter>
               </Card>
               
-              <Card className="hover:shadow-md transition-all border-amber-200/50">
-                <CardHeader className="bg-amber-50 rounded-t-lg">
+              <Card className="bg-white/5 backdrop-blur-sm border border-white/10 hover:border-amber-500/30 transition-all">
+                <CardHeader className="bg-gradient-to-r from-amber-500/20 to-amber-600/10 rounded-t-lg">
                   <CardTitle>Full Session Coverage</CardTitle>
                   <CardDescription>Completely eliminate your copay</CardDescription>
                 </CardHeader>
                 <CardContent className="pt-6">
                   <div className="text-center mb-6">
                     <span className="text-4xl font-bold text-amber-500">100</span>
-                    <span className="text-gray-500 ml-2">credits</span>
+                    <span className="text-gray-400 ml-2">credits</span>
                   </div>
-                  <ul className="space-y-2 text-gray-700 mb-6">
+                  <ul className="space-y-2 text-gray-300 mb-6">
                     <li className="flex items-center">
-                      <Star className="h-4 w-4 text-amber-500 mr-2" />
+                      <Star className="h-4 w-4 text-amber-500 mr-2 flex-shrink-0" />
                       Cover your entire session copay
                     </li>
                     <li className="flex items-center">
-                      <Star className="h-4 w-4 text-amber-500 mr-2" />
+                      <Star className="h-4 w-4 text-amber-500 mr-2 flex-shrink-0" />
                       Premium therapist sessions included
                     </li>
                     <li className="flex items-center">
-                      <Star className="h-4 w-4 text-amber-500 mr-2" />
+                      <Star className="h-4 w-4 text-amber-500 mr-2 flex-shrink-0" />
                       Best value for your credits
                     </li>
                   </ul>
@@ -310,139 +394,10 @@ const CoPayCredits = () => {
                 </CardFooter>
               </Card>
             </div>
-            
-            <Card>
-              <CardHeader>
-                <CardTitle>Other Redemption Options</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                  <div className="border rounded-lg p-4">
-                    <h3 className="font-medium mb-2 flex items-center">
-                      <User className="h-4 w-4 text-amber-500 mr-2" />
-                      Group Therapy Session
-                    </h3>
-                    <p className="text-sm text-gray-600 mb-2">Attend a therapeutic group session.</p>
-                    <p className="text-amber-600 font-medium">15 credits</p>
-                  </div>
-                  
-                  <div className="border rounded-lg p-4">
-                    <h3 className="font-medium mb-2 flex items-center">
-                      <PiggyBank className="h-4 w-4 text-amber-500 mr-2" />
-                      Premium Resources
-                    </h3>
-                    <p className="text-sm text-gray-600 mb-2">Access premium wellness resources.</p>
-                    <p className="text-amber-600 font-medium">10 credits</p>
-                  </div>
-                  
-                  <div className="border rounded-lg p-4">
-                    <h3 className="font-medium mb-2 flex items-center">
-                      <GiftIcon className="h-4 w-4 text-amber-500 mr-2" />
-                      Donate to Scholarship
-                    </h3>
-                    <p className="text-sm text-gray-600 mb-2">Help others access mental health care.</p>
-                    <p className="text-amber-600 font-medium">Any amount</p>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
-          </TabsContent>
-          
-          <TabsContent value="info" className="space-y-6">
-            <Card>
-              <CardHeader>
-                <CardTitle>About Copay Credits</CardTitle>
-                <CardDescription>How our credit system works</CardDescription>
-              </CardHeader>
-              <CardContent>
-                <div className="space-y-6">
-                  <div>
-                    <h3 className="text-lg font-medium mb-2">What are Copay Credits?</h3>
-                    <p className="text-gray-700">
-                      Copay Credits are a unique feature of Thrive MT that allows you to earn credits through various activities and redeem them to reduce or eliminate your therapy session copays. This system makes mental health care more accessible and rewards your engagement in your wellness journey.
-                    </p>
-                  </div>
-                  
-                  <div>
-                    <h3 className="text-lg font-medium mb-2">How to Earn Credits</h3>
-                    <p className="text-gray-700 mb-3">
-                      You can earn credits in multiple ways:
-                    </p>
-                    <ul className="list-disc pl-6 space-y-1 text-gray-700">
-                      <li>Completing wellness challenges and activities</li>
-                      <li>Referring friends and family to Thrive MT</li>
-                      <li>Participating in mental health research and surveys</li>
-                      <li>Engaging with the Thrive MT community</li>
-                      <li>Reaching therapy and wellness milestones</li>
-                      <li>Sharing testimonials and reviews</li>
-                      <li>Taking advantage of special promotions</li>
-                    </ul>
-                  </div>
-                  
-                  <div>
-                    <h3 className="text-lg font-medium mb-2">How to Redeem Credits</h3>
-                    <p className="text-gray-700 mb-3">
-                      Credits can be redeemed at checkout when scheduling therapy sessions or through your account dashboard. The redemption options include:
-                    </p>
-                    <ul className="list-disc pl-6 space-y-1 text-gray-700">
-                      <li>25 credits: Reduce your standard session copay by $25</li>
-                      <li>100 credits: Get a fully covered session with no copay</li>
-                      <li>15 credits: Join a group therapy session</li>
-                      <li>10 credits: Access premium resources and tools</li>
-                      <li>Any amount: Donate to our scholarship fund to help others</li>
-                    </ul>
-                  </div>
-                  
-                  <div>
-                    <h3 className="text-lg font-medium mb-2">Credit Policy</h3>
-                    <p className="text-gray-700">
-                      Credits do not expire as long as your account remains active. You must have a session within a 6-month period to maintain an active account status. Credits cannot be transferred between accounts and have no cash value. Thrive MT reserves the right to modify the credit program with advance notice to members.
-                    </p>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
-            
-            <Card>
-              <CardHeader>
-                <CardTitle>Frequently Asked Questions</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div className="space-y-4">
-                  <div>
-                    <h3 className="font-medium mb-1">Do credits expire?</h3>
-                    <p className="text-gray-700">
-                      No, credits do not expire as long as your account remains active with at least one session every 6 months.
-                    </p>
-                  </div>
-                  
-                  <div>
-                    <h3 className="font-medium mb-1">Can I transfer credits to someone else?</h3>
-                    <p className="text-gray-700">
-                      Currently, credits cannot be transferred between accounts, but you can donate credits to our scholarship fund.
-                    </p>
-                  </div>
-                  
-                  <div>
-                    <h3 className="font-medium mb-1">How many credits can I earn per month?</h3>
-                    <p className="text-gray-700">
-                      There is no hard limit on credits earned per month, but certain activities have frequency limits (e.g., daily wellness challenges can only be completed once per day).
-                    </p>
-                  </div>
-                  
-                  <div>
-                    <h3 className="font-medium mb-1">Can I combine credits with insurance?</h3>
-                    <p className="text-gray-700">
-                      Yes, credits reduce your out-of-pocket copay after insurance has been applied.
-                    </p>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
           </TabsContent>
         </Tabs>
       </div>
-    </div>
+    </Page>
   );
 };
 
