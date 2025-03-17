@@ -195,9 +195,9 @@ const CollegeExperience: React.FC = () => {
 
   return (
     <Page title="College Mental Health Resources" fullWidth={true}>
-      <div className="space-y-8 w-full">
+      <div className="space-y-6">
         {/* Hero Section */}
-        <div className="bg-gradient-to-r from-[#6E59A5]/30 to-[#D946EF]/30 p-5 rounded-xl w-full">
+        <div className="bg-gradient-to-r from-[#6E59A5]/30 to-[#D946EF]/30 p-5 rounded-xl">
           <div className="flex flex-col md:flex-row gap-5 items-center">
             <div className="md:w-2/3">
               <h2 className="text-2xl font-semibold mb-2 text-white">
@@ -234,44 +234,44 @@ const CollegeExperience: React.FC = () => {
           </div>
         </div>
 
-        {/* Navigation Tabs Section */}
-        <div className="w-full mb-6">
-          <div className="bg-[#1A1F2C]/80 p-5 rounded-xl border border-[#8B5CF6]/30">
-            <h3 className="text-white font-medium mb-5 text-center text-xl">Navigate College Wellness Resources</h3>
+        {/* Navigation Tabs Section - Redesigned to prevent overlap */}
+        <div className="mb-4">
+          <div className="bg-[#1A1F2C]/80 p-4 rounded-xl border border-[#8B5CF6]/30">
+            <h3 className="text-white font-medium mb-4 text-center text-xl">Navigate College Wellness Resources</h3>
             
             <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-              <TabsList className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 w-full bg-transparent p-0">
+              <TabsList className="grid grid-cols-2 md:grid-cols-4 gap-2 w-full bg-transparent h-auto p-0">
                 <TabsTrigger 
                   value="resources" 
-                  className="bg-[#1A1F2C] text-white border border-[#8B5CF6]/30 py-5 px-4 flex flex-col items-center gap-3 data-[state=active]:bg-[#8B5CF6] data-[state=active]:border-[#8B5CF6] hover:bg-[#8B5CF6]/20 transition-all duration-200"
+                  className="bg-[#1A1F2C] text-white border border-[#8B5CF6]/30 py-3 px-2 flex flex-col items-center gap-2 data-[state=active]:bg-[#8B5CF6] data-[state=active]:border-[#8B5CF6] hover:bg-[#8B5CF6]/20 transition-all duration-200 h-auto"
                 >
-                  <FileText className="h-6 w-6" />
-                  <span className="font-medium">Resources</span>
+                  <FileText className="h-5 w-5" />
+                  <span className="font-medium text-sm">Resources</span>
                 </TabsTrigger>
                 <TabsTrigger 
                   value="workshops" 
-                  className="bg-[#1A1F2C] text-white border border-[#D946EF]/30 py-5 px-4 flex flex-col items-center gap-3 data-[state=active]:bg-[#D946EF] data-[state=active]:border-[#D946EF] hover:bg-[#D946EF]/20 transition-all duration-200"
+                  className="bg-[#1A1F2C] text-white border border-[#D946EF]/30 py-3 px-2 flex flex-col items-center gap-2 data-[state=active]:bg-[#D946EF] data-[state=active]:border-[#D946EF] hover:bg-[#D946EF]/20 transition-all duration-200 h-auto"
                 >
-                  <CalendarDays className="h-6 w-6" />
-                  <span className="font-medium">Workshops</span>
+                  <CalendarDays className="h-5 w-5" />
+                  <span className="font-medium text-sm">Workshops</span>
                 </TabsTrigger>
                 <TabsTrigger 
                   value="services" 
-                  className="bg-[#1A1F2C] text-white border border-[#8B5CF6]/30 py-5 px-4 flex flex-col items-center gap-3 data-[state=active]:bg-[#8B5CF6] data-[state=active]:border-[#8B5CF6] hover:bg-[#8B5CF6]/20 transition-all duration-200"
+                  className="bg-[#1A1F2C] text-white border border-[#8B5CF6]/30 py-3 px-2 flex flex-col items-center gap-2 data-[state=active]:bg-[#8B5CF6] data-[state=active]:border-[#8B5CF6] hover:bg-[#8B5CF6]/20 transition-all duration-200 h-auto"
                 >
-                  <Building className="h-6 w-6" />
-                  <span className="font-medium">Campus Services</span>
+                  <Building className="h-5 w-5" />
+                  <span className="font-medium text-sm">Campus Services</span>
                 </TabsTrigger>
                 <TabsTrigger 
                   value="crisis" 
-                  className="bg-[#1A1F2C] text-white border border-[#F87171]/50 py-5 px-4 flex flex-col items-center gap-3 data-[state=active]:bg-[#F87171] data-[state=active]:border-[#F87171] hover:bg-[#F87171]/20 transition-all duration-200"
+                  className="bg-[#1A1F2C] text-white border border-[#F87171]/50 py-3 px-2 flex flex-col items-center gap-2 data-[state=active]:bg-[#F87171] data-[state=active]:border-[#F87171] hover:bg-[#F87171]/20 transition-all duration-200 h-auto"
                 >
-                  <AlertTriangle className="h-6 w-6" />
-                  <span className="font-medium">Crisis Support</span>
+                  <AlertTriangle className="h-5 w-5" />
+                  <span className="font-medium text-sm">Crisis Support</span>
                 </TabsTrigger>
               </TabsList>
               
-              <div className="mt-6">
+              <div className="mt-4">
                 {activeTab === "resources" && (
                   <TabsContent value="resources" className="mt-0 pt-0">
                     <div className="mb-8 w-full">

@@ -36,16 +36,16 @@ const Page: React.FC<PageProps> = ({
   };
   
   return (
-    <div className="min-h-screen bg-gradient-to-b from-[#1a1a1f] via-[#242432] to-[#272730] text-white py-6 px-3 sm:px-4 md:px-6 relative">
+    <div className="min-h-screen bg-gradient-to-b from-[#1a1a1f] via-[#242432] to-[#272730] text-white py-4 px-2 sm:px-3 md:px-4 relative">
       <div className="absolute inset-0 bg-[url('data:image/svg+xml;utf8,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%2220%22 height=%2220%22 viewBox=%220 0 20 20%22><circle cx=%222%22 cy=%222%22 r=%221%22 fill=%22%23B87333%22 fill-opacity=%220.05%22/></svg>')] opacity-20"></div>
       
-      <div className={`${fullWidth ? 'w-full max-w-none' : 'max-w-5xl mx-auto'} bg-white/10 backdrop-blur-md rounded-2xl p-4 sm:p-6 shadow-xl relative overflow-hidden border border-white/5`}>
+      <div className={`${fullWidth ? 'w-full max-w-none' : 'max-w-5xl mx-auto'} backdrop-blur-md rounded-2xl p-4 sm:p-5 shadow-xl relative overflow-hidden`}>
         {/* Decorative elements */}
         <div className="absolute top-0 right-0 w-80 h-80 bg-gradient-to-br from-[#B87333]/20 to-transparent rounded-full blur-3xl -z-10"></div>
         <div className="absolute bottom-0 left-0 w-80 h-80 bg-gradient-to-tr from-[#9b87f5]/20 to-transparent rounded-full blur-3xl -z-10"></div>
         
         {/* Title in Header */}
-        <div className="flex flex-col md:flex-row items-center justify-between mb-4 md:mb-6 gap-3">
+        <div className="flex flex-col md:flex-row items-center justify-between mb-4 md:mb-5 gap-3">
           <div className="flex items-center gap-3">
             {showBackButton && (
               <Button 
@@ -75,7 +75,7 @@ const Page: React.FC<PageProps> = ({
           </div>
         </div>
         
-        <div className={`${fullWidth ? 'w-full' : ''} bg-white/5 backdrop-blur-sm rounded-xl p-3 sm:p-4 border border-white/10 shadow-inner transition-all duration-300 hover:shadow-lg`}>
+        <div className="w-full">
           {children || (
             <div className="p-6 rounded-lg bg-white/5 text-center backdrop-blur-sm">
               <p className="text-lg text-gray-300">Coming soon! This feature is under development.</p>
