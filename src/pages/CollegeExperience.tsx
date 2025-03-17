@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from "react";
 import Page from "@/components/Page";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
@@ -35,7 +36,14 @@ const CollegeExperience: React.FC = () => {
       description: "Loading your resource...",
       duration: 2000
     });
-    console.log(`Navigating to: ${path}`);
+    
+    // Check if the path exists in the routes, otherwise navigate to mental-wellness-tools as fallback
+    // In a real app, you'd have all these routes properly defined
+    if (path.startsWith("/")) {
+      navigate(path);
+    } else {
+      navigate(`/${path}`);
+    }
   };
   
   const mentalHealthResources = [
@@ -43,84 +51,84 @@ const CollegeExperience: React.FC = () => {
       title: "Academic Stress Management",
       description: "Techniques for balancing coursework, exams, and deadlines",
       icon: BookOpen,
-      path: "/college-stress-management",
+      path: "/mental-wellness-tools",
       category: "academic"
     },
     {
       title: "Campus Counseling Services",
       description: "Directory of free mental health services available on campus",
       icon: MapPin,
-      path: "/campus-services",
+      path: "/resource-library",
       category: "support"
     },
     {
       title: "Peer Support Network",
       description: "Connect with trained student mentors for one-on-one conversations",
       icon: Users,
-      path: "/peer-support",
+      path: "/community-support",
       category: "support"
     },
     {
       title: "Time Management Workshop",
       description: "Interactive tools to balance academics, social life, and self-care",
       icon: Calendar,
-      path: "/time-management",
+      path: "/workshops",
       category: "academic"
     },
     {
       title: "Test Anxiety Relief",
       description: "Strategies to manage anxiety and perform your best on exams",
       icon: CopyCheck,
-      path: "/exam-anxiety",
+      path: "/mental-wellness-tools",
       category: "academic"
     },
     {
       title: "Mindfulness for Students",
       description: "Quick meditation practices adapted for busy student schedules",
       icon: Brain,
-      path: "/student-mindfulness",
+      path: "/mindfulness",
       category: "wellness"
     },
     {
       title: "Healthy Sleep Habits",
       description: "Improve your sleep quality despite dorm life and late-night study sessions",
       icon: Moon,
-      path: "/sleep-habits",
+      path: "/mindfulness",
       category: "wellness"
     },
     {
       title: "Social Anxiety Workshop",
       description: "Navigate campus social life with confidence and ease",
       icon: User,
-      path: "/social-anxiety",
+      path: "/workshops",
       category: "social"
     },
     {
       title: "Financial Stress Relief",
       description: "Coping strategies for students dealing with financial pressure",
       icon: Lightbulb,
-      path: "/financial-stress",
+      path: "/financial-assistance",
       category: "lifestyle"
     },
     {
       title: "Substance Use Awareness",
       description: "Education and support for making informed choices about alcohol and drugs",
       icon: Coffee,
-      path: "/substance-awareness",
+      path: "/resource-library",
       category: "wellness"
     },
     {
       title: "Nutrition on a Budget",
       description: "Eating well in college with limited time and money",
       icon: Utensils,
-      path: "/student-nutrition",
+      path: "/lifestyle-integration",
       category: "wellness"
     },
     {
       title: "Campus Workout Guide",
       description: "Making the most of your campus recreation facilities",
       icon: Dumbbell,
-      path: "/campus-workout",
+      path: "/holistic-wellness",
       category: "wellness"
     }
   ];
@@ -210,7 +218,7 @@ const CollegeExperience: React.FC = () => {
               </p>
               <Button 
                 className="bg-[#D946EF] hover:bg-[#D946EF]/80 text-white font-medium shadow-lg group transition-all duration-300 hover:translate-x-1"
-                onClick={() => navigate("/student-mindfulness")}
+                onClick={() => navigate("/mindfulness")}
               >
                 Start Your Journey <ArrowRight className="ml-1 h-4 w-4 group-hover:translate-x-1 transition-transform"/>
               </Button>
@@ -304,6 +312,10 @@ const CollegeExperience: React.FC = () => {
                               <Button 
                                 variant="outline" 
                                 className="w-full bg-[#8B5CF6]/20 hover:bg-[#8B5CF6]/40 border-[#8B5CF6]/50 hover:text-white text-white flex items-center justify-center gap-2 group"
+                                onClick={(e) => {
+                                  e.stopPropagation(); // Prevent card click from firing
+                                  handleResourceClick(resource.title, resource.path);
+                                }}
                               >
                                 <span>Explore Resource</span>
                                 <ArrowRight className="h-4 w-4 group-hover:translate-x-1 transition-transform" />
@@ -358,6 +370,7 @@ const CollegeExperience: React.FC = () => {
                               <div className="mt-4 md:mt-0">
                                 <Button 
                                   className="bg-[#D946EF] hover:bg-[#D946EF]/80 text-white font-medium shadow-md transition-all duration-300 group"
+                                  onClick={() => navigate("/workshops")}
                                 >
                                   <span>Join Workshop</span>
                                   <Play className="ml-1 h-4 w-4 group-hover:scale-110 transition-transform" />
@@ -373,6 +386,7 @@ const CollegeExperience: React.FC = () => {
                       
                       <Button 
                         className="mt-6 w-full bg-gradient-to-r from-[#D946EF]/80 to-[#8B5CF6]/80 hover:from-[#D946EF] hover:to-[#8B5CF6] text-white font-medium shadow-md transition-all duration-300 border-none"
+                        onClick={() => navigate("/workshops")}
                       >
                         <span>View All Workshops</span>
                         <CalendarDays className="ml-2 h-4 w-4" />
@@ -417,6 +431,7 @@ const CollegeExperience: React.FC = () => {
                             <div className="mt-3">
                               <Button 
                                 className="bg-[#8B5CF6] hover:bg-[#8B5CF6]/80 text-white shadow-md transition-all duration-300 group"
+                                onClick={() => navigate("/contact")}
                               >
                                 <span>Connect Now</span>
                                 <Plus className="ml-1 h-4 w-4 group-hover:rotate-90 transition-transform" />
@@ -428,6 +443,7 @@ const CollegeExperience: React.FC = () => {
                       
                       <Button 
                         className="mt-6 w-full bg-gradient-to-r from-[#8B5CF6]/80 to-[#6E59A5]/80 hover:from-[#8B5CF6] hover:to-[#6E59A5] text-white font-medium shadow-md transition-all duration-300 border-none"
+                        onClick={() => navigate("/resource-library")}
                       >
                         <span>View All Campus Services</span>
                         <Building className="ml-2 h-4 w-4" />
@@ -451,6 +467,7 @@ const CollegeExperience: React.FC = () => {
                           
                           <Button 
                             className="mt-3 bg-white text-[#F87171] hover:bg-white/90 font-medium shadow-md transition-all duration-300 group border-none"
+                            onClick={() => navigate("/crisis-support")}
                           >
                             <span>Call Now</span>
                             <ArrowRight className="ml-1 h-4 w-4 group-hover:translate-x-1 transition-transform" />
@@ -463,6 +480,7 @@ const CollegeExperience: React.FC = () => {
                           
                           <Button 
                             className="mt-3 bg-[#F87171]/80 hover:bg-[#F87171] text-white font-medium shadow-md transition-all duration-300 group border-none"
+                            onClick={() => navigate("/crisis-support")}
                           >
                             <span>Text Now</span>
                             <ArrowRight className="ml-1 h-4 w-4 group-hover:translate-x-1 transition-transform" />
@@ -475,6 +493,7 @@ const CollegeExperience: React.FC = () => {
                           
                           <Button 
                             className="mt-3 bg-[#F87171]/80 hover:bg-[#F87171] text-white font-medium shadow-md transition-all duration-300 group border-none"
+                            onClick={() => navigate("/crisis-support")}
                           >
                             <span>Call Lifeline</span>
                             <ArrowRight className="ml-1 h-4 w-4 group-hover:translate-x-1 transition-transform" />
@@ -487,6 +506,7 @@ const CollegeExperience: React.FC = () => {
                           
                           <Button 
                             className="mt-3 bg-[#F87171]/80 hover:bg-[#F87171] text-white font-medium shadow-md transition-all duration-300 group border-none"
+                            onClick={() => navigate("/crisis-support")}
                           >
                             <span>Emergency Services</span>
                             <ArrowRight className="ml-1 h-4 w-4 group-hover:translate-x-1 transition-transform" />
@@ -502,6 +522,7 @@ const CollegeExperience: React.FC = () => {
                         
                         <Button 
                           className="mt-4 w-full bg-white/10 hover:bg-white/20 text-white font-medium shadow-md transition-all duration-300 border border-white/30"
+                          onClick={() => navigate("/scheduling")}
                         >
                           <span>Schedule Counseling Appointment</span>
                           <Calendar className="ml-2 h-4 w-4" />
@@ -526,7 +547,7 @@ const CollegeExperience: React.FC = () => {
             <Button 
               variant="outline" 
               className="border-[#8B5CF6]/40 bg-[#1A1F2C]/50 hover:bg-[#8B5CF6]/30 h-auto py-4 flex flex-col gap-2 text-white transition-all duration-300 hover:scale-105"
-              onClick={() => navigate("/campus-services")}
+              onClick={() => navigate("/mental-wellness-tools")}
             >
               <GraduationCap className="h-5 w-5" />
               <span>Academic Support</span>
@@ -536,7 +557,7 @@ const CollegeExperience: React.FC = () => {
             <Button 
               variant="outline" 
               className="border-[#D946EF]/40 bg-[#1A1F2C]/50 hover:bg-[#D946EF]/30 h-auto py-4 flex flex-col gap-2 text-white transition-all duration-300 hover:scale-105"
-              onClick={() => navigate("/peer-support")}
+              onClick={() => navigate("/community-support")}
             >
               <HeartHandshake className="h-5 w-5" />
               <span>Peer Counseling</span>
@@ -546,7 +567,7 @@ const CollegeExperience: React.FC = () => {
             <Button 
               variant="outline" 
               className="border-[#8B5CF6]/40 bg-[#1A1F2C]/50 hover:bg-[#8B5CF6]/30 h-auto py-4 flex flex-col gap-2 text-white transition-all duration-300 hover:scale-105"
-              onClick={() => navigate("/student-resources")}
+              onClick={() => navigate("/resource-library")}
             >
               <Backpack className="h-5 w-5" />
               <span>Student Resources</span>
@@ -556,7 +577,7 @@ const CollegeExperience: React.FC = () => {
             <Button 
               variant="outline" 
               className="border-[#D946EF]/40 bg-[#1A1F2C]/50 hover:bg-[#D946EF]/30 h-auto py-4 flex flex-col gap-2 text-white transition-all duration-300 hover:scale-105"
-              onClick={() => navigate("/self-care")}
+              onClick={() => navigate("/self-help-resources")}
             >
               <Sparkles className="h-5 w-5" />
               <span>Self-Care Ideas</span>
@@ -580,7 +601,7 @@ const CollegeExperience: React.FC = () => {
           
           <Button 
             className="mt-5 bg-[#8B5CF6]/30 hover:bg-[#8B5CF6]/50 text-white font-medium border border-[#8B5CF6]/50 transition-all duration-300 group"
-            onClick={() => navigate("/share-story")}
+            onClick={() => navigate("/community-support")}
           >
             <span>Share Your Story</span>
             <Plus className="ml-1 h-4 w-4 group-hover:rotate-90 transition-transform" />
