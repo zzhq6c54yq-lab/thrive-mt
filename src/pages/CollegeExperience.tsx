@@ -1,4 +1,3 @@
-
 import React, { useState } from "react";
 import Page from "@/components/Page";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
@@ -28,7 +27,7 @@ const CollegeExperience: React.FC = () => {
     // For now we'll just log it
     console.log(`Navigating to: ${path}`);
   };
-
+  
   const mentalHealthResources = [
     {
       title: "Academic Stress Management",
@@ -184,7 +183,7 @@ const CollegeExperience: React.FC = () => {
               <h2 className="text-2xl font-medium mb-2 text-transparent bg-clip-text bg-gradient-to-r from-[#8B5CF6] to-[#D946EF]">
                 Your Campus Wellness Journey Starts Here
               </h2>
-              <p className="text-white/80 mb-4">
+              <p className="text-white mb-4">
                 College life brings unique challenges to your mental health. We've gathered resources 
                 specifically designed for students like you balancing academics, social life, 
                 personal growth, and wellness.
@@ -204,7 +203,7 @@ const CollegeExperience: React.FC = () => {
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
             />
-            <p className="mt-2 text-sm text-white/60">
+            <p className="mt-2 text-sm text-white/70">
               Try searching for: stress, sleep, anxiety, exams, social, time management
             </p>
           </div>
@@ -232,19 +231,19 @@ const CollegeExperience: React.FC = () => {
                       <div className="p-2 rounded-lg bg-[#8B5CF6]/10">
                         <resource.icon className="h-5 w-5 text-[#8B5CF6]" />
                       </div>
-                      <span className="text-xs px-2 py-1 rounded-full border border-white/10 bg-white/5 text-white/70">
+                      <span className="text-xs px-2 py-1 rounded-full border border-white/10 bg-white/5 text-white">
                         {resource.category}
                       </span>
                     </div>
-                    <CardTitle className="mt-3 text-lg font-medium">{resource.title}</CardTitle>
-                    <CardDescription className="text-white/70">{resource.description}</CardDescription>
+                    <CardTitle className="mt-3 text-lg font-medium text-white">{resource.title}</CardTitle>
+                    <CardDescription className="text-white/90">{resource.description}</CardDescription>
                   </CardHeader>
                   <CardContent>
                     <Button 
                       variant="outline" 
-                      className="w-full hover:bg-[#8B5CF6]/20 border-[#8B5CF6]/30 hover:text-white"
+                      className="w-full hover:bg-[#8B5CF6]/20 border-[#8B5CF6]/30 hover:text-white text-white"
                     >
-                      Access Resource
+                      View Details
                     </Button>
                   </CardContent>
                 </Card>
@@ -253,18 +252,18 @@ const CollegeExperience: React.FC = () => {
             
             {filteredResources.length === 0 && (
               <div className="text-center py-8">
-                <p className="text-white/60">No resources found matching "{searchTerm}". Try a different search term.</p>
+                <p className="text-white/80">No resources found matching "{searchTerm}". Try a different search term.</p>
               </div>
             )}
           </TabsContent>
           
           <TabsContent value="workshops" className="space-y-6">
             <div className="bg-white/5 border border-white/10 rounded-lg p-4 mb-4">
-              <h3 className="text-lg font-medium mb-2 flex items-center gap-2">
+              <h3 className="text-lg font-medium mb-2 flex items-center gap-2 text-white">
                 <Calendar className="h-5 w-5 text-[#D946EF]" />
                 <span>Upcoming Mental Health Workshops</span>
               </h3>
-              <p className="text-white/70 mb-4">
+              <p className="text-white/90 mb-4">
                 All workshops are free for enrolled students. Register early as spots fill quickly.
               </p>
               
@@ -277,24 +276,24 @@ const CollegeExperience: React.FC = () => {
                     <div className="flex flex-col md:flex-row justify-between md:items-center">
                       <div>
                         <h4 className="font-medium text-[#8B5CF6]">{workshop.title}</h4>
-                        <p className="text-white/80 text-sm">{workshop.description}</p>
+                        <p className="text-white/90 text-sm">{workshop.description}</p>
                         <div className="flex items-center gap-4 mt-2">
-                          <span className="text-xs flex items-center gap-1">
+                          <span className="text-xs flex items-center gap-1 text-white/90">
                             <Calendar className="h-3 w-3" /> {workshop.date}
                           </span>
-                          <span className="text-xs flex items-center gap-1">
+                          <span className="text-xs flex items-center gap-1 text-white/90">
                             <Clock className="h-3 w-3" /> {workshop.time}
                           </span>
-                          <span className="text-xs flex items-center gap-1">
+                          <span className="text-xs flex items-center gap-1 text-white/90">
                             <MapPin className="h-3 w-3" /> {workshop.location}
                           </span>
                         </div>
                       </div>
                       <div className="mt-4 md:mt-0">
-                        <Button variant="outline" className="hover:bg-[#D946EF]/20 border-[#D946EF]/30">
-                          Register
+                        <Button variant="outline" className="hover:bg-[#D946EF]/20 border-[#D946EF]/30 text-white">
+                          Join Workshop
                         </Button>
-                        <div className="text-xs text-white/60 mt-1 text-center">
+                        <div className="text-xs text-white/80 mt-1 text-center">
                           {typeof workshop.spots === 'number' ? `${workshop.spots} spots left` : workshop.spots}
                         </div>
                       </div>
@@ -303,7 +302,7 @@ const CollegeExperience: React.FC = () => {
                 ))}
               </div>
               
-              <Button variant="outline" className="mt-4 w-full border-[#D946EF]/30 hover:bg-[#D946EF]/10">
+              <Button variant="outline" className="mt-4 w-full border-[#D946EF]/30 hover:bg-[#D946EF]/10 text-white">
                 View All Workshops
               </Button>
             </div>
@@ -311,11 +310,11 @@ const CollegeExperience: React.FC = () => {
           
           <TabsContent value="services" className="space-y-6">
             <div className="bg-white/5 border border-white/10 rounded-lg p-4">
-              <h3 className="text-lg font-medium mb-2 flex items-center gap-2">
+              <h3 className="text-lg font-medium mb-2 flex items-center gap-2 text-white">
                 <MapPin className="h-5 w-5 text-[#8B5CF6]" />
                 <span>Campus Mental Health Services</span>
               </h3>
-              <p className="text-white/70 mb-4">
+              <p className="text-white/90 mb-4">
                 Services available to all enrolled students, typically covered by your student health fee.
               </p>
               
@@ -326,17 +325,17 @@ const CollegeExperience: React.FC = () => {
                     className="border border-white/10 rounded-lg p-4 hover:bg-white/5 transition-colors"
                   >
                     <h4 className="font-medium text-[#8B5CF6]">{service.title}</h4>
-                    <p className="text-white/80 text-sm mt-1">{service.description}</p>
+                    <p className="text-white/90 text-sm mt-1">{service.description}</p>
                     <div className="mt-2 grid grid-cols-1 md:grid-cols-3 gap-2 text-sm">
-                      <div className="flex items-center gap-1 text-white/60">
+                      <div className="flex items-center gap-1 text-white/80">
                         <Clock className="h-3 w-3" /> 
                         <span>{service.hours}</span>
                       </div>
-                      <div className="flex items-center gap-1 text-white/60">
+                      <div className="flex items-center gap-1 text-white/80">
                         <User className="h-3 w-3" /> 
                         <span>{service.contact}</span>
                       </div>
-                      <div className="flex items-center gap-1 text-white/60">
+                      <div className="flex items-center gap-1 text-white/80">
                         <MapPin className="h-3 w-3" /> 
                         <span>{service.location}</span>
                       </div>
