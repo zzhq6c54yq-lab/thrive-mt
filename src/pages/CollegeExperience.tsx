@@ -11,7 +11,8 @@ import {
   Backpack, BookOpen, Brain, Calendar, Compass, CopyCheck, GraduationCap, 
   HeartHandshake, Lightbulb, MapPin, PartyPopper, Sparkles, 
   User, Users, Coffee, Moon, Clock, Utensils, Dumbbell, 
-  FileText, CalendarDays, Building, AlertTriangle
+  FileText, CalendarDays, Building, AlertTriangle,
+  ArrowRight, Play, Plus
 } from "lucide-react";
 
 const CollegeExperience: React.FC = () => {
@@ -190,6 +191,11 @@ const CollegeExperience: React.FC = () => {
                 specifically designed for students like you balancing academics, social life, 
                 personal growth, and wellness.
               </p>
+              <Button 
+                className="bg-[#D946EF] hover:bg-[#D946EF]/80 text-white font-medium shadow-lg group transition-all duration-300 hover:translate-x-1"
+              >
+                Start Your Journey <ArrowRight className="ml-1 h-4 w-4 group-hover:translate-x-1 transition-transform"/>
+              </Button>
             </div>
             <div className="md:w-1/3 flex-shrink-0">
               <div className="p-4 rounded-full bg-[#8B5CF6]/40 inline-flex items-center justify-center">
@@ -270,9 +276,10 @@ const CollegeExperience: React.FC = () => {
                   <CardContent>
                     <Button 
                       variant="outline" 
-                      className="w-full hover:bg-[#8B5CF6]/40 border-[#8B5CF6]/50 hover:text-white text-white"
+                      className="w-full bg-[#8B5CF6]/20 hover:bg-[#8B5CF6]/40 border-[#8B5CF6]/50 hover:text-white text-white flex items-center justify-center gap-2 group"
                     >
-                      View Details
+                      <span>Explore Resource</span>
+                      <ArrowRight className="h-4 w-4 group-hover:translate-x-1 transition-transform" />
                     </Button>
                   </CardContent>
                 </Card>
@@ -319,8 +326,11 @@ const CollegeExperience: React.FC = () => {
                         </div>
                       </div>
                       <div className="mt-4 md:mt-0">
-                        <Button variant="outline" className="hover:bg-[#D946EF]/30 border-[#D946EF]/50 text-white">
-                          Join Workshop
+                        <Button 
+                          className="bg-[#D946EF] hover:bg-[#D946EF]/80 text-white font-medium shadow-md transition-all duration-300 group"
+                        >
+                          <span>Join Workshop</span>
+                          <Play className="ml-1 h-4 w-4 group-hover:scale-110 transition-transform" />
                         </Button>
                         <div className="text-xs text-[#D6BCFA] mt-1 text-center">
                           {typeof workshop.spots === 'number' ? `${workshop.spots} spots left` : workshop.spots}
@@ -331,8 +341,11 @@ const CollegeExperience: React.FC = () => {
                 ))}
               </div>
               
-              <Button variant="outline" className="mt-4 w-full border-[#D946EF]/50 hover:bg-[#D946EF]/30 text-white">
-                View All Workshops
+              <Button 
+                className="mt-4 w-full bg-gradient-to-r from-[#D946EF]/80 to-[#8B5CF6]/80 hover:from-[#D946EF] hover:to-[#8B5CF6] text-white font-medium shadow-md transition-all duration-300 border-none"
+              >
+                <span>View All Workshops</span>
+                <CalendarDays className="ml-2 h-4 w-4" />
               </Button>
             </div>
           </TabsContent>
@@ -369,9 +382,24 @@ const CollegeExperience: React.FC = () => {
                         <span>{service.location}</span>
                       </div>
                     </div>
+                    <div className="mt-3">
+                      <Button 
+                        className="bg-[#8B5CF6] hover:bg-[#8B5CF6]/80 text-white shadow-md transition-all duration-300 group"
+                      >
+                        <span>Connect Now</span>
+                        <Plus className="ml-1 h-4 w-4 group-hover:rotate-90 transition-transform" />
+                      </Button>
+                    </div>
                   </div>
                 ))}
               </div>
+              
+              <Button 
+                className="mt-4 w-full bg-gradient-to-r from-[#8B5CF6]/80 to-[#6E59A5]/80 hover:from-[#8B5CF6] hover:to-[#6E59A5] text-white font-medium shadow-md transition-all duration-300 border-none"
+              >
+                <span>View All Campus Services</span>
+                <Building className="ml-2 h-4 w-4" />
+              </Button>
             </div>
           </TabsContent>
           
@@ -386,21 +414,49 @@ const CollegeExperience: React.FC = () => {
                 <div className="bg-[#F87171]/30 rounded-lg p-4 w-full">
                   <h4 className="font-medium text-white">Campus Crisis Line (24/7)</h4>
                   <p className="text-2xl font-bold text-white mt-2">555-HELP (4357)</p>
+                  
+                  <Button 
+                    className="mt-3 bg-white text-[#F87171] hover:bg-white/90 font-medium shadow-md transition-all duration-300 group border-none"
+                  >
+                    <span>Call Now</span>
+                    <ArrowRight className="ml-1 h-4 w-4 group-hover:translate-x-1 transition-transform" />
+                  </Button>
                 </div>
                 
                 <div className="bg-[#1A1F2C]/60 rounded-lg p-4 w-full">
                   <h4 className="font-medium text-white">National Crisis Text Line</h4>
                   <p className="text-white mt-1">Text HOME to 741741 to connect with a Crisis Counselor</p>
+                  
+                  <Button 
+                    className="mt-3 bg-[#F87171]/80 hover:bg-[#F87171] text-white font-medium shadow-md transition-all duration-300 group border-none"
+                  >
+                    <span>Text Now</span>
+                    <ArrowRight className="ml-1 h-4 w-4 group-hover:translate-x-1 transition-transform" />
+                  </Button>
                 </div>
                 
                 <div className="bg-[#1A1F2C]/60 rounded-lg p-4 w-full">
                   <h4 className="font-medium text-white">National Suicide Prevention Lifeline</h4>
                   <p className="text-white mt-1">1-800-273-8255 (Available 24/7)</p>
+                  
+                  <Button 
+                    className="mt-3 bg-[#F87171]/80 hover:bg-[#F87171] text-white font-medium shadow-md transition-all duration-300 group border-none"
+                  >
+                    <span>Call Lifeline</span>
+                    <ArrowRight className="ml-1 h-4 w-4 group-hover:translate-x-1 transition-transform" />
+                  </Button>
                 </div>
                 
                 <div className="bg-[#1A1F2C]/60 rounded-lg p-4 w-full">
                   <h4 className="font-medium text-white">Emergency Services</h4>
                   <p className="text-white mt-1">Call 911 or go to your nearest emergency room</p>
+                  
+                  <Button 
+                    className="mt-3 bg-[#F87171]/80 hover:bg-[#F87171] text-white font-medium shadow-md transition-all duration-300 group border-none"
+                  >
+                    <span>Emergency Services</span>
+                    <ArrowRight className="ml-1 h-4 w-4 group-hover:translate-x-1 transition-transform" />
+                  </Button>
                 </div>
               </div>
               
@@ -409,6 +465,13 @@ const CollegeExperience: React.FC = () => {
                   For non-emergency support, please contact the Student Counseling Center during business hours
                   or schedule an appointment through the student portal.
                 </p>
+                
+                <Button 
+                  className="mt-4 w-full bg-white/10 hover:bg-white/20 text-white font-medium shadow-md transition-all duration-300 border border-white/30"
+                >
+                  <span>Schedule Counseling Appointment</span>
+                  <Calendar className="ml-2 h-4 w-4" />
+                </Button>
               </div>
             </div>
           </TabsContent>
@@ -424,34 +487,38 @@ const CollegeExperience: React.FC = () => {
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4 w-full">
             <Button 
               variant="outline" 
-              className="border-[#8B5CF6]/40 bg-[#1A1F2C]/50 hover:bg-[#8B5CF6]/20 h-auto py-4 flex flex-col gap-2 text-white"
+              className="border-[#8B5CF6]/40 bg-[#1A1F2C]/50 hover:bg-[#8B5CF6]/30 h-auto py-4 flex flex-col gap-2 text-white transition-all duration-300 hover:scale-105"
             >
               <GraduationCap className="h-5 w-5" />
               <span>Academic Support</span>
+              <ArrowRight className="h-4 w-4 mt-1 text-[#8B5CF6]" />
             </Button>
             
             <Button 
               variant="outline" 
-              className="border-[#D946EF]/40 bg-[#1A1F2C]/50 hover:bg-[#D946EF]/20 h-auto py-4 flex flex-col gap-2 text-white"
+              className="border-[#D946EF]/40 bg-[#1A1F2C]/50 hover:bg-[#D946EF]/30 h-auto py-4 flex flex-col gap-2 text-white transition-all duration-300 hover:scale-105"
             >
               <HeartHandshake className="h-5 w-5" />
               <span>Peer Counseling</span>
+              <ArrowRight className="h-4 w-4 mt-1 text-[#D946EF]" />
             </Button>
             
             <Button 
               variant="outline" 
-              className="border-[#8B5CF6]/40 bg-[#1A1F2C]/50 hover:bg-[#8B5CF6]/20 h-auto py-4 flex flex-col gap-2 text-white"
+              className="border-[#8B5CF6]/40 bg-[#1A1F2C]/50 hover:bg-[#8B5CF6]/30 h-auto py-4 flex flex-col gap-2 text-white transition-all duration-300 hover:scale-105"
             >
               <Backpack className="h-5 w-5" />
               <span>Student Resources</span>
+              <ArrowRight className="h-4 w-4 mt-1 text-[#8B5CF6]" />
             </Button>
             
             <Button 
               variant="outline" 
-              className="border-[#D946EF]/40 bg-[#1A1F2C]/50 hover:bg-[#D946EF]/20 h-auto py-4 flex flex-col gap-2 text-white"
+              className="border-[#D946EF]/40 bg-[#1A1F2C]/50 hover:bg-[#D946EF]/30 h-auto py-4 flex flex-col gap-2 text-white transition-all duration-300 hover:scale-105"
             >
               <Sparkles className="h-5 w-5" />
               <span>Self-Care Ideas</span>
+              <ArrowRight className="h-4 w-4 mt-1 text-[#D946EF]" />
             </Button>
           </div>
         </div>
@@ -468,6 +535,13 @@ const CollegeExperience: React.FC = () => {
             constant panic to being able to focus and perform much better on exams."
             <div className="mt-2 text-sm text-[#D6BCFA]">— Junior, Psychology</div>
           </div>
+          
+          <Button 
+            className="mt-6 bg-[#8B5CF6]/30 hover:bg-[#8B5CF6]/50 text-white font-medium border border-[#8B5CF6]/50 transition-all duration-300 group"
+          >
+            <span>Share Your Story</span>
+            <Plus className="ml-1 h-4 w-4 group-hover:rotate-90 transition-transform" />
+          </Button>
         </div>
       </div>
     </Page>
