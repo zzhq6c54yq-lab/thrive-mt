@@ -26,35 +26,35 @@ const CoPayCredits = () => {
   return (
     <Page title="Co-Pay Credits Program" fullWidth={true}>
       <div className="space-y-8 w-full">
-        {/* Hero Section */}
-        <div className="bg-gradient-to-r from-amber-500/20 to-amber-600/20 p-6 sm:p-8 rounded-xl w-full">
-          <div className="flex flex-col md:flex-row gap-6 items-center">
+        {/* Hero Section - Redesigned for better visual appeal */}
+        <div className="bg-gradient-to-r from-amber-100 to-amber-200 p-8 rounded-xl w-full shadow-md">
+          <div className="flex flex-col md:flex-row gap-8 items-center">
             <div className="md:w-2/3">
-              <h2 className="text-2xl md:text-3xl font-light mb-4 text-white">Welcome to our Co-Pay Credits Program</h2>
-              <p className="text-white/90 mb-6">
+              <h2 className="text-3xl md:text-4xl font-bold mb-4 text-amber-800">Welcome to our Co-Pay Credits Program</h2>
+              <p className="text-gray-700 mb-6 text-lg">
                 Designed to reward our community for prioritizing their mental health and well-being. 
                 This innovative rewards system enables you to earn credits every time you invest in your 
-                health through therapy sessions, subscriptions, and purchases made at thrive-apparel.com.
+                health through therapy sessions, subscriptions, and purchases.
               </p>
               <div className="flex flex-wrap gap-4">
                 <Button 
-                  className="bg-amber-500 hover:bg-amber-600 text-white"
+                  className="bg-amber-500 hover:bg-amber-600 text-white font-medium px-6 py-6 h-auto text-lg shadow-md transition-transform hover:scale-105"
                   onClick={() => setActiveTab("earn")}
                 >
                   Start Earning Credits
                 </Button>
                 <Button 
                   variant="outline" 
-                  className="border-white/20 text-white hover:bg-white/10"
+                  className="border-amber-800 text-amber-800 hover:bg-amber-100 font-medium px-6 py-6 h-auto text-lg shadow-sm"
                   onClick={() => setActiveTab("how-it-works")}
                 >
-                  Learn More
+                  How It Works
                 </Button>
               </div>
             </div>
             <div className="md:w-1/3 flex justify-center">
               <div className="relative w-64 h-64">
-                <div className="absolute inset-0 rounded-full bg-amber-500/30 animate-pulse blur-xl"></div>
+                <div className="absolute inset-0 rounded-full bg-amber-300/30 animate-pulse blur-xl"></div>
                 <div className="absolute inset-4 rounded-full bg-gradient-to-br from-amber-400 to-amber-600 flex items-center justify-center shadow-lg">
                   <div className="text-center text-white">
                     <Wallet className="w-16 h-16 mx-auto mb-4 drop-shadow-lg" />
@@ -67,66 +67,72 @@ const CoPayCredits = () => {
           </div>
         </div>
 
-        {/* Credit Overview */}
+        {/* Credit Overview - Redesigned with more attractive cards */}
         <div className="grid grid-cols-1 md:grid-cols-12 gap-6">
-          <Card className="md:col-span-8 bg-white/5 backdrop-blur-sm border border-white/10">
-            <CardHeader>
-              <CardTitle className="text-xl flex items-center gap-2">
-                <BadgePercent className="h-5 w-5 text-amber-500" />
+          <Card className="md:col-span-8 bg-white shadow-md border border-amber-200">
+            <CardHeader className="bg-gradient-to-r from-amber-50 to-amber-100 border-b border-amber-200">
+              <CardTitle className="text-2xl flex items-center gap-2 text-amber-800">
+                <BadgePercent className="h-6 w-6 text-amber-600" />
                 Your Co-Pay Credits
               </CardTitle>
-              <CardDescription>Use these credits to reduce your therapy session costs</CardDescription>
+              <CardDescription className="text-gray-600">Use these credits to reduce your therapy session costs</CardDescription>
             </CardHeader>
-            <CardContent>
-              <div className="flex items-center justify-between mb-4">
+            <CardContent className="pt-6">
+              <div className="flex items-center justify-between mb-6">
                 <div>
-                  <span className="text-4xl font-bold text-amber-500">{credits}</span>
-                  <span className="text-gray-400 ml-2">credits available</span>
+                  <span className="text-4xl font-bold text-amber-600">{credits}</span>
+                  <span className="text-gray-500 ml-2">credits available</span>
                 </div>
-                <Button className="bg-amber-500 hover:bg-amber-600">Use Credits</Button>
+                <Button className="bg-amber-500 hover:bg-amber-600 text-white font-medium shadow-md">Use Credits</Button>
               </div>
               <div className="mb-3">
-                <Progress value={credits} max={100} className="h-3 bg-white/10">
-                  <div className="h-full bg-gradient-to-r from-amber-500 to-amber-600 rounded-full"></div>
+                <Progress value={credits} max={100} className="h-3 bg-gray-100">
+                  <div className="h-full bg-gradient-to-r from-amber-400 to-amber-600 rounded-full"></div>
                 </Progress>
               </div>
-              <p className="text-sm text-gray-400 mb-6">
+              <p className="text-sm text-gray-500 mb-8">
                 {credits >= 100 ? "You have enough credits for a free session!" : `${100 - credits} more credits needed for a free session`}
               </p>
               
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-6">
-                <div className="bg-white/5 p-4 rounded-lg border border-white/10">
-                  <div className="flex items-center gap-3 mb-2">
-                    <div className="p-2 rounded-full bg-amber-500/20">
-                      <PercentIcon className="h-5 w-5 text-amber-500" />
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 mt-8">
+                <div className="bg-white p-6 rounded-lg border border-gray-200 shadow-sm hover:shadow-md transition-shadow">
+                  <div className="flex items-center gap-3 mb-4">
+                    <div className="p-3 rounded-full bg-amber-100">
+                      <PercentIcon className="h-6 w-6 text-amber-600" />
                     </div>
-                    <h4 className="font-medium">Basic Membership</h4>
+                    <h4 className="font-semibold text-gray-800 text-lg">Gold Membership</h4>
                   </div>
-                  <p className="text-sm text-gray-400 pl-10">Earn 5% back on every dollar spent on therapy costs and monthly subscriptions.</p>
+                  <p className="text-gray-600 pl-12">Earn 5% back on every dollar spent on therapy costs and monthly subscriptions.</p>
+                  <Button className="mt-4 w-full bg-amber-500 hover:bg-amber-600 text-black font-semibold shadow-sm">
+                    Get Started
+                  </Button>
                 </div>
                 
-                <div className="bg-gradient-to-br from-amber-500/20 to-amber-600/10 p-4 rounded-lg border border-amber-500/30">
-                  <div className="flex items-center gap-3 mb-2">
-                    <div className="p-2 rounded-full bg-amber-500/30">
-                      <Shield className="h-5 w-5 text-amber-400" />
+                <div className="bg-gradient-to-br from-amber-50 to-amber-100 p-6 rounded-lg border border-amber-300 shadow-md hover:shadow-lg transition-shadow">
+                  <div className="flex items-center gap-3 mb-4">
+                    <div className="p-3 rounded-full bg-amber-200">
+                      <Shield className="h-6 w-6 text-amber-700" />
                     </div>
-                    <h4 className="font-medium">Platinum Membership</h4>
+                    <h4 className="font-semibold text-gray-800 text-lg">Platinum Membership</h4>
                   </div>
-                  <p className="text-sm text-gray-400 pl-10">Enjoy greater rewards with 10% back on every dollar spent, designed for those who want to maximize benefits.</p>
+                  <p className="text-gray-600 pl-12">Enjoy greater rewards with 10% back on every dollar spent, designed for those who want to maximize benefits.</p>
+                  <Button className="mt-4 w-full bg-amber-600 hover:bg-amber-700 text-black font-semibold shadow-sm">
+                    Upgrade Now
+                  </Button>
                 </div>
               </div>
             </CardContent>
           </Card>
           
-          <Card className="md:col-span-4 bg-white/5 backdrop-blur-sm border border-white/10">
-            <CardHeader>
-              <CardTitle className="text-xl flex items-center gap-2">
-                <CreditCardIcon className="h-5 w-5 text-amber-500" />
+          <Card className="md:col-span-4 bg-white shadow-md border border-amber-200">
+            <CardHeader className="bg-gradient-to-r from-amber-50 to-amber-100 border-b border-amber-200">
+              <CardTitle className="text-xl flex items-center gap-2 text-amber-800">
+                <CreditCardIcon className="h-5 w-5 text-amber-600" />
                 Recent Activity
               </CardTitle>
             </CardHeader>
-            <CardContent className="max-h-[300px] overflow-y-auto">
-              <div className="space-y-3">
+            <CardContent className="max-h-[360px] overflow-y-auto pt-6">
+              <div className="space-y-4">
                 {[
                   { date: "Apr 15, 2024", action: "Used for session", amount: -25 },
                   { date: "Apr 10, 2024", action: "Wellness challenge", amount: 15 },
@@ -134,20 +140,20 @@ const CoPayCredits = () => {
                   { date: "Mar 28, 2024", action: "Used for session", amount: -25 },
                   { date: "Mar 20, 2024", action: "Monthly subscription", amount: 10 }
                 ].map((item, i) => (
-                  <div key={i} className="flex justify-between py-3 border-b border-white/10 last:border-0">
+                  <div key={i} className="flex justify-between py-3 border-b border-gray-100 last:border-0">
                     <div>
-                      <div className="text-sm font-medium text-white/80">{item.action}</div>
+                      <div className="text-sm font-medium text-gray-800">{item.action}</div>
                       <div className="text-xs text-gray-500">{item.date}</div>
                     </div>
-                    <div className={`font-medium ${item.amount > 0 ? 'text-green-400' : 'text-amber-400'}`}>
+                    <div className={`font-medium ${item.amount > 0 ? 'text-green-600' : 'text-amber-600'}`}>
                       {item.amount > 0 ? `+${item.amount}` : item.amount}
                     </div>
                   </div>
                 ))}
               </div>
             </CardContent>
-            <CardFooter className="pt-2">
-              <Button variant="outline" className="w-full text-amber-400 border-white/10 hover:bg-white/5">
+            <CardFooter className="pt-2 bg-amber-50">
+              <Button variant="outline" className="w-full text-amber-700 border-amber-300 hover:bg-amber-100">
                 <Download className="h-4 w-4 mr-2" />
                 View All Transactions
               </Button>
@@ -155,12 +161,27 @@ const CoPayCredits = () => {
           </Card>
         </div>
         
-        {/* Main Content Tabs */}
+        {/* Main Content Tabs - Improved styling and clarity */}
         <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-          <TabsList className="w-full grid grid-cols-3 bg-white/5 p-1">
-            <TabsTrigger value="how-it-works">How It Works</TabsTrigger>
-            <TabsTrigger value="earn">Earn Credits</TabsTrigger>
-            <TabsTrigger value="redeem">Redeem Credits</TabsTrigger>
+          <TabsList className="w-full grid grid-cols-3 bg-amber-100 p-1 rounded-lg">
+            <TabsTrigger 
+              value="how-it-works" 
+              className="data-[state=active]:bg-white data-[state=active]:text-amber-800 data-[state=active]:shadow-sm"
+            >
+              How It Works
+            </TabsTrigger>
+            <TabsTrigger 
+              value="earn" 
+              className="data-[state=active]:bg-white data-[state=active]:text-amber-800 data-[state=active]:shadow-sm"
+            >
+              Earn Credits
+            </TabsTrigger>
+            <TabsTrigger 
+              value="redeem" 
+              className="data-[state=active]:bg-white data-[state=active]:text-amber-800 data-[state=active]:shadow-sm"
+            >
+              Redeem Credits
+            </TabsTrigger>
           </TabsList>
           
           <TabsContent value="how-it-works" className="mt-6">
