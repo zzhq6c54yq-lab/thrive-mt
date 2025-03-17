@@ -667,12 +667,12 @@ const MainDashboard: React.FC<MainDashboardProps> = ({
                   <div 
                     key={index + 9}
                     onClick={() => handleFeatureClick(feature.path)}
-                    className="relative group cursor-pointer overflow-hidden"
+                    className="relative group cursor-pointer overflow-hidden rounded-lg min-h-[110px] flex items-center"
                   >
-                    <div className="absolute inset-0 bg-gradient-to-br bg-black/40 backdrop-blur-md opacity-90 rounded-lg"></div>
-                    <div className={`absolute inset-0 bg-gradient-to-br ${gradients[gradientIndex]} opacity-40 rounded-lg group-hover:opacity-60 transition-opacity`}></div>
+                    <div className="absolute inset-0 bg-black/40 backdrop-blur-md opacity-90"></div>
+                    <div className={`absolute inset-0 bg-gradient-to-br ${gradients[gradientIndex]} opacity-40 group-hover:opacity-60 transition-opacity`}></div>
                     
-                    <div className="flex items-center p-4 relative">
+                    <div className="flex items-center p-4 relative w-full">
                       <div 
                         className="mr-4 p-2.5 rounded-md transition-all duration-300 group-hover:scale-125 group-hover:rotate-3"
                         style={{ 
@@ -699,3 +699,4 @@ const MainDashboard: React.FC<MainDashboardProps> = ({
 };
 
 export default MainDashboard;
+
