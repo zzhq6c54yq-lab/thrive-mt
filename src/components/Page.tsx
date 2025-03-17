@@ -39,7 +39,7 @@ const Page: React.FC<PageProps> = ({
     <div className="min-h-screen bg-gradient-to-b from-[#1a1a1f] via-[#242432] to-[#272730] text-white py-4 px-2 relative">
       <div className="absolute inset-0 bg-[url('data:image/svg+xml;utf8,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%2220%22 height=%2220%22 viewBox=%220 0 20 20%22><circle cx=%222%22 cy=%222%22 r=%221%22 fill=%22%23B87333%22 fill-opacity=%220.05%22/></svg>')] opacity-20"></div>
       
-      <div className={`${fullWidth ? 'w-full max-w-none' : 'max-w-5xl mx-auto'} backdrop-blur-md rounded-2xl p-4 shadow-lg relative overflow-hidden border border-white/10`}>
+      <div className={`${fullWidth ? 'w-full max-w-none' : 'max-w-5xl mx-auto'} bg-white/5 backdrop-blur-md rounded-2xl p-4 shadow-lg relative overflow-hidden`}>
         {/* Decorative elements */}
         <div className="absolute top-0 right-0 w-80 h-80 bg-gradient-to-br from-[#B87333]/20 to-transparent rounded-full blur-3xl -z-10"></div>
         <div className="absolute bottom-0 left-0 w-80 h-80 bg-gradient-to-tr from-[#9b87f5]/20 to-transparent rounded-full blur-3xl -z-10"></div>

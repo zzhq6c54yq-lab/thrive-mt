@@ -3,9 +3,20 @@ import React from "react";
 import { Button } from "@/components/ui/button";
 import { Handshake, Award, WalletCards, Sparkles } from "lucide-react";
 import { useNavigate } from "react-router-dom";
+import { useToast } from "@/hooks/use-toast";
 
 const NewFeatures: React.FC = () => {
   const navigate = useNavigate();
+  const { toast } = useToast();
+
+  const handleNavigation = (path: string, title: string) => {
+    toast({
+      title: `Navigating to ${title}`,
+      description: "Loading your requested feature...",
+      duration: 2000
+    });
+    navigate(path);
+  };
 
   return (
     <div className="w-full bg-gradient-to-r from-[#1c2e4a] to-[#2d3748] border-y border-[#B87333]/20 py-6 px-4 shadow-lg relative z-10">
@@ -22,7 +33,7 @@ const NewFeatures: React.FC = () => {
           <Button 
             variant="bronze"
             className="flex items-center gap-2 px-6 py-6 rounded-lg transform transition-all duration-300 hover:scale-105 shadow-[0_4px_12px_rgba(0,0,0,0.25)] group"
-            onClick={() => navigate("/barter-system")}
+            onClick={() => handleNavigation("/barter-system", "Barter System")}
           >
             <div className="p-2 rounded-full bg-[#B87333]/20 group-hover:bg-[#B87333]/30 transition-colors">
               <Handshake className="h-5 w-5 text-[#E5C5A1] group-hover:text-white transition-colors" />
@@ -33,7 +44,7 @@ const NewFeatures: React.FC = () => {
           <Button 
             variant="bronze"
             className="flex items-center gap-2 px-6 py-6 rounded-lg transform transition-all duration-300 hover:scale-105 shadow-[0_4px_12px_rgba(0,0,0,0.25)] group"
-            onClick={() => navigate("/subscription-plans")}
+            onClick={() => handleNavigation("/subscription-plans", "Subscription Plans")}
           >
             <div className="p-2 rounded-full bg-[#B87333]/20 group-hover:bg-[#B87333]/30 transition-colors">
               <Award className="h-5 w-5 text-[#E5C5A1] group-hover:text-white transition-colors" />
@@ -44,7 +55,7 @@ const NewFeatures: React.FC = () => {
           <Button 
             variant="bronze"
             className="flex items-center gap-2 px-6 py-6 rounded-lg transform transition-all duration-300 hover:scale-105 shadow-[0_4px_12px_rgba(0,0,0,0.25)] group"
-            onClick={() => navigate("/copay-credits")}
+            onClick={() => handleNavigation("/copay-credits", "Co-Pay Credits")}
           >
             <div className="p-2 rounded-full bg-[#B87333]/20 group-hover:bg-[#B87333]/30 transition-colors">
               <WalletCards className="h-5 w-5 text-[#E5C5A1] group-hover:text-white transition-colors" />
