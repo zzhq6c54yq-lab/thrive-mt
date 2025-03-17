@@ -3,7 +3,7 @@ import React, { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { workshopData } from "@/data/workshopData";
 import { useNavigate } from "react-router-dom";
-import { Play, Pause, Volume2, Volume, ExternalLink } from "lucide-react";
+import { Play, Pause, Volume2, Volume, ExternalLink, Calendar, Sparkles } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 
 const FeaturedWorkshops: React.FC = () => {
@@ -33,7 +33,16 @@ const FeaturedWorkshops: React.FC = () => {
 
   return (
     <div className="mb-12">
-      <h2 className="text-3xl font-bold mb-6 text-gray-800">Monthly Featured Workshops</h2>
+      <div className="mb-6 relative">
+        <h2 className="text-3xl font-bold inline-flex items-center gap-3 relative">
+          <Calendar className="h-6 w-6 text-[#B87333]" />
+          <span className="gradient-heading text-transparent bg-clip-text bg-gradient-to-r from-[#B87333] via-[#E5C5A1] to-[#B87333] tracking-tight">
+            Monthly Featured Workshops
+          </span>
+        </h2>
+        <div className="absolute -bottom-2 left-0 w-72 h-[2px] bg-gradient-to-r from-[#B87333] via-[#E5C5A1] to-transparent"></div>
+      </div>
+      
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
         {featuredWorkshops.map((workshop, index) => {
           const colorClass = workshop.color.split(' ')[0];

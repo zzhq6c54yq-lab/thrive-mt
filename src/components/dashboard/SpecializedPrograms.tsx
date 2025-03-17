@@ -1,7 +1,7 @@
 
 import React from "react";
 import { Button } from "@/components/ui/button";
-import { Shield, GraduationCap, Briefcase, Star } from "lucide-react";
+import { Shield, GraduationCap, Briefcase, Sparkles } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { useToast } from "@/hooks/use-toast";
 
@@ -48,10 +48,16 @@ const SpecializedPrograms: React.FC = () => {
 
   return (
     <div className="mb-10">
-      <h3 className="text-xl font-semibold text-gray-800 mb-4 flex items-center">
-        <Star className="h-5 w-5 text-[#D946EF] mr-2" />
-        <span>Specialized Programs</span>
-      </h3>
+      <div className="mb-6 relative">
+        <h2 className="text-3xl font-bold text-gray-800 inline-flex items-center gap-3 relative">
+          <Sparkles className="h-6 w-6 text-[#B87333]" />
+          <span className="gradient-heading text-transparent bg-clip-text bg-gradient-to-r from-[#B87333] via-[#E5C5A1] to-[#B87333] tracking-tight">
+            Specialized Programs
+          </span>
+        </h2>
+        <div className="absolute -bottom-2 left-0 w-64 h-[2px] bg-gradient-to-r from-[#B87333] via-[#E5C5A1] to-transparent"></div>
+      </div>
+      
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
         {specializedPrograms.map((program, index) => (
           <div 
