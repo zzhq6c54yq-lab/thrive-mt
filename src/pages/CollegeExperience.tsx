@@ -195,10 +195,10 @@ const CollegeExperience: React.FC = () => {
 
   return (
     <Page title="College Mental Health Resources" fullWidth={true}>
-      <div className="space-y-10 w-full">
+      <div className="space-y-8 w-full">
         {/* Hero Section */}
-        <div className="bg-gradient-to-r from-[#6E59A5]/30 to-[#D946EF]/30 p-6 rounded-xl w-full">
-          <div className="flex flex-col md:flex-row gap-6 items-center">
+        <div className="bg-gradient-to-r from-[#6E59A5]/30 to-[#D946EF]/30 p-5 rounded-xl w-full">
+          <div className="flex flex-col md:flex-row gap-5 items-center">
             <div className="md:w-2/3">
               <h2 className="text-2xl font-semibold mb-2 text-white">
                 Your Campus Wellness Journey Starts Here
@@ -235,12 +235,12 @@ const CollegeExperience: React.FC = () => {
         </div>
 
         {/* Navigation Tabs Section */}
-        <div className="w-full mb-8">
-          <div className="bg-[#1A1F2C]/80 p-6 rounded-xl border border-[#8B5CF6]/30">
-            <h3 className="text-white font-medium mb-6 text-center text-xl">Navigate College Wellness Resources</h3>
+        <div className="w-full mb-6">
+          <div className="bg-[#1A1F2C]/80 p-5 rounded-xl border border-[#8B5CF6]/30">
+            <h3 className="text-white font-medium mb-5 text-center text-xl">Navigate College Wellness Resources</h3>
             
             <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-              <TabsList className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 w-full bg-transparent p-0">
+              <TabsList className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 w-full bg-transparent p-0">
                 <TabsTrigger 
                   value="resources" 
                   className="bg-[#1A1F2C] text-white border border-[#8B5CF6]/30 py-5 px-4 flex flex-col items-center gap-3 data-[state=active]:bg-[#8B5CF6] data-[state=active]:border-[#8B5CF6] hover:bg-[#8B5CF6]/20 transition-all duration-200"
@@ -271,7 +271,7 @@ const CollegeExperience: React.FC = () => {
                 </TabsTrigger>
               </TabsList>
               
-              <div className="mt-8">
+              <div className="mt-6">
                 {activeTab === "resources" && (
                   <TabsContent value="resources" className="mt-0 pt-0">
                     <div className="mb-8 w-full">
@@ -515,13 +515,13 @@ const CollegeExperience: React.FC = () => {
         </div>
 
         {/* Quick Access Section */}
-        <div className="mt-10 w-full">
+        <div className="mt-8 w-full">
           <h3 className="text-lg font-medium mb-4 flex items-center gap-2 text-white">
             <Compass className="h-5 w-5 text-[#D946EF]" />
             <span>Quick Access</span>
           </h3>
           
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 w-full">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-3 w-full">
             <Button 
               variant="outline" 
               className="border-[#8B5CF6]/40 bg-[#1A1F2C]/50 hover:bg-[#8B5CF6]/30 h-auto py-4 flex flex-col gap-2 text-white transition-all duration-300 hover:scale-105"
@@ -561,7 +561,7 @@ const CollegeExperience: React.FC = () => {
         </div>
         
         {/* Student Stories Section */}
-        <div className="mt-10 bg-gradient-to-r from-[#6E59A5]/20 to-[#D946EF]/20 p-6 rounded-xl w-full">
+        <div className="mt-8 bg-gradient-to-r from-[#6E59A5]/20 to-[#D946EF]/20 p-5 rounded-xl w-full">
           <h3 className="text-lg font-medium mb-4 flex items-center gap-2 text-white">
             <Users className="h-5 w-5 text-[#8B5CF6]" />
             <span>Student Stories</span>
@@ -574,7 +574,7 @@ const CollegeExperience: React.FC = () => {
           </div>
           
           <Button 
-            className="mt-6 bg-[#8B5CF6]/30 hover:bg-[#8B5CF6]/50 text-white font-medium border border-[#8B5CF6]/50 transition-all duration-300 group"
+            className="mt-5 bg-[#8B5CF6]/30 hover:bg-[#8B5CF6]/50 text-white font-medium border border-[#8B5CF6]/50 transition-all duration-300 group"
           >
             <span>Share Your Story</span>
             <Plus className="ml-1 h-4 w-4 group-hover:rotate-90 transition-transform" />
