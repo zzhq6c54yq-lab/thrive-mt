@@ -3,7 +3,7 @@ import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/hooks/use-toast";
-import { Backpack, BookOpen, Brain, Calendar, CopyCheck, GraduationCap, HeartHandshake, MapPin, PartyPopper, Users } from "lucide-react";
+import { BookOpen, Brain, Calendar, CopyCheck, GraduationCap, HeartHandshake, MapPin, PartyPopper, Users } from "lucide-react";
 
 // Welcome screens before the main portal
 const WelcomeScreen: React.FC = () => {
@@ -79,46 +79,6 @@ const CollegePortal: React.FC = () => {
     // Navigate to the college support page
     navigate("/college-experience");
   };
-
-  // College-focused resources
-  const collegeResources = [
-    {
-      title: "Academic Stress Management",
-      description: "Techniques for balancing coursework, exams, and deadlines",
-      icon: BookOpen,
-      path: "/college-stress-management"
-    },
-    {
-      title: "Campus Mental Health Services",
-      description: "Directory of counseling and psychological services available on campus",
-      icon: MapPin,
-      path: "/campus-services"
-    },
-    {
-      title: "Student Support Groups",
-      description: "Peer-led groups for various mental health topics",
-      icon: Users,
-      path: "/student-groups"
-    },
-    {
-      title: "Time Management Tools",
-      description: "Apps and techniques to balance academics, social life, and self-care",
-      icon: Calendar,
-      path: "/time-management"
-    },
-    {
-      title: "Exam Anxiety Workshop",
-      description: "Strategies to manage test anxiety and perform your best",
-      icon: CopyCheck,
-      path: "/exam-anxiety"
-    },
-    {
-      title: "Mindfulness for Students",
-      description: "Practices adapted for busy student schedules",
-      icon: Brain,
-      path: "/student-mindfulness"
-    }
-  ];
 
   const renderCurrentScreen = () => {
     switch (screenState) {

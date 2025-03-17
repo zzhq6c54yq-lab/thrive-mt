@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
@@ -11,15 +12,15 @@ const WelcomeScreen: React.FC = () => {
         Small Business Mental Health Portal
       </h1>
       <div className="max-w-2xl">
-        <p className="text-xl mb-6 text-white/90">
+        <p className="text-xl mb-6 text-white/90 font-medium">
           Welcome to your dedicated mental health space. Running or working at a small business 
           brings unique challenges – we're here to support your entrepreneurial journey.
         </p>
-        <p className="text-lg mb-6 text-white/80">
+        <p className="text-lg mb-6 text-white/90 font-medium">
           Here, you'll find resources tailored specifically for business owners and employees
           balancing work demands, financial pressures, and personal wellbeing.
         </p>
-        <p className="text-lg text-white/80">
+        <p className="text-lg text-white/90 font-medium">
           Your mental wellbeing matters as much as your business success. Let's prioritize both together.
         </p>
       </div>
@@ -34,11 +35,11 @@ const PortalIntroScreen: React.FC<{ onEnterPortal: () => void }> = ({ onEnterPor
         Welcome to Your Business Wellness Hub
       </h1>
       <div className="max-w-2xl mb-8">
-        <p className="text-xl mb-6 text-white/90">
+        <p className="text-xl mb-6 text-white/90 font-medium">
           This space is designed specifically for entrepreneurs and small business employees,
           balancing work responsibilities, team management, and personal wellbeing.
         </p>
-        <p className="text-lg mb-8 text-white/80">
+        <p className="text-lg mb-8 text-white/90 font-medium">
           Click below to access specialized resources, peer support networks, 
           and tools designed with the small business environment in mind.
         </p>
@@ -62,7 +63,7 @@ const SmallBusinessPortal: React.FC = () => {
     if (screenState === 'welcome') {
       const timer = setTimeout(() => {
         setScreenState('intro');
-      }, 8000);
+      }, 4000); // Changed from 8000 to 4000 to match DoD and College portals
       return () => clearTimeout(timer);
     }
   }, [screenState]);

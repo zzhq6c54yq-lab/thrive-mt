@@ -1,4 +1,3 @@
-
 import React, { useState } from "react";
 import Page from "@/components/Page";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
@@ -10,7 +9,7 @@ import { useToast } from "@/hooks/use-toast";
 import { 
   Briefcase, Building, BarChart, Calendar, ChartLine, Clipboard, Compass, Clock,
   CopyCheck, DollarSign, HandHeart, Handshake, Heart, Lightbulb, MapPin,
-  LifeBuoy, MessageSquare, Shield, UserCircle, Users 
+  LifeBuoy, MessageSquare, Shield, UserCircle, Users, Lock
 } from "lucide-react";
 
 const SmallBusinessExperience: React.FC = () => {
