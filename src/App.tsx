@@ -19,7 +19,7 @@ import CommunitySupport from "@/pages/CommunitySupport";
 import ResourceLibrary from "@/pages/ResourceLibrary";
 import ProgressReports from "@/pages/ProgressReports";
 import HolisticWellness from "@/pages/HolisticWellness";
-import HelpNavButton from "@/components/help/HelpNavButton";
+import HenryButton from "@/components/henry/HenryButton";
 import BarterSystem from "@/pages/BarterSystem";
 import LifestyleIntegration from "@/pages/LifestyleIntegration";
 import GamesAndQuizzes from "@/pages/GamesAndQuizzes";
@@ -112,7 +112,7 @@ function App() {
         
         <Route path="*" element={<NotFound />} />
       </Routes>
-      <HelpNavButton />
+      <HenryButton />
       <Toaster />
     </Router>
   );

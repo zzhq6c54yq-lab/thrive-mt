@@ -1,4 +1,3 @@
-
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { useToast } from "@/hooks/use-toast";
@@ -13,7 +12,7 @@ import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover
 import { format } from "date-fns";
 import { cn } from "@/lib/utils";
 import HomeButton from "@/components/HomeButton";
-import HelpNavButton from "@/components/help/HelpNavButton";
+import HenryButton from "@/components/henry/HenryButton";
 import { Checkbox } from "@/components/ui/checkbox";
 
 // Sample affirmations data
@@ -523,7 +522,7 @@ const LifestyleIntegration = () => {
           </CardFooter>
         </Card>
       </div>
-      <HelpNavButton />
+      <HenryButton />
     </div>
   );
 };
