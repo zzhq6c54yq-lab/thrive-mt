@@ -39,8 +39,8 @@ const HenryButton: React.FC<HenryButtonProps> = ({
     else timeOfDay = "evening";
     
     const greeting = userName 
-      ? `Good ${timeOfDay}, ${userName}! I'm Henry (Helpful Electronic Navigator Responding Yes), your Thrive navigator. How can I help you on your journey today?`
-      : `Good ${timeOfDay}! I'm Henry (Helpful Electronic Navigator Responding Yes), your Thrive navigator. How can I help you on your journey today?`;
+      ? `Good ${timeOfDay}, ${userName}! I'm H.E.N.R.Y., your Thrive navigator. Hope, Empathy, Nurturing, Resilience, and You - that's what I'm here for. How can I help you today?`
+      : `Good ${timeOfDay}! I'm H.E.N.R.Y., your Thrive navigator. Hope, Empathy, Nurturing, Resilience, and You - that's what I'm here for. How can I help you today?`;
       
     return greeting;
   };
@@ -97,10 +97,13 @@ const HenryButton: React.FC<HenryButtonProps> = ({
               <span className="text-2xl font-bold">H</span>
             </div>
           </div>
-          <DialogTitle className="text-xl gradient-heading text-transparent bg-clip-text bg-gradient-to-r from-[#B87333] to-[#e5c5a1]">Chat with Henry</DialogTitle>
+          <DialogTitle className="text-xl gradient-heading text-transparent bg-clip-text bg-gradient-to-r from-[#B87333] to-[#e5c5a1]">Chat with H.E.N.R.Y.</DialogTitle>
           <DialogDescription className="text-white/70 text-sm">
             Your helpful navigator through Thrive MT
           </DialogDescription>
+          <div className="mt-2 text-xs text-white/60 px-4">
+            <p><span className="text-[#B87333] font-bold">H</span>ope • <span className="text-[#B87333] font-bold">E</span>mpathy • <span className="text-[#B87333] font-bold">N</span>urturing • <span className="text-[#B87333] font-bold">R</span>esilience • <span className="text-[#B87333] font-bold">Y</span>ou</p>
+          </div>
         </DialogHeader>
         
         <ScrollArea className="h-[300px] overflow-auto pr-4 mb-3" ref={scrollAreaRef}>
@@ -122,7 +125,7 @@ const HenryButton: React.FC<HenryButtonProps> = ({
                       <div className="h-6 w-6 rounded-full flex items-center justify-center bg-gradient-to-br from-[#B87333] to-[#E5C5A1] text-white mr-2">
                         <span className="text-xs font-bold">H</span>
                       </div>
-                      <span className="text-xs text-white/70">Henry</span>
+                      <span className="text-xs text-white/70">H.E.N.R.Y.</span>
                     </div>
                   )}
                   <p className="text-sm">{message.text}</p>

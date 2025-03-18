@@ -29,7 +29,8 @@ const HelpDialog: React.FC<HelpDialogProps> = ({ isOpen, onOpenChange, userName 
     "progress": "Track your mental wellness journey with Progress Reports that show your mood trends, workshop completion, and goal achievement.",
     "navigate": "Use the Home button to return to the main dashboard. The arrows help you scroll through content on the page.",
     "meetings": "Virtual Meetings connect you with mental health professionals and support groups in real-time video sessions.",
-    "help": "I'm Henry, your guide through Thrive MT. Ask me anything about mental wellness or how to use the platform!"
+    "help": "I'm Henry, your guide through Thrive MT. Ask me anything about mental wellness or how to use the platform!",
+    "henry": "My name is H.E.N.R.Y., which stands for:\n- Hope: Embracing the belief that positive change is possible\n- Empathy: Cultivating understanding for yourself and others\n- Nurturing: Providing support and encouragement\n- Resilience: Building strength to face challenges\n- You: Focusing on your unique mental wellness journey"
   };
 
   const getGreeting = () => {
@@ -41,8 +42,8 @@ const HelpDialog: React.FC<HelpDialogProps> = ({ isOpen, onOpenChange, userName 
     else timeOfDay = "evening";
     
     return userName 
-      ? `Good ${timeOfDay}, ${userName}! I'm Henry (Helpful Electronic Navigator Responding Yes), your Thrive navigator. How can I help you on your journey today?`
-      : `Good ${timeOfDay}! I'm Henry (Helpful Electronic Navigator Responding Yes), your Thrive navigator. How can I help you on your journey today?`;
+      ? `Good ${timeOfDay}, ${userName}! I'm H.E.N.R.Y., your Thrive navigator. Hope, Empathy, Nurturing, Resilience, and You - that's what I'm here for. How can I help you on your journey today?`
+      : `Good ${timeOfDay}! I'm H.E.N.R.Y., your Thrive navigator. Hope, Empathy, Nurturing, Resilience, and You - that's what I'm here for. How can I help you on your journey today?`;
   };
 
   const handleOpenChange = (open: boolean) => {
@@ -54,6 +55,15 @@ const HelpDialog: React.FC<HelpDialogProps> = ({ isOpen, onOpenChange, userName 
 
   const generateResponse = (message: string) => {
     const lowerMessage = message.toLowerCase();
+    
+    // Check for specific questions about Henry's name
+    if (lowerMessage.includes("what does h.e.n.r.y. stand for") || 
+        lowerMessage.includes("what does henry stand for") || 
+        lowerMessage.includes("meaning of henry") || 
+        lowerMessage.includes("henry acronym") || 
+        lowerMessage.includes("what's henry")) {
+      return knowledgeBase["henry"];
+    }
     
     // Check if message contains keywords from our knowledge base
     for (const [keyword, response] of Object.entries(knowledgeBase)) {
@@ -167,10 +177,14 @@ const HelpDialog: React.FC<HelpDialogProps> = ({ isOpen, onOpenChange, userName 
               <span className="text-2xl font-bold">H</span>
             </div>
           </div>
-          <DialogTitle className="text-xl text-transparent bg-clip-text bg-gradient-to-r from-[#B87333] to-[#e5c5a1]">Chat with Henry</DialogTitle>
+          <DialogTitle className="text-xl text-transparent bg-clip-text bg-gradient-to-r from-[#B87333] to-[#e5c5a1]">Chat with H.E.N.R.Y.</DialogTitle>
           <DialogDescription className="text-white/70 text-sm">
             Your helpful navigator through Thrive MT
           </DialogDescription>
+          <div className="mt-2 text-xs text-white/60 px-4">
+            <p>H.E.N.R.Y. stands for:</p>
+            <p><span className="text-[#B87333] font-bold">H</span>ope • <span className="text-[#B87333] font-bold">E</span>mpathy • <span className="text-[#B87333] font-bold">N</span>urturing • <span className="text-[#B87333] font-bold">R</span>esilience • <span className="text-[#B87333] font-bold">Y</span>ou</p>
+          </div>
         </DialogHeader>
         
         <MessageList messages={messages} />

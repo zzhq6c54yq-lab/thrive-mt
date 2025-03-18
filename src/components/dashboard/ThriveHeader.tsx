@@ -83,7 +83,7 @@ const ThriveHeader: React.FC<ThriveHeaderProps> = ({
                 <div className="flex items-center gap-2">
                   <Footprints className="h-5 w-5 text-[#B87333] group-hover:scale-110 transition-transform" />
                   <span className="relative z-10 text-white">
-                    {showHenry ? "Hide Henry" : "Meet Henry"}
+                    {showHenry ? "Hide Henry" : "Meet H.E.N.R.Y."}
                   </span>
                 </div>
                 <div className="absolute inset-0 bg-gradient-to-r from-[#B87333]/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>

@@ -41,10 +41,10 @@ const Header = () => {
           <Button 
             variant="outline" 
             size="icon" 
-            className="h-10 w-10 rounded-full border-2 border-[#B87333] bg-white shadow-md hover:bg-[#B87333]/10"
+            className="h-20 w-20 rounded-full border-4 border-[#B87333] bg-white shadow-xl hover:bg-[#B87333]/10 transition-all duration-300 hover:shadow-[0_0_15px_#B87333]"
             aria-label="User menu"
           >
-            <User className="h-5 w-5 text-[#B87333]" />
+            <User className="h-10 w-10 text-[#B87333]" />
           </Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent className="w-56 mt-2 mr-2 bg-white/95 backdrop-blur-sm border border-[#B87333]/20">

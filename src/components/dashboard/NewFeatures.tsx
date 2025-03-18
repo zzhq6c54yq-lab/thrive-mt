@@ -1,3 +1,4 @@
+
 import React from "react";
 import { Button } from "@/components/ui/button";
 import { Handshake, Award, WalletCards, Sparkles, Crown, Zap } from "lucide-react";
@@ -51,7 +52,7 @@ const NewFeatures: React.FC = () => {
           
           <Button 
             variant="gold"
-            className="flex items-center gap-2 px-6 py-6 rounded-lg transform transition-all duration-300 hover:scale-105 shadow-[0_4px_12px_rgba(0,0,0,0.25)] group relative overflow-hidden"
+            className="flex items-center gap-2 px-5 py-5 rounded-lg transform transition-all duration-300 hover:scale-105 shadow-[0_4px_12px_rgba(0,0,0,0.25)] group relative overflow-hidden"
             onClick={() => handleNavigation("/subscription-plans", "Subscription Plans")}
           >
             <div className="absolute inset-0 bg-gradient-to-r from-[#B87333] via-[#E5C5A1] to-[#B87333] opacity-100 background-animate" style={{backgroundSize: '200% auto'}}></div>
@@ -63,14 +64,14 @@ const NewFeatures: React.FC = () => {
             </div>
             
             <div className="p-2 rounded-full bg-black/30 backdrop-blur-sm z-10 group-hover:bg-black/40 transition-colors">
-              <Crown className="h-6 w-6 text-white group-hover:text-white transition-colors" />
+              <Crown className="h-5 w-5 text-white group-hover:text-white transition-colors" />
             </div>
             <div className="z-10 flex flex-col items-start">
-              <span className="font-bold text-black">Upgrade Plan</span>
-              <span className="text-xs text-black/80">Unlock premium mental health tools</span>
+              <span className="font-bold text-black text-sm">Upgrade Plan</span>
+              <span className="text-xs text-black/80">Premium tools</span>
             </div>
             
-            <Zap className="h-5 w-5 ml-2 text-black group-hover:translate-x-1 transition-transform z-10" />
+            <Zap className="h-5 w-5 ml-1 text-black group-hover:translate-x-1 transition-transform z-10" />
           </Button>
           
           <Button 
