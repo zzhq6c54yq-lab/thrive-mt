@@ -1,6 +1,5 @@
 
 import React from "react";
-import { Button } from "@/components/ui/button";
 import {
   Brain, Library, Users, Heart, GraduationCap, CalendarRange, LeafyGreen,
   Moon, HandHeart, ListChecks, FlameKindling, Footprints, ArrowRight,
@@ -205,6 +204,7 @@ const KeyFeatures: React.FC = () => {
             const CornerIcons = [Sparkles, Star, Lightbulb, Target, Zap, Bird, Leaf, Smile, Coffee];
             const CornerIcon = CornerIcons[index % CornerIcons.length];
             
+            // Main feature boxes are larger
             return (
               <div 
                 key={index}
@@ -223,7 +223,7 @@ const KeyFeatures: React.FC = () => {
                   <CornerIcon className="h-5 w-5" style={{ color: iconColor }} />
                 </div>
                 
-                <div className="relative p-7 flex flex-col h-full min-h-[220px]">
+                <div className="relative p-7 flex flex-col h-full min-h-[240px]">
                   <div className="flex items-start gap-4 mb-4">
                     <div 
                       className="p-3 rounded-lg transform transition-transform group-hover:scale-110 group-hover:rotate-3"
@@ -244,20 +244,9 @@ const KeyFeatures: React.FC = () => {
                     {feature.description}
                   </p>
                   
-                  <div className="mt-auto flex justify-between items-center">
-                    <Button 
-                      className="group/btn flex items-center gap-2 bg-white/10 hover:bg-white/20 backdrop-blur-sm border-none"
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        handleFeatureClick(feature.path);
-                      }}
-                    >
-                      <span className="text-white">Explore</span>
-                      <ArrowRight className="h-4 w-4 text-white transition-transform group-hover/btn:translate-x-1" />
-                    </Button>
-                    
+                  <div className="mt-auto">
                     <div 
-                      className="h-8 w-8 rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity"
+                      className="h-8 w-8 rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity ml-auto"
                       style={{ background: `${iconColor}30` }}
                     >
                       <ArrowRight className="h-4 w-4 text-white" />
@@ -302,27 +291,28 @@ const KeyFeatures: React.FC = () => {
             const gradientIndex = index % gradients.length;
             const color = iconColors[gradientIndex];
             
+            // Secondary smaller boxes
             return (
               <div 
                 key={index + 9}
                 onClick={() => handleFeatureClick(feature.path)}
-                className="relative group cursor-pointer overflow-hidden rounded-lg min-h-[110px] flex items-center"
+                className="relative group cursor-pointer overflow-hidden rounded-lg min-h-[90px] flex items-center"
               >
                 <div className="absolute inset-0 bg-black/40 backdrop-blur-md opacity-90"></div>
                 <div className={`absolute inset-0 bg-gradient-to-br ${gradients[gradientIndex]} opacity-40 group-hover:opacity-60 transition-opacity`}></div>
                 
-                <div className="flex items-center p-4 relative w-full">
+                <div className="flex items-center p-3 relative w-full">
                   <div 
-                    className="mr-4 p-2.5 rounded-md transition-all duration-300 group-hover:scale-125 group-hover:rotate-3"
+                    className="mr-3 p-2 rounded-md transition-all duration-300 group-hover:scale-125 group-hover:rotate-3"
                     style={{ 
                       background: `${color}20`,
                       border: `1px solid ${color}40` 
                     }}
                   >
-                    <feature.icon className="h-5 w-5" style={{ color }} />
+                    <feature.icon className="h-4 w-4" style={{ color }} />
                   </div>
                   <div>
-                    <h3 className="font-medium text-white group-hover:text-white/90">{feature.title}</h3>
+                    <h3 className="font-medium text-white group-hover:text-white/90 text-sm">{feature.title}</h3>
                     <p className="text-xs text-white/70">{feature.description}</p>
                   </div>
                 </div>
