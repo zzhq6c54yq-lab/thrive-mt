@@ -18,12 +18,12 @@ export const useButtonVisibility = () => {
       const excludedScreenStates = ['intro', 'mood', 'moodResponse', 'register', 'subscription', 'visionBoard'];
       
       // Special case: For main welcome page, we want to show the button
-      if (screenState === 'main') {
-        console.log("Showing button: On main dashboard");
+      if (!screenState || screenState === 'main') {
+        console.log("Showing button: On main dashboard or welcome page");
         return true;
       }
       
-      if (screenState === undefined || excludedScreenStates.includes(screenState || '')) {
+      if (excludedScreenStates.includes(screenState || '')) {
         console.log("Hiding button: Home path with excluded screenState:", screenState);
         return false;
       }
