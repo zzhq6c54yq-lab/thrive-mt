@@ -151,6 +151,18 @@
   }
 }
 
+@keyframes background-animate {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
 .intro-logo-icon {
   animation: fadeInLogo 2s ease-out forwards, copperShimmer 3s ease-in-out 2s infinite, floatAnimation 6s ease-in-out infinite;
   filter: drop-shadow(0 0 8px rgba(184, 115, 51, 0.6));

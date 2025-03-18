@@ -30,13 +30,13 @@ const ThriveHeader: React.FC<ThriveHeaderProps> = ({
           <div className="flex flex-col md:flex-row items-center justify-between w-full">
             <div className="flex items-center gap-8 mb-6 md:mb-0">
               <div className="relative group">
-                <div className="absolute inset-0 rounded-full bg-gradient-to-r from-[#B87333]/40 to-[#E5C5A1]/40 blur-xl animate-pulse"></div>
-                <div className="absolute inset-[-8px] rounded-full border-2 border-[#B87333]/30 animate-spin" style={{animationDuration: '20s'}}></div>
-                <div className="absolute inset-[-4px] rounded-full bg-gradient-to-br from-[#B87333]/50 to-[#E5C5A1]/30 blur-sm"></div>
+                <div className="absolute inset-0 rounded-full bg-gradient-to-r from-[#B87333]/60 to-[#E5C5A1]/60 blur-xl animate-pulse"></div>
+                <div className="absolute inset-[-12px] rounded-full border-3 border-[#B87333]/50 animate-spin" style={{animationDuration: '20s'}}></div>
+                <div className="absolute inset-[-6px] rounded-full bg-gradient-to-br from-[#B87333]/70 to-[#E5C5A1]/50 blur-sm"></div>
                 <img 
                   src="/lovable-uploads/f2c6ac08-6331-4884-950d-7f94d68ff15f.png" 
                   alt="Thrive MT Logo" 
-                  className="relative h-28 w-28 object-contain filter drop-shadow-[0_0_8px_rgba(184,115,51,0.7)] transition-transform duration-500 group-hover:scale-110"
+                  className="relative h-36 w-36 object-contain filter drop-shadow-[0_0_12px_rgba(184,115,51,0.9)] transition-transform duration-500 group-hover:scale-110"
                 />
               </div>
               <div className="text-center md:text-left">

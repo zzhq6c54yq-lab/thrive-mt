@@ -1,6 +1,5 @@
 
 import React from "react";
-import { ArrowLeft } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useNavigate } from "react-router-dom";
 import HomeButton from "./HomeButton";
@@ -16,21 +15,12 @@ interface PageProps {
 const Page: React.FC<PageProps> = ({ 
   title, 
   children, 
-  showBackButton = true, 
+  showBackButton = false, // Changed default to false
   onBackClick,
   fullWidth = false
 }) => {
   const navigate = useNavigate();
   
-  const handleBack = () => {
-    if (onBackClick) {
-      onBackClick();
-    } else {
-      // Always navigate to main screen with the 'main' screenState to avoid intro screens
-      navigate("/", { state: { screenState: 'main' } });
-    }
-  };
-
   const handleMainMenu = () => {
     navigate("/", { state: { screenState: 'main' } });
   };
@@ -47,17 +37,6 @@ const Page: React.FC<PageProps> = ({
         {/* Title in Header */}
         <div className="flex flex-col md:flex-row items-center justify-between mb-4 gap-3">
           <div className="flex items-center gap-3">
-            {showBackButton && (
-              <Button 
-                variant="ghost" 
-                className="flex items-center gap-2 text-white hover:bg-white/15 transition-all duration-300"
-                onClick={handleBack}
-              >
-                <ArrowLeft className="h-4 w-4" />
-                Back
-              </Button>
-            )}
-            
             <h1 className="text-2xl md:text-3xl font-light tracking-tight">
               <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#B87333] to-[#e5c5a1] drop-shadow-sm">{title}</span>
             </h1>
