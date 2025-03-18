@@ -11,6 +11,7 @@ import NewFeatures from "@/components/dashboard/NewFeatures";
 import SpecializedPrograms from "@/components/dashboard/SpecializedPrograms";
 import FeaturedWorkshops from "@/components/dashboard/FeaturedWorkshops";
 import KeyFeatures from "@/components/dashboard/KeyFeatures";
+import HenryButton from "@/components/henry/HenryButton";
 
 interface MainDashboardProps {
   userName: string;
@@ -65,6 +66,9 @@ const MainDashboard: React.FC<MainDashboardProps> = ({
 
         <KeyFeatures />
       </div>
+      
+      {/* Henry Button */}
+      <HenryButton userName={userName} />
     </div>
   );
 };

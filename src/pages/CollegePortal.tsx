@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/hooks/use-toast";
 import { ArrowRight } from "lucide-react";
+import HenryButton from "@/components/henry/HenryButton";
 
 // Welcome screens before the main portal
 const WelcomeScreen: React.FC<{ onContinue: () => void }> = ({ onContinue }) => {
@@ -108,6 +109,9 @@ const CollegePortal: React.FC = () => {
         
         {renderCurrentScreen()}
       </div>
+      
+      {/* Show Henry on all screens in the college portal */}
+      <HenryButton />
     </div>
   );
 };

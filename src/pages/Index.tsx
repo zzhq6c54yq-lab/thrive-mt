@@ -2,7 +2,6 @@ import React, { useState, useEffect, useRef } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useToast } from "@/hooks/use-toast";
 import CoPayCreditPopup from "@/components/CoPayCreditPopup";
-import HenryDialog from "@/components/HenryDialog";
 import IntroScreen from "@/components/home/IntroScreen";
 import MoodScreen from "@/components/home/MoodScreen";
 import MoodResponse from "@/components/home/MoodResponse";
@@ -10,6 +9,7 @@ import RegistrationScreen from "@/components/home/RegistrationScreen";
 import SubscriptionScreen from "@/components/home/SubscriptionScreen";
 import MainDashboard from "@/components/home/MainDashboard";
 import VisionBoard from "@/components/home/VisionBoard";
+import HenryButton from "@/components/henry/HenryButton";
 
 const Index = () => {
   const [showCoPayCredit, setShowCoPayCredit] = useState(false);
@@ -254,6 +254,10 @@ const Index = () => {
     }
   };
 
+  const shouldShowHenry = () => {
+    return screenState === 'main';
+  };
+
   const renderCurrentScreen = () => {
     switch (screenState) {
       case 'intro':
@@ -324,16 +328,27 @@ const Index = () => {
     }
   };
 
+  useEffect(() => {
+    if (screenState === 'main') {
+      setShowCoPayCredit(true);
+      setTimeout(() => {
+        setShowHenry(true);
+      }, 1500);
+    }
+  }, [screenState]);
+
   return (
     <div className="relative">
       <CoPayCreditPopup open={showCoPayCredit} onOpenChange={setShowCoPayCredit} />
       
-      <HenryDialog 
-        isOpen={showHenry} 
-        onOpenChange={setShowHenry}
-      />
-
       {renderCurrentScreen()}
+      
+      {screenState === 'main' && (
+        <HenryButton 
+          userName={userInfo.name}
+          triggerInitialGreeting={showHenry}
+        />
+      )}
     </div>
   );
 };
