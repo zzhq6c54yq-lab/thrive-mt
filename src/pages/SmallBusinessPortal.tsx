@@ -1,10 +1,11 @@
 
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/hooks/use-toast";
+import { ArrowRight } from "lucide-react";
 
-const WelcomeScreen: React.FC = () => {
+const WelcomeScreen: React.FC<{ onContinue: () => void }> = ({ onContinue }) => {
   return (
     <div className="flex flex-col items-center justify-center min-h-[70vh] text-center px-4 animate-fade-in">
       <h1 className="text-4xl md:text-5xl font-light mb-8 text-transparent bg-clip-text bg-gradient-to-r from-[#F97316] to-[#FB923C]">
@@ -19,10 +20,16 @@ const WelcomeScreen: React.FC = () => {
           Here, you'll find resources tailored specifically for business owners and employees
           balancing work demands, financial pressures, and personal wellbeing.
         </p>
-        <p className="text-lg text-white/90 font-medium">
+        <p className="text-lg mb-8 text-white/90 font-medium">
           Your mental wellbeing matters as much as your business success. Let's prioritize both together.
         </p>
       </div>
+      <Button 
+        onClick={onContinue}
+        className="bg-[#F97316] hover:bg-[#FB923C] text-white text-lg px-8 py-6 h-auto transition-all duration-300 transform hover:scale-105 shadow-[0_0_15px_rgba(249,115,22,0.3)]"
+      >
+        Next <ArrowRight className="ml-1 h-5 w-5" />
+      </Button>
     </div>
   );
 };
@@ -59,20 +66,11 @@ const SmallBusinessPortal: React.FC = () => {
   const location = useLocation();
   const { toast } = useToast();
 
-  useEffect(() => {
-    // Check if we're coming from another page with state
-    if (location.state && location.state.screenState === 'main') {
-      setScreenState('intro');
-      return;
-    }
-    
-    if (screenState === 'welcome') {
-      const timer = setTimeout(() => {
-        setScreenState('intro');
-      }, 4000); // Changed from 8000 to 4000 to match DoD and College portals
-      return () => clearTimeout(timer);
-    }
-  }, [screenState, location.state]);
+  // Removed auto-transition effect since we're now using a Next button
+
+  const handleContinueToIntro = () => {
+    setScreenState('intro');
+  };
 
   const handleEnterPortal = () => {
     toast({
@@ -87,7 +85,7 @@ const SmallBusinessPortal: React.FC = () => {
   const renderCurrentScreen = () => {
     switch (screenState) {
       case 'welcome':
-        return <WelcomeScreen />;
+        return <WelcomeScreen onContinue={handleContinueToIntro} />;
       case 'intro':
         return <PortalIntroScreen onEnterPortal={handleEnterPortal} />;
       default:

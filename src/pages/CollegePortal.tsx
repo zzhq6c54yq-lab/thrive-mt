@@ -1,12 +1,12 @@
 
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/hooks/use-toast";
-import { GraduationCap } from "lucide-react";
+import { ArrowRight } from "lucide-react";
 
 // Welcome screens before the main portal
-const WelcomeScreen: React.FC = () => {
+const WelcomeScreen: React.FC<{ onContinue: () => void }> = ({ onContinue }) => {
   return (
     <div className="flex flex-col items-center justify-center min-h-[70vh] text-center px-4 animate-fade-in">
       <h1 className="text-4xl md:text-5xl font-light mb-8 text-transparent bg-clip-text bg-gradient-to-r from-[#8B5CF6] to-[#D946EF]">
@@ -21,10 +21,16 @@ const WelcomeScreen: React.FC = () => {
           Here, you'll find resources tailored specifically for college students facing 
           academic pressure, social challenges, and personal growth opportunities.
         </p>
-        <p className="text-lg text-white/90 font-medium">
+        <p className="text-lg mb-8 text-white/90 font-medium">
           Your mental wellbeing matters as much as your GPA. Let's prioritize both together.
         </p>
       </div>
+      <Button 
+        onClick={onContinue}
+        className="bg-[#8B5CF6] hover:bg-[#7c4fe7] text-white text-lg px-8 py-6 h-auto transition-all duration-300 transform hover:scale-105 shadow-[0_0_15px_rgba(139,92,246,0.3)]"
+      >
+        Next <ArrowRight className="ml-1 h-5 w-5" />
+      </Button>
     </div>
   );
 };
@@ -60,14 +66,11 @@ const CollegePortal: React.FC = () => {
   const navigate = useNavigate();
   const { toast } = useToast();
 
-  useEffect(() => {
-    if (screenState === 'welcome') {
-      const timer = setTimeout(() => {
-        setScreenState('intro');
-      }, 4000); // Reduced from 8000 to 4000 for better user experience
-      return () => clearTimeout(timer);
-    }
-  }, [screenState]);
+  // Removed auto-transition effect since we're now using a Next button
+
+  const handleContinueToIntro = () => {
+    setScreenState('intro');
+  };
 
   const handleEnterPortal = () => {
     toast({
@@ -86,7 +89,7 @@ const CollegePortal: React.FC = () => {
   const renderCurrentScreen = () => {
     switch (screenState) {
       case 'welcome':
-        return <WelcomeScreen />;
+        return <WelcomeScreen onContinue={handleContinueToIntro} />;
       case 'intro':
         return <PortalIntroScreen onEnterPortal={handleEnterPortal} />;
       default:
