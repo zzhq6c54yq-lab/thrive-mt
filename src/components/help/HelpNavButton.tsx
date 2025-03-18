@@ -18,10 +18,7 @@ const HelpNavButton: React.FC = () => {
   
   return (
     <>
-      <div 
-        onClick={() => setIsDialogOpen(true)}
-        className="cursor-pointer"
-      >
+      <div className="fixed right-6 top-1/2 transform -translate-y-1/2 z-50">
         <HenryButton userName={undefined} />
       </div>
       <HelpDialog isOpen={isDialogOpen} onOpenChange={setIsDialogOpen} />

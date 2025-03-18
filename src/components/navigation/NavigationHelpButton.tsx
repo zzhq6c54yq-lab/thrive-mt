@@ -26,7 +26,7 @@ const NavigationHelpButton: React.FC = () => {
 
   return (
     <>
-      <div className="fixed right-6 bottom-32 z-50 flex flex-col items-center">
+      <div className="fixed right-6 top-1/2 transform -translate-y-1/2 z-50 flex flex-col items-center">
         <Button
           onClick={openHelp}
           className="h-14 w-14 rounded-full bg-gradient-to-br from-[#B87333] to-[#E5C5A1] text-white shadow-lg hover:shadow-xl transition-all duration-300 flex items-center justify-center"

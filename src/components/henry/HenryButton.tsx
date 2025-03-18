@@ -22,7 +22,7 @@ const HenryButton: React.FC<HenryButtonProps> = ({ userName, triggerInitialGreet
     <>
       <div 
         onClick={() => setIsDialogOpen(true)}
-        className="cursor-pointer flex items-center justify-center"
+        className="cursor-pointer fixed right-6 top-1/2 transform -translate-y-1/2 z-50"
       >
         <div className="h-12 w-12 rounded-full flex items-center justify-center bg-gradient-to-br from-[#B87333] to-[#E5C5A1] text-white shadow-lg hover:shadow-xl transition-all duration-300">
           <span className="text-xl font-bold">H</span>

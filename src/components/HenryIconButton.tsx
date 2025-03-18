@@ -38,14 +38,10 @@ const HenryIconButton: React.FC<HenryIconButtonProps> = ({
       <Button
         variant="bronze"
         size="h-icon"
-        className={`rounded-full fixed z-50 flex items-center justify-center overflow-hidden transition-all duration-300 p-0 shadow-lg hover:shadow-[0_0_15px_rgba(184,115,51,0.6)] ${className}`}
+        className={`rounded-full fixed right-6 top-1/2 transform -translate-y-1/2 z-50 flex items-center justify-center overflow-hidden transition-all duration-300 p-0 shadow-lg hover:shadow-[0_0_15px_rgba(184,115,51,0.6)] ${className}`}
         onClick={handleClick}
         aria-label="Ask for Help"
         title="Ask for Help"
-        style={{ 
-          bottom: '30px', 
-          right: '30px'
-        }}
       >
         <div className="h-full w-full flex items-center justify-center">
           <div className="relative h-8 w-8 rounded-full flex items-center justify-center bg-gradient-to-br from-[#B87333] to-[#E5C5A1] text-white font-semibold shadow-inner">
