@@ -1,5 +1,6 @@
 
 import React from "react";
+import { useNavigate } from "react-router-dom";
 import { useToast } from "@/hooks/use-toast";
 import Header from "@/components/layout/Header";
 import UpcomingAppointments from "@/components/dashboard/UpcomingAppointments";
@@ -28,6 +29,8 @@ const MainDashboard: React.FC<MainDashboardProps> = ({
   selectedGoals,
   navigateToFeature
 }) => {
+  const navigate = useNavigate();
+  
   return (
     <div className="min-h-screen bg-gradient-to-b from-[#1a1a20] via-[#252535] to-[#2d2d3d] text-white pt-6 pb-20 px-4 relative overflow-hidden">
       <div className="absolute inset-0 z-0 overflow-hidden">
@@ -58,7 +61,7 @@ const MainDashboard: React.FC<MainDashboardProps> = ({
           <QuizzesSection />
         </div>
         
-        <FeaturedWorkshops />
+        <FeaturedWorkshops navigate={navigate} />
 
         <KeyFeatures />
       </div>

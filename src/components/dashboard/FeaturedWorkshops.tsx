@@ -1,14 +1,16 @@
-
 import React, { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { workshopData } from "@/data/workshopData";
-import { useNavigate } from "react-router-dom";
+import { NavigateFunction } from "react-router-dom";
 import { Play, Pause, Volume2, Volume, ExternalLink, Calendar, Sparkles } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 
-const FeaturedWorkshops: React.FC = () => {
+interface FeaturedWorkshopsProps {
+  navigate: NavigateFunction;
+}
+
+const FeaturedWorkshops: React.FC<FeaturedWorkshopsProps> = ({ navigate }) => {
   const { toast } = useToast();
-  const navigate = useNavigate();
   const featuredWorkshops = workshopData.slice(0, 3);
   const [activeVideoIndex, setActiveVideoIndex] = useState<number | null>(null);
   const [isMuted, setIsMuted] = useState(true);
