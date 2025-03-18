@@ -1,4 +1,3 @@
-
 import React from "react";
 import { Button } from "@/components/ui/button";
 import { Handshake, Award, WalletCards, Sparkles, Crown, Zap } from "lucide-react";
@@ -16,14 +15,9 @@ const NewFeatures: React.FC = () => {
       duration: 2000
     });
     
-    // Special case for upgrade plan - use state to trigger subscription screen
+    // Special case for upgrade plan - now navigate to the dedicated page
     if (path === "/subscription-plans") {
-      navigate("/", { 
-        state: { 
-          screenState: 'subscription',
-          returnToMain: true
-        } 
-      });
+      navigate("/subscription-plans");
     } else {
       navigate(path);
     }
@@ -34,7 +28,6 @@ const NewFeatures: React.FC = () => {
       <div className="absolute inset-0 bg-[url('data:image/svg+xml;utf8,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%2240%22 height=%2240%22 viewBox=%220 0 40 40%22><path d=%22M0 20 L40 20%22 stroke=%22%23B87333%22 stroke-opacity=%220.05%22 stroke-width=%221%22/></svg>')] opacity-40"></div>
       <div className="absolute inset-0 bg-[url('data:image/svg+xml;utf8,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%2260%22 height=%2260%22 viewBox=%220 0 60 60%22><circle cx=%2230%22 cy=%2230%22 r=%222%22 fill=%22%23B87333%22 fill-opacity=%220.05%22/></svg>')] opacity-30"></div>
       
-      {/* Dynamic animated backgrounds */}
       <div className="absolute top-0 right-0 w-96 h-96 bg-gradient-to-br from-[#B87333]/10 to-transparent rounded-full blur-3xl"></div>
       <div className="absolute bottom-0 left-0 w-96 h-96 bg-gradient-to-tr from-[#8B5CF6]/10 to-transparent rounded-full blur-3xl"></div>
       
@@ -61,10 +54,8 @@ const NewFeatures: React.FC = () => {
             className="flex items-center gap-2 px-6 py-6 rounded-lg transform transition-all duration-300 hover:scale-105 shadow-[0_4px_12px_rgba(0,0,0,0.25)] group relative overflow-hidden"
             onClick={() => handleNavigation("/subscription-plans", "Subscription Plans")}
           >
-            {/* Animated background for the button */}
             <div className="absolute inset-0 bg-gradient-to-r from-[#B87333] via-[#E5C5A1] to-[#B87333] opacity-100 background-animate" style={{backgroundSize: '200% auto'}}></div>
             
-            {/* Sparkling effects */}
             <div className="absolute top-0 left-0 w-full h-full">
               <div className="absolute top-1/4 left-1/4 w-1 h-1 rounded-full bg-white/80 animate-ping" style={{animationDuration: '3s'}}></div>
               <div className="absolute top-3/4 right-1/4 w-1 h-1 rounded-full bg-white/80 animate-ping" style={{animationDuration: '2s'}}></div>
@@ -79,7 +70,6 @@ const NewFeatures: React.FC = () => {
               <span className="text-xs text-black/80">Unlock premium mental health tools</span>
             </div>
             
-            {/* Right arrow indicator */}
             <Zap className="h-5 w-5 ml-2 text-black group-hover:translate-x-1 transition-transform z-10" />
           </Button>
           

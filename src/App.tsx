@@ -47,6 +47,7 @@ import CollegePortal from "@/pages/CollegePortal";
 import CollegeExperience from "@/pages/CollegeExperience";
 import SmallBusinessPortal from "@/pages/SmallBusinessPortal";
 import SmallBusinessExperience from "@/pages/SmallBusinessExperience";
+import SubscriptionPlansPage from "@/pages/SubscriptionPlansPage";
 
 function App() {
   return (
@@ -87,29 +88,24 @@ function App() {
         <Route path="/games-and-quizzes" element={<GamesAndQuizzes />} />
         <Route path="/settings" element={<UserSettings />} />
         <Route path="/profile" element={<UserProfile />} />
+        <Route path="/subscription-plans" element={<SubscriptionPlansPage />} />
         
-        {/* Military Support Section */}
         <Route path="/military-support" element={<MilitarySupport />} />
         <Route path="/military-workshops" element={<MilitaryWorkshops />} />
         <Route path="/military-resources" element={<MilitaryResources />} />
         <Route path="/military-affirmations" element={<MilitaryAffirmations />} />
         <Route path="/military-blog" element={<MilitaryBlog />} />
         
-        {/* DoD Portal Section */}
         <Route path="/dod-portal" element={<DoDPortal />} />
         
-        {/* Add redirect from department-of-defense to dod-portal */}
         <Route path="/department-of-defense" element={<Navigate to="/dod-portal" replace />} />
         
-        {/* College Experience Section */}
         <Route path="/college-portal" element={<CollegePortal />} />
         <Route path="/college-experience" element={<CollegeExperience />} />
         
-        {/* Small Business Section - Add these new routes */}
         <Route path="/small-business-portal" element={<SmallBusinessPortal />} />
         <Route path="/small-business-experience" element={<SmallBusinessExperience />} />
         
-        {/* Update this redirect to our new portal */}
         <Route path="/small-business" element={<Navigate to="/small-business-portal" replace />} />
         
         <Route path="*" element={<NotFound />} />
