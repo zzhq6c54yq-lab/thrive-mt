@@ -35,10 +35,17 @@ const Index = () => {
     if (location.state && location.state.screenState) {
       setScreenState(location.state.screenState);
       
-      window.history.replaceState(
-        { ...window.history.state, screenState }, 
-        document.title
-      );
+      if (location.state.returnToMain) {
+        window.history.replaceState(
+          { ...window.history.state, screenState: location.state.screenState, returnToMain: true }, 
+          document.title
+        );
+      } else {
+        window.history.replaceState(
+          { ...window.history.state, screenState: location.state.screenState }, 
+          document.title
+        );
+      }
     } else if (location.state && location.state.returnToIntro) {
       setScreenState('intro');
       
@@ -209,7 +216,15 @@ const Index = () => {
       description: `Your ${selectedPlan} plan is now active. Enjoy your benefits!`,
     });
     
-    setScreenState('visionBoard');
+    if (location.state && location.state.returnToMain) {
+      setScreenState('main');
+      window.history.replaceState(
+        { ...window.history.state, returnToMain: false }, 
+        document.title
+      );
+    } else {
+      setScreenState('visionBoard');
+    }
   };
 
   const handleVisionBoardContinue = () => {

@@ -15,7 +15,18 @@ const NewFeatures: React.FC = () => {
       description: "Loading your requested feature...",
       duration: 2000
     });
-    navigate(path);
+    
+    // Special case for upgrade plan - use state to trigger subscription screen
+    if (path === "/subscription-plans") {
+      navigate("/", { 
+        state: { 
+          screenState: 'subscription',
+          returnToMain: true
+        } 
+      });
+    } else {
+      navigate(path);
+    }
   };
 
   return (
@@ -69,3 +80,4 @@ const NewFeatures: React.FC = () => {
 };
 
 export default NewFeatures;
+
