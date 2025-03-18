@@ -1,4 +1,3 @@
-
 import React, { useState } from "react";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
@@ -157,9 +156,21 @@ const HelpDialog: React.FC<HelpDialogProps> = ({ isOpen, onOpenChange, userName 
     }, 1000);
   };
 
+  const handleGotIt = () => {
+    onOpenChange(false);
+    toast({
+      title: "Chat closed",
+      description: "You can always open it again by clicking the help button",
+      duration: 2000,
+    });
+  };
+
   return (
     <Dialog open={isOpen} onOpenChange={handleOpenChange}>
-      <DialogContent className="sm:max-w-md sm:w-[350px] bg-black/85 backdrop-blur-md border border-[#B87333]/50 p-3">
+      <DialogContent 
+        className="sm:max-w-md w-[350px] md:w-[400px] bg-black/85 backdrop-blur-md border border-[#B87333]/50 p-3 max-h-[80vh] overflow-hidden"
+        size="small"
+      >
         <div className="absolute right-2 top-2 z-10">
           <Button 
             className="p-1 h-6 w-6 rounded-full bg-transparent hover:bg-white/10 text-white/70 hover:text-white"
@@ -222,6 +233,15 @@ const HelpDialog: React.FC<HelpDialogProps> = ({ isOpen, onOpenChange, userName 
             onClick={() => handleSendMessage("How do I track progress?")}
           >
             Progress <ArrowRight className="ml-1 h-3 w-3" />
+          </Button>
+        </div>
+        
+        <div className="mt-4 flex justify-center">
+          <Button
+            className="bg-gradient-to-br from-[#B87333] to-[#E5C5A1] hover:from-[#A56625] hover:to-[#D4B48F] text-white w-1/2"
+            onClick={handleGotIt}
+          >
+            Got it
           </Button>
         </div>
       </DialogContent>
