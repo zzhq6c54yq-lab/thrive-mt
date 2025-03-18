@@ -26,7 +26,7 @@ const HomeButton: React.FC<HomeButtonProps> = ({ className = "" }) => {
     <Button
       variant="outline"
       size="icon"
-      className={`rounded-full bg-white/10 backdrop-blur-sm hover:bg-white/20 border-white/10 transition-all duration-300 transform hover:scale-105 ${className}`}
+      className={`rounded-full bg-white/10 backdrop-blur-sm hover:bg-white/20 border-[#B87333]/40 hover:border-[#B87333] transition-all duration-300 transform hover:scale-105 ${className}`}
       onClick={handleHomeClick}
       aria-label="Return to main screen"
       title="Return to main screen"
@@ -35,7 +35,7 @@ const HomeButton: React.FC<HomeButtonProps> = ({ className = "" }) => {
         <img 
           src="/lovable-uploads/f2c6ac08-6331-4884-950d-7f94d68ff15f.png" 
           alt="Thrive MT Logo" 
-          className="h-5 w-5 filter drop-shadow-[0_0_3px_rgba(184,115,51,0.6)] transition-all duration-300 hover:drop-shadow-[0_0_5px_rgba(184,115,51,0.8)]"
+          className="h-5 w-5 filter drop-shadow-[0_0_5px_rgba(184,115,51,0.8)] transition-all duration-300 hover:drop-shadow-[0_0_8px_rgba(184,115,51,1)]"
         />
       </div>
     </Button>

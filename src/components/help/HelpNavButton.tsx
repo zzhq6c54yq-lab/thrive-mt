@@ -31,7 +31,9 @@ const HelpNavButton: React.FC = () => {
 
   return (
     <>
-      <FloatingButton onClick={() => setShowHelpDialog(true)} />
+      <div className="fixed right-6 bottom-10 z-50">
+        <FloatingButton onClick={() => setShowHelpDialog(true)} />
+      </div>
       
       <HelpDialog 
         isOpen={showHelpDialog} 

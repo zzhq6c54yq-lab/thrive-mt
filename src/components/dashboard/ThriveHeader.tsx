@@ -30,31 +30,31 @@ const ThriveHeader: React.FC<ThriveHeaderProps> = ({
           <div className="flex flex-col md:flex-row items-center justify-between w-full">
             <div className="flex items-center gap-8 mb-6 md:mb-0">
               <div className="relative group">
-                {/* Enhanced logo animations with stronger effects */}
-                <div className="absolute inset-[-25px] rounded-full bg-gradient-to-r from-[#B87333]/70 to-[#E5C5A1]/70 blur-xl animate-pulse" style={{animationDuration: '3s'}}></div>
-                <div className="absolute inset-[-40px] rounded-full border-2 border-[#B87333]/40 animate-spin" style={{animationDuration: '15s'}}></div>
-                <div className="absolute inset-[-20px] rounded-full border border-[#E5C5A1]/50 animate-spin" style={{animationDuration: '10s', animationDirection: 'reverse'}}></div>
-                <div className="absolute inset-[-10px] rounded-full bg-gradient-to-br from-[#B87333]/80 to-[#E5C5A1]/40 blur-sm animate-pulse" style={{animationDuration: '4s'}}></div>
+                {/* Enhanced logo animations with stronger effects and larger size */}
+                <div className="absolute inset-[-45px] rounded-full bg-gradient-to-r from-[#B87333]/80 to-[#E5C5A1]/80 blur-xl animate-pulse" style={{animationDuration: '3s'}}></div>
+                <div className="absolute inset-[-60px] rounded-full border-2 border-[#B87333]/60 animate-spin" style={{animationDuration: '15s'}}></div>
+                <div className="absolute inset-[-35px] rounded-full border border-[#E5C5A1]/70 animate-spin" style={{animationDuration: '10s', animationDirection: 'reverse'}}></div>
+                <div className="absolute inset-[-20px] rounded-full bg-gradient-to-br from-[#B87333]/90 to-[#E5C5A1]/60 blur-sm animate-pulse" style={{animationDuration: '4s'}}></div>
                 
                 {/* Enhanced sparkling effect */}
-                <div className="absolute top-[-15px] left-[25px] w-3 h-3 bg-white rounded-full animate-ping" style={{animationDuration: '1.8s', animationDelay: '0.5s'}}></div>
-                <div className="absolute bottom-[-8px] right-[35px] w-2.5 h-2.5 bg-white rounded-full animate-ping" style={{animationDuration: '1.5s', animationDelay: '1s'}}></div>
-                <div className="absolute top-[35px] right-[-18px] w-3 h-3 bg-white rounded-full animate-ping" style={{animationDuration: '2.1s'}}></div>
-                <div className="absolute bottom-[30px] left-[-10px] w-2 h-2 bg-white rounded-full animate-ping" style={{animationDuration: '2.4s', animationDelay: '0.7s'}}></div>
+                <div className="absolute top-[-20px] left-[35px] w-4 h-4 bg-white rounded-full animate-ping" style={{animationDuration: '1.8s', animationDelay: '0.5s'}}></div>
+                <div className="absolute bottom-[-12px] right-[45px] w-3.5 h-3.5 bg-white rounded-full animate-ping" style={{animationDuration: '1.5s', animationDelay: '1s'}}></div>
+                <div className="absolute top-[45px] right-[-25px] w-4 h-4 bg-white rounded-full animate-ping" style={{animationDuration: '2.1s'}}></div>
+                <div className="absolute bottom-[40px] left-[-15px] w-3 h-3 bg-white rounded-full animate-ping" style={{animationDuration: '2.4s', animationDelay: '0.7s'}}></div>
                 
-                {/* Larger logo with deeper colors and stronger glow */}
+                {/* Larger logo with deeper colors and stronger glow - DOUBLED SIZE */}
                 <img 
                   src="/lovable-uploads/f2c6ac08-6331-4884-950d-7f94d68ff15f.png" 
                   alt="Thrive MT Logo" 
-                  className="relative h-56 w-56 object-contain filter drop-shadow-[0_0_25px_rgba(184,115,51,1)] transition-all duration-500 group-hover:scale-110 group-hover:drop-shadow-[0_0_35px_rgba(184,115,51,1)]"
+                  className="relative h-[112px] w-[112px] object-contain filter drop-shadow-[0_0_35px_rgba(184,115,51,1)] transition-all duration-500 group-hover:scale-110 group-hover:drop-shadow-[0_0_45px_rgba(184,115,51,1)]"
                 />
                 
                 {/* Additional glow effects */}
-                <div className="absolute inset-0 rounded-full bg-gradient-to-r from-[#B87333]/30 via-transparent to-[#B87333]/30 animate-pulse" style={{animationDuration: '5s'}}></div>
+                <div className="absolute inset-0 rounded-full bg-gradient-to-r from-[#B87333]/40 via-transparent to-[#B87333]/40 animate-pulse" style={{animationDuration: '5s'}}></div>
                 
                 {/* Enhanced rotating halo effect */}
-                <div className="absolute inset-[-5px] border-4 border-[#B87333]/20 rounded-full animate-ping" style={{animationDuration: '3.5s'}}></div>
-                <div className="absolute inset-[-15px] border-2 border-[#E5C5A1]/20 rounded-full animate-ping" style={{animationDuration: '4.5s', animationDelay: '0.5s'}}></div>
+                <div className="absolute inset-[-10px] border-4 border-[#B87333]/30 rounded-full animate-ping" style={{animationDuration: '3.5s'}}></div>
+                <div className="absolute inset-[-25px] border-2 border-[#E5C5A1]/30 rounded-full animate-ping" style={{animationDuration: '4.5s', animationDelay: '0.5s'}}></div>
               </div>
               <div className="text-center md:text-left">
                 <h1 className="text-4xl md:text-5xl font-bold tracking-tight">
@@ -83,7 +83,7 @@ const ThriveHeader: React.FC<ThriveHeaderProps> = ({
                 <div className="flex items-center gap-2">
                   <Footprints className="h-5 w-5 text-[#B87333] group-hover:scale-110 transition-transform" />
                   <span className="relative z-10 text-white">
-                    {showHenry ? "Hide Henry" : "Meet H.E.N.R.Y."}
+                    {showHenry ? "Hide H.E.N.R.Y." : "Meet H.E.N.R.Y."}
                   </span>
                 </div>
                 <div className="absolute inset-0 bg-gradient-to-r from-[#B87333]/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>

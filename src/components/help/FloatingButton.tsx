@@ -32,7 +32,9 @@ const FloatingButton: React.FC<FloatingButtonProps> = ({ onClick }) => {
           size="icon"
           aria-label="Get help"
         >
-          <HelpCircle className="h-6 w-6" />
+          <div className="relative h-10 w-10 rounded-full flex items-center justify-center bg-gradient-to-br from-[#B87333] to-[#E5C5A1] text-white font-semibold border-2 border-white/30">
+            <span className="text-2xl">H</span>
+          </div>
         </Button>
       </div>
       
