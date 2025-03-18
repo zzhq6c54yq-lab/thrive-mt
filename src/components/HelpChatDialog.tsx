@@ -63,41 +63,41 @@ const HelpChatDialog: React.FC<HelpChatDialogProps> = ({
 
   return (
     <Dialog open={isOpen} onOpenChange={onOpenChange}>
-      <DialogContent className="sm:max-w-md sm:w-[400px] bg-black/85 backdrop-blur-md border border-[#B87333]/50 p-4" size="small">
+      <DialogContent className="sm:max-w-md sm:w-[350px] bg-black/85 backdrop-blur-md border border-[#B87333]/50 p-3" size="small">
         <div className="absolute right-2 top-2 z-10">
           <Button 
-            className="p-1 h-8 w-8 rounded-full bg-transparent hover:bg-white/10 text-white/70 hover:text-white"
+            className="p-1 h-6 w-6 rounded-full bg-transparent hover:bg-white/10 text-white/70 hover:text-white"
             variant="ghost"
             size="icon"
             onClick={() => onOpenChange(false)}
           >
-            <X className="h-4 w-4" />
+            <X className="h-3 w-3" />
           </Button>
         </div>
         
-        <div className="text-center relative mb-4">
+        <div className="text-center relative mb-3">
           <div className="flex justify-center mb-2">
-            <div className="h-14 w-14 rounded-full flex items-center justify-center border-2 border-[#B87333]/50 bg-gradient-to-br from-[#B87333] to-[#E5C5A1] text-white">
-              <span className="text-2xl font-bold">H</span>
+            <div className="h-12 w-12 rounded-full flex items-center justify-center border-2 border-[#B87333]/50 bg-gradient-to-br from-[#B87333] to-[#E5C5A1] text-white">
+              <span className="text-xl font-bold">H</span>
             </div>
           </div>
-          <h2 className="text-xl text-transparent bg-clip-text bg-gradient-to-r from-[#B87333] to-[#e5c5a1]">
+          <h2 className="text-lg text-transparent bg-clip-text bg-gradient-to-r from-[#B87333] to-[#e5c5a1]">
             Help Navigation
           </h2>
-          <p className="text-white/70 text-sm">
+          <p className="text-white/70 text-xs">
             Ask me anything about the site
           </p>
         </div>
         
-        <ScrollArea className="h-[300px] overflow-auto pr-4 mb-3" ref={scrollAreaRef}>
-          <div className="space-y-4">
+        <ScrollArea className="h-[250px] overflow-auto pr-3 mb-2" ref={scrollAreaRef}>
+          <div className="space-y-3">
             {messages.map((message, index) => (
               <div
                 key={index}
                 className={`flex ${message.isUser ? "justify-end" : "justify-start"}`}
               >
                 <div
-                  className={`max-w-[80%] rounded-lg p-3 ${
+                  className={`max-w-[80%] rounded-lg p-2 ${
                     message.isUser
                       ? "bg-[#B87333] text-white"
                       : "bg-gray-700 text-white"
@@ -105,13 +105,13 @@ const HelpChatDialog: React.FC<HelpChatDialogProps> = ({
                 >
                   {!message.isUser && (
                     <div className="flex items-center mb-1">
-                      <div className="h-6 w-6 rounded-full flex items-center justify-center bg-gradient-to-br from-[#B87333] to-[#E5C5A1] text-white mr-2">
+                      <div className="h-5 w-5 rounded-full flex items-center justify-center bg-gradient-to-br from-[#B87333] to-[#E5C5A1] text-white mr-1">
                         <span className="text-xs font-bold">H</span>
                       </div>
                       <span className="text-xs text-white/70">Henry</span>
                     </div>
                   )}
-                  <p className="text-sm">{message.text}</p>
+                  <p className="text-xs">{message.text}</p>
                 </div>
               </div>
             ))}
@@ -123,7 +123,7 @@ const HelpChatDialog: React.FC<HelpChatDialogProps> = ({
             value={input}
             onChange={(e) => setInput(e.target.value)}
             placeholder="Type your message..."
-            className="flex-1 min-h-[40px] bg-white/5 border-[#B87333]/20 focus-visible:ring-[#B87333] text-white text-sm"
+            className="flex-1 min-h-[36px] max-h-[60px] bg-white/5 border-[#B87333]/20 focus-visible:ring-[#B87333] text-white text-xs py-1"
             onKeyDown={(e) => {
               if (e.key === "Enter" && !e.shiftKey) {
                 e.preventDefault();
@@ -134,9 +134,9 @@ const HelpChatDialog: React.FC<HelpChatDialogProps> = ({
           <Button 
             type="submit" 
             size="icon"
-            className="h-10 w-10 bg-[#B87333] hover:bg-[#B87333]/80"
+            className="h-8 w-8 bg-[#B87333] hover:bg-[#B87333]/80"
           >
-            <Send className="h-4 w-4" />
+            <Send className="h-3 w-3" />
           </Button>
         </form>
       </DialogContent>

@@ -1,7 +1,7 @@
 
 import React, { useState } from "react";
 import { Button } from "@/components/ui/button";
-import { ChevronUp, ChevronDown, HelpCircle } from "lucide-react";
+import { ChevronUp, ChevronDown, X } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import HelpDialog from "@/components/help/HelpDialog";
 import { useLocation, useNavigate } from "react-router-dom";

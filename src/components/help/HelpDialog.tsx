@@ -159,42 +159,42 @@ const HelpDialog: React.FC<HelpDialogProps> = ({ isOpen, onOpenChange, userName 
 
   return (
     <Dialog open={isOpen} onOpenChange={handleOpenChange}>
-      <DialogContent className="sm:max-w-md sm:w-[400px] bg-black/85 backdrop-blur-md border border-[#B87333]/50 p-4">
+      <DialogContent className="sm:max-w-md sm:w-[350px] bg-black/85 backdrop-blur-md border border-[#B87333]/50 p-3">
         <div className="absolute right-2 top-2 z-10">
           <Button 
-            className="p-1 h-8 w-8 rounded-full bg-transparent hover:bg-white/10 text-white/70 hover:text-white"
+            className="p-1 h-6 w-6 rounded-full bg-transparent hover:bg-white/10 text-white/70 hover:text-white"
             variant="ghost"
             size="icon"
             onClick={() => handleOpenChange(false)}
           >
-            <X className="h-4 w-4" />
+            <X className="h-3 w-3" />
           </Button>
         </div>
         
-        <DialogHeader className="text-center relative mb-4">
+        <DialogHeader className="text-center relative mb-3">
           <div className="flex justify-center mb-2">
-            <div className="h-14 w-14 rounded-full flex items-center justify-center border-2 border-[#B87333]/50 bg-gradient-to-br from-[#B87333] to-[#E5C5A1] text-white">
-              <span className="text-2xl font-bold">H</span>
+            <div className="h-12 w-12 rounded-full flex items-center justify-center border-2 border-[#B87333]/50 bg-gradient-to-br from-[#B87333] to-[#E5C5A1] text-white">
+              <span className="text-xl font-bold">H</span>
             </div>
           </div>
-          <DialogTitle className="text-xl text-transparent bg-clip-text bg-gradient-to-r from-[#B87333] to-[#e5c5a1]">Chat with H.E.N.R.Y.</DialogTitle>
-          <DialogDescription className="text-white/70 text-sm">
+          <DialogTitle className="text-lg text-transparent bg-clip-text bg-gradient-to-r from-[#B87333] to-[#e5c5a1]">Chat with H.E.N.R.Y.</DialogTitle>
+          <DialogDescription className="text-white/70 text-xs">
             Your helpful navigator through Thrive MT
           </DialogDescription>
-          <div className="mt-2 text-xs text-white/60 px-4">
-            <p>H.E.N.R.Y. stands for:</p>
-            <p><span className="text-[#B87333] font-bold">H</span>ope • <span className="text-[#B87333] font-bold">E</span>mpathy • <span className="text-[#B87333] font-bold">N</span>urturing • <span className="text-[#B87333] font-bold">R</span>esilience • <span className="text-[#B87333] font-bold">Y</span>ou</p>
+          <div className="mt-1 text-xs text-white/60 px-2">
+            <p className="text-[10px]">H.E.N.R.Y. stands for:</p>
+            <p className="text-[10px]"><span className="text-[#B87333] font-bold">H</span>ope • <span className="text-[#B87333] font-bold">E</span>mpathy • <span className="text-[#B87333] font-bold">N</span>urturing • <span className="text-[#B87333] font-bold">R</span>esilience • <span className="text-[#B87333] font-bold">Y</span>ou</p>
           </div>
         </DialogHeader>
         
         <MessageList messages={messages} />
         <MessageInput onSendMessage={handleSendMessage} />
         
-        <div className="mt-4 flex flex-wrap gap-2 justify-center">
+        <div className="mt-3 flex flex-wrap gap-1 justify-center">
           <Button 
             variant="outline" 
             size="sm"
-            className="bg-transparent border-white/20 text-white/70 hover:bg-white/10 hover:text-white text-xs"
+            className="bg-transparent border-white/20 text-white/70 hover:bg-white/10 hover:text-white text-xs py-1 h-7"
             onClick={() => handleSendMessage("Tell me about workshops")}
           >
             Workshops <ArrowRight className="ml-1 h-3 w-3" />
@@ -202,7 +202,7 @@ const HelpDialog: React.FC<HelpDialogProps> = ({ isOpen, onOpenChange, userName 
           <Button 
             variant="outline" 
             size="sm"
-            className="bg-transparent border-white/20 text-white/70 hover:bg-white/10 hover:text-white text-xs"
+            className="bg-transparent border-white/20 text-white/70 hover:bg-white/10 hover:text-white text-xs py-1 h-7"
             onClick={() => handleSendMessage("Tell me about community support")}
           >
             Community <ArrowRight className="ml-1 h-3 w-3" />
@@ -210,7 +210,7 @@ const HelpDialog: React.FC<HelpDialogProps> = ({ isOpen, onOpenChange, userName 
           <Button 
             variant="outline" 
             size="sm"
-            className="bg-transparent border-white/20 text-white/70 hover:bg-white/10 hover:text-white text-xs"
+            className="bg-transparent border-white/20 text-white/70 hover:bg-white/10 hover:text-white text-xs py-1 h-7"
             onClick={() => handleSendMessage("How do I find tools?")}
           >
             Tools <ArrowRight className="ml-1 h-3 w-3" />
@@ -218,7 +218,7 @@ const HelpDialog: React.FC<HelpDialogProps> = ({ isOpen, onOpenChange, userName 
           <Button 
             variant="outline" 
             size="sm"
-            className="bg-transparent border-white/20 text-white/70 hover:bg-white/10 hover:text-white text-xs"
+            className="bg-transparent border-white/20 text-white/70 hover:bg-white/10 hover:text-white text-xs py-1 h-7"
             onClick={() => handleSendMessage("How do I track progress?")}
           >
             Progress <ArrowRight className="ml-1 h-3 w-3" />

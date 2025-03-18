@@ -17,6 +17,12 @@ export const useButtonVisibility = () => {
       // Skip button on these specific screens - only show on main screen
       const excludedScreenStates = ['intro', 'mood', 'moodResponse', 'register', 'subscription', 'visionBoard'];
       
+      // Special case: For main welcome page, we want to show the button
+      if (screenState === 'main') {
+        console.log("Showing button: On main dashboard");
+        return true;
+      }
+      
       if (screenState === undefined || excludedScreenStates.includes(screenState || '')) {
         console.log("Hiding button: Home path with excluded screenState:", screenState);
         return false;
