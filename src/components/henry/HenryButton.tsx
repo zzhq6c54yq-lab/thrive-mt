@@ -2,7 +2,6 @@
 import React, { useState, useEffect } from "react";
 import { useLocation } from "react-router-dom";
 import HelpDialog from "../help/HelpDialog";
-import { Heart, RotateCcw } from "lucide-react";
 
 interface HenryButtonProps {
   userName?: string;
@@ -27,35 +26,22 @@ const HenryButton: React.FC<HenryButtonProps> = ({ userName, triggerInitialGreet
         aria-label="Open Henry support chat"
       >
         <div className="relative h-16 w-16 flex items-center justify-center transition-transform duration-300 hover:scale-110">
-          {/* Head silhouette with gradient effect */}
-          <div className="absolute inset-0 rounded-full bg-gradient-to-b from-black via-gray-700 to-transparent opacity-80 shadow-lg"></div>
+          {/* Vibrant circle background */}
+          <div className="absolute inset-0 rounded-full bg-gradient-to-r from-[#8B5CF6] to-[#D946EF] shadow-lg"></div>
           
-          {/* Brain pattern backdrop */}
-          <div className="absolute inset-1 rounded-full bg-black/10 backdrop-blur-sm"></div>
+          {/* Inner circle for depth */}
+          <div className="absolute inset-[3px] rounded-full bg-white/90"></div>
           
-          {/* Animated circular arrow */}
-          <div className="absolute inset-2 rounded-full border-2 border-white/50 animate-spin" style={{ animationDuration: '12s' }}></div>
+          {/* Letter H */}
+          <div className="relative z-10 text-3xl font-bold text-[#8B5CF6]">H</div>
           
-          {/* Main head silhouette with heart */}
-          <div className="absolute inset-0 flex items-center justify-center">
-            <img 
-              src="/lovable-uploads/54e4d3e9-8aa5-46b2-a8e6-42fb0ba8128b.png" 
-              alt="Henry - Mental Health Assistant" 
-              className="h-full w-full object-contain animate-pulse"
-              style={{ animationDuration: '3s' }}
-            />
-            
-            {/* Glow effect */}
-            <div className="absolute inset-0 rounded-full bg-gradient-to-r from-[#B87333]/10 via-transparent to-[#B87333]/10 animate-pulse" style={{ animationDuration: '5s' }}></div>
-          </div>
-          
-          {/* Pulsing effect */}
-          <div className="absolute inset-[-5px] rounded-full border border-[#B87333]/30 animate-ping" style={{ animationDuration: '2.5s' }}></div>
+          {/* Pulsing glow effect */}
+          <div className="absolute inset-[-4px] rounded-full bg-gradient-to-r from-[#8B5CF6]/50 to-[#D946EF]/50 animate-pulse" style={{ animationDuration: '3s' }}></div>
         </div>
         
         {/* Text label below the button */}
         <div className="mt-2 text-center">
-          <span className="text-sm font-medium text-white bg-black/70 px-2 py-1 rounded-full shadow-lg border border-[#B87333]/30">
+          <span className="text-sm font-medium text-white bg-gradient-to-r from-[#8B5CF6] to-[#D946EF] px-2 py-1 rounded-full shadow-lg">
             Henry
           </span>
         </div>

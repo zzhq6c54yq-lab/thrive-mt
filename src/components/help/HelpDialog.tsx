@@ -6,7 +6,6 @@ import MessageList from "./MessageList";
 import MessageInput from "./MessageInput";
 import { useToast } from "@/hooks/use-toast";
 import { useHenryMessageProcessor } from "./HenryMessageProcessor";
-import { Brain, Heart } from "lucide-react";
 
 interface HelpDialogProps {
   isOpen: boolean;
@@ -34,16 +33,13 @@ const HelpDialog: React.FC<HelpDialogProps> = ({ isOpen, onOpenChange }) => {
   return (
     <Dialog open={isOpen} onOpenChange={onOpenChange}>
       <DialogContent 
-        className="sm:max-w-md w-[350px] md:w-[400px] bg-black/85 backdrop-blur-md border border-[#B87333]/50 p-3 max-h-[80vh] overflow-hidden"
+        className="sm:max-w-md w-[350px] md:w-[400px] bg-black/85 backdrop-blur-md border border-[#8B5CF6]/50 p-3 max-h-[80vh] overflow-hidden"
       >
         <DialogHeader className="text-center">
           <div className="flex justify-center mb-2">
-            <div className="relative h-16 w-16 rounded-full flex items-center justify-center bg-gradient-to-br from-black to-gray-700 border border-[#B87333]/50">
-              <img 
-                src="/lovable-uploads/54e4d3e9-8aa5-46b2-a8e6-42fb0ba8128b.png" 
-                alt="Henry" 
-                className="h-16 w-16 object-contain"
-              />
+            <div className="relative h-16 w-16 rounded-full flex items-center justify-center bg-gradient-to-r from-[#8B5CF6] to-[#D946EF] shadow-lg">
+              <div className="absolute inset-[3px] rounded-full bg-white/90"></div>
+              <div className="relative z-10 text-3xl font-bold text-[#8B5CF6]">H</div>
               {emergencyMode && (
                 <div className="absolute inset-0 rounded-full border-2 border-red-600 animate-pulse"></div>
               )}
@@ -72,7 +68,7 @@ const HelpDialog: React.FC<HelpDialogProps> = ({ isOpen, onOpenChange }) => {
             className={`${
               emergencyMode 
                 ? "bg-gradient-to-br from-red-700 to-red-500 hover:from-red-800 hover:to-red-600" 
-                : "bg-gradient-to-br from-[#B87333] to-[#E5C5A1] hover:from-[#A56625] hover:to-[#D4B48F]"
+                : "bg-gradient-to-r from-[#8B5CF6] to-[#D946EF] hover:from-[#7B4CE6] hover:to-[#C935DF]"
             } text-white w-1/2`}
             onClick={() => onOpenChange(false)}
           >
