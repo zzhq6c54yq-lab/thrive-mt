@@ -31,8 +31,17 @@ const FeaturedWorkshops: React.FC<FeaturedWorkshopsProps> = ({ navigate }) => {
       duration: 1500,
     });
     
-    // Navigate directly to the workshop content tab to make it fully operational
-    navigate(`/workshop/${workshopId}`, { state: { activeTab: "workshop" } });
+    // Navigate directly to the workshop page with active content tab
+    navigate(`/workshop/${workshopId}`, { 
+      state: { 
+        activeTab: "content",
+        showWorksheets: true,
+        showExercises: true,
+        showVideos: true,
+        showResources: true,
+        duration: 45 // 45 minute workshop
+      } 
+    });
   };
 
   return (

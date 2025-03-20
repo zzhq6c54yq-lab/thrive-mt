@@ -36,7 +36,7 @@
 }
 
 .card {
-  padding: 2em;
+  padding: 1.5em;
 }
 
 .read-the-docs {
@@ -48,6 +48,7 @@ body {
   overflow-x: hidden;
   width: 100%;
   position: relative;
+  font-size: 14px;
 }
 
 /* Ensure all fixed elements stay in view */
@@ -59,57 +60,84 @@ body {
 @media (max-width: 640px) {
   .dialog-content {
     width: 90% !important;
-    max-width: 320px !important;
-    padding: 0.75rem !important;
+    max-width: 300px !important;
+    padding: 0.5rem !important;
   }
   
   .message-container {
-    max-height: 40vh !important;
+    max-height: 35vh !important;
   }
 }
 
 /* Global size reduction for all containers */
 .container, .max-w-5xl, .max-w-6xl, .max-w-7xl {
-  max-width: 95% !important;
-  width: 95% !important;
+  max-width: 92% !important;
+  width: 92% !important;
 }
 
 /* Reduce padding across all components */
 .p-4 {
-  padding: 0.75rem !important;
+  padding: 0.5rem !important;
 }
 
 .p-6, .p-8 {
-  padding: 1rem !important;
+  padding: 0.75rem !important;
 }
 
 /* Reduce text size for better mobile viewing */
 h1 {
-  font-size: 1.75rem !important;
-}
-
-h2 {
   font-size: 1.5rem !important;
 }
 
-h3 {
+h2 {
   font-size: 1.25rem !important;
+}
+
+h3 {
+  font-size: 1.1rem !important;
 }
 
 /* Reduce vertical spacing */
 .mb-4, .my-4 {
-  margin-bottom: 0.75rem !important;
+  margin-bottom: 0.5rem !important;
 }
 
 .mb-6, .my-6 {
-  margin-bottom: 1rem !important;
+  margin-bottom: 0.75rem !important;
 }
 
 .mb-8, .my-8 {
-  margin-bottom: 1.25rem !important;
+  margin-bottom: 1rem !important;
 }
 
 /* Improve button sizing for smaller screens */
 .button, button {
-  padding: 0.5rem 0.75rem !important;
+  padding: 0.4rem 0.6rem !important;
+}
+
+/* Make all dialogs more compact */
+.dialog-header {
+  padding: 0.75rem 0.5rem !important;
+}
+
+.dialog-content {
+  padding: 0.75rem !important;
+}
+
+/* Make HenryButton smaller and more visible */
+.henry-button {
+  width: 40px !important;
+  height: 40px !important;
+  bottom: 16px !important;
+  right: 16px !important;
+}
+
+/* Reduce the size of the entire Page component */
+.page-container {
+  padding: 0.75rem !important;
+}
+
+/* Ensure messages in chat are compact */
+.message-list {
+  max-height: 60vh !important;
 }

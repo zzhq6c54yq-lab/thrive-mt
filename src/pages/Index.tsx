@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect, useRef } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useToast } from "@/hooks/use-toast";
@@ -26,6 +27,10 @@ const Index = () => {
     name: '',
     email: '',
     password: '',
+  });
+  const [popupsShown, setPopupsShown] = useState({
+    coPayCredit: false,
+    henryIntro: false
   });
   const navigate = useNavigate();
   const location = useLocation();
@@ -81,11 +86,20 @@ const Index = () => {
   }, [screenState]);
 
   useEffect(() => {
-    if (screenState === 'main') {
+    // Only show popups during initial flow from vision board to main
+    if (screenState === 'main' && !popupsShown.coPayCredit) {
       setShowCoPayCredit(true);
-      setShowHenry(false);
+      setPopupsShown(prev => ({ ...prev, coPayCredit: true }));
+      
+      // Set a timer to show Henry after the co-pay credit popup is closed
+      setTimeout(() => {
+        if (!popupsShown.henryIntro) {
+          setShowHenry(true);
+          setPopupsShown(prev => ({ ...prev, henryIntro: true }));
+        }
+      }, 1500);
     }
-  }, [screenState]);
+  }, [screenState, popupsShown]);
 
   useEffect(() => {
     const handleMouseMove = (e: MouseEvent) => {
@@ -295,7 +309,7 @@ const Index = () => {
           <SubscriptionScreen
             selectedPlan={selectedPlan}
             onPlanSelect={handleSubscriptionSelect}
-            onContinue={() => setScreenState('visionBoard')}
+            onContinue={handleSubscriptionContinue}
             onPrevious={() => setScreenState('register')}
             onSkip={() => setScreenState('main')}
           />
@@ -307,7 +321,7 @@ const Index = () => {
             selectedGoals={selectedGoals}
             onQualityToggle={toggleQuality}
             onGoalToggle={toggleGoal}
-            onContinue={() => setScreenState('main')}
+            onContinue={handleVisionBoardContinue}
             onPrevious={() => setScreenState('subscription')}
             onSkip={() => setScreenState('main')}
           />
@@ -317,7 +331,7 @@ const Index = () => {
           <MainDashboard
             userName={userInfo.name}
             showHenry={showHenry}
-            onHenryToggle={() => setShowHenry(prev => !prev)}
+            onHenryToggle={toggleHenry}
             selectedQualities={selectedQualities}
             selectedGoals={selectedGoals}
             navigateToFeature={navigateToFeature}
@@ -328,25 +342,22 @@ const Index = () => {
     }
   };
 
-  useEffect(() => {
-    if (screenState === 'main') {
-      setShowCoPayCredit(true);
-      setTimeout(() => {
-        setShowHenry(true);
-      }, 1500);
-    }
-  }, [screenState]);
-
   return (
     <div className="relative">
-      <CoPayCreditPopup open={showCoPayCredit} onOpenChange={setShowCoPayCredit} />
+      {/* Only show CoPayCredit popup during initial transition */}
+      {showCoPayCredit && !popupsShown.coPayCredit && 
+        <CoPayCreditPopup 
+          open={showCoPayCredit} 
+          onOpenChange={setShowCoPayCredit} 
+        />
+      }
       
       {renderCurrentScreen()}
       
       {screenState === 'main' && (
         <HenryButton 
           userName={userInfo.name}
-          triggerInitialGreeting={showHenry}
+          triggerInitialGreeting={showHenry && !popupsShown.henryIntro}
         />
       )}
     </div>

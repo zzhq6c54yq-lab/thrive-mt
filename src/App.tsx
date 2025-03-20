@@ -69,6 +69,7 @@ function App() {
         <Route path="/virtual-meetings" element={<VirtualMeetings />} />
         <Route path="/mental-health-games" element={<MentalHealthGames />} />
         <Route path="/games-quizzes" element={<GamesAndQuizzes />} />
+        <Route path="/games-and-quizzes" element={<GamesAndQuizzes />} />
         <Route path="/personalized-content" element={<PersonalizedContent />} />
         <Route path="/community-support" element={<CommunitySupport />} />
         <Route path="/resource-library" element={<ResourceLibrary />} />
@@ -87,7 +88,6 @@ function App() {
         <Route path="/financial-assistance" element={<FinancialAssistance />} />
         <Route path="/contact" element={<ContactSupport />} />
         <Route path="/lifestyle-integration" element={<LifestyleIntegration />} />
-        <Route path="/games-and-quizzes" element={<GamesAndQuizzes />} />
         <Route path="/settings" element={<UserSettings />} />
         <Route path="/profile" element={<UserProfile />} />
         <Route path="/subscription-plans" element={<SubscriptionPlansPage />} />
