@@ -94,7 +94,9 @@ export const generateResponse = (message: string, userName?: string) => {
   // Check for emergency first
   const emergencyType = checkForEmergency(message);
   if (emergencyType) {
-    return emergencyResponses[emergencyType];
+    // Fixed: Instead of using the boolean true as an index, 
+    // we need to return a specific emergency type string
+    return "I'm concerned about what you're sharing. If you're having thoughts of harming yourself, please call the National Suicide Prevention Lifeline at 988 right away. Would you like me to navigate you to our Crisis Support page?";
   }
   
   // Check for emotional states
