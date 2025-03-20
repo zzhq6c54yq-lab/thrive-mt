@@ -4,9 +4,10 @@ import React from "react";
 interface MessageProps {
   text: string;
   isUser: boolean;
+  timestamp?: string;
 }
 
-const Message: React.FC<MessageProps> = ({ text, isUser }) => {
+const Message: React.FC<MessageProps> = ({ text, isUser, timestamp }) => {
   return (
     <div className={`flex ${isUser ? "justify-end" : "justify-start"} mb-4`}>
       <div
@@ -26,9 +27,15 @@ const Message: React.FC<MessageProps> = ({ text, isUser }) => {
               />
             </div>
             <span className="text-xs text-white/70">Henry</span>
+            {timestamp && <span className="text-xs text-white/50 ml-2">{timestamp}</span>}
           </div>
         )}
         <p className="text-sm whitespace-pre-wrap">{text}</p>
+        {isUser && timestamp && (
+          <div className="flex justify-end mt-1">
+            <span className="text-xs text-white/50">{timestamp}</span>
+          </div>
+        )}
       </div>
     </div>
   );
