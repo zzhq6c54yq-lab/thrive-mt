@@ -1,8 +1,8 @@
 
 import * as React from "react"
 
-// Using a smaller breakpoint to better handle the resized message components
-const MOBILE_BREAKPOINT = 640
+// Using a smaller breakpoint for better responsiveness with compact UI
+const MOBILE_BREAKPOINT = 480
 
 export function useIsMobile() {
   const [isMobile, setIsMobile] = React.useState<boolean | undefined>(undefined)
