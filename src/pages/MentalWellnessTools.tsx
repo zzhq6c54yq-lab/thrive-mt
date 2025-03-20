@@ -578,7 +578,7 @@ const MentalWellnessTools = () => {
             </div>
 
             <div className="mb-10 bg-gradient-to-r from-[#F1F0FB] to-[#F8E8DD] rounded-xl p-8 text-center relative overflow-hidden">
-              <div className="absolute inset-0 bg-[url('data:image/svg+xml;utf8,<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"40\" height=\"40\" viewBox=\"0 0 40 40\"><rect x=\"0\" y=\"0\" width=\"40\" height=\"40\" fill=\"none\" stroke=\"%23B87333\" stroke-opacity=\"0.05\" stroke-width=\"1\" stroke-dasharray=\"1 4\"/></svg>')] opacity-20 z-0"></div>
+              <div className="absolute inset-0 bg-[url('/pattern.svg')] opacity-20 z-0"></div>
               <div className="relative z-10">
                 <h2 className="text-3xl font-light mb-4">Your Personalized Wellness Journey</h2>
                 <p className="text-lg text-muted-foreground mb-6 max-w-3xl mx-auto">
@@ -701,33 +701,33 @@ const MentalWellnessTools = () => {
               initial="hidden"
               animate="visible"
             >
-              {filteredTools.map((category, index) => (
+              {filteredTools.map((tool, index) => (
                 <motion.div
                   key={index}
                   variants={itemVariants}
-                  onMouseEnter={() => setHoveredCardId(category.title)}
+                  onMouseEnter={() => setHoveredCardId(tool.title)}
                   onMouseLeave={() => setHoveredCardId(null)}
                   whileHover={{ y: -5 }}
                 >
                   <Card 
                     className={`feature-card overflow-hidden border-border/50 hover:border-[#B87333]/50 transition-all hover:shadow-lg ${
-                      recommendations.includes(category.title) ? "ring-2 ring-[#B87333]/30" : ""
+                      recommendations.includes(tool.title) ? "ring-2 ring-[#B87333]/30" : ""
                     }`}
                   >
                     <CardHeader className={`pb-4 transition-colors duration-500 ${
-                      hoveredCardId === category.title ? 'bg-gradient-to-r from-white to-[#B87333]/5' : ''
+                      hoveredCardId === tool.title ? 'bg-gradient-to-r from-white to-[#B87333]/5' : ''
                     }`}>
                       <div className="rounded-full bg-[#B87333]/10 w-12 h-12 flex items-center justify-center mb-4">
-                        <category.icon className={`h-6 w-6 text-[#B87333] ${
-                          hoveredCardId === category.title ? 'animate-bounce' : ''
+                        <tool.icon className={`h-6 w-6 text-[#B87333] ${
+                          hoveredCardId === tool.title ? 'animate-bounce' : ''
                         }`} />
                       </div>
-                      <CardTitle className="text-2xl">{category.title}</CardTitle>
-                      <CardDescription className="text-base">{category.description}</CardDescription>
+                      <CardTitle className="text-2xl">{tool.title}</CardTitle>
+                      <CardDescription className="text-base">{tool.description}</CardDescription>
                     </CardHeader>
                     <CardContent>
                       <ul className="space-y-2 mb-6">
-                        {category.features.map((feature, featureIndex) => (
+                        {tool.features.map((feature, featureIndex) => (
                           <li key={featureIndex} className="flex items-start">
                             <span className="text-[#B87333] mr-2 text-lg">•</span>
                             <span className="text-muted-foreground">{feature}</span>
@@ -736,9 +736,9 @@ const MentalWellnessTools = () => {
                       </ul>
                       <Button 
                         className="w-full bg-[#B87333] hover:bg-[#B87333]/90 hero-button"
-                        onClick={() => handleToolSelect(category.title)}
+                        onClick={() => handleToolSelect(tool.title)}
                       >
-                        {category.cta}
+                        {tool.cta}
                       </Button>
                     </CardContent>
                   </Card>
