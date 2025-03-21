@@ -2,22 +2,15 @@
 import React, { useState, useEffect, useRef } from "react";
 import { Dialog, DialogContent } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
-import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import { X, Send, Mic, AlertCircle } from "lucide-react";
-import { generateResponse } from "@/components/help/utils/responseGenerator";
-import { checkForEmergency } from "@/components/help/utils/messageHelpers";
 import { useToast } from "@/hooks/use-toast";
+import HenryHeader from "./components/HenryHeader";
+import { useMessageProcessor, Message } from "./hooks/useMessageProcessor";
 
 interface HenryDialogProps {
   isOpen: boolean;
   onOpenChange: (open: boolean) => void;
   userName?: string;
-}
-
-interface Message {
-  text: string;
-  isUser: boolean;
-  timestamp: Date;
 }
 
 const HenryDialog: React.FC<HenryDialogProps> = ({ 
@@ -27,11 +20,17 @@ const HenryDialog: React.FC<HenryDialogProps> = ({
 }) => {
   const [messages, setMessages] = useState<Message[]>([]);
   const [inputValue, setInputValue] = useState("");
-  const [isProcessing, setIsProcessing] = useState(false);
   const [isListening, setIsListening] = useState(false);
-  const [isEmergency, setIsEmergency] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const { toast } = useToast();
+  
+  // Add a message to the chat
+  const addMessage = (message: Message) => {
+    setMessages(prev => [...prev, message]);
+  };
+  
+  // Use the centralized message processor
+  const { processing, emergencyMode, processMessage } = useMessageProcessor(addMessage);
   
   // Initialize with greeting when dialog opens
   useEffect(() => {
@@ -96,59 +95,8 @@ const HenryDialog: React.FC<HenryDialogProps> = ({
   
   const handleSendMessage = (text: string = inputValue) => {
     if (!text.trim()) return;
-    
-    // Add user message
-    const userMessage: Message = {
-      text: text.trim(),
-      isUser: true,
-      timestamp: new Date()
-    };
-    
-    setMessages(prev => [...prev, userMessage]);
     setInputValue("");
-    setIsProcessing(true);
-    
-    // Check for emergency
-    const emergency = checkForEmergency(text);
-    if (emergency) {
-      setIsEmergency(true);
-      
-      // Emergency response with crisis protocol
-      setTimeout(() => {
-        const emergencyResponse: Message = {
-          text: "I'm concerned about what you're sharing. If you're having thoughts of harming yourself, please call the National Suicide Prevention Lifeline at 988 right away. Would you like me to connect you with our Crisis Support resources?",
-          isUser: false,
-          timestamp: new Date()
-        };
-        
-        setMessages(prev => [...prev, emergencyResponse]);
-        setIsProcessing(false);
-        
-        toast({
-          title: "Crisis Resources Available",
-          description: "Henry has detected concerning content and is ready to provide crisis resources.",
-          variant: "destructive",
-          duration: 10000,
-        });
-      }, 1000);
-      
-      return;
-    }
-    
-    // Generate response after a small delay to feel more natural
-    setTimeout(() => {
-      // Fix: Pass only one argument to generateResponse
-      const response = generateResponse(text);
-      
-      const henryMessage: Message = {
-        text: response,
-        isUser: false,
-        timestamp: new Date()
-      };
-      
-      setMessages(prev => [...prev, henryMessage]);
-      setIsProcessing(false);
-    }, 1500);
+    processMessage(text);
   };
   
   const handleInputChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
@@ -168,26 +116,7 @@ const HenryDialog: React.FC<HenryDialogProps> = ({
         className="sm:max-w-md w-[350px] md:w-[400px] bg-black/90 backdrop-blur-md border border-[#B87333]/50 p-3 max-h-[80vh] overflow-hidden"
       >
         {/* Header */}
-        <div className="flex items-center justify-between border-b border-[#B87333]/30 pb-2">
-          <div className="flex items-center gap-2">
-            <Avatar className="h-10 w-10 border-2 border-[#B87333]/50">
-              <AvatarImage src="/lovable-uploads/f3c84972-8f58-42d7-b86f-82ff2d823b30.png" alt="Henry" />
-              <AvatarFallback className="bg-[#B87333]/20 text-[#B87333]">H</AvatarFallback>
-            </Avatar>
-            <div>
-              <h3 className="text-sm font-medium text-white">Henry</h3>
-              <p className="text-xs text-white/70">Your mental health companion</p>
-            </div>
-          </div>
-          <Button 
-            className="h-8 w-8 rounded-full bg-transparent hover:bg-white/10"
-            variant="ghost"
-            size="icon"
-            onClick={() => onOpenChange(false)}
-          >
-            <X className="h-4 w-4 text-white/70" />
-          </Button>
-        </div>
+        <HenryHeader onClose={() => onOpenChange(false)} />
         
         {/* Messages Area */}
         <div className="flex flex-col space-y-4 py-3 overflow-y-auto max-h-[400px] scrollbar-thin scrollbar-thumb-[#B87333]/20 scrollbar-track-transparent pr-2">
@@ -210,7 +139,7 @@ const HenryDialog: React.FC<HenryDialogProps> = ({
               </div>
             </div>
           ))}
-          {isProcessing && (
+          {processing && (
             <div className="flex justify-start">
               <div className="bg-[#2A2A2A] text-white px-4 py-2 rounded-2xl rounded-tl-none max-w-[80%]">
                 <div className="flex space-x-1">
@@ -225,8 +154,8 @@ const HenryDialog: React.FC<HenryDialogProps> = ({
         </div>
         
         {/* Input Area */}
-        <div className={`relative mt-2 ${isEmergency ? 'border border-red-500 rounded-md p-1' : ''}`}>
-          {isEmergency && (
+        <div className={`relative mt-2 ${emergencyMode ? 'border border-red-500 rounded-md p-1' : ''}`}>
+          {emergencyMode && (
             <div className="bg-red-500/10 text-red-400 p-2 rounded-md mb-2 flex items-start gap-2">
               <AlertCircle className="h-5 w-5 flex-shrink-0 mt-0.5" />
               <span className="text-xs">Crisis support activated. Henry can help connect you to professional resources.</span>
@@ -240,13 +169,13 @@ const HenryDialog: React.FC<HenryDialogProps> = ({
               placeholder="Type your message..."
               className="flex-1 bg-[#2A2A2A] text-white border-none rounded-md p-3 focus:ring-2 focus:ring-[#B87333]/50 resize-none max-h-20 min-h-[40px]"
               rows={1}
-              disabled={isProcessing || isListening}
+              disabled={processing || isListening}
             />
             <div className="flex gap-1">
               <Button
                 type="button"
                 onClick={startListening}
-                disabled={isProcessing || isListening}
+                disabled={processing || isListening}
                 className={`rounded-full w-10 h-10 flex items-center justify-center ${
                   isListening ? 'bg-red-500 animate-pulse' : 'bg-[#B87333]'
                 }`}
@@ -257,7 +186,7 @@ const HenryDialog: React.FC<HenryDialogProps> = ({
               <Button
                 type="button"
                 onClick={() => handleSendMessage()}
-                disabled={!inputValue.trim() || isProcessing}
+                disabled={!inputValue.trim() || processing}
                 className="rounded-full w-10 h-10 flex items-center justify-center bg-[#B87333]"
                 size="icon"
               >
