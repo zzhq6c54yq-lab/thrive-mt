@@ -5,7 +5,7 @@ interface HenryFloatingElementProps {
   showHenry: boolean;
   mousePosition: { x: number; y: number };
   henryPosition: { x: number; y: number };
-  setHenryPosition: (position: { x: number; y: number }) => void;
+  setHenryPosition: React.Dispatch<React.SetStateAction<{ x: number; y: number }>>;
 }
 
 const HenryFloatingElement: React.FC<HenryFloatingElementProps> = ({
@@ -26,6 +26,7 @@ const HenryFloatingElement: React.FC<HenryFloatingElementProps> = ({
       
       const lerp = (start: number, end: number, factor: number) => start + (end - start) * factor;
       
+      // Update with the correct type for the state setter function
       setHenryPosition(prev => ({
         x: lerp(prev.x, targetX, 0.05),
         y: lerp(prev.y, targetY, 0.05)
