@@ -1,10 +1,11 @@
 
 import React from "react";
 import { Button } from "@/components/ui/button";
-import { BookOpen, Filter } from "lucide-react";
+import { BookOpen, Filter, Brain, Sparkles } from "lucide-react";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import QuizCard from "./QuizCard";
 import { Quiz } from "@/data/gamesData";
+import { motion } from "framer-motion";
 
 interface QuizzesSectionProps {
   filteredQuizzes: Quiz[];
@@ -19,17 +20,29 @@ const QuizzesSection: React.FC<QuizzesSectionProps> = ({
   setCategoryFilter,
   onStartQuiz
 }) => {
+  const container = {
+    hidden: { opacity: 0 },
+    show: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.1
+      }
+    }
+  };
+
   return (
     <>
-      <div className="mb-4 flex flex-col sm:flex-row gap-3 justify-between items-start sm:items-center bg-white/50 p-3 rounded-lg backdrop-blur">
+      <div className="mb-6 flex flex-col sm:flex-row gap-3 justify-between items-start sm:items-center bg-white/50 p-4 rounded-xl backdrop-blur shadow-sm">
         <h2 className="text-xl font-semibold text-gray-800 flex items-center gap-2">
-          <BookOpen className="h-5 w-5 text-[#9b87f5]" />
-          <span>Mental Health Quizzes</span>
+          <div className="p-2 rounded-full bg-gradient-to-r from-[#8B5CF6]/20 to-[#0EA5E9]/20">
+            <Brain className="h-5 w-5 text-[#8B5CF6]" />
+          </div>
+          <span>Mental Health Assessment Quizzes</span>
         </h2>
         
         <div className="flex flex-wrap gap-2">
           <Select value={categoryFilter} onValueChange={setCategoryFilter}>
-            <SelectTrigger className="w-[140px] h-9">
+            <SelectTrigger className="w-[160px] h-9 bg-white border-[#8B5CF6]/20">
               <SelectValue placeholder="Category" />
             </SelectTrigger>
             <SelectContent>
@@ -44,8 +57,8 @@ const QuizzesSection: React.FC<QuizzesSectionProps> = ({
           
           <Button 
             variant="outline" 
-            className="h-9 px-3" 
-            onClick={() => setCategoryFilter("")}
+            className="h-9 px-3 border-[#8B5CF6]/20 text-[#8B5CF6] hover:bg-[#8B5CF6]/10" 
+            onClick={() => setCategoryFilter("all")}
           >
             <Filter className="h-4 w-4 mr-1" />
             Reset
@@ -62,7 +75,12 @@ const QuizzesSection: React.FC<QuizzesSectionProps> = ({
           <p className="text-gray-500 mt-1">Try adjusting your search or filters</p>
         </div>
       ) : (
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <motion.div 
+          className="grid grid-cols-1 md:grid-cols-2 gap-6"
+          variants={container}
+          initial="hidden"
+          animate="show"
+        >
           {filteredQuizzes.map((quiz) => (
             <QuizCard 
               key={quiz.id} 
@@ -70,8 +88,20 @@ const QuizzesSection: React.FC<QuizzesSectionProps> = ({
               onStartQuiz={onStartQuiz} 
             />
           ))}
-        </div>
+        </motion.div>
       )}
+
+      <div className="mt-12 text-center">
+        <div className="relative inline-block">
+          <div className="absolute -inset-0.5 bg-gradient-to-r from-[#8B5CF6] to-[#0EA5E9] rounded-full blur"></div>
+          <Button 
+            className="relative bg-white text-[#8B5CF6] hover:bg-[#8B5CF6]/10 border border-[#8B5CF6]/20 shadow-sm px-6"
+          >
+            <Sparkles className="h-4 w-4 mr-2" />
+            Explore all quizzes
+          </Button>
+        </div>
+      </div>
     </>
   );
 };

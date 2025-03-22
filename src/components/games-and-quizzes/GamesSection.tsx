@@ -1,10 +1,11 @@
 
 import React from "react";
 import { Button } from "@/components/ui/button";
-import { Filter, Gamepad } from "lucide-react";
+import { Filter, Gamepad, Sparkles } from "lucide-react";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import GameCard from "./GameCard";
 import { Game } from "@/data/gamesData";
+import { motion } from "framer-motion";
 
 interface GamesSectionProps {
   filteredGames: Game[];
@@ -23,17 +24,29 @@ const GamesSection: React.FC<GamesSectionProps> = ({
   setTypeFilter,
   onStartGame
 }) => {
+  const container = {
+    hidden: { opacity: 0 },
+    show: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.1
+      }
+    }
+  };
+
   return (
     <>
-      <div className="mb-4 flex flex-col sm:flex-row gap-3 justify-between items-start sm:items-center bg-white/50 p-3 rounded-lg backdrop-blur">
+      <div className="mb-6 flex flex-col sm:flex-row gap-3 justify-between items-start sm:items-center bg-white/50 p-4 rounded-xl backdrop-blur shadow-sm">
         <h2 className="text-xl font-semibold text-gray-800 flex items-center gap-2">
-          <Gamepad className="h-5 w-5 text-[#9b87f5]" />
-          <span>Mental Wellness Games</span>
+          <div className="p-2 rounded-full bg-gradient-to-r from-[#9b87f5]/20 to-[#D946EF]/20">
+            <Gamepad className="h-5 w-5 text-[#9b87f5]" />
+          </div>
+          <span>Therapeutic Mental Wellness Games</span>
         </h2>
         
         <div className="flex flex-wrap gap-2">
           <Select value={difficultyFilter} onValueChange={setDifficultyFilter}>
-            <SelectTrigger className="w-[130px] h-9">
+            <SelectTrigger className="w-[130px] h-9 bg-white border-[#9b87f5]/20">
               <SelectValue placeholder="Difficulty" />
             </SelectTrigger>
             <SelectContent>
@@ -45,7 +58,7 @@ const GamesSection: React.FC<GamesSectionProps> = ({
           </Select>
           
           <Select value={typeFilter} onValueChange={setTypeFilter}>
-            <SelectTrigger className="w-[130px] h-9">
+            <SelectTrigger className="w-[130px] h-9 bg-white border-[#9b87f5]/20">
               <SelectValue placeholder="Game Type" />
             </SelectTrigger>
             <SelectContent>
@@ -62,10 +75,10 @@ const GamesSection: React.FC<GamesSectionProps> = ({
           
           <Button 
             variant="outline" 
-            className="h-9 px-3" 
+            className="h-9 px-3 border-[#9b87f5]/20 text-[#9b87f5] hover:bg-[#9b87f5]/10" 
             onClick={() => {
-              setDifficultyFilter("");
-              setTypeFilter("");
+              setDifficultyFilter("all");
+              setTypeFilter("all");
             }}
           >
             <Filter className="h-4 w-4 mr-1" />
@@ -83,7 +96,12 @@ const GamesSection: React.FC<GamesSectionProps> = ({
           <p className="text-gray-500 mt-1">Try adjusting your search or filters</p>
         </div>
       ) : (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <motion.div 
+          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
+          variants={container}
+          initial="hidden"
+          animate="show"
+        >
           {filteredGames.map((game) => (
             <GameCard 
               key={game.id} 
@@ -91,8 +109,20 @@ const GamesSection: React.FC<GamesSectionProps> = ({
               onStartGame={onStartGame} 
             />
           ))}
-        </div>
+        </motion.div>
       )}
+
+      <div className="mt-12 text-center">
+        <div className="relative inline-block">
+          <div className="absolute -inset-0.5 bg-gradient-to-r from-[#9b87f5] to-[#D946EF] rounded-full blur"></div>
+          <Button 
+            className="relative bg-white text-[#9b87f5] hover:bg-[#9b87f5]/10 border border-[#9b87f5]/20 shadow-sm px-6"
+          >
+            <Sparkles className="h-4 w-4 mr-2" />
+            View more games
+          </Button>
+        </div>
+      </div>
     </>
   );
 };

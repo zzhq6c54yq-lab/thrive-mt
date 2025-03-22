@@ -31,10 +31,10 @@ const FeaturedWorkshops: React.FC<FeaturedWorkshopsProps> = ({ navigate }) => {
       duration: 1500,
     });
     
-    // Navigate directly to the workshop page with active content tab
+    // Navigate directly to the workshop page with active workshop content tab
     navigate(`/workshop/${workshopId}`, { 
       state: { 
-        activeTab: "content",
+        activeTab: "workshop", 
         showWorksheets: true,
         showExercises: true,
         showVideos: true,

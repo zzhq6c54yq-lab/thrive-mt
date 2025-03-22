@@ -1,7 +1,7 @@
 
 import React, { useState } from "react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Gamepad, HelpCircle } from "lucide-react";
+import { Gamepad, HelpCircle, Sparkles } from "lucide-react";
 import { gamesData, quizzesData, Game, Quiz } from "@/data/gamesData";
 import Header from "@/components/layout/Header";
 import GameMemoryMatch from "@/components/games/GameMemoryMatch";
@@ -129,24 +129,39 @@ const GamesAndQuizzes = () => {
       <Header />
       
       <div className="container mx-auto max-w-6xl px-4 py-8">
+        <div className="mb-8 text-center">
+          <h1 className="text-4xl font-bold mb-3 text-transparent bg-clip-text bg-gradient-to-r from-[#9b87f5] via-[#D946EF] to-[#8B5CF6]">
+            Games & Quizzes for Mental Wellness
+          </h1>
+          <p className="text-lg text-gray-600 max-w-2xl mx-auto">
+            Have fun while improving your mental wellbeing with our engaging games and insightful quizzes
+          </p>
+          <div className="mt-4">
+            <div className="inline-block relative">
+              <div className="absolute -inset-1 bg-gradient-to-r from-[#9b87f5] to-[#D946EF] rounded-lg blur opacity-30"></div>
+              <Sparkles className="h-8 w-8 text-[#9b87f5] mx-auto" />
+            </div>
+          </div>
+        </div>
+        
         <SearchHeader 
           searchTerm={searchTerm} 
           setSearchTerm={setSearchTerm} 
         />
         
         <Tabs defaultValue="games" className="mb-8">
-          <TabsList className="mb-6">
-            <TabsTrigger value="games" className="flex items-center gap-2">
-              <Gamepad className="h-4 w-4" />
+          <TabsList className="mb-6 mx-auto w-[80%] max-w-md bg-white/50 backdrop-blur h-14 p-1">
+            <TabsTrigger value="games" className="flex items-center gap-2 h-12 text-base">
+              <Gamepad className="h-5 w-5" />
               <span>Therapeutic Games</span>
             </TabsTrigger>
-            <TabsTrigger value="quizzes" className="flex items-center gap-2">
-              <HelpCircle className="h-4 w-4" />
+            <TabsTrigger value="quizzes" className="flex items-center gap-2 h-12 text-base">
+              <HelpCircle className="h-5 w-5" />
               <span>Mental Health Quizzes</span>
             </TabsTrigger>
           </TabsList>
           
-          <TabsContent value="games">
+          <TabsContent value="games" className="animate-fade-in">
             <GamesSection 
               filteredGames={searchTerm || difficultyFilter || typeFilter ? filteredGames : featuredGames}
               difficultyFilter={difficultyFilter}
@@ -157,7 +172,7 @@ const GamesAndQuizzes = () => {
             />
           </TabsContent>
           
-          <TabsContent value="quizzes">
+          <TabsContent value="quizzes" className="animate-fade-in">
             <QuizzesSection 
               filteredQuizzes={searchTerm || categoryFilter ? filteredQuizzes : featuredQuizzes}
               categoryFilter={categoryFilter}
