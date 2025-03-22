@@ -37,6 +37,9 @@ const GameCard: React.FC<GameCardProps> = ({ game, onStartGame }) => {
     }
   };
 
+  // Default rating of 4 if not present in the Game type
+  const rating = 4;
+
   return (
     <motion.div variants={item}>
       <Card className="group h-full flex flex-col overflow-hidden hover:shadow-xl transition-all duration-300 border border-white bg-white/90 backdrop-blur">
@@ -72,7 +75,7 @@ const GameCard: React.FC<GameCardProps> = ({ game, onStartGame }) => {
               {[1, 2, 3, 4, 5].map((star) => (
                 <Star 
                   key={star} 
-                  className={`h-4 w-4 ${star <= game.rating ? 'text-amber-400 fill-amber-400' : 'text-gray-200'}`} 
+                  className={`h-4 w-4 ${star <= rating ? 'text-amber-400 fill-amber-400' : 'text-gray-200'}`} 
                 />
               ))}
             </div>
