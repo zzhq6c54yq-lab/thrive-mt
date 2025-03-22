@@ -23,10 +23,14 @@ const HenryFloatingElement: React.FC<HenryFloatingElementProps> = ({
   const [showIntroDialog, setShowIntroDialog] = useState(false);
   const [showConversationDialog, setShowConversationDialog] = useState(false);
 
-  // Show the intro dialog when Henry first appears
+  // Only show the intro dialog if it hasn't been shown before
   useEffect(() => {
     if (showHenry) {
-      setShowIntroDialog(true);
+      const henryIntroShown = localStorage.getItem('henryIntroShown') === 'true';
+      if (!henryIntroShown) {
+        setShowIntroDialog(true);
+        localStorage.setItem('henryIntroShown', 'true');
+      }
     }
   }, [showHenry]);
 

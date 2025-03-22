@@ -3,7 +3,7 @@ import React, { useState, useEffect } from "react";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/hooks/use-toast";
-import MessageList from "@/components/shared/MessageList"; // Update import
+import MessageList from "@/components/shared/MessageList"; // Updated import path
 import MessageInput from "./help/MessageInput";
 import { useMessageProcessor, Message } from "@/components/henry/hooks/useMessageProcessor";
 

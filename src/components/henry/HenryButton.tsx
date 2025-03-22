@@ -20,6 +20,12 @@ const HenryButton: React.FC<HenryButtonProps> = ({
   const location = useLocation();
   const isHomePath = location.pathname === '/';
 
+  // Check if Henry intro has been shown before using localStorage
+  useEffect(() => {
+    const henryIntroShown = localStorage.getItem('henryIntroShown') === 'true';
+    setIntroShown(henryIntroShown);
+  }, []);
+
   // Check path and determine if button should be visible
   // Don't show on home path during initial screens
   const [isVisible, setIsVisible] = useState(true);
@@ -40,9 +46,13 @@ const HenryButton: React.FC<HenryButtonProps> = ({
 
   // Show intro dialog when arriving at main for the first time
   useEffect(() => {
-    if (triggerInitialGreeting && !introShown) {
+    const fromOnboarding = triggerInitialGreeting && !introShown;
+    
+    if (fromOnboarding) {
       setShowIntroDialog(true);
       setIntroShown(true);
+      // Store that Henry intro has been shown
+      localStorage.setItem('henryIntroShown', 'true');
     }
   }, [triggerInitialGreeting, introShown]);
 

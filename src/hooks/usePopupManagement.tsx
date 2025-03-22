@@ -23,14 +23,11 @@ export const usePopupManagement = (screenState: string) => {
         setPopupsShown(prev => ({ ...prev, coPayCredit: true }));
       }
       
-      // Always show Henry when navigating to main from other screens
-      setShowHenry(true);
-      
-      // Set a timer to mark Henry intro as shown if it wasn't shown yet
+      // Show Henry only when navigating to main from registration or vision board
+      // and if it hasn't been shown before
       if (!popupsShown.henryIntro) {
-        setTimeout(() => {
-          setPopupsShown(prev => ({ ...prev, henryIntro: true }));
-        }, 500);
+        setShowHenry(true);
+        setPopupsShown(prev => ({ ...prev, henryIntro: true }));
       }
     }
   }, [screenState, popupsShown]);
