@@ -37,7 +37,7 @@ const GamesSection: React.FC<GamesSectionProps> = ({
               <SelectValue placeholder="Difficulty" />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="">All Difficulties</SelectItem>
+              <SelectItem value="all">All Difficulties</SelectItem>
               <SelectItem value="easy">Easy</SelectItem>
               <SelectItem value="medium">Medium</SelectItem>
               <SelectItem value="hard">Hard</SelectItem>
@@ -49,7 +49,7 @@ const GamesSection: React.FC<GamesSectionProps> = ({
               <SelectValue placeholder="Game Type" />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="">All Types</SelectItem>
+              <SelectItem value="all">All Types</SelectItem>
               <SelectItem value="memory">Memory</SelectItem>
               <SelectItem value="puzzle">Puzzle</SelectItem>
               <SelectItem value="reaction">Reaction</SelectItem>

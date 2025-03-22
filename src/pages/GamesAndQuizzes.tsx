@@ -41,8 +41,8 @@ const GamesAndQuizzes = () => {
   const filteredGames = gamesData.filter(game => {
     const matchesSearch = game.title.toLowerCase().includes(searchTerm.toLowerCase()) || 
                          game.description.toLowerCase().includes(searchTerm.toLowerCase());
-    const matchesDifficulty = difficultyFilter ? game.difficulty === difficultyFilter : true;
-    const matchesType = typeFilter ? game.type === typeFilter : true;
+    const matchesDifficulty = difficultyFilter === "" || difficultyFilter === "all" ? true : game.difficulty === difficultyFilter;
+    const matchesType = typeFilter === "" || typeFilter === "all" ? true : game.type === typeFilter;
     
     return matchesSearch && matchesDifficulty && matchesType;
   });
@@ -50,7 +50,7 @@ const GamesAndQuizzes = () => {
   const filteredQuizzes = quizzesData.filter(quiz => {
     const matchesSearch = quiz.title.toLowerCase().includes(searchTerm.toLowerCase()) || 
                          quiz.description.toLowerCase().includes(searchTerm.toLowerCase());
-    const matchesCategory = categoryFilter ? quiz.category === categoryFilter : true;
+    const matchesCategory = categoryFilter === "" || categoryFilter === "all" ? true : quiz.category === categoryFilter;
     
     return matchesSearch && matchesCategory;
   });

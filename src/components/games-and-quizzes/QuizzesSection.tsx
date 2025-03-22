@@ -33,7 +33,7 @@ const QuizzesSection: React.FC<QuizzesSectionProps> = ({
               <SelectValue placeholder="Category" />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="">All Categories</SelectItem>
+              <SelectItem value="all">All Categories</SelectItem>
               <SelectItem value="mental-health">Mental Health</SelectItem>
               <SelectItem value="wellbeing">Wellbeing</SelectItem>
               <SelectItem value="coping-strategies">Coping Strategies</SelectItem>
