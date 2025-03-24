@@ -1,7 +1,7 @@
 
 import React, { useState } from "react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Gamepad, HelpCircle, Sparkles } from "lucide-react";
+import { Gamepad, HelpCircle, Sparkles, Home } from "lucide-react";
 import { gamesData, quizzesData, Game, Quiz } from "@/data/gamesData";
 import Header from "@/components/layout/Header";
 import GameMemoryMatch from "@/components/games/GameMemoryMatch";
@@ -152,12 +152,13 @@ const GamesAndQuizzes = () => {
           </div>
         </div>
         
-        {/* Add main menu button */}
+        {/* Main Menu button */}
         <div className="flex justify-end mb-4">
           <Button 
             onClick={handleMainMenu}
-            className="bg-gradient-to-r from-[#9b87f5] to-[#D946EF] text-white"
+            className="bg-gradient-to-r from-[#9b87f5] to-[#D946EF] text-white flex items-center gap-2"
           >
+            <Home size={18} />
             Main Menu
           </Button>
         </div>

@@ -31,6 +31,55 @@ const MainDashboard: React.FC<MainDashboardProps> = ({
   navigateToFeature
 }) => {
   const navigate = useNavigate();
+  const { toast } = useToast();
+  
+  // Function to handle featured workshop clicks
+  const handleWorkshopClick = (workshopId: string, workshopTitle: string) => {
+    toast({
+      title: "Opening Workshop",
+      description: `Loading "${workshopTitle}" workshop content...`,
+      duration: 1500
+    });
+    
+    // Based on the workshop ID, navigate to the appropriate content
+    switch(workshopId) {
+      case "mindful-communication":
+        navigate("/workshop/mindful-communication", { 
+          state: { workshopTitle: "Mindful Communication" } 
+        });
+        break;
+      case "emotional-regulation":
+        navigate("/workshop/emotional-regulation", {
+          state: { workshopTitle: "Emotional Regulation" }
+        });
+        break;
+      case "stress-management":
+        navigate("/workshop/stress-management", {
+          state: { workshopTitle: "Stress Management" }
+        });
+        break;
+      default:
+        // If it's a military workshop
+        if (workshopId.startsWith("military-")) {
+          const militaryWorkshopId = workshopId.replace("military-", "");
+          navigate(`/military-workshop/${militaryWorkshopId}`);
+        } 
+        // If it's a corporate workshop
+        else if (workshopId.startsWith("corporate-")) {
+          const corporateWorkshopId = workshopId.replace("corporate-", "");
+          navigate("/corporate-wellness", { 
+            state: { 
+              workshop: workshopTitle, 
+              showWorkshopContent: true 
+            } 
+          });
+        }
+        // For any other workshop type
+        else {
+          navigate(`/workshop/${workshopId}`);
+        }
+    }
+  };
   
   return (
     <div className="min-h-screen bg-gradient-to-b from-[#1a1a20] via-[#252535] to-[#2d2d3d] text-white pt-6 pb-20 px-4 relative overflow-hidden">
@@ -62,12 +111,13 @@ const MainDashboard: React.FC<MainDashboardProps> = ({
           <QuizzesSection />
         </div>
         
-        <FeaturedWorkshops navigate={navigate} />
+        <FeaturedWorkshops 
+          navigate={navigate} 
+          onWorkshopClick={handleWorkshopClick}
+        />
 
         <KeyFeatures />
       </div>
-      
-      {/* Removed HenryButton component from here as it's redundant */}
     </div>
   );
 };

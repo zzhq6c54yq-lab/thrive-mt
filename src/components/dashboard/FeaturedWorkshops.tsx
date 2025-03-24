@@ -1,188 +1,92 @@
 
-import React, { useState } from "react";
+import React from "react";
+import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { workshopData } from "@/data/workshopData";
+import { CalendarDays, Users, ArrowRight } from "lucide-react";
 import { NavigateFunction } from "react-router-dom";
-import { Play, Pause, Volume2, Volume, ExternalLink, Calendar, Sparkles } from "lucide-react";
-import { useToast } from "@/hooks/use-toast";
 
 interface FeaturedWorkshopsProps {
   navigate: NavigateFunction;
+  onWorkshopClick: (workshopId: string, workshopTitle: string) => void;
 }
 
-const FeaturedWorkshops: React.FC<FeaturedWorkshopsProps> = ({ navigate }) => {
-  const { toast } = useToast();
-  const featuredWorkshops = workshopData.slice(0, 3);
-  const [activeVideoIndex, setActiveVideoIndex] = useState<number | null>(null);
-  const [isMuted, setIsMuted] = useState(true);
-
-  const toggleVideo = (index: number) => {
-    setActiveVideoIndex(activeVideoIndex === index ? null : index);
-  };
-
-  const toggleMute = () => {
-    setIsMuted(!isMuted);
-  };
-
-  const handleWorkshopJoin = (workshopId: string) => {
-    toast({
-      title: "Joining Workshop",
-      description: "Taking you to the workshop content",
-      duration: 1500,
-    });
-    
-    // Navigate directly to the workshop page with active workshop content tab
-    navigate(`/workshop/${workshopId}`, { 
-      state: { 
-        activeTab: "workshop", 
-        showWorksheets: true,
-        showExercises: true,
-        showVideos: true,
-        showResources: true,
-        duration: 45, // 45 minute workshop
-        fromDashboard: true // Flag indicating this navigation came from dashboard
-      } 
-    });
-  };
+const FeaturedWorkshops: React.FC<FeaturedWorkshopsProps> = ({ navigate, onWorkshopClick }) => {
+  const workshops = [
+    {
+      id: "mindful-communication",
+      title: "Mindful Communication",
+      description: "Learn effective communication techniques rooted in mindfulness principles to improve relationships.",
+      instructor: "Dr. Sarah Johnson",
+      date: "Tuesdays & Thursdays",
+      image: "https://images.unsplash.com/photo-1573497620053-ea5300f94f21?ixlib=rb-1.2.1&auto=format&fit=crop&w=1000&q=80"
+    },
+    {
+      id: "emotional-regulation",
+      title: "Emotional Regulation",
+      description: "Develop skills to manage difficult emotions and respond rather than react to challenging situations.",
+      instructor: "Dr. Michael Chen",
+      date: "Mondays & Wednesdays",
+      image: "https://images.unsplash.com/photo-1499209974431-9dddcece7f88?ixlib=rb-1.2.1&auto=format&fit=crop&w=1000&q=80"
+    },
+    {
+      id: "stress-management",
+      title: "Stress Management",
+      description: "Evidence-based strategies to reduce stress and build resilience in high-pressure environments.",
+      instructor: "Dr. Robert Taylor",
+      date: "Fridays",
+      image: "https://images.unsplash.com/photo-1506126613408-eca07ce68773?ixlib=rb-1.2.1&auto=format&fit=crop&w=1000&q=80"
+    }
+  ];
 
   return (
     <div className="mb-12">
-      <div className="mb-6 relative">
-        <h2 className="text-3xl font-bold inline-flex items-center gap-3 relative">
-          <Calendar className="h-6 w-6 text-[#B87333]" />
-          <span className="gradient-heading text-transparent bg-clip-text bg-gradient-to-r from-[#B87333] via-[#E5C5A1] to-[#B87333] tracking-tight">
-            Monthly Featured Workshops
-          </span>
-        </h2>
-        <div className="absolute -bottom-2 left-0 w-72 h-[2px] bg-gradient-to-r from-[#B87333] via-[#E5C5A1] to-transparent"></div>
+      <div className="flex justify-between items-center mb-6">
+        <h2 className="text-2xl font-bold">Monthly Featured Workshops</h2>
+        <Button 
+          variant="link" 
+          className="text-[#E5C5A1] px-0 flex items-center"
+          onClick={() => navigate("/workshops")}
+        >
+          View All
+          <ArrowRight className="ml-1 h-4 w-4" />
+        </Button>
       </div>
       
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-        {featuredWorkshops.map((workshop, index) => {
-          const colorClass = workshop.color.split(' ')[0];
-          const accentColor = colorClass.includes('bg-[') 
-            ? colorClass.replace('bg-[', '').replace(']/10', '') 
-            : '#9b87f5';
-          const isActive = activeVideoIndex === index;
-            
-          return (
-            <div 
-              key={workshop.id}
-              className="relative rounded-xl overflow-hidden shadow-md transition-all duration-300 hover:shadow-xl transform hover:scale-[1.01] group h-full"
-              style={{
-                background: `linear-gradient(135deg, #ffffff 0%, #f6f6f6 100%)`,
-                borderLeft: `4px solid ${accentColor}`
-              }}
-            >
-              <div className="p-6 flex flex-col h-full">
-                <div className="flex justify-between items-start mb-3">
-                  <div 
-                    className="p-3 rounded-full"
-                    style={{ background: `${accentColor}15` }}
-                  >
-                    <workshop.icon className="h-6 w-6" style={{ color: accentColor }} />
-                  </div>
-                  <Button 
-                    variant="ghost" 
-                    size="icon"
-                    className="h-8 w-8 rounded-full hover:bg-gray-200/80"
-                    onClick={() => toggleVideo(index)}
-                  >
-                    {isActive ? 
-                      <Pause className="h-4 w-4 text-gray-700" /> : 
-                      <Play className="h-4 w-4 text-gray-700" />
-                    }
-                  </Button>
-                </div>
-                
-                <h3 className="text-xl font-semibold mb-2" style={{ color: accentColor }}>
-                  {workshop.title}
-                </h3>
-                
-                {isActive ? (
-                  <div className="relative mb-4 flex-grow rounded-md overflow-hidden bg-black/5">
-                    <div className="aspect-video rounded-md overflow-hidden flex items-center justify-center bg-gradient-to-br from-gray-100 to-gray-200">
-                      <video 
-                        className="w-full h-full object-cover"
-                        autoPlay
-                        loop
-                        muted={isMuted}
-                        poster={`https://picsum.photos/seed/${workshop.id}/640/360`}
-                      >
-                        <source src="https://interactive-examples.mdn.mozilla.net/media/cc0-videos/flower.mp4" type="video/mp4" />
-                        Your browser does not support the video tag.
-                      </video>
-                      
-                      <div className="absolute bottom-2 right-2 flex gap-2">
-                        <Button
-                          variant="outline"
-                          size="icon"
-                          className="h-8 w-8 bg-white/80 backdrop-blur-sm rounded-full hover:bg-white"
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            toggleMute();
-                          }}
-                        >
-                          {isMuted ? 
-                            <Volume className="h-4 w-4" /> : 
-                            <Volume2 className="h-4 w-4" />
-                          }
-                        </Button>
-                        <Button
-                          variant="outline"
-                          size="icon"
-                          className="h-8 w-8 bg-white/80 backdrop-blur-sm rounded-full hover:bg-white"
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            window.open(`/workshop/${workshop.id}`, '_blank');
-                          }}
-                        >
-                          <ExternalLink className="h-4 w-4" />
-                        </Button>
-                      </div>
-                    </div>
-                    
-                    <div className="mt-2 text-sm text-gray-600">
-                      <p>Preview: {workshop.title} introduction</p>
-                    </div>
-                  </div>
-                ) : (
-                  <p className="text-gray-600 mb-4 text-sm flex-grow">
-                    {workshop.description}
-                  </p>
-                )}
-                
-                <div className="mt-auto pt-2">
-                  <Button 
-                    className="w-full flex items-center justify-center gap-2 hover:shadow-md"
-                    style={{ 
-                      backgroundColor: accentColor,
-                      color: '#fff'
-                    }}
-                    onClick={() => handleWorkshopJoin(workshop.id)}
-                  >
-                    Join Workshop
-                  </Button>
-                </div>
-              </div>
-              
-              <div 
-                className="absolute inset-0 opacity-0 group-hover:opacity-10 transition-opacity duration-300"
-                style={{ background: accentColor }}
-              ></div>
+        {workshops.map((workshop) => (
+          <Card key={workshop.id} className="bg-[#252535] border-[#3d3d5c] rounded-lg hover:bg-[#2a2a40] transition-colors">
+            <div className="aspect-video overflow-hidden relative">
+              <img 
+                src={workshop.image} 
+                alt={workshop.title} 
+                className="w-full h-full object-cover rounded-t-lg"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-[#1a1a20] to-transparent opacity-60"></div>
             </div>
-          );
-        })}
-      </div>
-      
-      <div className="mt-6 text-center">
-        <Button
-          variant="outline" 
-          className="border-[#B87333] text-[#B87333] hover:bg-[#B87333]/10"
-          onClick={() => navigate("/workshops")}
-        >
-          View All Workshops
-        </Button>
+            <CardHeader className="pb-2">
+              <CardTitle className="text-white text-xl">{workshop.title}</CardTitle>
+              <CardDescription className="text-gray-400">{workshop.description}</CardDescription>
+            </CardHeader>
+            <CardContent className="pb-2">
+              <div className="flex items-center text-gray-400 mb-1">
+                <Users className="mr-2 h-4 w-4 text-[#E5C5A1]" />
+                <span className="text-sm">{workshop.instructor}</span>
+              </div>
+              <div className="flex items-center text-gray-400">
+                <CalendarDays className="mr-2 h-4 w-4 text-[#E5C5A1]" />
+                <span className="text-sm">{workshop.date}</span>
+              </div>
+            </CardContent>
+            <CardFooter>
+              <Button 
+                className="w-full bg-[#B87333] hover:bg-[#a66a2e] text-white"
+                onClick={() => onWorkshopClick(workshop.id, workshop.title)}
+              >
+                View Workshop
+              </Button>
+            </CardFooter>
+          </Card>
+        ))}
       </div>
     </div>
   );
