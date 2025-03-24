@@ -1,3 +1,4 @@
+
 import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
 import { Toaster } from "@/components/ui/toaster";
 import Index from "@/pages/Index";
@@ -25,6 +26,7 @@ import Scheduling from "@/pages/Scheduling";
 import PrivacySecurity from "@/pages/PrivacySecurity";
 import FamilySupport from "@/pages/FamilySupport";
 import AlternativeTherapies from "@/pages/AlternativeTherapies";
+import AlternativeTherapyDetail from "@/pages/AlternativeTherapyDetail";
 import MindfulnessSleep from "@/pages/MindfulnessSleep";
 import SelfHelpResources from "@/pages/SelfHelpResources";
 import Journaling from "@/pages/Journaling";
@@ -77,6 +79,7 @@ function App() {
         <Route path="/holistic-wellness" element={<HolisticWellness />} />
         <Route path="/family-support" element={<FamilySupport />} />
         <Route path="/alternative-therapies" element={<AlternativeTherapies />} />
+        <Route path="/alternative-therapies/:therapyId" element={<AlternativeTherapyDetail />} />
         <Route path="/mindfulness" element={<MindfulnessSleep />} />
         <Route path="/self-help-resources" element={<SelfHelpResources />} />
         <Route path="/journaling" element={<Journaling />} />

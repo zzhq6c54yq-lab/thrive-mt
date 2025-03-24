@@ -1,22 +1,580 @@
-import React from "react";
+
+import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { ArrowLeft, Heart, BookOpen, Compass, Film, Dumbbell, PenTool, Music, CloudRain, Moon } from "lucide-react";
+import { 
+  ArrowLeft, Heart, BookOpen, Compass, Film, Dumbbell, PenTool, Music, 
+  CloudRain, Moon, Coffee, Brain, Gem, Fruit, Award, UserPlus, Snowflake 
+} from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetDescription, SheetClose } from "@/components/ui/sheet";
 import { useToast } from "@/hooks/use-toast";
 import HomeButton from "@/components/HomeButton";
 
 const AlternativeTherapies = () => {
   const navigate = useNavigate();
   const { toast } = useToast();
+  const [selectedTherapy, setSelectedTherapy] = useState<Therapy | null>(null);
 
-  const handleTherapyClick = (therapy: string) => {
+  // Therapy data structure
+  type Therapy = {
+    id: string;
+    name: string;
+    icon: React.ReactNode;
+    shortDescription: string;
+    description: string;
+    benefits: string[];
+    tags: string[];
+    resources: {
+      title: string;
+      type: "article" | "video" | "app" | "book";
+      url: string;
+      description: string;
+    }[];
+    practitioners?: string[];
+  };
+
+  // Define therapy data
+  const therapies: Record<string, Therapy[]> = {
+    "creative": [
+      {
+        id: "art-therapy",
+        name: "Art Therapy",
+        icon: <PenTool className="h-5 w-5 text-blue-500" />,
+        shortDescription: "Visual expression of emotions and experiences",
+        description: "Art therapy uses creative processes like drawing, painting, and sculpting to help people express emotions, reduce stress, and increase self-awareness. It's particularly helpful for those who struggle with verbal expression or have experienced trauma.",
+        benefits: ["Emotional expression without words", "Processing trauma", "Reducing anxiety and stress", "Improving self-esteem", "Developing healthy coping skills"],
+        tags: ["Trauma Processing", "Emotional Release", "Self-Discovery"],
+        resources: [
+          {
+            title: "American Art Therapy Association",
+            type: "article",
+            url: "https://arttherapy.org/",
+            description: "Professional association providing resources and therapist directory"
+          },
+          {
+            title: "Introduction to Art Therapy Techniques",
+            type: "book",
+            url: "#",
+            description: "Comprehensive guide for beginners exploring art therapy"
+          },
+          {
+            title: "Healing Through Art",
+            type: "video",
+            url: "#",
+            description: "Documentary exploring the healing power of artistic expression"
+          }
+        ],
+        practitioners: ["Licensed Art Therapists", "Mental Health Counselors with Art Therapy training"]
+      },
+      {
+        id: "music-therapy",
+        name: "Music Therapy",
+        icon: <Music className="h-5 w-5 text-blue-500" />,
+        shortDescription: "Sonic exploration of emotional landscapes",
+        description: "Music therapy uses musical elements like rhythm, melody, and harmony to address physical, emotional, cognitive, and social needs. It can involve listening to, creating, or moving to music under the guidance of a qualified therapist.",
+        benefits: ["Reducing stress and anxiety", "Improving mood", "Enhancing memory and cognitive function", "Facilitating emotional expression", "Building social connections"],
+        tags: ["Mood Regulation", "Cognitive Function", "Social Connection"],
+        resources: [
+          {
+            title: "American Music Therapy Association",
+            type: "article",
+            url: "https://www.musictherapy.org/",
+            description: "Professional organization for music therapy resources and education"
+          },
+          {
+            title: "Music Therapy for Anxiety",
+            type: "app",
+            url: "#",
+            description: "App featuring therapeutic music compositions for anxiety relief"
+          },
+          {
+            title: "The Science of Music Therapy",
+            type: "video",
+            url: "#",
+            description: "Research-based documentary on music therapy effectiveness"
+          }
+        ],
+        practitioners: ["Board-Certified Music Therapists", "Neurologic Music Therapists"]
+      },
+      {
+        id: "drama-therapy",
+        name: "Drama Therapy",
+        icon: <Film className="h-5 w-5 text-blue-500" />,
+        shortDescription: "Theatrical approaches to personal growth",
+        description: "Drama therapy uses theater techniques like role-play, storytelling, and improvisation to promote psychological growth and healing. It provides a safe space to explore difficult emotions and practice new behaviors.",
+        benefits: ["Exploring alternative perspectives", "Practicing social skills", "Processing emotional conflicts", "Building confidence", "Developing empathy"],
+        tags: ["Role Exploration", "Narrative Therapy", "Emotional Catharsis"],
+        resources: [
+          {
+            title: "North American Drama Therapy Association",
+            type: "article",
+            url: "https://www.nadta.org/",
+            description: "Professional organization for drama therapy"
+          },
+          {
+            title: "Drama Therapy Techniques for Everyday Life",
+            type: "book",
+            url: "#",
+            description: "Practical guide to incorporating drama therapy methods"
+          },
+          {
+            title: "Transformation Through Performance",
+            type: "video",
+            url: "#",
+            description: "Case studies of drama therapy success stories"
+          }
+        ],
+        practitioners: ["Registered Drama Therapists", "Licensed Mental Health Counselors with drama therapy training"]
+      },
+      {
+        id: "expressive-writing",
+        name: "Expressive Writing",
+        icon: <BookOpen className="h-5 w-5 text-blue-500" />,
+        shortDescription: "Processing emotions through written expression",
+        description: "Expressive writing therapy involves writing about thoughts and feelings related to traumatic or stressful events. Research shows it can help process difficult experiences and improve psychological well-being.",
+        benefits: ["Processing trauma", "Gaining perspective on problems", "Reducing rumination", "Organizing thoughts", "Emotional release"],
+        tags: ["Emotional Processing", "Stress Reduction", "Self-Reflection"],
+        resources: [
+          {
+            title: "Expressive Writing: Words that Heal",
+            type: "book",
+            url: "#",
+            description: "Guide by James Pennebaker, pioneer in therapeutic writing research"
+          },
+          {
+            title: "Therapeutic Writing Prompts",
+            type: "app",
+            url: "#",
+            description: "Daily guided writing exercises for mental health"
+          },
+          {
+            title: "The Healing Power of Writing",
+            type: "article",
+            url: "#",
+            description: "Research overview of writing as therapy"
+          }
+        ],
+        practitioners: ["Mental Health Counselors", "Psychologists", "Writing Therapists"]
+      }
+    ],
+    "mind-body": [
+      {
+        id: "yoga-movement",
+        name: "Yoga & Movement",
+        icon: <Dumbbell className="h-5 w-5 text-blue-500" />,
+        shortDescription: "Physical practices with mental benefits",
+        description: "Yoga integrates physical postures, breathwork, and meditation to reduce stress, improve flexibility, and enhance mind-body awareness. Different styles range from gentle restorative practices to more vigorous forms.",
+        benefits: ["Reducing stress and anxiety", "Improving physical flexibility", "Enhancing mind-body connection", "Promoting better sleep", "Building strength and balance"],
+        tags: ["Stress Reduction", "Mind-Body Connection", "Physical Wellness"],
+        resources: [
+          {
+            title: "Yoga for Mental Health",
+            type: "video",
+            url: "#",
+            description: "Series of yoga practices specifically for anxiety and depression"
+          },
+          {
+            title: "Trauma-Sensitive Yoga",
+            type: "article",
+            url: "#",
+            description: "Guide to yoga practices adapted for trauma survivors"
+          },
+          {
+            title: "Yoga Journal",
+            type: "article",
+            url: "https://www.yogajournal.com/",
+            description: "Comprehensive resource for yoga practices and philosophy"
+          }
+        ],
+        practitioners: ["Certified Yoga Instructors", "Yoga Therapists", "Mind-Body Medical Professionals"]
+      },
+      {
+        id: "mindfulness-meditation",
+        name: "Mindfulness Meditation",
+        icon: <CloudRain className="h-5 w-5 text-blue-500" />,
+        shortDescription: "Present-moment awareness practices",
+        description: "Mindfulness meditation involves paying attention to the present moment without judgment. Regular practice can help develop awareness of thoughts and feelings, reducing reactivity and stress.",
+        benefits: ["Reducing anxiety and depression", "Improving focus", "Enhancing emotional regulation", "Decreasing stress", "Promoting self-awareness"],
+        tags: ["Anxiety Reduction", "Attention Training", "Emotional Regulation"],
+        resources: [
+          {
+            title: "Mindful.org",
+            type: "article",
+            url: "https://www.mindful.org/",
+            description: "Resource for mindfulness practices and research"
+          },
+          {
+            title: "Headspace",
+            type: "app",
+            url: "https://www.headspace.com/",
+            description: "Guided meditation app for beginners to advanced practitioners"
+          },
+          {
+            title: "Mindfulness-Based Stress Reduction",
+            type: "book",
+            url: "#",
+            description: "Program developed by Jon Kabat-Zinn for stress management"
+          }
+        ],
+        practitioners: ["Mindfulness Teachers", "MBSR Instructors", "Meditation Guides"]
+      },
+      {
+        id: "breathwork",
+        name: "Breathwork",
+        icon: <Moon className="h-5 w-5 text-blue-500" />,
+        shortDescription: "Conscious breathing for mental health",
+        description: "Breathwork encompasses various breathing techniques that can influence physiological and psychological states. These practices can activate the parasympathetic nervous system, reducing stress and anxiety.",
+        benefits: ["Reducing anxiety", "Balancing autonomic nervous system", "Improving energy levels", "Enhancing emotional regulation", "Supporting focus and concentration"],
+        tags: ["Stress Response", "Nervous System", "Energy Regulation"],
+        resources: [
+          {
+            title: "The Breathing App",
+            type: "app",
+            url: "#",
+            description: "Guided breathing exercises based on resonance frequency"
+          },
+          {
+            title: "Breath: The New Science of a Lost Art",
+            type: "book",
+            url: "#",
+            description: "James Nestor's exploration of breathing techniques"
+          },
+          {
+            title: "Transformational Breath Foundation",
+            type: "article",
+            url: "https://www.transformationalbreath.com/",
+            description: "Organization dedicated to breathwork training and resources"
+          }
+        ],
+        practitioners: ["Breathwork Facilitators", "Somatic Therapists", "Integrative Health Practitioners"]
+      },
+      {
+        id: "cold-therapy",
+        name: "Cold Therapy",
+        icon: <Snowflake className="h-5 w-5 text-blue-500" />,
+        shortDescription: "Using cold exposure for mental resilience",
+        description: "Cold therapy involves deliberate exposure to cold temperatures through cold showers, ice baths, or cold water immersion. Research suggests it can reduce inflammation, improve mood, and build mental resilience.",
+        benefits: ["Reducing inflammation", "Improving mood", "Increasing stress resilience", "Enhancing focus", "Boosting immune function"],
+        tags: ["Stress Adaptation", "Mood Enhancement", "Physiological Regulation"],
+        resources: [
+          {
+            title: "The Wim Hof Method",
+            type: "article",
+            url: "https://www.wimhofmethod.com/",
+            description: "Breathing, cold exposure, and commitment techniques"
+          },
+          {
+            title: "Cold Exposure Science",
+            type: "video",
+            url: "#",
+            description: "Scientific explanation of cold therapy benefits"
+          },
+          {
+            title: "Cold Plunge Guide",
+            type: "book",
+            url: "#",
+            description: "Practical guide to safe cold water immersion practices"
+          }
+        ],
+        practitioners: ["Cold Therapy Instructors", "Health Coaches", "Biohacking Specialists"]
+      }
+    ],
+    "other": [
+      {
+        id: "nature-therapy",
+        name: "Nature Therapy",
+        icon: <Compass className="h-5 w-5 text-blue-500" />,
+        shortDescription: "Healing through connection with nature",
+        description: "Nature therapy, also called ecotherapy, involves structured therapeutic experiences in natural settings. Research shows that time in nature can reduce stress hormones, improve mood, and enhance overall wellbeing.",
+        benefits: ["Reducing stress and anxiety", "Improving attention and focus", "Enhancing mood", "Promoting physical activity", "Fostering environmental connection"],
+        tags: ["Ecotherapy", "Forest Bathing", "Outdoor Therapy"],
+        resources: [
+          {
+            title: "The Nature Fix",
+            type: "book",
+            url: "#",
+            description: "Florence Williams' exploration of nature's impact on the brain"
+          },
+          {
+            title: "Association of Nature & Forest Therapy",
+            type: "article",
+            url: "https://www.natureandforesttherapy.org/",
+            description: "Training and resources for forest therapy guides"
+          },
+          {
+            title: "Nature Sounds App",
+            type: "app",
+            url: "#",
+            description: "Natural soundscapes for relaxation and sleep"
+          }
+        ],
+        practitioners: ["Forest Therapy Guides", "Horticultural Therapists", "Wilderness Therapists"]
+      },
+      {
+        id: "bibliotherapy",
+        name: "Bibliotherapy",
+        icon: <BookOpen className="h-5 w-5 text-blue-500" />,
+        shortDescription: "Therapeutic use of literature",
+        description: "Bibliotherapy uses guided reading of literature to support mental health. It can involve fiction, poetry, or self-help books to gain insights, find connection, and develop coping strategies.",
+        benefits: ["Gaining new perspectives", "Reducing feelings of isolation", "Developing emotional vocabulary", "Finding meaning in experiences", "Building empathy"],
+        tags: ["Self-Help Books", "Narrative Therapy", "Reflective Reading"],
+        resources: [
+          {
+            title: "The Novel Cure",
+            type: "book",
+            url: "#",
+            description: "An A-Z of literary remedies for various conditions"
+          },
+          {
+            title: "International Federation for Biblio/Poetry Therapy",
+            type: "article",
+            url: "https://ifbpt.org/",
+            description: "Professional organization for bibliotherapy"
+          },
+          {
+            title: "Therapeutic Reading Lists",
+            type: "article",
+            url: "#",
+            description: "Curated book recommendations for specific mental health challenges"
+          }
+        ],
+        practitioners: ["Certified Poetry Therapists", "Bibliotherapists", "Mental Health Counselors"]
+      },
+      {
+        id: "animal-assisted-therapy",
+        name: "Animal-Assisted Therapy",
+        icon: <Heart className="h-5 w-5 text-blue-500" />,
+        shortDescription: "Healing connections with animals",
+        description: "Animal-assisted therapy incorporates animals into the therapeutic process. Interactions with animals can reduce stress hormones, increase oxytocin, and provide emotional support and motivation in treatment.",
+        benefits: ["Reducing anxiety and stress", "Increasing social interaction", "Improving mood", "Enhancing motivation for treatment", "Providing emotional support"],
+        tags: ["Therapy Animals", "Emotional Support", "Companionship"],
+        resources: [
+          {
+            title: "Pet Partners",
+            type: "article",
+            url: "https://petpartners.org/",
+            description: "Organization for animal-assisted interventions"
+          },
+          {
+            title: "Animal-Assisted Therapy in Counseling",
+            type: "book",
+            url: "#",
+            description: "Comprehensive guide for mental health professionals"
+          },
+          {
+            title: "Healing Paws",
+            type: "video",
+            url: "#",
+            description: "Documentary on animal-assisted therapy impacts"
+          }
+        ],
+        practitioners: ["Animal-Assisted Therapists", "Counselors with Animal-Assisted Therapy training", "Equine Therapists"]
+      },
+      {
+        id: "nutrition-therapy",
+        name: "Nutritional Psychiatry",
+        icon: <Fruit className="h-5 w-5 text-blue-500" />,
+        shortDescription: "Mental health support through diet",
+        description: "Nutritional psychiatry explores the connection between diet and mental health. Research shows strong links between gut health, inflammation, and mental wellbeing, with certain dietary patterns showing benefits for mood disorders.",
+        benefits: ["Supporting brain function", "Reducing inflammation", "Improving gut health", "Stabilizing mood", "Enhancing energy levels"],
+        tags: ["Anti-inflammatory Diet", "Gut-Brain Connection", "Micronutrients"],
+        resources: [
+          {
+            title: "This Is Your Brain on Food",
+            type: "book",
+            url: "#",
+            description: "Dr. Uma Naidoo's guide to foods that support mental health"
+          },
+          {
+            title: "International Society for Nutritional Psychiatry Research",
+            type: "article",
+            url: "https://www.isnpr.org/",
+            description: "Organization dedicated to research in nutritional psychiatry"
+          },
+          {
+            title: "Food Mood Tracker",
+            type: "app",
+            url: "#",
+            description: "App for tracking food intake and mood correlations"
+          }
+        ],
+        practitioners: ["Nutritional Psychiatrists", "Registered Dietitians", "Functional Medicine Practitioners"]
+      }
+    ],
+    "emerging": [
+      {
+        id: "virtual-reality-therapy",
+        name: "Virtual Reality Therapy",
+        icon: <Gem className="h-5 w-5 text-blue-500" />,
+        shortDescription: "Immersive therapeutic environments",
+        description: "Virtual Reality Therapy uses immersive digital environments to treat various mental health conditions. It's particularly effective for exposure therapy, helping people confront fears in a controlled, safe setting.",
+        benefits: ["Safe exposure to phobia triggers", "Distraction from pain", "Skill-building in simulated environments", "Enhanced engagement in therapy", "Access to otherwise impossible therapeutic scenarios"],
+        tags: ["Digital Therapeutics", "Exposure Therapy", "Immersive Healing"],
+        resources: [
+          {
+            title: "Virtual Reality Medical Center",
+            type: "article",
+            url: "https://vrphobia.com/",
+            description: "Organization specializing in VR therapy for anxiety disorders"
+          },
+          {
+            title: "Therapeutic VR Applications",
+            type: "app",
+            url: "#",
+            description: "Collection of therapeutic VR experiences for various conditions"
+          },
+          {
+            title: "The Promise of VR in Mental Health",
+            type: "video",
+            url: "#",
+            description: "Documentary on the future of VR in psychological treatment"
+          }
+        ],
+        practitioners: ["VR Therapy Specialists", "Mental Health Technologists", "Clinical Psychologists with VR training"]
+      },
+      {
+        id: "neurofeedback",
+        name: "Neurofeedback",
+        icon: <Brain className="h-5 w-5 text-blue-500" />,
+        shortDescription: "Brain training through real-time feedback",
+        description: "Neurofeedback uses real-time displays of brain activity to teach self-regulation of brain function. Sensors monitor brainwaves while feedback helps the brain learn more optimal patterns.",
+        benefits: ["Improving attention", "Reducing anxiety symptoms", "Addressing PTSD symptoms", "Enhancing sleep quality", "Supporting cognitive performance"],
+        tags: ["Brain Training", "Self-Regulation", "Neuroplasticity"],
+        resources: [
+          {
+            title: "International Society for Neurofeedback & Research",
+            type: "article",
+            url: "https://isnr.org/",
+            description: "Professional organization for neurofeedback research and practice"
+          },
+          {
+            title: "A Symphony in the Brain",
+            type: "book",
+            url: "#",
+            description: "Jim Robbins' exploration of neurofeedback development"
+          },
+          {
+            title: "Neurofeedback: The Science Explained",
+            type: "video",
+            url: "#",
+            description: "Scientific breakdown of how neurofeedback works"
+          }
+        ],
+        practitioners: ["Neurofeedback Therapists", "Neurotherapists", "Psychologists with neurofeedback training"]
+      },
+      {
+        id: "psychedelic-therapy",
+        name: "Psychedelic-Assisted Therapy",
+        icon: <Award className="h-5 w-5 text-blue-500" />,
+        shortDescription: "Therapeutic use of psychedelic substances",
+        description: "Psychedelic-assisted therapy involves the carefully guided use of substances like psilocybin, MDMA, or ketamine within a therapeutic framework. Research shows promising results for treatment-resistant depression, PTSD, and addiction.",
+        benefits: ["Breaking rigid thought patterns", "Processing traumatic memories", "Reducing depression symptoms", "Addressing addiction", "Promoting psychological insights"],
+        tags: ["Emerging Research", "Mental Health Innovation", "Supervised Therapy"],
+        resources: [
+          {
+            title: "Multidisciplinary Association for Psychedelic Studies",
+            type: "article",
+            url: "https://maps.org/",
+            description: "Organization researching therapeutic applications of psychedelics"
+          },
+          {
+            title: "How to Change Your Mind",
+            type: "book",
+            url: "#",
+            description: "Michael Pollan's exploration of psychedelic therapy"
+          },
+          {
+            title: "The Future of Psychedelic Medicine",
+            type: "video",
+            url: "#",
+            description: "Research overview and therapeutic applications"
+          }
+        ],
+        practitioners: ["Psychiatrists with psychedelic therapy training", "Licensed Therapists in clinical trials", "Medical professionals at ketamine clinics"]
+      },
+      {
+        id: "group-therapy",
+        name: "Group Therapy",
+        icon: <UserPlus className="h-5 w-5 text-blue-500" />,
+        shortDescription: "Healing in community settings",
+        description: "Group therapy brings together individuals facing similar challenges to share experiences and support each other under professional guidance. It provides both therapeutic insights and the powerful healing element of community.",
+        benefits: ["Reducing isolation", "Gaining perspective from peers", "Practicing social skills", "Building support networks", "Cost-effective treatment"],
+        tags: ["Peer Support", "Shared Experience", "Therapeutic Community"],
+        resources: [
+          {
+            title: "American Group Psychotherapy Association",
+            type: "article",
+            url: "https://www.agpa.org/",
+            description: "Professional organization for group therapy"
+          },
+          {
+            title: "Group Therapy Finder",
+            type: "app",
+            url: "#",
+            description: "Directory of local and virtual therapy groups"
+          },
+          {
+            title: "The Theory and Practice of Group Psychotherapy",
+            type: "book",
+            url: "#",
+            description: "Irvin Yalom's comprehensive guide to group therapy"
+          }
+        ],
+        practitioners: ["Licensed Group Therapists", "Clinical Social Workers", "Psychologists"]
+      }
+    ]
+  };
+
+  const handleTherapyClick = (therapy: Therapy) => {
+    setSelectedTherapy(therapy);
+    
+    // Also show toast notification
     toast({
-      title: `${therapy} Resources`,
+      title: `${therapy.name} Resources`,
       description: "Loading detailed information and resources...",
       duration: 2000
     });
+  };
+
+  const handleResourceClick = (resource: any) => {
+    // In a real app, this would navigate to the resource or open in a new tab
+    toast({
+      title: `Accessing: ${resource.title}`,
+      description: "This would open the resource in a full implementation",
+      duration: 3000
+    });
+  };
+
+  const renderTherapyCards = (therapyArray: Therapy[]) => {
+    return therapyArray.map((therapy) => (
+      <Card key={therapy.id} className="transition-all duration-300 hover:shadow-lg">
+        <CardHeader className="pb-4">
+          <div className="flex justify-between items-start">
+            <CardTitle className="text-2xl font-medium">{therapy.name}</CardTitle>
+            {therapy.icon}
+          </div>
+          <CardDescription>{therapy.shortDescription}</CardDescription>
+        </CardHeader>
+        <CardContent className="pb-4">
+          <p className="text-gray-700 mb-4">{therapy.description.substring(0, 120)}...</p>
+          <div className="flex flex-wrap gap-2 mb-4">
+            {therapy.tags.map((tag, index) => (
+              <Badge key={index} variant="outline" className="bg-blue-50">{tag}</Badge>
+            ))}
+          </div>
+        </CardContent>
+        <CardFooter>
+          <Button 
+            className="w-full"
+            onClick={() => handleTherapyClick(therapy)}
+          >
+            Explore {therapy.name}
+          </Button>
+        </CardFooter>
+      </Card>
+    ));
   };
 
   return (
@@ -40,249 +598,28 @@ const AlternativeTherapies = () => {
         <div className="mb-10">
           <h2 className="text-3xl font-light mb-6">Creative Expression Therapies</h2>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            <Card className="transition-all duration-300 hover:shadow-lg">
-              <CardHeader className="pb-4">
-                <div className="flex justify-between items-start">
-                  <CardTitle className="text-2xl font-medium">Art Therapy</CardTitle>
-                  <PenTool className="h-5 w-5 text-blue-500" />
-                </div>
-                <CardDescription>Visual expression of emotions and experiences</CardDescription>
-              </CardHeader>
-              <CardContent className="pb-4">
-                <p className="text-gray-700 mb-4">Express emotions and process experiences through artistic creation, helping to externalize internal struggles.</p>
-                <div className="flex flex-wrap gap-2 mb-4">
-                  <Badge variant="outline" className="bg-blue-50">Trauma Processing</Badge>
-                  <Badge variant="outline" className="bg-blue-50">Emotional Release</Badge>
-                  <Badge variant="outline" className="bg-blue-50">Self-Discovery</Badge>
-                </div>
-              </CardContent>
-              <CardFooter>
-                <Button 
-                  className="w-full"
-                  onClick={() => handleTherapyClick("Art Therapy")}
-                >
-                  Explore Art Therapy
-                </Button>
-              </CardFooter>
-            </Card>
-            
-            <Card className="transition-all duration-300 hover:shadow-lg">
-              <CardHeader className="pb-4">
-                <div className="flex justify-between items-start">
-                  <CardTitle className="text-2xl font-medium">Music Therapy</CardTitle>
-                  <Music className="h-5 w-5 text-blue-500" />
-                </div>
-                <CardDescription>Sonic exploration of emotional landscapes</CardDescription>
-              </CardHeader>
-              <CardContent className="pb-4">
-                <p className="text-gray-700 mb-4">Use music to address emotional, cognitive, and social needs, creating pathways for expression and connection.</p>
-                <div className="flex flex-wrap gap-2 mb-4">
-                  <Badge variant="outline" className="bg-blue-50">Mood Regulation</Badge>
-                  <Badge variant="outline" className="bg-blue-50">Cognitive Function</Badge>
-                  <Badge variant="outline" className="bg-blue-50">Social Connection</Badge>
-                </div>
-              </CardContent>
-              <CardFooter>
-                <Button 
-                  className="w-full"
-                  onClick={() => handleTherapyClick("Music Therapy")}
-                >
-                  Explore Music Therapy
-                </Button>
-              </CardFooter>
-            </Card>
-            
-            <Card className="transition-all duration-300 hover:shadow-lg">
-              <CardHeader className="pb-4">
-                <div className="flex justify-between items-start">
-                  <CardTitle className="text-2xl font-medium">Drama Therapy</CardTitle>
-                  <Film className="h-5 w-5 text-blue-500" />
-                </div>
-                <CardDescription>Theatrical approaches to personal growth</CardDescription>
-              </CardHeader>
-              <CardContent className="pb-4">
-                <p className="text-gray-700 mb-4">Use theatrical techniques to facilitate personal growth and promote mental wellness through role-play and storytelling.</p>
-                <div className="flex flex-wrap gap-2 mb-4">
-                  <Badge variant="outline" className="bg-blue-50">Role Exploration</Badge>
-                  <Badge variant="outline" className="bg-blue-50">Narrative Therapy</Badge>
-                  <Badge variant="outline" className="bg-blue-50">Emotional Catharsis</Badge>
-                </div>
-              </CardContent>
-              <CardFooter>
-                <Button 
-                  className="w-full"
-                  onClick={() => handleTherapyClick("Drama Therapy")}
-                >
-                  Explore Drama Therapy
-                </Button>
-              </CardFooter>
-            </Card>
+            {renderTherapyCards(therapies.creative)}
           </div>
         </div>
 
         <div className="mb-10">
           <h2 className="text-3xl font-light mb-6">Mind-Body Approaches</h2>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            <Card className="transition-all duration-300 hover:shadow-lg">
-              <CardHeader className="pb-4">
-                <div className="flex justify-between items-start">
-                  <CardTitle className="text-2xl font-medium">Yoga & Movement</CardTitle>
-                  <Dumbbell className="h-5 w-5 text-blue-500" />
-                </div>
-                <CardDescription>Physical practices with mental benefits</CardDescription>
-              </CardHeader>
-              <CardContent className="pb-4">
-                <p className="text-gray-700 mb-4">Connect mind and body through movement practices that reduce stress and promote mental clarity and emotional balance.</p>
-                <div className="flex flex-wrap gap-2 mb-4">
-                  <Badge variant="outline" className="bg-blue-50">Stress Reduction</Badge>
-                  <Badge variant="outline" className="bg-blue-50">Mind-Body Connection</Badge>
-                  <Badge variant="outline" className="bg-blue-50">Physical Wellness</Badge>
-                </div>
-              </CardContent>
-              <CardFooter>
-                <Button 
-                  className="w-full"
-                  onClick={() => handleTherapyClick("Yoga & Movement")}
-                >
-                  Explore Yoga & Movement
-                </Button>
-              </CardFooter>
-            </Card>
-            
-            <Card className="transition-all duration-300 hover:shadow-lg">
-              <CardHeader className="pb-4">
-                <div className="flex justify-between items-start">
-                  <CardTitle className="text-2xl font-medium">Mindfulness Meditation</CardTitle>
-                  <CloudRain className="h-5 w-5 text-blue-500" />
-                </div>
-                <CardDescription>Present-moment awareness practices</CardDescription>
-              </CardHeader>
-              <CardContent className="pb-4">
-                <p className="text-gray-700 mb-4">Develop awareness of the present moment through meditation techniques that help manage anxiety and improve focus.</p>
-                <div className="flex flex-wrap gap-2 mb-4">
-                  <Badge variant="outline" className="bg-blue-50">Anxiety Reduction</Badge>
-                  <Badge variant="outline" className="bg-blue-50">Attention Training</Badge>
-                  <Badge variant="outline" className="bg-blue-50">Emotional Regulation</Badge>
-                </div>
-              </CardContent>
-              <CardFooter>
-                <Button 
-                  className="w-full"
-                  onClick={() => handleTherapyClick("Mindfulness Meditation")}
-                >
-                  Explore Mindfulness
-                </Button>
-              </CardFooter>
-            </Card>
-            
-            <Card className="transition-all duration-300 hover:shadow-lg">
-              <CardHeader className="pb-4">
-                <div className="flex justify-between items-start">
-                  <CardTitle className="text-2xl font-medium">Breathwork</CardTitle>
-                  <Moon className="h-5 w-5 text-blue-500" />
-                </div>
-                <CardDescription>Conscious breathing for mental health</CardDescription>
-              </CardHeader>
-              <CardContent className="pb-4">
-                <p className="text-gray-700 mb-4">Use specialized breathing techniques to influence physiological states, reduce anxiety, and promote relaxation.</p>
-                <div className="flex flex-wrap gap-2 mb-4">
-                  <Badge variant="outline" className="bg-blue-50">Stress Response</Badge>
-                  <Badge variant="outline" className="bg-blue-50">Nervous System</Badge>
-                  <Badge variant="outline" className="bg-blue-50">Energy Regulation</Badge>
-                </div>
-              </CardContent>
-              <CardFooter>
-                <Button 
-                  className="w-full"
-                  onClick={() => handleTherapyClick("Breathwork")}
-                >
-                  Explore Breathwork
-                </Button>
-              </CardFooter>
-            </Card>
+            {renderTherapyCards(therapies["mind-body"])}
           </div>
         </div>
 
         <div className="mb-10">
           <h2 className="text-3xl font-light mb-6">Other Therapeutic Approaches</h2>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            <Card className="transition-all duration-300 hover:shadow-lg">
-              <CardHeader className="pb-4">
-                <div className="flex justify-between items-start">
-                  <CardTitle className="text-2xl font-medium">Nature Therapy</CardTitle>
-                  <Compass className="h-5 w-5 text-blue-500" />
-                </div>
-                <CardDescription>Healing through connection with nature</CardDescription>
-              </CardHeader>
-              <CardContent className="pb-4">
-                <p className="text-gray-700 mb-4">Engage with natural environments to reduce stress, improve mood, and enhance overall mental wellbeing.</p>
-                <div className="flex flex-wrap gap-2 mb-4">
-                  <Badge variant="outline" className="bg-blue-50">Ecotherapy</Badge>
-                  <Badge variant="outline" className="bg-blue-50">Forest Bathing</Badge>
-                  <Badge variant="outline" className="bg-blue-50">Outdoor Therapy</Badge>
-                </div>
-              </CardContent>
-              <CardFooter>
-                <Button 
-                  className="w-full"
-                  onClick={() => handleTherapyClick("Nature Therapy")}
-                >
-                  Explore Nature Therapy
-                </Button>
-              </CardFooter>
-            </Card>
-            
-            <Card className="transition-all duration-300 hover:shadow-lg">
-              <CardHeader className="pb-4">
-                <div className="flex justify-between items-start">
-                  <CardTitle className="text-2xl font-medium">Bibliotherapy</CardTitle>
-                  <BookOpen className="h-5 w-5 text-blue-500" />
-                </div>
-                <CardDescription>Therapeutic use of literature</CardDescription>
-              </CardHeader>
-              <CardContent className="pb-4">
-                <p className="text-gray-700 mb-4">Use guided reading and literature to gain insight, promote healing, and develop coping mechanisms for mental health challenges.</p>
-                <div className="flex flex-wrap gap-2 mb-4">
-                  <Badge variant="outline" className="bg-blue-50">Self-Help Books</Badge>
-                  <Badge variant="outline" className="bg-blue-50">Narrative Therapy</Badge>
-                  <Badge variant="outline" className="bg-blue-50">Reflective Reading</Badge>
-                </div>
-              </CardContent>
-              <CardFooter>
-                <Button 
-                  className="w-full"
-                  onClick={() => handleTherapyClick("Bibliotherapy")}
-                >
-                  Explore Bibliotherapy
-                </Button>
-              </CardFooter>
-            </Card>
-            
-            <Card className="transition-all duration-300 hover:shadow-lg">
-              <CardHeader className="pb-4">
-                <div className="flex justify-between items-start">
-                  <CardTitle className="text-2xl font-medium">Animal-Assisted Therapy</CardTitle>
-                  <Heart className="h-5 w-5 text-blue-500" />
-                </div>
-                <CardDescription>Healing connections with animals</CardDescription>
-              </CardHeader>
-              <CardContent className="pb-4">
-                <p className="text-gray-700 mb-4">Work with animals to improve emotional, cognitive, and social functioning through structured therapeutic interactions.</p>
-                <div className="flex flex-wrap gap-2 mb-4">
-                  <Badge variant="outline" className="bg-blue-50">Therapy Animals</Badge>
-                  <Badge variant="outline" className="bg-blue-50">Emotional Support</Badge>
-                  <Badge variant="outline" className="bg-blue-50">Companionship</Badge>
-                </div>
-              </CardContent>
-              <CardFooter>
-                <Button 
-                  className="w-full"
-                  onClick={() => handleTherapyClick("Animal-Assisted Therapy")}
-                >
-                  Explore Animal Therapy
-                </Button>
-              </CardFooter>
-            </Card>
+            {renderTherapyCards(therapies.other)}
+          </div>
+        </div>
+
+        <div className="mb-10">
+          <h2 className="text-3xl font-light mb-6">Emerging Therapies</h2>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            {renderTherapyCards(therapies.emerging)}
           </div>
         </div>
 
@@ -328,6 +665,84 @@ const AlternativeTherapies = () => {
           </div>
         </div>
       </div>
+
+      {/* Therapy Detail Sheet */}
+      <Sheet open={!!selectedTherapy} onOpenChange={(open) => !open && setSelectedTherapy(null)}>
+        <SheetContent className="w-full md:max-w-md overflow-y-auto">
+          {selectedTherapy && (
+            <>
+              <SheetHeader className="mb-6">
+                <div className="flex items-center justify-between">
+                  <SheetTitle className="text-2xl">{selectedTherapy.name}</SheetTitle>
+                  <div className="p-2 bg-blue-50 rounded-full">{selectedTherapy.icon}</div>
+                </div>
+                <SheetDescription>{selectedTherapy.shortDescription}</SheetDescription>
+              </SheetHeader>
+              
+              <div className="space-y-6">
+                <div>
+                  <h3 className="text-lg font-medium mb-2">About {selectedTherapy.name}</h3>
+                  <p className="text-gray-700">{selectedTherapy.description}</p>
+                </div>
+                
+                <div>
+                  <h3 className="text-lg font-medium mb-2">Key Benefits</h3>
+                  <ul className="list-disc pl-5 space-y-1">
+                    {selectedTherapy.benefits.map((benefit, index) => (
+                      <li key={index} className="text-gray-700">{benefit}</li>
+                    ))}
+                  </ul>
+                </div>
+                
+                {selectedTherapy.practitioners && (
+                  <div>
+                    <h3 className="text-lg font-medium mb-2">Who Provides This Therapy</h3>
+                    <ul className="list-disc pl-5 space-y-1">
+                      {selectedTherapy.practitioners.map((practitioner, index) => (
+                        <li key={index} className="text-gray-700">{practitioner}</li>
+                      ))}
+                    </ul>
+                  </div>
+                )}
+                
+                <div>
+                  <h3 className="text-lg font-medium mb-4">Resources</h3>
+                  <div className="space-y-4">
+                    {selectedTherapy.resources.map((resource, index) => (
+                      <div 
+                        key={index} 
+                        className="p-4 border rounded-lg hover:bg-blue-50 transition-colors cursor-pointer"
+                        onClick={() => handleResourceClick(resource)}
+                      >
+                        <div className="flex justify-between items-start">
+                          <h4 className="font-medium text-blue-600">{resource.title}</h4>
+                          <Badge variant="outline">{resource.type}</Badge>
+                        </div>
+                        <p className="text-sm text-gray-600 mt-1">{resource.description}</p>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+                
+                <div className="pt-4">
+                  <Button 
+                    className="w-full" 
+                    onClick={() => {
+                      toast({
+                        title: `${selectedTherapy.name} Providers`,
+                        description: "Connecting you with local practitioners specializing in this therapy.",
+                        duration: 3000
+                      });
+                    }}
+                  >
+                    Find Local Providers
+                  </Button>
+                </div>
+              </div>
+            </>
+          )}
+        </SheetContent>
+      </Sheet>
     </div>
   );
 };
