@@ -48,6 +48,7 @@ import CollegePortal from "@/pages/CollegePortal";
 import CollegeExperience from "@/pages/CollegeExperience";
 import SmallBusinessPortal from "@/pages/SmallBusinessPortal";
 import SmallBusinessExperience from "@/pages/SmallBusinessExperience";
+import EmployeeReadiness from "@/pages/EmployeeReadiness";
 import SubscriptionPlansPage from "@/pages/SubscriptionPlansPage";
 // Keep only one Henry button component
 import HelpNavButton from "@/components/help/HelpNavButton";
@@ -110,6 +111,7 @@ function App() {
         
         <Route path="/small-business-portal" element={<SmallBusinessPortal />} />
         <Route path="/small-business-experience" element={<SmallBusinessExperience />} />
+        <Route path="/employee-readiness" element={<EmployeeReadiness />} />
         
         <Route path="/small-business" element={<Navigate to="/small-business-portal" replace />} />
         
