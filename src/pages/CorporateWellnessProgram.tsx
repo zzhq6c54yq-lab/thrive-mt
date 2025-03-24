@@ -1,4 +1,3 @@
-
 import React, { useState } from "react";
 import { useLocation, useNavigate, Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
@@ -117,6 +116,24 @@ const CorporateWellnessProgram = () => {
   
   const toggleMute = () => {
     setIsMuted(!isMuted);
+  };
+  
+  // Add the missing function for workshop registration
+  const handleWorkshopRegistration = (workshopName: string) => {
+    toast({
+      title: "Workshop Registration Successful",
+      description: `You've been registered for "${workshopName}". Check your dashboard for details.`,
+      duration: 3000
+    });
+    
+    setTimeout(() => {
+      navigate("/corporate-wellness", { 
+        state: { 
+          workshop: workshopName,
+          showWorkshopContent: true 
+        } 
+      });
+    }, 1000);
   };
   
   // Determine what to show based on location state
