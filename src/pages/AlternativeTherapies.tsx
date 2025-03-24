@@ -1,7 +1,6 @@
-
 import React from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { ArrowLeft, Heart, BookOpen, Compass, Film, Yoga, PenTool, Music, CloudRain, Moon } from "lucide-react";
+import { ArrowLeft, Heart, BookOpen, Compass, Film, Dumbbell, PenTool, Music, CloudRain, Moon } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -12,7 +11,6 @@ const AlternativeTherapies = () => {
   const navigate = useNavigate();
   const { toast } = useToast();
 
-  // This would navigate to a detailed page in a full implementation
   const handleTherapyClick = (therapy: string) => {
     toast({
       title: `${therapy} Resources`,
@@ -129,7 +127,7 @@ const AlternativeTherapies = () => {
               <CardHeader className="pb-4">
                 <div className="flex justify-between items-start">
                   <CardTitle className="text-2xl font-medium">Yoga & Movement</CardTitle>
-                  <Yoga className="h-5 w-5 text-blue-500" />
+                  <Dumbbell className="h-5 w-5 text-blue-500" />
                 </div>
                 <CardDescription>Physical practices with mental benefits</CardDescription>
               </CardHeader>
