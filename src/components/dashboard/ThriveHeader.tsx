@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Footprints } from "lucide-react";
 import HenryIntroDialog from "../henry/HenryIntroDialog";
 import HelpDialog from "../help/HelpDialog";
+import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 
 interface ThriveHeaderProps {
   userName: string;
@@ -43,7 +44,7 @@ const ThriveHeader: React.FC<ThriveHeaderProps> = ({
       <div className="absolute inset-0 opacity-30">
         <div className="absolute top-0 left-0 right-0 h-20 bg-gradient-to-r from-[#B87333]/15 via-[#E5C5A1]/25 to-[#B87333]/15 transform -skew-y-3 animate-pulse" style={{animationDuration: '8s'}}></div>
         <div className="absolute top-10 left-0 right-0 h-28 bg-gradient-to-r from-[#E5C5A1]/10 via-[#B87333]/15 to-[#E5C5A1]/10 transform skew-y-2 animate-pulse" style={{animationDuration: '12s', animationDelay: '0.5s'}}></div>
-        <div className="absolute inset-0 bg-[url('data:image/svg+xml;utf8,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%2220%22 height=%2220%22 viewBox=%220 0 20 20%22><circle cx=%222%22 cy=%222%22 r=%220.5%22 fill=%22%23ffffff%22 fill-opacity=%220.3%22/></svg>')] opacity-10"></div>
+        <div className="absolute inset-0 bg-[url('data:image/svg+xml;utf8,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%2220%22 height=%2220%22 viewBox=%220 0 20 20%22><circle cx=%222%22 cy=%222%22 r=%220.5%22 fill=%22%23ffffff%22 fill-opacity=%220.3%22/></svg>')]"></div>
         <div className="absolute bottom-0 left-0 right-0 h-24 bg-gradient-to-r from-[#B87333]/15 via-[#E5C5A1]/20 to-[#B87333]/15 transform -skew-y-2 animate-pulse" style={{animationDuration: '10s'}}></div>
       </div>
       <div className="container mx-auto max-w-6xl relative z-10">
@@ -102,7 +103,10 @@ const ThriveHeader: React.FC<ThriveHeaderProps> = ({
                 <div className="absolute top-1 right-1 w-2 h-2 rounded-full border border-[#B87333]/40"></div>
                 <div className="absolute -left-1 top-1/2 transform -translate-y-1/2 w-2 h-8 bg-[#B87333]/20 rounded-r-full"></div>
                 <div className="flex items-center gap-2">
-                  <Footprints className="h-5 w-5 text-[#B87333] group-hover:scale-110 transition-transform" />
+                  <Avatar className="h-6 w-6 border border-[#B87333]/30">
+                    <AvatarImage src="/lovable-uploads/f3c84972-8f58-42d7-b86f-82ff2d823b30.png" alt="Henry" />
+                    <AvatarFallback className="bg-gradient-to-br from-[#B87333] to-[#E5C5A1] text-white text-xs">H</AvatarFallback>
+                  </Avatar>
                   <span className="relative z-10 text-white">
                     {showHenry ? "Hide H.E.N.R.Y." : "Meet H.E.N.R.Y."}
                   </span>

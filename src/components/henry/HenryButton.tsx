@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { useLocation } from "react-router-dom";
 import HenryDialog from "./HenryDialog";
 import HenryIntroDialog from "./HenryIntroDialog";
+import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 
 interface HenryButtonProps {
   userName?: string;
@@ -51,7 +52,10 @@ const HenryButton: React.FC<HenryButtonProps> = ({
         onClick={handleOpenHenry}
         className="h-14 w-14 rounded-full bg-gradient-to-br from-[#B87333] to-[#E5C5A1] hover:from-[#A56625] hover:to-[#D4B48F] text-white shadow-lg flex items-center justify-center"
       >
-        <span className="text-2xl font-bold">H</span>
+        <Avatar className="h-10 w-10 border-2 border-white/30">
+          <AvatarImage src="/lovable-uploads/f3c84972-8f58-42d7-b86f-82ff2d823b30.png" alt="Henry" />
+          <AvatarFallback className="bg-gradient-to-br from-[#B87333] to-[#E5C5A1] text-white font-semibold">H</AvatarFallback>
+        </Avatar>
       </Button>
 
       <HenryDialog 

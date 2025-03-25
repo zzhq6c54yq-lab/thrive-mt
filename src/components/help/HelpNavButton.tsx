@@ -5,6 +5,7 @@ import { useToast } from "@/hooks/use-toast";
 import HelpDialog from "@/components/help/HelpDialog";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useButtonVisibility } from "../help/RouteVisibility";
+import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 
 const HelpNavButton: React.FC = () => {
   const [showHelpDialog, setShowHelpDialog] = useState(false);
@@ -33,8 +34,13 @@ const HelpNavButton: React.FC = () => {
           size="icon"
           aria-label="Get Help"
         >
-          <div className="relative h-10 w-10 rounded-full flex items-center justify-center bg-gradient-to-br from-[#B87333] to-[#E5C5A1] text-white font-semibold border-2 border-white/30">
-            <span className="text-2xl">H</span>
+          <div className="relative h-10 w-10 rounded-full flex items-center justify-center border-2 border-white/30">
+            <Avatar className="h-10 w-10">
+              <AvatarImage src="/lovable-uploads/f3c84972-8f58-42d7-b86f-82ff2d823b30.png" alt="Henry" />
+              <AvatarFallback className="bg-gradient-to-br from-[#B87333] to-[#E5C5A1] text-white font-semibold">
+                H
+              </AvatarFallback>
+            </Avatar>
           </div>
         </Button>
       </div>
