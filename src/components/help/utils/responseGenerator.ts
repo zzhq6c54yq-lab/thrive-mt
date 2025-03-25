@@ -57,7 +57,7 @@ export const generateTheoryOfMindResponse = (emotionalState: string, userName?: 
 };
 
 // Generate a response based on the message content with enhanced understanding
-export const generateResponse = (message: string): string => {
+export const generateResponse = (message: string, conversationContext?: string[]): string => {
   const lowerMessage = message.toLowerCase();
   
   // Check for emergency with enhanced understanding
@@ -87,6 +87,20 @@ export const generateResponse = (message: string): string => {
   if (lowerMessage.includes("do you have empathy") || lowerMessage.includes("can you empathize") ||
       lowerMessage.includes("understand my emotions") || lowerMessage.includes("understand feelings")) {
     return knowledgeBase["empathy_statement"];
+  }
+  
+  // Use conversation context to generate more contextually relevant responses if available
+  if (conversationContext && conversationContext.length > 0) {
+    // Look for topics mentioned repeatedly in the conversation
+    const conversationText = conversationContext.join(" ").toLowerCase();
+    
+    // Check if the conversation has been focused on mental health topics
+    for (const [key, value] of Object.entries(knowledgeBase)) {
+      // If a topic appears multiple times in the conversation, prioritize that response
+      if ((conversationText.match(new RegExp(key, 'g')) || []).length > 1 && lowerMessage.includes(key)) {
+        return `Based on our conversation, I understand ${key} is important to you. ${value}`;
+      }
+    }
   }
   
   // Check for emotional states (theory of mind)
