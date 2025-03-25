@@ -144,10 +144,23 @@ const Index = () => {
 
   const navigateToFeature = (path: string) => {
     if (path.startsWith('/')) {
-      navigate(path, { state: { 
-        qualities: selectedQualities, 
-        goals: selectedGoals 
-      }});
+      // Special case for Small Business Portal - include state to trigger teaser
+      if (path === '/small-business-portal') {
+        navigate(path, { 
+          state: { 
+            qualities: selectedQualities, 
+            goals: selectedGoals,
+            fromMainMenu: true  // Flag to show teaser screen
+          }
+        });
+      } else {
+        navigate(path, { 
+          state: { 
+            qualities: selectedQualities, 
+            goals: selectedGoals 
+          }
+        });
+      }
     }
   };
 

@@ -1,5 +1,5 @@
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/hooks/use-toast";
@@ -57,6 +57,38 @@ const PortalOption: React.FC<OptionProps> = ({ title, description, icon, onClick
   </Card>
 );
 
+// Teaser screen shown after main app selection
+const TeaserScreen: React.FC<{ onContinue: () => void }> = ({ onContinue }) => {
+  return (
+    <div className="flex flex-col items-center justify-center min-h-[70vh] text-center px-4 animate-fade-in">
+      <h1 className="text-4xl md:text-5xl font-light mb-8 text-transparent bg-clip-text bg-gradient-to-r from-[#F97316] to-[#FB923C]">
+        Small Business Mental Health
+      </h1>
+      <div className="max-w-2xl mb-8">
+        <div className="relative rounded-xl overflow-hidden mb-6" style={{ maxWidth: '400px', margin: '0 auto' }}>
+          <img 
+            src="/lovable-uploads/bce2b3d1-dbc0-4e7c-a7d1-98811182fe0a.png" 
+            alt="Small Business Owner"
+            className="w-full rounded-xl shadow-xl"
+          />
+          <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent"></div>
+        </div>
+        
+        <p className="text-xl mb-6 text-white/90 font-medium">
+          Our specialized program for small business owners and employees
+          focuses on the unique mental health challenges of entrepreneurship.
+        </p>
+      </div>
+      <Button 
+        onClick={onContinue}
+        className="bg-[#F97316] hover:bg-[#FB923C] text-white text-lg px-8 py-6 h-auto transition-all duration-300 transform hover:scale-105 shadow-[0_0_15px_rgba(249,115,22,0.3)]"
+      >
+        Continue to Portal <ArrowRight className="ml-1 h-5 w-5" />
+      </Button>
+    </div>
+  );
+};
+
 const WelcomeScreen: React.FC<{ onContinue: () => void }> = ({ onContinue }) => {
   return (
     <div className="flex flex-col items-center justify-center min-h-[70vh] text-center px-4 animate-fade-in">
@@ -80,7 +112,7 @@ const WelcomeScreen: React.FC<{ onContinue: () => void }> = ({ onContinue }) => 
         onClick={onContinue}
         className="bg-[#F97316] hover:bg-[#FB923C] text-white text-lg px-8 py-6 h-auto transition-all duration-300 transform hover:scale-105 shadow-[0_0_15px_rgba(249,115,22,0.3)]"
       >
-        Next <ArrowRight className="ml-1 h-5 w-5" />
+        Enter My Portal <ArrowRight className="ml-1 h-5 w-5" />
       </Button>
     </div>
   );
@@ -127,10 +159,23 @@ const PortalOptionsScreen: React.FC<{ onSelectOption: (option: 'business' | 'emp
 };
 
 const SmallBusinessPortal: React.FC = () => {
-  const [screenState, setScreenState] = useState<'welcome' | 'options'>('welcome');
+  const [screenState, setScreenState] = useState<'teaser' | 'welcome' | 'options'>('teaser');
   const navigate = useNavigate();
   const location = useLocation();
   const { toast } = useToast();
+
+  useEffect(() => {
+    // Check if we're coming directly from the main index page
+    if (location.state && location.state.fromMainMenu) {
+      setScreenState('teaser');
+    } else if (location.state && location.state.screenState) {
+      setScreenState(location.state.screenState);
+    }
+  }, [location]);
+
+  const handleContinueFromTeaser = () => {
+    setScreenState('welcome');
+  };
 
   const handleContinueToOptions = () => {
     setScreenState('options');
@@ -152,6 +197,8 @@ const SmallBusinessPortal: React.FC = () => {
 
   const renderCurrentScreen = () => {
     switch (screenState) {
+      case 'teaser':
+        return <TeaserScreen onContinue={handleContinueFromTeaser} />;
       case 'welcome':
         return <WelcomeScreen onContinue={handleContinueToOptions} />;
       case 'options':
