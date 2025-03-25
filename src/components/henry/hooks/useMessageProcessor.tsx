@@ -27,7 +27,7 @@ export const useMessageProcessor = (
     setConversationContext(prev => {
       const newContext = [...prev];
       newContext.push(`${isUser ? "User" : "Henry"}: ${message}`);
-      return newContext.slice(-6);
+      return newContext.slice(-8);
     });
   };
 
@@ -89,7 +89,7 @@ export const useMessageProcessor = (
       if (smallTalkResponse) {
         responseText = smallTalkResponse;
       } else {
-        responseText = generateResponse(text);
+        responseText = generateResponse(text, conversationContext);
       }
       
       const henryMessage: Message = {
@@ -107,16 +107,16 @@ export const useMessageProcessor = (
   const handleSmallTalk = (message: string): string | null => {
     const lowerMessage = message.toLowerCase();
     
-    if (/^(hi|hello|hey|greetings|howdy)(\s|$|!)/i.test(lowerMessage)) {
-      return `${getContextualGreeting()}! How are you feeling today?`;
+    if (/^(hi|hello|hey|greetings|howdy|good (morning|afternoon|evening))(\s|$|!)/i.test(lowerMessage)) {
+      return `${getContextualGreeting()}! How are you feeling today? I'm here to support your mental wellbeing.`;
     }
     
     if (/how are you|how('s| is) it going|how('re| are) you doing/i.test(lowerMessage)) {
-      return "I'm here and ready to help you! As an AI assistant, I don't have feelings, but I'm focused on supporting your mental wellbeing. What's on your mind today?";
+      return "I'm here and ready to help you! As your mental wellness companion, I'm focused on supporting your wellbeing. What's on your mind today?";
     }
     
     if (/thank(s| you)|appreciate it/i.test(lowerMessage)) {
-      return "You're very welcome! I'm glad I could help. Is there anything else you'd like to talk about?";
+      return "You're very welcome! I'm glad I could help. Is there anything else you'd like to talk about regarding your mental wellness journey?";
     }
     
     if (/what('s| is) your name|who are you/i.test(lowerMessage)) {
@@ -129,6 +129,14 @@ export const useMessageProcessor = (
     
     if (/bye|goodbye|see you|talk (to you )?later/i.test(lowerMessage)) {
       return "Take care! Remember that I'm here whenever you need support. Be gentle with yourself until we talk again.";
+    }
+    
+    if (/help( me)?|can you help|need (some )?advice|feeling (bad|down|sad|depressed|anxious|overwhelmed)/i.test(lowerMessage)) {
+      return "I'm here to help. Could you tell me a bit more about what you're experiencing? The more specific you can be, the better I can support you.";
+    }
+    
+    if (/what (can|do) you do|how (can|do) you (help|work)|what are you for/i.test(lowerMessage)) {
+      return "I'm designed to support your mental wellbeing in several ways. I can provide resources for stress management, anxiety, and depression, guide you through exercises for mindfulness and relaxation, help you track your mood patterns, and connect you with professional help when needed. What area of mental wellness are you interested in exploring?";
     }
     
     return null;
