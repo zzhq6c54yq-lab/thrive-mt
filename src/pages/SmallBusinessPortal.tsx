@@ -1,10 +1,10 @@
+
 import React, { useState, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/hooks/use-toast";
 import { ArrowRight, Briefcase, Users } from "lucide-react";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
-import HomeButton from "@/components/HomeButton";
 
 interface OptionProps {
   title: string;
@@ -60,7 +60,17 @@ const PortalOptionsScreen: React.FC<{ onSelectOption: (option: 'business' | 'emp
   return (
     <div className="flex flex-col items-center justify-center min-h-[70vh] text-center px-4 animate-fade-in">
       <div className="absolute top-4 right-4 z-20">
-        <HomeButton />
+        <Button
+          variant="outline"
+          size="icon"
+          className="rounded-full bg-white/10 backdrop-blur-sm hover:bg-white/20 border-[#B87333]/40 hover:border-[#B87333] transition-all duration-300 transform hover:scale-105"
+          onClick={() => navigate("/", { state: { screenState: 'main' } })}
+          aria-label="Return to main screen"
+          title="Return to main screen"
+        >
+          <span className="sr-only">Return home</span>
+          <ArrowRight className="h-4 w-4 text-white/70" />
+        </Button>
       </div>
       
       <h1 className="text-4xl md:text-5xl font-light mb-8 text-transparent bg-clip-text bg-gradient-to-r from-[#F97316] to-[#FB923C]">

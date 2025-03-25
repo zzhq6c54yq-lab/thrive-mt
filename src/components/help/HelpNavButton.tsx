@@ -34,14 +34,10 @@ const HelpNavButton: React.FC = () => {
           size="icon"
           aria-label="Get Help"
         >
-          <div className="relative h-10 w-10 rounded-full flex items-center justify-center border-2 border-white/30">
-            <Avatar className="h-10 w-10">
-              <AvatarImage src="/lovable-uploads/f3c84972-8f58-42d7-b86f-82ff2d823b30.png" alt="Henry" />
-              <AvatarFallback className="bg-gradient-to-br from-[#B87333] to-[#E5C5A1] text-white font-semibold">
-                H
-              </AvatarFallback>
-            </Avatar>
-          </div>
+          <Avatar className="h-10 w-10 border-2 border-white/30">
+            <AvatarImage src="/lovable-uploads/f3c84972-8f58-42d7-b86f-82ff2d823b30.png" alt="Henry" />
+            <AvatarFallback className="bg-gradient-to-br from-[#B87333] to-[#E5C5A1] text-white font-semibold">H</AvatarFallback>
+          </Avatar>
         </Button>
       </div>
       
