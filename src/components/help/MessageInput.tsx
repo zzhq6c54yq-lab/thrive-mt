@@ -1,145 +1,100 @@
 
 import React, { useState, useRef, useEffect } from "react";
 import { Button } from "@/components/ui/button";
-import { Send, Mic } from "lucide-react";
+import { Send, AlertCircle } from "lucide-react";
 
 interface MessageInputProps {
   onSendMessage: (message: string) => void;
-  isProcessing: boolean;
+  isProcessing?: boolean;
   isEmergencyMode?: boolean;
   onResize?: (height: number) => void;
 }
 
 const MessageInput: React.FC<MessageInputProps> = ({ 
   onSendMessage, 
-  isProcessing, 
+  isProcessing = false,
   isEmergencyMode = false,
   onResize
 }) => {
   const [message, setMessage] = useState("");
-  const [isListening, setIsListening] = useState(false);
-  const textAreaRef = useRef<HTMLTextAreaElement>(null);
-  
-  // Adjust textarea height based on content
-  useEffect(() => {
-    if (textAreaRef.current) {
-      // Reset height to measure the scrollHeight correctly
-      textAreaRef.current.style.height = "auto";
-      const scrollHeight = textAreaRef.current.scrollHeight;
-      textAreaRef.current.style.height = `${scrollHeight}px`;
+  const textareaRef = useRef<HTMLTextAreaElement>(null);
+
+  const handleChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    setMessage(e.target.value);
+    
+    // Adjust height based on content
+    if (textareaRef.current) {
+      textareaRef.current.style.height = "40px";
+      const scrollHeight = textareaRef.current.scrollHeight;
+      textareaRef.current.style.height = `${scrollHeight}px`;
       
       if (onResize) {
         onResize(scrollHeight);
       }
     }
-  }, [message, onResize]);
-  
-  const handleInputChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-    setMessage(e.target.value);
   };
-  
+
   const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
-    if (e.key === 'Enter' && !e.shiftKey) {
+    if (e.key === "Enter" && !e.shiftKey) {
       e.preventDefault();
-      handleSend();
+      handleSendMessage();
     }
   };
-  
-  const handleSend = () => {
-    if (message.trim() && !isProcessing) {
-      onSendMessage(message);
-      setMessage("");
+
+  const handleSendMessage = () => {
+    if (message.trim() === "" || isProcessing) return;
+    
+    onSendMessage(message.trim());
+    setMessage("");
+    
+    // Reset height
+    if (textareaRef.current) {
+      textareaRef.current.style.height = "40px";
       
-      // Reset height after clearing
-      if (textAreaRef.current) {
-        textAreaRef.current.style.height = "auto";
-        if (onResize) {
-          onResize(40); // Default height
-        }
+      if (onResize) {
+        onResize(40);
       }
     }
   };
-  
-  const startListening = () => {
-    if (!('webkitSpeechRecognition' in window)) {
-      alert("Voice recognition not supported in your browser. Try typing instead.");
-      return;
-    }
-    
-    setIsListening(true);
-    
-    // @ts-ignore - WebkitSpeechRecognition is not in the TypeScript types
-    const recognition = new window.webkitSpeechRecognition();
-    recognition.lang = 'en-US';
-    recognition.interimResults = false;
-    
-    recognition.onresult = (event: any) => {
-      const transcript = event.results[0][0].transcript;
-      setMessage(transcript);
-      setIsListening(false);
+
+  // Reset the height when the component mounts
+  useEffect(() => {
+    if (textareaRef.current) {
+      textareaRef.current.style.height = "40px";
       
-      // Submit automatically after a short delay
-      setTimeout(() => {
-        onSendMessage(transcript);
-        setMessage("");
-      }, 500);
-    };
-    
-    recognition.onerror = () => {
-      setIsListening(false);
-    };
-    
-    recognition.onend = () => {
-      setIsListening(false);
-    };
-    
-    recognition.start();
-  };
-  
+      if (onResize) {
+        onResize(40);
+      }
+    }
+  }, [onResize]);
+
   return (
-    <div className="flex items-end gap-2 mt-2">
-      <textarea
-        ref={textAreaRef}
-        value={message}
-        onChange={handleInputChange}
-        onKeyDown={handleKeyDown}
-        placeholder="Type a message..."
-        className={`flex-1 bg-[#2A2A2A] text-white border-none rounded-md p-3 focus:ring-2 ${
-          isEmergencyMode 
-            ? 'focus:ring-red-500/50 border border-red-500/50' 
-            : 'focus:ring-[#B87333]/50'
-        } resize-none max-h-20 min-h-[40px]`}
-        rows={1}
-        disabled={isProcessing || isListening}
-      />
-      <div className="flex gap-1">
+    <div className={`relative ${isEmergencyMode ? 'border border-red-500 rounded-md p-2' : ''}`}>
+      {isEmergencyMode && (
+        <div className="bg-red-500/10 text-red-400 p-2 rounded-md mb-2 flex items-start gap-2 text-xs">
+          <AlertCircle className="h-4 w-4 flex-shrink-0 mt-0.5" />
+          <span>Crisis support active. Please share how you're feeling.</span>
+        </div>
+      )}
+      <div className="flex">
+        <textarea
+          ref={textareaRef}
+          value={message}
+          onChange={handleChange}
+          onKeyDown={handleKeyDown}
+          disabled={isProcessing}
+          placeholder="Type your message..."
+          className={`flex-1 p-2 rounded-l-md outline-none resize-none min-h-[40px] max-h-24 bg-gray-700 text-white placeholder-gray-400
+            ${isEmergencyMode ? 'border-red-500 focus:border-red-500' : 'border-gray-600 focus:border-[#B87333]'}`}
+          style={{ overflow: 'auto' }}
+        />
         <Button
           type="button"
-          onClick={startListening}
-          disabled={isProcessing || isListening}
-          className={`rounded-full w-10 h-10 flex items-center justify-center ${
-            isListening 
-              ? 'bg-red-500 animate-pulse' 
-              : isEmergencyMode 
-                ? 'bg-red-600 hover:bg-red-700' 
-                : 'bg-[#B87333] hover:bg-[#A56625]'
-          }`}
-          size="icon"
+          onClick={handleSendMessage}
+          disabled={message.trim() === "" || isProcessing}
+          className={`rounded-r-md h-auto ${isEmergencyMode ? 'bg-red-600 hover:bg-red-700' : 'bg-[#B87333] hover:bg-[#A56625]'}`}
         >
-          <Mic className="h-5 w-5" />
-        </Button>
-        <Button
-          type="button"
-          onClick={handleSend}
-          disabled={!message.trim() || isProcessing}
-          className={`rounded-full w-10 h-10 flex items-center justify-center ${
-            isEmergencyMode 
-              ? 'bg-red-600 hover:bg-red-700' 
-              : 'bg-[#B87333] hover:bg-[#A56625]'
-          }`}
-          size="icon"
-        >
-          <Send className="h-5 w-5" />
+          <Send className="h-4 w-4" />
         </Button>
       </div>
     </div>

@@ -1,93 +1,100 @@
 
 import React, { useRef, useEffect } from "react";
+import { ScrollArea } from "@/components/ui/scroll-area";
+import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import { cn } from "@/lib/utils";
 
-export interface MessageProps {
+interface Message {
   text: string;
   isUser: boolean;
   timestamp?: Date;
-  sender?: string;
-  avatar?: string;
 }
 
 interface MessageListProps {
-  messages: MessageProps[];
+  messages: Message[];
   className?: string;
   style?: React.CSSProperties;
   showTypingIndicator?: boolean;
 }
 
 const MessageList: React.FC<MessageListProps> = ({ 
-  messages, 
-  className = "", 
-  style = {},
+  messages,
+  className,
+  style,
   showTypingIndicator = false
 }) => {
-  const messagesEndRef = useRef<HTMLDivElement>(null);
-  
-  // Scroll to bottom when new messages arrive
-  useEffect(() => {
-    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
-  }, [messages]);
-  
-  return (
-    <div 
-      className={cn(
-        "flex flex-col space-y-4 py-3 overflow-y-auto max-h-[400px] scrollbar-thin scrollbar-thumb-[#B87333]/20 scrollbar-track-transparent pr-2",
-        className
-      )}
-      style={style}
-    >
-      {messages.map((message, index) => (
-        <div 
-          key={index} 
-          className={`flex ${message.isUser ? 'justify-end' : 'justify-start'}`}
-        >
-          <div 
-            className={`max-w-[80%] px-4 py-2 rounded-2xl ${
-              message.isUser 
-                ? 'bg-[#B87333] text-white rounded-tr-none' 
-                : 'bg-[#2A2A2A] text-white rounded-tl-none'
-            }`}
-          >
-            {!message.isUser && message.sender && (
-              <div className="flex items-center mb-1">
-                {message.avatar && (
-                  <div className="h-5 w-5 rounded-full overflow-hidden mr-2">
-                    <img 
-                      src={message.avatar} 
-                      alt={message.sender} 
-                      className="h-full w-full object-cover"
-                    />
-                  </div>
-                )}
-                <span className="text-xs text-white/70">{message.sender}</span>
-              </div>
-            )}
-            <p className="text-sm">{message.text}</p>
-            {message.timestamp && (
-              <p className="text-xs opacity-70 mt-1 text-right">
-                {message.timestamp.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}
-              </p>
-            )}
-          </div>
-        </div>
-      ))}
+  const scrollRef = useRef<HTMLDivElement>(null);
 
-      {showTypingIndicator && (
-        <div className="flex justify-start">
-          <div className="bg-[#2A2A2A] text-white px-4 py-2 rounded-2xl rounded-tl-none max-w-[80%]">
-            <div className="flex space-x-1">
-              <div className="w-2 h-2 bg-[#B87333]/70 rounded-full animate-bounce" style={{animationDelay: '0ms'}}></div>
-              <div className="w-2 h-2 bg-[#B87333]/70 rounded-full animate-bounce" style={{animationDelay: '150ms'}}></div>
-              <div className="w-2 h-2 bg-[#B87333]/70 rounded-full animate-bounce" style={{animationDelay: '300ms'}}></div>
+  // Auto-scroll to bottom whenever messages change
+  useEffect(() => {
+    if (scrollRef.current) {
+      scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
+    }
+  }, [messages, showTypingIndicator]);
+
+  return (
+    <ScrollArea 
+      className={cn("flex-1 pr-4", className)} 
+      style={style}
+      ref={scrollRef}
+    >
+      <div className="space-y-4 py-1">
+        {messages.map((message, index) => (
+          <div
+            key={index}
+            className={`flex ${message.isUser ? "justify-end" : "justify-start"}`}
+          >
+            <div
+              className={`max-w-[80%] rounded-lg p-3 ${
+                message.isUser
+                  ? "bg-[#B87333] text-white"
+                  : "bg-gray-700 text-white"
+              }`}
+            >
+              {/* Only show Henry's avatar and name for non-user messages */}
+              {!message.isUser && (
+                <div className="flex items-center mb-1">
+                  <Avatar className="h-6 w-6 mr-2">
+                    <AvatarImage src="/lovable-uploads/f3c84972-8f58-42d7-b86f-82ff2d823b30.png" alt="Henry" />
+                    <AvatarFallback className="bg-gradient-to-br from-[#B87333] to-[#E5C5A1] text-white text-xs">H</AvatarFallback>
+                  </Avatar>
+                  <span className="text-xs text-white/70">Henry</span>
+                </div>
+              )}
+              <p className="text-sm">{message.text}</p>
+              {message.timestamp && (
+                <span className="text-xs opacity-70 mt-1 block text-right">
+                  {message.timestamp.toLocaleTimeString([], {
+                    hour: "2-digit",
+                    minute: "2-digit",
+                  })}
+                </span>
+              )}
             </div>
           </div>
-        </div>
-      )}
-      
-      <div ref={messagesEndRef} />
-    </div>
+        ))}
+        
+        {/* Typing indicator */}
+        {showTypingIndicator && (
+          <div className="flex justify-start">
+            <div className="max-w-[80%] rounded-lg p-3 bg-gray-700">
+              <div className="flex items-center mb-1">
+                <Avatar className="h-6 w-6 mr-2">
+                  <AvatarImage src="/lovable-uploads/f3c84972-8f58-42d7-b86f-82ff2d823b30.png" alt="Henry" />
+                  <AvatarFallback className="bg-gradient-to-br from-[#B87333] to-[#E5C5A1] text-white text-xs">H</AvatarFallback>
+                </Avatar>
+                <span className="text-xs text-white/70">Henry</span>
+              </div>
+              <div className="flex space-x-1 items-center h-5">
+                <div className="w-2 h-2 rounded-full bg-white/40 animate-bounce" style={{ animationDelay: "0ms" }}></div>
+                <div className="w-2 h-2 rounded-full bg-white/40 animate-bounce" style={{ animationDelay: "300ms" }}></div>
+                <div className="w-2 h-2 rounded-full bg-white/40 animate-bounce" style={{ animationDelay: "600ms" }}></div>
+              </div>
+            </div>
+          </div>
+        )}
+      </div>
+    </ScrollArea>
   );
 };
 

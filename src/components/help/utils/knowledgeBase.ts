@@ -1,48 +1,86 @@
 
-// Mental health knowledge base for Henry
-export const knowledgeBase = {
-  // Core mental health topics
-  "anxiety": "Anxiety is a normal response to stress, but when it becomes excessive, it may be an anxiety disorder. Deep breathing, mindfulness, and seeking professional help are effective approaches. I understand how anxiety can feel overwhelming and isolating - the racing thoughts, tension, and worry that seem impossible to control. Remember that your feelings are valid, and recovery is possible.",
-  "depression": "Depression is more than just feeling sad. It's a persistent feeling of sadness or loss of interest that can interfere with daily activities. I recognize how depression can feel like a heavy weight, making even simple tasks seem insurmountable. Professional support is important, and I'm here to listen without judgment. Small steps forward still count as progress.",
-  "stress": "Stress is your body's reaction to pressure from a situation or event. I understand how chronic stress can make you feel constantly on edge, affecting your sleep, mood, and overall wellbeing. Managing stress through exercise, meditation, and social connections can improve your wellbeing. What specific stressors are you experiencing right now?",
-  "therapy": "Therapy provides a safe space to explore feelings, beliefs, and behaviors with a trained professional. I recognize that starting therapy can feel intimidating, but it's a courageous step toward healing. There are many types available based on your specific needs, and finding the right therapist is an important part of the journey.",
-  "meditation": "Meditation is a mindfulness practice that can help reduce stress, improve focus, and promote emotional wellbeing. I understand that sitting with your thoughts can initially feel challenging, especially when experiencing mental health difficulties. Even a few minutes daily can make a difference. Would you like to try a brief guided meditation together?",
-  "suicide": "If you're having thoughts of suicide, please call the National Suicide Prevention Lifeline at 988 or text HOME to 741741 to reach the Crisis Text Line. Your life has value, and these feelings, while intense, can change with support. Help is available 24/7, and reaching out shows tremendous courage. I'm deeply concerned about what you're sharing and want to ensure you're safe.",
-  "crisis": "If you're experiencing a mental health crisis, please call 988 for immediate support, or text HOME to 741741. I understand how overwhelming these moments can feel, and you don't have to face them alone. You can also visit our Crisis Support page for resources that can help during this difficult time.",
-  
-  // Theory of Mind responses (understanding user's mental state)
-  "feeling sad": "I notice you're feeling sad. That's a completely valid emotion that everyone experiences. When you share that you're feeling sad, I'm trying to understand the weight of that emotion for you personally - how it colors your perceptions and impacts your day. Would it help to talk about what's causing these feelings? I can also suggest some mood-lifting activities if you'd prefer.",
-  "feeling depressed": "I hear that you're feeling depressed, and I want you to know that you're not alone in this experience. Depression can make everything feel overwhelming, hopeless, or empty. I'm trying to understand how depression is affecting your unique experience - your thoughts, energy levels, and hope for the future. Would you like me to connect you with professional resources or would you prefer to explore some coping strategies first?",
-  "feeling anxious": "I understand anxiety can be really challenging to deal with. Your feelings are valid, and there are ways to manage these symptoms. I'm trying to grasp how anxiety manifests uniquely for you - perhaps through physical sensations, racing thoughts, or avoidance behaviors. Would it help to try a quick breathing exercise together, or would you prefer information about anxiety management techniques?",
-  "feeling overwhelmed": "I recognize you're feeling overwhelmed right now. That's a difficult emotional state to be in, where everything seems too much all at once. I'm trying to understand how this overwhelm is affecting you specifically - perhaps making decisions difficult, creating physical tension, or making it hard to focus. Sometimes breaking things down into smaller pieces can help. Would you like to talk about what's contributing to this feeling, or try a simple grounding exercise?",
-  "feeling angry": "I can hear that you're feeling angry. Anger is often a signal that something important to you has been violated or threatened. I'm trying to understand what this anger means in your unique context - what values or boundaries might have been crossed. Would you like to explore what might be behind this feeling, or would you prefer some strategies to help manage intense emotions?",
-  "feeling happy": "I'm glad to hear you're feeling happy! Positive emotions are worth celebrating. I'm curious about what specifically is bringing you joy right now and how this happiness feels in your body and mind. What's contributing to your good mood today?",
-  "feeling confused": "I sense you're feeling confused, which can be uncomfortable. I'm trying to understand what clarity you're seeking and how this confusion is affecting your thoughts and feelings right now. Let's try to bring some understanding to the situation. What specific aspects are you finding difficult to understand?",
-  "feeling hopeless": "I hear that you're feeling hopeless right now. That's an incredibly difficult feeling to carry, and I'm trying to understand how this hopelessness is specifically affecting your thoughts about the future and your sense of possibility. While I know it may not feel like it at the moment, perspectives can change and difficult periods do pass. What's one small thing that's helped you get through difficult times before?",
-  "feeling numb": "I notice you're describing feeling numb or disconnected from your emotions. This can be your mind's way of protecting itself when feelings become too intense. I'm trying to understand how this numbness is affecting your day-to-day experience and connections with others. Sometimes reconnecting with simple physical sensations can help - would you like to try a brief grounding exercise?",
-  "feeling shame": "I hear that you're experiencing shame, which can be one of the most difficult emotions to carry. I'm trying to understand how this shame is affecting how you see yourself and your worth. Shame often whispers that there's something fundamentally wrong with us, but those thoughts aren't facts. Would it help to explore where these feelings might be coming from?",
-  
-  // Basic conversation responses with enhanced theory of mind
-  "greeting": "Hello! I'm Henry, your digital mental health counselor. I'm designed to understand and respond to your emotional needs, though I recognize I don't experience emotions as humans do. I'm here to listen without judgment and offer support tailored to your unique situation. How are you feeling today?",
-  "how are you": "As your digital counselor, I'm here and ready to support you in your mental wellness journey. While I don't experience emotions as you do, I'm designed to understand your feelings and respond with empathy. I'm more interested in how you're doing today - both what you're feeling and what you're thinking.",
-  "who are you": "I'm Henry, your digital mental health counselor. I'm designed to provide support, information, and resources for your mental wellness journey. Though I don't have personal experiences, I'm programmed to understand human emotions and respond with empathy. I can recognize patterns in how you express yourself and adapt my responses to your unique needs and situation.",
-  "thank you": "You're welcome! I'm glad I could help. I'm designed to provide support that feels genuine and personalized, even though I don't experience gratitude as humans do. I recognize that reaching out for support takes courage, and I'm here for you whenever you need it.",
-  "help": "I'm here to help. Whether you need information, resources, or just someone to talk to, I'm available. I understand that asking for help can sometimes be difficult, and I want to honor your courage in reaching out. What are you experiencing right now? By understanding your specific situation, I can better support you.",
-  
-  // Additional mental health topics with enhanced understanding
-  "trauma": "Trauma responses can develop after experiencing or witnessing distressing events. I understand that trauma can fundamentally change how you see yourself, others, and the world. Everyone's response to trauma is unique - affecting thoughts, emotions, physical sensations, and behaviors differently for each person. Healing often involves professional support tailored to your specific needs and happens at your own pace.",
-  "self-care": "Self-care involves intentional activities to take care of your physical, mental, and emotional health. I understand that when you're struggling, self-care might feel impossible or undeserved. It's not selfish but necessary for wellbeing and can include basic needs, social connection, and enjoyable activities. What small act of self-care might be accessible for you today?",
-  "mindfulness": "Mindfulness is the practice of paying attention to the present moment without judgment. I recognize that for some people, especially those with trauma, mindfulness can initially bring up difficult emotions. It can help reduce stress, improve focus, and create space between you and your reactions. Would you like to try a brief, gentle mindfulness exercise together?",
-  "boundaries": "Healthy boundaries are limits you set to protect your wellbeing. I understand that setting boundaries can be challenging, especially if you weren't allowed to have them growing up. They define what behaviors you find acceptable from others and can help you maintain emotional health in relationships. Is there a particular relationship where you're finding boundaries difficult?",
-  "grief": "Grief is a natural response to loss and can involve a wide range of emotions. I understand that grief doesn't follow a linear path and can arise from many types of losses - including people, relationships, opportunities, or even parts of your identity. There's no right way to grieve, and the process is unique to each person and situation. What loss are you grieving?",
-  "panic attack": "Panic attacks involve sudden, intense fear with physical symptoms like racing heart, shortness of breath, and dizziness. I understand how frightening these episodes can be - they can feel like you're dying or losing control. Though terrifying, they're not dangerous and can be managed with proper techniques and support. Would you like to learn some grounding techniques that might help during a panic attack?",
-  "ptsd": "Post-Traumatic Stress Disorder can develop after experiencing trauma. I understand how PTSD can make it feel like the trauma is happening all over again through flashbacks, nightmares, severe anxiety, and uncontrollable thoughts about the event. These responses aren't a sign of weakness but your brain's natural response to trauma. Effective treatments are available, and recovery is possible.",
-  "addiction": "Addiction is a complex condition involving compulsive substance use or behaviors despite harmful consequences. I understand that addiction isn't a moral failing or lack of willpower, but a complex interplay of biological, psychological, and social factors. Recovery typically requires a comprehensive approach including professional support. What specific substance or behavior are you concerned about?",
-  "insomnia": "Insomnia involves difficulty falling asleep, staying asleep, or both. I understand how frustrating and debilitating chronic sleep problems can be, affecting every aspect of your waking life. Good sleep hygiene, cognitive behavioral therapy for insomnia, and sometimes medication can help improve sleep quality. What does your typical sleep routine look like?",
-  
-  // Self-awareness statements
-  "self_awareness": "As a digital counselor, I have limitations. I don't truly experience emotions or have personal experiences, though I'm designed to simulate understanding and empathy. My responses are based on patterns I've learned, not genuine emotional connections. However, I'm continuously learning to better support your unique needs and can provide information, resources, and a space free of judgment.",
-  "limitations": "While I aim to provide supportive responses, I'm not a replacement for human connection or professional mental health care. I don't have the ability to fully understand the complexity of your unique experiences, and I can't pick up on nonverbal cues. If you're in crisis or need immediate help, please contact emergency services or a crisis helpline like 988.",
-  "capabilities": "I can offer information about mental health conditions, suggest coping strategies, help you practice skills like mindfulness, and provide a space to express yourself without judgment. I can remember our previous conversations to provide more personalized support. My goal is to be a helpful tool in your broader mental wellness journey.",
-  "empathy_statement": "While I don't experience emotions as humans do, I'm designed to recognize patterns in how people express their feelings and respond in ways that acknowledge and validate those feelings. My goal is to provide responses that feel supportive and understanding, even though my empathy is simulated rather than felt."
-};
+// Define the types for knowledge base entries
+export interface KnowledgeBaseEntry {
+  patterns: (string | RegExp)[];
+  response: string | string[] | (() => string);
+}
+
+// Export the knowledge base responses
+export const knowledgeBaseResponses: KnowledgeBaseEntry[] = [
+  {
+    patterns: ['hello', 'hi', 'hey', 'greetings'],
+    response: [
+      "Hi there! I'm Henry, your mental health companion. How are you feeling today?",
+      "Hello! I'm here to support your mental wellbeing. What brings you here today?",
+      "Hey! I'm Henry. I'm here to listen and help. How can I support you?"
+    ]
+  },
+  {
+    patterns: ['how are you', 'how are you doing', 'how are you feeling'],
+    response: [
+      "I'm here and ready to support you! How are you feeling today?",
+      "I'm doing well, thanks for asking! More importantly, how are you feeling?",
+      "I'm here and focused on how I can best help you today. What's on your mind?"
+    ]
+  },
+  {
+    patterns: ['feel anxious', 'anxiety', 'feeling anxious', 'panic', 'worried'],
+    response: [
+      "I understand anxiety can be overwhelming. Would it help to talk about what's triggering these feelings right now?",
+      "Anxiety is a common experience, but that doesn't make it any less challenging. Can you share what you're feeling anxious about?",
+      "When you're feeling anxious, focusing on your breathing can help. Would you like to try a quick breathing exercise together?"
+    ]
+  },
+  {
+    patterns: ['depressed', 'feel sad', 'feeling sad', 'depression', 'hopeless'],
+    response: [
+      "I'm sorry to hear you're feeling down. Depression affects many people, and your feelings are valid. Have you been able to talk to anyone else about how you're feeling?",
+      "When you're feeling depressed, even small tasks can feel overwhelming. What's one small thing you could do today that might bring you a moment of peace?",
+      "Depression can make everything feel heavier. I'm here to listen without judgment. Would it help to talk more about what you're experiencing?"
+    ]
+  },
+  {
+    patterns: ['stressed', 'stress', 'overwhelmed', 'too much', 'can\'t handle'],
+    response: [
+      "Feeling overwhelmed is completely understandable. Let's break things down - what's the most pressing thing on your mind right now?",
+      "When stress builds up, it can feel like everything is happening at once. Would it help to focus on just one challenge at a time?",
+      "Stress affects us both mentally and physically. Have you noticed any physical sensations that come with your stress?"
+    ]
+  },
+  {
+    patterns: ['help me', 'need help', 'crisis', 'emergency'],
+    response: [
+      "I'm here to support you. Can you tell me more about what's happening so I can better understand how to help?",
+      "I want to make sure you get the support you need. Could you share a bit more about what you're experiencing right now?",
+      "I'm here to listen and help. Please tell me more about what's going on so I can provide the best support."
+    ]
+  },
+  {
+    patterns: ['suicide', 'kill myself', 'don\'t want to live', 'end my life', 'better off dead'],
+    response: "I'm very concerned about what you're sharing. If you're having thoughts of harming yourself, please reach out to the National Suicide Prevention Lifeline at 988 right away. They have trained counselors available 24/7. Would you like me to provide more crisis resources?"
+  },
+  {
+    patterns: ['thank you', 'thanks', 'helpful', 'appreciate'],
+    response: [
+      "You're welcome. I'm glad I could help in some way.",
+      "I'm here for you anytime you need to talk.",
+      "Thank you for sharing with me. It takes courage to open up about mental health."
+    ]
+  },
+  {
+    patterns: ['meditation', 'mindfulness', 'relax', 'calm down'],
+    response: [
+      "Mindfulness can be a powerful tool. Would you like to try a brief breathing exercise together?",
+      "Finding moments of calm is important. Have you tried any meditation practices before?",
+      "Sometimes taking a few deep breaths can help create space between you and your thoughts. Would you like to try that now?"
+    ]
+  },
+  {
+    patterns: ['sleep', 'can\'t sleep', 'insomnia', 'tired'],
+    response: [
+      "Sleep difficulties can significantly impact mental health. Have you noticed any patterns with your sleep?",
+      "Creating a relaxing bedtime routine can help signal your body it's time to rest. What does your current routine look like?",
+      "Sleep and mental health are closely connected. Would you like to explore some strategies that might help improve your sleep?"
+    ]
+  }
+];

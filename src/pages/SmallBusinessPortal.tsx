@@ -57,6 +57,8 @@ const PortalOption: React.FC<OptionProps> = ({ title, description, icon, onClick
 );
 
 const PortalOptionsScreen: React.FC<{ onSelectOption: (option: 'business' | 'employee') => void }> = ({ onSelectOption }) => {
+  const navigate = useNavigate();
+
   return (
     <div className="flex flex-col items-center justify-center min-h-[70vh] text-center px-4 animate-fade-in">
       <div className="absolute top-4 right-4 z-20">

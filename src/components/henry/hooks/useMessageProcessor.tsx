@@ -1,7 +1,8 @@
+
 import { useState, useEffect } from "react";
 import { useToast } from "@/hooks/use-toast";
 import { generateResponse } from "@/components/help/utils/responseGenerator";
-import { checkForEmergency } from "@/components/help/utils/messageHelpers";
+import { checkForEmergency, saveConversationToLocalStorage, analyzeSentiment } from "@/components/help/utils/messageHelpers";
 
 export interface Message {
   text: string;
@@ -117,8 +118,8 @@ export const useMessageProcessor = (
     updateConversationContext(text.trim(), true);
     setProcessing(true);
     
-    const emergency = checkForEmergency(text);
-    if (emergency && !emergencyMode) {
+    const emergencyMatches = checkForEmergency(text);
+    if (emergencyMatches.length > 0 && !emergencyMode) {
       setEmergencyMode(true);
       
       if (options.onEmergencyDetected) {
@@ -128,9 +129,9 @@ export const useMessageProcessor = (
       setTimeout(() => {
         let emergencyResponseText = "I'm concerned about what you're sharing. ";
         
-        if (emergency.includes("suicide") || emergency.includes("self-harm")) {
+        if (emergencyMatches.some(match => match === 'suicide' || match === 'kill myself' || match === 'self-harm')) {
           emergencyResponseText += "If you're having thoughts of harming yourself, please call the National Suicide Prevention Lifeline at 988 right away. Would you like me to connect you with our Crisis Support resources?";
-        } else if (emergency.includes("crisis") || emergency.includes("emergency")) {
+        } else if (emergencyMatches.some(match => match === 'crisis' || match === 'emergency')) {
           emergencyResponseText += "It sounds like you're going through a difficult time. I want to make sure you get the support you need. Would you like me to connect you with our Crisis Support resources?";
         } else {
           emergencyResponseText += "What you're describing sounds serious, and I want to make sure you get appropriate support. Would you like me to connect you with our Crisis Support resources?";
