@@ -1,4 +1,3 @@
-
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
@@ -6,7 +5,7 @@ import { useToast } from "@/hooks/use-toast";
 import { 
   ArrowLeft, Brain, Bookmark, Calendar, Clock, Coffee, 
   Heart, Users, Briefcase, Compass, Shield, CheckCircle,
-  ExternalLink, Download, PlayCircle, FileText, Star, Info
+  ExternalLink, Download, PlayCircle, FileText, Star, Info, X
 } from "lucide-react";
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -705,21 +704,3 @@ const EmployeeReadiness: React.FC = () => {
                 <li>Recommended resources based on your results</li>
               </ul>
             </div>
-            
-            <div className="flex justify-between mt-6">
-              <Button variant="outline" className="border-white/20" onClick={() => setIsAssessmentDialogOpen(false)}>
-                Maybe Later
-              </Button>
-              <Button className="bg-blue-600 hover:bg-blue-700" onClick={handleStartAssessment}>
-                <Download className="mr-2 h-4 w-4" />
-                Start Assessment
-              </Button>
-            </div>
-          </div>
-        </DialogContent>
-      </Dialog>
-    </div>
-  );
-};
-
-export default EmployeeReadiness;
