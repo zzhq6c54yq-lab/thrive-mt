@@ -2,7 +2,6 @@
 import React from "react";
 import { Button } from "@/components/ui/button";
 import { ArrowRight, ArrowLeft } from "lucide-react";
-import MoodPlaylistGenerator from "@/components/playlists/MoodPlaylistGenerator";
 
 interface MoodResponseProps {
   selectedMood: 'happy' | 'ok' | 'neutral' | 'down' | 'sad' | 'overwhelmed' | null;
@@ -66,10 +65,9 @@ const MoodResponse: React.FC<MoodResponseProps> = ({ selectedMood, onContinue, o
         </p>
         
         <div className="mb-10">
-          <MoodPlaylistGenerator 
-            currentMood={selectedMood || "neutral"} 
-            className="bg-white/5 border border-white/10 backdrop-blur-md"
-          />
+          <p className="text-white/80 italic">
+            Based on your mood, we've prepared personalized resources and activities to support your mental wellbeing today.
+          </p>
         </div>
         
         <div className="flex justify-between mt-6">
