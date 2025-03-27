@@ -5,12 +5,8 @@ import { Button } from "@/components/ui/button";
 import { ArrowLeft } from "lucide-react";
 import HomeButton from "@/components/HomeButton";
 
-interface WorkshopParams {
-  workshopId: string;
-}
-
 const MilitaryWorkshop = () => {
-  const { workshopId } = useParams<WorkshopParams>();
+  const { workshopId } = useParams<{ workshopId: string }>();
   
   return (
     <div className="min-h-screen bg-[#0A1929] text-white">
