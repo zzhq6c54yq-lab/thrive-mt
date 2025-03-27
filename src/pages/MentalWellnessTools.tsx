@@ -17,6 +17,7 @@ import ToolsList from "@/components/mental-wellness/ToolsList";
 import ActivitiesTab from "@/components/mental-wellness/ActivitiesTab";
 import ResourcesTab from "@/components/mental-wellness/ResourcesTab";
 import HelpDialog from "@/components/mental-wellness/HelpDialog";
+import HenryReminderService from "@/components/henry/HenryReminderService";
 
 const MentalWellnessTools: React.FC = () => {
   const location = useLocation();
@@ -133,6 +134,13 @@ const MentalWellnessTools: React.FC = () => {
   return (
     <div className="min-h-screen bg-gradient-to-b from-[#f8f9fa] to-[#e9ecef]">
       <Header />
+      
+      <HenryReminderService 
+        preferences={{
+          reminderFrequency: 'hourly',
+          categories: ['mindfulness', 'physical', 'emotional', 'social']
+        }}
+      />
       
       <div className="container mx-auto max-w-6xl px-4 py-8">
         <div className="flex flex-col md:flex-row items-start md:items-center justify-between mb-8 gap-4">
