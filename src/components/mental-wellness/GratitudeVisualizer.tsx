@@ -331,7 +331,7 @@ const GratitudeVisualizer: React.FC<GratitudeVisualizerProps> = ({ onClose }) =>
         </>
       )}
 
-      {(!saved && step === 3) || saved ? (
+      {((!saved && step === 3) || saved) && (
         <>
           <div 
             className={`relative rounded-lg overflow-hidden shadow-lg transition-all duration-500 ${getOpacityClass()}`}
