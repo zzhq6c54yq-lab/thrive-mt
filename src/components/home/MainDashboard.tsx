@@ -15,7 +15,6 @@ import GratitudeVisualizer from "@/components/mental-wellness/GratitudeVisualize
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Heart } from "lucide-react";
-import NavigationHelpButton from "@/components/navigation/NavigationHelpButton";
 
 interface MainDashboardProps {
   userName: string;
@@ -156,9 +155,6 @@ const MainDashboard: React.FC<MainDashboardProps> = ({
 
         <KeyFeatures />
       </div>
-      
-      {/* Add the NavigationHelpButton for consistent help access */}
-      <NavigationHelpButton />
     </div>
   );
 };
