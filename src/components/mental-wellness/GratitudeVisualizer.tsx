@@ -150,8 +150,11 @@ const GratitudeVisualizer: React.FC<GratitudeVisualizerProps> = ({ onClose }) =>
     // In a real app, this would trigger a download of the visualization
   };
 
-  // Create the ring opacity class separately instead of using template literals in JSX
-  const ringOpacityClass = saved ? `ring-4 ring-indigo-500 ring-opacity-${pulseOpacity === 0.2 ? '20' : '60'}` : "";
+  // Create a fixed string for the ring opacity class to avoid template literals with variables in JSX
+  const getOpacityClass = () => {
+    if (!saved) return "";
+    return pulseOpacity === 0.2 ? "ring-4 ring-indigo-500 ring-opacity-20" : "ring-4 ring-indigo-500 ring-opacity-60";
+  };
 
   return (
     <div className="space-y-4 animate-fade-in">
@@ -331,7 +334,7 @@ const GratitudeVisualizer: React.FC<GratitudeVisualizerProps> = ({ onClose }) =>
       {(!saved && step === 3) || saved ? (
         <>
           <div 
-            className={`relative rounded-lg overflow-hidden shadow-lg transition-all duration-500 ${ringOpacityClass}`}
+            className={`relative rounded-lg overflow-hidden shadow-lg transition-all duration-500 ${getOpacityClass()}`}
             style={{ minHeight: "350px" }}
           >
             {!useGradient ? (
