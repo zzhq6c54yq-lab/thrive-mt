@@ -2,7 +2,7 @@ import React from "react";
 import {
   Brain, Library, Users, Heart, GraduationCap, CalendarRange, LeafyGreen,
   Moon, HandHeart, ListChecks, FlameKindling, Footprints, ArrowRight,
-  Sparkles, Star, Lightbulb, Target, Zap, Bird, Leaf, Smile, Coffee, Puzzle, HeartHandshake
+  Sparkles, Star, Lightbulb, Target, Zap, Bird, Leaf, Smile, Coffee, Puzzle, HeartHandshake, Music
 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { useToast } from "@/hooks/use-toast";
@@ -119,6 +119,12 @@ const KeyFeatures: React.FC = () => {
       description: "Comprehensive approach to physical, mental, and spiritual wellbeing",
       icon: LeafyGreen,
       path: "/holistic-wellness"
+    },
+    {
+      title: "Mood Playlists",
+      description: "AI-generated music playlists based on your emotional state",
+      icon: Music,
+      path: "/mental-wellness-tools?tab=activities"
     }
   ];
 
