@@ -1,10 +1,10 @@
-
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import { Button } from "@/components/ui/button";
-import { ArrowRight, ArrowLeft, AlertCircle } from "lucide-react";
+import { ArrowRight, ArrowLeft, AlertCircle, X, Phone, MessageCircle } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter } from "@/components/ui/dialog";
 import { useToast } from "@/hooks/use-toast";
+import { Slider } from "@/components/ui/slider";
 
 interface MoodResponseProps {
   selectedMood: 'happy' | 'ok' | 'neutral' | 'down' | 'sad' | 'overwhelmed' | null;
@@ -16,6 +16,8 @@ const MoodResponse: React.FC<MoodResponseProps> = ({ selectedMood, onContinue, o
   const navigate = useNavigate();
   const { toast } = useToast();
   const [showCrisisDialog, setShowCrisisDialog] = useState(false);
+  const [sliderValue, setSliderValue] = useState([0]);
+  const dialogContentRef = useRef<HTMLDivElement>(null);
   
   // Multiple response messages for each mood with enhanced, more in-depth content
   const moodResponses = {
@@ -88,7 +90,7 @@ const MoodResponse: React.FC<MoodResponseProps> = ({ selectedMood, onContinue, o
     down: [
       {
         title: "Sorry you're feeling down",
-        message: "We all experience difficult emotions as part of being human. Research shows that acknowledging these feelings—rather than suppressing them—actually helps us process and move through them more effectively. Consider giving yourself the kindness you'd offer a good friend who was feeling down. What small act of self-compassion feels accessible right now? Perhaps a brief walk, a comforting cup of tea, or simply placing a hand on your heart with gentle awareness.",
+        message: "We all experience difficult emotions as part of being human. Research shows that acknowledging these feelings—rather than suppressing them���actually helps us process and move through them more effectively. Consider giving yourself the kindness you'd offer a good friend who was feeling down. What small act of self-compassion feels accessible right now? Perhaps a brief walk, a comforting cup of tea, or simply placing a hand on your heart with gentle awareness.",
         affirmation: "I accept my feelings with compassion and know that difficult emotions are temporary."
       },
       {
@@ -165,7 +167,7 @@ const MoodResponse: React.FC<MoodResponseProps> = ({ selectedMood, onContinue, o
 
   // Open crisis dialog automatically if mood is overwhelmed
   useEffect(() => {
-    if (selectedMood === 'overwhelmed') {
+    if (selectedMood === 'overwhelmed' || selectedMood === 'sad') {
       // Don't open immediately, wait a moment after they see the response first
       const timer = setTimeout(() => {
         setShowCrisisDialog(true);
@@ -195,6 +197,23 @@ const MoodResponse: React.FC<MoodResponseProps> = ({ selectedMood, onContinue, o
       description: "You're taking an important step. Support is available.",
     });
   };
+
+  // Handle slider change for dialog content scrolling
+  const handleSliderChange = (value: number[]) => {
+    setSliderValue(value);
+    if (dialogContentRef.current) {
+      const maxScroll = dialogContentRef.current.scrollHeight - dialogContentRef.current.clientHeight;
+      const scrollPosition = (value[0] / 100) * maxScroll;
+      dialogContentRef.current.scrollTop = scrollPosition;
+    }
+  };
+
+  useEffect(() => {
+    // Reset slider when dialog opens
+    if (showCrisisDialog) {
+      setSliderValue([0]);
+    }
+  }, [showCrisisDialog]);
 
   if (!selectedResponse) return null;
 
@@ -227,24 +246,24 @@ const MoodResponse: React.FC<MoodResponseProps> = ({ selectedMood, onContinue, o
           {onPrevious && (
             <Button 
               onClick={onPrevious}
-              className="bg-white/20 backdrop-blur-md hover:bg-white/30 text-white px-5 py-2 h-auto transition-all duration-300 transform hover:scale-105 border border-white/20 rounded-xl shadow-md"
+              className="bg-white/20 backdrop-blur-md hover:bg-white/30 text-white px-4 py-1.5 h-auto transition-all duration-300 transform hover:scale-105 border border-white/20 rounded-xl shadow-md text-sm"
               size="sm"
             >
-              <ArrowLeft className="mr-2 h-4 w-4" /> Previous
+              <ArrowLeft className="mr-2 h-3 w-3" /> Previous
             </Button>
           )}
           <div className={onPrevious ? "" : "mx-auto"}>
             <Button 
               onClick={onContinue}
-              className="bg-white/20 backdrop-blur-md hover:bg-white/30 text-white px-5 py-2 h-auto transition-all duration-300 transform hover:scale-105 border border-white/20 rounded-xl shadow-md"
+              className="bg-white/20 backdrop-blur-md hover:bg-white/30 text-white px-4 py-1.5 h-auto transition-all duration-300 transform hover:scale-105 border border-white/20 rounded-xl shadow-md text-sm"
               size="sm"
             >
-              Continue <ArrowRight className="ml-2 h-4 w-4" />
+              Continue <ArrowRight className="ml-2 h-3 w-3" />
             </Button>
           </div>
         </div>
         
-        {selectedMood === 'overwhelmed' && (
+        {(selectedMood === 'overwhelmed' || selectedMood === 'sad') && (
           <div className="mt-6 p-4 border border-red-500/30 rounded-lg bg-red-900/10 backdrop-blur-sm">
             <div className="flex items-start">
               <AlertCircle className="h-5 w-5 text-red-400 mr-2 flex-shrink-0 mt-0.5" />
@@ -264,38 +283,51 @@ const MoodResponse: React.FC<MoodResponseProps> = ({ selectedMood, onContinue, o
         )}
       </div>
 
-      {/* Crisis Support Dialog */}
+      {/* Crisis Support Dialog with Slider Navigation */}
       <Dialog open={showCrisisDialog} onOpenChange={setShowCrisisDialog}>
-        <DialogContent className="bg-slate-900 border border-red-500/30 text-white">
-          <DialogHeader>
-            <DialogTitle className="flex items-center text-red-300">
-              <AlertCircle className="h-5 w-5 mr-2" />
-              Crisis Support Available
-            </DialogTitle>
+        <DialogContent className="bg-slate-900 border border-red-500/30 text-white max-h-[90vh] overflow-hidden flex flex-col">
+          <div className="sticky top-0 z-10 bg-slate-900 pb-2 border-b border-red-500/20">
+            <div className="flex justify-between items-center">
+              <DialogTitle className="flex items-center text-red-300">
+                <AlertCircle className="h-5 w-5 mr-2" />
+                Crisis Support Available
+              </DialogTitle>
+              <Button 
+                className="h-7 w-7 p-0 rounded-full bg-transparent hover:bg-red-900/30"
+                onClick={() => setShowCrisisDialog(false)}
+              >
+                <X className="h-4 w-4 text-red-300" />
+              </Button>
+            </div>
             <DialogDescription className="text-slate-300">
               If you're experiencing a crisis or having thoughts of self-harm, 
               immediate support is available.
             </DialogDescription>
-          </DialogHeader>
+          </div>
 
-          <div className="space-y-4 py-4">
-            <div className="p-3 border border-white/10 rounded-md">
+          <div 
+            className="space-y-4 py-4 overflow-y-auto flex-grow pr-2 scrollbar-hide"
+            ref={dialogContentRef}
+            style={{ maxHeight: "50vh" }}
+          >
+            <div className="p-3 border border-red-500/30 rounded-md bg-red-900/10 mb-4">
               <h4 className="font-medium text-white mb-2">Immediate Crisis Support</h4>
               <p className="text-sm text-slate-300 mb-2">
                 Connect to trained crisis counselors who can provide immediate support.
               </p>
-              <Button className="w-full bg-red-500 hover:bg-red-600 text-white"
+              <Button className="w-full bg-red-600 hover:bg-red-700 text-black font-bold"
                 onClick={handleCrisisSupport}>
+                <Phone className="mr-2 h-5 w-5" />
                 Access Crisis Resources
               </Button>
             </div>
 
-            <div className="p-3 border border-white/10 rounded-md">
+            <div className="p-3 border border-red-500/30 rounded-md bg-red-900/10 mb-4">
               <h4 className="font-medium text-white mb-2">National Suicide Prevention Lifeline</h4>
               <p className="text-sm text-slate-300 mb-2">
                 Free, confidential support available 24/7.
               </p>
-              <Button className="w-full" variant="outline"
+              <Button className="w-full bg-red-600 hover:bg-red-700 text-black font-bold"
                 onClick={() => {
                   window.open('tel:988');
                   toast({
@@ -303,16 +335,17 @@ const MoodResponse: React.FC<MoodResponseProps> = ({ selectedMood, onContinue, o
                     description: "Dialing 988 - The National Suicide Prevention Lifeline",
                   });
                 }}>
+                <Phone className="mr-2 h-5 w-5" />
                 Call 988
               </Button>
             </div>
 
-            <div className="p-3 border border-white/10 rounded-md">
+            <div className="p-3 border border-red-500/30 rounded-md bg-red-900/10 mb-4">
               <h4 className="font-medium text-white mb-2">Crisis Text Line</h4>
               <p className="text-sm text-slate-300 mb-2">
                 Text-based crisis support available 24/7.
               </p>
-              <Button className="w-full" variant="outline"
+              <Button className="w-full bg-red-600 hover:bg-red-700 text-black font-bold"
                 onClick={() => {
                   navigator.clipboard.writeText('HOME');
                   toast({
@@ -320,20 +353,61 @@ const MoodResponse: React.FC<MoodResponseProps> = ({ selectedMood, onContinue, o
                     description: "We've copied 'HOME' to your clipboard for the Crisis Text Line",
                   });
                 }}>
+                <MessageCircle className="mr-2 h-5 w-5" />
                 Text HOME to 741741
+              </Button>
+            </div>
+
+            <div className="p-3 border border-red-500/30 rounded-md bg-red-900/10 mb-4">
+              <h4 className="font-medium text-white mb-2">Community Support Chat</h4>
+              <p className="text-sm text-slate-300 mb-2">
+                Connect with others who understand what you're going through.
+              </p>
+              <Button className="w-full bg-red-600 hover:bg-red-700 text-black font-bold">
+                Join Support Chat
+              </Button>
+            </div>
+
+            <div className="p-3 border border-red-500/30 rounded-md bg-red-900/10">
+              <h4 className="font-medium text-white mb-2">Emergency Services</h4>
+              <p className="text-sm text-slate-300 mb-2">
+                If you or someone you know is in immediate danger, please call emergency services.
+              </p>
+              <Button className="w-full bg-red-600 hover:bg-red-700 text-black font-bold"
+                onClick={() => {
+                  window.open('tel:911');
+                  toast({
+                    title: "Connecting to Emergency Services",
+                    description: "Dialing 911 - Emergency Services",
+                  });
+                }}>
+                <Phone className="mr-2 h-5 w-5" />
+                Call 911
               </Button>
             </div>
           </div>
 
-          <DialogFooter>
-            <Button 
-              className="w-full" 
-              variant="secondary"
-              onClick={() => setShowCrisisDialog(false)}
-            >
-              I'm OK Right Now
-            </Button>
-          </DialogFooter>
+          <div className="sticky bottom-0 pt-2 border-t border-red-500/20 bg-slate-900">
+            <div className="px-2 mb-3">
+              <p className="text-xs text-slate-400 mb-1">Scroll to see more resources</p>
+              <Slider
+                value={sliderValue}
+                onValueChange={handleSliderChange}
+                className="mt-2"
+                step={1}
+                max={100}
+              />
+            </div>
+            
+            <DialogFooter>
+              <Button 
+                className="w-full bg-red-600 hover:bg-red-700 text-black font-bold" 
+                onClick={() => setShowCrisisDialog(false)}
+              >
+                Continue
+              </Button>
+            </DialogFooter>
+          </div>
         </DialogContent>
       </Dialog>
     </div>
