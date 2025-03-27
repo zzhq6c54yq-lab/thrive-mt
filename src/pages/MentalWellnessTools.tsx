@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { ArrowLeft, Search, MessageCircle, IceCream } from "lucide-react";
@@ -9,6 +10,7 @@ import Header from "@/components/layout/Header";
 import { useToast } from "@/hooks/use-toast";
 import { toolCategories } from "@/data/toolCategories";
 
+// Import our new components
 import CakeDecorationGame from "@/components/mental-wellness/CakeDecorationGame";
 import CategorySelector from "@/components/mental-wellness/CategorySelector";
 import PersonalizedSection from "@/components/mental-wellness/PersonalizedSection";
@@ -17,13 +19,13 @@ import ToolsList from "@/components/mental-wellness/ToolsList";
 import ActivitiesTab from "@/components/mental-wellness/ActivitiesTab";
 import ResourcesTab from "@/components/mental-wellness/ResourcesTab";
 import HelpDialog from "@/components/mental-wellness/HelpDialog";
-import HenryReminderService from "@/components/henry/HenryReminderService";
 
 const MentalWellnessTools: React.FC = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const { toast } = useToast();
   
+  // State management
   const [selectedQualities, setSelectedQualities] = useState<string[]>([]);
   const [selectedGoals, setSelectedGoals] = useState<string[]>([]);
   const [recommendations, setRecommendations] = useState<string[]>([]);
@@ -43,6 +45,7 @@ const MentalWellnessTools: React.FC = () => {
     }
   }, [location]);
 
+  // Category keyword mapping for filtering
   const categoryMapping: Record<string, string[]> = {
     "Mindfulness & Meditation": ["peaceful", "mindful", "present", "focused"],
     "Anxiety Relief": ["reducing-anxiety", "managing-stress", "emotional-regulation"],
@@ -52,6 +55,7 @@ const MentalWellnessTools: React.FC = () => {
     "Self-Discovery": ["finding-purpose", "building-confidence", "creative", "resilient"]
   };
 
+  // Generate personalized recommendations based on user qualities and goals
   const generateRecommendations = () => {
     const allSelections = [...selectedQualities, ...selectedGoals];
     if (allSelections.length === 0) {
@@ -114,6 +118,7 @@ const MentalWellnessTools: React.FC = () => {
     });
   };
 
+  // Filter tools based on current selections
   const filteredTools = toolCategories.filter(tool => {
     const matchesSearch = tool.title.toLowerCase().includes(searchTerm.toLowerCase()) || 
                        tool.description.toLowerCase().includes(searchTerm.toLowerCase());
@@ -134,13 +139,6 @@ const MentalWellnessTools: React.FC = () => {
   return (
     <div className="min-h-screen bg-gradient-to-b from-[#f8f9fa] to-[#e9ecef]">
       <Header />
-      
-      <HenryReminderService 
-        preferences={{
-          reminderFrequency: 'hourly',
-          categories: ['mindfulness', 'physical', 'emotional', 'social']
-        }}
-      />
       
       <div className="container mx-auto max-w-6xl px-4 py-8">
         <div className="flex flex-col md:flex-row items-start md:items-center justify-between mb-8 gap-4">
@@ -239,7 +237,7 @@ const MentalWellnessTools: React.FC = () => {
           </TabsContent>
           
           <TabsContent value="activities" className="space-y-6">
-            <ActivitiesTab 
+            <ActivitiesTab
               onStartIcingGame={handleStartIcingGame}
               onToolSelect={handleToolSelect}
             />
@@ -277,11 +275,13 @@ const MentalWellnessTools: React.FC = () => {
         </div>
       </div>
 
+      {/* Help Dialog */}
       <HelpDialog isOpen={isHelpDialogOpen} onClose={() => setIsHelpDialogOpen(false)} />
     </div>
   );
 };
 
+// Define missing icon components
 const Sparkles = ({ className }: { className?: string }) => (
   <svg 
     xmlns="http://www.w3.org/2000/svg" 

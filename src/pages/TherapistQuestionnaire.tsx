@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 import HomeButton from "@/components/HomeButton";
-import { RadioGroup, Radio } from "@/components/ui/radio-group";
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Label } from "@/components/ui/label";
 import { Checkbox } from "@/components/ui/checkbox";
 import { toast } from "@/components/ui/use-toast";
@@ -238,7 +238,7 @@ const TherapistQuestionnaire = () => {
               >
                 {currentQuestion.options.map((option) => (
                   <div key={option.value} className="flex items-start space-x-3 p-3 rounded-md hover:bg-slate-50">
-                    <Radio id={option.value} value={option.value} />
+                    <RadioGroupItem id={option.value} value={option.value} />
                     <Label htmlFor={option.value} className="font-normal cursor-pointer">{option.label}</Label>
                   </div>
                 ))}

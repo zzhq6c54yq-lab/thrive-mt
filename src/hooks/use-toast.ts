@@ -1,3 +1,4 @@
+
 import * as React from "react";
 import { Toast, ToastActionElement } from "@/components/ui/toast";
 
@@ -6,7 +7,6 @@ type ToastProps = {
   description?: React.ReactNode;
   variant?: "default" | "destructive";
   duration?: number;
-  action?: ToastActionElement;
 };
 
 type ToasterToast = {
@@ -148,17 +148,19 @@ function useToast() {
         
       const dismiss = () => dispatch({ type: "DISMISS_TOAST", toastId: id });
 
-      dispatch({
-        type: "ADD_TOAST",
-        toast: {
-          id,
-          open: true,
-          onOpenChange: (open: boolean) => {
-            if (!open) dismiss();
+      if (props.variant === 'destructive') {
+        dispatch({
+          type: "ADD_TOAST",
+          toast: {
+            id,
+            open: true,
+            onOpenChange: (open: boolean) => {
+              if (!open) dismiss();
+            },
+            ...props
           },
-          ...props
-        },
-      });
+        });
+      }
 
       return {
         id,
