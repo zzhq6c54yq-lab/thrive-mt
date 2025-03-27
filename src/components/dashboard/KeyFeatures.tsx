@@ -2,7 +2,8 @@ import React from "react";
 import {
   Brain, Library, Users, Heart, GraduationCap, CalendarRange, LeafyGreen,
   Moon, HandHeart, ListChecks, FlameKindling, Footprints, ArrowRight,
-  Sparkles, Star, Lightbulb, Target, Zap, Bird, Leaf, Smile, Coffee, Puzzle, HeartHandshake
+  Sparkles, Star, Lightbulb, Target, Zap, Bird, Leaf, Smile, Coffee, Puzzle, HeartHandshake,
+  Headphones, Music
 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { useToast } from "@/hooks/use-toast";
@@ -23,6 +24,12 @@ const KeyFeatures: React.FC = () => {
       description: "Fun and therapeutic games and quizzes to boost mental wellbeing",
       icon: Puzzle,
       path: "/games-and-quizzes"
+    },
+    {
+      title: "Binaural Beats",
+      description: "Sound therapy to improve sleep, focus, and mental wellbeing",
+      icon: Headphones,
+      path: "/binaural-beats"
     },
     {
       title: "Resource Library",
@@ -123,11 +130,19 @@ const KeyFeatures: React.FC = () => {
   ];
 
   const handleFeatureClick = (path: string) => {
-    toast({
-      title: "Navigating...",
-      description: "Taking you to your selected feature",
-      duration: 1500,
-    });
+    if (path === "/binaural-beats") {
+      toast({
+        title: "Navigating to Binaural Beats",
+        description: "Explore therapeutic sound frequencies to improve focus, sleep, and mental wellbeing",
+        duration: 2000,
+      });
+    } else {
+      toast({
+        title: "Navigating...",
+        description: "Taking you to your selected feature",
+        duration: 1500,
+      });
+    }
     
     navigate(path);
   };

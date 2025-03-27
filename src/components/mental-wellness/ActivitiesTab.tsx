@@ -3,10 +3,9 @@ import React, { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Brain, Music, HeartHandshake, Flower, Wind, PenTool, Camera } from "lucide-react";
+import { Brain, HeartHandshake, Flower, Wind, PenTool, Camera } from "lucide-react";
 import CakeDecorationGame from "./CakeDecorationGame";
 import HelpDialog from "./HelpDialog";
-import MoodPlaylistGenerator from "@/components/playlists/MoodPlaylistGenerator";
 import GratitudeVisualizer from "./GratitudeVisualizer";
 
 interface ActivitiesTabProps {
@@ -18,7 +17,6 @@ const ActivitiesTab: React.FC<ActivitiesTabProps> = ({ onStartIcingGame, onToolS
   const [showHelp, setShowHelp] = useState(false);
   const [showIcingGame, setShowIcingGame] = useState(false);
   const [showGratitudeVisualizer, setShowGratitudeVisualizer] = useState(false);
-  const defaultMood = 'neutral';
 
   const handleCloseIcingGame = () => {
     setShowIcingGame(false);
@@ -39,10 +37,9 @@ const ActivitiesTab: React.FC<ActivitiesTabProps> = ({ onStartIcingGame, onToolS
       </div>
       
       <Tabs defaultValue="creative" className="space-y-4">
-        <TabsList className="grid grid-cols-3 w-full">
+        <TabsList className="grid grid-cols-2 w-full">
           <TabsTrigger value="creative">Creative</TabsTrigger>
           <TabsTrigger value="wellness">Wellness</TabsTrigger>
-          <TabsTrigger value="music">Music</TabsTrigger>
         </TabsList>
         
         <TabsContent value="creative" className="space-y-4">
@@ -139,21 +136,6 @@ const ActivitiesTab: React.FC<ActivitiesTabProps> = ({ onStartIcingGame, onToolS
               </CardFooter>
             </Card>
           </div>
-        </TabsContent>
-        
-        <TabsContent value="music" className="space-y-4">
-          <Card className="col-span-1 md:col-span-2">
-            <CardHeader>
-              <CardTitle className="flex items-center"><Music className="mr-2 h-4 w-4" /> Mood-Based Music</CardTitle>
-              <CardDescription>Listen to music that matches or improves your current mood</CardDescription>
-            </CardHeader>
-            <CardContent>
-              <MoodPlaylistGenerator 
-                currentMood={defaultMood} 
-                className="bg-white/5 border-none"
-              />
-            </CardContent>
-          </Card>
         </TabsContent>
       </Tabs>
     </div>
