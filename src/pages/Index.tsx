@@ -7,7 +7,7 @@ import useMousePosition from "@/hooks/useMousePosition";
 import useScreenHistory from "@/hooks/useScreenHistory";
 import usePopupManagement from "@/hooks/usePopupManagement";
 import IndexScreenManager from "@/components/home/IndexScreenManager";
-// Removed HenryFloatingElement as we're consolidating to just one Henry button
+import NavigationHelpButton from "@/components/navigation/NavigationHelpButton";
 
 const Index = () => {
   // State management
@@ -43,7 +43,7 @@ const Index = () => {
     if (location.state && location.state.showHenry) {
       setShowHenry(true);
     }
-  }, [location.state]);
+  }, [location.state, setShowHenry]);
 
   // User interaction handlers
   const handleUserInfoChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -144,6 +144,12 @@ const Index = () => {
 
   const navigateToFeature = (path: string) => {
     if (path.startsWith('/')) {
+      toast({
+        title: "Navigating...",
+        description: `Loading ${path.substring(1).replace(/-/g, ' ')} page`,
+        duration: 1500
+      });
+      
       // Special case for Small Business Portal - include state to trigger teaser
       if (path === '/small-business-portal') {
         navigate(path, { 
@@ -200,7 +206,8 @@ const Index = () => {
         setScreenState={setScreenState}
       />
       
-      {/* Removed HenryFloatingElement - Using the global HelpNavButton instead */}
+      {/* Global Navigation Help Button */}
+      <NavigationHelpButton />
     </div>
   );
 };
