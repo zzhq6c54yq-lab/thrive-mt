@@ -1,5 +1,5 @@
 
-import React from "react";
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useToast } from "@/hooks/use-toast";
 import Header from "@/components/layout/Header";
@@ -11,7 +11,13 @@ import NewFeatures from "@/components/dashboard/NewFeatures";
 import SpecializedPrograms from "@/components/dashboard/SpecializedPrograms";
 import FeaturedWorkshops from "@/components/dashboard/FeaturedWorkshops";
 import KeyFeatures from "@/components/dashboard/KeyFeatures";
-// Removed HenryButton import - We're handling this via the global HelpNavButton component
+import GratitudeVisualizer from "@/components/mental-wellness/GratitudeVisualizer";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Radio, RadioGroup } from "@/components/ui/radio-group";
+import { Label } from "@/components/ui/label";
+import { Heart, Music, Radio as RadioIcon } from "lucide-react";
+import MoodPlaylistGenerator from "@/components/playlists/MoodPlaylistGenerator";
 
 interface MainDashboardProps {
   userName: string;
@@ -32,6 +38,8 @@ const MainDashboard: React.FC<MainDashboardProps> = ({
 }) => {
   const navigate = useNavigate();
   const { toast } = useToast();
+  const [showGratitudeVisualizer, setShowGratitudeVisualizer] = useState(false);
+  const [radioStation, setRadioStation] = useState("relaxation");
   
   // Function to handle featured workshop clicks
   const handleWorkshopClick = (workshopId: string, workshopTitle: string) => {
@@ -81,6 +89,10 @@ const MainDashboard: React.FC<MainDashboardProps> = ({
     }
   };
   
+  const handleCloseGratitudeVisualizer = () => {
+    setShowGratitudeVisualizer(false);
+  };
+  
   return (
     <div className="min-h-screen bg-gradient-to-b from-[#1a1a20] via-[#252535] to-[#2d2d3d] text-white pt-6 pb-20 px-4 relative overflow-hidden">
       <div className="absolute inset-0 z-0 overflow-hidden">
@@ -103,6 +115,35 @@ const MainDashboard: React.FC<MainDashboardProps> = ({
       <NewFeatures />
 
       <div className="container mx-auto max-w-6xl px-4 py-6 relative z-10">
+        {/* Gratitude Visualizer Section */}
+        <div className="mb-12">
+          <Card className="bg-gradient-to-br from-violet-900/40 to-fuchsia-900/40 border-violet-500/20 shadow-lg hover:shadow-violet-500/10 transition-all duration-300">
+            <CardHeader className="flex flex-row items-center justify-between pb-2">
+              <CardTitle className="text-xl font-medium flex items-center gap-2">
+                <Heart className="h-5 w-5 text-rose-400" />
+                Daily Gratitude Visualizer
+              </CardTitle>
+              <Button 
+                variant="ghost" 
+                size="sm" 
+                className="text-violet-200 hover:text-white hover:bg-violet-800/40"
+                onClick={() => setShowGratitudeVisualizer(!showGratitudeVisualizer)}
+              >
+                {showGratitudeVisualizer ? "Close" : "Open"} Visualizer
+              </Button>
+            </CardHeader>
+            <CardContent>
+              {showGratitudeVisualizer ? (
+                <GratitudeVisualizer onClose={handleCloseGratitudeVisualizer} />
+              ) : (
+                <p className="text-violet-200 text-sm">
+                  Create visual representations of what you're grateful for today. Express your gratitude through beautiful imagery and affirmations.
+                </p>
+              )}
+            </CardContent>
+          </Card>
+        </div>
+        
         <SpecializedPrograms />
         
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
@@ -117,6 +158,50 @@ const MainDashboard: React.FC<MainDashboardProps> = ({
         />
 
         <KeyFeatures />
+        
+        {/* Radio Controller Section at the bottom */}
+        <div className="mt-12 mb-4">
+          <Card className="bg-gradient-to-br from-blue-900/40 to-indigo-900/40 border-blue-500/20 shadow-lg hover:shadow-blue-500/10 transition-all duration-300">
+            <CardHeader className="flex flex-row items-center justify-between pb-2">
+              <CardTitle className="text-xl font-medium flex items-center gap-2">
+                <RadioIcon className="h-5 w-5 text-blue-400" />
+                Mood Radio
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="space-y-4">
+                <RadioGroup 
+                  defaultValue="relaxation" 
+                  value={radioStation} 
+                  onValueChange={setRadioStation}
+                  className="flex flex-wrap gap-4"
+                >
+                  <div className="flex items-center space-x-2">
+                    <Radio id="relaxation" value="relaxation" />
+                    <Label htmlFor="relaxation">Relaxation</Label>
+                  </div>
+                  <div className="flex items-center space-x-2">
+                    <Radio id="focus" value="focus" />
+                    <Label htmlFor="focus">Focus & Productivity</Label>
+                  </div>
+                  <div className="flex items-center space-x-2">
+                    <Radio id="uplift" value="uplift" />
+                    <Label htmlFor="uplift">Uplifting</Label>
+                  </div>
+                  <div className="flex items-center space-x-2">
+                    <Radio id="sleep" value="sleep" />
+                    <Label htmlFor="sleep">Sleep & Calm</Label>
+                  </div>
+                </RadioGroup>
+                
+                <MoodPlaylistGenerator 
+                  currentMood={radioStation} 
+                  className="bg-white/5 border-none"
+                />
+              </div>
+            </CardContent>
+          </Card>
+        </div>
       </div>
     </div>
   );
