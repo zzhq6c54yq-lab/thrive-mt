@@ -9,6 +9,7 @@ import QuizzesSection from "@/components/dashboard/QuizzesSection";
 import ThriveHeader from "@/components/dashboard/ThriveHeader";
 import NewFeatures from "@/components/dashboard/NewFeatures";
 import SpecializedPrograms from "@/components/dashboard/SpecializedPrograms";
+import GratitudeVisualizer from "@/components/dashboard/GratitudeVisualizer";
 import FeaturedWorkshops from "@/components/dashboard/FeaturedWorkshops";
 import KeyFeatures from "@/components/dashboard/KeyFeatures";
 // Removed HenryButton import - We're handling this via the global HelpNavButton component
@@ -104,6 +105,8 @@ const MainDashboard: React.FC<MainDashboardProps> = ({
 
       <div className="container mx-auto max-w-6xl px-4 py-6 relative z-10">
         <SpecializedPrograms />
+        
+        <GratitudeVisualizer />
         
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
           <UpcomingAppointments />
