@@ -62,6 +62,13 @@ export default {
           purple: '#8B5CF6',
           pink: '#D946EF',
           dark: '#1A1F2C'
+        },
+        binaural: {
+          blue: '#3B82F6',
+          purple: '#8B5CF6',
+          cyan: '#06B6D4',
+          teal: '#14B8A6',
+          indigo: '#6366F1'
         }
       },
       keyframes: {
@@ -107,6 +114,46 @@ export default {
             transform: 'scale(2)',
             opacity: '0'
           }
+        },
+        'wave': {
+          '0%': {
+            transform: 'translateX(-100%)'
+          },
+          '50%': {
+            transform: 'translateX(0)'
+          },
+          '100%': {
+            transform: 'translateX(100%)'
+          }
+        },
+        'ripple': {
+          '0%': {
+            transform: 'scale(0.8)',
+            opacity: '1'
+          },
+          '100%': {
+            transform: 'scale(2.4)',
+            opacity: '0'
+          }
+        },
+        'pulse-ring': {
+          '0%': {
+            transform: 'scale(0.33)'
+          },
+          '80%, 100%': {
+            opacity: '0'
+          }
+        },
+        'pulse-dot': {
+          '0%': {
+            transform: 'scale(0.8)'
+          },
+          '50%': {
+            transform: 'scale(1)'
+          },
+          '100%': {
+            transform: 'scale(0.8)'
+          }
         }
       },
       animation: {
@@ -114,7 +161,11 @@ export default {
         'fade-in': 'fade-in 0.5s ease-out',
         'platinum-pulse': 'platinum-glow 2s infinite ease-in-out',
         'float': 'float 6s infinite ease-in-out',
-        'ping': 'ping 2s cubic-bezier(0, 0, 0.2, 1) infinite'
+        'ping': 'ping 2s cubic-bezier(0, 0, 0.2, 1) infinite',
+        'wave': 'wave 5s infinite ease-in-out',
+        'ripple': 'ripple 1.5s linear infinite',
+        'pulse-ring': 'pulse-ring 1.25s cubic-bezier(0.215, 0.61, 0.355, 1) infinite',
+        'pulse-dot': 'pulse-dot 1.25s cubic-bezier(0.455, 0.03, 0.515, 0.955) infinite'
       },
       borderRadius: {
         lg: 'var(--radius)',
