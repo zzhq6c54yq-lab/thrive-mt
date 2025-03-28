@@ -93,12 +93,28 @@ export default {
           '100%': {
             boxShadow: '0 0 5px rgba(159, 158, 161, 0.5), 0 0 10px rgba(159, 158, 161, 0.3)'
           }
+        },
+        'float': {
+          '0%, 100%': {
+            transform: 'translateY(0)'
+          },
+          '50%': {
+            transform: 'translateY(-10px)'
+          }
+        },
+        'ping': {
+          '75%, 100%': {
+            transform: 'scale(2)',
+            opacity: '0'
+          }
         }
       },
       animation: {
         'fade-up': 'fade-up 0.5s ease-out',
         'fade-in': 'fade-in 0.5s ease-out',
-        'platinum-pulse': 'platinum-glow 2s infinite ease-in-out'
+        'platinum-pulse': 'platinum-glow 2s infinite ease-in-out',
+        'float': 'float 6s infinite ease-in-out',
+        'ping': 'ping 2s cubic-bezier(0, 0, 0.2, 1) infinite'
       },
       borderRadius: {
         lg: 'var(--radius)',

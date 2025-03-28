@@ -1,9 +1,11 @@
+
 import React, { useState, useRef, useEffect } from "react";
 import { useSearchParams } from "react-router-dom";
 import { 
   Play, Pause, Volume2, Volume, VolumeX, 
   Moon, Brain, Heart, Music, Leaf, Cloud, 
-  Headphones, SkipBack, SkipForward
+  Headphones, SkipBack, SkipForward, Sparkles,
+  BadgeInfo, WavesIcon, Zap
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import Page from "@/components/Page";
@@ -17,6 +19,7 @@ const beatCategories = [
     name: "Chakra Balancing",
     icon: Brain,
     color: "from-purple-600 to-indigo-600",
+    description: "Harmonize your energy centers with specific frequencies for each chakra.",
     tracks: [
       { id: "root", name: "Root Chakra (396 Hz)", frequency: 396, duration: 20 },
       { id: "sacral", name: "Sacral Chakra (417 Hz)", frequency: 417, duration: 20 },
@@ -31,7 +34,8 @@ const beatCategories = [
     id: "stress",
     name: "Stress Relief",
     icon: Leaf,
-    color: "from-green-600 to-emerald-500",
+    color: "from-green-500 to-emerald-400",
+    description: "Calm your mind and release tension with these soothing frequencies.",
     tracks: [
       { id: "calm-mind", name: "Calm Mind (432 Hz)", frequency: 432, duration: 30 },
       { id: "anxiety-relief", name: "Anxiety Relief (63 Hz)", frequency: 63, duration: 25 },
@@ -43,7 +47,8 @@ const beatCategories = [
     id: "sleep",
     name: "Sleep & Relaxation",
     icon: Moon,
-    color: "from-blue-600 to-indigo-800",
+    color: "from-blue-600 to-indigo-700",
+    description: "Achieve deeper, more restorative sleep with these gentle frequencies.",
     tracks: [
       { id: "deep-sleep", name: "Deep Sleep (3 Hz)", frequency: 3, duration: 480 }, // 8 hours
       { id: "gentle-sleep", name: "Gentle Sleep (6 Hz)", frequency: 6, duration: 480 }, // 8 hours
@@ -56,6 +61,7 @@ const beatCategories = [
     name: "Meditation",
     icon: Cloud,
     color: "from-cyan-500 to-blue-500",
+    description: "Enhance your meditation practice with frequencies that promote mindfulness.",
     tracks: [
       { id: "mindfulness", name: "Mindfulness (7.83 Hz)", frequency: 7.83, duration: 30 },
       { id: "theta-meditation", name: "Theta Meditation (6 Hz)", frequency: 6, duration: 45 },
@@ -67,7 +73,8 @@ const beatCategories = [
     id: "depression",
     name: "Depression Relief",
     icon: Heart,
-    color: "from-pink-500 to-rose-500",
+    color: "from-pink-500 to-rose-400",
+    description: "Lift your mood and promote emotional balance with these uplifting frequencies.",
     tracks: [
       { id: "mood-lift", name: "Mood Lift (10 Hz)", frequency: 10, duration: 30 },
       { id: "happiness-boost", name: "Happiness Boost (8.4 Hz)", frequency: 8.4, duration: 25 },
@@ -89,6 +96,7 @@ const BinauralBeats: React.FC = () => {
   const [isMuted, setIsMuted] = useState<boolean>(false);
   const [currentTime, setCurrentTime] = useState<number>(0);
   const [duration, setDuration] = useState<number>(0);
+  const [showInfo, setShowInfo] = useState<boolean>(false);
 
   const leftOscillatorRef = useRef<OscillatorNode | null>(null);
   const rightOscillatorRef = useRef<OscillatorNode | null>(null);
@@ -334,14 +342,77 @@ const BinauralBeats: React.FC = () => {
 
   return (
     <Page title="Binaural Beats Therapy">
-      <div className="container mx-auto px-4 py-8">
-        <div className="mb-8">
-          <h1 className="text-3xl font-bold mb-2">Binaural Beats Therapy</h1>
-          <p className="text-gray-500 mb-6">
-            Experience the healing power of binaural beats to reduce stress, improve focus, enhance meditation, and promote better sleep.
-          </p>
+      <div className="min-h-screen bg-gradient-to-b from-[#0f172a] via-[#1e293b] to-[#334155] text-white">
+        <div className="container mx-auto px-4 py-12">
+          <div className="mb-10 text-center">
+            <div className="flex justify-center items-center gap-4 mb-4">
+              <WavesIcon className="h-10 w-10 text-cyan-400" />
+              <h1 className="text-5xl font-bold bg-gradient-to-r from-blue-400 via-cyan-400 to-teal-400 text-transparent bg-clip-text">Binaural Beats Therapy</h1>
+              <WavesIcon className="h-10 w-10 text-teal-400" />
+            </div>
+            <p className="text-gray-300 mb-6 max-w-3xl mx-auto text-lg">
+              Experience the healing power of binaural beats to reduce stress, improve focus, enhance meditation, and promote better sleep.
+            </p>
+            
+            <Button 
+              variant="outline" 
+              size="sm" 
+              className="text-cyan-400 border-cyan-400/50 hover:bg-cyan-400/10"
+              onClick={() => setShowInfo(!showInfo)}
+            >
+              <BadgeInfo className="h-4 w-4 mr-2" />
+              {showInfo ? "Hide Information" : "What are Binaural Beats?"}
+            </Button>
+          </div>
           
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4 mb-8">
+          {showInfo && (
+            <div className="max-w-4xl mx-auto mb-12 bg-white/5 backdrop-blur-md rounded-xl p-6 shadow-xl border border-white/10 animate-fade-in">
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                <div>
+                  <h2 className="text-xl font-bold mb-4 flex items-center gap-2">
+                    <Zap className="h-5 w-5 text-cyan-400" />
+                    <span>What are Binaural Beats?</span>
+                  </h2>
+                  <p className="mb-4 text-gray-300">
+                    Binaural beats occur when two slightly different frequencies are played separately to each ear,
+                    causing the brain to perceive a third "beat" frequency equal to the difference between the two tones.
+                  </p>
+                  <p className="text-gray-300">
+                    For example, if a 420 Hz tone is played in your left ear and a 430 Hz tone in your right ear,
+                    your brain perceives a 10 Hz binaural beat. This can help induce specific brainwave states
+                    associated with relaxation, focus, creativity, or sleep.
+                  </p>
+                </div>
+                
+                <div>
+                  <h2 className="text-xl font-bold mb-4 flex items-center gap-2">
+                    <Headphones className="h-5 w-5 text-cyan-400" />
+                    <span>How to Use</span>
+                  </h2>
+                  <ul className="space-y-3 text-gray-300">
+                    <li className="flex items-start">
+                      <Headphones className="h-5 w-5 mr-2 text-cyan-400 mt-0.5" />
+                      <span>Use stereo headphones for the best experience</span>
+                    </li>
+                    <li className="flex items-start">
+                      <Moon className="h-5 w-5 mr-2 text-cyan-400 mt-0.5" />
+                      <span>Find a quiet, comfortable place with minimal distractions</span>
+                    </li>
+                    <li className="flex items-start">
+                      <Brain className="h-5 w-5 mr-2 text-cyan-400 mt-0.5" />
+                      <span>Start with short sessions (15-30 minutes) and gradually increase duration</span>
+                    </li>
+                    <li className="flex items-start">
+                      <Heart className="h-5 w-5 mr-2 text-cyan-400 mt-0.5" />
+                      <span>Be consistent for best results - regular practice enhances benefits</span>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          )}
+          
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6 mb-12">
             {beatCategories.map((category) => {
               const Icon = category.icon;
               const isActive = category.id === activeCategory;
@@ -351,38 +422,78 @@ const BinauralBeats: React.FC = () => {
                   key={category.id}
                   onClick={() => handleCategoryChange(category.id)}
                   className={cn(
-                    "rounded-xl p-4 transition-all duration-300 flex flex-col items-center justify-center text-center h-32 shadow-md hover:shadow-lg",
+                    "rounded-2xl p-6 transition-all duration-500 flex flex-col items-center justify-center text-center h-40 shadow-xl group",
                     isActive 
-                      ? `bg-gradient-to-br ${category.color} text-white` 
-                      : "bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700"
+                      ? `bg-gradient-to-br ${category.color} text-white border-2 border-white/50` 
+                      : "bg-white/5 backdrop-blur-sm border border-white/10 hover:bg-white/10 hover:scale-105 hover:shadow-2xl"
                   )}
                 >
-                  <Icon className={cn("h-10 w-10 mb-2", isActive ? "text-white" : "text-gray-500")} />
-                  <h3 className="font-medium text-sm">{category.name}</h3>
+                  <div className={cn(
+                    "w-16 h-16 rounded-full flex items-center justify-center mb-3 transition-all duration-500",
+                    isActive ? "bg-white/20" : "bg-white/5 group-hover:bg-white/10"
+                  )}>
+                    <Icon className={cn(
+                      "h-8 w-8 transition-all", 
+                      isActive ? "text-white" : "text-gray-400 group-hover:text-white"
+                    )} />
+                  </div>
+                  <h3 className={cn(
+                    "font-medium text-lg transition-all",
+                    isActive ? "text-white" : "text-gray-300 group-hover:text-white"
+                  )}>
+                    {category.name}
+                  </h3>
+                  {isActive && (
+                    <div className="absolute -bottom-1 left-1/2 transform -translate-x-1/2 w-2 h-2 bg-white rounded-full shadow-lg shadow-white/30"></div>
+                  )}
                 </button>
               );
             })}
           </div>
           
-          <div className="bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-800 dark:to-gray-900 rounded-xl p-6 shadow-md mb-8">
-            <h2 className="text-xl font-semibold mb-4">{currentCategory.name} Tracks</h2>
+          <div className="bg-white/5 backdrop-blur-md rounded-2xl p-8 shadow-xl border border-white/10 mb-12 relative overflow-hidden">
+            <div className="absolute inset-0 bg-gradient-to-br from-white/5 to-transparent opacity-40 pointer-events-none"></div>
+            
+            <h2 className="text-2xl font-bold mb-6 flex items-center gap-2">
+              <div className={cn(
+                "w-8 h-8 rounded-full flex items-center justify-center",
+                `bg-gradient-to-br ${currentCategory.color}`
+              )}>
+                {React.createElement(currentCategory.icon, { className: "h-4 w-4 text-white" })}
+              </div>
+              <span>{currentCategory.name} Tracks</span>
+            </h2>
+            
+            <p className="text-gray-300 mb-6 text-lg">{currentCategory.description}</p>
+            
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
               {currentCategory.tracks.map((track) => (
                 <button
                   key={track.id}
                   onClick={() => handleTrackChange(track.id)}
                   className={cn(
-                    "p-4 rounded-lg transition-all duration-200 text-left",
+                    "p-5 rounded-xl transition-all duration-300 text-left hover:scale-[1.02] relative overflow-hidden",
                     track.id === activeTrack
                       ? `bg-gradient-to-r ${currentCategory.color} text-white`
-                      : "bg-white dark:bg-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600"
+                      : "bg-white/5 hover:bg-white/10 text-gray-200"
                   )}
                 >
+                  {track.id === activeTrack && (
+                    <div className="absolute right-2 top-2">
+                      <Sparkles className="h-4 w-4 text-white/70 animate-pulse" />
+                    </div>
+                  )}
+                  
                   <div className="flex items-center">
-                    <Music className="h-5 w-5 mr-2" />
+                    <div className={cn(
+                      "w-10 h-10 rounded-full flex items-center justify-center mr-3",
+                      track.id === activeTrack ? "bg-white/20" : "bg-white/10"
+                    )}>
+                      <Music className="h-5 w-5" />
+                    </div>
                     <div>
-                      <h3 className="font-medium text-sm">{track.name}</h3>
-                      <p className="text-xs opacity-80">{track.duration} min</p>
+                      <h3 className="font-medium text-base">{track.name}</h3>
+                      <p className="text-sm opacity-80">{track.duration} min</p>
                     </div>
                   </div>
                 </button>
@@ -390,70 +501,90 @@ const BinauralBeats: React.FC = () => {
             </div>
           </div>
           
-          <div className={`bg-gradient-to-r ${currentCategory.color} text-white rounded-xl p-6 shadow-md`}>
-            <div className="flex flex-col items-center">
-              <div className="w-24 h-24 rounded-full bg-white/20 flex items-center justify-center mb-4">
-                <Headphones className="h-12 w-12" />
+          <div className={`bg-gradient-to-r ${currentCategory.color} rounded-2xl p-10 shadow-2xl relative overflow-hidden`}>
+            <div className="absolute inset-0 bg-black/10"></div>
+            
+            {/* Animated waves background */}
+            <div className="absolute inset-0 overflow-hidden opacity-30 pointer-events-none">
+              <div className="absolute top-0 left-0 right-0 h-24 bg-white/10 transform -skew-y-3 animate-float" style={{animationDuration: '10s'}}></div>
+              <div className="absolute top-20 left-0 right-0 h-16 bg-white/5 transform skew-y-3 animate-float" style={{animationDuration: '13s', animationDelay: '1s'}}></div>
+              <div className="absolute bottom-0 left-0 right-0 h-32 bg-white/10 transform -skew-y-3 animate-float" style={{animationDuration: '8s', animationDelay: '2s'}}></div>
+            </div>
+            
+            <div className="flex flex-col items-center relative z-10">
+              <div className="w-32 h-32 rounded-full bg-white/20 flex items-center justify-center mb-6 shadow-xl relative group animate-float" style={{animationDuration: '6s'}}>
+                <Headphones className="h-16 w-16 text-white" />
+                
+                {isPlaying && (
+                  <>
+                    <div className="absolute inset-0 rounded-full border-4 border-white/30 animate-ping" style={{animationDuration: '2s'}}></div>
+                    <div className="absolute inset-0 rounded-full border-2 border-white/20 animate-ping" style={{animationDuration: '3s'}}></div>
+                  </>
+                )}
               </div>
               
-              <h3 className="text-xl font-bold mb-1">{currentTrack.name}</h3>
-              <p className="text-sm opacity-80 mb-6">{currentCategory.name}</p>
+              <h3 className="text-3xl font-bold mb-2 text-white">{currentTrack.name}</h3>
+              <p className="text-lg opacity-90 mb-8 font-light">{currentCategory.name}</p>
               
-              <div className="w-full max-w-md mb-4">
-                <div className="flex justify-between mb-1 text-sm">
+              <div className="w-full max-w-md mb-6 bg-white/10 backdrop-blur-sm rounded-full p-4">
+                <div className="flex justify-between mb-2 text-sm font-medium">
                   <span>{formatTime(currentTime)}</span>
                   <span>{formatTime(duration)}</span>
                 </div>
-                <div className="h-2 bg-white/20 rounded-full overflow-hidden">
+                <div className="h-3 bg-white/20 rounded-full overflow-hidden">
                   <div 
-                    className="h-full bg-white"
-                    style={{ width: `${(currentTime / duration) * 100}%` }}
+                    className="h-full bg-white animate-pulse"
+                    style={{ width: `${(currentTime / duration) * 100}%`, animationDuration: '2s' }}
                   />
                 </div>
               </div>
               
-              <div className="flex items-center space-x-4 mb-8">
+              <div className="flex items-center space-x-6 mb-10">
                 <Button 
                   size="icon"
                   variant="secondary"
-                  className="rounded-full bg-white/20 hover:bg-white/30 text-white"
+                  className="rounded-full bg-white/20 hover:bg-white/30 text-white w-12 h-12 shadow-lg transition-all duration-300 hover:scale-110"
                   onClick={handlePreviousTrack}
                 >
-                  <SkipBack className="h-5 w-5" />
+                  <SkipBack className="h-6 w-6" />
                 </Button>
                 
                 <Button
                   size="icon"
                   variant="secondary"
-                  className="rounded-full w-14 h-14 bg-white/20 hover:bg-white/30 text-white"
+                  className="rounded-full w-20 h-20 bg-white/20 hover:bg-white/30 text-white shadow-xl transition-all duration-300 hover:scale-110"
                   onClick={handlePlayPause}
                 >
-                  {isPlaying ? <Pause className="h-7 w-7" /> : <Play className="h-7 w-7" />}
+                  {isPlaying ? (
+                    <Pause className="h-10 w-10" />
+                  ) : (
+                    <Play className="h-10 w-10 ml-1" />
+                  )}
                 </Button>
                 
                 <Button 
                   size="icon"
                   variant="secondary"
-                  className="rounded-full bg-white/20 hover:bg-white/30 text-white"
+                  className="rounded-full bg-white/20 hover:bg-white/30 text-white w-12 h-12 shadow-lg transition-all duration-300 hover:scale-110"
                   onClick={handleNextTrack}
                 >
-                  <SkipForward className="h-5 w-5" />
+                  <SkipForward className="h-6 w-6" />
                 </Button>
               </div>
               
-              <div className="flex items-center space-x-2 w-full max-w-xs">
+              <div className="flex items-center space-x-3 w-full max-w-xs">
                 <Button
                   size="icon"
                   variant="secondary"
-                  className="rounded-full bg-white/20 hover:bg-white/30 text-white h-8 w-8"
+                  className="rounded-full bg-white/20 hover:bg-white/30 text-white h-10 w-10 shadow-lg transition-all duration-300 hover:scale-110"
                   onClick={handleMuteToggle}
                 >
                   {isMuted ? (
-                    <VolumeX className="h-4 w-4" />
+                    <VolumeX className="h-5 w-5" />
                   ) : volume > 50 ? (
-                    <Volume2 className="h-4 w-4" />
+                    <Volume2 className="h-5 w-5" />
                   ) : (
-                    <Volume className="h-4 w-4" />
+                    <Volume className="h-5 w-5" />
                   )}
                 </Button>
                 
@@ -467,43 +598,6 @@ const BinauralBeats: React.FC = () => {
                 />
               </div>
             </div>
-          </div>
-        </div>
-
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8">
-          <div className="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-md">
-            <h2 className="text-xl font-bold mb-4">What are Binaural Beats?</h2>
-            <p className="mb-4">
-              Binaural beats occur when two slightly different frequencies are played separately to each ear,
-              causing the brain to perceive a third "beat" frequency equal to the difference between the two tones.
-            </p>
-            <p>
-              For example, if a 420 Hz tone is played in your left ear and a 430 Hz tone in your right ear,
-              your brain perceives a 10 Hz binaural beat. This can help induce specific brainwave states
-              associated with relaxation, focus, creativity, or sleep.
-            </p>
-          </div>
-          
-          <div className="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-md">
-            <h2 className="text-xl font-bold mb-4">How to Use</h2>
-            <ul className="space-y-3">
-              <li className="flex items-start">
-                <Headphones className="h-5 w-5 mr-2 text-gray-500 mt-0.5" />
-                <span>Use stereo headphones for the best experience</span>
-              </li>
-              <li className="flex items-start">
-                <Moon className="h-5 w-5 mr-2 text-gray-500 mt-0.5" />
-                <span>Find a quiet, comfortable place with minimal distractions</span>
-              </li>
-              <li className="flex items-start">
-                <Brain className="h-5 w-5 mr-2 text-gray-500 mt-0.5" />
-                <span>Start with short sessions (15-30 minutes) and gradually increase duration</span>
-              </li>
-              <li className="flex items-start">
-                <Heart className="h-5 w-5 mr-2 text-gray-500 mt-0.5" />
-                <span>Be consistent for best results - regular practice enhances benefits</span>
-              </li>
-            </ul>
           </div>
         </div>
       </div>
