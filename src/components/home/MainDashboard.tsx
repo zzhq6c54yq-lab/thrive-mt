@@ -1,126 +1,176 @@
-
-import React from "react";
-import { useNavigate } from "react-router-dom";
-import { useToast } from "@/hooks/use-toast";
-import Header from "@/components/layout/Header";
+import React, { useState } from "react";
+import { motion } from "framer-motion";
+import { Share2, Lightbulb, Users, ShieldCheck, HeartHandshake, BookOpenCheck } from "lucide-react";
 import UpcomingAppointments from "@/components/dashboard/UpcomingAppointments";
-import InsightsSection from "@/components/dashboard/InsightsSection";
-import QuizzesSection from "@/components/dashboard/QuizzesSection";
 import ThriveHeader from "@/components/dashboard/ThriveHeader";
-import NewFeatures from "@/components/dashboard/NewFeatures";
-import SpecializedPrograms from "@/components/dashboard/SpecializedPrograms";
-import GratitudeVisualizer from "@/components/dashboard/GratitudeVisualizer";
-import FeaturedWorkshops from "@/components/dashboard/FeaturedWorkshops";
 import KeyFeatures from "@/components/dashboard/KeyFeatures";
-// Removed HenryButton import - We're handling this via the global HelpNavButton component
+import SpecializedPrograms from "@/components/dashboard/SpecializedPrograms";
+import InsightsSection from "@/components/dashboard/InsightsSection";
+import GratitudeVisualizer from "@/components/dashboard/GratitudeVisualizer";
+import QuizzesSection from "@/components/dashboard/QuizzesSection";
+import FeaturedWorkshops from "@/components/dashboard/FeaturedWorkshops";
+import NewFeatures from "@/components/dashboard/NewFeatures";
 
-interface MainDashboardProps {
-  userName: string;
-  showHenry: boolean;
-  onHenryToggle: () => void;
-  selectedQualities: string[];
-  selectedGoals: string[];
+interface Props {
+  selectedMood?: string | null;
+  selectedQualities?: string[];
+  selectedGoals?: string[];
+  onHenryOpen?: () => void;
   navigateToFeature: (path: string) => void;
 }
 
-const MainDashboard: React.FC<MainDashboardProps> = ({
-  userName,
-  showHenry,
-  onHenryToggle,
-  selectedQualities,
-  selectedGoals,
-  navigateToFeature
+const MainDashboard: React.FC<Props> = ({
+  selectedMood,
+  selectedQualities = [],
+  selectedGoals = [],
+  onHenryOpen,
+  navigateToFeature,
 }) => {
-  const navigate = useNavigate();
-  const { toast } = useToast();
-  
-  // Function to handle featured workshop clicks
-  const handleWorkshopClick = (workshopId: string, workshopTitle: string) => {
-    toast({
-      title: "Opening Workshop",
-      description: `Loading "${workshopTitle}" workshop content...`,
-      duration: 1500
-    });
-    
-    // Based on the workshop ID, navigate to the appropriate content
-    switch(workshopId) {
-      case "mindful-communication":
-        navigate("/workshop/mindful-communication", { 
-          state: { workshopTitle: "Mindful Communication" } 
-        });
-        break;
-      case "emotional-regulation":
-        navigate("/workshop/emotional-regulation", {
-          state: { workshopTitle: "Emotional Regulation" }
-        });
-        break;
-      case "stress-management":
-        navigate("/workshop/stress-management", {
-          state: { workshopTitle: "Stress Management" }
-        });
-        break;
-      default:
-        // If it's a military workshop
-        if (workshopId.startsWith("military-")) {
-          const militaryWorkshopId = workshopId.replace("military-", "");
-          navigate(`/military-workshop/${militaryWorkshopId}`);
-        } 
-        // If it's a corporate workshop
-        else if (workshopId.startsWith("corporate-")) {
-          const corporateWorkshopId = workshopId.replace("corporate-", "");
-          navigate("/corporate-wellness", { 
-            state: { 
-              workshop: workshopTitle, 
-              showWorkshopContent: true 
-            } 
-          });
-        }
-        // For any other workshop type
-        else {
-          navigate(`/workshop/${workshopId}`);
-        }
-    }
+  const [showNav, setShowNav] = useState<boolean>(true);
+
+  const handleNavigate = (path: string) => {
+    navigateToFeature(path);
   };
-  
+
+  // Add Connect & Share to the new features list
+  const newFeatures = [
+    {
+      id: "connect-share",
+      title: "Connect & Share",
+      description: "Share videos, messages, and important documents with loved ones.",
+      icon: Share2,
+      path: "/connect-and-share", 
+      color: "from-blue-400 to-indigo-500",
+      new: true
+    },
+    {
+      id: "personalized-content",
+      title: "Personalized Content",
+      description: "Curated content based on your interests and goals.",
+      icon: Lightbulb,
+      path: "/personalized-content",
+      color: "from-yellow-400 to-orange-500",
+      new: true
+    },
+    {
+      id: "community-support",
+      title: "Community Support",
+      description: "Connect with others and share your experiences.",
+      icon: Users,
+      path: "/community-support",
+      color: "from-green-400 to-teal-500",
+      new: true
+    },
+    {
+      id: "privacy-security",
+      title: "Privacy & Security",
+      description: "Learn about our commitment to your privacy and security.",
+      icon: ShieldCheck,
+      path: "/privacy-security",
+      color: "from-purple-400 to-pink-500",
+      new: true
+    },
+    {
+      id: "family-support",
+      title: "Family Support",
+      description: "Resources and support for your family's mental wellness.",
+      icon: HeartHandshake,
+      path: "/family-support",
+      color: "from-red-400 to-rose-500",
+      new: true
+    },
+    {
+      id: "self-help-resources",
+      title: "Self-Help Resources",
+      description: "Access articles, guides, and tools for self-improvement.",
+      icon: BookOpenCheck,
+      path: "/self-help-resources",
+      color: "from-blue-400 to-cyan-500",
+      new: true
+    },
+  ];
+
   return (
-    <div className="min-h-screen bg-gradient-to-b from-[#1a1a20] via-[#252535] to-[#2d2d3d] text-white pt-6 pb-20 px-4 relative overflow-hidden">
-      <div className="absolute inset-0 z-0 overflow-hidden">
-        <div className="absolute inset-0 bg-[url('data:image/svg+xml;utf8,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%2220%22 height=%2220%22 viewBox=%220 0 20 20%22><circle cx=%222%22 cy=%222%22 r=%221%22 fill=%22%23B87333%22 fill-opacity=%220.03%22/></svg>')] opacity-20"></div>
-        <div className="absolute top-[-20%] right-[-10%] w-[80%] h-[80%] rounded-full bg-gradient-to-br from-[#B87333]/5 to-transparent blur-3xl"></div>
-        <div className="absolute bottom-[-20%] left-[-10%] w-[80%] h-[80%] rounded-full bg-gradient-to-tr from-[#9b87f5]/5 to-transparent blur-3xl"></div>
-        <div className="absolute top-0 left-0 right-0 h-24 bg-gradient-to-r from-[#B87333]/3 via-[#E5C5A1]/5 to-[#B87333]/3 transform -skew-y-3"></div>
-        <div className="absolute top-10 left-0 right-0 h-32 bg-gradient-to-r from-[#E5C5A1]/2 via-[#B87333]/4 to-[#E5C5A1]/2 transform skew-y-2" style={{animationDelay: '0.5s'}}></div>
-        <div className="absolute bottom-0 left-0 right-0 h-28 bg-gradient-to-r from-[#B87333]/3 via-[#E5C5A1]/5 to-[#B87333]/3 transform -skew-y-2"></div>
-      </div>
-      
-      <Header />
-      
+    <div className="w-full max-w-7xl mx-auto px-4">
       <ThriveHeader 
-        userName={userName}
-        showHenry={showHenry}
-        onHenryToggle={onHenryToggle}
+        showNav={showNav} 
+        setShowNav={setShowNav} 
+        selectedMood={selectedMood}
+        onHenryOpen={onHenryOpen}
       />
 
-      <NewFeatures />
-
-      <div className="container mx-auto max-w-6xl px-4 py-6 relative z-10">
-        <SpecializedPrograms />
-        
-        <GratitudeVisualizer />
-        
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
-          <UpcomingAppointments />
-          <InsightsSection />
-          <QuizzesSection />
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 mb-12">
+        <div className="lg:col-span-8">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.2 }}
+          >
+            <NewFeatures 
+              features={newFeatures} 
+              onFeatureSelect={handleNavigate}
+            />
+          </motion.div>
+          
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.3 }}
+          >
+            <UpcomingAppointments />
+          </motion.div>
+          
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.4 }}
+          >
+            <KeyFeatures onFeatureSelect={handleNavigate} />
+          </motion.div>
+          
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.5 }}
+          >
+            <FeaturedWorkshops />
+          </motion.div>
         </div>
         
-        <FeaturedWorkshops 
-          navigate={navigate} 
-          onWorkshopClick={handleWorkshopClick}
-        />
-
-        <KeyFeatures />
+        <div className="lg:col-span-4">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.3 }}
+          >
+            <GratitudeVisualizer />
+          </motion.div>
+          
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.4 }}
+          >
+            <InsightsSection selectedQualities={selectedQualities} selectedGoals={selectedGoals} />
+          </motion.div>
+          
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.5 }}
+          >
+            <QuizzesSection />
+          </motion.div>
+        </div>
       </div>
+      
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.6 }}
+      >
+        <SpecializedPrograms navigateToFeature={handleNavigate} />
+      </motion.div>
     </div>
   );
 };
