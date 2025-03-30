@@ -1,4 +1,3 @@
-
 import React, { useState } from "react";
 import { motion } from "framer-motion";
 import { Share2, Lightbulb, Users, ShieldCheck, HeartHandshake, BookOpenCheck } from "lucide-react";
@@ -11,7 +10,6 @@ import GratitudeVisualizer from "@/components/dashboard/GratitudeVisualizer";
 import QuizzesSection from "@/components/dashboard/QuizzesSection";
 import FeaturedWorkshops from "@/components/dashboard/FeaturedWorkshops";
 import NewFeatures from "@/components/dashboard/NewFeatures";
-import { useNavigate } from "react-router-dom";
 
 interface Props {
   selectedMood?: string | null;
@@ -19,9 +17,6 @@ interface Props {
   selectedGoals?: string[];
   onHenryOpen?: () => void;
   navigateToFeature: (path: string) => void;
-  userName?: string;
-  showHenry?: boolean;
-  onHenryToggle?: () => void;
 }
 
 const MainDashboard: React.FC<Props> = ({
@@ -30,24 +25,11 @@ const MainDashboard: React.FC<Props> = ({
   selectedGoals = [],
   onHenryOpen,
   navigateToFeature,
-  userName = "",
-  showHenry = false,
-  onHenryToggle,
 }) => {
-  const navigate = useNavigate();
-  
+  const [showNav, setShowNav] = useState<boolean>(true);
+
   const handleNavigate = (path: string) => {
     navigateToFeature(path);
-  };
-
-  const handleWorkshopClick = (workshopId: string, workshopTitle: string) => {
-    navigate(`/workshop/${workshopId}`, { 
-      state: { 
-        workshopTitle,
-        qualities: selectedQualities,
-        goals: selectedGoals 
-      }
-    });
   };
 
   // Add Connect & Share to the new features list
@@ -111,9 +93,10 @@ const MainDashboard: React.FC<Props> = ({
   return (
     <div className="w-full max-w-7xl mx-auto px-4">
       <ThriveHeader 
-        userName={userName}
-        showHenry={showHenry}
-        onHenryToggle={onHenryToggle || (() => {})}
+        showNav={showNav} 
+        setShowNav={setShowNav} 
+        selectedMood={selectedMood}
+        onHenryOpen={onHenryOpen}
       />
 
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 mb-12">
@@ -150,10 +133,7 @@ const MainDashboard: React.FC<Props> = ({
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.5 }}
           >
-            <FeaturedWorkshops 
-              navigate={navigate} 
-              onWorkshopClick={handleWorkshopClick} 
-            />
+            <FeaturedWorkshops />
           </motion.div>
         </div>
         
