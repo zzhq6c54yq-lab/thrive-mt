@@ -7,8 +7,9 @@ import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
 import { 
   Send, X, Users, MessagesSquare, Info, 
-  ThumbsUp, Heart, Video, PhoneCall, Paperclip, Smile
+  ThumbsUp, Heart, Video, PhoneCall, Paperclip, Smile, Image, Gif
 } from "lucide-react";
+import { useToast } from "@/hooks/use-toast";
 
 interface ChatMessage {
   id: string;
@@ -41,6 +42,8 @@ const ChatRoomDialog: React.FC<ChatRoomDialogProps> = ({
   const [newMessage, setNewMessage] = useState("");
   const [activeUsers, setActiveUsers] = useState<{id: string, name: string, avatar?: string}[]>([]);
   const [showInfo, setShowInfo] = useState(false);
+  const [isTyping, setIsTyping] = useState(false);
+  const { toast } = useToast();
   
   const chatEndRef = useRef<HTMLDivElement>(null);
   
@@ -113,6 +116,31 @@ const ChatRoomDialog: React.FC<ChatRoomDialogProps> = ({
       
       setChatMessages(mockMessages);
       setActiveUsers(mockActiveUsers);
+
+      // Simulate someone typing after 3 seconds
+      const typingTimer = setTimeout(() => {
+        setIsTyping(true);
+        
+        // Then stop typing and add a new message after 2 more seconds
+        const messageTimer = setTimeout(() => {
+          setIsTyping(false);
+          
+          const newIncomingMessage: ChatMessage = {
+            id: `msg${mockMessages.length + 1}`,
+            userId: "user5",
+            userName: "Taylor",
+            userAvatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=Taylor",
+            content: "Hello everyone! First time here. I've been dealing with anxiety during public speaking. Has anyone found effective techniques for managing that specific situation?",
+            timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+          };
+          
+          setChatMessages(prev => [...prev, newIncomingMessage]);
+        }, 2000);
+        
+        return () => clearTimeout(messageTimer);
+      }, 3000);
+      
+      return () => clearTimeout(typingTimer);
     }
   }, [isOpen, groupId]);
   
@@ -138,6 +166,35 @@ const ChatRoomDialog: React.FC<ChatRoomDialogProps> = ({
     
     setChatMessages([...chatMessages, newChatMessage]);
     setNewMessage("");
+
+    // Simulate someone responding after a bit
+    setTimeout(() => {
+      setIsTyping(true);
+      
+      setTimeout(() => {
+        setIsTyping(false);
+        
+        // Random response based on message content
+        let responseContent = "Thanks for sharing that with the group. How has everyone else been dealing with similar situations?";
+        
+        if (newMessage.toLowerCase().includes("anxiety") || newMessage.toLowerCase().includes("anxious")) {
+          responseContent = "Anxiety can be really challenging. Have you tried any grounding techniques when you feel anxious?";
+        } else if (newMessage.toLowerCase().includes("meditation") || newMessage.toLowerCase().includes("breathing")) {
+          responseContent = "Meditation has been shown to be very effective for many people. The key is consistency - even 5 minutes daily can make a difference.";
+        }
+        
+        const responseMessage: ChatMessage = {
+          id: `msg${chatMessages.length + 2}`,
+          userId: "user1",
+          userName: "AlexTherapist",
+          userAvatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=Alex",
+          content: responseContent,
+          timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+        };
+        
+        setChatMessages(prev => [...prev, responseMessage]);
+      }, 3000);
+    }, 1500);
   };
   
   const handleReaction = (messageId: string, reactionType: string) => {
@@ -180,6 +237,29 @@ const ChatRoomDialog: React.FC<ChatRoomDialogProps> = ({
         return message;
       })
     );
+
+    // Show toast for the reaction
+    toast({
+      title: "Reaction added",
+      description: `You reacted with ${reactionType}`,
+      duration: 1500,
+    });
+  };
+
+  const handleCallAction = () => {
+    toast({
+      title: "Video call initiated",
+      description: "Starting a video call with the group...",
+      duration: 3000,
+    });
+  };
+
+  const handleAttachmentAction = () => {
+    toast({
+      title: "Attachment feature",
+      description: "File attachment feature coming soon!",
+      duration: 3000,
+    });
   };
   
   return (
@@ -196,6 +276,14 @@ const ChatRoomDialog: React.FC<ChatRoomDialogProps> = ({
             </div>
             
             <div className="flex items-center gap-2">
+              <Button 
+                variant="ghost" 
+                size="icon" 
+                className="h-9 w-9 rounded-full hover:bg-gray-100"
+                onClick={handleCallAction}
+              >
+                <Video className="h-5 w-5 text-[#B87333]" />
+              </Button>
               <Button 
                 variant="ghost" 
                 size="icon" 
@@ -273,10 +361,55 @@ const ChatRoomDialog: React.FC<ChatRoomDialogProps> = ({
                           ))}
                         </div>
                       )}
+                      
+                      {message.userId !== "currentUser" && !message.reactions && (
+                        <div className="flex gap-1 mt-1 opacity-0 hover:opacity-100 transition-opacity">
+                          <button
+                            className="text-xs inline-flex items-center gap-1 px-2 py-1 rounded-full bg-gray-100 text-gray-600 hover:bg-gray-200"
+                            onClick={() => handleReaction(message.id, "👍")}
+                          >
+                            <span>👍</span>
+                          </button>
+                          <button
+                            className="text-xs inline-flex items-center gap-1 px-2 py-1 rounded-full bg-gray-100 text-gray-600 hover:bg-gray-200"
+                            onClick={() => handleReaction(message.id, "❤️")}
+                          >
+                            <span>❤️</span>
+                          </button>
+                        </div>
+                      )}
                     </div>
                   </div>
                 </div>
               ))}
+              
+              {isTyping && (
+                <div className="flex justify-start">
+                  <div className="flex flex-row gap-3 max-w-[80%]">
+                    <Avatar className="h-10 w-10">
+                      <AvatarImage src="https://api.dicebear.com/7.x/avataaars/svg?seed=Taylor" />
+                      <AvatarFallback>T</AvatarFallback>
+                    </Avatar>
+                    
+                    <div>
+                      <div className="flex items-center gap-2 mb-1">
+                        <span className="font-medium text-sm">
+                          Taylor
+                        </span>
+                      </div>
+                      
+                      <div className="bg-gray-100 text-gray-800 rounded-2xl py-3 px-4">
+                        <div className="flex gap-1.5">
+                          <div className="w-2 h-2 rounded-full bg-gray-400 animate-bounce" style={{ animationDelay: "0ms" }}></div>
+                          <div className="w-2 h-2 rounded-full bg-gray-400 animate-bounce" style={{ animationDelay: "150ms" }}></div>
+                          <div className="w-2 h-2 rounded-full bg-gray-400 animate-bounce" style={{ animationDelay: "300ms" }}></div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              )}
+              
               <div ref={chatEndRef}></div>
             </div>
           </div>
@@ -320,6 +453,27 @@ const ChatRoomDialog: React.FC<ChatRoomDialogProps> = ({
                   <span className="font-medium text-[#B87333]">Next meeting:</span> Tuesday, 7:00 PM EST
                 </p>
               </div>
+
+              <div className="mt-6 pt-6 border-t">
+                <h3 className="font-bold text-lg mb-4 flex items-center gap-2">
+                  <MessagesSquare className="h-5 w-5 text-[#B87333]" />
+                  Resources
+                </h3>
+                <div className="space-y-2">
+                  <div className="p-2 bg-white rounded-md border border-gray-200 flex items-center gap-2 cursor-pointer hover:bg-gray-50">
+                    <div className="bg-blue-100 p-1.5 rounded">
+                      <img src="https://api.dicebear.com/7.x/shapes/svg?seed=doc1" className="h-5 w-5" alt="Resource" />
+                    </div>
+                    <div className="text-sm">Anxiety Workbook.pdf</div>
+                  </div>
+                  <div className="p-2 bg-white rounded-md border border-gray-200 flex items-center gap-2 cursor-pointer hover:bg-gray-50">
+                    <div className="bg-green-100 p-1.5 rounded">
+                      <img src="https://api.dicebear.com/7.x/shapes/svg?seed=doc2" className="h-5 w-5" alt="Resource" />
+                    </div>
+                    <div className="text-sm">Breathing Techniques.pdf</div>
+                  </div>
+                </div>
+              </div>
             </div>
           )}
         </div>
@@ -333,6 +487,7 @@ const ChatRoomDialog: React.FC<ChatRoomDialogProps> = ({
                 variant="ghost"
                 size="icon"
                 className="h-9 w-9 rounded-full text-gray-500 hover:text-gray-700 hover:bg-gray-100"
+                onClick={handleAttachmentAction}
               >
                 <Paperclip className="h-5 w-5" />
               </Button>
@@ -341,8 +496,18 @@ const ChatRoomDialog: React.FC<ChatRoomDialogProps> = ({
                 variant="ghost"
                 size="icon"
                 className="h-9 w-9 rounded-full text-gray-500 hover:text-gray-700 hover:bg-gray-100"
+                onClick={handleAttachmentAction}
               >
-                <Smile className="h-5 w-5" />
+                <Image className="h-5 w-5" />
+              </Button>
+              <Button
+                type="button"
+                variant="ghost"
+                size="icon"
+                className="h-9 w-9 rounded-full text-gray-500 hover:text-gray-700 hover:bg-gray-100"
+                onClick={handleAttachmentAction}
+              >
+                <Gif className="h-5 w-5" />
               </Button>
             </div>
             
