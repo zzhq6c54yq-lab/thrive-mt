@@ -1,4 +1,3 @@
-
 import React, { useState } from "react";
 import { Calendar, ArrowLeft, Brain, Heart, Activity, CheckCircle } from "lucide-react";
 import { useNavigate } from "react-router-dom";
@@ -150,7 +149,7 @@ const WellnessChallenges: React.FC = () => {
   };
   
   return (
-    <Page>
+    <Page title="Daily Wellness Challenges">
       <div className="min-h-screen bg-gradient-to-b from-[#1a1a20] via-[#252535] to-[#2d2d3d] text-white pb-16">
         <div className="container mx-auto max-w-6xl px-4 py-8">
           <div className="flex items-center mb-6">

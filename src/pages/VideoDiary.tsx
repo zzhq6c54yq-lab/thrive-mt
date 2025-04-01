@@ -135,7 +135,7 @@ const VideoDiary: React.FC = () => {
   };
 
   return (
-    <Page>
+    <Page title="Video Diary">
       <div className="min-h-screen bg-gradient-to-b from-[#1a1a20] via-[#252535] to-[#2d2d3d] text-white pb-16">
         {renderVideoList()}
       </div>
