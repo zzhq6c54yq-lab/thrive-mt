@@ -1,3 +1,4 @@
+
 import { 
   Brain, 
   MessageCircle, 
@@ -606,3 +607,9 @@ Henry note: Social media can intensify feelings of isolation by showing curated 
           {
             title: "Connection in Difficulty",
             instructions: "The next time you make a mistake or face a challenge, pause and silently say to yourself: 'This is a moment of suffering. Suffering is part of life. May I be kind to myself in this moment.'"
+          }
+        ]
+      }
+    ]
+  }
+];
