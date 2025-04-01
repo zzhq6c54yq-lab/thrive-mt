@@ -4,7 +4,7 @@ import {
   Brain, Library, Users, Heart, GraduationCap, CalendarRange, LeafyGreen,
   Moon, HandHeart, ListChecks, FlameKindling, Footprints, ArrowRight,
   Sparkles, Star, Lightbulb, Target, Zap, Bird, Leaf, Smile, Coffee, Puzzle, HeartHandshake,
-  Headphones, Music
+  Headphones, Music, Video
 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { useToast } from "@/hooks/use-toast";
@@ -14,6 +14,18 @@ const KeyFeatures: React.FC = () => {
   const navigate = useNavigate();
 
   const keyFeatures = [
+    {
+      title: "Video Diary",
+      description: "Record video messages for yourself or to share with loved ones",
+      icon: Video,
+      path: "/video-diary"
+    },
+    {
+      title: "Wellness Challenges",
+      description: "Complete daily challenges to improve your mental and physical wellbeing",
+      icon: ListChecks,
+      path: "/wellness-challenges"
+    },
     {
       title: "Personalized Content",
       description: "Content tailored to your mental health journey and cultural background",

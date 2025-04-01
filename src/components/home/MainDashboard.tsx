@@ -1,3 +1,4 @@
+
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import { useToast } from "@/hooks/use-toast";
@@ -99,6 +100,7 @@ const MainDashboard: React.FC<MainDashboardProps> = ({
       <NewFeatures />
 
       <div className="container mx-auto max-w-6xl px-4 py-6 relative z-10">
+        {/* Improved flow: Featured content side by side */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-12">
           <DailyWellnessChallenges />
           <VideoDiary />
