@@ -78,8 +78,11 @@ export const usePopupManagement = (screenState: string) => {
         console.log("Setting showMainTutorial to TRUE - first visit or coming from onboarding");
         setShowMainTutorial(true);
         
-        // Don't mark as shown yet - we'll do that when the user closes the tutorial
-        // Instead, specifically reset the flag to ensure it shows
+        // Reset the flag to ensure it shows
+        localStorage.removeItem('popupsShown');
+        localStorage.removeItem('hasVisitedThriveMT');
+        localStorage.removeItem('dashboardTutorialShown');
+        
         if (popupsShown.mainTutorial) {
           setPopupsShown(prev => ({ ...prev, mainTutorial: false }));
         }
@@ -96,6 +99,7 @@ export const usePopupManagement = (screenState: string) => {
     setPopupsShown(prev => ({ ...prev, mainTutorial: true, transitionTutorial: true }));
     setShowMainTutorial(false);
     localStorage.setItem('hasVisitedThriveMT', 'true');
+    localStorage.setItem('dashboardTutorialShown', 'true');
   };
 
   // Method to reset popup states (useful for testing)

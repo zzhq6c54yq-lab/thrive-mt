@@ -80,7 +80,7 @@ const WelcomeTutorial: React.FC<WelcomeTutorialProps> = ({ isOpen, onClose }) =>
       console.log("WelcomeTutorial dialog open state changing to:", open);
       if (!open) onClose();
     }}>
-      <DialogContent className="bg-[#2a2a3c] border-[#3a3a4c] text-white max-w-md max-h-[80vh] relative">
+      <DialogContent className="bg-[#2a2a3c] border-[#3a3a4c] text-white max-w-md max-h-[80vh] relative z-[100]">
         {/* Close button (X) in the top-right corner */}
         <Button 
           variant="ghost" 
