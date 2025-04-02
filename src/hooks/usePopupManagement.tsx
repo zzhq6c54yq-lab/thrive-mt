@@ -20,6 +20,9 @@ export const usePopupManagement = (screenState: string) => {
     };
   });
 
+  // Get the preferred language for translations
+  const preferredLanguage = localStorage.getItem('preferredLanguage') || 'English';
+
   // Save popup state to localStorage whenever it changes
   useEffect(() => {
     localStorage.setItem('popupsShown', JSON.stringify(popupsShown));

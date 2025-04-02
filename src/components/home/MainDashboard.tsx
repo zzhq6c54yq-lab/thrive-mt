@@ -33,28 +33,32 @@ const MainDashboard: React.FC<MainDashboardProps> = ({
 }) => {
   const navigate = useNavigate();
   const { toast } = useToast();
+  const preferredLanguage = localStorage.getItem('preferredLanguage') || 'English';
+  const isSpanish = preferredLanguage === 'Español';
   
   const handleWorkshopClick = (workshopId: string, workshopTitle: string) => {
     toast({
-      title: "Opening Workshop",
-      description: `Loading "${workshopTitle}" workshop content...`,
+      title: isSpanish ? "Abriendo Taller" : "Opening Workshop",
+      description: isSpanish ? 
+        `Cargando contenido del taller "${workshopTitle}"...` : 
+        `Loading "${workshopTitle}" workshop content...`,
       duration: 1500
     });
     
     switch(workshopId) {
       case "mindful-communication":
         navigate("/workshop/mindful-communication", { 
-          state: { workshopTitle: "Mindful Communication" } 
+          state: { workshopTitle: isSpanish ? "Comunicación Consciente" : "Mindful Communication" } 
         });
         break;
       case "emotional-regulation":
         navigate("/workshop/emotional-regulation", {
-          state: { workshopTitle: "Emotional Regulation" }
+          state: { workshopTitle: isSpanish ? "Regulación Emocional" : "Emotional Regulation" }
         });
         break;
       case "stress-management":
         navigate("/workshop/stress-management", {
-          state: { workshopTitle: "Stress Management" }
+          state: { workshopTitle: isSpanish ? "Manejo del Estrés" : "Stress Management" }
         });
         break;
       default:

@@ -31,6 +31,8 @@ const Index = () => {
   const [currentFeatureId, setCurrentFeatureId] = useState<string>("dashboard");
   const [tutorialCompleted, setTutorialCompleted] = useState(false);
   const [showTransitionTutorial, setShowTransitionTutorial] = useState(false);
+  const [autoProgressTutorial, setAutoProgressTutorial] = useState(false);
+  const [tutorialInterval, setTutorialInterval] = useState<NodeJS.Timeout | null>(null);
 
   const mousePosition = useMousePosition();
   const navigate = useNavigate();
@@ -47,6 +49,7 @@ const Index = () => {
   useScreenHistory(screenState, setScreenState);
 
   const preferredLanguage = localStorage.getItem('preferredLanguage') || 'English';
+  const isSpanish = preferredLanguage === 'Español';
 
   useEffect(() => {
     // Add a listener for language changes
@@ -93,10 +96,41 @@ const Index = () => {
         setShowMainTutorial(true);
         setCurrentFeatureId("dashboard");
         setTutorialStep(0);
+        setAutoProgressTutorial(true);
       }, 800); // Slight delay to allow the main screen to render
     }
     localStorage.setItem('prevScreenState', screenState);
   }, [screenState, tutorialCompleted, showMainTutorial]);
+
+  // Auto-progress tutorial timer
+  useEffect(() => {
+    if (showMainTutorial && autoProgressTutorial) {
+      // If already exists, clear it first
+      if (tutorialInterval) {
+        clearInterval(tutorialInterval);
+      }
+      
+      // Set new interval for auto-progression (every 5 seconds)
+      const interval = setInterval(() => {
+        if (tutorialStep < mainFeatures.length - 1) {
+          setTutorialStep(step => step + 1);
+          setCurrentFeatureId(mainFeatures[tutorialStep + 1].id);
+        } else {
+          // End tutorial when reached the end
+          handleFinishTutorial();
+          clearInterval(interval);
+        }
+      }, 8000); // 8 seconds between steps
+      
+      setTutorialInterval(interval);
+    }
+    
+    return () => {
+      if (tutorialInterval) {
+        clearInterval(tutorialInterval);
+      }
+    };
+  }, [showMainTutorial, autoProgressTutorial, tutorialStep]);
 
   const mainFeatures = [
     { id: "dashboard", title: getTranslatedText('dashboardTitle'), description: getTranslatedText('dashboardDesc') },
@@ -111,171 +145,87 @@ const Index = () => {
     const translations: Record<string, Record<string, string>> = {
       'welcomeTitle': {
         'English': 'Welcome to Thrive MT!',
-        'Español': '¡Bienvenido a Thrive MT!',
-        'Français': 'Bienvenue sur Thrive MT !',
-        'Deutsch': 'Willkommen bei Thrive MT!',
-        '中文': '欢迎来到 Thrive MT!',
-        'العربية': 'مرحبًا بك في Thrive MT!'
+        'Español': '¡Bienvenido a Thrive MT!'
       },
       'tourQuestion': {
         'English': 'Would you like a guided tour of the app\'s features?',
-        'Español': '¿Te gustaría un recorrido guiado por las funciones de la aplicación?',
-        'Français': 'Souhaitez-vous une visite guidée des fonctionnalités de l\'application ?',
-        'Deutsch': 'Möchten Sie eine geführte Tour durch die Funktionen der App?',
-        '中文': '您想要应用功能的导览吗？',
-        'العربية': 'هل ترغب في جولة إرشادية لميزات التطبيق؟'
+        'Español': '¿Te gustaría un recorrido guiado por las funciones de la aplicación?'
       },
       'henryIntro': {
         'English': 'Hi, I\'m Henry, your mental wellness assistant! I can guide you through the app\'s features to help you get started.',
-        'Español': 'Hola, soy Henry, ¡tu asistente de bienestar mental! Puedo guiarte a través de las funciones de la aplicación para ayudarte a comenzar.',
-        'Français': 'Bonjour, je suis Henry, votre assistant de bien-être mental ! Je peux vous guider à travers les fonctionnalités de l\'application pour vous aider à démarrer.',
-        'Deutsch': 'Hallo, ich bin Henry, dein Assistent für mentales Wohlbefinden! Ich kann dich durch die Funktionen der App führen, um dir den Einstieg zu erleichtern.',
-        '中文': '嗨，我是亨利，您的心理健康助手！我可以引导您了解应用程序的功能，帮助您入门。',
-        'العربية': 'مرحبًا، أنا هنري، مساعدك للعافية النفسية! يمكنني إرشادك عبر ميزات التطبيق لمساعدتك على البدء.'
+        'Español': 'Hola, soy Henry, ¡tu asistente de bienestar mental! Puedo guiarte a través de las funciones de la aplicación para ayudarte a comenzar.'
       },
       'tutorialAccess': {
         'English': 'Each feature has its own tutorial that you can access anytime by clicking the "How to use this feature" button.',
-        'Español': 'Cada función tiene su propio tutorial al que puedes acceder en cualquier momento haciendo clic en el botón "Cómo usar esta función".',
-        'Français': 'Chaque fonctionnalité possède son propre tutoriel auquel vous pouvez accéder à tout moment en cliquant sur le bouton "Comment utiliser cette fonctionnalité".',
-        'Deutsch': 'Jede Funktion hat ihr eigenes Tutorial, auf das Sie jederzeit zugreifen können, indem Sie auf die Schaltfläche "Wie man diese Funktion verwendet" klicken.',
-        '中文': '每个功能都有自己的教程，您可以随时通过单击"如何使用此功能"按钮访问。',
-        'العربية': 'كل ميزة لها برنامجها التعليمي الخاص الذي يمكنك الوصول إليه في أي وقت بالنقر على زر "كيفية استخدام هذه الميزة".'
+        'Español': 'Cada función tiene su propio tutorial al que puedes acceder en cualquier momento haciendo clic en el botón "Cómo usar esta función".'
       },
       'skipForNow': {
         'English': 'Skip for now',
-        'Español': 'Omitir por ahora',
-        'Français': 'Ignorer pour l\'instant',
-        'Deutsch': 'Vorerst überspringen',
-        '中文': '暂时跳过',
-        'العربية': 'تخطي في الوقت الحالي'
+        'Español': 'Omitir por ahora'
       },
       'showMeAround': {
         'English': 'Show me around',
-        'Español': 'Muéstrame el lugar',
-        'Français': 'Faites-moi visiter',
-        'Deutsch': 'Zeig mir alles',
-        '中文': '带我参观',
-        'العربية': 'أرني المكان'
+        'Español': 'Muéstrame el lugar'
       },
       'next': {
         'English': 'Next',
-        'Español': 'Siguiente',
-        'Français': 'Suivant',
-        'Deutsch': 'Weiter',
-        '中文': '下一个',
-        'العربية': 'التالي'
+        'Español': 'Siguiente'
       },
       'finish': {
         'English': 'Finish Tour',
-        'Español': 'Finalizar recorrido',
-        'Français': 'Terminer la visite',
-        'Deutsch': 'Tour beenden',
-        '中文': '完成导览',
-        'العربية': 'إنهاء الجولة'
+        'Español': 'Finalizar recorrido'
       },
       'mainFeatures': {
         'English': 'Main Features',
-        'Español': 'Características principales',
-        'Français': 'Fonctionnalités principales',
-        'Deutsch': 'Hauptfunktionen',
-        '中文': '主要功能',
-        'العربية': 'الميزات الرئيسية'
+        'Español': 'Características principales'
       },
       'dashboardTitle': {
         'English': 'Dashboard',
-        'Español': 'Panel',
-        'Français': 'Tableau de Bord',
-        'Deutsch': 'Dashboard',
-        '中文': '仪表板',
-        'العربية': 'لوحة التحكم'
+        'Español': 'Panel'
       },
       'dashboardDesc': {
         'English': 'Your personal mental health control center',
-        'Español': 'Tu centro de control de salud mental personal',
-        'Français': 'Votre centre de contrôle de santé mentale personnel',
-        'Deutsch': 'Ihr persönliches Kontrollzentrum für psychische Gesundheit',
-        '中文': '您的个人心理健康控制中心',
-        'العربية': 'مركز التحكم في الصحة النفسية الشخصية الخاص بك'
+        'Español': 'Tu centro de control de salud mental personal'
       },
       'challengesTitle': {
         'English': 'Wellness Challenges',
-        'Español': 'Desafíos de Bienestar',
-        'Français': 'Défis de Bien-être',
-        'Deutsch': 'Wellness-Herausforderungen',
-        '中文': '健康挑战',
-        'العربية': 'تحديات العافية'
+        'Español': 'Desafíos de Bienestar'
       },
       'challengesDesc': {
         'English': 'Complete daily activities to improve your well-being',
-        'Español': 'Completa actividades diarias para mejorar tu bienestar',
-        'Français': 'Complétez des activités quotidiennes pour améliorer votre bien-être',
-        'Deutsch': 'Absolvieren Sie tägliche Aktivitäten, um Ihr Wohlbefinden zu verbessern',
-        '中文': '完成日常活动以改善您的健康状况',
-        'العربية': 'أكمل الأنشطة اليومية لتحسين صحتك'
+        'Español': 'Completa actividades diarias para mejorar tu bienestar'
       },
       'therapyTitle': {
         'English': 'Real-Time Therapy',
-        'Español': 'Terapia en Tiempo Real',
-        'Français': 'Thérapie en Temps Réel',
-        'Deutsch': 'Echtzeit-Therapie',
-        '中文': '实时治疗',
-        'العربية': 'العلاج في الوقت الحقيقي'
+        'Español': 'Terapia en Tiempo Real'
       },
       'therapyDesc': {
         'English': 'Connect with therapists when you need support',
-        'Español': 'Conéctate con terapeutas cuando necesites apoyo',
-        'Français': 'Connectez-vous avec des thérapeutes lorsque vous avez besoin de soutien',
-        'Deutsch': 'Verbinden Sie sich mit Therapeuten, wenn Sie Unterstützung benötigen',
-        '中文': '在您需要支持时与治疗师联系',
-        'العربية': 'تواصل مع المعالجين عندما تحتاج إلى الدعم'
+        'Español': 'Conéctate con terapeutas cuando necesites apoyo'
       },
       'communityTitle': {
         'English': 'Community Support',
-        'Español': 'Apoyo Comunitario',
-        'Français': 'Soutien Communautaire',
-        'Deutsch': 'Gemeinschaftliche Unterstützung',
-        '中文': '社区支持',
-        'العربية': 'دعم المجتمع'
+        'Español': 'Apoyo Comunitario'
       },
       'communityDesc': {
         'English': 'Join a community of individuals on similar journeys',
-        'Español': 'Únete a una comunidad de personas en viajes similares',
-        'Français': 'Rejoignez une communauté de personnes aux parcours similaires',
-        'Deutsch': 'Treten Sie einer Gemeinschaft von Personen auf ähnlichen Wegen bei',
-        '中文': '加入一个有着相似经历的人的社区',
-        'العربية': 'انضم إلى مجتمع من الأفراد في رحلات مماثلة'
+        'Español': 'Únete a una comunidad de personas en viajes similares'
       },
       'resourcesTitle': {
         'English': 'Resource Library',
-        'Español': 'Biblioteca de Recursos',
-        'Français': 'Bibliothèque de Ressources',
-        'Deutsch': 'Ressourcen-Bibliothek',
-        '中文': '资源库',
-        'العربية': 'مكتبة الموارد'
+        'Español': 'Biblioteca de Recursos'
       },
       'resourcesDesc': {
         'English': 'Access mental health articles, videos, and tools',
-        'Español': 'Accede a artículos, videos y herramientas de salud mental',
-        'Français': 'Accédez à des articles, vidéos et outils de santé mentale',
-        'Deutsch': 'Zugriff auf Artikel, Videos und Tools zur psychischen Gesundheit',
-        '中文': '获取心理健康文章、视频和工具',
-        'العربية': 'الوصول إلى مقالات وفيديوهات وأدوات الصحة النفسية'
+        'Español': 'Accede a artículos, videos y herramientas de salud mental'
       },
       'coPayTitle': {
         'English': 'Co-Pay Credits',
-        'Español': 'Créditos de Copago',
-        'Français': 'Crédits de Quote-part',
-        'Deutsch': 'Zuzahlungsguthaben',
-        '中文': '共付额积分',
-        'العربية': 'ائتمانات الدفع المشترك'
+        'Español': 'Créditos de Copago'
       },
       'coPayDesc': {
         'English': 'Earn rewards for consistent engagement',
-        'Español': 'Gana recompensas por una participación constante',
-        'Français': 'Gagnez des récompenses pour un engagement constant',
-        'Deutsch': 'Verdienen Sie Belohnungen für konsequentes Engagement',
-        '中文': '通过持续参与获得奖励',
-        'العربية': 'اكسب المكافآت للمشاركة المستمرة'
+        'Español': 'Gana recompensas por una participación constante'
       }
     };
     
@@ -291,16 +241,16 @@ const Index = () => {
     e.preventDefault();
     if (!userInfo.name || !userInfo.email || !userInfo.password) {
       toast({
-        title: "Registration Error",
-        description: "Please fill in all fields to continue.",
+        title: isSpanish ? "Error de Registro" : "Registration Error",
+        description: isSpanish ? "Por favor completa todos los campos para continuar." : "Please fill in all fields to continue.",
         variant: "destructive"
       });
       return;
     }
     
     toast({
-      title: "Registration Successful",
-      description: "Welcome to Thrive MT! Your journey to better mental health begins now.",
+      title: isSpanish ? "Registro Exitoso" : "Registration Successful",
+      description: isSpanish ? "¡Bienvenido a Thrive MT! Tu viaje hacia una mejor salud mental comienza ahora." : "Welcome to Thrive MT! Your journey to better mental health begins now.",
     });
     
     setScreenState('subscription');
@@ -309,8 +259,8 @@ const Index = () => {
   const handleSubscriptionSelect = (planTitle: string) => {
     setSelectedPlan(planTitle);
     toast({
-      title: `${planTitle} Plan Selected`,
-      description: `You have selected the ${planTitle} subscription plan.`,
+      title: isSpanish ? `Plan ${planTitle} Seleccionado` : `${planTitle} Plan Selected`,
+      description: isSpanish ? `Has seleccionado el plan de suscripción ${planTitle}.` : `You have selected the ${planTitle} subscription plan.`,
     });
   };
 
@@ -337,16 +287,16 @@ const Index = () => {
   const handleSubscriptionContinue = () => {
     if (!selectedPlan) {
       toast({
-        title: "Please Select a Plan",
-        description: "Please select a subscription plan to continue.",
+        title: isSpanish ? "Por Favor Selecciona un Plan" : "Please Select a Plan",
+        description: isSpanish ? "Por favor selecciona un plan de suscripción para continuar." : "Please select a subscription plan to continue.",
         variant: "destructive"
       });
       return;
     }
     
     toast({
-      title: "Plan Confirmed",
-      description: `Your ${selectedPlan} plan is now active. Enjoy your benefits!`,
+      title: isSpanish ? "Plan Confirmado" : "Plan Confirmed",
+      description: isSpanish ? `Tu plan ${selectedPlan} ahora está activo. ¡Disfruta tus beneficios!` : `Your ${selectedPlan} plan is now active. Enjoy your benefits!`,
     });
     
     if (location.state && location.state.returnToMain) {
@@ -363,16 +313,16 @@ const Index = () => {
   const handleVisionBoardContinue = () => {
     if (selectedQualities.length < 2 || selectedGoals.length < 2) {
       toast({
-        title: "More Selections Needed",
-        description: "Please select at least 2 qualities and 2 goals to continue.",
+        title: isSpanish ? "Se Necesitan Más Selecciones" : "More Selections Needed",
+        description: isSpanish ? "Por favor selecciona al menos 2 cualidades y 2 metas para continuar." : "Please select at least 2 qualities and 2 goals to continue.",
         variant: "destructive"
       });
       return;
     }
     
     toast({
-      title: "Vision Board Created",
-      description: "Your personalized mental wellness journey is ready!",
+      title: isSpanish ? "Tablero de Visión Creado" : "Vision Board Created",
+      description: isSpanish ? "¡Tu viaje personalizado de bienestar mental está listo!" : "Your personalized mental wellness journey is ready!",
     });
     
     setScreenState('main');
@@ -409,14 +359,15 @@ const Index = () => {
     setShowMainTutorial(true);
     setTutorialStep(0);
     setCurrentFeatureId(mainFeatures[0].id);
+    setAutoProgressTutorial(true);
   };
 
   const handleSkipTutorial = () => {
     setIsFirstVisit(false);
     setTutorialCompleted(true);
     toast({
-      title: "Tutorial Skipped",
-      description: "You can access tutorials anytime through the Help button.",
+      title: isSpanish ? "Tutorial Omitido" : "Tutorial Skipped",
+      description: isSpanish ? "Puedes acceder a los tutoriales en cualquier momento a través del botón de Ayuda." : "You can access tutorials anytime through the Help button.",
     });
   };
 
@@ -430,21 +381,33 @@ const Index = () => {
   };
 
   const handleFinishTutorial = () => {
+    if (tutorialInterval) {
+      clearInterval(tutorialInterval);
+      setTutorialInterval(null);
+    }
+    
     setShowMainTutorial(false);
     setTutorialStep(0);
     setTutorialCompleted(true);
+    setAutoProgressTutorial(false);
     
     toast({
-      title: "Tutorial Completed",
-      description: "You can always access feature tutorials by clicking 'How to use this feature' buttons.",
+      title: isSpanish ? "Tutorial Completado" : "Tutorial Completed",
+      description: isSpanish ? "Siempre puedes acceder a los tutoriales haciendo clic en los botones 'Cómo usar esta función'." : "You can always access feature tutorials by clicking 'How to use this feature' buttons.",
     });
     
     setShowHenry(true);
   };
 
   const closeTutorialAndMarkCompleted = () => {
+    if (tutorialInterval) {
+      clearInterval(tutorialInterval);
+      setTutorialInterval(null);
+    }
+    
     setShowMainTutorial(false);
     setTutorialCompleted(true);
+    setAutoProgressTutorial(false);
   };
 
   return (
@@ -563,14 +526,27 @@ const Index = () => {
           <DialogFooter className="flex justify-between mt-4">
             <Button 
               variant="outline"
-              onClick={closeTutorialAndMarkCompleted}
+              onClick={() => {
+                closeTutorialAndMarkCompleted();
+                if (tutorialInterval) {
+                  clearInterval(tutorialInterval);
+                  setTutorialInterval(null);
+                }
+              }}
               className="border-gray-600 text-gray-300 hover:bg-gray-700"
             >
               {getTranslatedText('skipForNow')}
             </Button>
             
             <Button 
-              onClick={handleNextFeatureTutorial}
+              onClick={() => {
+                setAutoProgressTutorial(false);
+                if (tutorialInterval) {
+                  clearInterval(tutorialInterval);
+                  setTutorialInterval(null);
+                }
+                handleNextFeatureTutorial();
+              }}
               className="bg-indigo-500 hover:bg-indigo-600 text-white"
             >
               {tutorialStep < mainFeatures.length - 1 ? (
