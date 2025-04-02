@@ -78,6 +78,7 @@ const HenryIconButton: React.FC<HenryIconButtonProps> = ({
             featureId="dashboard" 
             variant="logo" 
             className="shadow-xl hover:shadow-[0_0_25px_rgba(184,115,51,0.6)]"
+            showAnimatedRings={true}
           />
         )}
       </div>

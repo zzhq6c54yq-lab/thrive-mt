@@ -9,12 +9,14 @@ interface TutorialButtonProps {
   featureId: string;
   className?: string;
   variant?: "default" | "logo";
+  showAnimatedRings?: boolean;
 }
 
 const TutorialButton: React.FC<TutorialButtonProps> = ({ 
   featureId,
   className = "",
-  variant = "default" 
+  variant = "default",
+  showAnimatedRings = false
 }) => {
   const [showTutorial, setShowTutorial] = useState(false);
   const [isSpanish, setIsSpanish] = useState<boolean>(false);
@@ -70,10 +72,17 @@ const TutorialButton: React.FC<TutorialButtonProps> = ({
           variant="bronze"
           size="icon"
           onClick={handleOpenTutorial}
-          className={`p-0 h-16 w-16 rounded-full shadow-lg hover:shadow-[0_0_25px_rgba(184,115,51,0.6)] ${className}`}
+          className={`p-0 h-16 w-16 rounded-full shadow-lg hover:shadow-[0_0_25px_rgba(184,115,51,0.6)] relative ${className}`}
           aria-label={isSpanish ? "Abrir tutorial" : "Open tutorial"}
         >
-          <div className="w-full h-full rounded-full flex items-center justify-center">
+          {showAnimatedRings && (
+            <>
+              <div className="absolute inset-0 rounded-full border-2 border-[#B87333]/30 animate-ping"></div>
+              <div className="absolute inset-[-8px] rounded-full border border-[#E5C5A1]/20 animate-pulse"></div>
+              <div className="absolute inset-[-4px] rounded-full border border-[#B87333]/40" style={{animationDelay: '0.5s'}}></div>
+            </>
+          )}
+          <div className="w-full h-full rounded-full flex items-center justify-center bg-gradient-to-br from-[#B87333] to-[#E5C5A1]">
             <span className="text-white font-bold text-xl tracking-tighter">THRIVE</span>
           </div>
         </Button>
