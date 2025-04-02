@@ -158,11 +158,8 @@ const IndexContent: React.FC<IndexContentProps> = ({
       />
       
       {/* Debug - Add visible indicator when tutorial should be showing */}
-      {shouldShowTutorial ? (
-        console.log("Rendering welcome tutorial because shouldShowTutorial is true")
-      ) : (
-        console.log("NOT rendering welcome tutorial because shouldShowTutorial is false")
-      )}
+      {shouldShowTutorial && console.log("Rendering welcome tutorial because shouldShowTutorial is true")}
+      {!shouldShowTutorial && console.log("NOT rendering welcome tutorial because shouldShowTutorial is false")}
       
       {/* Enhanced WelcomeTutorial component with improved visibility */}
       <WelcomeTutorial
