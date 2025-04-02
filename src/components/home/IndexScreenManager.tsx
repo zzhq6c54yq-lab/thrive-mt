@@ -56,11 +56,25 @@ const IndexScreenManager: React.FC<IndexScreenManagerProps> = ({
   // Save previous state to localStorage for transition detection
   React.useEffect(() => {
     localStorage.setItem('prevScreenState', screenState);
+    
+    // When navigating to main from onboarding screens, ensure tutorial will show
+    if (screenState === 'main') {
+      const prevState = localStorage.getItem('prevScreenState');
+      if (prevState === 'visionBoard' || 
+          prevState === 'subscription' || 
+          prevState === 'moodResponse' || 
+          prevState === 'mood' || 
+          prevState === 'register') {
+        // Force show tutorial by resetting flag
+        localStorage.setItem('dashboardTutorialShown', 'false');
+      }
+    }
   }, [screenState]);
 
   // Reset transition tutorial flags when starting a new session
   React.useEffect(() => {
     if (screenState === 'intro') {
+      // Reset the tutorial flags to ensure tutorial shows after onboarding
       localStorage.removeItem('dashboardTutorialShown');
       
       // Get popup state and reset transition tutorial flag
@@ -68,10 +82,11 @@ const IndexScreenManager: React.FC<IndexScreenManagerProps> = ({
       if (popupsShown) {
         const parsedState = JSON.parse(popupsShown);
         parsedState.transitionTutorial = false;
+        parsedState.mainTutorial = false; // Reset main tutorial flag as well
         localStorage.setItem('popupsShown', JSON.stringify(parsedState));
       }
     }
-  }, []);
+  }, [screenState]);
 
   const handlePrevious = () => {
     let newScreenState: 'intro' | 'mood' | 'moodResponse' | 'register' | 'subscription' | 'visionBoard' | 'main' = 'intro';

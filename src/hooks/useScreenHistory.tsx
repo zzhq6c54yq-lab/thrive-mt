@@ -12,6 +12,19 @@ export const useScreenHistory = (
     if (location.state && location.state.screenState) {
       setScreenState(location.state.screenState);
       
+      // If transitioning to 'main' from an onboarding screen, force tutorial to show
+      if (location.state.screenState === 'main') {
+        const prevScreenState = localStorage.getItem('prevScreenState');
+        if (prevScreenState === 'visionBoard' || 
+            prevScreenState === 'subscription' || 
+            prevScreenState === 'moodResponse' || 
+            prevScreenState === 'mood' || 
+            prevScreenState === 'register') {
+          // Reset the tutorial flag to ensure it shows
+          localStorage.setItem('dashboardTutorialShown', 'false');
+        }
+      }
+      
       if (location.state.returnToMain) {
         window.history.replaceState(
           { ...window.history.state, screenState: location.state.screenState, returnToMain: true }, 
@@ -61,6 +74,9 @@ export const useScreenHistory = (
       { ...window.history.state, screenState }, 
       document.title
     );
+    
+    // Store the previous screen state for transition detection
+    localStorage.setItem('prevScreenState', screenState);
   }, [screenState]);
 };
 

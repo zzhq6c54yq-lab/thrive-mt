@@ -57,26 +57,26 @@ const MainDashboard: React.FC<MainDashboardProps> = ({
     };
   }, []);
   
-  // Check if this is the first time loading the dashboard from onboarding
+  // This useEffect has been modified - we now rely on the parent component's tutorial state
+  // rather than loading our own, to prevent the tutorial from not showing
   useEffect(() => {
-    // If coming from vision board or subscription plan screens, show tutorial
-    const state = location.state as { from?: string } | null;
-    const comingFromOnboarding = state?.from === 'visionBoard' || state?.from === 'subscription';
+    // Check if coming from onboarding screens
+    const prevScreenState = localStorage.getItem('prevScreenState');
+    const comingFromOnboarding = prevScreenState === 'visionBoard' || 
+                                prevScreenState === 'subscription' || 
+                                prevScreenState === 'moodResponse' || 
+                                prevScreenState === 'mood' || 
+                                prevScreenState === 'register';
     
-    // Only show tutorial once by checking localStorage
-    const dashboardTutorialShown = localStorage.getItem('dashboardTutorialShown') === 'true';
-    
-    if (comingFromOnboarding && !dashboardTutorialShown) {
-      // Slight delay to ensure UI is fully rendered
-      setTimeout(() => {
-        setShowTutorial(true);
-        localStorage.setItem('dashboardTutorialShown', 'true');
-      }, 500);
+    if (comingFromOnboarding) {
+      // Force reset the dashboard tutorial flag 
+      localStorage.setItem('dashboardTutorialShown', 'false');
     }
-  }, [location]);
+  }, []);
   
   const handleTutorialClose = () => {
     setShowTutorial(false);
+    localStorage.setItem('dashboardTutorialShown', 'true');
   };
   
   const handleWorkshopClick = (workshopId: string, workshopTitle: string) => {

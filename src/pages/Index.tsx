@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { useToast } from "@/hooks/use-toast";
@@ -26,10 +27,8 @@ const Index = () => {
   const [showFeatureTutorial, setShowFeatureTutorial] = useState(false);
   const [isFirstVisit, setIsFirstVisit] = useState(false);
   const [tutorialStep, setTutorialStep] = useState(0);
-  const [showMainTutorial, setShowMainTutorial] = useState(false);
   const [currentFeatureId, setCurrentFeatureId] = useState<string>("dashboard");
   const [tutorialCompleted, setTutorialCompleted] = useState(false);
-  const [showTransitionTutorial, setShowTransitionTutorial] = useState(false);
   const [autoProgressTutorial, setAutoProgressTutorial] = useState(false);
   const [tutorialInterval, setTutorialInterval] = useState<NodeJS.Timeout | null>(null);
 
@@ -42,7 +41,10 @@ const Index = () => {
     setShowCoPayCredit, 
     showHenry, 
     setShowHenry,
+    showMainTutorial,
+    setShowMainTutorial,
     popupsShown,
+    markTutorialCompleted
   } = usePopupManagement(screenState);
 
   useScreenHistory(screenState, setScreenState);
@@ -75,30 +77,31 @@ const Index = () => {
     }
   }, [screenState]);
 
-  useEffect(() => {
-    if (screenState === 'main' && 
-        (document.referrer.includes('visionBoard') || document.referrer.includes('subscription')) && 
-        !tutorialCompleted) {
-      setShowTransitionTutorial(true);
-    }
-  }, [screenState, tutorialCompleted]);
-
-  // Automatically show the tutorial when transitioning to main from visionBoard or subscription
+  // Automatically show the tutorial when transitioning to main from any onboarding screen
   useEffect(() => {
     const prevState = localStorage.getItem('prevScreenState');
     if (screenState === 'main' && 
-        (prevState === 'visionBoard' || prevState === 'subscription') &&
-        !tutorialCompleted && 
-        !showMainTutorial) {
+        (prevState === 'visionBoard' || 
+         prevState === 'subscription' || 
+         prevState === 'moodResponse' || 
+         prevState === 'mood' || 
+         prevState === 'register')) {
+      
+      // Force the tutorial to show by clearing its state
+      localStorage.setItem('dashboardTutorialShown', 'false');
+      
+      // Show the tutorial with a slight delay to ensure the main screen is rendered
       setTimeout(() => {
         setShowMainTutorial(true);
         setCurrentFeatureId("dashboard");
         setTutorialStep(0);
         setAutoProgressTutorial(true);
-      }, 800); // Slight delay to allow the main screen to render
+      }, 500);
     }
+    
+    // Save current screen state for next navigation
     localStorage.setItem('prevScreenState', screenState);
-  }, [screenState, tutorialCompleted, showMainTutorial]);
+  }, [screenState, setShowMainTutorial]);
 
   // Auto-progress tutorial timer
   useEffect(() => {
@@ -108,7 +111,7 @@ const Index = () => {
         clearInterval(tutorialInterval);
       }
       
-      // Set new interval for auto-progression (every 5 seconds)
+      // Set new interval for auto-progression (every 8 seconds)
       const interval = setInterval(() => {
         if (tutorialStep < mainFeatures.length - 1) {
           setTutorialStep(step => step + 1);
@@ -363,6 +366,7 @@ const Index = () => {
   const handleSkipTutorial = () => {
     setIsFirstVisit(false);
     setTutorialCompleted(true);
+    markTutorialCompleted();
     toast({
       title: isSpanish ? "Tutorial Omitido" : "Tutorial Skipped",
       description: isSpanish ? "Puedes acceder a los tutoriales en cualquier momento a través del botón de Ayuda." : "You can access tutorials anytime through the Help button.",
@@ -388,6 +392,7 @@ const Index = () => {
     setTutorialStep(0);
     setTutorialCompleted(true);
     setAutoProgressTutorial(false);
+    markTutorialCompleted();
     
     toast({
       title: isSpanish ? "Tutorial Completado" : "Tutorial Completed",
@@ -406,6 +411,7 @@ const Index = () => {
     setShowMainTutorial(false);
     setTutorialCompleted(true);
     setAutoProgressTutorial(false);
+    markTutorialCompleted();
   };
 
   return (

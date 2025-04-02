@@ -12,6 +12,7 @@ export const usePopupManagement = (screenState: string) => {
   const [showCoPayCredit, setShowCoPayCredit] = useState(false);
   const [showHenry, setShowHenry] = useState(false);
   const [showTransitionTutorial, setShowTransitionTutorial] = useState(false);
+  const [showMainTutorial, setShowMainTutorial] = useState(false);
   const [popupsShown, setPopupsShown] = useState<PopupState>(() => {
     // Try to get popup state from localStorage to persist between sessions
     const savedState = localStorage.getItem('popupsShown');
@@ -53,7 +54,7 @@ export const usePopupManagement = (screenState: string) => {
     // Show popups during initial flow when transferring to main menu
     if (screenState === 'main') {
       // Always show the tutorial when coming from emotional check-in (mood, moodResponse) 
-      // or plan selection (subscription) screens, or vision board
+      // or plan selection (subscription) screens, or vision board or registration
       if (prevScreenState === 'visionBoard' || 
           prevScreenState === 'subscription' || 
           prevScreenState === 'moodResponse' ||
@@ -62,6 +63,7 @@ export const usePopupManagement = (screenState: string) => {
         // Force show the welcome tutorial by resetting the flag
         localStorage.setItem('dashboardTutorialShown', 'false');
         setShowTransitionTutorial(true);
+        setShowMainTutorial(true);
       }
       
       // Show co-pay credit popup if not shown yet
@@ -85,6 +87,7 @@ export const usePopupManagement = (screenState: string) => {
   // Method to mark tutorial as completed
   const markTutorialCompleted = () => {
     setPopupsShown(prev => ({ ...prev, mainTutorial: true, transitionTutorial: true }));
+    setShowMainTutorial(false);
     localStorage.setItem('dashboardTutorialShown', 'true');
   };
 
@@ -108,6 +111,8 @@ export const usePopupManagement = (screenState: string) => {
     setShowHenry,
     showTransitionTutorial,
     setShowTransitionTutorial,
+    showMainTutorial,
+    setShowMainTutorial,
     popupsShown,
     markTutorialCompleted,
     resetPopupStates
