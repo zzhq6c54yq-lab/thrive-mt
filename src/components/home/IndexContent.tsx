@@ -21,6 +21,7 @@ interface IndexContentProps {
   setIsFirstVisit: (value: boolean) => void;
   showCoPayCredit: boolean;
   setShowCoPayCredit: (value: boolean) => void;
+  showMainTutorial: boolean;
   popupsShown: any;
   getTranslatedText: (key: string) => string;
   onMoodSelect: (mood: 'happy' | 'ok' | 'neutral' | 'down' | 'sad' | 'overwhelmed') => void;
@@ -49,6 +50,7 @@ const IndexContent: React.FC<IndexContentProps> = ({
   setIsFirstVisit,
   showCoPayCredit,
   setShowCoPayCredit,
+  showMainTutorial,
   popupsShown,
   getTranslatedText,
   onMoodSelect,
@@ -66,29 +68,25 @@ const IndexContent: React.FC<IndexContentProps> = ({
 }) => {
   const { toast } = useToast();
   
-  // Effect to check if we should show the welcome tutorial based on both
-  // the first visit status and if we've just completed onboarding
+  // Effect to check if we should show the welcome tutorial
   useEffect(() => {
     if (screenState === 'main') {
-      // Check if this is the first time viewing the dashboard (either from localStorage or from onboarding)
-      const hasVisited = localStorage.getItem('hasVisitedThriveMT');
-      const prevScreenState = localStorage.getItem('prevScreenState');
-      const comingFromOnboarding = prevScreenState === 'visionBoard' || 
-                                  prevScreenState === 'subscription';
-                                  
-      console.log("IndexContent - Coming from onboarding:", comingFromOnboarding, "hasVisited:", hasVisited);
+      console.log("IndexContent - Main screen detected. isFirstVisit:", isFirstVisit, "showMainTutorial:", showMainTutorial);
       
-      if (!hasVisited || comingFromOnboarding) {
+      if (showMainTutorial) {
+        console.log("Setting isFirstVisit to true based on showMainTutorial");
         setIsFirstVisit(true);
       }
     }
-  }, [screenState, setIsFirstVisit]);
+  }, [screenState, setIsFirstVisit, showMainTutorial]);
 
   const handleCloseTutorial = () => {
+    console.log("handleCloseTutorial called - marking tutorial as completed");
     setIsFirstVisit(false);
     markTutorialCompleted();
-    localStorage.setItem('hasVisitedThriveMT', 'true');
   };
+
+  console.log("IndexContent rendering with isFirstVisit:", isFirstVisit, "showMainTutorial:", showMainTutorial);
 
   return (
     <div className="relative">
@@ -122,7 +120,7 @@ const IndexContent: React.FC<IndexContentProps> = ({
       
       {/* WelcomeTutorial component that shows the dashboard tutorial */}
       <WelcomeTutorial
-        isOpen={isFirstVisit}
+        isOpen={isFirstVisit || showMainTutorial}
         onClose={handleCloseTutorial}
       />
     </div>

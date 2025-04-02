@@ -40,8 +40,10 @@ const Index = () => {
     setShowCoPayCredit, 
     showHenry, 
     setShowHenry,
+    showMainTutorial,
     popupsShown,
-    markTutorialCompleted
+    markTutorialCompleted,
+    resetPopupStates
   } = usePopupManagement(screenState);
 
   // Use the screen history hook
@@ -51,16 +53,23 @@ const Index = () => {
     if (location.state && location.state.showHenry) {
       setShowHenry(true);
     }
-  }, [location.state, setShowHenry]);
+    
+    // Special handling for debug purposes - you can add ?reset=true to URL to reset states
+    if (location.search.includes('reset=true')) {
+      console.log("Resetting all popup states due to URL parameter");
+      resetPopupStates();
+    }
+  }, [location.state, location.search, setShowHenry, resetPopupStates]);
 
   // Check if it's the first visit and show tutorial accordingly
   useEffect(() => {
-    const hasVisited = localStorage.getItem('hasVisitedThriveMT');
-    if (!hasVisited && screenState === 'main') {
-      console.log("First visit detected, showing welcome tutorial");
+    console.log("Index - First visit check with screen:", screenState, "showMainTutorial:", showMainTutorial);
+    
+    if (screenState === 'main' && showMainTutorial) {
+      console.log("Setting isFirstVisit to true for main screen with showMainTutorial active");
       setIsFirstVisit(true);
     }
-  }, [screenState, setIsFirstVisit]);
+  }, [screenState, showMainTutorial, setIsFirstVisit]);
 
   const toggleHenry = () => {
     setShowHenry(prev => !prev);
@@ -87,6 +96,8 @@ const Index = () => {
     }
   };
 
+  console.log("Index rendering with screen:", screenState, "isFirstVisit:", isFirstVisit, "showMainTutorial:", showMainTutorial);
+
   return (
     <IndexContent
       screenState={screenState}
@@ -100,6 +111,7 @@ const Index = () => {
       setIsFirstVisit={setIsFirstVisit}
       showCoPayCredit={showCoPayCredit}
       setShowCoPayCredit={setShowCoPayCredit}
+      showMainTutorial={showMainTutorial}
       popupsShown={popupsShown}
       getTranslatedText={getTranslatedText}
       onMoodSelect={handleMoodSelect}

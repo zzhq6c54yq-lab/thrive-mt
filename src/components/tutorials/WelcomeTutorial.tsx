@@ -1,5 +1,5 @@
 
-import React from "react";
+import React, { useEffect } from "react";
 import {
   Dialog,
   DialogContent,
@@ -20,6 +20,11 @@ interface WelcomeTutorialProps {
 const WelcomeTutorial: React.FC<WelcomeTutorialProps> = ({ isOpen, onClose }) => {
   // Check if we're using Spanish
   const isSpanish = localStorage.getItem('preferredLanguage') === 'Español';
+  
+  // Log when this component renders with its open state
+  useEffect(() => {
+    console.log("WelcomeTutorial rendered with isOpen:", isOpen);
+  }, [isOpen]);
 
   return (
     <Dialog open={isOpen} onOpenChange={(open) => !open && onClose()}>

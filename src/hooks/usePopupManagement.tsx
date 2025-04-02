@@ -45,13 +45,24 @@ export const usePopupManagement = (screenState: string) => {
       
       // Show Henry only when navigating to main from registration or vision board
       // and if it hasn't been shown before
-      if (!popupsShown.henryIntro) {
+      if (!popupsShown.henryIntro && 
+          (prevScreenState === 'visionBoard' || prevScreenState === 'subscription')) {
         setShowHenry(true);
         setPopupsShown(prev => ({ ...prev, henryIntro: true }));
       }
       
-      // Handle tutorial visibility for first-time users
-      // We'll let IndexContent handle this with isFirstVisit state
+      // Handle main tutorial for first time users
+      const hasVisitedThriveMT = localStorage.getItem('hasVisitedThriveMT');
+      const comingFromOnboarding = (prevScreenState === 'visionBoard' || prevScreenState === 'subscription');
+      
+      console.log("Tutorial check - hasVisitedThriveMT:", hasVisitedThriveMT, "Coming from onboarding:", comingFromOnboarding);
+      
+      if (!hasVisitedThriveMT || comingFromOnboarding) {
+        if (!popupsShown.mainTutorial) {
+          console.log("Setting showMainTutorial to true");
+          setShowMainTutorial(true);
+        }
+      }
     }
     
     // Save current screen state as previous for next navigation
@@ -60,13 +71,15 @@ export const usePopupManagement = (screenState: string) => {
 
   // Method to mark tutorial as completed
   const markTutorialCompleted = () => {
+    console.log("Marking tutorial as completed");
     setPopupsShown(prev => ({ ...prev, mainTutorial: true, transitionTutorial: true }));
     setShowMainTutorial(false);
-    localStorage.setItem('dashboardTutorialShown', 'true');
+    localStorage.setItem('hasVisitedThriveMT', 'true');
   };
 
   // Method to reset popup states (useful for testing)
   const resetPopupStates = () => {
+    console.log("Resetting all popup states");
     setPopupsShown({
       coPayCredit: false,
       henryIntro: false,
@@ -74,8 +87,12 @@ export const usePopupManagement = (screenState: string) => {
       transitionTutorial: false
     });
     localStorage.removeItem('popupsShown');
-    localStorage.removeItem('dashboardTutorialShown');
+    localStorage.removeItem('hasVisitedThriveMT');
     localStorage.removeItem('prevScreenState');
+    localStorage.removeItem('dashboardTutorialShown');
+    
+    // Force reload of the current state
+    setShowMainTutorial(true);
   };
 
   return {
