@@ -24,12 +24,18 @@ export const usePopupManagement = (screenState: string) => {
     };
   });
 
-  // Force reset popup state in development - remove in production
+  // Force reset popup state in development - enhanced to check URL parameters
   useEffect(() => {
     const queryParams = new URLSearchParams(window.location.search);
-    if (queryParams.has('reset')) {
+    if (queryParams.has('reset') || queryParams.has('tutorial')) {
       console.log("Resetting popup states due to URL parameter");
       resetPopupStates();
+      
+      // Force set main tutorial to show
+      if (queryParams.has('tutorial')) {
+        console.log("Forcing main tutorial to show due to URL parameter");
+        setShowMainTutorial(true);
+      }
     }
   }, []);
 
@@ -60,7 +66,7 @@ export const usePopupManagement = (screenState: string) => {
         setPopupsShown(prev => ({ ...prev, henryIntro: true }));
       }
       
-      // Enhanced handling for main tutorial
+      // Enhanced handling for main tutorial - more aggressive reset
       const hasVisitedThriveMT = localStorage.getItem('hasVisitedThriveMT');
       const comingFromOnboarding = (
         prevScreenState === 'visionBoard' || 
@@ -73,12 +79,12 @@ export const usePopupManagement = (screenState: string) => {
                  "Coming from onboarding:", comingFromOnboarding,
                  "popupsShown.mainTutorial:", popupsShown.mainTutorial);
       
-      // Always show tutorial for first-time users or when coming from onboarding
-      if (!hasVisitedThriveMT || comingFromOnboarding) {
-        console.log("Setting showMainTutorial to TRUE - first visit or coming from onboarding");
+      // Much more aggressive checking to ensure tutorial shows
+      if (!hasVisitedThriveMT || comingFromOnboarding || !popupsShown.mainTutorial || screenState === 'main') {
+        console.log("Setting showMainTutorial to TRUE - forcing tutorial display");
         setShowMainTutorial(true);
         
-        // Reset the flag to ensure it shows
+        // Aggressively reset flags to ensure it shows
         localStorage.removeItem('popupsShown');
         localStorage.removeItem('hasVisitedThriveMT');
         localStorage.removeItem('dashboardTutorialShown');
@@ -102,15 +108,16 @@ export const usePopupManagement = (screenState: string) => {
     localStorage.setItem('dashboardTutorialShown', 'true');
   };
 
-  // Method to reset popup states (useful for testing)
+  // Method to reset popup states (useful for testing) - enhanced
   const resetPopupStates = () => {
     console.log("Resetting all popup states");
     
-    // Clear localStorage items
+    // Clear ALL localStorage items that might interfere
     localStorage.removeItem('popupsShown');
     localStorage.removeItem('hasVisitedThriveMT');
     localStorage.removeItem('prevScreenState');
     localStorage.removeItem('dashboardTutorialShown');
+    localStorage.removeItem('tutorialShown');
     
     // Reset state
     setPopupsShown({

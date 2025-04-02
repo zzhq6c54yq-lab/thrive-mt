@@ -1,8 +1,9 @@
 
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import CoPayCreditPopup from "@/components/CoPayCreditPopup";
 import IndexScreenManager from "@/components/home/IndexScreenManager";
 import WelcomeTutorial from "@/components/tutorials/WelcomeTutorial";
+import TestTutorial from "@/components/tutorials/TestTutorial";
 import { useToast } from "@/hooks/use-toast";
 import { Button } from "@/components/ui/button";
 import { X } from "lucide-react";
@@ -69,9 +70,18 @@ const IndexContent: React.FC<IndexContentProps> = ({
   markTutorialCompleted
 }) => {
   const { toast } = useToast();
+  const [forceTutorial, setForceTutorial] = useState(false);
   
-  // Effect to handle tutorial display logic
+  // Effect to handle tutorial display logic and test with URL parameter
   useEffect(() => {
+    // Check for URL parameter to force tutorial display
+    const queryParams = new URLSearchParams(window.location.search);
+    if (queryParams.has('tutorial')) {
+      console.log("Forcing tutorial display due to URL parameter");
+      setForceTutorial(true);
+      return;
+    }
+    
     if (screenState === 'main') {
       console.log("IndexContent - Main screen detected. isFirstVisit:", isFirstVisit, "showMainTutorial:", showMainTutorial);
       
@@ -98,7 +108,7 @@ const IndexContent: React.FC<IndexContentProps> = ({
           sessionStorage.setItem('justCompletedOnboarding', 'true');
         }
         
-        // Clear localStorage items that might prevent tutorial from showing
+        // Force clear localStorage items that might prevent tutorial from showing
         localStorage.removeItem('popupsShown');
         localStorage.removeItem('hasVisitedThriveMT');
         localStorage.removeItem('dashboardTutorialShown');
@@ -109,6 +119,7 @@ const IndexContent: React.FC<IndexContentProps> = ({
   const handleCloseTutorial = () => {
     console.log("handleCloseTutorial called - marking tutorial as completed");
     setIsFirstVisit(false);
+    setForceTutorial(false);
     markTutorialCompleted();
     
     // If this was immediately after onboarding, show a welcome toast
@@ -121,14 +132,28 @@ const IndexContent: React.FC<IndexContentProps> = ({
     }
   };
 
-  console.log("IndexContent rendering with screenState:", screenState, "isFirstVisit:", isFirstVisit, "showMainTutorial:", showMainTutorial);
+  console.log("IndexContent rendering with screenState:", screenState, "isFirstVisit:", isFirstVisit, "showMainTutorial:", showMainTutorial, "forceTutorial:", forceTutorial);
 
-  // Determine if tutorial should be visible
-  const shouldShowTutorial = (isFirstVisit || showMainTutorial) && screenState === 'main';
+  // Determine if tutorial should be visible - now with forced option
+  const shouldShowTutorial = forceTutorial || ((isFirstVisit || showMainTutorial) && screenState === 'main');
   console.log("Should show tutorial:", shouldShowTutorial);
 
   return (
     <div className="relative z-10">
+      {/* Test button to force show tutorial - for debugging */}
+      {screenState === 'main' && (
+        <div className="absolute top-20 right-4 z-50">
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={() => setForceTutorial(true)}
+            className="bg-red-500/80 hover:bg-red-600 text-white border-red-400"
+          >
+            Force Tutorial
+          </Button>
+        </div>
+      )}
+      
       {/* CoPayCredit Popup */}
       {showCoPayCredit && !popupsShown.coPayCredit && 
         <CoPayCreditPopup 
@@ -159,9 +184,9 @@ const IndexContent: React.FC<IndexContentProps> = ({
         setScreenState={setScreenState}
       />
       
-      {/* Enhanced Welcome Tutorial component with improved z-index and visibility */}
+      {/* Using new TestTutorial component that uses AlertDialog instead of Dialog */}
       {shouldShowTutorial && (
-        <WelcomeTutorial
+        <TestTutorial
           isOpen={shouldShowTutorial}
           onClose={handleCloseTutorial}
         />
