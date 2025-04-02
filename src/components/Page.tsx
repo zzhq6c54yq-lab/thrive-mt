@@ -2,7 +2,7 @@
 import React, { useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { useNavigate, useLocation } from "react-router-dom";
-import { ArrowLeft, Home } from "lucide-react";
+import { ArrowLeft, Home, Languages } from "lucide-react";
 import TutorialButton from "./tutorials/TutorialButton";
 
 interface PageProps {
@@ -50,8 +50,18 @@ const Page: React.FC<PageProps> = ({
     navigate("/", { state: { screenState: 'main' } });
   };
   
+  const toggleLanguage = () => {
+    const currentLanguage = localStorage.getItem('preferredLanguage') || 'English';
+    const newLanguage = currentLanguage === 'English' ? 'Español' : 'English';
+    localStorage.setItem('preferredLanguage', newLanguage);
+    
+    // Force a re-render of the app to apply the language change immediately
+    window.dispatchEvent(new Event('languageChange'));
+  };
+  
   // Get the preferred language from localStorage
   const preferredLanguage = localStorage.getItem('preferredLanguage') || 'English';
+  const isSpanish = preferredLanguage === 'Español';
   
   // Determine if this is the main dashboard page
   const isMainDashboard = location.pathname === "/" && 
@@ -62,27 +72,15 @@ const Page: React.FC<PageProps> = ({
     const translations: Record<string, Record<string, string>> = {
       'back': {
         'English': 'Back',
-        'Español': 'Atrás',
-        'Français': 'Retour',
-        'Deutsch': 'Zurück',
-        '中文': '返回',
-        'العربية': 'رجوع'
+        'Español': 'Atrás'
       },
       'home': {
         'English': 'Home',
-        'Español': 'Inicio',
-        'Français': 'Accueil',
-        'Deutsch': 'Startseite',
-        '中文': '主页',
-        'العربية': 'الرئيسية'
+        'Español': 'Inicio'
       },
       'comingSoon': {
         'English': 'Coming soon! This feature is under development.',
-        'Español': '¡Próximamente! Esta función está en desarrollo.',
-        'Français': 'Bientôt disponible ! Cette fonctionnalité est en cours de développement.',
-        'Deutsch': 'Demnächst verfügbar! Diese Funktion wird gerade entwickelt.',
-        '中文': '即将推出！此功能正在开发中。',
-        'العربية': 'قريبا! هذه الميزة قيد التطوير.'
+        'Español': '¡Próximamente! Esta función está en desarrollo.'
       }
     };
     
@@ -122,6 +120,18 @@ const Page: React.FC<PageProps> = ({
               <Home className="h-4 w-4 mr-1" />
               {getTranslation('home')}
             </Button>
+            
+            {/* Language toggle button */}
+            <Button
+              variant="outline"
+              size="sm"
+              className="mr-2 bg-white/5 hover:bg-white/15 border-white/10 text-white/90 text-xs h-7"
+              onClick={toggleLanguage}
+            >
+              <Languages className="h-4 w-4 mr-1" />
+              {isSpanish ? "English" : "Español"}
+            </Button>
+            
             <h1 className="text-lg md:text-xl font-light tracking-tight">
               <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#B87333] to-[#e5c5a1] drop-shadow-sm">{title}</span>
             </h1>

@@ -1,5 +1,5 @@
+
 import React, { useState, useEffect } from "react";
-import { useLocation } from "react-router-dom";
 import { 
   Dialog, 
   DialogContent, 
@@ -13,18 +13,10 @@ import {
   Lightbulb, ChevronLeft, ChevronRight, X, Award, Bell, CheckCircle,
   Brain, Library, Users, Heart, GraduationCap, CalendarRange, LeafyGreen,
   ListChecks, Video, Puzzle, HeartHandshake, Headphones, Coffee, Moon,
-  HandHeart, Target
+  HandHeart, Target, Shield, Compass, Book, Briefcase, Fingerprint,
+  Sparkles, UserCircle, Laugh, PlusCircle, Settings, HelpCircle
 } from "lucide-react";
-import { useToast } from "@/hooks/use-toast";
 import { ScrollArea } from "@/components/ui/scroll-area";
-
-export interface TutorialStep {
-  title: string;
-  description: string;
-  image?: string;
-  highlight?: string;
-  icon?: React.ReactNode;
-}
 
 interface FeatureTutorialProps {
   featureId: string;
@@ -33,1021 +25,437 @@ interface FeatureTutorialProps {
 }
 
 const FeatureTutorial: React.FC<FeatureTutorialProps> = ({ 
-  featureId, 
+  featureId,
   onClose,
   embedded = false
 }) => {
   const [open, setOpen] = useState(true);
   const [currentStep, setCurrentStep] = useState(0);
-  const [tutorialSteps, setTutorialSteps] = useState<TutorialStep[]>([]);
-  const location = useLocation();
-  const { toast } = useToast();
-
-  // Get the preferred language for translations
   const preferredLanguage = localStorage.getItem('preferredLanguage') || 'English';
   const isSpanish = preferredLanguage === 'Español';
-
-  // Load tutorial steps based on the feature
-  useEffect(() => {
-    const getTutorialForFeature = () => {
-      // Default tutorial steps for any feature
-      const defaultSteps: TutorialStep[] = [
+  
+  // Function to get feature tutorials based on the feature ID
+  const getFeatureTutorials = () => {
+    // This contains all the tutorial content organized by feature ID
+    const tutorials = {
+      'dashboard': {
+        icon: <Sparkles className="text-[#B87333]" />,
+        title: isSpanish ? "Panel Principal" : "Main Dashboard",
+        steps: [
+          {
+            title: isSpanish ? "Bienvenido al Panel Principal" : "Welcome to your Dashboard",
+            description: isSpanish 
+              ? "Este es tu centro de control personal para tu viaje de bienestar mental. Aquí encontrarás una visión general de todas las características clave, desafíos, citas y insights."
+              : "This is your personal control center for your mental wellness journey. Here you'll find an overview of all key features, challenges, appointments, and insights.",
+            image: "/lovable-uploads/f2c6ac08-6331-4884-950d-7f94d68ff15f.png"
+          },
+          {
+            title: isSpanish ? "Menú de Navegación" : "Navigation Menu",
+            description: isSpanish 
+              ? "Usa los íconos en la parte superior derecha para acceder a tu perfil, configuración, y alternar el idioma. También puedes encontrar tutoriales para cada característica haciendo clic en el botón 'Cómo usar esta función'."
+              : "Use the icons at the top right to access your profile, settings, and toggle language. You can also find tutorials for each feature by clicking the 'How to use this feature' button.",
+            image: "/lovable-uploads/d2ecdcd2-9a78-40ea-8a8a-ef13092b5ea1.png"
+          },
+          {
+            title: isSpanish ? "Personalización" : "Personalization",
+            description: isSpanish 
+              ? "Tu tablero está personalizado según las preferencias que seleccionaste durante la configuración. Puedes actualizar estas preferencias en cualquier momento a través de la configuración de perfil."
+              : "Your dashboard is personalized based on the preferences you selected during setup. You can update these preferences anytime through profile settings.",
+            image: "/lovable-uploads/f2c6ac08-6331-4884-950d-7f94d68ff15f.png"
+          }
+        ]
+      },
+      'wellness-challenges': {
+        icon: <CheckCircle className="text-green-500" />,
+        title: isSpanish ? "Desafíos de Bienestar" : "Wellness Challenges",
+        steps: [
+          {
+            title: isSpanish ? "Desafíos Diarios" : "Daily Challenges",
+            description: isSpanish 
+              ? "Los desafíos de bienestar son actividades pequeñas y efectivas diseñadas para mejorar tu salud mental y bienestar general cada día."
+              : "Wellness challenges are small, effective activities designed to improve your mental health and overall wellbeing each day.",
+            image: "/lovable-uploads/f2c6ac08-6331-4884-950d-7f94d68ff15f.png"
+          },
+          {
+            title: isSpanish ? "Completando Desafíos" : "Completing Challenges",
+            description: isSpanish 
+              ? "Marca los desafíos como completados para ganar créditos de copago y seguir tu progreso. Los desafíos completados construyen un historial de bienestar visible en tus análisis."
+              : "Mark challenges as complete to earn co-pay credits and track your progress. Completed challenges build a wellness history visible in your analytics.",
+            image: "/lovable-uploads/d2ecdcd2-9a78-40ea-8a8a-ef13092b5ea1.png"
+          },
+          {
+            title: isSpanish ? "Desafíos Personalizados" : "Personalized Challenges",
+            description: isSpanish 
+              ? "Los desafíos se adaptan a tus necesidades específicas y objetivos de bienestar mental. Se vuelven más personalizados a medida que interactúas con la aplicación."
+              : "Challenges are tailored to your specific needs and mental wellness goals. They become more personalized as you interact with the app.",
+            image: "/lovable-uploads/f2c6ac08-6331-4884-950d-7f94d68ff15f.png"
+          }
+        ]
+      },
+      'specialized-programs': {
+        icon: <Shield className="text-blue-500" />,
+        title: isSpanish ? "Programas Especializados" : "Specialized Programs",
+        steps: [
+          {
+            title: isSpanish ? "Programas a Medida" : "Tailored Programs",
+            description: isSpanish 
+              ? "Los programas especializados ofrecen recursos y apoyo específicos para diferentes grupos, como personal militar, estudiantes universitarios y propietarios de pequeñas empresas."
+              : "Specialized programs offer specific resources and support for different groups, like military personnel, college students, and small business owners.",
+            image: "/lovable-uploads/f2c6ac08-6331-4884-950d-7f94d68ff15f.png"
+          },
+          {
+            title: isSpanish ? "Beneficios del Programa" : "Program Benefits",
+            description: isSpanish 
+              ? "Cada programa incluye recursos, talleres y herramientas específicamente diseñadas para abordar los desafíos únicos de salud mental que enfrentan estos grupos."
+              : "Each program includes resources, workshops, and tools specifically designed to address the unique mental health challenges faced by these groups.",
+            image: "/lovable-uploads/f2c6ac08-6331-4884-950d-7f94d68ff15f.png"
+          },
+          {
+            title: isSpanish ? "Accediendo a Programas" : "Accessing Programs",
+            description: isSpanish 
+              ? "Haz clic en cualquier programa para explorar su contenido completo. Puedes participar en múltiples programas simultáneamente según tus necesidades."
+              : "Click on any program to explore its full content. You can participate in multiple programs simultaneously based on your needs.",
+            image: "/lovable-uploads/d2ecdcd2-9a78-40ea-8a8a-ef13092b5ea1.png"
+          }
+        ]
+      },
+      'gratitude-visualizer': {
+        icon: <Heart className="text-red-500" />,
+        title: isSpanish ? "Visualizador de Gratitud" : "Gratitude Visualizer",
+        steps: [
+          {
+            title: isSpanish ? "Expresando Gratitud" : "Expressing Gratitude",
+            description: isSpanish 
+              ? "El visualizador de gratitud te ayuda a reconocer y apreciar los aspectos positivos de tu vida, lo que está científicamente demostrado que mejora el bienestar mental."
+              : "The gratitude visualizer helps you acknowledge and appreciate the positive aspects of your life, which is scientifically proven to improve mental wellbeing.",
+            image: "/lovable-uploads/f2c6ac08-6331-4884-950d-7f94d68ff15f.png"
+          },
+          {
+            title: isSpanish ? "Añadiendo Entradas" : "Adding Entries",
+            description: isSpanish 
+              ? "Añade nuevas entradas de gratitud haciendo clic en el botón '+'. Puedes incluir texto, imágenes o seleccionar de una lista de sugerencias."
+              : "Add new gratitude entries by clicking the '+' button. You can include text, images, or select from a list of suggestions.",
+            image: "/lovable-uploads/d2ecdcd2-9a78-40ea-8a8a-ef13092b5ea1.png"
+          },
+          {
+            title: isSpanish ? "Visualizando Patrones" : "Visualizing Patterns",
+            description: isSpanish 
+              ? "Con el tiempo, podrás ver patrones en tus entradas de gratitud, revelando lo que valoras más y contribuyendo a una mejor autoconciencia."
+              : "Over time, you'll see patterns in your gratitude entries, revealing what you value most and contributing to better self-awareness.",
+            image: "/lovable-uploads/f2c6ac08-6331-4884-950d-7f94d68ff15f.png"
+          }
+        ]
+      },
+      'appointments': {
+        icon: <CalendarRange className="text-purple-500" />,
+        title: isSpanish ? "Próximas Citas" : "Upcoming Appointments",
+        steps: [
+          {
+            title: isSpanish ? "Gestión de Citas" : "Appointment Management",
+            description: isSpanish 
+              ? "La sección de citas te muestra todas tus próximas sesiones programadas con terapeutas, grupos de apoyo, o talleres."
+              : "The appointments section shows you all your upcoming scheduled sessions with therapists, support groups, or workshops.",
+            image: "/lovable-uploads/f2c6ac08-6331-4884-950d-7f94d68ff15f.png"
+          },
+          {
+            title: isSpanish ? "Preparación para Sesiones" : "Session Preparation",
+            description: isSpanish 
+              ? "Haz clic en cualquier cita para ver detalles, prepararte para la sesión, o acceder a material preliminar recomendado por tu terapeuta."
+              : "Click on any appointment to see details, prepare for the session, or access preliminary material recommended by your therapist.",
+            image: "/lovable-uploads/d2ecdcd2-9a78-40ea-8a8a-ef13092b5ea1.png"
+          },
+          {
+            title: isSpanish ? "Programación" : "Scheduling",
+            description: isSpanish 
+              ? "Para programar nuevas citas, haz clic en 'Programar cita' o navega a la sección de Terapia en Tiempo Real en el menú principal."
+              : "To schedule new appointments, click 'Schedule appointment' or navigate to the Real-Time Therapy section in the main menu.",
+            image: "/lovable-uploads/f2c6ac08-6331-4884-950d-7f94d68ff15f.png"
+          }
+        ]
+      },
+      'insights': {
+        icon: <Brain className="text-indigo-500" />,
+        title: isSpanish ? "Análisis" : "Insights",
+        steps: [
+          {
+            title: isSpanish ? "Análisis Personalizados" : "Personalized Insights",
+            description: isSpanish 
+              ? "La sección de análisis proporciona información personalizada basada en tus actividades, patrones de estado de ánimo, y progreso en la aplicación."
+              : "The insights section provides personalized information based on your activities, mood patterns, and progress in the app.",
+            image: "/lovable-uploads/f2c6ac08-6331-4884-950d-7f94d68ff15f.png"
+          },
+          {
+            title: isSpanish ? "Seguimiento de Patrones" : "Pattern Tracking",
+            description: isSpanish 
+              ? "Observa cómo cambian tus patrones de bienestar con el tiempo. Estos análisis se vuelven más precisos cuanto más utilices la aplicación."
+              : "See how your wellness patterns change over time. These insights become more accurate the more you use the app.",
+            image: "/lovable-uploads/d2ecdcd2-9a78-40ea-8a8a-ef13092b5ea1.png"
+          },
+          {
+            title: isSpanish ? "Recomendaciones Prácticas" : "Actionable Recommendations",
+            description: isSpanish 
+              ? "Basándose en tus análisis, recibirás recomendaciones prácticas para mejorar tu bienestar mental y abordar áreas específicas de preocupación."
+              : "Based on your insights, you'll receive actionable recommendations to improve your mental wellbeing and address specific areas of concern.",
+            image: "/lovable-uploads/f2c6ac08-6331-4884-950d-7f94d68ff15f.png"
+          }
+        ]
+      },
+      'quizzes': {
+        icon: <HelpCircle className="text-amber-500" />,
+        title: isSpanish ? "Cuestionarios" : "Quizzes",
+        steps: [
+          {
+            title: isSpanish ? "Cuestionarios Educativos" : "Educational Quizzes",
+            description: isSpanish 
+              ? "Los cuestionarios de salud mental son herramientas interactivas diseñadas para aumentar tu conocimiento y autoconciencia sobre varios aspectos de la salud mental."
+              : "Mental health quizzes are interactive tools designed to increase your knowledge and self-awareness about various aspects of mental health.",
+            image: "/lovable-uploads/f2c6ac08-6331-4884-950d-7f94d68ff15f.png"
+          },
+          {
+            title: isSpanish ? "Seguimiento de Progreso" : "Progress Tracking",
+            description: isSpanish 
+              ? "Cada cuestionario muestra tu progreso y puedes retomar donde lo dejaste. Completa cuestionarios para ganar créditos de copago."
+              : "Each quiz shows your progress and you can pick up where you left off. Complete quizzes to earn co-pay credits.",
+            image: "/lovable-uploads/d2ecdcd2-9a78-40ea-8a8a-ef13092b5ea1.png"
+          },
+          {
+            title: isSpanish ? "Categorías de Cuestionarios" : "Quiz Categories",
+            description: isSpanish 
+              ? "Explora diferentes categorías de cuestionarios, desde conceptos básicos de salud mental hasta técnicas específicas como la atención plena y la regulación emocional."
+              : "Explore different quiz categories, from mental health basics to specific techniques like mindfulness and emotional regulation.",
+            image: "/lovable-uploads/f2c6ac08-6331-4884-950d-7f94d68ff15f.png"
+          }
+        ]
+      },
+      'workshops': {
+        icon: <Users className="text-green-600" />,
+        title: isSpanish ? "Talleres Destacados" : "Featured Workshops",
+        steps: [
+          {
+            title: isSpanish ? "Talleres Interactivos" : "Interactive Workshops",
+            description: isSpanish 
+              ? "Los talleres son sesiones educativas guiadas que cubren diversos temas de salud mental, desde técnicas de manejo del estrés hasta habilidades de comunicación."
+              : "Workshops are guided educational sessions covering various mental health topics, from stress management techniques to communication skills.",
+            image: "/lovable-uploads/f2c6ac08-6331-4884-950d-7f94d68ff15f.png"
+          },
+          {
+            title: isSpanish ? "Participación en Talleres" : "Workshop Participation",
+            description: isSpanish 
+              ? "Haz clic en un taller para ver detalles, unirte a una sesión en vivo, o acceder a contenido grabado. Puedes interactuar con facilitadores y otros participantes."
+              : "Click on a workshop to view details, join a live session, or access recorded content. You can interact with facilitators and other participants.",
+            image: "/lovable-uploads/d2ecdcd2-9a78-40ea-8a8a-ef13092b5ea1.png"
+          },
+          {
+            title: isSpanish ? "Talleres Personalizados" : "Personalized Workshops",
+            description: isSpanish 
+              ? "Los talleres destacados se seleccionan en base a tus objetivos de bienestar y preferencias. Explora todos los talleres disponibles en la sección de Talleres."
+              : "Featured workshops are selected based on your wellness goals and preferences. Explore all available workshops in the Workshops section.",
+            image: "/lovable-uploads/f2c6ac08-6331-4884-950d-7f94d68ff15f.png"
+          }
+        ]
+      },
+      'key-features': {
+        icon: <Sparkles className="text-blue-400" />,
+        title: isSpanish ? "Características Principales" : "Key Features",
+        steps: [
+          {
+            title: isSpanish ? "Navegación Rápida" : "Quick Navigation",
+            description: isSpanish 
+              ? "Las características principales proporcionan acceso directo a las funcionalidades más utilizadas de Thrive MT, permitiéndote navegar rápidamente a donde necesitas ir."
+              : "Key features provide direct access to Thrive MT's most-used functionalities, allowing you to quickly navigate to where you need to go.",
+            image: "/lovable-uploads/f2c6ac08-6331-4884-950d-7f94d68ff15f.png"
+          },
+          {
+            title: isSpanish ? "Exploración de Características" : "Feature Exploration",
+            description: isSpanish 
+              ? "Haz clic en cualquier característica para explorarla en profundidad. Cada una tiene su propio tutorial al que puedes acceder a través del botón 'Cómo usar esta función'."
+              : "Click on any feature to explore it in depth. Each one has its own tutorial that you can access via the 'How to use this feature' button.",
+            image: "/lovable-uploads/d2ecdcd2-9a78-40ea-8a8a-ef13092b5ea1.png"
+          },
+          {
+            title: isSpanish ? "Personalización de Accesos" : "Customizing Access",
+            description: isSpanish 
+              ? "Puedes personalizar qué características aparecen en esta sección a través de la configuración de perfil, asegurando un acceso rápido a las herramientas que más utilizas."
+              : "You can customize which features appear in this section through profile settings, ensuring quick access to the tools you use most.",
+            image: "/lovable-uploads/f2c6ac08-6331-4884-950d-7f94d68ff15f.png"
+          }
+        ]
+      },
+    };
+    
+    return tutorials[featureId as keyof typeof tutorials] || {
+      icon: <Lightbulb className="text-amber-500" />,
+      title: isSpanish ? "Tutorial de Características" : "Feature Tutorial",
+      steps: [
         {
-          title: getTranslatedText('welcomeTitle', featureId),
-          description: getTranslatedText('introDescription', featureId),
-          image: "/lovable-uploads/d2ecdcd2-9a78-40ea-8a8a-ef13092b5ea1.png",
-          icon: <Lightbulb className="h-12 w-12 text-amber-400" />
+          title: isSpanish ? "Características Próximamente" : "Features Coming Soon",
+          description: isSpanish 
+            ? "Esta característica está actualmente en desarrollo. ¡Vuelve pronto para ver actualizaciones!"
+            : "This feature is currently under development. Check back soon for updates!",
+          image: "/lovable-uploads/f2c6ac08-6331-4884-950d-7f94d68ff15f.png"
         }
-      ];
-
-      // Feature-specific tutorial steps
-      switch (featureId) {
-        case "wellness-challenges":
-          return [
-            ...defaultSteps,
-            {
-              title: getTranslatedText('featureTitle', featureId),
-              description: getTranslatedText('mainDescription', featureId),
-              highlight: "challenges-overview",
-              icon: <ListChecks className="h-12 w-12 text-green-400" />
-            },
-            {
-              title: getTranslatedText('pointsTitle', featureId),
-              description: getTranslatedText('pointsDescription', featureId),
-              highlight: "points-system",
-              icon: <Award className="h-12 w-12 text-amber-400" />
-            },
-            {
-              title: getTranslatedText('categoriesTitle', featureId),
-              description: getTranslatedText('categoriesDescription', featureId),
-              highlight: "challenge-categories",
-              icon: <Target className="h-12 w-12 text-blue-400" />
-            },
-            {
-              title: getTranslatedText('completingTitle', featureId),
-              description: getTranslatedText('completingDescription', featureId),
-              highlight: "complete-challenge",
-              icon: <CheckCircle className="h-12 w-12 text-green-400" />
-            },
-            {
-              title: getTranslatedText('redeemingTitle', featureId),
-              description: getTranslatedText('redeemingDescription', featureId),
-              highlight: "redeem-points",
-              icon: <Award className="h-12 w-12 text-amber-400" />
-            },
-            {
-              title: getTranslatedText('remindersTitle', featureId),
-              description: getTranslatedText('remindersDescription', featureId),
-              highlight: "reminders",
-              icon: <Bell className="h-12 w-12 text-indigo-400" />
-            }
-          ];
-        case "copay-credits":
-          return [
-            ...defaultSteps,
-            {
-              title: getTranslatedText('featureTitle', featureId),
-              description: getTranslatedText('mainDescription', featureId),
-              highlight: "credits-overview",
-              icon: <Award className="h-12 w-12 text-amber-400" />
-            },
-            {
-              title: getTranslatedText('earningTitle', featureId),
-              description: getTranslatedText('earningDescription', featureId),
-              highlight: "earning-credits",
-              icon: <Award className="h-12 w-12 text-amber-400" />
-            },
-            {
-              title: getTranslatedText('usingTitle', featureId),
-              description: getTranslatedText('usingDescription', featureId),
-              highlight: "using-credits",
-              icon: <HandHeart className="h-12 w-12 text-pink-400" />
-            }
-          ];
-        case "real-time-therapy":
-          return [
-            ...defaultSteps,
-            {
-              title: getTranslatedText('featureTitle', featureId),
-              description: getTranslatedText('mainDescription', featureId),
-              highlight: "therapy-overview",
-              icon: <GraduationCap className="h-12 w-12 text-indigo-400" />
-            },
-            {
-              title: getTranslatedText('sessionTitle', featureId),
-              description: getTranslatedText('sessionDescription', featureId),
-              highlight: "booking-session",
-              icon: <CalendarRange className="h-12 w-12 text-blue-400" />
-            },
-            {
-              title: getTranslatedText('paymentTitle', featureId),
-              description: getTranslatedText('paymentDescription', featureId),
-              highlight: "payment-options",
-              icon: <Award className="h-12 w-12 text-amber-400" />
-            }
-          ];
-        case "community-support":
-          return [
-            ...defaultSteps,
-            {
-              title: getTranslatedText('featureTitle', featureId),
-              description: getTranslatedText('mainDescription', featureId),
-              highlight: "community-overview",
-              icon: <Users className="h-12 w-12 text-indigo-400" />
-            },
-            {
-              title: getTranslatedText('groupsTitle', featureId),
-              description: getTranslatedText('groupsDescription', featureId),
-              highlight: "support-groups",
-              icon: <Users className="h-12 w-12 text-indigo-400" />
-            },
-            {
-              title: getTranslatedText('postingTitle', featureId),
-              description: getTranslatedText('postingDescription', featureId),
-              highlight: "posting-guidelines",
-              icon: <Heart className="h-12 w-12 text-pink-400" />
-            }
-          ];
-        case "resource-library":
-          return [
-            ...defaultSteps,
-            {
-              title: getTranslatedText('featureTitle', featureId),
-              description: getTranslatedText('mainDescription', featureId),
-              highlight: "resources-overview",
-              icon: <Library className="h-12 w-12 text-indigo-400" />
-            },
-            {
-              title: getTranslatedText('searchingTitle', featureId),
-              description: getTranslatedText('searchingDescription', featureId),
-              highlight: "search-filter",
-              icon: <Library className="h-12 w-12 text-indigo-400" />
-            },
-            {
-              title: getTranslatedText('savingTitle', featureId),
-              description: getTranslatedText('savingDescription', featureId),
-              highlight: "save-resources",
-              icon: <Heart className="h-12 w-12 text-pink-400" />
-            }
-          ];
-        case "dashboard":
-          return [
-            ...defaultSteps,
-            {
-              title: getTranslatedText('featureTitle', featureId),
-              description: getTranslatedText('mainDescription', featureId),
-              highlight: "dashboard-overview",
-              icon: <Target className="h-12 w-12 text-blue-400" />
-            },
-            {
-              title: getTranslatedText('widgetsTitle', featureId),
-              description: getTranslatedText('widgetsDescription', featureId),
-              highlight: "dashboard-widgets",
-              icon: <Puzzle className="h-12 w-12 text-green-400" />
-            },
-            {
-              title: getTranslatedText('dailyChallengesTitle', featureId),
-              description: getTranslatedText('dailyChallengesDescription', featureId),
-              highlight: "daily-challenges",
-              icon: <ListChecks className="h-12 w-12 text-green-400" />
-            },
-            {
-              title: getTranslatedText('gratitudeTitle', featureId),
-              description: getTranslatedText('gratitudeDescription', featureId),
-              highlight: "gratitude-visualizer",
-              icon: <Heart className="h-12 w-12 text-pink-400" />
-            },
-            {
-              title: getTranslatedText('videoDiaryTitle', featureId),
-              description: getTranslatedText('videoDiaryDescription', featureId),
-              highlight: "video-diary",
-              icon: <Video className="h-12 w-12 text-blue-400" />
-            },
-            {
-              title: getTranslatedText('appointmentsTitle', featureId),
-              description: getTranslatedText('appointmentsDescription', featureId),
-              highlight: "appointments",
-              icon: <CalendarRange className="h-12 w-12 text-blue-400" />
-            },
-            {
-              title: getTranslatedText('insightsTitle', featureId),
-              description: getTranslatedText('insightsDescription', featureId),
-              highlight: "insights",
-              icon: <Brain className="h-12 w-12 text-purple-400" />
-            },
-            {
-              title: getTranslatedText('workshopsTitle', featureId),
-              description: getTranslatedText('workshopsDescription', featureId),
-              highlight: "workshops",
-              icon: <CalendarRange className="h-12 w-12 text-blue-400" />
-            },
-            {
-              title: getTranslatedText('keyFeaturesTitle', featureId),
-              description: getTranslatedText('keyFeaturesDescription', featureId),
-              highlight: "key-features",
-              icon: <Lightbulb className="h-12 w-12 text-amber-400" />
-            },
-            {
-              title: getTranslatedText('navigationTitle', featureId),
-              description: getTranslatedText('navigationDescription', featureId),
-              highlight: "navigation",
-              icon: <Target className="h-12 w-12 text-blue-400" />
-            }
-          ];
-        case "video-diary":
-          return [
-            ...defaultSteps,
-            {
-              title: getTranslatedText('featureTitle', featureId),
-              description: getTranslatedText('mainDescription', featureId),
-              highlight: "video-diary-overview",
-              icon: <Video className="h-12 w-12 text-blue-400" />
-            }
-          ];
-        case "mindfulness":
-          return [
-            ...defaultSteps,
-            {
-              title: getTranslatedText('featureTitle', featureId),
-              description: getTranslatedText('mainDescription', featureId),
-              highlight: "mindfulness-overview",
-              icon: <Moon className="h-12 w-12 text-indigo-400" />
-            }
-          ];
-        case "journaling":
-          return [
-            ...defaultSteps,
-            {
-              title: getTranslatedText('featureTitle', featureId),
-              description: getTranslatedText('mainDescription', featureId),
-              highlight: "journaling-overview",
-              icon: <Heart className="h-12 w-12 text-pink-400" />
-            }
-          ];
-        case "binaural-beats":
-          return [
-            ...defaultSteps,
-            {
-              title: getTranslatedText('featureTitle', featureId),
-              description: getTranslatedText('mainDescription', featureId),
-              highlight: "binaural-beats-overview",
-              icon: <Headphones className="h-12 w-12 text-purple-400" />
-            }
-          ];
-        case "lifestyle-integration":
-          return [
-            ...defaultSteps,
-            {
-              title: getTranslatedText('featureTitle', featureId),
-              description: getTranslatedText('mainDescription', featureId),
-              highlight: "lifestyle-integration-overview",
-              icon: <Coffee className="h-12 w-12 text-brown-400" />
-            }
-          ];
-        case "mental-wellness-tools":
-          return [
-            ...defaultSteps,
-            {
-              title: getTranslatedText('featureTitle', featureId),
-              description: getTranslatedText('mainDescription', featureId),
-              highlight: "mental-wellness-tools-overview",
-              icon: <LeafyGreen className="h-12 w-12 text-green-400" />
-            }
-          ];
-        case "my-sponsor":
-          return [
-            ...defaultSteps,
-            {
-              title: getTranslatedText('featureTitle', featureId),
-              description: getTranslatedText('mainDescription', featureId),
-              highlight: "my-sponsor-overview",
-              icon: <HeartHandshake className="h-12 w-12 text-red-400" />
-            }
-          ];
-        default:
-          return defaultSteps;
-      }
+      ]
     };
-
-    setTutorialSteps(getTutorialForFeature());
-  }, [featureId, preferredLanguage]);
-
-  const getTranslatedText = (type: string, feature: string) => {
-    const translations: Record<string, Record<string, Record<string, string>>> = {
-      'welcomeTitle': {
-        'wellness-challenges': {
-          'English': 'Welcome to Wellness Challenges',
-          'Español': 'Bienvenido a los Desafíos de Bienestar'
-        },
-        'copay-credits': {
-          'English': 'Welcome to Co-Pay Credits',
-          'Español': 'Bienvenido a Créditos de Copago'
-        },
-        'dashboard': {
-          'English': 'Welcome to Your Dashboard',
-          'Español': 'Bienvenido a tu Panel'
-        },
-        'real-time-therapy': {
-          'English': 'Welcome to Real-Time Therapy',
-          'Español': 'Bienvenido a Terapia en Tiempo Real'
-        },
-        'community-support': {
-          'English': 'Welcome to Community Support',
-          'Español': 'Bienvenido a Apoyo Comunitario'
-        },
-        'resource-library': {
-          'English': 'Welcome to Resource Library',
-          'Español': 'Bienvenido a la Biblioteca de Recursos'
-        },
-        'video-diary': {
-          'English': 'Welcome to Video Diary',
-          'Español': 'Bienvenido al Diario en Video'
-        },
-        'mindfulness': {
-          'English': 'Welcome to Mindfulness & Sleep',
-          'Español': 'Bienvenido a Atención Plena y Sueño'
-        },
-        'journaling': {
-          'English': 'Welcome to Journaling',
-          'Español': 'Bienvenido a Diario Personal'
-        },
-        'binaural-beats': {
-          'English': 'Welcome to Binaural Beats',
-          'Español': 'Bienvenido a Ritmos Binaurales'
-        },
-        'lifestyle-integration': {
-          'English': 'Welcome to Lifestyle Integration',
-          'Español': 'Bienvenido a Integración de Estilo de Vida'
-        },
-        'mental-wellness-tools': {
-          'English': 'Welcome to Mental Wellness Tools',
-          'Español': 'Bienvenido a Herramientas de Bienestar Mental'
-        },
-        'my-sponsor': {
-          'English': 'Welcome to My Sponsor',
-          'Español': 'Bienvenido a Mi Patrocinador'
-        }
-      },
-      'introDescription': {
-        'wellness-challenges': {
-          'English': "I'm Henry, and I'll guide you through the Wellness Challenges feature.",
-          'Español': "Soy Henry, y te guiaré a través de la función de Desafíos de Bienestar."
-        },
-        'dashboard': {
-          'English': "I'm Henry, and I'll guide you through your personalized dashboard.",
-          'Español': "Soy Henry, y te guiaré a través de tu panel personalizado."
-        },
-        'real-time-therapy': {
-          'English': "I'm Henry, and I'll guide you through the Real-Time Therapy options.",
-          'Español': "Soy Henry, y te guiaré a través de las opciones de Terapia en Tiempo Real."
-        },
-        'community-support': {
-          'English': "I'm Henry, and I'll guide you through our Community Support features.",
-          'Español': "Soy Henry, y te guiaré a través de nuestras características de Apoyo Comunitario."
-        },
-        'resource-library': {
-          'English': "I'm Henry, and I'll guide you through our Resource Library.",
-          'Español': "Soy Henry, y te guiaré a través de nuestra Biblioteca de Recursos."
-        },
-        'copay-credits': {
-          'English': "I'm Henry, and I'll guide you through the Co-Pay Credits system.",
-          'Español': "Soy Henry, y te guiaré a través del sistema de Créditos de Copago."
-        },
-        'video-diary': {
-          'English': "I'm Henry, and I'll guide you through the Video Diary feature.",
-          'Español': "Soy Henry, y te guiaré a través de la función de Diario en Video."
-        },
-        'mindfulness': {
-          'English': "I'm Henry, and I'll guide you through our Mindfulness & Sleep features.",
-          'Español': "Soy Henry, y te guiaré a través de nuestras funciones de Atención Plena y Sueño."
-        },
-        'journaling': {
-          'English': "I'm Henry, and I'll guide you through the Journaling feature.",
-          'Español': "Soy Henry, y te guiaré a través de la función de Diario Personal."
-        },
-        'binaural-beats': {
-          'English': "I'm Henry, and I'll guide you through our Binaural Beats therapy.",
-          'Español': "Soy Henry, y te guiaré a través de nuestra terapia de Ritmos Binaurales."
-        },
-        'lifestyle-integration': {
-          'English': "I'm Henry, and I'll guide you through Lifestyle Integration features.",
-          'Español': "Soy Henry, y te guiaré a través de las funciones de Integración de Estilo de Vida."
-        },
-        'mental-wellness-tools': {
-          'English': "I'm Henry, and I'll guide you through our Mental Wellness Tools.",
-          'Español': "Soy Henry, y te guiaré a través de nuestras Herramientas de Bienestar Mental."
-        },
-        'my-sponsor': {
-          'English': "I'm Henry, and I'll guide you through the My Sponsor feature.",
-          'Español': "Soy Henry, y te guiaré a través de la función de Mi Patrocinador."
-        }
-      },
-      'featureTitle': {
-        'wellness-challenges': {
-          'English': 'Wellness Challenges',
-          'Español': 'Desafíos de Bienestar'
-        },
-        'copay-credits': {
-          'English': 'Co-Pay Credits System',
-          'Español': 'Sistema de Créditos de Copago'
-        },
-        'dashboard': {
-          'English': 'Your Dashboard',
-          'Español': 'Tu Panel'
-        },
-        'real-time-therapy': {
-          'English': 'Real-Time Therapy',
-          'Español': 'Terapia en Tiempo Real'
-        },
-        'community-support': {
-          'English': 'Community Support',
-          'Español': 'Apoyo Comunitario'
-        },
-        'resource-library': {
-          'English': 'Resource Library',
-          'Español': 'Biblioteca de Recursos'
-        },
-        'video-diary': {
-          'English': 'Video Diary',
-          'Español': 'Diario en Video'
-        },
-        'mindfulness': {
-          'English': 'Mindfulness & Sleep',
-          'Español': 'Atención Plena y Sueño'
-        },
-        'journaling': {
-          'English': 'Journaling',
-          'Español': 'Diario Personal'
-        },
-        'binaural-beats': {
-          'English': 'Binaural Beats',
-          'Español': 'Ritmos Binaurales'
-        },
-        'lifestyle-integration': {
-          'English': 'Lifestyle Integration',
-          'Español': 'Integración de Estilo de Vida'
-        },
-        'mental-wellness-tools': {
-          'English': 'Mental Wellness Tools',
-          'Español': 'Herramientas de Bienestar Mental'
-        },
-        'my-sponsor': {
-          'English': 'My Sponsor',
-          'Español': 'Mi Patrocinador'
-        }
-      },
-      'mainDescription': {
-        'wellness-challenges': {
-          'English': 'Complete daily challenges to improve your mental health and earn points towards co-pay credits.',
-          'Español': 'Completa desafíos diarios para mejorar tu salud mental y ganar puntos para créditos de copago.'
-        },
-        'copay-credits': {
-          'English': 'Earn and use credits to reduce the cost of your therapy sessions.',
-          'Español': 'Gana y usa créditos para reducir el costo de tus sesiones de terapia.'
-        },
-        'dashboard': {
-          'English': 'Your dashboard provides a quick overview of your progress and upcoming appointments.',
-          'Español': 'Tu panel proporciona una visión rápida de tu progreso y próximas citas.'
-        },
-        'real-time-therapy': {
-          'English': 'Connect with licensed therapists instantly when you need support.',
-          'Español': 'Conéctate con terapeutas licenciados al instante cuando necesites apoyo.'
-        },
-        'community-support': {
-          'English': 'Connect with others facing similar challenges in a safe, moderated environment.',
-          'Español': 'Conéctate con otros que enfrentan desafíos similares en un entorno seguro y moderado.'
-        },
-        'resource-library': {
-          'English': 'Access a wide range of mental health resources, articles, and tools.',
-          'Español': 'Accede a una amplia gama de recursos, artículos y herramientas de salud mental.'
-        },
-        'video-diary': {
-          'English': 'Record video messages to track your journey or share with your therapist.',
-          'Español': 'Graba mensajes de video para seguir tu viaje o compartir con tu terapeuta.'
-        },
-        'mindfulness': {
-          'English': 'Record and visualize things you are grateful for to improve mental wellbeing.',
-          'Español': 'Registra y visualiza las cosas por las que estás agradecido para mejorar el bienestar mental.'
-        },
-        'journaling': {
-          'English': 'Record your thoughts and feelings to improve your mental health.',
-          'Español': 'Registra tus pensamientos y sentimientos para mejorar tu salud mental.'
-        },
-        'binaural-beats': {
-          'English': 'Listen to binaural beats to improve your mood and focus.',
-          'Español': 'Escucha ritmos binaurales para mejorar tu estado de ánimo y concentración.'
-        },
-        'lifestyle-integration': {
-          'English': 'Explore ways to integrate healthy habits into your daily life.',
-          'Español': 'Explora formas de integrar hábitos saludables en tu vida diaria.'
-        },
-        'mental-wellness-tools': {
-          'English': 'Use tools to support your mental health and well-being.',
-          'Español': 'Usa herramientas para apoyar tu salud mental y bienestar.'
-        },
-        'my-sponsor': {
-          'English': 'Learn about your sponsor and how they can support you.',
-          'Español': 'Aprende sobre tu patrocinador y cómo pueden apoyarte.'
-        }
-      },
-      'pointsTitle': {
-        'wellness-challenges': {
-          'English': 'Points System',
-          'Español': 'Sistema de Puntos'
-        }
-      },
-      'pointsDescription': {
-        'wellness-challenges': {
-          'English': 'Earn points for completing challenges, which can be redeemed for co-pay credits.',
-          'Español': 'Gana puntos por completar desafíos, que pueden canjearse por créditos de copago.'
-        }
-      },
-      'categoriesTitle': {
-        'wellness-challenges': {
-          'English': 'Challenge Categories',
-          'Español': 'Categorías de Desafíos'
-        }
-      },
-      'categoriesDescription': {
-        'wellness-challenges': {
-          'English': 'Challenges are organized by category to target different aspects of mental wellness.',
-          'Español': 'Los desafíos están organizados por categoría para apuntar a diferentes aspectos del bienestar mental.'
-        }
-      },
-      'completingTitle': {
-        'wellness-challenges': {
-          'English': 'Completing Challenges',
-          'Español': 'Completando Desafíos'
-        }
-      },
-      'completingDescription': {
-        'wellness-challenges': {
-          'English': 'Mark challenges as complete to earn points and track your progress.',
-          'Español': 'Marca los desafíos como completados para ganar puntos y seguir tu progreso.'
-        }
-      },
-      'redeemingTitle': {
-        'wellness-challenges': {
-          'English': 'Redeeming Points',
-          'Español': 'Canjeando Puntos'
-        }
-      },
-      'redeemingDescription': {
-        'wellness-challenges': {
-          'English': 'Use your earned points to receive discounts on therapy sessions.',
-          'Español': 'Usa tus puntos ganados para recibir descuentos en sesiones de terapia.'
-        }
-      },
-      'remindersTitle': {
-        'wellness-challenges': {
-          'English': 'Setting Reminders',
-          'Español': 'Configurando Recordatorios'
-        }
-      },
-      'remindersDescription': {
-        'wellness-challenges': {
-          'English': 'Set reminders to help you stay on track with your daily challenges.',
-          'Español': 'Configura recordatorios para ayudarte a mantenerte al día con tus desafíos diarios.'
-        }
-      },
-      'earningTitle': {
-        'copay-credits': {
-          'English': 'Earning Credits',
-          'Español': 'Ganando Créditos'
-        }
-      },
-      'earningDescription': {
-        'copay-credits': {
-          'English': 'Complete wellness challenges and activities to earn co-pay credits.',
-          'Español': 'Completa desafíos de bienestar y actividades para ganar créditos de copago.'
-        }
-      },
-      'usingTitle': {
-        'copay-credits': {
-          'English': 'Using Credits',
-          'Español': 'Usando Créditos'
-        }
-      },
-      'usingDescription': {
-        'copay-credits': {
-          'English': 'Apply your credits to reduce the cost of therapy sessions at checkout.',
-          'Español': 'Aplica tus créditos para reducir el costo de las sesiones de terapia al pagar.'
-        }
-      },
-      'sessionTitle': {
-        'real-time-therapy': {
-          'English': 'Booking a Session',
-          'Español': 'Reservando una Sesión'
-        }
-      },
-      'sessionDescription': {
-        'real-time-therapy': {
-          'English': 'Schedule appointments with therapists based on your availability.',
-          'Español': 'Programa citas con terapeutas según tu disponibilidad.'
-        }
-      },
-      'paymentTitle': {
-        'real-time-therapy': {
-          'English': 'Payment Options',
-          'Español': 'Opciones de Pago'
-        }
-      },
-      'paymentDescription': {
-        'real-time-therapy': {
-          'English': 'Use insurance, co-pay credits, or direct payment for your sessions.',
-          'Español': 'Usa seguro, créditos de copago o pago directo para tus sesiones.'
-        }
-      },
-      'groupsTitle': {
-        'community-support': {
-          'English': 'Support Groups',
-          'Español': 'Grupos de Apoyo'
-        }
-      },
-      'groupsDescription': {
-        'community-support': {
-          'English': 'Join virtual support groups led by qualified facilitators.',
-          'Español': 'Únete a grupos de apoyo virtuales dirigidos por facilitadores calificados.'
-        }
-      },
-      'postingTitle': {
-        'community-support': {
-          'English': 'Posting Guidelines',
-          'Español': 'Pautas para Publicar'
-        }
-      },
-      'postingDescription': {
-        'community-support': {
-          'English': 'Learn about our community guidelines for respectful communication.',
-          'Español': 'Aprende sobre nuestras pautas comunitarias para una comunicación respetuosa.'
-        }
-      },
-      'searchingTitle': {
-        'resource-library': {
-          'English': 'Searching Resources',
-          'Español': 'Buscando Recursos'
-        }
-      },
-      'searchingDescription': {
-        'resource-library': {
-          'English': 'Use filters and keywords to find relevant mental health resources.',
-          'Español': 'Usa filtros y palabras clave para encontrar recursos relevantes de salud mental.'
-        }
-      },
-      'savingTitle': {
-        'resource-library': {
-          'English': 'Saving Resources',
-          'Español': 'Guardando Recursos'
-        }
-      },
-      'savingDescription': {
-        'resource-library': {
-          'English': 'Save your favorite resources for quick access later.',
-          'Español': 'Guarda tus recursos favoritos para acceder rápidamente más tarde.'
-        }
-      },
-      'widgetsTitle': {
-        'dashboard': {
-          'English': 'Dashboard Widgets',
-          'Español': 'Widgets del Panel'
-        }
-      },
-      'widgetsDescription': {
-        'dashboard': {
-          'English': 'Each widget on your dashboard provides valuable information and quick access to features.',
-          'Español': 'Cada widget en tu panel proporciona información valiosa y acceso rápido a las funciones.'
-        }
-      },
-      'navigationTitle': {
-        'dashboard': {
-          'English': 'Navigation',
-          'Español': 'Navegación'
-        }
-      },
-      'navigationDescription': {
-        'dashboard': {
-          'English': 'Access all app features from your dashboard through the menu and feature cards.',
-          'Español': 'Accede a todas las funciones de la aplicación desde tu panel a través del menú y las tarjetas de funciones.'
-        }
-      },
-      'dailyChallengesTitle': {
-        'dashboard': {
-          'English': 'Daily Wellness Challenges',
-          'Español': 'Desafíos Diarios de Bienestar'
-        }
-      },
-      'dailyChallengesDescription': {
-        'dashboard': {
-          'English': 'Complete daily challenges to improve your mental health and earn rewards.',
-          'Español': 'Completa desafíos diarios para mejorar tu salud mental y ganar recompensas.'
-        }
-      },
-      'gratitudeTitle': {
-        'dashboard': {
-          'English': 'Gratitude Visualizer',
-          'Español': 'Visualizador de Gratitud'
-        }
-      },
-      'gratitudeDescription': {
-        'dashboard': {
-          'English': 'Record and visualize things you are grateful for to improve mental wellbeing.',
-          'Español': 'Registra y visualiza las cosas por las que estás agradecido para mejorar el bienestar mental.'
-        }
-      },
-      'videoDiaryTitle': {
-        'dashboard': {
-          'English': 'Video Diary',
-          'Español': 'Diario en Video'
-        }
-      },
-      'videoDiaryDescription': {
-        'dashboard': {
-          'English': 'Record video messages to track your journey or share with your therapist.',
-          'Español': 'Graba mensajes de video para seguir tu viaje o compartir con tu terapeuta.'
-        }
-      },
-      'appointmentsTitle': {
-        'dashboard': {
-          'English': 'Upcoming Appointments',
-          'Español': 'Próximas Citas'
-        }
-      },
-      'appointmentsDescription': {
-        'dashboard': {
-          'English': 'View and manage your upcoming therapy sessions and wellness appointments.',
-          'Español': 'Ve y administra tus próximas sesiones de terapia y citas de bienestar.'
-        }
-      },
-      'insightsTitle': {
-        'dashboard': {
-          'English': 'Insights',
-          'Español': 'Análisis'
-        }
-      },
-      'insightsDescription': {
-        'dashboard': {
-          'English': 'Track your mood and view insights about your mental health journey.',
-          'Español': 'Sigue tu estado de ánimo y ve análisis sobre tu viaje de salud mental.'
-        }
-      },
-      'workshopsTitle': {
-        'dashboard': {
-          'English': 'Featured Workshops',
-          'Español': 'Talleres Destacados'
-        }
-      },
-      'workshopsDescription': {
-        'dashboard': {
-          'English': 'Discover and join interactive workshops to learn new coping skills.',
-          'Español': 'Descubre y únete a talleres interactivos para aprender nuevas habilidades de afrontamiento.'
-        }
-      },
-      'keyFeaturesTitle': {
-        'dashboard': {
-          'English': 'Key Features',
-          'Español': 'Características Principales'
-        }
-      },
-      'keyFeaturesDescription': {
-        'dashboard': {
-          'English': 'Explore all the features available to support your mental wellness journey.',
-          'Español': 'Explora todas las características disponibles para apoyar tu viaje de bienestar mental.'
-        }
-      }
-    };
-    
-    const commonTranslations: Record<string, Record<string, string>> = {
-      'next': {
-        'English': 'Next',
-        'Español': 'Siguiente'
-      },
-      'previous': {
-        'English': 'Previous',
-        'Español': 'Anterior'
-      },
-      'finish': {
-        'English': 'Finish',
-        'Español': 'Finalizar'
-      },
-      'tutorialClosed': {
-        'English': 'Tutorial Closed',
-        'Español': 'Tutorial Cerrado'
-      },
-      'restartHelp': {
-        'English': 'You can restart the tutorial anytime by clicking \'Help\' in the menu.',
-        'Español': 'Puedes reiniciar el tutorial en cualquier momento haciendo clic en \'Ayuda\' en el menú.'
-      }
-    };
-    
-    if (commonTranslations[type]) {
-      return commonTranslations[type][preferredLanguage] || commonTranslations[type]['English'];
-    }
-    
-    if (!translations[type] || !translations[type][feature] || !translations[type][feature][preferredLanguage]) {
-      return type === 'next' ? 'Next' : 
-             type === 'previous' ? 'Previous' : 
-             type === 'finish' ? 'Finish' : 
-             'No translation available';
-    }
-    
-    return translations[type][feature][preferredLanguage];
   };
-
+  
+  const tutorial = getFeatureTutorials();
+  const totalSteps = tutorial.steps.length;
+  
   const handleClose = () => {
-    if (!embedded) {
-      setOpen(false);
-      onClose();
-      
-      toast({
-        title: getTranslatedText('tutorialClosed', featureId),
-        description: getTranslatedText('restartHelp', featureId),
-      });
-    }
+    setOpen(false);
+    onClose();
   };
-
+  
   const handleNext = () => {
-    if (tutorialSteps.length > 0 && currentStep < tutorialSteps.length - 1) {
+    if (currentStep < totalSteps - 1) {
       setCurrentStep(currentStep + 1);
     } else {
       handleClose();
     }
   };
-
+  
   const handlePrevious = () => {
     if (currentStep > 0) {
       setCurrentStep(currentStep - 1);
     }
   };
-
-  const renderStepIcon = () => {
-    if (!tutorialSteps || tutorialSteps.length === 0) {
-      return <Lightbulb className="h-12 w-12 text-amber-400 mb-2" />;
-    }
-    
-    if (currentStep >= tutorialSteps.length) {
-      return <Lightbulb className="h-12 w-12 text-amber-400 mb-2" />;
-    }
-    
-    const step = tutorialSteps[currentStep];
-    
-    if (step.icon) {
-      return React.cloneElement(step.icon as React.ReactElement, { className: "mb-2" });
-    }
-    
-    if (step && step.highlight) {
-      if (step.highlight === "points-system" || step.highlight === "earning-credits") {
-        return <Award className="h-12 w-12 text-amber-400 mb-2" />;
-      } else if (step.highlight === "reminders") {
-        return <Bell className="h-12 w-12 text-indigo-400 mb-2" />;
-      } else if (step.highlight === "complete-challenge") {
-        return <CheckCircle className="h-12 w-12 text-green-400 mb-2" />;
-      }
-    }
-    
-    return <Lightbulb className="h-12 w-12 text-amber-400 mb-2" />;
-  };
-
-  if (embedded) {
-    return (
-      <div className="bg-[#2a2a3c]/60 border border-[#3a3a4c] rounded-lg overflow-hidden">
-        {tutorialSteps.length > 0 && currentStep < tutorialSteps.length && (
-          <div className="py-4 text-center px-4">
-            {renderStepIcon()}
-            <h3 className="text-lg font-medium text-white mb-2">
-              {tutorialSteps[currentStep].title}
-            </h3>
-            <p className="text-gray-300">
-              {tutorialSteps[currentStep].description}
-            </p>
-            
-            {tutorialSteps[currentStep].image && (
-              <div className="mt-4 rounded-lg overflow-hidden">
-                <img 
-                  src={tutorialSteps[currentStep].image} 
-                  alt={tutorialSteps[currentStep].title} 
-                  className="w-full"
-                />
+  
+  const currentTutorialStep = tutorial.steps[currentStep];
+  
+  const DialogComponent = embedded ? React.Fragment : DialogContent;
+  
+  return (
+    <>
+      {!embedded && (
+        <Dialog open={open} onOpenChange={setOpen}>
+          <DialogContent className="sm:max-w-md bg-[#2a2a3c] border-[#3a3a4c] text-white">
+            <DialogHeader className="space-y-3">
+              <div className="flex items-center gap-3">
+                <div className="p-2 rounded-full bg-white/10">
+                  {tutorial.icon}
+                </div>
+                <DialogTitle className="text-xl flex items-center">
+                  {tutorial.title}
+                </DialogTitle>
               </div>
-            )}
+              <DialogDescription className="text-gray-300">
+                {isSpanish ? "Paso" : "Step"} {currentStep + 1} {isSpanish ? "de" : "of"} {totalSteps}
+              </DialogDescription>
+            </DialogHeader>
             
-            <div className="flex justify-between mt-4">
-              <Button 
-                variant="outline" 
-                size="sm"
-                onClick={handlePrevious}
-                disabled={currentStep === 0}
-                className="border-gray-600 text-gray-300 hover:bg-gray-700 disabled:opacity-50"
-              >
-                <ChevronLeft className="h-4 w-4 mr-1" />
-                {getTranslatedText('previous', featureId)}
-              </Button>
+            <div className="py-4">
+              <div className="space-y-4">
+                <h3 className="font-semibold text-lg text-white">{currentTutorialStep.title}</h3>
+                
+                {currentTutorialStep.image && (
+                  <div className="flex justify-center">
+                    <img 
+                      src={currentTutorialStep.image} 
+                      alt={currentTutorialStep.title}
+                      className="max-h-40 object-contain rounded-lg border border-white/10"
+                    />
+                  </div>
+                )}
+                
+                <p className="text-gray-300">{currentTutorialStep.description}</p>
+              </div>
+            </div>
+            
+            <DialogFooter className="flex justify-between space-x-2">
+              <div className="flex-1">
+                {currentStep > 0 && (
+                  <Button 
+                    variant="outline" 
+                    onClick={handlePrevious}
+                    className="border-gray-600 text-gray-300 hover:bg-gray-700"
+                  >
+                    <ChevronLeft className="w-4 h-4 mr-1" />
+                    {isSpanish ? "Anterior" : "Previous"}
+                  </Button>
+                )}
+              </div>
               
               <Button 
-                variant="default" 
-                size="sm"
                 onClick={handleNext}
                 className="bg-indigo-500 hover:bg-indigo-600 text-white"
               >
-                {currentStep < tutorialSteps.length - 1 ? (
+                {currentStep < totalSteps - 1 ? (
                   <>
-                    {getTranslatedText('next', featureId)}
-                    <ChevronRight className="h-4 w-4 ml-1" />
+                    {isSpanish ? "Siguiente" : "Next"}
+                    <ChevronRight className="ml-1 w-4 h-4" />
                   </>
                 ) : (
-                  getTranslatedText('finish', featureId)
+                  isSpanish ? "Finalizar" : "Finish"
                 )}
               </Button>
+            </DialogFooter>
+          </DialogContent>
+        </Dialog>
+      )}
+      
+      {embedded && (
+        <div className="bg-[#2a2a3c] border border-[#3a3a4c] rounded-lg text-white overflow-hidden">
+          <div className="p-4 space-y-3">
+            <div className="flex items-center gap-3">
+              <div className="p-2 rounded-full bg-white/10">
+                {tutorial.icon}
+              </div>
+              <h2 className="text-xl font-semibold">{tutorial.title}</h2>
+            </div>
+            <div className="text-gray-300 text-sm">
+              {isSpanish ? "Paso" : "Step"} {currentStep + 1} {isSpanish ? "de" : "of"} {totalSteps}
             </div>
           </div>
-        )}
-      </div>
-    );
-  }
-
-  const hasValidStep = tutorialSteps.length > 0 && currentStep < tutorialSteps.length;
-
-  return (
-    <Dialog open={open} onOpenChange={setOpen}>
-      <DialogContent className="bg-[#2a2a3c] border-[#3a3a4c] text-white max-w-md">
-        <DialogHeader>
-          <div className="flex items-center">
-            <img 
-              src="/lovable-uploads/d2ecdcd2-9a78-40ea-8a8a-ef13092b5ea1.png" 
-              alt="Henry" 
-              className="w-8 h-8 mr-3 rounded-full"
-            />
-            <DialogTitle className="text-xl text-white">{isSpanish ? "Tutorial de Características" : "Feature Tutorial"}</DialogTitle>
-          </div>
-          <DialogDescription className="text-gray-300">
-            {isSpanish ? `Paso ${currentStep + 1} de ${tutorialSteps.length}` : `Step ${currentStep + 1} of ${tutorialSteps.length}`}
-          </DialogDescription>
-        </DialogHeader>
-        
-        <ScrollArea className="max-h-[60vh]">
-          {hasValidStep && (
-            <div className="py-4 text-center">
-              {renderStepIcon()}
-              <h3 className="text-lg font-medium text-white mb-2">
-                {tutorialSteps[currentStep].title}
-              </h3>
-              <p className="text-gray-300">
-                {tutorialSteps[currentStep].description}
-              </p>
+          
+          <div className="px-4 py-3">
+            <div className="space-y-4">
+              <h3 className="font-semibold text-lg text-white">{currentTutorialStep.title}</h3>
               
-              {tutorialSteps[currentStep].image && (
-                <div className="mt-4 rounded-lg overflow-hidden">
+              {currentTutorialStep.image && (
+                <div className="flex justify-center">
                   <img 
-                    src={tutorialSteps[currentStep].image} 
-                    alt={tutorialSteps[currentStep].title} 
-                    className="w-full"
+                    src={currentTutorialStep.image} 
+                    alt={currentTutorialStep.title}
+                    className="max-h-40 object-contain rounded-lg border border-white/10"
                   />
                 </div>
               )}
+              
+              <p className="text-gray-300">{currentTutorialStep.description}</p>
             </div>
-          )}
-        </ScrollArea>
-        
-        <DialogFooter className="flex justify-between">
-          <div className="flex gap-2">
-            <Button 
-              variant="outline" 
-              size="sm"
-              onClick={handlePrevious}
-              disabled={currentStep === 0}
-              className="border-gray-600 text-gray-300 hover:bg-gray-700 disabled:opacity-50"
-            >
-              <ChevronLeft className="h-4 w-4 mr-1" />
-              {getTranslatedText('previous', featureId)}
-            </Button>
+          </div>
+          
+          <div className="p-4 flex justify-between border-t border-gray-700">
+            <div className="flex-1">
+              {currentStep > 0 && (
+                <Button 
+                  variant="outline" 
+                  onClick={handlePrevious}
+                  className="border-gray-600 text-gray-300 hover:bg-gray-700"
+                >
+                  <ChevronLeft className="w-4 h-4 mr-1" />
+                  {isSpanish ? "Anterior" : "Previous"}
+                </Button>
+              )}
+            </div>
             
             <Button 
-              variant="default" 
-              size="sm"
               onClick={handleNext}
               className="bg-indigo-500 hover:bg-indigo-600 text-white"
             >
-              {hasValidStep && currentStep < tutorialSteps.length - 1 ? (
+              {currentStep < totalSteps - 1 ? (
                 <>
-                  {getTranslatedText('next', featureId)}
-                  <ChevronRight className="h-4 w-4 ml-1" />
+                  {isSpanish ? "Siguiente" : "Next"}
+                  <ChevronRight className="ml-1 w-4 h-4" />
                 </>
               ) : (
-                getTranslatedText('finish', featureId)
+                isSpanish ? "Finalizar" : "Finish"
               )}
             </Button>
           </div>
-          
-          <Button 
-            variant="ghost" 
-            size="sm"
-            onClick={handleClose}
-            className="text-gray-400 hover:text-white hover:bg-transparent"
-          >
-            <X className="h-4 w-4" />
-          </Button>
-        </DialogFooter>
-      </DialogContent>
-    </Dialog>
+        </div>
+      )}
+    </>
   );
 };
 
