@@ -2,7 +2,7 @@
 import React from "react";
 import CoPayCreditPopup from "@/components/CoPayCreditPopup";
 import IndexScreenManager from "@/components/home/IndexScreenManager";
-import WelcomeDialog from "@/components/home/WelcomeDialog";
+import WelcomeTutorial from "@/components/tutorials/WelcomeTutorial";
 import { useToast } from "@/hooks/use-toast";
 
 interface IndexContentProps {
@@ -66,11 +66,6 @@ const IndexContent: React.FC<IndexContentProps> = ({
 }) => {
   const { toast } = useToast();
 
-  const handleStartTutorial = () => {
-    setIsFirstVisit(false);
-    markTutorialCompleted();
-  };
-
   const handleSkipTutorial = () => {
     setIsFirstVisit(false);
     markTutorialCompleted();
@@ -78,6 +73,11 @@ const IndexContent: React.FC<IndexContentProps> = ({
       title: getTranslatedText('skipForNow'),
       description: getTranslatedText('tutorialAccess'),
     });
+  };
+
+  const handleCloseTutorial = () => {
+    setIsFirstVisit(false);
+    markTutorialCompleted();
   };
 
   return (
@@ -110,12 +110,9 @@ const IndexContent: React.FC<IndexContentProps> = ({
         setScreenState={setScreenState}
       />
       
-      <WelcomeDialog
-        open={isFirstVisit}
-        onOpenChange={setIsFirstVisit}
-        onSkip={handleSkipTutorial}
-        onStartTutorial={handleStartTutorial}
-        translatedText={getTranslatedText}
+      <WelcomeTutorial
+        isOpen={isFirstVisit}
+        onClose={handleCloseTutorial}
       />
     </div>
   );
