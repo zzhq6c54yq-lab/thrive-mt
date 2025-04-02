@@ -65,8 +65,20 @@ const IndexScreenManager: React.FC<IndexScreenManagerProps> = ({
           prevState === 'moodResponse' || 
           prevState === 'mood' || 
           prevState === 'register') {
+        
+        console.log("Transitioning to main from:", prevState);
+        
         // Force show tutorial by resetting flag
         localStorage.setItem('dashboardTutorialShown', 'false');
+        
+        // Also reset the popupsShown tutorial flags in localStorage
+        const popupsShown = localStorage.getItem('popupsShown');
+        if (popupsShown) {
+          const parsedState = JSON.parse(popupsShown);
+          parsedState.mainTutorial = false;
+          parsedState.transitionTutorial = false;
+          localStorage.setItem('popupsShown', JSON.stringify(parsedState));
+        }
       }
     }
   }, [screenState]);

@@ -20,8 +20,20 @@ export const useScreenHistory = (
             prevScreenState === 'moodResponse' || 
             prevScreenState === 'mood' || 
             prevScreenState === 'register') {
+          
+          console.log("Detecting transition to main from onboarding:", prevScreenState);
+          
           // Reset the tutorial flag to ensure it shows
           localStorage.setItem('dashboardTutorialShown', 'false');
+          
+          // Also reset the popupsShown tutorial flags in localStorage
+          const popupsShown = localStorage.getItem('popupsShown');
+          if (popupsShown) {
+            const parsedState = JSON.parse(popupsShown);
+            parsedState.mainTutorial = false;
+            parsedState.transitionTutorial = false;
+            localStorage.setItem('popupsShown', JSON.stringify(parsedState));
+          }
         }
       }
       

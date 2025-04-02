@@ -60,8 +60,19 @@ export const usePopupManagement = (screenState: string) => {
           prevScreenState === 'moodResponse' ||
           prevScreenState === 'mood' ||
           prevScreenState === 'register') {
-        // Force show the welcome tutorial by resetting the flag
+        
+        console.log("Showing tutorial when transitioning from:", prevScreenState, "to main");
+        
+        // Force reset tutorial flags to ensure they show
         localStorage.setItem('dashboardTutorialShown', 'false');
+        
+        // Reset the transition tutorial flags in popupsShown state
+        setPopupsShown(prev => ({
+          ...prev,
+          mainTutorial: false,
+          transitionTutorial: false
+        }));
+        
         setShowTransitionTutorial(true);
         setShowMainTutorial(true);
       }

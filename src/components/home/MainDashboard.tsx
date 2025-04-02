@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { useToast } from "@/hooks/use-toast";
@@ -57,8 +56,7 @@ const MainDashboard: React.FC<MainDashboardProps> = ({
     };
   }, []);
   
-  // This useEffect has been modified - we now rely on the parent component's tutorial state
-  // rather than loading our own, to prevent the tutorial from not showing
+  // Check if coming from onboarding screens and force tutorial if needed
   useEffect(() => {
     // Check if coming from onboarding screens
     const prevScreenState = localStorage.getItem('prevScreenState');
@@ -68,9 +66,23 @@ const MainDashboard: React.FC<MainDashboardProps> = ({
                                 prevScreenState === 'mood' || 
                                 prevScreenState === 'register';
     
+    console.log("MainDashboard: Previous screen state:", prevScreenState);
+    console.log("Coming from onboarding:", comingFromOnboarding);
+    
     if (comingFromOnboarding) {
       // Force reset the dashboard tutorial flag 
       localStorage.setItem('dashboardTutorialShown', 'false');
+      
+      // Reset the popupsShown tutorial flags in localStorage as well
+      const popupsShown = localStorage.getItem('popupsShown');
+      if (popupsShown) {
+        const parsedState = JSON.parse(popupsShown);
+        parsedState.mainTutorial = false;
+        parsedState.transitionTutorial = false;
+        localStorage.setItem('popupsShown', JSON.stringify(parsedState));
+      }
+      
+      console.log("Reset tutorial flags in MainDashboard");
     }
   }, []);
   
