@@ -1,13 +1,15 @@
 
 import React, { useState } from "react";
-import { Calendar, CheckCircle, ArrowRight, Brain, Heart, Activity } from "lucide-react";
+import { Calendar, CheckCircle, ArrowRight, Brain, Heart, Activity, Award } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { useToast } from "@/hooks/use-toast";
+import { Progress } from "@/components/ui/progress";
 
 const DailyWellnessChallenges: React.FC = () => {
   const navigate = useNavigate();
   const { toast } = useToast();
   const [activeTab, setActiveTab] = useState<'wellness' | 'mental'>('wellness');
+  const [points, setPoints] = useState<number>(75);
   
   const wellnessChallenges = [
     {
@@ -15,21 +17,24 @@ const DailyWellnessChallenges: React.FC = () => {
       title: "10-Minute Mindful Meditation",
       description: "Take a moment to center yourself with a guided meditation",
       icon: Brain,
-      completed: true
+      completed: true,
+      points: 10
     },
     {
       id: "gratitude",
       title: "Gratitude Journaling",
       description: "Write down three things you're grateful for today",
       icon: Heart,
-      completed: false
+      completed: false,
+      points: 10
     },
     {
       id: "hydration",
       title: "Hydration Tracker",
       description: "Drink 8 glasses of water throughout the day",
       icon: Activity,
-      completed: false
+      completed: false,
+      points: 10
     }
   ];
   
@@ -39,21 +44,24 @@ const DailyWellnessChallenges: React.FC = () => {
       title: "Positive Affirmations",
       description: "Repeat 5 positive affirmations to yourself",
       icon: Heart,
-      completed: false
+      completed: false,
+      points: 10
     },
     {
       id: "stress-relief",
       title: "Stress-Relief Exercise",
       description: "Practice 5 minutes of deep breathing",
       icon: Brain,
-      completed: true
+      completed: true,
+      points: 10
     },
     {
       id: "mindful-walk",
       title: "Mindful Walk",
       description: "Take a 15-minute walk focusing on your surroundings",
       icon: Activity,
-      completed: false
+      completed: false,
+      points: 10
     }
   ];
   
@@ -72,6 +80,27 @@ const DailyWellnessChallenges: React.FC = () => {
     });
     navigate(`/wellness-challenges/${id}`);
   };
+
+  const handleToggleCompletion = (id: string, e: React.MouseEvent) => {
+    e.stopPropagation();
+    
+    // Find the challenge
+    const challenge = [...wellnessChallenges, ...mentalHealthChallenges].find(c => c.id === id);
+    if (!challenge) return;
+    
+    // If challenge is not completed, add points
+    if (!challenge.completed) {
+      setPoints(prev => prev + challenge.points);
+      
+      toast({
+        title: "Challenge Completed!",
+        description: `You earned +${challenge.points} points!`,
+        duration: 1500
+      });
+
+      // In a real app, we would update the challenge's completed status here
+    }
+  };
   
   return (
     <div className="mb-12 bg-gradient-to-br from-[#2a2a3c] to-[#1f1f2c] rounded-3xl overflow-hidden shadow-xl">
@@ -81,7 +110,24 @@ const DailyWellnessChallenges: React.FC = () => {
         <div className="bg-gradient-to-r from-[#8D65C5]/20 via-[#E96DED]/20 to-[#6C85DD]/20 p-6">
           <div className="flex justify-between items-center mb-4">
             <h2 className="text-2xl font-bold text-white">Daily Challenges</h2>
-            <Calendar className="h-6 w-6 text-indigo-300" />
+            <div className="flex items-center gap-2">
+              <span className="text-amber-400 font-bold">{points}</span>
+              <Award className="h-5 w-5 text-amber-400" />
+            </div>
+          </div>
+          
+          {/* Points progress bar */}
+          <div className="mb-4">
+            <div className="flex justify-between items-center mb-1 text-xs text-gray-300">
+              <span>Progress toward $1 credit</span>
+              <span>{points}/1000 points</span>
+            </div>
+            <Progress value={(points % 1000) / 10} max={100} className="h-2 bg-[#1e1e2c]">
+              <div className="h-full bg-gradient-to-r from-amber-400 to-amber-600 rounded-full"></div>
+            </Progress>
+            <p className="text-xs text-gray-400 mt-1 text-right">
+              {1000 - (points % 1000)} more points needed
+            </p>
           </div>
           
           <div className="flex space-x-4 mb-6">
@@ -121,23 +167,49 @@ const DailyWellnessChallenges: React.FC = () => {
                 <div className="flex-1">
                   <div className="flex justify-between items-start">
                     <h3 className="font-medium text-white">{challenge.title}</h3>
-                    {challenge.completed && (
-                      <CheckCircle className="h-5 w-5 text-green-400" />
-                    )}
+                    <span className="text-amber-400 text-sm font-medium">+{challenge.points} pts</span>
                   </div>
                   <p className="text-sm text-gray-400 mt-1">{challenge.description}</p>
                 </div>
+                
+                <button
+                  onClick={(e) => handleToggleCompletion(challenge.id, e)}
+                  className={`ml-3 p-2 rounded-full ${
+                    challenge.completed 
+                      ? 'bg-green-500/20 text-green-400' 
+                      : 'bg-gray-700/50 text-gray-400 hover:bg-gray-700 hover:text-white'
+                  } transition-colors`}
+                >
+                  <CheckCircle className="h-5 w-5" />
+                </button>
               </div>
             ))}
           </div>
           
-          <button 
-            onClick={handleViewAll}
-            className="mt-6 flex items-center text-indigo-300 hover:text-indigo-200 text-sm font-medium transition-colors"
-          >
-            View all challenges
-            <ArrowRight className="ml-2 h-4 w-4" />
-          </button>
+          <div className="flex justify-between items-center mt-6">
+            <button 
+              onClick={handleViewAll}
+              className="flex items-center text-indigo-300 hover:text-indigo-200 text-sm font-medium transition-colors"
+            >
+              View all challenges
+              <ArrowRight className="ml-2 h-4 w-4" />
+            </button>
+            
+            <button
+              onClick={() => navigate("/copay-credits")}
+              className="flex items-center text-amber-300 hover:text-amber-200 text-sm font-medium transition-colors"
+            >
+              Redeem for co-pay credits
+              <Award className="ml-2 h-4 w-4" />
+            </button>
+          </div>
+          
+          <div className="mt-6 bg-indigo-500/10 p-3 rounded-lg border border-indigo-500/20">
+            <h4 className="text-sm font-medium text-white flex items-center">
+              <Calendar className="h-4 w-4 mr-2 text-indigo-300" />
+              Complete All Challenges Bonus: +25 points
+            </h4>
+          </div>
         </div>
       </div>
     </div>

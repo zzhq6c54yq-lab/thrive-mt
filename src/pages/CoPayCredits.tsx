@@ -8,12 +8,15 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Progress } from "@/components/ui/progress";
 import { useToast } from "@/hooks/use-toast";
+import ChallengeRewardsCard from "@/components/rewards/ChallengeRewardsCard";
 
 const CoPayCredits = () => {
   const { toast } = useToast();
   const [credits, setCredits] = useState(75);
   const [activeTab, setActiveTab] = useState("how-it-works");
   const [currentPlan, setCurrentPlan] = useState("basic");
+  const [challengePoints, setChallengePoints] = useState(75);
+  const [challengeCredits, setChallengeCredits] = useState(0);
 
   const handleEarnCredits = (amount: number, source: string) => {
     setCredits(prev => prev + amount);
@@ -28,6 +31,29 @@ const CoPayCredits = () => {
     toast({
       title: `Upgraded to ${plan.charAt(0).toUpperCase() + plan.slice(1)} Plan!`,
       description: `You've successfully upgraded to the ${plan} membership plan.`,
+    });
+  };
+
+  const handleRedeemPoints = () => {
+    if (challengePoints < 1000) {
+      toast({
+        title: "Not enough points",
+        description: "You need at least 1,000 points to redeem for $1 in co-pay credits.",
+        variant: "destructive"
+      });
+      return;
+    }
+    
+    const creditsToRedeem = Math.floor(challengePoints / 1000);
+    const pointsToDeduct = creditsToRedeem * 1000;
+    
+    setChallengePoints(prev => prev - pointsToDeduct);
+    setChallengeCredits(prev => prev + creditsToRedeem);
+    setCredits(prev => prev + creditsToRedeem);
+    
+    toast({
+      title: "Points Redeemed!",
+      description: `You've converted ${pointsToDeduct} points into $${creditsToRedeem} co-pay credits.`,
     });
   };
 
@@ -74,6 +100,13 @@ const CoPayCredits = () => {
             </div>
           </div>
         </div>
+
+        {/* Challenge Rewards Section - NEW */}
+        <ChallengeRewardsCard 
+          points={challengePoints}
+          coPayCredits={challengeCredits}
+          onRedeemPoints={handleRedeemPoints}
+        />
 
         {/* Membership Plan Upgrade Section - NEW */}
         <Card className="bg-gradient-to-b from-amber-50 to-white border border-amber-200 shadow-lg overflow-hidden">
@@ -702,4 +735,3 @@ const CoPayCredits = () => {
 };
 
 export default CoPayCredits;
-
