@@ -13,6 +13,22 @@ const QuizzesSection = () => {
   const preferredLanguage = localStorage.getItem('preferredLanguage') || 'English';
   const isSpanish = preferredLanguage === 'Español';
   
+  // Translations
+  const translations = {
+    title: isSpanish ? "Cuestionarios de Salud Mental" : "Mental Health Quizzes",
+    description: isSpanish ? "Cuestionarios divertidos y educativos para mejorar tu conocimiento" : "Fun and educational quizzes to enhance your knowledge",
+    inProgress: isSpanish ? "En progreso" : "In progress",
+    progress: isSpanish ? "Progreso" : "Progress",
+    questions: isSpanish ? "preguntas" : "questions",
+    exploreMore: isSpanish ? "Explorar Más Cuestionarios" : "Explore More Quizzes",
+    continue: isSpanish ? "Continuar" : "Continue",
+    start: isSpanish ? "Iniciar" : "Start",
+    startingQuiz: isSpanish ? "Iniciando Cuestionario" : "Quiz Starting",
+    takingToQuiz: isSpanish ? "Llevándote al cuestionario seleccionado..." : "Taking you to the selected quiz...",
+    exploringQuizzes: isSpanish ? "Explorando Cuestionarios" : "Exploring Quizzes",
+    takingToAll: isSpanish ? "Llevándote a todos los cuestionarios disponibles" : "Taking you to all available quizzes"
+  };
+  
   // Mock data for quizzes with translations
   const quizzes = [
     {
@@ -39,10 +55,8 @@ const QuizzesSection = () => {
 
   const handleStartQuiz = (quizId: number) => {
     toast({
-      title: isSpanish ? "Iniciando Cuestionario" : "Quiz Starting",
-      description: isSpanish 
-        ? "Llevándote al cuestionario seleccionado..." 
-        : "Taking you to the selected quiz...",
+      title: translations.startingQuiz,
+      description: translations.takingToQuiz,
       duration: 1500,
     });
     
@@ -57,10 +71,8 @@ const QuizzesSection = () => {
   
   const handleExploreQuizzes = () => {
     toast({
-      title: isSpanish ? "Explorando Cuestionarios" : "Exploring Quizzes",
-      description: isSpanish 
-        ? "Llevándote a todos los cuestionarios disponibles" 
-        : "Taking you to all available quizzes",
+      title: translations.exploringQuizzes,
+      description: translations.takingToAll,
       duration: 1500,
     });
     
@@ -74,12 +86,10 @@ const QuizzesSection = () => {
       <CardHeader className="pb-2">
         <CardTitle className="text-lg font-semibold flex items-center gap-2">
           <HelpCircle className="h-5 w-5 text-[#B87333]" />
-          {isSpanish ? "Cuestionarios de Salud Mental" : "Mental Health Quizzes"}
+          {translations.title}
         </CardTitle>
         <CardDescription>
-          {isSpanish 
-            ? "Cuestionarios divertidos y educativos para mejorar tu conocimiento" 
-            : "Fun and educational quizzes to enhance your knowledge"}
+          {translations.description}
         </CardDescription>
       </CardHeader>
       <CardContent>
@@ -96,7 +106,7 @@ const QuizzesSection = () => {
                     {quiz.completionRate > 0 && (
                       <span className="inline-flex items-center px-1.5 py-0.5 rounded-full text-xs font-medium bg-green-50 text-green-700">
                         <CheckCircle className="h-3 w-3 mr-1" />
-                        {isSpanish ? "En progreso" : "In progress"}
+                        {translations.inProgress}
                       </span>
                     )}
                   </h4>
@@ -108,15 +118,15 @@ const QuizzesSection = () => {
                   onClick={() => handleStartQuiz(quiz.id)}
                 >
                   {quiz.completionRate > 0 
-                    ? (isSpanish ? "Continuar" : "Continue") 
-                    : (isSpanish ? "Iniciar" : "Start")}
+                    ? translations.continue
+                    : translations.start}
                 </Button>
               </div>
               
               {quiz.completionRate > 0 && (
                 <div className="mt-3">
                   <div className="flex justify-between text-xs mb-1">
-                    <span>{isSpanish ? "Progreso" : "Progress"}</span>
+                    <span>{translations.progress}</span>
                     <span>{quiz.completionRate}%</span>
                   </div>
                   <Progress value={quiz.completionRate} className="h-1.5" />
@@ -125,7 +135,7 @@ const QuizzesSection = () => {
               
               <div className="mt-2 flex items-center text-xs text-muted-foreground">
                 <Lightbulb className="h-3 w-3 mr-1" />
-                <span>{quiz.questions} {isSpanish ? "preguntas" : "questions"}</span>
+                <span>{quiz.questions} {translations.questions}</span>
                 <span className="mx-2">•</span>
                 <span>{quiz.timeEstimate}</span>
               </div>
@@ -140,7 +150,7 @@ const QuizzesSection = () => {
             className="text-[#B87333] border-[#B87333]/30 hover:bg-[#B87333]/5 hover:border-[#B87333]"
             onClick={handleExploreQuizzes}
           >
-            {isSpanish ? "Explorar Más Cuestionarios" : "Explore More Quizzes"}
+            {translations.exploreMore}
             <ArrowRight className="ml-2 h-3 w-3" />
           </Button>
         </div>

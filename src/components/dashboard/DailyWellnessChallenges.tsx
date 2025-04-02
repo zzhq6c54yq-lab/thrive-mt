@@ -11,27 +11,48 @@ const DailyWellnessChallenges: React.FC = () => {
   const [activeTab, setActiveTab] = useState<'wellness' | 'mental'>('wellness');
   const [points, setPoints] = useState<number>(75);
   
+  // Get preferred language
+  const preferredLanguage = localStorage.getItem('preferredLanguage') || 'English';
+  const isSpanish = preferredLanguage === 'Español';
+  
+  // Translations
+  const translations = {
+    dailyChallenges: isSpanish ? "Desafíos Diarios" : "Daily Challenges",
+    progressToward: isSpanish ? "Progreso hacia crédito de $1" : "Progress toward $1 credit",
+    points: isSpanish ? "puntos" : "points",
+    morePointsNeeded: isSpanish ? "puntos más necesarios" : "more points needed",
+    wellnessChallenges: isSpanish ? "Desafíos de Bienestar" : "Wellness Challenges",
+    mentalHealth: isSpanish ? "Salud Mental" : "Mental Health",
+    viewAllChallenges: isSpanish ? "Ver todos los desafíos" : "View all challenges",
+    redeemForCredits: isSpanish ? "Canjear por créditos de copago" : "Redeem for co-pay credits",
+    completeAllBonus: isSpanish ? "Bonificación por Completar Todos los Desafíos: +25 puntos" : "Complete All Challenges Bonus: +25 points",
+    challengeSelected: isSpanish ? "Desafío Seleccionado" : "Challenge Selected",
+    openingDetails: isSpanish ? "Abriendo detalles del desafío..." : "Opening challenge details...",
+    challengeCompleted: isSpanish ? "¡Desafío Completado!" : "Challenge Completed!",
+    earnedPoints: isSpanish ? "¡Ganaste +{points} puntos!" : "You earned +{points} points!"
+  };
+  
   const wellnessChallenges = [
     {
       id: "meditation",
-      title: "10-Minute Mindful Meditation",
-      description: "Take a moment to center yourself with a guided meditation",
+      title: isSpanish ? "Meditación Consciente de 10 Minutos" : "10-Minute Mindful Meditation",
+      description: isSpanish ? "Tómate un momento para centrarte con una meditación guiada" : "Take a moment to center yourself with a guided meditation",
       icon: Brain,
       completed: true,
       points: 10
     },
     {
       id: "gratitude",
-      title: "Gratitude Journaling",
-      description: "Write down three things you're grateful for today",
+      title: isSpanish ? "Diario de Gratitud" : "Gratitude Journaling",
+      description: isSpanish ? "Escribe tres cosas por las que estás agradecido hoy" : "Write down three things you're grateful for today",
       icon: Heart,
       completed: false,
       points: 10
     },
     {
       id: "hydration",
-      title: "Hydration Tracker",
-      description: "Drink 8 glasses of water throughout the day",
+      title: isSpanish ? "Seguimiento de Hidratación" : "Hydration Tracker",
+      description: isSpanish ? "Bebe 8 vasos de agua durante el día" : "Drink 8 glasses of water throughout the day",
       icon: Activity,
       completed: false,
       points: 10
@@ -41,24 +62,24 @@ const DailyWellnessChallenges: React.FC = () => {
   const mentalHealthChallenges = [
     {
       id: "affirmations",
-      title: "Positive Affirmations",
-      description: "Repeat 5 positive affirmations to yourself",
+      title: isSpanish ? "Afirmaciones Positivas" : "Positive Affirmations",
+      description: isSpanish ? "Repítete a ti mismo 5 afirmaciones positivas" : "Repeat 5 positive affirmations to yourself",
       icon: Heart,
       completed: false,
       points: 10
     },
     {
       id: "stress-relief",
-      title: "Stress-Relief Exercise",
-      description: "Practice 5 minutes of deep breathing",
+      title: isSpanish ? "Ejercicio de Alivio del Estrés" : "Stress-Relief Exercise",
+      description: isSpanish ? "Practica 5 minutos de respiración profunda" : "Practice 5 minutes of deep breathing",
       icon: Brain,
       completed: true,
       points: 10
     },
     {
       id: "mindful-walk",
-      title: "Mindful Walk",
-      description: "Take a 15-minute walk focusing on your surroundings",
+      title: isSpanish ? "Caminata Consciente" : "Mindful Walk",
+      description: isSpanish ? "Da un paseo de 15 minutos centrándote en tu entorno" : "Take a 15-minute walk focusing on your surroundings",
       icon: Activity,
       completed: false,
       points: 10
@@ -74,8 +95,8 @@ const DailyWellnessChallenges: React.FC = () => {
   
   const handleChallengeClick = (id: string) => {
     toast({
-      title: "Challenge Selected",
-      description: "Opening challenge details...",
+      title: translations.challengeSelected,
+      description: translations.openingDetails,
       duration: 1500
     });
     navigate(`/wellness-challenges/${id}`);
@@ -93,8 +114,8 @@ const DailyWellnessChallenges: React.FC = () => {
       setPoints(prev => prev + challenge.points);
       
       toast({
-        title: "Challenge Completed!",
-        description: `You earned +${challenge.points} points!`,
+        title: translations.challengeCompleted,
+        description: translations.earnedPoints.replace('{points}', challenge.points.toString()),
         duration: 1500
       });
 
@@ -109,7 +130,7 @@ const DailyWellnessChallenges: React.FC = () => {
         
         <div className="bg-gradient-to-r from-[#8D65C5]/20 via-[#E96DED]/20 to-[#6C85DD]/20 p-6">
           <div className="flex justify-between items-center mb-4">
-            <h2 className="text-2xl font-bold text-white">Daily Challenges</h2>
+            <h2 className="text-2xl font-bold text-white">{translations.dailyChallenges}</h2>
             <div className="flex items-center gap-2">
               <span className="text-amber-400 font-bold">{points}</span>
               <Award className="h-5 w-5 text-amber-400" />
@@ -119,14 +140,14 @@ const DailyWellnessChallenges: React.FC = () => {
           {/* Points progress bar */}
           <div className="mb-4">
             <div className="flex justify-between items-center mb-1 text-xs text-gray-300">
-              <span>Progress toward $1 credit</span>
-              <span>{points}/1000 points</span>
+              <span>{translations.progressToward}</span>
+              <span>{points}/1000 {translations.points}</span>
             </div>
             <Progress value={(points % 1000) / 10} max={100} className="h-2 bg-[#1e1e2c]">
               <div className="h-full bg-gradient-to-r from-amber-400 to-amber-600 rounded-full"></div>
             </Progress>
             <p className="text-xs text-gray-400 mt-1 text-right">
-              {1000 - (points % 1000)} more points needed
+              {1000 - (points % 1000)} {translations.morePointsNeeded}
             </p>
           </div>
           
@@ -139,7 +160,7 @@ const DailyWellnessChallenges: React.FC = () => {
                   : 'bg-[#3a3a4c]/50 text-gray-300 hover:bg-[#3a3a4c]'
               }`}
             >
-              Wellness Challenges
+              {translations.wellnessChallenges}
             </button>
             <button
               onClick={() => setActiveTab('mental')}
@@ -149,7 +170,7 @@ const DailyWellnessChallenges: React.FC = () => {
                   : 'bg-[#3a3a4c]/50 text-gray-300 hover:bg-[#3a3a4c]'
               }`}
             >
-              Mental Health
+              {translations.mentalHealth}
             </button>
           </div>
           
@@ -191,7 +212,7 @@ const DailyWellnessChallenges: React.FC = () => {
               onClick={handleViewAll}
               className="flex items-center text-indigo-300 hover:text-indigo-200 text-sm font-medium transition-colors"
             >
-              View all challenges
+              {translations.viewAllChallenges}
               <ArrowRight className="ml-2 h-4 w-4" />
             </button>
             
@@ -199,7 +220,7 @@ const DailyWellnessChallenges: React.FC = () => {
               onClick={() => navigate("/copay-credits")}
               className="flex items-center text-amber-300 hover:text-amber-200 text-sm font-medium transition-colors"
             >
-              Redeem for co-pay credits
+              {translations.redeemForCredits}
               <Award className="ml-2 h-4 w-4" />
             </button>
           </div>
@@ -207,7 +228,7 @@ const DailyWellnessChallenges: React.FC = () => {
           <div className="mt-6 bg-indigo-500/10 p-3 rounded-lg border border-indigo-500/20">
             <h4 className="text-sm font-medium text-white flex items-center">
               <Calendar className="h-4 w-4 mr-2 text-indigo-300" />
-              Complete All Challenges Bonus: +25 points
+              {translations.completeAllBonus}
             </h4>
           </div>
         </div>

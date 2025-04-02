@@ -11,6 +11,14 @@ const SpecializedPrograms: React.FC = () => {
   const preferredLanguage = localStorage.getItem('preferredLanguage') || 'English';
   const isSpanish = preferredLanguage === 'Español';
 
+  // Translations
+  const translations = {
+    title: isSpanish ? "Programas Especializados" : "Specialized Programs",
+    navigating: isSpanish ? "Navegando..." : "Navigating...",
+    takingYou: isSpanish ? "Llevándote a la función seleccionada" : "Taking you to your selected feature",
+    exploreProgram: isSpanish ? "Explorar Programa" : "Explore Program"
+  };
+
   const specializedPrograms = [
     {
       title: isSpanish ? "Departamento de Defensa" : "Department of Defense",
@@ -46,10 +54,8 @@ const SpecializedPrograms: React.FC = () => {
   
   const handleFeatureClick = (path: string) => {
     toast({
-      title: isSpanish ? "Navegando..." : "Navigating...",
-      description: isSpanish 
-        ? "Llevándote a la función seleccionada" 
-        : "Taking you to your selected feature",
+      title: translations.navigating,
+      description: translations.takingYou,
       duration: 1500,
     });
     
@@ -62,7 +68,7 @@ const SpecializedPrograms: React.FC = () => {
         <h2 className="text-3xl font-bold text-gray-800 inline-flex items-center gap-3 relative">
           <Sparkles className="h-6 w-6 text-[#B87333]" />
           <span className="gradient-heading text-transparent bg-clip-text bg-gradient-to-r from-[#B87333] via-[#E5C5A1] to-[#B87333] tracking-tight">
-            {isSpanish ? "Programas Especializados" : "Specialized Programs"}
+            {translations.title}
           </span>
         </h2>
         <div className="absolute -bottom-2 left-0 w-64 h-[2px] bg-gradient-to-r from-[#B87333] via-[#E5C5A1] to-transparent"></div>
@@ -96,7 +102,7 @@ const SpecializedPrograms: React.FC = () => {
                   handleFeatureClick(program.path);
                 }}
               >
-                {isSpanish ? "Explorar Programa" : "Explore Program"}
+                {translations.exploreProgram}
               </Button>
             </div>
             

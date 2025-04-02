@@ -16,6 +16,30 @@ const GratitudeVisualizer: React.FC<GratitudeVisualizerProps> = ({ onReset }) =>
   const [customBackground, setCustomBackground] = useState<string | null>(null);
   const { toast } = useToast();
   
+  // Get preferred language
+  const preferredLanguage = localStorage.getItem('preferredLanguage') || 'English';
+  const isSpanish = preferredLanguage === 'Español';
+  
+  // Translations
+  const translations = {
+    title: isSpanish ? "Visualizador de Gratitud" : "Gratitude Visualizer",
+    instruction: isSpanish ? "Tómate un momento para reflexionar sobre algo por lo que estás agradecido hoy. Tu nota se mostrará como un hermoso recordatorio visual." : "Take a moment to reflect on something you're grateful for today. Your note will be displayed as a beautiful visual reminder.",
+    placeholder: isSpanish ? "Estoy agradecido por..." : "I am grateful for...",
+    chooseBackground: isSpanish ? "Elige un fondo:" : "Choose a background:",
+    saveGratitude: isSpanish ? "Guardar Gratitud" : "Save Gratitude",
+    resetGratitude: isSpanish ? "Reiniciar" : "Reset",
+    todayGratitude: isSpanish ? "Mi Gratitud de Hoy" : "My Gratitude Today",
+    changeBackground: isSpanish ? "Cambiar Fondo" : "Change Background",
+    emptyTitle: isSpanish ? "Gratitud Vacía" : "Empty Gratitude",
+    emptyDescription: isSpanish ? "Por favor ingresa algo por lo que estés agradecido." : "Please enter something you're grateful for.",
+    savedTitle: isSpanish ? "Gratitud Guardada" : "Gratitude Saved",
+    savedDescription: isSpanish ? "Tu recordatorio de gratitud ha sido guardado." : "Your gratitude reminder has been saved.",
+    resetTitle: isSpanish ? "Gratitud Reiniciada" : "Gratitude Reset",
+    resetDescription: isSpanish ? "Tu recordatorio de gratitud ha sido reiniciado." : "Your gratitude reminder has been reset.",
+    imageTitle: isSpanish ? "Imagen Subida" : "Image Uploaded",
+    imageDescription: isSpanish ? "Tu fondo personalizado ha sido establecido." : "Your custom background has been set."
+  };
+  
   // Enhanced background gradients
   const backgrounds = [
     "bg-gradient-to-r from-[#FF9A9E] to-[#FECFEF]", // Soft pink gradient
@@ -40,8 +64,8 @@ const GratitudeVisualizer: React.FC<GratitudeVisualizerProps> = ({ onReset }) =>
   const saveGratitude = () => {
     if (!gratitude.trim()) {
       toast({
-        title: "Empty Gratitude",
-        description: "Please enter something you're grateful for.",
+        title: translations.emptyTitle,
+        description: translations.emptyDescription,
         variant: "destructive"
       });
       return;
@@ -55,8 +79,8 @@ const GratitudeVisualizer: React.FC<GratitudeVisualizerProps> = ({ onReset }) =>
     }
     
     toast({
-      title: "Gratitude Saved",
-      description: "Your gratitude reminder has been saved.",
+      title: translations.savedTitle,
+      description: translations.savedDescription,
     });
     
     setGratitude("");
@@ -72,8 +96,8 @@ const GratitudeVisualizer: React.FC<GratitudeVisualizerProps> = ({ onReset }) =>
     localStorage.removeItem("gratitudeCustomBg");
     
     toast({
-      title: "Gratitude Reset",
-      description: "Your gratitude reminder has been reset.",
+      title: translations.resetTitle,
+      description: translations.resetDescription,
     });
     
     if (onReset) onReset();
@@ -97,8 +121,8 @@ const GratitudeVisualizer: React.FC<GratitudeVisualizerProps> = ({ onReset }) =>
       reader.readAsDataURL(file);
       
       toast({
-        title: "Image Uploaded",
-        description: "Your custom background has been set.",
+        title: translations.imageTitle,
+        description: translations.imageDescription,
       });
     }
   };
@@ -122,7 +146,7 @@ const GratitudeVisualizer: React.FC<GratitudeVisualizerProps> = ({ onReset }) =>
             </div>
           </div>
           <span className="gradient-heading text-transparent bg-clip-text bg-gradient-to-r from-[#FF9A9E] via-[#F6416C] to-[#FECFEF] tracking-tight">
-            Gratitude Visualizer
+            {translations.title}
           </span>
         </h2>
         <div className="absolute -bottom-2 left-0 w-64 h-[3px] bg-gradient-to-r from-[#FF9A9E] via-[#F6416C] to-transparent rounded-full"></div>
@@ -139,7 +163,7 @@ const GratitudeVisualizer: React.FC<GratitudeVisualizerProps> = ({ onReset }) =>
           </div>
           
           <p className="text-white/80 mb-6 text-lg">
-            Take a moment to reflect on something you're grateful for today. Your note will be displayed as a beautiful visual reminder.
+            {translations.instruction}
           </p>
           
           <div className="mb-6">
@@ -147,7 +171,7 @@ const GratitudeVisualizer: React.FC<GratitudeVisualizerProps> = ({ onReset }) =>
               value={gratitude}
               onChange={(e) => setGratitude(e.target.value)}
               className="w-full bg-white/10 border border-white/20 rounded-xl p-5 text-white placeholder-white/50 focus:ring-2 focus:ring-[#FF9A9E] focus:border-transparent resize-none text-lg shadow-inner"
-              placeholder="I am grateful for..."
+              placeholder={translations.placeholder}
               rows={3}
             />
           </div>
@@ -155,7 +179,7 @@ const GratitudeVisualizer: React.FC<GratitudeVisualizerProps> = ({ onReset }) =>
           <div className="mb-8">
             <p className="text-white/90 mb-3 font-medium flex items-center">
               <Sparkles className="h-4 w-4 mr-2 text-[#FECFEF]" />
-              Choose a background:
+              {translations.chooseBackground}
             </p>
             <div className="flex flex-wrap gap-3 mb-4">
               {backgrounds.map((bg, index) => (
@@ -192,7 +216,7 @@ const GratitudeVisualizer: React.FC<GratitudeVisualizerProps> = ({ onReset }) =>
                   onChange={handleImageUpload}
                 />
                 {customBackground && (
-                  <div className="absolute inset-0 flex items-center justify-center bg-black/20">
+                  <div className="absolute inset-0 flex items-center justify-center bg-black/10">
                     <div className="bg-white/20 rounded-full p-1">
                       <Sparkles className="h-4 w-4 text-white" />
                     </div>
@@ -200,60 +224,63 @@ const GratitudeVisualizer: React.FC<GratitudeVisualizerProps> = ({ onReset }) =>
                 )}
               </label>
             </div>
+            
+            <Button
+              onClick={saveGratitude}
+              className="w-full bg-gradient-to-r from-[#FF9A9E] to-[#FECFEF] hover:from-[#FF8A8E] hover:to-[#FEBFDF] text-white shadow-md shadow-[rgba(255,154,158,0.3)] hover:shadow-lg transition-all duration-300"
+            >
+              {translations.saveGratitude}
+            </Button>
           </div>
-          
-          <Button 
-            onClick={saveGratitude}
-            className="bg-gradient-to-r from-[#FF9A9E] to-[#F6416C] hover:from-[#F6416C] hover:to-[#FF9A9E] text-white rounded-xl px-6 py-3 font-medium transition-all duration-300 shadow-md hover:shadow-xl hover:shadow-[rgba(255,154,158,0.25)] w-full sm:w-auto relative overflow-hidden group"
-          >
-            <div className="absolute inset-0 w-full h-full bg-white/10 translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-700"></div>
-            <Sparkles className="h-5 w-5 mr-2 animate-pulse" style={{animationDuration: '3s'}} />
-            <span className="text-lg">Save My Gratitude</span>
-          </Button>
         </div>
       ) : (
         <div 
           className={cn(
-            "rounded-2xl p-10 shadow-2xl overflow-hidden relative min-h-[280px] flex flex-col justify-center items-center text-center transform transition-all duration-500 hover:shadow-[0_20px_60px_-15px_rgba(255,154,158,0.4)]",
+            "rounded-2xl p-8 shadow-xl border border-white/20 transform transition-all duration-500 hover:shadow-[0_10px_40px_-15px_rgba(255,154,158,0.3)] relative overflow-hidden flex flex-col items-center justify-center min-h-[300px]",
             currentBackgroundClass
           )}
           style={currentBackgroundStyle}
         >
-          <div className="absolute inset-0 bg-gradient-to-b from-black/30 to-black/50 backdrop-blur-[2px]"></div>
+          <div className="absolute inset-0 bg-black/20 backdrop-blur-[2px]"></div>
           
-          {/* Decorative elements */}
-          <div className="absolute top-0 left-0 w-full h-full overflow-hidden opacity-40 pointer-events-none">
-            <div className="absolute top-0 left-[10%] w-16 h-16 rounded-full bg-white/10 animate-float" style={{animationDelay: '0s'}}></div>
-            <div className="absolute top-[30%] right-[5%] w-20 h-20 rounded-full bg-white/10 animate-float" style={{animationDelay: '1.5s'}}></div>
-            <div className="absolute bottom-[10%] left-[20%] w-12 h-12 rounded-full bg-white/10 animate-float" style={{animationDelay: '2.5s'}}></div>
-            <div className="absolute top-[15%] right-[15%] w-10 h-10">
-              <Stars className="text-white/30 animate-pulse" style={{animationDuration: '5s'}} />
-            </div>
-            <div className="absolute bottom-[20%] right-[10%] w-8 h-8">
-              <Flower className="text-white/30 animate-float" style={{animationDuration: '7s'}} />
+          <div className="relative z-10 text-center max-w-md mx-auto">
+            <h3 className="text-2xl font-bold text-white mb-4 drop-shadow-md">
+              {translations.todayGratitude}
+            </h3>
+            
+            <p className="text-white text-xl font-medium leading-relaxed mb-6 drop-shadow-md">
+              "{savedGratitude}"
+            </p>
+            
+            <div className="flex flex-wrap justify-center gap-3">
+              <Button
+                onClick={handleReset}
+                size="sm"
+                variant="outline"
+                className="bg-white/10 border-white/40 text-white hover:bg-white/20 transition-all duration-300 backdrop-blur-md"
+              >
+                <RefreshCw className="mr-2 h-4 w-4" />
+                {translations.resetGratitude}
+              </Button>
+              
+              <Button
+                onClick={() => setSavedGratitude(null)}
+                size="sm"
+                variant="outline"
+                className="bg-white/10 border-white/40 text-white hover:bg-white/20 transition-all duration-300 backdrop-blur-md"
+              >
+                <Image className="mr-2 h-4 w-4" />
+                {translations.changeBackground}
+              </Button>
             </div>
           </div>
           
-          <div className="relative z-10 max-w-2xl mx-auto">
-            <div className="relative inline-block mb-6">
-              <div className="absolute inset-0 rounded-full bg-gradient-to-r from-[#FF9A9E] to-[#FECFEF] opacity-20 blur-md"></div>
-              <Heart className="h-16 w-16 text-white/90 drop-shadow-lg animate-pulse" style={{animationDuration: '4s'}} />
-            </div>
-            <h3 className="text-4xl font-light text-white mb-6 tracking-wide drop-shadow-md" style={{textShadow: '0 2px 10px rgba(0,0,0,0.3)'}}>Today I'm grateful for...</h3>
-            <p className="text-2xl font-medium text-white mb-8 leading-relaxed drop-shadow-md animate-float" style={{textShadow: '0 2px 10px rgba(0,0,0,0.3)', animationDuration: '5s'}}>{savedGratitude}</p>
-            
-            <div className="flex justify-center space-x-3">
-              <Button 
-                variant="outline" 
-                size="lg" 
-                className="bg-white/20 text-white border-white/40 hover:bg-white/30 backdrop-blur-sm rounded-xl shadow-lg font-medium transition-all duration-300 hover:scale-105 relative overflow-hidden group"
-                onClick={handleReset}
-              >
-                <div className="absolute inset-0 w-full h-full bg-white/10 translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-700"></div>
-                <RefreshCw className="h-5 w-5 mr-2 group-hover:rotate-180 transition-transform duration-500" />
-                <span>Reset Gratitude</span>
-              </Button>
-            </div>
+          {/* Decorative elements */}
+          <div className="absolute top-4 right-4 opacity-50">
+            <Heart className="h-6 w-6 text-white drop-shadow-lg" />
+          </div>
+          <div className="absolute bottom-4 left-4 opacity-50">
+            <Sparkles className="h-6 w-6 text-white drop-shadow-lg" />
           </div>
         </div>
       )}

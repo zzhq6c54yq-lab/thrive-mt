@@ -12,131 +12,143 @@ import { useToast } from "@/hooks/use-toast";
 const KeyFeatures: React.FC = () => {
   const { toast } = useToast();
   const navigate = useNavigate();
+  
+  // Get preferred language
+  const preferredLanguage = localStorage.getItem('preferredLanguage') || 'English';
+  const isSpanish = preferredLanguage === 'Español';
+  
+  // Translations
+  const translations = {
+    title: isSpanish ? "Características Principales" : "Key Features",
+    subtitle: isSpanish ? "Herramientas y recursos diseñados para tu viaje de bienestar mental" : "Tools and resources designed for your mental wellness journey",
+    navigating: isSpanish ? "Navegando..." : "Navigating...",
+    takingTo: isSpanish ? "Llevándote a la función seleccionada" : "Taking you to your selected feature"
+  };
 
   const keyFeatures = [
     {
-      title: "Video Diary",
-      description: "Record video messages for yourself or to share with loved ones",
+      title: isSpanish ? "Diario en Video" : "Video Diary",
+      description: isSpanish ? "Graba mensajes de video para ti mismo o para compartir con seres queridos" : "Record video messages for yourself or to share with loved ones",
       icon: Video,
       path: "/video-diary"
     },
     {
-      title: "Wellness Challenges",
-      description: "Complete daily challenges to improve your mental and physical wellbeing",
+      title: isSpanish ? "Desafíos de Bienestar" : "Wellness Challenges",
+      description: isSpanish ? "Completa desafíos diarios para mejorar tu bienestar mental y físico" : "Complete daily challenges to improve your mental and physical wellbeing",
       icon: ListChecks,
       path: "/wellness-challenges"
     },
     {
-      title: "Personalized Content",
-      description: "Content tailored to your mental health journey and cultural background",
+      title: isSpanish ? "Contenido Personalizado" : "Personalized Content",
+      description: isSpanish ? "Contenido adaptado a tu viaje de salud mental y antecedentes culturales" : "Content tailored to your mental health journey and cultural background",
       icon: Brain,
       path: "/personalized-content"
     },
     {
-      title: "Games & Quizzes",
-      description: "Fun and therapeutic games and quizzes to boost mental wellbeing",
+      title: isSpanish ? "Juegos y Cuestionarios" : "Games & Quizzes",
+      description: isSpanish ? "Juegos y cuestionarios divertidos y terapéuticos para mejorar el bienestar mental" : "Fun and therapeutic games and quizzes to boost mental wellbeing",
       icon: Puzzle,
       path: "/games-and-quizzes"
     },
     {
-      title: "Resource Library",
-      description: "Comprehensive mental health resources and educational content",
+      title: isSpanish ? "Biblioteca de Recursos" : "Resource Library",
+      description: isSpanish ? "Recursos completos de salud mental y contenido educativo" : "Comprehensive mental health resources and educational content",
       icon: Library,
       path: "/resource-library"
     },
     {
-      title: "Community Support",
-      description: "Connect with others and access culturally sensitive resources",
+      title: isSpanish ? "Apoyo Comunitario" : "Community Support",
+      description: isSpanish ? "Conéctate con otros y accede a recursos culturalmente sensibles" : "Connect with others and access culturally sensitive resources",
       icon: Users,
       path: "/community-support"
     },
     {
-      title: "My N.A/A.A Sponsor",
-      description: "Access your digital sponsor and recovery support resources",
+      title: isSpanish ? "Mi Patrocinador N.A/A.A" : "My N.A/A.A Sponsor",
+      description: isSpanish ? "Accede a tu patrocinador digital y recursos de apoyo para la recuperación" : "Access your digital sponsor and recovery support resources",
       icon: HeartHandshake,
       path: "/my-sponsor"
     },
     {
-      title: "Binaural Beats",
-      description: "Audio therapy for stress, anxiety, sleep, meditation and chakra balancing",
+      title: isSpanish ? "Ritmos Binaurales" : "Binaural Beats",
+      description: isSpanish ? "Terapia de audio para estrés, ansiedad, sueño, meditación y equilibrio de chakras" : "Audio therapy for stress, anxiety, sleep, meditation and chakra balancing",
       icon: Headphones,
       path: "/binaural-beats"
     },
     {
-      title: "Lifestyle Integration",
-      description: "Seamlessly blend mental wellness practices into your daily routine",
+      title: isSpanish ? "Integración del Estilo de Vida" : "Lifestyle Integration",
+      description: isSpanish ? "Integra sin problemas prácticas de bienestar mental en tu rutina diaria" : "Seamlessly blend mental wellness practices into your daily routine",
       icon: Coffee,
       path: "/lifestyle-integration"
     },
     {
-      title: "Mental Wellness Tools",
-      description: "Track nutrition, sleep, exercise, and mental wellbeing",
+      title: isSpanish ? "Herramientas de Bienestar Mental" : "Mental Wellness Tools",
+      description: isSpanish ? "Haz seguimiento de la nutrición, el sueño, el ejercicio y el bienestar mental" : "Track nutrition, sleep, exercise, and mental wellbeing",
       icon: LeafyGreen,
       path: "/mental-wellness-tools"
     },
     {
-      title: "Progress Tracking",
-      description: "Monitor your mental health journey over time",
+      title: isSpanish ? "Seguimiento de Progreso" : "Progress Tracking",
+      description: isSpanish ? "Monitorea tu viaje de salud mental a lo largo del tiempo" : "Monitor your mental health journey over time",
       icon: ListChecks,
       path: "/progress-reports"
     },
     {
-      title: "Family Resources",
-      description: "Support tools for families and caregivers",
+      title: isSpanish ? "Recursos Familiares" : "Family Resources",
+      description: isSpanish ? "Herramientas de apoyo para familias y cuidadores" : "Support tools for families and caregivers",
       icon: HandHeart,
       path: "/family-support"
     },
     {
-      title: "Alternative Therapies",
-      description: "Explore art, music, and nature-based healing approaches",
+      title: isSpanish ? "Terapias Alternativas" : "Alternative Therapies",
+      description: isSpanish ? "Explora enfoques de sanación basados en arte, música y naturaleza" : "Explore art, music, and nature-based healing approaches",
       icon: FlameKindling,
       path: "/therapist-questionnaire"  // Points to therapist questionnaire
     },
     {
-      title: "Mindfulness & Sleep",
-      description: "Diverse meditation practices and sleep tracking",
+      title: isSpanish ? "Mindfulness y Sueño" : "Mindfulness & Sleep",
+      description: isSpanish ? "Diversas prácticas de meditación y seguimiento del sueño" : "Diverse meditation practices and sleep tracking",
       icon: Moon,
       path: "/mindfulness"
     },
     {
-      title: "Therapy Options",
-      description: "Connect with licensed therapists",
+      title: isSpanish ? "Opciones de Terapia" : "Therapy Options",
+      description: isSpanish ? "Conéctate con terapeutas licenciados" : "Connect with licensed therapists",
       icon: GraduationCap,
       path: "/real-time-therapy"  // Changed to direct to real-time therapy page
     },
     {
-      title: "Workshops",
-      description: "Interactive learning experiences",
+      title: isSpanish ? "Talleres" : "Workshops",
+      description: isSpanish ? "Experiencias de aprendizaje interactivas" : "Interactive learning experiences",
       icon: CalendarRange,
       path: "/workshops"
     },
     {
-      title: "Self-Help Resources",
-      description: "Articles, videos, and tips on various mental health topics",
+      title: isSpanish ? "Recursos de Autoayuda" : "Self-Help Resources",
+      description: isSpanish ? "Artículos, videos y consejos sobre diversos temas de salud mental" : "Articles, videos, and tips on various mental health topics",
       icon: Library,
       path: "/self-help-resources"
     },
     {
-      title: "Journaling",
-      description: "Space for personal reflections and emotional expression",
+      title: isSpanish ? "Escritura de Diario" : "Journaling",
+      description: isSpanish ? "Espacio para reflexiones personales y expresión emocional" : "Space for personal reflections and emotional expression",
       icon: Heart,
       path: "/journaling"
     },
     {
-      title: "Crisis Support",
-      description: "Immediate resources and hotlines for when you need help",
+      title: isSpanish ? "Apoyo en Crisis" : "Crisis Support",
+      description: isSpanish ? "Recursos inmediatos y líneas directas para cuando necesitas ayuda" : "Immediate resources and hotlines for when you need help",
       icon: Heart,
       path: "/crisis-support"
     },
     {
-      title: "Progress Analytics",
-      description: "Track and analyze your mental wellness journey",
+      title: isSpanish ? "Análisis de Progreso" : "Progress Analytics",
+      description: isSpanish ? "Rastrea y analiza tu viaje de bienestar mental" : "Track and analyze your mental wellness journey",
       icon: ListChecks,
       path: "/progress-analytics"
     },
     {
-      title: "Holistic Wellness",
-      description: "Comprehensive approach to physical, mental, and spiritual wellbeing",
+      title: isSpanish ? "Bienestar Holístico" : "Holistic Wellness",
+      description: isSpanish ? "Enfoque integral del bienestar físico, mental y espiritual" : "Comprehensive approach to physical, mental, and spiritual wellbeing",
       icon: LeafyGreen,
       path: "/therapist-questionnaire"  // Points to therapist questionnaire
     }
@@ -144,8 +156,8 @@ const KeyFeatures: React.FC = () => {
 
   const handleFeatureClick = (path: string) => {
     toast({
-      title: "Navigating...",
-      description: "Taking you to your selected feature",
+      title: translations.navigating,
+      description: translations.takingTo,
       duration: 1500,
     });
     
@@ -167,9 +179,9 @@ const KeyFeatures: React.FC = () => {
         <div className="flex items-center justify-between mb-10">
           <div>
             <h2 className="text-4xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-[#B87333] via-[#E5C5A1] to-[#B87333] animate-gradient-x" style={{backgroundSize: '200% auto'}}>
-              Key Features
+              {translations.title}
             </h2>
-            <p className="text-gray-300 mt-2">Tools and resources designed for your mental wellness journey</p>
+            <p className="text-gray-300 mt-2">{translations.subtitle}</p>
           </div>
           <div className="hidden md:block">
             <Sparkles className="h-12 w-12 text-[#E5C5A1] opacity-60 animate-pulse" />

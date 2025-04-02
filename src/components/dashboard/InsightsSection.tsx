@@ -7,6 +7,27 @@ const InsightsSection = () => {
   const preferredLanguage = localStorage.getItem('preferredLanguage') || 'English';
   const isSpanish = preferredLanguage === 'Español';
   
+  // Translations
+  const translations = {
+    title: isSpanish ? "Análisis de Estado de Ánimo" : "Mood Insights",
+    subtitle: isSpanish ? "Patrones y tendencias en tus registros de estado de ánimo" : "Patterns and trends in your mood entries",
+    averageMood: isSpanish ? "Estado de Ánimo Promedio" : "Average Mood",
+    weeklyTrend: isSpanish ? "Tendencia Semanal" : "Weekly Trend",
+    timeOfDay: isSpanish ? "Impacto por Hora del Día" : "Time of Day Impact",
+    potentialTriggers: isSpanish ? "Posibles Desencadenantes" : "Potential Triggers",
+    viewDetailedReports: isSpanish ? "Ver Informes Detallados" : "View Detailed Reports",
+    morning: isSpanish ? "Mañana" : "Morning",
+    afternoon: isSpanish ? "Tarde" : "Afternoon",
+    evening: isSpanish ? "Noche" : "Evening",
+    mon: isSpanish ? "Lun" : "Mon",
+    tue: isSpanish ? "Mar" : "Tue",
+    wed: isSpanish ? "Mié" : "Wed",
+    thu: isSpanish ? "Jue" : "Thu",
+    fri: isSpanish ? "Vie" : "Fri",
+    sat: isSpanish ? "Sáb" : "Sat",
+    sun: isSpanish ? "Dom" : "Sun"
+  };
+  
   // Mock data for insights
   const moodData = {
     average: 7.2,
@@ -15,18 +36,18 @@ const InsightsSection = () => {
       ? ["Estrés laboral", "Mal sueño", "Redes sociales"] 
       : ["Work stress", "Poor sleep", "Social media"],
     patterns: [
-      { day: isSpanish ? "Lun" : "Mon", value: 45 },
-      { day: isSpanish ? "Mar" : "Tue", value: 65 },
-      { day: isSpanish ? "Mié" : "Wed", value: 60 },
-      { day: isSpanish ? "Jue" : "Thu", value: 80 },
-      { day: isSpanish ? "Vie" : "Fri", value: 75 },
-      { day: isSpanish ? "Sáb" : "Sat", value: 85 },
-      { day: isSpanish ? "Dom" : "Sun", value: 90 },
+      { day: translations.mon, value: 45 },
+      { day: translations.tue, value: 65 },
+      { day: translations.wed, value: 60 },
+      { day: translations.thu, value: 80 },
+      { day: translations.fri, value: 75 },
+      { day: translations.sat, value: 85 },
+      { day: translations.sun, value: 90 },
     ],
     timeOfDay: [
-      { time: isSpanish ? "Mañana" : "Morning", mood: "7.5" },
-      { time: isSpanish ? "Tarde" : "Afternoon", mood: "6.8" },
-      { time: isSpanish ? "Noche" : "Evening", mood: "7.4" },
+      { time: translations.morning, mood: "7.5" },
+      { time: translations.afternoon, mood: "6.8" },
+      { time: translations.evening, mood: "7.4" },
     ]
   };
 
@@ -43,12 +64,10 @@ const InsightsSection = () => {
             <div className="absolute inset-0 bg-[#B87333]/20 rounded-full blur-sm"></div>
             <Brain className="h-5 w-5 text-[#B87333] relative" />
           </div>
-          {isSpanish ? "Análisis de Estado de Ánimo" : "Mood Insights"}
+          {translations.title}
         </CardTitle>
         <CardDescription>
-          {isSpanish 
-            ? "Patrones y tendencias en tus registros de estado de ánimo" 
-            : "Patterns and trends in your mood entries"}
+          {translations.subtitle}
         </CardDescription>
       </CardHeader>
       <CardContent className="relative z-10">
@@ -56,7 +75,7 @@ const InsightsSection = () => {
           <div className="flex items-center justify-between">
             <div>
               <span className="text-sm text-muted-foreground">
-                {isSpanish ? "Estado de Ánimo Promedio" : "Average Mood"}
+                {translations.averageMood}
               </span>
               <div className="text-2xl font-bold">{moodData.average}/10</div>
             </div>
@@ -68,7 +87,7 @@ const InsightsSection = () => {
 
           <div>
             <span className="text-sm text-muted-foreground">
-              {isSpanish ? "Tendencia Semanal" : "Weekly Trend"}
+              {translations.weeklyTrend}
             </span>
             <div className="mt-2 flex items-end space-x-1">
               {moodData.patterns.map((day) => (
@@ -85,7 +104,7 @@ const InsightsSection = () => {
 
           <div>
             <span className="text-sm text-muted-foreground">
-              {isSpanish ? "Impacto por Hora del Día" : "Time of Day Impact"}
+              {translations.timeOfDay}
             </span>
             <div className="mt-2 grid grid-cols-3 gap-2">
               {moodData.timeOfDay.map((time, index) => (
@@ -102,7 +121,7 @@ const InsightsSection = () => {
 
           <div>
             <span className="text-sm text-muted-foreground">
-              {isSpanish ? "Posibles Desencadenantes" : "Potential Triggers"}
+              {translations.potentialTriggers}
             </span>
             <div className="mt-2 flex flex-wrap gap-2">
               {moodData.triggers.map((trigger, index) => (
@@ -124,7 +143,7 @@ const InsightsSection = () => {
             className="text-sm text-[#B87333] hover:text-[#A56625] underline-offset-4 hover:underline relative group"
           >
             <span className="relative z-10">
-              {isSpanish ? "Ver Informes Detallados" : "View Detailed Reports"}
+              {translations.viewDetailedReports}
             </span>
             <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-[#B87333]/30 group-hover:w-full transition-all duration-300"></span>
           </a>

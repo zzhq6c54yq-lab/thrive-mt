@@ -14,101 +14,140 @@ const FeaturedWorkshops: React.FC<FeaturedWorkshopsProps> = ({ navigate, onWorks
   const [currentPage, setCurrentPage] = useState(0);
   const workshopsPerPage = 3;
   
+  // Get preferred language
+  const preferredLanguage = localStorage.getItem('preferredLanguage') || 'English';
+  const isSpanish = preferredLanguage === 'Español';
+  
+  // Translations
+  const translations = {
+    title: isSpanish ? "Talleres Mensuales Destacados" : "Monthly Featured Workshops",
+    viewAll: isSpanish ? "Ver Todo" : "View All",
+    page: isSpanish ? "Página" : "Page",
+    of: isSpanish ? "de" : "of",
+    viewWorkshop: isSpanish ? "Ver Taller" : "View Workshop",
+    prev: isSpanish ? "Anterior" : "Previous page",
+    next: isSpanish ? "Siguiente" : "Next page"
+  };
+  
   const workshops = [
     {
       id: "mindful-communication",
-      title: "Mindful Communication",
-      description: "Learn effective communication techniques rooted in mindfulness principles to improve relationships.",
-      instructor: "Dr. Sarah Johnson",
-      date: "Tuesdays & Thursdays",
+      title: isSpanish ? "Comunicación Consciente" : "Mindful Communication",
+      description: isSpanish 
+        ? "Aprende técnicas efectivas de comunicación basadas en principios de atención plena para mejorar las relaciones." 
+        : "Learn effective communication techniques rooted in mindfulness principles to improve relationships.",
+      instructor: isSpanish ? "Dra. Sarah Johnson" : "Dr. Sarah Johnson",
+      date: isSpanish ? "Martes y Jueves" : "Tuesdays & Thursdays",
       image: "https://images.unsplash.com/photo-1573497620053-ea5300f94f21?ixlib=rb-1.2.1&auto=format&fit=crop&w=1000&q=80"
     },
     {
       id: "emotional-regulation",
-      title: "Emotional Regulation",
-      description: "Develop skills to manage difficult emotions and respond rather than react to challenging situations.",
-      instructor: "Dr. Michael Chen",
-      date: "Mondays & Wednesdays",
+      title: isSpanish ? "Regulación Emocional" : "Emotional Regulation",
+      description: isSpanish 
+        ? "Desarrolla habilidades para manejar emociones difíciles y responder en lugar de reaccionar a situaciones desafiantes." 
+        : "Develop skills to manage difficult emotions and respond rather than react to challenging situations.",
+      instructor: isSpanish ? "Dr. Michael Chen" : "Dr. Michael Chen",
+      date: isSpanish ? "Lunes y Miércoles" : "Mondays & Wednesdays",
       image: "https://images.unsplash.com/photo-1499209974431-9dddcece7f88?ixlib=rb-1.2.1&auto=format&fit=crop&w=1000&q=80"
     },
     {
       id: "stress-management",
-      title: "Stress Management",
-      description: "Evidence-based strategies to reduce stress and build resilience in high-pressure environments.",
-      instructor: "Dr. Robert Taylor",
-      date: "Fridays",
+      title: isSpanish ? "Manejo del Estrés" : "Stress Management",
+      description: isSpanish 
+        ? "Estrategias basadas en evidencia para reducir el estrés y desarrollar resiliencia en entornos de alta presión." 
+        : "Evidence-based strategies to reduce stress and build resilience in high-pressure environments.",
+      instructor: isSpanish ? "Dr. Robert Taylor" : "Dr. Robert Taylor",
+      date: isSpanish ? "Viernes" : "Fridays",
       image: "https://images.unsplash.com/photo-1506126613408-eca07ce68773?ixlib=rb-1.2.1&auto=format&fit=crop&w=1000&q=80"
     },
     {
       id: "better-sleep",
-      title: "Better Sleep Habits",
-      description: "Develop healthy sleep routines and overcome insomnia with evidence-based techniques.",
-      instructor: "Dr. Lisa Martinez",
-      date: "Mondays & Wednesdays",
+      title: isSpanish ? "Mejores Hábitos de Sueño" : "Better Sleep Habits",
+      description: isSpanish 
+        ? "Desarrolla rutinas saludables de sueño y supera el insomnio con técnicas basadas en evidencia." 
+        : "Develop healthy sleep routines and overcome insomnia with evidence-based techniques.",
+      instructor: isSpanish ? "Dra. Lisa Martinez" : "Dr. Lisa Martinez",
+      date: isSpanish ? "Lunes y Miércoles" : "Mondays & Wednesdays",
       image: "https://images.unsplash.com/photo-1541781774459-bb2af2f05b55?ixlib=rb-1.2.1&auto=format&fit=crop&w=1000&q=80"
     },
     {
       id: "cognitive-reframing",
-      title: "Cognitive Reframing",
-      description: "Learn to identify negative thought patterns and transform them into more balanced perspectives.",
-      instructor: "Dr. James Wilson",
-      date: "Tuesdays",
+      title: isSpanish ? "Reestructuración Cognitiva" : "Cognitive Reframing",
+      description: isSpanish 
+        ? "Aprende a identificar patrones de pensamiento negativos y transformarlos en perspectivas más equilibradas." 
+        : "Learn to identify negative thought patterns and transform them into more balanced perspectives.",
+      instructor: isSpanish ? "Dr. James Wilson" : "Dr. James Wilson",
+      date: isSpanish ? "Martes" : "Tuesdays",
       image: "https://images.unsplash.com/photo-1489533119213-66a5cd877091?ixlib=rb-1.2.1&auto=format&fit=crop&w=1000&q=80"
     },
     {
       id: "gratitude-practice",
-      title: "Gratitude Practice",
-      description: "Harness the power of gratitude to increase happiness and resilience in your daily life.",
-      instructor: "Dr. Emma Thompson",
-      date: "Thursdays",
+      title: isSpanish ? "Práctica de Gratitud" : "Gratitude Practice",
+      description: isSpanish 
+        ? "Aprovecha el poder de la gratitud para aumentar la felicidad y la resiliencia en tu vida diaria." 
+        : "Harness the power of gratitude to increase happiness and resilience in your daily life.",
+      instructor: isSpanish ? "Dra. Emma Thompson" : "Dr. Emma Thompson",
+      date: isSpanish ? "Jueves" : "Thursdays",
       image: "https://images.unsplash.com/photo-1518602164809-512c39454922?ixlib=rb-1.2.1&auto=format&fit=crop&w=1000&q=80"
     },
     {
       id: "self-compassion",
-      title: "Self-Compassion Skills",
-      description: "Break free from self-criticism and develop a kinder relationship with yourself.",
-      instructor: "Dr. Anna Kim",
-      date: "Wednesdays",
+      title: isSpanish ? "Habilidades de Autocompasión" : "Self-Compassion Skills",
+      description: isSpanish 
+        ? "Libérate de la autocrítica y desarrolla una relación más amable contigo mismo." 
+        : "Break free from self-criticism and develop a kinder relationship with yourself.",
+      instructor: isSpanish ? "Dra. Anna Kim" : "Dr. Anna Kim",
+      date: isSpanish ? "Miércoles" : "Wednesdays",
       image: "https://images.unsplash.com/photo-1475938476802-32a7e851dad1?ixlib=rb-1.2.1&auto=format&fit=crop&w=1000&q=80"
     },
     {
       id: "social-connection",
-      title: "Building Social Connection",
-      description: "Strengthen relationships and overcome isolation with evidence-based strategies.",
-      instructor: "Dr. Thomas Parker",
-      date: "Mondays & Fridays",
+      title: isSpanish ? "Construyendo Conexión Social" : "Building Social Connection",
+      description: isSpanish 
+        ? "Fortalece relaciones y supera el aislamiento con estrategias basadas en evidencia." 
+        : "Strengthen relationships and overcome isolation with evidence-based strategies.",
+      instructor: isSpanish ? "Dr. Thomas Parker" : "Dr. Thomas Parker",
+      date: isSpanish ? "Lunes y Viernes" : "Mondays & Fridays",
       image: "https://images.unsplash.com/photo-1529156069898-49953e39b3ac?ixlib=rb-1.2.1&auto=format&fit=crop&w=1000&q=80"
     },
     {
       id: "anxiety-management",
-      title: "Anxiety Management Toolkit",
-      description: "Practical strategies to understand and manage anxiety in your daily life.",
-      instructor: "Dr. Rachel Greene",
-      date: "Tuesdays & Thursdays",
+      title: isSpanish ? "Kit de Herramientas para Manejar la Ansiedad" : "Anxiety Management Toolkit",
+      description: isSpanish 
+        ? "Estrategias prácticas para entender y manejar la ansiedad en tu vida diaria." 
+        : "Practical strategies to understand and manage anxiety in your daily life.",
+      instructor: isSpanish ? "Dra. Rachel Greene" : "Dr. Rachel Greene",
+      date: isSpanish ? "Martes y Jueves" : "Tuesdays & Thursdays",
       image: "https://images.unsplash.com/photo-1541199249251-f713e6145474?ixlib=rb-1.2.1&auto=format&fit=crop&w=1000&q=80"
     },
     {
       id: "boundary-setting",
-      title: "Healthy Boundary Setting",
-      description: "Learn to establish and maintain healthy boundaries in all your relationships.",
-      instructor: "Dr. Samuel Washington",
-      date: "Wednesdays",
+      title: isSpanish ? "Establecimiento de Límites Saludables" : "Healthy Boundary Setting",
+      description: isSpanish 
+        ? "Aprende a establecer y mantener límites saludables en todas tus relaciones." 
+        : "Learn to establish and maintain healthy boundaries in all your relationships.",
+      instructor: isSpanish ? "Dr. Samuel Washington" : "Dr. Samuel Washington",
+      date: isSpanish ? "Miércoles" : "Wednesdays",
       image: "https://images.unsplash.com/photo-1568260843567-3e0d96a5eb1d?ixlib=rb-1.2.1&auto=format&fit=crop&w=1000&q=80"
     },
     {
       id: "values-alignment",
-      title: "Living by Your Values",
-      description: "Clarify your core values and align your daily choices with what matters most to you.",
-      instructor: "Dr. Michelle Rodriguez",
-      date: "Fridays",
+      title: isSpanish ? "Viviendo según tus Valores" : "Living by Your Values",
+      description: isSpanish 
+        ? "Clarifica tus valores fundamentales y alinea tus decisiones diarias con lo que más te importa." 
+        : "Clarify your core values and align your daily choices with what matters most to you.",
+      instructor: isSpanish ? "Dra. Michelle Rodriguez" : "Dr. Michelle Rodriguez",
+      date: isSpanish ? "Viernes" : "Fridays",
       image: "https://images.unsplash.com/photo-1486312338219-ce68d2c6f44d?ixlib=rb-1.2.1&auto=format&fit=crop&w=1000&q=80"
     },
     {
       id: "habit-formation",
-      title: "Habit Formation Mastery",
-      description: "Learn the science behind effective habit change and develop skills for lasting change.",
-      instructor: "Dr. Benjamin Harris",
-      date: "Mondays",
+      title: isSpanish ? "Dominio de la Formación de Hábitos" : "Habit Formation Mastery",
+      description: isSpanish 
+        ? "Aprende la ciencia detrás del cambio efectivo de hábitos y desarrolla habilidades para un cambio duradero." 
+        : "Learn the science behind effective habit change and develop skills for lasting change.",
+      instructor: isSpanish ? "Dr. Benjamin Harris" : "Dr. Benjamin Harris",
+      date: isSpanish ? "Lunes" : "Mondays",
       image: "https://images.unsplash.com/photo-1516035069371-29a1b244cc32?ixlib=rb-1.2.1&auto=format&fit=crop&w=1000&q=80"
     }
   ];
@@ -130,26 +169,26 @@ const FeaturedWorkshops: React.FC<FeaturedWorkshopsProps> = ({ navigate, onWorks
   return (
     <div className="mb-12">
       <div className="flex justify-between items-center mb-6">
-        <h2 className="text-2xl font-bold">Monthly Featured Workshops</h2>
+        <h2 className="text-2xl font-bold">{translations.title}</h2>
         <div className="flex items-center gap-2">
           <Button 
             variant="outline" 
             size="sm"
             className="border-[#3d3d5c] text-gray-300 flex items-center"
             onClick={prevPage}
-            aria-label="Previous page"
+            aria-label={translations.prev}
           >
             <ChevronLeft className="h-4 w-4" />
           </Button>
           <span className="text-sm text-gray-300">
-            Page {currentPage + 1} of {pageCount}
+            {translations.page} {currentPage + 1} {translations.of} {pageCount}
           </span>
           <Button 
             variant="outline" 
             size="sm"
             className="border-[#3d3d5c] text-gray-300 flex items-center"
             onClick={nextPage}
-            aria-label="Next page"
+            aria-label={translations.next}
           >
             <ChevronRight className="h-4 w-4" />
           </Button>
@@ -158,7 +197,7 @@ const FeaturedWorkshops: React.FC<FeaturedWorkshopsProps> = ({ navigate, onWorks
             className="text-[#E5C5A1] px-0 flex items-center ml-4"
             onClick={() => navigate("/workshops")}
           >
-            View All
+            {translations.viewAll}
             <ArrowRight className="ml-1 h-4 w-4" />
           </Button>
         </div>
@@ -194,7 +233,7 @@ const FeaturedWorkshops: React.FC<FeaturedWorkshopsProps> = ({ navigate, onWorks
                 className="w-full bg-[#B87333] hover:bg-[#a66a2e] text-white"
                 onClick={() => onWorkshopClick(workshop.id, workshop.title)}
               >
-                View Workshop
+                {translations.viewWorkshop}
               </Button>
             </CardFooter>
           </Card>

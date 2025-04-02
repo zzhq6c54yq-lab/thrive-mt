@@ -8,11 +8,26 @@ import { useToast } from "@/hooks/use-toast";
 const NewFeatures: React.FC = () => {
   const navigate = useNavigate();
   const { toast } = useToast();
+  
+  // Get preferred language
+  const preferredLanguage = localStorage.getItem('preferredLanguage') || 'English';
+  const isSpanish = preferredLanguage === 'Español';
+  
+  // Translations
+  const translations = {
+    newFeatures: isSpanish ? "Nuevas Características" : "New Features",
+    barterSystem: isSpanish ? "Sistema de Trueque" : "Barter System",
+    upgradePlan: isSpanish ? "Mejorar Plan" : "Upgrade Plan",
+    premiumTools: isSpanish ? "Herramientas premium" : "Premium tools",
+    coPayCredits: isSpanish ? "Créditos de Copago" : "Co-Pay Credits",
+    navigating: isSpanish ? "Navegando a" : "Navigating to",
+    loading: isSpanish ? "Cargando la función solicitada..." : "Loading your requested feature..."
+  };
 
   const handleNavigation = (path: string, title: string) => {
     toast({
-      title: `Navigating to ${title}`,
-      description: "Loading your requested feature...",
+      title: `${translations.navigating} ${title}`,
+      description: translations.loading,
       duration: 2000
     });
     
@@ -35,25 +50,27 @@ const NewFeatures: React.FC = () => {
       <div className="container mx-auto max-w-6xl relative">
         <h3 className="text-xl font-semibold text-white mb-6 flex items-center">
           <Sparkles className="h-5 w-5 text-[#B87333] mr-2" />
-          <span className="gradient-heading text-transparent bg-clip-text bg-gradient-to-r from-[#B87333] via-[#E5C5A1] to-[#B87333]">New Features</span>
+          <span className="gradient-heading text-transparent bg-clip-text bg-gradient-to-r from-[#B87333] via-[#E5C5A1] to-[#B87333]">
+            {translations.newFeatures}
+          </span>
         </h3>
         
         <div className="flex flex-wrap justify-center sm:justify-between gap-6">
           <Button 
             variant="bronze"
             className="flex items-center gap-2 px-6 py-6 rounded-lg transform transition-all duration-300 hover:scale-105 shadow-[0_4px_12px_rgba(0,0,0,0.25)] group"
-            onClick={() => handleNavigation("/barter-system", "Barter System")}
+            onClick={() => handleNavigation("/barter-system", translations.barterSystem)}
           >
             <div className="p-2 rounded-full bg-[#B87333]/20 group-hover:bg-[#B87333]/30 transition-colors">
               <Handshake className="h-5 w-5 text-[#E5C5A1] group-hover:text-white transition-colors" />
             </div>
-            <span className="font-medium">Barter System</span>
+            <span className="font-medium">{translations.barterSystem}</span>
           </Button>
           
           <Button 
             variant="gold"
             className="flex items-center gap-2 px-5 py-5 rounded-lg transform transition-all duration-300 hover:scale-105 shadow-[0_4px_12px_rgba(0,0,0,0.25)] group relative overflow-hidden"
-            onClick={() => handleNavigation("/subscription-plans", "Subscription Plans")}
+            onClick={() => handleNavigation("/subscription-plans", translations.upgradePlan)}
           >
             <div className="absolute inset-0 bg-gradient-to-r from-[#B87333] via-[#E5C5A1] to-[#B87333] opacity-100 background-animate" style={{backgroundSize: '200% auto'}}></div>
             
@@ -67,8 +84,8 @@ const NewFeatures: React.FC = () => {
               <Crown className="h-5 w-5 text-white group-hover:text-white transition-colors" />
             </div>
             <div className="z-10 flex flex-col items-start">
-              <span className="font-bold text-black text-sm">Upgrade Plan</span>
-              <span className="text-xs text-black/80">Premium tools</span>
+              <span className="font-bold text-black text-sm">{translations.upgradePlan}</span>
+              <span className="text-xs text-black/80">{translations.premiumTools}</span>
             </div>
             
             <Zap className="h-5 w-5 ml-1 text-black group-hover:translate-x-1 transition-transform z-10" />
@@ -77,12 +94,12 @@ const NewFeatures: React.FC = () => {
           <Button 
             variant="bronze"
             className="flex items-center gap-2 px-6 py-6 rounded-lg transform transition-all duration-300 hover:scale-105 shadow-[0_4px_12px_rgba(0,0,0,0.25)] group"
-            onClick={() => handleNavigation("/copay-credits", "Co-Pay Credits")}
+            onClick={() => handleNavigation("/copay-credits", translations.coPayCredits)}
           >
             <div className="p-2 rounded-full bg-[#B87333]/20 group-hover:bg-[#B87333]/30 transition-colors">
               <WalletCards className="h-5 w-5 text-[#E5C5A1] group-hover:text-white transition-colors" />
             </div>
-            <span className="font-medium">Co-Pay Credits</span>
+            <span className="font-medium">{translations.coPayCredits}</span>
           </Button>
         </div>
       </div>
