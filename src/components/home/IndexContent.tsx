@@ -73,20 +73,48 @@ const IndexContent: React.FC<IndexContentProps> = ({
     if (screenState === 'main') {
       console.log("IndexContent - Main screen detected. isFirstVisit:", isFirstVisit, "showMainTutorial:", showMainTutorial);
       
+      // Detect first visit or explicit tutorial flag  
       if (showMainTutorial) {
-        console.log("Setting isFirstVisit to true based on showMainTutorial");
+        console.log("Setting isFirstVisit to true based on showMainTutorial flag");
         setIsFirstVisit(true);
+        
+        // Check for transition from onboarding screens
+        const prevScreenState = localStorage.getItem('prevScreenState');
+        const comingFromOnboarding = (
+          prevScreenState === 'visionBoard' || 
+          prevScreenState === 'subscription' || 
+          prevScreenState === 'register' || 
+          prevScreenState === 'moodResponse'
+        );
+        
+        if (comingFromOnboarding) {
+          console.log("Coming from onboarding screen: ", prevScreenState);
+          // Set a flag in session storage to remember this was an onboarding transition
+          sessionStorage.setItem('justCompletedOnboarding', 'true');
+        }
       }
     }
-  }, [screenState, setIsFirstVisit, showMainTutorial]);
+  }, [screenState, showMainTutorial, setIsFirstVisit, isFirstVisit]);
 
   const handleCloseTutorial = () => {
     console.log("handleCloseTutorial called - marking tutorial as completed");
     setIsFirstVisit(false);
     markTutorialCompleted();
+    
+    // If this was immediately after onboarding, show a welcome toast
+    if (sessionStorage.getItem('justCompletedOnboarding')) {
+      toast({
+        title: getTranslatedText("welcomeToThrive"),
+        description: getTranslatedText("exploreAllFeatures"),
+      });
+      sessionStorage.removeItem('justCompletedOnboarding');
+    }
   };
 
-  console.log("IndexContent rendering with isFirstVisit:", isFirstVisit, "showMainTutorial:", showMainTutorial);
+  console.log("IndexContent rendering with screenState:", screenState, "isFirstVisit:", isFirstVisit, "showMainTutorial:", showMainTutorial);
+
+  // Determine if tutorial should be visible
+  const shouldShowTutorial = (isFirstVisit || showMainTutorial) && screenState === 'main';
 
   return (
     <div className="relative">
@@ -118,9 +146,9 @@ const IndexContent: React.FC<IndexContentProps> = ({
         setScreenState={setScreenState}
       />
       
-      {/* WelcomeTutorial component that shows the dashboard tutorial */}
+      {/* Enhanced WelcomeTutorial component with improved visuals */}
       <WelcomeTutorial
-        isOpen={isFirstVisit || showMainTutorial}
+        isOpen={shouldShowTutorial}
         onClose={handleCloseTutorial}
       />
     </div>

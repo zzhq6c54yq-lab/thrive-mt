@@ -58,16 +58,24 @@ const Header = () => {
 
   return (
     <header className="fixed top-0 right-0 z-50 p-4 flex items-center justify-end gap-2">
-      {/* Tutorial Button */}
+      {/* Enhanced Tutorial Button with animated logo */}
       <Button 
         variant="outline" 
         size="icon" 
-        className="h-10 w-10 rounded-full border-2 border-[#B87333] bg-white shadow-lg hover:bg-[#B87333]/10 transition-all duration-300 hover:shadow-[0_0_15px_#B87333]"
+        className="h-10 w-10 rounded-full border-2 border-[#B87333] bg-white/10 backdrop-blur-sm shadow-lg hover:bg-[#B87333]/20 transition-all duration-300 hover:shadow-[0_0_15px_#B87333] relative overflow-hidden"
         aria-label={isSpanish ? "Tutorial de la Aplicación" : "App Tutorial"}
         title={isSpanish ? "Tutorial de la Aplicación" : "App Tutorial"}
         onClick={() => setShowWelcomeTutorial(true)}
       >
-        <div className="text-[#B87333] font-bold text-base leading-none tracking-tighter flex flex-col items-center">
+        {/* Animated rings */}
+        <div className="absolute inset-[-5px] rounded-full border border-[#B87333]/30 animate-spin" style={{animationDuration: '15s'}}></div>
+        <div className="absolute inset-[-3px] rounded-full border border-[#E5C5A1]/20 animate-spin" style={{animationDuration: '10s', animationDirection: 'reverse'}}></div>
+        
+        {/* Glow effect */}
+        <div className="absolute inset-0 rounded-full bg-gradient-to-r from-[#B87333]/20 via-transparent to-[#B87333]/20 animate-pulse" style={{animationDuration: '3s'}}></div>
+        
+        {/* Logo */}
+        <div className="relative z-10 text-[#B87333] font-bold text-base leading-none tracking-tighter flex flex-col items-center">
           <span className="text-[6px] opacity-80 mb-0.5">THRIVE</span>
           <span>MT</span>
         </div>
@@ -79,7 +87,7 @@ const Header = () => {
           <Button 
             variant="outline" 
             size="icon" 
-            className="h-10 w-10 rounded-full border-2 border-[#B87333] bg-white shadow-lg hover:bg-[#B87333]/10 transition-all duration-300 hover:shadow-[0_0_15px_#B87333]"
+            className="h-10 w-10 rounded-full border-2 border-[#B87333] bg-white/10 backdrop-blur-sm shadow-lg hover:bg-[#B87333]/20 transition-all duration-300 hover:shadow-[0_0_15px_#B87333]"
             aria-label={isSpanish ? "Menú de usuario" : "User menu"}
             title={isSpanish ? "Menú de usuario" : "User menu"}
           >
@@ -134,7 +142,7 @@ const Header = () => {
         </DropdownMenuContent>
       </DropdownMenu>
       
-      {/* Welcome Tutorial Dialog */}
+      {/* Enhanced Welcome Tutorial Dialog */}
       <WelcomeTutorial
         isOpen={showWelcomeTutorial}
         onClose={() => setShowWelcomeTutorial(false)}
