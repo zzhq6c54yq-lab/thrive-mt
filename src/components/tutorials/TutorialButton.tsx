@@ -22,12 +22,17 @@ const TutorialButton: React.FC<TutorialButtonProps> = ({
   
   // Check if we should show the tutorial button based on the current route
   const shouldShowTutorialButton = () => {
-    // Only show on main dashboard
+    // Only show logo variant on main dashboard
     const state = location.state as { screenState?: string } | null;
     const screenState = state?.screenState;
     
-    // Only show on main dashboard, not on emotional check-in or other initial screens
-    return location.pathname === "/" && screenState === 'main';
+    // For logo variant, only show on main dashboard, not on emotional check-in or other initial screens
+    if (variant === "logo") {
+      return location.pathname === "/" && screenState === 'main';
+    }
+    
+    // For default variant, show on all screens except emotional check-in
+    return !(location.pathname === "/" && screenState !== 'main');
   };
   
   // Check language preference and listen for changes
@@ -54,7 +59,7 @@ const TutorialButton: React.FC<TutorialButtonProps> = ({
   };
 
   // Don't render if we shouldn't show the button
-  if (!shouldShowTutorialButton() && variant === "logo") {
+  if (!shouldShowTutorialButton()) {
     return null;
   }
 

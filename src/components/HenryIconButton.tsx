@@ -41,6 +41,9 @@ const HenryIconButton: React.FC<HenryIconButtonProps> = ({
     }
   };
 
+  // Determine if we should show the MT logo tutorial button
+  const shouldShowMTButton = location.pathname === "/" && screenState === 'main';
+
   return (
     <>
       <div className="fixed right-6 top-1/2 transform -translate-y-1/2 z-50 flex flex-col items-center gap-3">
@@ -61,7 +64,7 @@ const HenryIconButton: React.FC<HenryIconButtonProps> = ({
         </Button>
         
         {/* Only show the MT logo tutorial button on the main dashboard */}
-        {location.pathname === "/" && screenState === 'main' && (
+        {shouldShowMTButton && (
           <TutorialButton 
             featureId="dashboard" 
             variant="logo" 

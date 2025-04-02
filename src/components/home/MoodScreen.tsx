@@ -142,6 +142,7 @@ const MoodScreen: React.FC<MoodScreenProps> = ({ onMoodSelect, onPrevious }) => 
     }
   ];
 
+  // Animation variants
   const container = {
     hidden: { opacity: 0 },
     show: {
@@ -179,23 +180,6 @@ const MoodScreen: React.FC<MoodScreenProps> = ({ onMoodSelect, onPrevious }) => 
         <div className="absolute bottom-0 right-0 w-96 h-96 bg-[#B87333]/5 rounded-full blur-3xl"></div>
         <div className="absolute top-1/4 right-1/4 w-64 h-64 bg-[#B87333]/3 rounded-full blur-3xl"></div>
       </div>
-      
-      {/* Thrive MT Logo in circle */}
-      <motion.div 
-        initial={{ scale: 0, opacity: 0 }}
-        animate={{ scale: 1, opacity: 1 }}
-        transition={{ delay: 0.5, duration: 0.5 }}
-        className="absolute top-6 right-6 z-20"
-      >
-        <div className="w-16 h-16 rounded-full bg-gradient-to-br from-[#B87333] to-[#E5C5A1] flex items-center justify-center shadow-lg p-1">
-          <div className="w-full h-full rounded-full bg-[#1a1a1f]/80 flex items-center justify-center">
-            <div className="text-[#B87333] font-bold text-xl leading-none tracking-tighter flex flex-col items-center">
-              <span className="text-[8px] opacity-80 mb-0.5">THRIVE</span>
-              <span className="text-xl">MT</span>
-            </div>
-          </div>
-        </div>
-      </motion.div>
       
       <div className="z-10 w-full max-w-4xl mx-auto px-4 py-8">
         <motion.div 
