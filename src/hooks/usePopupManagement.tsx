@@ -47,9 +47,11 @@ export const usePopupManagement = (screenState: string) => {
     };
   }, []);
 
+  // Main effect for handling popups based on screen state
   useEffect(() => {
     // Track previous screen state
     const prevScreenState = localStorage.getItem('prevScreenState');
+    console.log("usePopupManagement - Current screen:", screenState, "Previous screen:", prevScreenState);
     
     // Show popups during initial flow when transferring to main menu
     if (screenState === 'main') {
@@ -61,9 +63,9 @@ export const usePopupManagement = (screenState: string) => {
           prevScreenState === 'mood' ||
           prevScreenState === 'register') {
         
-        console.log("Showing tutorial when transitioning from:", prevScreenState, "to main");
+        console.log("TUTORIAL TRIGGER: Showing tutorial when transitioning from:", prevScreenState, "to main");
         
-        // Force reset tutorial flags to ensure they show
+        // Force reset all tutorial-related flags to ensure they show
         localStorage.setItem('dashboardTutorialShown', 'false');
         
         // Reset the transition tutorial flags in popupsShown state
@@ -73,8 +75,15 @@ export const usePopupManagement = (screenState: string) => {
           transitionTutorial: false
         }));
         
+        // Force show both tutorials
         setShowTransitionTutorial(true);
         setShowMainTutorial(true);
+        
+        // Force a re-render after a small delay to ensure state changes are applied
+        setTimeout(() => {
+          console.log("Forcing tutorial display after delay");
+          setShowMainTutorial(true);
+        }, 100);
       }
       
       // Show co-pay credit popup if not shown yet

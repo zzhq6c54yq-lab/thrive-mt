@@ -55,6 +55,8 @@ const IndexScreenManager: React.FC<IndexScreenManagerProps> = ({
 }) => {
   // Save previous state to localStorage for transition detection
   React.useEffect(() => {
+    const prevState = localStorage.getItem('prevScreenState');
+    console.log("IndexScreenManager: Screen changing from", prevState, "to", screenState);
     localStorage.setItem('prevScreenState', screenState);
     
     // When navigating to main from onboarding screens, ensure tutorial will show
@@ -66,9 +68,9 @@ const IndexScreenManager: React.FC<IndexScreenManagerProps> = ({
           prevState === 'mood' || 
           prevState === 'register') {
         
-        console.log("Transitioning to main from:", prevState);
+        console.log("MANAGER TRIGGER: Transitioning to main from:", prevState);
         
-        // Force show tutorial by resetting flag
+        // Force show tutorial by resetting flag and doing it early in the process
         localStorage.setItem('dashboardTutorialShown', 'false');
         
         // Also reset the popupsShown tutorial flags in localStorage

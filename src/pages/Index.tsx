@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { useToast } from "@/hooks/use-toast";
@@ -53,9 +52,7 @@ const Index = () => {
   const isSpanish = preferredLanguage === 'Español';
 
   useEffect(() => {
-    // Add a listener for language changes
     const handleLanguageChange = () => {
-      // Force component re-render to apply language changes
       setSelectedMood(prev => prev);
     };
     
@@ -77,51 +74,62 @@ const Index = () => {
     }
   }, [screenState]);
 
-  // Automatically show the tutorial when transitioning to main from any onboarding screen
   useEffect(() => {
+    console.log("Index checking for tutorial trigger, screen state:", screenState);
     const prevState = localStorage.getItem('prevScreenState');
-    if (screenState === 'main' && 
-        (prevState === 'visionBoard' || 
-         prevState === 'subscription' || 
-         prevState === 'moodResponse' || 
-         prevState === 'mood' || 
-         prevState === 'register')) {
+    
+    if (screenState === 'main') {
+      console.log("Index: Currently on main screen, previous screen was:", prevState);
       
-      // Force the tutorial to show by clearing its state
-      localStorage.setItem('dashboardTutorialShown', 'false');
+      const comingFromOnboarding = prevState === 'visionBoard' || 
+                                  prevState === 'subscription' || 
+                                  prevState === 'moodResponse' || 
+                                  prevState === 'mood' || 
+                                  prevState === 'register';
+                                  
+      console.log("Coming from onboarding screen?", comingFromOnboarding);
       
-      // Show the tutorial with a slight delay to ensure the main screen is rendered
-      setTimeout(() => {
-        setShowMainTutorial(true);
-        setCurrentFeatureId("dashboard");
-        setTutorialStep(0);
-        setAutoProgressTutorial(true);
-      }, 500);
+      if (comingFromOnboarding) {
+        console.log("INDEX TRIGGER: Forcing tutorial to show for transition from", prevState, "to main");
+        
+        localStorage.setItem('dashboardTutorialShown', 'false');
+        
+        const storedPopups = localStorage.getItem('popupsShown');
+        if (storedPopups) {
+          const parsedPopups = JSON.parse(storedPopups);
+          parsedPopups.mainTutorial = false;
+          parsedPopups.transitionTutorial = false;
+          localStorage.setItem('popupsShown', JSON.stringify(parsedPopups));
+        }
+        
+        setTimeout(() => {
+          setShowMainTutorial(true);
+          setCurrentFeatureId("dashboard");
+          setTutorialStep(0);
+          setAutoProgressTutorial(true);
+          console.log("Tutorial visibility forcibly set to true with delay");
+        }, 300);
+      }
     }
     
-    // Save current screen state for next navigation
     localStorage.setItem('prevScreenState', screenState);
   }, [screenState, setShowMainTutorial]);
 
-  // Auto-progress tutorial timer
   useEffect(() => {
     if (showMainTutorial && autoProgressTutorial) {
-      // If already exists, clear it first
       if (tutorialInterval) {
         clearInterval(tutorialInterval);
       }
       
-      // Set new interval for auto-progression (every 8 seconds)
       const interval = setInterval(() => {
         if (tutorialStep < mainFeatures.length - 1) {
           setTutorialStep(step => step + 1);
           setCurrentFeatureId(mainFeatures[tutorialStep + 1].id);
         } else {
-          // End tutorial when reached the end
           handleFinishTutorial();
           clearInterval(interval);
         }
-      }, 8000); // 8 seconds between steps
+      }, 8000);
       
       setTutorialInterval(interval);
     }
@@ -540,6 +548,5 @@ const Index = () => {
     </Dialog>
   </div>
 );
-};
 
 export default Index;

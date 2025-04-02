@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { useToast } from "@/hooks/use-toast";
@@ -66,10 +67,12 @@ const MainDashboard: React.FC<MainDashboardProps> = ({
                                 prevScreenState === 'mood' || 
                                 prevScreenState === 'register';
     
-    console.log("MainDashboard: Previous screen state:", prevScreenState);
+    console.log("DASHBOARD TRIGGER: Previous screen state:", prevScreenState);
     console.log("Coming from onboarding:", comingFromOnboarding);
     
     if (comingFromOnboarding) {
+      console.log("MainDashboard forcing tutorial to show");
+      
       // Force reset the dashboard tutorial flag 
       localStorage.setItem('dashboardTutorialShown', 'false');
       
@@ -82,7 +85,10 @@ const MainDashboard: React.FC<MainDashboardProps> = ({
         localStorage.setItem('popupsShown', JSON.stringify(parsedState));
       }
       
-      console.log("Reset tutorial flags in MainDashboard");
+      // Set local tutorial state
+      setShowTutorial(true);
+      
+      console.log("Reset tutorial flags in MainDashboard, showTutorial =", true);
     }
   }, []);
   

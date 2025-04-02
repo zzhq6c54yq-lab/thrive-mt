@@ -21,7 +21,7 @@ export const useScreenHistory = (
             prevScreenState === 'mood' || 
             prevScreenState === 'register') {
           
-          console.log("Detecting transition to main from onboarding:", prevScreenState);
+          console.log("HISTORY TRIGGER: Detecting transition to main from onboarding:", prevScreenState);
           
           // Reset the tutorial flag to ensure it shows
           localStorage.setItem('dashboardTutorialShown', 'false');
@@ -82,6 +82,7 @@ export const useScreenHistory = (
   }, [location.state, screenState, setScreenState]);
 
   useEffect(() => {
+    console.log("Screen state changed to:", screenState);
     window.history.replaceState(
       { ...window.history.state, screenState }, 
       document.title
