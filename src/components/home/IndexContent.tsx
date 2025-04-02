@@ -127,6 +127,13 @@ const IndexContent: React.FC<IndexContentProps> = ({
   const shouldShowTutorial = (isFirstVisit || showMainTutorial) && screenState === 'main';
   console.log("Should show tutorial:", shouldShowTutorial);
 
+  // Log tutorial state - done before the return statement to avoid rendering void in JSX
+  if (shouldShowTutorial) {
+    console.log("Rendering welcome tutorial because shouldShowTutorial is true");
+  } else {
+    console.log("NOT rendering welcome tutorial because shouldShowTutorial is false");
+  }
+
   return (
     <div className="relative">
       {showCoPayCredit && !popupsShown.coPayCredit && 
@@ -156,10 +163,6 @@ const IndexContent: React.FC<IndexContentProps> = ({
         handleRegister={handleRegister}
         setScreenState={setScreenState}
       />
-      
-      {/* Debug - Add visible indicator when tutorial should be showing */}
-      {shouldShowTutorial && console.log("Rendering welcome tutorial because shouldShowTutorial is true")}
-      {!shouldShowTutorial && console.log("NOT rendering welcome tutorial because shouldShowTutorial is false")}
       
       {/* Enhanced WelcomeTutorial component with improved visibility */}
       <WelcomeTutorial
