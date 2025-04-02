@@ -53,6 +53,7 @@ const Index = () => {
     }
   }, [location.state, setShowHenry]);
 
+  // Check if it's the first visit and show tutorial accordingly
   useEffect(() => {
     const hasVisited = localStorage.getItem('hasVisitedThriveMT');
     if (!hasVisited && screenState === 'main') {
