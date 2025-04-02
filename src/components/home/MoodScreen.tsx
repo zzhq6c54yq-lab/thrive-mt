@@ -1,4 +1,3 @@
-
 import React, { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { ArrowLeft, Smile, Meh, Frown, HeartCrack, Angry, Annoyed } from "lucide-react";
@@ -101,7 +100,7 @@ const MoodScreen: React.FC<MoodScreenProps> = ({ onMoodSelect, onPrevious }) => 
       iconGradient: "bg-gradient-to-br from-purple-200 to-purple-300",
       accentColor: "purple-400",
       message: isSpanish 
-        ? "Tu tristeza habla de tu capacidad para sentir profundamente. Está bien no estar bien a veces. Date el espacio para procesar estos sentimientos y recuerda que no estás solo en tu experiencia. Hay apoyo disponible cuando lo necesites.",
+        ? "Tu tristeza habla de tu capacidad para sentir profundamente. Está bien no estar bien a veces. Date el espacio para procesar estos sentimientos y recuerda que no estás solo en tu experiencia. Hay apoyo disponible cuando lo necesites."
         : "Your sadness speaks to your capacity to feel deeply. It's okay to not be okay sometimes. Give yourself the space to process these feelings, and remember that you're not alone in your experience. Support is available when you need it."
     },
     {
@@ -114,7 +113,7 @@ const MoodScreen: React.FC<MoodScreenProps> = ({ onMoodSelect, onPrevious }) => 
       iconGradient: "bg-gradient-to-br from-orange-200 to-orange-300",
       accentColor: "orange-400",
       message: isSpanish 
-        ? "Sentirse abrumado es una señal de que necesitas cuidarte. Respira profundamente y recuerda que no tienes que hacerlo todo a la vez. Está bien establecer límites y pedir ayuda. Un paso a la vez es todo lo que necesitas dar ahora.",
+        ? "Sentirse abrumado es una señal de que necesitas cuidarte. Respira profundamente y recuerda que no tienes que hacerlo todo a la vez. Está bien establecer límites y pedir ayuda. Un paso a la vez es todo lo que necesitas dar ahora."
         : "Feeling overwhelmed is a signal that you need self-care. Take a deep breath and remember that you don't have to do it all at once. It's okay to set boundaries and ask for help. One step at a time is all you need to take right now."
     }
   ];
