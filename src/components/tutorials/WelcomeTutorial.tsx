@@ -35,7 +35,7 @@ const WelcomeTutorial: React.FC<WelcomeTutorialProps> = ({ isOpen, onClose }) =>
         
         <ScrollArea className="max-h-[60vh] pr-4">
           <FeatureTutorial 
-            featureId="main" 
+            featureId="dashboard" 
             onClose={onClose} 
             embedded={true}
           />
