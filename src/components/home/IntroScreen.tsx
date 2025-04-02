@@ -13,7 +13,7 @@ const IntroScreen: React.FC<IntroScreenProps> = ({ onContinue }) => {
   
   const handleLanguageChange = (language: string) => {
     setSelectedLanguage(language);
-    // In a real implementation, this would update the app's language context
+    // This will update the app's language context
     localStorage.setItem('preferredLanguage', language);
   };
   
@@ -21,17 +21,20 @@ const IntroScreen: React.FC<IntroScreenProps> = ({ onContinue }) => {
     <div className="min-h-screen flex flex-col items-center justify-center bg-[#1a1a1f] overflow-hidden relative">
       <div className="floating-bg"></div>
       
-      {/* Language selector at the top */}
-      <div className="absolute top-5 right-5 z-20">
-        <div className="flex items-center gap-2 bg-black/40 backdrop-blur-sm p-1 rounded-full">
-          <Languages className="h-5 w-5 text-[#B87333]" />
-          <div className="flex gap-1">
+      {/* Language selector centered at the top */}
+      <div className="absolute top-5 z-20 w-full flex justify-center">
+        <div className="flex flex-col items-center bg-black/40 backdrop-blur-sm p-3 rounded-xl">
+          <div className="flex items-center gap-2 mb-2">
+            <Languages className="h-5 w-5 text-[#B87333]" />
+            <span className="text-white font-medium">Select Language</span>
+          </div>
+          <div className="grid grid-cols-3 gap-2 max-w-md">
             {languages.map((language) => (
               <Button
                 key={language}
                 size="sm"
                 variant={selectedLanguage === language ? "gold" : "ghost"}
-                className={`text-xs py-1 px-2 h-7 rounded-full transition-all duration-300 ${
+                className={`text-xs py-1 px-2 h-8 rounded-full transition-all duration-300 ${
                   selectedLanguage === language 
                     ? "bg-[#B87333] text-white shadow-[0_0_10px_rgba(184,115,51,0.5)]" 
                     : "text-white/70 hover:text-white hover:bg-[#B87333]/20"

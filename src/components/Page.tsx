@@ -53,6 +53,42 @@ const Page: React.FC<PageProps> = ({
   // Get the preferred language from localStorage
   const preferredLanguage = localStorage.getItem('preferredLanguage') || 'English';
   
+  // Determine if this is the main dashboard page
+  const isMainDashboard = location.pathname === "/" && 
+    location.state && location.state.screenState === 'main';
+
+  // Translation function for back/home buttons
+  const getTranslation = (key: string) => {
+    const translations: Record<string, Record<string, string>> = {
+      'back': {
+        'English': 'Back',
+        'Español': 'Atrás',
+        'Français': 'Retour',
+        'Deutsch': 'Zurück',
+        '中文': '返回',
+        'العربية': 'رجوع'
+      },
+      'home': {
+        'English': 'Home',
+        'Español': 'Inicio',
+        'Français': 'Accueil',
+        'Deutsch': 'Startseite',
+        '中文': '主页',
+        'العربية': 'الرئيسية'
+      },
+      'comingSoon': {
+        'English': 'Coming soon! This feature is under development.',
+        'Español': '¡Próximamente! Esta función está en desarrollo.',
+        'Français': 'Bientôt disponible ! Cette fonctionnalité est en cours de développement.',
+        'Deutsch': 'Demnächst verfügbar! Diese Funktion wird gerade entwickelt.',
+        '中文': '即将推出！此功能正在开发中。',
+        'العربية': 'قريبا! هذه الميزة قيد التطوير.'
+      }
+    };
+    
+    return translations[key][preferredLanguage] || translations[key]['English'];
+  };
+  
   return (
     <div className="min-h-screen bg-gradient-to-b from-[#1a1a1f] via-[#242432] to-[#272730] text-white py-1 px-1 relative overflow-x-hidden">
       <div className="absolute inset-0 bg-[url('data:image/svg+xml;utf8,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%2220%22 height=%2220%22 viewBox=%220 0 20 20%22><circle cx=%222%22 cy=%222%22 r=%221%22 fill=%22%23B87333%22 fill-opacity=%220.05%22/></svg>')] opacity-20"></div>
@@ -65,7 +101,8 @@ const Page: React.FC<PageProps> = ({
         {/* Title in Header with language indicator */}
         <div className="flex flex-col md:flex-row items-center justify-between mb-2 gap-1">
           <div className="flex items-center gap-1">
-            {showBackButton && (
+            {/* Only show back button when not on main dashboard */}
+            {showBackButton && !isMainDashboard && (
               <Button
                 variant="outline"
                 size="sm"
@@ -73,11 +110,7 @@ const Page: React.FC<PageProps> = ({
                 onClick={handleBackClick}
               >
                 <ArrowLeft className="h-4 w-4 mr-1" />
-                {preferredLanguage === 'English' ? 'Back' : 
-                  preferredLanguage === 'Español' ? 'Atrás' :
-                  preferredLanguage === 'Français' ? 'Retour' :
-                  preferredLanguage === 'Deutsch' ? 'Zurück' :
-                  preferredLanguage === '中文' ? '返回' : 'رجوع'}
+                {getTranslation('back')}
               </Button>
             )}
             <Button
@@ -87,11 +120,7 @@ const Page: React.FC<PageProps> = ({
               onClick={handleHomeClick}
             >
               <Home className="h-4 w-4 mr-1" />
-              {preferredLanguage === 'English' ? 'Home' : 
-                preferredLanguage === 'Español' ? 'Inicio' :
-                preferredLanguage === 'Français' ? 'Accueil' :
-                preferredLanguage === 'Deutsch' ? 'Startseite' :
-                preferredLanguage === '中文' ? '主页' : 'الرئيسية'}
+              {getTranslation('home')}
             </Button>
             <h1 className="text-lg md:text-xl font-light tracking-tight">
               <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#B87333] to-[#e5c5a1] drop-shadow-sm">{title}</span>
@@ -108,11 +137,7 @@ const Page: React.FC<PageProps> = ({
           {children || (
             <div className="p-3 rounded-lg bg-white/5 text-center backdrop-blur-sm">
               <p className="text-sm text-gray-300">
-                {preferredLanguage === 'English' ? 'Coming soon! This feature is under development.' : 
-                  preferredLanguage === 'Español' ? '¡Próximamente! Esta función está en desarrollo.' :
-                  preferredLanguage === 'Français' ? 'Bientôt disponible ! Cette fonctionnalité est en cours de développement.' :
-                  preferredLanguage === 'Deutsch' ? 'Demnächst verfügbar! Diese Funktion wird gerade entwickelt.' :
-                  preferredLanguage === '中文' ? '即将推出！此功能正在开发中。' : 'قريبا! هذه الميزة قيد التطوير.'}
+                {getTranslation('comingSoon')}
               </p>
             </div>
           )}

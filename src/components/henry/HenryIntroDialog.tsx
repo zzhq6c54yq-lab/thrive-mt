@@ -1,9 +1,9 @@
 
 import React from "react";
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter } from "@/components/ui/dialog";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter, DialogClose } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
-import { Heart, Brain, Smile, Sparkles, ArrowRight, MessageCircle, HandHeart } from "lucide-react";
+import { Heart, Brain, Smile, Sparkles, ArrowRight, MessageCircle, HandHeart, X } from "lucide-react";
 import { ScrollArea } from "@/components/ui/scroll-area";
 
 interface HenryIntroDialogProps {
@@ -20,7 +20,12 @@ const HenryIntroDialog: React.FC<HenryIntroDialogProps> = ({ open, onOpenChange,
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="sm:max-w-md bg-white/5 backdrop-blur-md border border-[#B87333]/20">
+      <DialogContent className="sm:max-w-md bg-white/5 backdrop-blur-md border border-[#B87333]/20 max-h-[85vh] overflow-hidden">
+        <DialogClose className="absolute right-4 top-4 rounded-sm opacity-70 ring-offset-background transition-opacity hover:opacity-100 focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:pointer-events-none data-[state=open]:bg-accent data-[state=open]:text-muted-foreground">
+          <X className="h-4 w-4 text-white" />
+          <span className="sr-only">Close</span>
+        </DialogClose>
+        
         <DialogHeader className="text-center">
           <div className="flex justify-center mb-2">
             <Avatar className="h-24 w-24 border-4 border-[#B87333]/50">
@@ -36,7 +41,7 @@ const HenryIntroDialog: React.FC<HenryIntroDialogProps> = ({ open, onOpenChange,
           </DialogDescription>
         </DialogHeader>
         
-        <ScrollArea className="max-h-[60vh] overflow-auto pr-4">
+        <ScrollArea className="pr-4 mt-4" style={{ maxHeight: 'calc(60vh - 100px)' }}>
           <div className="space-y-4 text-white">
             <p className="leading-relaxed">
               Hey there! I'm Henry, your personal companion on this journey to better mental health. Think of me as that supportive friend who's always here when you need someone to talk to.
