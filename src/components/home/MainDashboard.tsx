@@ -2,7 +2,6 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import { useToast } from "@/hooks/use-toast";
-import { ArrowLeft } from "lucide-react";
 import Header from "@/components/layout/Header";
 import UpcomingAppointments from "@/components/dashboard/UpcomingAppointments";
 import InsightsSection from "@/components/dashboard/InsightsSection";
@@ -34,10 +33,6 @@ const MainDashboard: React.FC<MainDashboardProps> = ({
 }) => {
   const navigate = useNavigate();
   const { toast } = useToast();
-  
-  const handleGoBack = () => {
-    navigate(-1);
-  };
   
   const handleWorkshopClick = (workshopId: string, workshopTitle: string) => {
     toast({
@@ -91,17 +86,6 @@ const MainDashboard: React.FC<MainDashboardProps> = ({
         <div className="absolute top-0 left-0 right-0 h-24 bg-gradient-to-r from-[#B87333]/3 via-[#E5C5A1]/5 to-[#B87333]/3 transform -skew-y-3"></div>
         <div className="absolute top-10 left-0 right-0 h-32 bg-gradient-to-r from-[#E5C5A1]/2 via-[#B87333]/4 to-[#E5C5A1]/2 transform skew-y-2" style={{animationDelay: '0.5s'}}></div>
         <div className="absolute bottom-0 left-0 right-0 h-28 bg-gradient-to-r from-[#B87333]/3 via-[#E5C5A1]/5 to-[#B87333]/3 transform -skew-y-2"></div>
-      </div>
-      
-      <div className="container mx-auto max-w-6xl relative z-10">
-        <div className="flex items-center mb-4">
-          <button 
-            onClick={handleGoBack} 
-            className="mr-4 p-2 rounded-full bg-[#2a2a3c]/80 hover:bg-[#2a2a3c] transition-colors"
-          >
-            <ArrowLeft className="h-5 w-5 text-gray-300" />
-          </button>
-        </div>
       </div>
       
       <Header />

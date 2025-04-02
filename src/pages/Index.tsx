@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { useToast } from "@/hooks/use-toast";
@@ -8,7 +9,7 @@ import usePopupManagement from "@/hooks/usePopupManagement";
 import IndexScreenManager from "@/components/home/IndexScreenManager";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
-import { Lightbulb, Navigation, ChevronRight } from "lucide-react";
+import { Lightbulb, ChevronRight } from "lucide-react";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import FeatureTutorial from "@/components/tutorials/FeatureTutorial";
 
@@ -27,7 +28,9 @@ const Index = () => {
   const [isFirstVisit, setIsFirstVisit] = useState(false);
   const [tutorialStep, setTutorialStep] = useState(0);
   const [showMainTutorial, setShowMainTutorial] = useState(false);
-  const [currentFeatureId, setCurrentFeatureId] = useState<string>("");
+  const [currentFeatureId, setCurrentFeatureId] = useState<string>("dashboard");
+  const [tutorialCompleted, setTutorialCompleted] = useState(false);
+  const [showTransitionTutorial, setShowTransitionTutorial] = useState(false);
 
   const mousePosition = useMousePosition();
   const navigate = useNavigate();
@@ -38,12 +41,23 @@ const Index = () => {
     setShowCoPayCredit, 
     showHenry, 
     setShowHenry,
-    popupsShown
+    popupsShown,
   } = usePopupManagement(screenState);
 
   useScreenHistory(screenState, setScreenState);
 
   const preferredLanguage = localStorage.getItem('preferredLanguage') || 'English';
+
+  useEffect(() => {
+    // Add a listener for language changes
+    const handleLanguageChange = () => {
+      // Force component re-render to apply language changes
+      setSelectedMood(prev => prev);
+    };
+    
+    window.addEventListener('languageChange', handleLanguageChange);
+    return () => window.removeEventListener('languageChange', handleLanguageChange);
+  }, []);
 
   useEffect(() => {
     if (location.state && location.state.showHenry) {
@@ -59,16 +73,41 @@ const Index = () => {
     }
   }, [screenState]);
 
+  // Show tutorial when transitioning to main screen from visionBoard or subscription
+  useEffect(() => {
+    if (screenState === 'main' && 
+        (document.referrer.includes('visionBoard') || document.referrer.includes('subscription')) && 
+        !tutorialCompleted) {
+      setShowTransitionTutorial(true);
+    }
+  }, [screenState, tutorialCompleted]);
+
+  // Automatically show the tutorial when transitioning to main from visionBoard or subscription
+  useEffect(() => {
+    const prevState = localStorage.getItem('prevScreenState');
+    if (screenState === 'main' && 
+        (prevState === 'visionBoard' || prevState === 'subscription') &&
+        !tutorialCompleted && 
+        !showMainTutorial) {
+      setTimeout(() => {
+        setShowMainTutorial(true);
+        setCurrentFeatureId("dashboard");
+        setTutorialStep(0);
+      }, 800); // Slight delay to allow the main screen to render
+    }
+    localStorage.setItem('prevScreenState', screenState);
+  }, [screenState, tutorialCompleted, showMainTutorial]);
+
   const mainFeatures = [
-    { id: "dashboard", title: "Dashboard", description: "Your personal mental health control center" },
-    { id: "wellness-challenges", title: "Wellness Challenges", description: "Complete daily activities to improve your well-being" },
-    { id: "real-time-therapy", title: "Real-Time Therapy", description: "Connect with therapists when you need support" },
-    { id: "community-support", title: "Community Support", description: "Join a community of individuals on similar journeys" },
-    { id: "resource-library", title: "Resource Library", description: "Access mental health articles, videos, and tools" },
-    { id: "copay-credits", title: "Co-Pay Credits", description: "Earn rewards for consistent engagement" }
+    { id: "dashboard", title: getTranslatedText('dashboardTitle'), description: getTranslatedText('dashboardDesc') },
+    { id: "wellness-challenges", title: getTranslatedText('challengesTitle'), description: getTranslatedText('challengesDesc') },
+    { id: "real-time-therapy", title: getTranslatedText('therapyTitle'), description: getTranslatedText('therapyDesc') },
+    { id: "community-support", title: getTranslatedText('communityTitle'), description: getTranslatedText('communityDesc') },
+    { id: "resource-library", title: getTranslatedText('resourcesTitle'), description: getTranslatedText('resourcesDesc') },
+    { id: "copay-credits", title: getTranslatedText('coPayTitle'), description: getTranslatedText('coPayDesc') }
   ];
 
-  const getTranslatedText = (key: string) => {
+  function getTranslatedText(key: string) {
     const translations: Record<string, Record<string, string>> = {
       'welcomeTitle': {
         'English': 'Welcome to Thrive MT!',
@@ -141,11 +180,107 @@ const Index = () => {
         'Deutsch': 'Hauptfunktionen',
         '中文': '主要功能',
         'العربية': 'الميزات الرئيسية'
+      },
+      'dashboardTitle': {
+        'English': 'Dashboard',
+        'Español': 'Panel',
+        'Français': 'Tableau de Bord',
+        'Deutsch': 'Dashboard',
+        '中文': '仪表板',
+        'العربية': 'لوحة التحكم'
+      },
+      'dashboardDesc': {
+        'English': 'Your personal mental health control center',
+        'Español': 'Tu centro de control de salud mental personal',
+        'Français': 'Votre centre de contrôle de santé mentale personnel',
+        'Deutsch': 'Ihr persönliches Kontrollzentrum für psychische Gesundheit',
+        '中文': '您的个人心理健康控制中心',
+        'العربية': 'مركز التحكم في الصحة النفسية الشخصية الخاص بك'
+      },
+      'challengesTitle': {
+        'English': 'Wellness Challenges',
+        'Español': 'Desafíos de Bienestar',
+        'Français': 'Défis de Bien-être',
+        'Deutsch': 'Wellness-Herausforderungen',
+        '中文': '健康挑战',
+        'العربية': 'تحديات العافية'
+      },
+      'challengesDesc': {
+        'English': 'Complete daily activities to improve your well-being',
+        'Español': 'Completa actividades diarias para mejorar tu bienestar',
+        'Français': 'Complétez des activités quotidiennes pour améliorer votre bien-être',
+        'Deutsch': 'Absolvieren Sie tägliche Aktivitäten, um Ihr Wohlbefinden zu verbessern',
+        '中文': '完成日常活动以改善您的健康状况',
+        'العربية': 'أكمل الأنشطة اليومية لتحسين صحتك'
+      },
+      'therapyTitle': {
+        'English': 'Real-Time Therapy',
+        'Español': 'Terapia en Tiempo Real',
+        'Français': 'Thérapie en Temps Réel',
+        'Deutsch': 'Echtzeit-Therapie',
+        '中文': '实时治疗',
+        'العربية': 'العلاج في الوقت الحقيقي'
+      },
+      'therapyDesc': {
+        'English': 'Connect with therapists when you need support',
+        'Español': 'Conéctate con terapeutas cuando necesites apoyo',
+        'Français': 'Connectez-vous avec des thérapeutes lorsque vous avez besoin de soutien',
+        'Deutsch': 'Verbinden Sie sich mit Therapeuten, wenn Sie Unterstützung benötigen',
+        '中文': '在您需要支持时与治疗师联系',
+        'العربية': 'تواصل مع المعالجين عندما تحتاج إلى الدعم'
+      },
+      'communityTitle': {
+        'English': 'Community Support',
+        'Español': 'Apoyo Comunitario',
+        'Français': 'Soutien Communautaire',
+        'Deutsch': 'Gemeinschaftliche Unterstützung',
+        '中文': '社区支持',
+        'العربية': 'دعم المجتمع'
+      },
+      'communityDesc': {
+        'English': 'Join a community of individuals on similar journeys',
+        'Español': 'Únete a una comunidad de personas en viajes similares',
+        'Français': 'Rejoignez une communauté de personnes aux parcours similaires',
+        'Deutsch': 'Treten Sie einer Gemeinschaft von Personen auf ähnlichen Wegen bei',
+        '中文': '加入一个有着相似经历的人的社区',
+        'العربية': 'انضم إلى مجتمع من الأفراد في رحلات مماثلة'
+      },
+      'resourcesTitle': {
+        'English': 'Resource Library',
+        'Español': 'Biblioteca de Recursos',
+        'Français': 'Bibliothèque de Ressources',
+        'Deutsch': 'Ressourcen-Bibliothek',
+        '中文': '资源库',
+        'العربية': 'مكتبة الموارد'
+      },
+      'resourcesDesc': {
+        'English': 'Access mental health articles, videos, and tools',
+        'Español': 'Accede a artículos, videos y herramientas de salud mental',
+        'Français': 'Accédez à des articles, vidéos et outils de santé mentale',
+        'Deutsch': 'Zugriff auf Artikel, Videos und Tools zur psychischen Gesundheit',
+        '中文': '获取心理健康文章、视频和工具',
+        'العربية': 'الوصول إلى مقالات وفيديوهات وأدوات الصحة النفسية'
+      },
+      'coPayTitle': {
+        'English': 'Co-Pay Credits',
+        'Español': 'Créditos de Copago',
+        'Français': 'Crédits de Quote-part',
+        'Deutsch': 'Zuzahlungsguthaben',
+        '中文': '共付额积分',
+        'العربية': 'ائتمانات الدفع المشترك'
+      },
+      'coPayDesc': {
+        'English': 'Earn rewards for consistent engagement',
+        'Español': 'Gana recompensas por una participación constante',
+        'Français': 'Gagnez des récompenses pour un engagement constant',
+        'Deutsch': 'Verdienen Sie Belohnungen für konsequentes Engagement',
+        '中文': '通过持续参与获得奖励',
+        'العربية': 'اكسب المكافآت للمشاركة المستمرة'
       }
     };
     
     return translations[key][preferredLanguage] || translations[key]['English'];
-  };
+  }
 
   const handleUserInfoChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -278,6 +413,7 @@ const Index = () => {
 
   const handleSkipTutorial = () => {
     setIsFirstVisit(false);
+    setTutorialCompleted(true);
     toast({
       title: "Tutorial Skipped",
       description: "You can access tutorials anytime through the Help button.",
@@ -296,6 +432,7 @@ const Index = () => {
   const handleFinishTutorial = () => {
     setShowMainTutorial(false);
     setTutorialStep(0);
+    setTutorialCompleted(true);
     
     toast({
       title: "Tutorial Completed",
@@ -303,6 +440,11 @@ const Index = () => {
     });
     
     setShowHenry(true);
+  };
+
+  const closeTutorialAndMarkCompleted = () => {
+    setShowMainTutorial(false);
+    setTutorialCompleted(true);
   };
 
   return (
@@ -381,7 +523,7 @@ const Index = () => {
         </DialogContent>
       </Dialog>
 
-      <Dialog open={showMainTutorial} onOpenChange={setShowMainTutorial}>
+      <Dialog open={showMainTutorial} onOpenChange={closeTutorialAndMarkCompleted}>
         <DialogContent className="bg-[#2a2a3c] border-[#3a3a4c] text-white max-w-lg">
           <DialogHeader>
             <div className="flex items-center">
@@ -421,7 +563,7 @@ const Index = () => {
           <DialogFooter className="flex justify-between mt-4">
             <Button 
               variant="outline"
-              onClick={handleFinishTutorial}
+              onClick={closeTutorialAndMarkCompleted}
               className="border-gray-600 text-gray-300 hover:bg-gray-700"
             >
               {getTranslatedText('skipForNow')}

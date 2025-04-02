@@ -1,5 +1,5 @@
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { ArrowRight, Languages } from "lucide-react";
 
@@ -11,10 +11,21 @@ const IntroScreen: React.FC<IntroScreenProps> = ({ onContinue }) => {
   const [selectedLanguage, setSelectedLanguage] = useState<string>("English");
   const languages = ["English", "Español", "Français", "Deutsch", "中文", "العربية"];
   
+  useEffect(() => {
+    // Load the saved language preference if available
+    const savedLanguage = localStorage.getItem('preferredLanguage');
+    if (savedLanguage) {
+      setSelectedLanguage(savedLanguage);
+    }
+  }, []);
+  
   const handleLanguageChange = (language: string) => {
     setSelectedLanguage(language);
     // This will update the app's language context
     localStorage.setItem('preferredLanguage', language);
+    
+    // Force a re-render of the app to apply the language change immediately
+    window.dispatchEvent(new Event('languageChange'));
   };
   
   return (
@@ -22,13 +33,13 @@ const IntroScreen: React.FC<IntroScreenProps> = ({ onContinue }) => {
       <div className="floating-bg"></div>
       
       {/* Language selector centered at the top */}
-      <div className="absolute top-5 z-20 w-full flex justify-center">
-        <div className="flex flex-col items-center bg-black/40 backdrop-blur-sm p-3 rounded-xl">
-          <div className="flex items-center gap-2 mb-2">
+      <div className="absolute top-1/4 -translate-y-1/2 z-20 w-full flex justify-center">
+        <div className="flex flex-col items-center bg-black/40 backdrop-blur-sm p-4 rounded-xl shadow-[0_0_15px_rgba(184,115,51,0.3)]">
+          <div className="flex items-center gap-2 mb-3">
             <Languages className="h-5 w-5 text-[#B87333]" />
             <span className="text-white font-medium">Select Language</span>
           </div>
-          <div className="grid grid-cols-3 gap-2 max-w-md">
+          <div className="grid grid-cols-3 gap-3 max-w-md">
             {languages.map((language) => (
               <Button
                 key={language}
