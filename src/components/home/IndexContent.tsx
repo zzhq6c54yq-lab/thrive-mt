@@ -1,5 +1,5 @@
 
-import React from "react";
+import React, { useEffect } from "react";
 import CoPayCreditPopup from "@/components/CoPayCreditPopup";
 import IndexScreenManager from "@/components/home/IndexScreenManager";
 import WelcomeTutorial from "@/components/tutorials/WelcomeTutorial";
@@ -65,6 +65,24 @@ const IndexContent: React.FC<IndexContentProps> = ({
   markTutorialCompleted
 }) => {
   const { toast } = useToast();
+  
+  // Effect to check if we should show the welcome tutorial based on both
+  // the first visit status and if we've just completed onboarding
+  useEffect(() => {
+    if (screenState === 'main') {
+      // Check if this is the first time viewing the dashboard (either from localStorage or from onboarding)
+      const hasVisited = localStorage.getItem('hasVisitedThriveMT');
+      const prevScreenState = localStorage.getItem('prevScreenState');
+      const comingFromOnboarding = prevScreenState === 'visionBoard' || 
+                                  prevScreenState === 'subscription';
+                                  
+      console.log("IndexContent - Coming from onboarding:", comingFromOnboarding, "hasVisited:", hasVisited);
+      
+      if (!hasVisited || comingFromOnboarding) {
+        setIsFirstVisit(true);
+      }
+    }
+  }, [screenState, setIsFirstVisit]);
 
   const handleCloseTutorial = () => {
     setIsFirstVisit(false);
@@ -102,7 +120,7 @@ const IndexContent: React.FC<IndexContentProps> = ({
         setScreenState={setScreenState}
       />
       
-      {/* WelcomeTutorial component that replaces welcome dialog */}
+      {/* WelcomeTutorial component that shows the dashboard tutorial */}
       <WelcomeTutorial
         isOpen={isFirstVisit}
         onClose={handleCloseTutorial}

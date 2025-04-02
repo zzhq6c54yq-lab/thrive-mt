@@ -24,28 +24,10 @@ export const usePopupManagement = (screenState: string) => {
     };
   });
 
-  // Get the preferred language for translations
-  const preferredLanguage = localStorage.getItem('preferredLanguage') || 'English';
-
   // Save popup state to localStorage whenever it changes
   useEffect(() => {
     localStorage.setItem('popupsShown', JSON.stringify(popupsShown));
   }, [popupsShown]);
-
-  // Listen for language changes
-  useEffect(() => {
-    const handleLanguageChange = () => {
-      // No need to do anything special here, just making sure the component re-renders
-      // when language changes
-      console.log("Language changed to:", localStorage.getItem('preferredLanguage'));
-    };
-    
-    window.addEventListener('languageChange', handleLanguageChange);
-    
-    return () => {
-      window.removeEventListener('languageChange', handleLanguageChange);
-    };
-  }, []);
 
   // Main effect for handling popups based on screen state
   useEffect(() => {
@@ -55,8 +37,6 @@ export const usePopupManagement = (screenState: string) => {
     
     // Show popups during initial flow when transferring to main menu
     if (screenState === 'main') {
-      // Removed tutorial trigger logic for transitioning from onboarding screens
-      
       // Show co-pay credit popup if not shown yet
       if (!popupsShown.coPayCredit) {
         setShowCoPayCredit(true);
@@ -69,6 +49,9 @@ export const usePopupManagement = (screenState: string) => {
         setShowHenry(true);
         setPopupsShown(prev => ({ ...prev, henryIntro: true }));
       }
+      
+      // Handle tutorial visibility for first-time users
+      // We'll let IndexContent handle this with isFirstVisit state
     }
     
     // Save current screen state as previous for next navigation
