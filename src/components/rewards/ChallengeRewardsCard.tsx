@@ -1,6 +1,6 @@
 
 import React, { useState } from "react";
-import { Award, Calendar, CheckCircle, ArrowUpRight } from "lucide-react";
+import { Award, Calendar, CheckCircle, ArrowUpRight, HelpCircle } from "lucide-react";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
 import { Button } from "@/components/ui/button";
@@ -8,6 +8,7 @@ import { useNavigate } from "react-router-dom";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter } from "@/components/ui/dialog";
 import { useToast } from "@/hooks/use-toast";
 import { ScrollArea } from "@/components/ui/scroll-area";
+import TutorialButton from "@/components/tutorials/TutorialButton";
 
 interface ChallengeRewardsCardProps {
   points: number;
@@ -62,10 +63,13 @@ const ChallengeRewardsCard: React.FC<ChallengeRewardsCardProps> = ({
     <>
       <Card className="bg-white shadow-md border border-amber-200">
         <CardHeader className="bg-gradient-to-r from-amber-50 to-amber-100 border-b border-amber-200">
-          <CardTitle className="text-xl flex items-center gap-2 text-amber-800">
-            <Award className="h-6 w-6 text-amber-600" />
-            Challenge Rewards
-          </CardTitle>
+          <div className="flex justify-between items-center">
+            <CardTitle className="text-xl flex items-center gap-2 text-amber-800">
+              <Award className="h-6 w-6 text-amber-600" />
+              Challenge Rewards
+            </CardTitle>
+            <TutorialButton featureId="wellness-challenges" className="h-7" />
+          </div>
           <CardDescription className="text-gray-600">
             Complete wellness challenges to earn points and co-pay credits
           </CardDescription>

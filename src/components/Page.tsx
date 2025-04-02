@@ -43,7 +43,9 @@ const Page: React.FC<PageProps> = ({
   };
   
   const handleHomeClick = () => {
-    navigate("/");
+    // Always navigate to main dashboard when home button is clicked
+    // Use state to ensure we go directly to the main screen
+    navigate("/", { state: { screenState: 'main' } });
   };
   
   return (

@@ -1,6 +1,5 @@
-
 import React, { useState, useEffect } from "react";
-import { Calendar, ArrowLeft, Brain, Heart, Activity, CheckCircle, Award, Clock, Bell } from "lucide-react";
+import { Calendar, ArrowLeft, Brain, Heart, Activity, CheckCircle, Award, Clock, Bell, HelpCircle } from "lucide-react";
 import { useNavigate, useLocation, useParams } from "react-router-dom";
 import Page from "@/components/Page";
 import { useToast } from "@/hooks/use-toast";
@@ -10,6 +9,7 @@ import { Switch } from "@/components/ui/switch";
 import { Label } from "@/components/ui/label";
 import { Progress } from "@/components/ui/progress";
 import { ScrollArea } from "@/components/ui/scroll-area";
+import TutorialButton from "@/components/tutorials/TutorialButton";
 
 const WellnessChallenges: React.FC = () => {
   const navigate = useNavigate();
@@ -32,14 +32,13 @@ const WellnessChallenges: React.FC = () => {
     {date: "Yesterday", action: "Weekly Challenge Bonus", points: 25},
     {date: "2 days ago", action: "Completed 3 Challenges", points: 30},
   ]);
-  
-  // Initialize active tab from route state if available
+
   useEffect(() => {
     if (location.state && location.state.initialTab) {
       setActiveTab(location.state.initialTab);
     }
   }, [location.state]);
-  
+
   const wellnessChallenges = [
     {
       id: "meditation",
@@ -96,7 +95,7 @@ const WellnessChallenges: React.FC = () => {
       points: 10
     }
   ];
-  
+
   const mentalHealthChallenges = [
     {
       id: "affirmations",
@@ -153,12 +152,12 @@ const WellnessChallenges: React.FC = () => {
       points: 10
     }
   ];
-  
+
   const completedChallenges = [
     ...wellnessChallenges.filter(c => c.completed),
     ...mentalHealthChallenges.filter(c => c.completed)
   ];
-  
+
   const getActiveChallenges = () => {
     switch(activeTab) {
       case 'wellness':
@@ -171,46 +170,41 @@ const WellnessChallenges: React.FC = () => {
         return wellnessChallenges;
     }
   };
-  
+
   const handleBack = () => {
     if (id) {
-      // If in challenge detail view, go back to challenge list
       navigate("/wellness-challenges");
     } else {
-      // If in challenge list view, go back to dashboard
       navigate("/");
     }
   };
-  
+
   const toggleChallengeCompletion = (id: string) => {
-    // Get the challenge from either wellness or mental challenges
     const allChallenges = [...wellnessChallenges, ...mentalHealthChallenges];
     const challenge = allChallenges.find(c => c.id === id);
-    
+
     if (!challenge) return;
-    
-    // If challenge was not already completed, add points
+
     if (!challenge.completed) {
       setPoints(prev => prev + challenge.points);
       setPointsHistory(prev => [
         {date: "Just now", action: `Completed ${challenge.title}`, points: challenge.points},
         ...prev
       ]);
-      
+
       toast({
         title: "Challenge Completed!",
         description: `You earned +${challenge.points} points!`,
         duration: 3000
       });
     }
-    
-    // In a real app, this would update state and persist the changes
+
     console.log(`Toggling completion for challenge: ${id}`);
   };
-  
+
   const handleRedeemPoints = () => {
     const creditsToRedeem = Math.floor(points / 1000);
-    
+
     if (creditsToRedeem < 1) {
       toast({
         title: "Not enough points",
@@ -219,41 +213,38 @@ const WellnessChallenges: React.FC = () => {
       });
       return;
     }
-    
+
     const pointsToDeduct = creditsToRedeem * 1000;
     const remainingPoints = points - pointsToDeduct;
-    
+
     setPoints(remainingPoints);
-    
+
     toast({
       title: "Points Redeemed Successfully!",
       description: `You've converted ${pointsToDeduct} points into $${creditsToRedeem} co-pay credits.`,
     });
-    
+
     setPointsHistory(prev => [
       {date: "Just now", action: `Redeemed for Co-Pay Credits`, points: -pointsToDeduct},
       ...prev
     ]);
-    
-    // Close the dialog
+
     setShowPointsDialog(false);
   };
-  
+
   const handleUpdateReminders = () => {
     toast({
       title: "Reminders Updated",
       description: "Your self-care reminder preferences have been saved.",
       duration: 3000
     });
-    
+
     setShowReminderDialog(false);
   };
-  
-  // If we have a specific challenge ID, render a details view
+
   if (id) {
-    // Find the challenge from either wellness or mental health categories
     const challenge = [...wellnessChallenges, ...mentalHealthChallenges].find(c => c.id === id);
-    
+
     if (!challenge) {
       return (
         <Page title="Challenge Not Found" returnToMain={true}>
@@ -263,11 +254,15 @@ const WellnessChallenges: React.FC = () => {
         </Page>
       );
     }
-    
+
     return (
       <Page title={`${challenge.title} - Challenge`} onBackClick={handleBack}>
         <ScrollArea className="h-[calc(100vh-140px)]">
           <div className="px-4 py-8">
+            <div className="flex justify-between items-center mb-6">
+              <TutorialButton featureId="wellness-challenges" />
+            </div>
+            
             <div className="bg-[#2a2a3c]/80 rounded-xl p-6 mb-6">
               <div className="flex items-start mb-6">
                 <div className={`p-4 rounded-lg mr-4 ${challenge.completed ? 'bg-green-500/20' : 'bg-indigo-500/20'}`}>
@@ -325,7 +320,6 @@ const WellnessChallenges: React.FC = () => {
               </div>
             </div>
             
-            {/* Self-Care Reminder Card */}
             <div className="bg-[#2a2a3c]/80 rounded-xl p-6 mb-6">
               <div className="flex items-center justify-between mb-4">
                 <h3 className="text-lg font-medium text-white">Self-Care Reminders</h3>
@@ -350,7 +344,6 @@ const WellnessChallenges: React.FC = () => {
           </div>
         </ScrollArea>
         
-        {/* Points Rewards Dialog */}
         <Dialog open={showPointsDialog} onOpenChange={setShowPointsDialog}>
           <DialogContent className="bg-[#2a2a3c] border-[#3a3a4c] text-white">
             <DialogHeader>
@@ -409,7 +402,6 @@ const WellnessChallenges: React.FC = () => {
           </DialogContent>
         </Dialog>
         
-        {/* Reminder Settings Dialog */}
         <Dialog open={showReminderDialog} onOpenChange={setShowReminderDialog}>
           <DialogContent className="bg-[#2a2a3c] border-[#3a3a4c] text-white">
             <DialogHeader>
@@ -518,10 +510,9 @@ const WellnessChallenges: React.FC = () => {
       </Page>
     );
   }
-  
-  // Otherwise, render the challenges list
+
   return (
-    <Page title="Daily Wellness Challenges" returnToMain={true}>
+    <Page title="Daily Wellness Challenges" onBackClick={handleBack}>
       <ScrollArea className="h-[calc(100vh-140px)]">
         <div className="min-h-screen bg-gradient-to-b from-[#1a1a20] via-[#252535] to-[#2d2d3d] text-white pb-16">
           <div className="container mx-auto max-w-6xl px-4 py-8">
@@ -531,6 +522,7 @@ const WellnessChallenges: React.FC = () => {
                 <p className="text-gray-300 mb-4">
                   Complete daily challenges to improve your mental and physical wellbeing.
                 </p>
+                <TutorialButton featureId="wellness-challenges" className="mb-4" />
               </div>
               
               <div className="flex flex-col items-end gap-2">
@@ -561,7 +553,6 @@ const WellnessChallenges: React.FC = () => {
               </div>
             </div>
             
-            {/* Points Progress Card */}
             <div className="bg-gradient-to-r from-amber-500/20 to-amber-600/20 rounded-xl p-5 mb-8 border border-amber-500/20">
               <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
                 <div>
@@ -690,7 +681,6 @@ const WellnessChallenges: React.FC = () => {
               )}
             </div>
             
-            {/* Points History */}
             <div className="mt-8 bg-[#2a2a3c]/80 rounded-2xl p-6">
               <h3 className="text-xl font-medium text-white mb-4">Points History</h3>
               <div className="space-y-3">
@@ -712,7 +702,6 @@ const WellnessChallenges: React.FC = () => {
         </div>
       </ScrollArea>
       
-      {/* Points Rewards Dialog */}
       <Dialog open={showPointsDialog} onOpenChange={setShowPointsDialog}>
         <DialogContent className="bg-[#2a2a3c] border-[#3a3a4c] text-white">
           <DialogHeader>
@@ -780,7 +769,6 @@ const WellnessChallenges: React.FC = () => {
         </DialogContent>
       </Dialog>
       
-      {/* Reminder Settings Dialog */}
       <Dialog open={showReminderDialog} onOpenChange={setShowReminderDialog}>
         <DialogContent className="bg-[#2a2a3c] border-[#3a3a4c] text-white">
           <DialogHeader>

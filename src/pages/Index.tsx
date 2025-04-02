@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { useToast } from "@/hooks/use-toast";
@@ -7,10 +6,11 @@ import useMousePosition from "@/hooks/useMousePosition";
 import useScreenHistory from "@/hooks/useScreenHistory";
 import usePopupManagement from "@/hooks/usePopupManagement";
 import IndexScreenManager from "@/components/home/IndexScreenManager";
-// Removed HenryFloatingElement as we're consolidating to just one Henry button
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter } from "@/components/ui/dialog";
+import { Button } from "@/components/ui/button";
+import { Lightbulb } from "lucide-react";
 
 const Index = () => {
-  // State management
   const [screenState, setScreenState] = useState<'intro' | 'mood' | 'moodResponse' | 'register' | 'subscription' | 'visionBoard' | 'main'>('intro');
   const [selectedMood, setSelectedMood] = useState<'happy' | 'ok' | 'neutral' | 'down' | 'sad' | 'overwhelmed' | null>(null);
   const [selectedQualities, setSelectedQualities] = useState<string[]>([]);
@@ -21,8 +21,9 @@ const Index = () => {
     email: '',
     password: '',
   });
-  
-  // Custom hooks
+  const [showFeatureTutorial, setShowFeatureTutorial] = useState(false);
+  const [isFirstVisit, setIsFirstVisit] = useState(false);
+
   const mousePosition = useMousePosition();
   const navigate = useNavigate();
   const location = useLocation();
@@ -34,18 +35,23 @@ const Index = () => {
     setShowHenry,
     popupsShown
   } = usePopupManagement(screenState);
-  
-  // Handle location/history state
+
   useScreenHistory(screenState, setScreenState);
 
-  // Check for Henry show directive from location state
   useEffect(() => {
     if (location.state && location.state.showHenry) {
       setShowHenry(true);
     }
   }, [location.state]);
 
-  // User interaction handlers
+  useEffect(() => {
+    const hasVisited = localStorage.getItem('hasVisitedThriveMT');
+    if (!hasVisited && screenState === 'main') {
+      setIsFirstVisit(true);
+      localStorage.setItem('hasVisitedThriveMT', 'true');
+    }
+  }, [screenState]);
+
   const handleUserInfoChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setUserInfo(prev => ({ ...prev, [name]: value }));
@@ -144,13 +150,12 @@ const Index = () => {
 
   const navigateToFeature = (path: string) => {
     if (path.startsWith('/')) {
-      // Special case for Small Business Portal - include state to trigger teaser
       if (path === '/small-business-portal') {
         navigate(path, { 
           state: { 
             qualities: selectedQualities, 
             goals: selectedGoals,
-            fromMainMenu: true  // Flag to show teaser screen
+            fromMainMenu: true 
           }
         });
       } else {
@@ -169,9 +174,23 @@ const Index = () => {
     setScreenState('moodResponse');
   };
 
+  const handleStartTutorial = () => {
+    setShowFeatureTutorial(true);
+    setIsFirstVisit(false);
+    
+    setShowHenry(true);
+  };
+
+  const handleSkipTutorial = () => {
+    setIsFirstVisit(false);
+    toast({
+      title: "Tutorial Skipped",
+      description: "You can access tutorials anytime through the Help button.",
+    });
+  };
+
   return (
     <div className="relative">
-      {/* Only show CoPayCredit popup during initial transition */}
       {showCoPayCredit && !popupsShown.coPayCredit && 
         <CoPayCreditPopup 
           open={showCoPayCredit} 
@@ -200,7 +219,49 @@ const Index = () => {
         setScreenState={setScreenState}
       />
       
-      {/* Removed HenryFloatingElement - Using the global HelpNavButton instead */}
+      <Dialog open={isFirstVisit} onOpenChange={setIsFirstVisit}>
+        <DialogContent className="bg-[#2a2a3c] border-[#3a3a4c] text-white">
+          <DialogHeader>
+            <div className="flex items-center">
+              <img 
+                src="/lovable-uploads/d2ecdcd2-9a78-40ea-8a8a-ef13092b5ea1.png" 
+                alt="Henry" 
+                className="w-10 h-10 mr-3 rounded-full"
+              />
+              <DialogTitle className="text-xl text-white">Welcome to Thrive MT!</DialogTitle>
+            </div>
+            <DialogDescription className="text-gray-300">
+              Would you like a guided tour of the app's features?
+            </DialogDescription>
+          </DialogHeader>
+          
+          <div className="py-4 text-center">
+            <Lightbulb className="h-16 w-16 text-amber-400 mx-auto mb-4" />
+            <p className="text-white">
+              Hi, I'm Henry, your mental wellness assistant! I can guide you through the app's features to help you get started.
+            </p>
+            <p className="text-gray-300 mt-2">
+              Each feature has its own tutorial that you can access anytime by clicking the "How to use this feature" button.
+            </p>
+          </div>
+          
+          <DialogFooter className="flex flex-col sm:flex-row gap-2">
+            <Button 
+              variant="outline" 
+              onClick={handleSkipTutorial}
+              className="w-full sm:w-auto border-gray-600 text-gray-300 hover:bg-gray-700"
+            >
+              Skip for now
+            </Button>
+            <Button 
+              onClick={handleStartTutorial}
+              className="w-full sm:w-auto bg-indigo-500 hover:bg-indigo-600 text-white"
+            >
+              Show me around
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 };
