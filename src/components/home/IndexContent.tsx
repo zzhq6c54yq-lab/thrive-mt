@@ -135,7 +135,7 @@ const IndexContent: React.FC<IndexContentProps> = ({
   }
 
   return (
-    <div className="relative">
+    <div className="relative z-10">
       {showCoPayCredit && !popupsShown.coPayCredit && 
         <CoPayCreditPopup 
           open={showCoPayCredit} 
