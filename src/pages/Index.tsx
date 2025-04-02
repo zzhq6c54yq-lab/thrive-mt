@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { useToast } from "@/hooks/use-toast";
@@ -468,85 +469,86 @@ const Index = () => {
             <DialogDescription className="text-gray-300">
               {getTranslatedText('tourQuestion')}
             </DialogDescription>
-        </DialogHeader>
+          </DialogHeader>
         
-        <div className="py-4 text-center">
-          <Lightbulb className="h-16 w-16 text-amber-400 mx-auto mb-4" />
-          <p className="text-white">
-            {getTranslatedText('henryIntro')}
-          </p>
-          <p className="text-gray-300 mt-2">
-            {getTranslatedText('tutorialAccess')}
-          </p>
-        </div>
-        
-        <DialogFooter className="flex flex-col sm:flex-row gap-2">
-          <Button 
-            variant="outline" 
-            onClick={handleSkipTutorial}
-            className="w-full sm:w-auto border-gray-600 text-gray-300 hover:bg-gray-700"
-          >
-            {getTranslatedText('skipForNow')}
-          </Button>
-          <Button 
-            onClick={handleStartTutorial}
-            className="w-full sm:w-auto bg-indigo-500 hover:bg-indigo-600 text-white"
-          >
-            {getTranslatedText('showMeAround')}
-          </Button>
-        </DialogFooter>
-      </DialogContent>
-    </Dialog>
-
-    <Dialog open={showMainTutorial} onOpenChange={closeTutorialAndMarkCompleted}>
-      <DialogContent className="bg-[#2a2a3c] border-[#3a3a4c] text-white max-w-lg">
-        {currentFeatureId && (
-          <FeatureTutorial 
-            featureId={currentFeatureId} 
-            onClose={() => {}} 
-            embedded={true}
-          />
-        )}
-        
-        <DialogFooter className="flex justify-between mt-4">
-          <Button 
-            variant="outline"
-            onClick={() => {
-              closeTutorialAndMarkCompleted();
-              if (tutorialInterval) {
-                clearInterval(tutorialInterval);
-                setTutorialInterval(null);
-              }
-            }}
-            className="border-gray-600 text-gray-300 hover:bg-gray-700"
-          >
-            {getTranslatedText('skipForNow')}
-          </Button>
+          <div className="py-4 text-center">
+            <Lightbulb className="h-16 w-16 text-amber-400 mx-auto mb-4" />
+            <p className="text-white">
+              {getTranslatedText('henryIntro')}
+            </p>
+            <p className="text-gray-300 mt-2">
+              {getTranslatedText('tutorialAccess')}
+            </p>
+          </div>
           
-          <Button 
-            onClick={() => {
-              setAutoProgressTutorial(false);
-              if (tutorialInterval) {
-                clearInterval(tutorialInterval);
-                setTutorialInterval(null);
-              }
-              handleNextFeatureTutorial();
-            }}
-            className="bg-indigo-500 hover:bg-indigo-600 text-white"
-          >
-            {tutorialStep < mainFeatures.length - 1 ? (
-              <>
-                {getTranslatedText('next')}
-                <ChevronRight className="ml-1 h-4 w-4" />
-              </>
-            ) : (
-              getTranslatedText('finish')
-            )}
-          </Button>
-        </DialogFooter>
-      </DialogContent>
-    </Dialog>
-  </div>
-);
+          <DialogFooter className="flex flex-col sm:flex-row gap-2">
+            <Button 
+              variant="outline" 
+              onClick={handleSkipTutorial}
+              className="w-full sm:w-auto border-gray-600 text-gray-300 hover:bg-gray-700"
+            >
+              {getTranslatedText('skipForNow')}
+            </Button>
+            <Button 
+              onClick={handleStartTutorial}
+              className="w-full sm:w-auto bg-indigo-500 hover:bg-indigo-600 text-white"
+            >
+              {getTranslatedText('showMeAround')}
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+
+      <Dialog open={showMainTutorial} onOpenChange={closeTutorialAndMarkCompleted}>
+        <DialogContent className="bg-[#2a2a3c] border-[#3a3a4c] text-white max-w-lg">
+          {currentFeatureId && (
+            <FeatureTutorial 
+              featureId={currentFeatureId} 
+              onClose={() => {}} 
+              embedded={true}
+            />
+          )}
+          
+          <DialogFooter className="flex justify-between mt-4">
+            <Button 
+              variant="outline"
+              onClick={() => {
+                closeTutorialAndMarkCompleted();
+                if (tutorialInterval) {
+                  clearInterval(tutorialInterval);
+                  setTutorialInterval(null);
+                }
+              }}
+              className="border-gray-600 text-gray-300 hover:bg-gray-700"
+            >
+              {getTranslatedText('skipForNow')}
+            </Button>
+            
+            <Button 
+              onClick={() => {
+                setAutoProgressTutorial(false);
+                if (tutorialInterval) {
+                  clearInterval(tutorialInterval);
+                  setTutorialInterval(null);
+                }
+                handleNextFeatureTutorial();
+              }}
+              className="bg-indigo-500 hover:bg-indigo-600 text-white"
+            >
+              {tutorialStep < mainFeatures.length - 1 ? (
+                <>
+                  {getTranslatedText('next')}
+                  <ChevronRight className="ml-1 h-4 w-4" />
+                </>
+              ) : (
+                getTranslatedText('finish')
+              )}
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+    </div>
+  );
+};
 
 export default Index;
