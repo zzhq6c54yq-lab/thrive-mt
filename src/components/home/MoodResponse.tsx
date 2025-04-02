@@ -1,8 +1,9 @@
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { ArrowRight, ArrowLeft, Smile, Meh, Frown, HeartCrack, Angry, Annoyed, PhoneCall, MessageSquare, Headphones, AlertTriangle } from "lucide-react";
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import { motion } from "framer-motion";
 
 interface MoodResponseProps {
   selectedMood: 'happy' | 'ok' | 'neutral' | 'down' | 'sad' | 'overwhelmed' | null;
@@ -12,6 +13,7 @@ interface MoodResponseProps {
 
 const MoodResponse: React.FC<MoodResponseProps> = ({ selectedMood, onContinue, onPrevious }) => {
   const [showEmergencyServices, setShowEmergencyServices] = useState(false);
+  const [activeAffirmation, setActiveAffirmation] = useState(0);
   
   // Get preferred language
   const preferredLanguage = localStorage.getItem('preferredLanguage') || 'English';
@@ -143,6 +145,70 @@ const MoodResponse: React.FC<MoodResponseProps> = ({ selectedMood, onContinue, o
         "Just by being here now, you're already taking positive steps forward."
       ];
   
+  // Helper function to get the correct affirmations based on mood
+  const getAffirmations = () => {
+    switch (selectedMood) {
+      case 'happy': return happyAffirmations;
+      case 'ok': return okAffirmations;
+      case 'neutral': return neutralAffirmations;
+      case 'down': return downAffirmations;
+      case 'sad': return sadAffirmations;
+      case 'overwhelmed': return overwhelmedAffirmations;
+      default: return [];
+    }
+  };
+  
+  // Helper function to get the correct title based on mood
+  const getTitle = () => {
+    switch (selectedMood) {
+      case 'happy': return translations.happyTitle;
+      case 'ok': return translations.okTitle;
+      case 'neutral': return translations.neutralTitle;
+      case 'down': return translations.downTitle;
+      case 'sad': return translations.sadTitle;
+      case 'overwhelmed': return translations.overwhelmedTitle;
+      default: return '';
+    }
+  };
+  
+  // Helper function to get the correct icon based on mood
+  const getMoodIcon = () => {
+    switch (selectedMood) {
+      case 'happy': return <Smile className="w-full h-full text-yellow-400" />;
+      case 'ok': return <Annoyed className="w-full h-full text-blue-400" />;
+      case 'neutral': return <Meh className="w-full h-full text-gray-400" />;
+      case 'down': return <HeartCrack className="w-full h-full text-indigo-400" />;
+      case 'sad': return <Frown className="w-full h-full text-purple-400" />;
+      case 'overwhelmed': return <Angry className="w-full h-full text-orange-400" />;
+      default: return null;
+    }
+  };
+  
+  // Helper function to get background gradient based on mood
+  const getBackgroundGradient = () => {
+    switch (selectedMood) {
+      case 'happy': return 'from-yellow-500/10 via-amber-500/5 to-[#1a1a1f]';
+      case 'ok': return 'from-blue-500/10 via-sky-500/5 to-[#1a1a1f]';
+      case 'neutral': return 'from-gray-500/10 via-slate-500/5 to-[#1a1a1f]';
+      case 'down': return 'from-indigo-500/10 via-indigo-500/5 to-[#1a1a1f]';
+      case 'sad': return 'from-purple-500/10 via-purple-500/5 to-[#1a1a1f]';
+      case 'overwhelmed': return 'from-orange-500/10 via-orange-500/5 to-[#1a1a1f]';
+      default: return 'from-[#1a1a1f] to-[#1a1a1f]';
+    }
+  };
+  
+  // Cycle through affirmations every 5 seconds
+  useEffect(() => {
+    const affirmations = getAffirmations();
+    if (affirmations.length === 0) return;
+    
+    const interval = setInterval(() => {
+      setActiveAffirmation(prev => (prev + 1) % affirmations.length);
+    }, 5000);
+    
+    return () => clearInterval(interval);
+  }, [selectedMood, isSpanish]);
+  
   const handleContinue = () => {
     if (selectedMood === 'sad' || selectedMood === 'overwhelmed') {
       setShowEmergencyServices(true);
@@ -214,238 +280,97 @@ const MoodResponse: React.FC<MoodResponseProps> = ({ selectedMood, onContinue, o
     );
   };
 
-  const renderMoodContent = () => {
-    switch (selectedMood) {
-      case 'happy':
-        return (
-          <div className="min-h-screen flex flex-col items-center justify-center bg-gradient-to-b from-[#F2FCE2] to-[#F2FCE2]/70 animate-fade-in relative overflow-hidden">
-            <div className="absolute inset-0 bg-[url('data:image/svg+xml;utf8,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%2220%22 height=%2220%22 viewBox=%220 0 20 20%22><circle cx=%222%22 cy=%222%22 r=%221%22 fill=%22%23B87333%22 fill-opacity=%220.05%22/></svg>')] opacity-30"></div>
-            <div className="text-center max-w-2xl mx-auto px-4 z-10">
-              <Smile className="w-20 h-20 mx-auto mb-8 text-[#B87333] filter drop-shadow-lg animate-pulse" />
-              <h2 className="text-3xl md:text-4xl mb-8 gradient-heading">{translations.happyTitle}</h2>
-              <div className="space-y-4 mb-10">
-                {happyAffirmations.map((affirmation, index) => (
-                  <p key={index} className="text-xl md:text-2xl font-light transition-all duration-300 hover:scale-105" style={{
-                    animationDelay: `${index * 0.2}s`,
-                    animation: 'fadeInText 1s ease-out forwards',
-                    opacity: 0
-                  }}>
-                    {affirmation}
-                  </p>
-                ))}
-              </div>
-              <div className="flex gap-4 justify-center">
-                <Button 
-                  className="group hero-button bg-[#B87333] hover:bg-[#B87333]/90"
-                  onClick={handleContinue}
-                >
-                  {translations.continueToRegister}
-                  <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
-                </Button>
-                <Button 
-                  className="group bg-[#B87333]/20 hover:bg-[#B87333]/30 flex items-center gap-2"
-                  onClick={onPrevious}
-                >
-                  <ArrowLeft className="h-4 w-4" />
-                  {translations.previous}
-                </Button>
-              </div>
-            </div>
-          </div>
-        );
-      case 'ok':
-        return (
-          <div className="min-h-screen flex flex-col items-center justify-center bg-gradient-to-b from-[#F9F9F2] to-[#F9F9F2]/70 animate-fade-in relative overflow-hidden">
-            <div className="absolute inset-0 bg-[url('data:image/svg+xml;utf8,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%2220%22 height=%2220%22 viewBox=%220 0 20 20%22><circle cx=%222%22 cy=%222%22 r=%221%22 fill=%22%23B87333%22 fill-opacity=%220.05%22/></svg>')] opacity-30"></div>
-            <div className="text-center max-w-2xl mx-auto px-4 z-10">
-              <Annoyed className="w-20 h-20 mx-auto mb-8 text-[#B87333] filter drop-shadow-lg animate-pulse" />
-              <h2 className="text-3xl md:text-4xl mb-8 gradient-heading">{translations.okTitle}</h2>
-              <div className="space-y-4 mb-10">
-                {okAffirmations.map((message, index) => (
-                  <p key={index} className="text-xl md:text-2xl font-light transition-all duration-300 hover:scale-105" style={{
-                    animationDelay: `${index * 0.2}s`,
-                    animation: 'fadeInText 1s ease-out forwards',
-                    opacity: 0
-                  }}>
-                    {message}
-                  </p>
-                ))}
-              </div>
-              <div className="flex gap-4 justify-center">
-                <Button 
-                  className="group hero-button bg-[#B87333] hover:bg-[#B87333]/90"
-                  onClick={handleContinue}
-                >
-                  {translations.continueToRegister}
-                  <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
-                </Button>
-                <Button 
-                  className="group bg-[#B87333]/20 hover:bg-[#B87333]/30 flex items-center gap-2"
-                  onClick={onPrevious}
-                >
-                  <ArrowLeft className="h-4 w-4" />
-                  {translations.previous}
-                </Button>
-              </div>
-            </div>
-          </div>
-        );
-      case 'neutral':
-        return (
-          <div className="min-h-screen flex flex-col items-center justify-center bg-gradient-to-b from-[#F7F7F7] to-[#F7F7F7]/70 animate-fade-in relative overflow-hidden">
-            <div className="absolute inset-0 bg-[url('data:image/svg+xml;utf8,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%2220%22 height=%2220%22 viewBox=%220 0 20 20%22><circle cx=%222%22 cy=%222%22 r=%221%22 fill=%22%23B87333%22 fill-opacity=%220.05%22/></svg>')] opacity-30"></div>
-            <div className="text-center max-w-2xl mx-auto px-4 z-10">
-              <Meh className="w-20 h-20 mx-auto mb-8 text-[#B87333] filter drop-shadow-lg animate-pulse" />
-              <h2 className="text-3xl md:text-4xl mb-8 gradient-heading">{translations.neutralTitle}</h2>
-              <div className="space-y-4 mb-10">
-                {neutralAffirmations.map((message, index) => (
-                  <p key={index} className="text-xl md:text-2xl font-light transition-all duration-300 hover:scale-105" style={{
-                    animationDelay: `${index * 0.2}s`,
-                    animation: 'fadeInText 1s ease-out forwards',
-                    opacity: 0
-                  }}>
-                    {message}
-                  </p>
-                ))}
-              </div>
-              <div className="flex gap-4 justify-center">
-                <Button 
-                  className="group hero-button bg-[#B87333] hover:bg-[#B87333]/90"
-                  onClick={handleContinue}
-                >
-                  {translations.continueToRegister}
-                  <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
-                </Button>
-                <Button 
-                  className="group bg-[#B87333]/20 hover:bg-[#B87333]/30 flex items-center gap-2"
-                  onClick={onPrevious}
-                >
-                  <ArrowLeft className="h-4 w-4" />
-                  {translations.previous}
-                </Button>
-              </div>
-            </div>
-          </div>
-        );
-      case 'down':
-        return (
-          <div className="min-h-screen flex flex-col items-center justify-center bg-gradient-to-b from-[#F2F2F7] to-[#F2F2F7]/70 animate-fade-in relative overflow-hidden">
-            <div className="absolute inset-0 bg-[url('data:image/svg+xml;utf8,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%2220%22 height=%2220%22 viewBox=%220 0 20 20%22><circle cx=%222%22 cy=%222%22 r=%221%22 fill=%22%23B87333%22 fill-opacity=%220.05%22/></svg>')] opacity-30"></div>
-            <div className="text-center max-w-2xl mx-auto px-4 z-10">
-              <HeartCrack className="w-20 h-20 mx-auto mb-8 text-[#B87333] filter drop-shadow-lg animate-pulse" />
-              <h2 className="text-3xl md:text-4xl mb-8 gradient-heading">{translations.downTitle}</h2>
-              <div className="space-y-4 mb-10">
-                {downAffirmations.map((message, index) => (
-                  <p key={index} className="text-xl md:text-2xl font-light transition-all duration-300 hover:scale-105" style={{
-                    animationDelay: `${index * 0.2}s`,
-                    animation: 'fadeInText 1s ease-out forwards',
-                    opacity: 0
-                  }}>
-                    {message}
-                  </p>
-                ))}
-              </div>
-              <div className="flex gap-4 justify-center">
-                <Button 
-                  className="group hero-button bg-[#B87333] hover:bg-[#B87333]/90"
-                  onClick={handleContinue}
-                >
-                  {translations.continueToRegister}
-                  <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
-                </Button>
-                <Button 
-                  className="group bg-[#B87333]/20 hover:bg-[#B87333]/30 flex items-center gap-2"
-                  onClick={onPrevious}
-                >
-                  <ArrowLeft className="h-4 w-4" />
-                  {translations.previous}
-                </Button>
-              </div>
-            </div>
-          </div>
-        );
-      case 'sad':
-        return (
-          <div className="min-h-screen flex flex-col items-center justify-center bg-gradient-to-b from-[#F0F4F8] to-[#F0F4F8]/70 animate-fade-in relative overflow-hidden">
-            <div className="absolute inset-0 bg-[url('data:image/svg+xml;utf8,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%2220%22 height=%2220%22 viewBox=%220 0 20 20%22><circle cx=%222%22 cy=%222%22 r=%221%22 fill=%22%23B87333%22 fill-opacity=%220.05%22/></svg>')] opacity-30"></div>
-            <div className="text-center max-w-2xl mx-auto px-4 z-10">
-              <Frown className="w-20 h-20 mx-auto mb-8 text-[#B87333] filter drop-shadow-lg animate-pulse" />
-              <h2 className="text-3xl md:text-4xl mb-8 gradient-heading">{translations.sadTitle}</h2>
-              <div className="space-y-4 mb-10">
-                {sadAffirmations.map((message, index) => (
-                  <p key={index} className="text-xl md:text-2xl font-light transition-all duration-300 hover:scale-105" style={{
-                    animationDelay: `${index * 0.2}s`,
-                    animation: 'fadeInText 1s ease-out forwards',
-                    opacity: 0
-                  }}>
-                    {message}
-                  </p>
-                ))}
-              </div>
-              <div className="flex gap-4 justify-center">
-                <Button 
-                  className="group hero-button bg-[#B87333] hover:bg-[#B87333]/90"
-                  onClick={handleContinue}
-                >
-                  {translations.continue}
-                  <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
-                </Button>
-                <Button 
-                  className="group bg-[#B87333]/20 hover:bg-[#B87333]/30 flex items-center gap-2"
-                  onClick={onPrevious}
-                >
-                  <ArrowLeft className="h-4 w-4" />
-                  {translations.previous}
-                </Button>
-              </div>
-            </div>
-            {renderEmergencyServices()}
-          </div>
-        );
-      case 'overwhelmed':
-        return (
-          <div className="min-h-screen flex flex-col items-center justify-center bg-gradient-to-b from-[#F0EDF6] to-[#F0EDF6]/70 animate-fade-in relative overflow-hidden">
-            <div className="absolute inset-0 bg-[url('data:image/svg+xml;utf8,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%2220%22 height=%2220%22 viewBox=%220 0 20 20%22><circle cx=%222%22 cy=%222%22 r=%221%22 fill=%22%23B87333%22 fill-opacity=%220.05%22/></svg>')] opacity-30"></div>
-            <div className="text-center max-w-2xl mx-auto px-4 z-10">
-              <Angry className="w-20 h-20 mx-auto mb-8 text-[#B87333] filter drop-shadow-lg animate-pulse" />
-              <h2 className="text-3xl md:text-4xl mb-8 gradient-heading">{translations.overwhelmedTitle}</h2>
-              <div className="space-y-4 mb-10">
-                {overwhelmedAffirmations.map((message, index) => (
-                  <p key={index} className="text-xl md:text-2xl font-light transition-all duration-300 hover:scale-105" style={{
-                    animationDelay: `${index * 0.2}s`,
-                    animation: 'fadeInText 1s ease-out forwards',
-                    opacity: 0
-                  }}>
-                    {message}
-                  </p>
-                ))}
-              </div>
-              <div className="flex gap-4 justify-center">
-                <Button 
-                  className="group hero-button bg-[#B87333] hover:bg-[#B87333]/90"
-                  onClick={handleContinue}
-                >
-                  {translations.continue}
-                  <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
-                </Button>
-                <Button 
-                  className="group bg-[#B87333]/20 hover:bg-[#B87333]/30 flex items-center gap-2"
-                  onClick={onPrevious}
-                >
-                  <ArrowLeft className="h-4 w-4" />
-                  {translations.previous}
-                </Button>
-              </div>
-            </div>
-            {renderEmergencyServices()}
-          </div>
-        );
-      default:
-        return null;
-    }
-  };
+  if (!selectedMood) return null;
+  
+  const affirmations = getAffirmations();
 
-  return renderMoodContent();
+  return (
+    <div className={`min-h-screen flex flex-col items-center justify-center bg-gradient-to-b ${getBackgroundGradient()} animate-fade-in relative`}>
+      {/* Decorative background elements */}
+      <div className="absolute inset-0 overflow-hidden">
+        <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-[#B87333]/5 rounded-full blur-3xl transform rotate-12"></div>
+        <div className="absolute bottom-1/4 right-1/4 w-72 h-72 bg-[#B87333]/5 rounded-full blur-3xl"></div>
+      </div>
+      
+      <div className="z-10 w-full max-w-4xl mx-auto px-4 py-8">
+        <div className="bg-white/10 backdrop-blur-md rounded-3xl p-8 md:p-12 shadow-2xl overflow-hidden relative">
+          <div className="absolute top-0 right-0 translate-x-1/4 -translate-y-1/4 w-48 h-48 bg-gradient-to-br from-[#B87333]/30 to-transparent rounded-full blur-xl"></div>
+          <div className="absolute bottom-0 left-0 -translate-x-1/4 translate-y-1/4 w-48 h-48 bg-gradient-to-br from-[#B87333]/30 to-transparent rounded-full blur-xl"></div>
+          
+          <div className="relative z-10">
+            <div className="flex flex-col md:flex-row items-center gap-8 mb-12">
+              <motion.div 
+                initial={{ opacity: 0, scale: 0.8 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{ duration: 0.5 }}
+                className="w-32 h-32 p-4 rounded-full bg-white/20 backdrop-blur-md flex items-center justify-center flex-shrink-0"
+              >
+                {getMoodIcon()}
+              </motion.div>
+              
+              <div className="text-center md:text-left">
+                <motion.h2 
+                  initial={{ opacity: 0, y: -20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.5, delay: 0.2 }}
+                  className="text-3xl md:text-4xl font-bold text-white mb-3 tracking-tight leading-tight"
+                >
+                  {getTitle()}
+                </motion.h2>
+                
+                <motion.div
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  transition={{ duration: 0.5, delay: 0.4 }}
+                  className="relative h-24 md:h-16 overflow-hidden"
+                >
+                  {affirmations.map((affirmation, index) => (
+                    <motion.p
+                      key={index}
+                      initial={{ opacity: 0, y: 20 }}
+                      animate={{ 
+                        opacity: index === activeAffirmation ? 1 : 0,
+                        y: index === activeAffirmation ? 0 : 20
+                      }}
+                      transition={{ duration: 0.5 }}
+                      className="absolute inset-0 text-xl md:text-2xl text-white/90 font-light"
+                    >
+                      {affirmation}
+                    </motion.p>
+                  ))}
+                </motion.div>
+              </div>
+            </div>
+            
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: 0.6 }}
+              className="flex flex-col md:flex-row justify-center md:justify-between gap-4"
+            >
+              <Button 
+                className="bg-white/20 hover:bg-white/30 text-white"
+                onClick={onPrevious}
+              >
+                <ArrowLeft className="mr-2 h-4 w-4" />
+                {translations.previous}
+              </Button>
+              
+              <Button 
+                className="bg-[#B87333] hover:bg-[#B87333]/90 text-white"
+                onClick={handleContinue}
+              >
+                {translations.continue}
+                <ArrowRight className="ml-2 h-4 w-4" />
+              </Button>
+            </motion.div>
+          </div>
+        </div>
+      </div>
+      
+      {renderEmergencyServices()}
+    </div>
+  );
 };
 
 export default MoodResponse;

@@ -1,7 +1,8 @@
 
-import React from "react";
+import React, { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { ArrowLeft, Smile, Meh, Frown, HeartCrack, Angry, Annoyed } from "lucide-react";
+import { motion } from "framer-motion";
 
 interface MoodScreenProps {
   onMoodSelect: (mood: 'happy' | 'ok' | 'neutral' | 'down' | 'sad' | 'overwhelmed') => void;
@@ -13,9 +14,13 @@ const MoodScreen: React.FC<MoodScreenProps> = ({ onMoodSelect, onPrevious }) => 
   const preferredLanguage = localStorage.getItem('preferredLanguage') || 'English';
   const isSpanish = preferredLanguage === 'Español';
   
+  // State for hover effects
+  const [hoveredMood, setHoveredMood] = useState<string | null>(null);
+  
   // Translations
   const translations = {
     title: isSpanish ? "¿Cómo te sientes hoy?" : "How are you feeling today?",
+    subtitle: isSpanish ? "Selecciona la emoción que mejor representa cómo te sientes" : "Select the emotion that best represents how you feel",
     happy: isSpanish ? "Feliz" : "Happy",
     justOk: isSpanish ? "Más o Menos" : "Just Ok",
     neutral: isSpanish ? "Neutral" : "Neutral",
@@ -31,98 +36,160 @@ const MoodScreen: React.FC<MoodScreenProps> = ({ onMoodSelect, onPrevious }) => 
     overwhelmedTooltip: isSpanish ? "Las cosas se sienten intensas, pero busco equilibrio" : "Things feel intense, but I'm seeking balance"
   };
 
+  // Mood data with additional styling information
+  const moods = [
+    {
+      id: 'happy',
+      label: translations.happy,
+      icon: <Smile className="w-full h-full" />,
+      tooltip: translations.happyTooltip,
+      color: "from-yellow-300 to-amber-400",
+      textColor: "text-amber-700",
+      iconColor: "text-amber-500",
+      bgLight: "bg-amber-100"
+    },
+    {
+      id: 'ok',
+      label: translations.justOk,
+      icon: <Annoyed className="w-full h-full" />,
+      tooltip: translations.justOkTooltip,
+      color: "from-blue-300 to-sky-400",
+      textColor: "text-sky-700",
+      iconColor: "text-sky-500",
+      bgLight: "bg-sky-100"
+    },
+    {
+      id: 'neutral',
+      label: translations.neutral,
+      icon: <Meh className="w-full h-full" />,
+      tooltip: translations.neutralTooltip,
+      color: "from-gray-300 to-gray-400",
+      textColor: "text-gray-700",
+      iconColor: "text-gray-500",
+      bgLight: "bg-gray-100"
+    },
+    {
+      id: 'down',
+      label: translations.down,
+      icon: <HeartCrack className="w-full h-full" />,
+      tooltip: translations.downTooltip,
+      color: "from-indigo-300 to-indigo-400",
+      textColor: "text-indigo-700",
+      iconColor: "text-indigo-500",
+      bgLight: "bg-indigo-100"
+    },
+    {
+      id: 'sad',
+      label: translations.sad,
+      icon: <Frown className="w-full h-full" />,
+      tooltip: translations.sadTooltip,
+      color: "from-purple-300 to-purple-400",
+      textColor: "text-purple-700",
+      iconColor: "text-purple-500",
+      bgLight: "bg-purple-100"
+    },
+    {
+      id: 'overwhelmed',
+      label: translations.overwhelmed,
+      icon: <Angry className="w-full h-full" />,
+      tooltip: translations.overwhelmedTooltip,
+      color: "from-orange-300 to-orange-400",
+      textColor: "text-orange-700",
+      iconColor: "text-orange-500",
+      bgLight: "bg-orange-100"
+    }
+  ];
+
+  const container = {
+    hidden: { opacity: 0 },
+    show: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.1
+      }
+    }
+  };
+
+  const item = {
+    hidden: { opacity: 0, y: 20 },
+    show: { opacity: 1, y: 0 }
+  };
+
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center bg-[#1a1a1f] animate-fade-in relative overflow-hidden">
-      <div className="floating-bg"></div>
-      <div className="text-center max-w-md mx-auto px-4 z-10">
-        <h2 className="text-2xl md:text-3xl text-white mb-8 gradient-heading">
-          {translations.title}
-        </h2>
+    <div className="min-h-screen flex flex-col items-center justify-center bg-gradient-to-b from-[#1a1a1f] to-[#2a2a35] animate-fade-in relative">
+      {/* Decorative background elements */}
+      <div className="absolute inset-0 overflow-hidden">
+        <div className="absolute top-0 left-0 w-96 h-96 bg-[#B87333]/5 rounded-full blur-3xl"></div>
+        <div className="absolute bottom-0 right-0 w-96 h-96 bg-[#B87333]/5 rounded-full blur-3xl"></div>
+        <div className="absolute top-1/4 right-1/4 w-64 h-64 bg-[#B87333]/3 rounded-full blur-3xl"></div>
+      </div>
+      
+      <div className="z-10 w-full max-w-4xl mx-auto px-4 py-8">
+        <motion.div 
+          initial={{ opacity: 0, y: -20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5 }}
+          className="text-center mb-12"
+        >
+          <h2 className="text-3xl md:text-4xl font-bold text-white mb-4 tracking-tight">
+            {translations.title}
+          </h2>
+          <p className="text-lg text-white/80 max-w-xl mx-auto">
+            {translations.subtitle}
+          </p>
+        </motion.div>
         
-        {/* Container with more horizontal space */}
-        <div className="grid grid-cols-2 md:grid-cols-3 gap-4 md:gap-6 mb-8 w-full max-w-md mx-auto">
-          <button 
-            onClick={() => onMoodSelect('happy')}
-            className="mood-button group"
-            aria-label={translations.happy}
-          >
-            <Smile className="w-12 h-12 md:w-14 md:h-14 text-[#B87333] transition-all duration-300" />
-            <span className="text-xs text-white mt-1 block">{translations.happy}</span>
-            <div className="opacity-0 group-hover:opacity-100 transition-opacity duration-200 absolute -bottom-16 bg-[#222] p-2 rounded-md text-xs text-white w-36 pointer-events-none">
-              {translations.happyTooltip}
-            </div>
-          </button>
-          
-          <button 
-            onClick={() => onMoodSelect('ok')}
-            className="mood-button group"
-            aria-label={translations.justOk}
-          >
-            <Annoyed className="w-12 h-12 md:w-14 md:h-14 text-[#B87333] transition-all duration-300" />
-            <span className="text-xs text-white mt-1 block">{translations.justOk}</span>
-            <div className="opacity-0 group-hover:opacity-100 transition-opacity duration-200 absolute -bottom-16 bg-[#222] p-2 rounded-md text-xs text-white w-36 pointer-events-none">
-              {translations.justOkTooltip}
-            </div>
-          </button>
-          
-          <button 
-            onClick={() => onMoodSelect('neutral')}
-            className="mood-button group"
-            aria-label={translations.neutral}
-          >
-            <Meh className="w-12 h-12 md:w-14 md:h-14 text-[#B87333] transition-all duration-300" />
-            <span className="text-xs text-white mt-1 block">{translations.neutral}</span>
-            <div className="opacity-0 group-hover:opacity-100 transition-opacity duration-200 absolute -bottom-16 bg-[#222] p-2 rounded-md text-xs text-white w-36 pointer-events-none">
-              {translations.neutralTooltip}
-            </div>
-          </button>
-          
-          <button 
-            onClick={() => onMoodSelect('down')}
-            className="mood-button group"
-            aria-label={translations.down}
-          >
-            <HeartCrack className="w-12 h-12 md:w-14 md:h-14 text-[#B87333] transition-all duration-300" />
-            <span className="text-xs text-white mt-1 block truncate px-1">{translations.down}</span>
-            <div className="opacity-0 group-hover:opacity-100 transition-opacity duration-200 absolute -bottom-16 bg-[#222] p-2 rounded-md text-xs text-white w-36 pointer-events-none">
-              {translations.downTooltip}
-            </div>
-          </button>
-          
-          <button 
-            onClick={() => onMoodSelect('sad')}
-            className="mood-button group"
-            aria-label={translations.sad}
-          >
-            <Frown className="w-12 h-12 md:w-14 md:h-14 text-[#B87333] transition-all duration-300" />
-            <span className="text-xs text-white mt-1 block">{translations.sad}</span>
-            <div className="opacity-0 group-hover:opacity-100 transition-opacity duration-200 absolute -bottom-16 bg-[#222] p-2 rounded-md text-xs text-white w-36 pointer-events-none">
-              {translations.sadTooltip}
-            </div>
-          </button>
-          
-          <button 
-            onClick={() => onMoodSelect('overwhelmed')}
-            className="mood-button group"
-            aria-label={translations.overwhelmed}
-          >
-            <Angry className="w-12 h-12 md:w-14 md:h-14 text-[#B87333] transition-all duration-300" />
-            <span className="text-xs text-white mt-1 block truncate px-1">{translations.overwhelmed}</span>
-            <div className="opacity-0 group-hover:opacity-100 transition-opacity duration-200 absolute -bottom-16 bg-[#222] p-2 rounded-md text-xs text-white w-36 pointer-events-none">
-              {translations.overwhelmedTooltip}
-            </div>
-          </button>
-        </div>
+        <motion.div 
+          variants={container}
+          initial="hidden"
+          animate="show"
+          className="grid grid-cols-2 md:grid-cols-3 gap-6 mb-16"
+        >
+          {moods.map((mood) => (
+            <motion.div
+              key={mood.id}
+              variants={item}
+              onHoverStart={() => setHoveredMood(mood.id)}
+              onHoverEnd={() => setHoveredMood(null)}
+              className="relative"
+            >
+              <button 
+                onClick={() => onMoodSelect(mood.id as any)}
+                className={`w-full h-full flex flex-col items-center rounded-2xl overflow-hidden transition-all duration-300 ${
+                  hoveredMood === mood.id 
+                    ? "scale-105 shadow-lg" 
+                    : "scale-100 shadow"
+                }`}
+                aria-label={mood.label}
+              >
+                <div className={`w-full bg-gradient-to-br ${mood.color} p-6 flex justify-center`}>
+                  <div className={`w-16 h-16 md:w-20 md:h-20 ${mood.iconColor}`}>
+                    {mood.icon}
+                  </div>
+                </div>
+                <div className={`w-full ${mood.bgLight} p-4`}>
+                  <h3 className={`text-lg font-medium ${mood.textColor}`}>{mood.label}</h3>
+                  <p className={`text-sm ${mood.textColor}/70 mt-1`}>{mood.tooltip}</p>
+                </div>
+              </button>
+            </motion.div>
+          ))}
+        </motion.div>
         
-        <div className="mt-10 flex justify-center gap-4">
+        <motion.div 
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 0.6 }}
+          className="flex justify-center"
+        >
           <Button 
-            className="group bg-[#B87333] hover:bg-[#B87333]/80 flex items-center gap-2 hero-button"
+            className="bg-[#B87333] hover:bg-[#B87333]/80 text-white px-6 py-6 h-auto text-lg rounded-xl shadow-lg transform transition-all duration-300 hover:scale-105"
             onClick={onPrevious}
           >
-            <ArrowLeft className="h-4 w-4" />
+            <ArrowLeft className="h-5 w-5 mr-2" />
             {translations.previous}
           </Button>
-        </div>
+        </motion.div>
       </div>
     </div>
   );
