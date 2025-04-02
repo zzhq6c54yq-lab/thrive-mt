@@ -3,6 +3,7 @@ import React, { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { HelpCircle } from "lucide-react";
 import FeatureTutorial from "./FeatureTutorial";
+import { useLocation } from "react-router-dom";
 
 interface TutorialButtonProps {
   featureId: string;
@@ -17,6 +18,17 @@ const TutorialButton: React.FC<TutorialButtonProps> = ({
 }) => {
   const [showTutorial, setShowTutorial] = useState(false);
   const [isSpanish, setIsSpanish] = useState<boolean>(false);
+  const location = useLocation();
+  
+  // Check if we should show the tutorial button based on the current route
+  const shouldShowTutorialButton = () => {
+    // Only show on main dashboard
+    const state = location.state as { screenState?: string } | null;
+    const screenState = state?.screenState;
+    
+    // Only show on main dashboard, not on emotional check-in or other initial screens
+    return location.pathname === "/" && screenState === 'main';
+  };
   
   // Check language preference and listen for changes
   useEffect(() => {
@@ -40,6 +52,11 @@ const TutorialButton: React.FC<TutorialButtonProps> = ({
   const handleOpenTutorial = () => {
     setShowTutorial(true);
   };
+
+  // Don't render if we shouldn't show the button
+  if (!shouldShowTutorialButton() && variant === "logo") {
+    return null;
+  }
 
   if (variant === "logo") {
     return (

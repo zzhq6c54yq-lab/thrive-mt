@@ -60,12 +60,14 @@ const HenryIconButton: React.FC<HenryIconButtonProps> = ({
           </div>
         </Button>
         
-        {/* Changed from TutorialButton with question mark to the MT logo version */}
-        <TutorialButton 
-          featureId="dashboard" 
-          variant="logo" 
-          className="shadow-xl hover:shadow-[0_0_25px_rgba(184,115,51,0.6)]"
-        />
+        {/* Only show the MT logo tutorial button on the main dashboard */}
+        {location.pathname === "/" && screenState === 'main' && (
+          <TutorialButton 
+            featureId="dashboard" 
+            variant="logo" 
+            className="shadow-xl hover:shadow-[0_0_25px_rgba(184,115,51,0.6)]"
+          />
+        )}
       </div>
       
       <HelpChatDialog isOpen={isHelpOpen} onOpenChange={setIsHelpOpen} />
