@@ -59,46 +59,14 @@ const IndexScreenManager: React.FC<IndexScreenManagerProps> = ({
     console.log("IndexScreenManager: Screen changing from", prevState, "to", screenState);
     localStorage.setItem('prevScreenState', screenState);
     
-    // When navigating to main from onboarding screens, ensure tutorial will show
-    if (screenState === 'main') {
-      const prevState = localStorage.getItem('prevScreenState');
-      if (prevState === 'visionBoard' || 
-          prevState === 'subscription' || 
-          prevState === 'moodResponse' || 
-          prevState === 'mood' || 
-          prevState === 'register') {
-        
-        console.log("MANAGER TRIGGER: Transitioning to main from:", prevState);
-        
-        // Force show tutorial by resetting flag and doing it early in the process
-        localStorage.setItem('dashboardTutorialShown', 'false');
-        
-        // Also reset the popupsShown tutorial flags in localStorage
-        const popupsShown = localStorage.getItem('popupsShown');
-        if (popupsShown) {
-          const parsedState = JSON.parse(popupsShown);
-          parsedState.mainTutorial = false;
-          parsedState.transitionTutorial = false;
-          localStorage.setItem('popupsShown', JSON.stringify(parsedState));
-        }
-      }
-    }
+    // Removed tutorial trigger logic for transitioning to main
   }, [screenState]);
 
   // Reset transition tutorial flags when starting a new session
   React.useEffect(() => {
     if (screenState === 'intro') {
-      // Reset the tutorial flags to ensure tutorial shows after onboarding
-      localStorage.removeItem('dashboardTutorialShown');
-      
-      // Get popup state and reset transition tutorial flag
-      const popupsShown = localStorage.getItem('popupsShown');
-      if (popupsShown) {
-        const parsedState = JSON.parse(popupsShown);
-        parsedState.transitionTutorial = false;
-        parsedState.mainTutorial = false; // Reset main tutorial flag as well
-        localStorage.setItem('popupsShown', JSON.stringify(parsedState));
-      }
+      // Just tracking that we're starting a new session, no tutorial reset needed
+      console.log("Starting new session from intro screen");
     }
   }, [screenState]);
 

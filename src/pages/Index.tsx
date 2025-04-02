@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { useToast } from "@/hooks/use-toast";
@@ -11,7 +10,6 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, Di
 import { Button } from "@/components/ui/button";
 import { Lightbulb, ChevronRight } from "lucide-react";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import WelcomeTutorial from "@/components/tutorials/WelcomeTutorial";
 
 const Index = () => {
   const [screenState, setScreenState] = useState<'intro' | 'mood' | 'moodResponse' | 'register' | 'subscription' | 'visionBoard' | 'main'>('intro');
@@ -24,7 +22,7 @@ const Index = () => {
     email: '',
     password: '',
   });
-  const [showWelcomeTutorial, setShowWelcomeTutorial] = useState(false);
+  // Removed showWelcomeTutorial state
   const [isFirstVisit, setIsFirstVisit] = useState(false);
 
   const mousePosition = useMousePosition();
@@ -100,44 +98,6 @@ const Index = () => {
       setIsFirstVisit(true);
       localStorage.setItem('hasVisitedThriveMT', 'true');
     }
-  }, [screenState]);
-
-  useEffect(() => {
-    console.log("Index checking for tutorial trigger, screen state:", screenState);
-    const prevState = localStorage.getItem('prevScreenState');
-    
-    if (screenState === 'main') {
-      console.log("Index: Currently on main screen, previous screen was:", prevState);
-      
-      const comingFromOnboarding = prevState === 'visionBoard' || 
-                                  prevState === 'subscription' || 
-                                  prevState === 'moodResponse' || 
-                                  prevState === 'mood' || 
-                                  prevState === 'register';
-                                  
-      console.log("Coming from onboarding screen?", comingFromOnboarding);
-      
-      if (comingFromOnboarding) {
-        console.log("INDEX TRIGGER: Forcing welcome tutorial to show for transition from", prevState, "to main");
-        
-        localStorage.setItem('dashboardTutorialShown', 'false');
-        
-        const storedPopups = localStorage.getItem('popupsShown');
-        if (storedPopups) {
-          const parsedPopups = JSON.parse(storedPopups);
-          parsedPopups.mainTutorial = false;
-          parsedPopups.transitionTutorial = false;
-          localStorage.setItem('popupsShown', JSON.stringify(parsedPopups));
-        }
-        
-        setTimeout(() => {
-          setShowWelcomeTutorial(true);
-          console.log("Welcome tutorial visibility forcibly set to true with delay");
-        }, 300);
-      }
-    }
-    
-    localStorage.setItem('prevScreenState', screenState);
   }, [screenState]);
 
   const handleUserInfoChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -264,7 +224,8 @@ const Index = () => {
 
   const handleStartTutorial = () => {
     setIsFirstVisit(false);
-    setShowWelcomeTutorial(true);
+    // Removed setShowWelcomeTutorial(true);
+    markTutorialCompleted();
   };
 
   const handleSkipTutorial = () => {
@@ -351,14 +312,8 @@ const Index = () => {
           </DialogFooter>
         </DialogContent>
       </Dialog>
-
-      <WelcomeTutorial
-        isOpen={showWelcomeTutorial}
-        onClose={() => {
-          setShowWelcomeTutorial(false);
-          markTutorialCompleted();
-        }}
-      />
+      
+      {/* Removed WelcomeTutorial component */}
     </div>
   );
 };

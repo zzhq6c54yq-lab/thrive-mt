@@ -55,36 +55,7 @@ export const usePopupManagement = (screenState: string) => {
     
     // Show popups during initial flow when transferring to main menu
     if (screenState === 'main') {
-      // Always show the tutorial when coming from emotional check-in (mood, moodResponse) 
-      // or plan selection (subscription) screens, or vision board or registration
-      if (prevScreenState === 'visionBoard' || 
-          prevScreenState === 'subscription' || 
-          prevScreenState === 'moodResponse' ||
-          prevScreenState === 'mood' ||
-          prevScreenState === 'register') {
-        
-        console.log("TUTORIAL TRIGGER: Showing tutorial when transitioning from:", prevScreenState, "to main");
-        
-        // Force reset all tutorial-related flags to ensure they show
-        localStorage.setItem('dashboardTutorialShown', 'false');
-        
-        // Reset the transition tutorial flags in popupsShown state
-        setPopupsShown(prev => ({
-          ...prev,
-          mainTutorial: false,
-          transitionTutorial: false
-        }));
-        
-        // Force show both tutorials
-        setShowTransitionTutorial(true);
-        setShowMainTutorial(true);
-        
-        // Force a re-render after a small delay to ensure state changes are applied
-        setTimeout(() => {
-          console.log("Forcing tutorial display after delay");
-          setShowMainTutorial(true);
-        }, 100);
-      }
+      // Removed tutorial trigger logic for transitioning from onboarding screens
       
       // Show co-pay credit popup if not shown yet
       if (!popupsShown.coPayCredit) {

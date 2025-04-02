@@ -12,30 +12,7 @@ export const useScreenHistory = (
     if (location.state && location.state.screenState) {
       setScreenState(location.state.screenState);
       
-      // If transitioning to 'main' from an onboarding screen, force tutorial to show
-      if (location.state.screenState === 'main') {
-        const prevScreenState = localStorage.getItem('prevScreenState');
-        if (prevScreenState === 'visionBoard' || 
-            prevScreenState === 'subscription' || 
-            prevScreenState === 'moodResponse' || 
-            prevScreenState === 'mood' || 
-            prevScreenState === 'register') {
-          
-          console.log("HISTORY TRIGGER: Detecting transition to main from onboarding:", prevScreenState);
-          
-          // Reset the tutorial flag to ensure it shows
-          localStorage.setItem('dashboardTutorialShown', 'false');
-          
-          // Also reset the popupsShown tutorial flags in localStorage
-          const popupsShown = localStorage.getItem('popupsShown');
-          if (popupsShown) {
-            const parsedState = JSON.parse(popupsShown);
-            parsedState.mainTutorial = false;
-            parsedState.transitionTutorial = false;
-            localStorage.setItem('popupsShown', JSON.stringify(parsedState));
-          }
-        }
-      }
+      // Removed tutorial trigger logic for transition to 'main'
       
       if (location.state.returnToMain) {
         window.history.replaceState(
