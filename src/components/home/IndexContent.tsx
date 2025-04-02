@@ -4,7 +4,6 @@ import CoPayCreditPopup from "@/components/CoPayCreditPopup";
 import IndexScreenManager from "@/components/home/IndexScreenManager";
 import MainTutorial from "@/components/tutorials/MainTutorial";
 import { useToast } from "@/hooks/use-toast";
-import { Button } from "@/components/ui/button";
 
 interface IndexContentProps {
   screenState: 'intro' | 'mood' | 'moodResponse' | 'register' | 'subscription' | 'visionBoard' | 'main';
@@ -107,30 +106,8 @@ const IndexContent: React.FC<IndexContentProps> = ({
     }
   };
 
-  // Force show tutorial (debug button)
-  const handleForceTutorial = () => {
-    console.log("IndexContent: Force tutorial button clicked");
-    localStorage.removeItem('mainTutorialShown');
-    localStorage.setItem('forceTutorial', 'true');
-    setTutorialVisible(true);
-  };
-
   return (
     <div className="relative z-10">
-      {/* Debug: Force tutorial button (only on main screen) */}
-      {screenState === 'main' && (
-        <div className="absolute top-20 right-4 z-50">
-          <Button
-            variant="outline"
-            size="sm"
-            onClick={handleForceTutorial}
-            className="bg-red-500/80 hover:bg-red-600 text-white border-red-400"
-          >
-            Force Tutorial
-          </Button>
-        </div>
-      )}
-      
       {/* CoPayCredit Popup */}
       {showCoPayCredit && !popupsShown.coPayCredit && 
         <CoPayCreditPopup 
