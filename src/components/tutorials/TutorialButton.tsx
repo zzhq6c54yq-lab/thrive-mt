@@ -83,7 +83,13 @@ const TutorialButton: React.FC<TutorialButtonProps> = ({
             </>
           )}
           <div className="w-full h-full rounded-full flex items-center justify-center bg-gradient-to-br from-[#B87333] to-[#E5C5A1]">
-            <span className="text-white font-bold text-xl tracking-tighter">THRIVE</span>
+            <div className="relative w-8 h-8 overflow-hidden">
+              <img 
+                src="/lovable-uploads/f2c6ac08-6331-4884-950d-7f94d68ff15f.png" 
+                alt="Thrive MT Logo" 
+                className="h-8 w-8 filter drop-shadow-[0_0_5px_rgba(255,255,255,0.5)]"
+              />
+            </div>
           </div>
         </Button>
         
