@@ -66,18 +66,10 @@ const IndexContent: React.FC<IndexContentProps> = ({
 }) => {
   const { toast } = useToast();
 
-  const handleSkipTutorial = () => {
-    setIsFirstVisit(false);
-    markTutorialCompleted();
-    toast({
-      title: getTranslatedText('skipForNow'),
-      description: getTranslatedText('tutorialAccess'),
-    });
-  };
-
   const handleCloseTutorial = () => {
     setIsFirstVisit(false);
     markTutorialCompleted();
+    localStorage.setItem('hasVisitedThriveMT', 'true');
   };
 
   return (
@@ -110,6 +102,7 @@ const IndexContent: React.FC<IndexContentProps> = ({
         setScreenState={setScreenState}
       />
       
+      {/* This is the WelcomeTutorial component that will replace the previous welcome dialog */}
       <WelcomeTutorial
         isOpen={isFirstVisit}
         onClose={handleCloseTutorial}

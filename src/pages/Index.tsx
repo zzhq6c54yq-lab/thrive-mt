@@ -57,8 +57,8 @@ const Index = () => {
   useEffect(() => {
     const hasVisited = localStorage.getItem('hasVisitedThriveMT');
     if (!hasVisited && screenState === 'main') {
+      console.log("First visit detected, showing welcome tutorial");
       setIsFirstVisit(true);
-      localStorage.setItem('hasVisitedThriveMT', 'true');
     }
   }, [screenState, setIsFirstVisit]);
 
