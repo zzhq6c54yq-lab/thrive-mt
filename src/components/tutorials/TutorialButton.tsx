@@ -1,11 +1,10 @@
 
 import React, { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
-import { HelpCircle } from "lucide-react";
+import { X } from "lucide-react";
 import FeatureTutorial from "./FeatureTutorial";
 import { useLocation } from "react-router-dom";
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter } from "@/components/ui/dialog";
-import { ScrollArea } from "@/components/ui/scroll-area";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "@/components/ui/dialog";
 import useTranslation from "@/hooks/useTranslation";
 
 interface TutorialButtonProps {
@@ -22,7 +21,7 @@ const TutorialButton: React.FC<TutorialButtonProps> = ({
   showAnimatedRings = false
 }) => {
   const [showTutorial, setShowTutorial] = useState(false);
-  const { isSpanish } = useTranslation();
+  const { isSpanish, getTranslatedText } = useTranslation();
   const location = useLocation();
   
   // Check if we should show the tutorial button based on the current route
@@ -84,7 +83,16 @@ const TutorialButton: React.FC<TutorialButtonProps> = ({
         {showTutorial && (
           <Dialog open={showTutorial} onOpenChange={setShowTutorial}>
             <DialogContent className="bg-[#2a2a3c] border-[#3a3a4c] text-white max-w-md">
-              <DialogHeader>
+              <DialogHeader className="relative">
+                <Button 
+                  variant="ghost" 
+                  size="icon" 
+                  className="absolute right-0 top-0 rounded-full text-white/70 hover:text-white hover:bg-white/10"
+                  onClick={() => setShowTutorial(false)}
+                >
+                  <X className="h-4 w-4" />
+                  <span className="sr-only">{isSpanish ? "Cerrar" : "Close"}</span>
+                </Button>
                 <DialogTitle className="text-xl text-white">
                   {isSpanish ? "Bienvenido a Thrive MT" : "Welcome to Thrive MT"}
                 </DialogTitle>
@@ -104,9 +112,9 @@ const TutorialButton: React.FC<TutorialButtonProps> = ({
               <DialogFooter>
                 <Button 
                   onClick={() => setShowTutorial(false)}
-                  className="bg-gradient-to-r from-[#B87333] to-[#E5C5A1] hover:from-[#A56625] hover:to-[#D4B48F] text-white"
+                  className="bg-gradient-to-r from-[#B87333] to-[#E5C5A1] hover:from-[#A56625] hover:to-[#D4B48F] text-white w-full sm:w-auto"
                 >
-                  {isSpanish ? "Entendido" : "Got it"}
+                  {isSpanish ? "Continuar" : "Continue"}
                 </Button>
               </DialogFooter>
             </DialogContent>
@@ -134,13 +142,19 @@ const TutorialButton: React.FC<TutorialButtonProps> = ({
       {showTutorial && (
         <Dialog open={showTutorial} onOpenChange={setShowTutorial}>
           <DialogContent className="bg-[#2a2a3c] border-[#3a3a4c] text-white max-w-md">
-            <DialogHeader>
+            <DialogHeader className="relative">
+              <Button 
+                variant="ghost" 
+                size="icon" 
+                className="absolute right-0 top-0 rounded-full text-white/70 hover:text-white hover:bg-white/10"
+                onClick={() => setShowTutorial(false)}
+              >
+                <X className="h-4 w-4" />
+                <span className="sr-only">{isSpanish ? "Cerrar" : "Close"}</span>
+              </Button>
               <DialogTitle className="text-xl text-white">
                 {isSpanish ? "Tutorial de Función" : "Feature Tutorial"}
               </DialogTitle>
-              <DialogDescription className="text-gray-300">
-                {isSpanish ? "Aprenda a usar esta función" : "Learn how to use this feature"}
-              </DialogDescription>
             </DialogHeader>
             
             <div className="flex flex-col items-center mb-4">
@@ -161,9 +175,9 @@ const TutorialButton: React.FC<TutorialButtonProps> = ({
             <DialogFooter>
               <Button 
                 onClick={() => setShowTutorial(false)}
-                className="bg-gradient-to-r from-[#B87333] to-[#E5C5A1] hover:from-[#A56625] hover:to-[#D4B48F] text-white"
+                className="bg-gradient-to-r from-[#B87333] to-[#E5C5A1] hover:from-[#A56625] hover:to-[#D4B48F] text-white w-full sm:w-auto"
               >
-                {isSpanish ? "Entendido" : "Got it"}
+                {isSpanish ? "Continuar" : "Continue"}
               </Button>
             </DialogFooter>
           </DialogContent>

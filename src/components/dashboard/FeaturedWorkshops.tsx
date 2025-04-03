@@ -12,7 +12,32 @@ interface FeaturedWorkshopsProps {
 
 const FeaturedWorkshops: React.FC<FeaturedWorkshopsProps> = ({ navigate, onWorkshopClick }) => {
   const [currentPage, setCurrentPage] = useState(0);
-  const workshopsPerPage = 3;
+  // Adjust workshops per page based on screen size
+  const getWorkshopsPerPage = () => {
+    // Using window.innerWidth directly for responsiveness
+    if (typeof window !== 'undefined') {
+      if (window.innerWidth < 640) return 1; // Mobile
+      if (window.innerWidth < 1024) return 2; // Tablet
+      return 3; // Desktop
+    }
+    return 3; // Default to desktop
+  };
+  
+  const [workshopsPerPage, setWorkshopsPerPage] = useState(getWorkshopsPerPage());
+  
+  // Update workshopsPerPage on window resize
+  React.useEffect(() => {
+    const handleResize = () => {
+      setWorkshopsPerPage(getWorkshopsPerPage());
+    };
+    
+    window.addEventListener('resize', handleResize);
+    handleResize(); // Initial call
+    
+    return () => {
+      window.removeEventListener('resize', handleResize);
+    };
+  }, []);
   
   // Get preferred language
   const preferredLanguage = localStorage.getItem('preferredLanguage') || 'English';
@@ -108,8 +133,8 @@ const FeaturedWorkshops: React.FC<FeaturedWorkshopsProps> = ({ navigate, onWorks
 
   return (
     <div className="mb-12">
-      <div className="flex justify-between items-center mb-6">
-        <h2 className="text-2xl font-bold">{translations.title}</h2>
+      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 gap-3 sm:gap-0">
+        <h2 className="text-xl sm:text-2xl font-bold">{translations.title}</h2>
         <div className="flex items-center gap-2">
           <Button 
             variant="outline" 
@@ -120,7 +145,7 @@ const FeaturedWorkshops: React.FC<FeaturedWorkshopsProps> = ({ navigate, onWorks
           >
             <ChevronLeft className="h-4 w-4" />
           </Button>
-          <span className="text-sm text-gray-300">
+          <span className="text-xs sm:text-sm text-gray-300">
             {translations.page} {currentPage + 1} {translations.of} {pageCount}
           </span>
           <Button 
@@ -134,7 +159,7 @@ const FeaturedWorkshops: React.FC<FeaturedWorkshopsProps> = ({ navigate, onWorks
           </Button>
           <Button 
             variant="link" 
-            className="text-[#E5C5A1] px-0 flex items-center ml-4"
+            className="text-[#E5C5A1] px-0 flex items-center ml-2 sm:ml-4"
             onClick={() => navigate("/workshops")}
           >
             {translations.viewAll}
@@ -143,7 +168,7 @@ const FeaturedWorkshops: React.FC<FeaturedWorkshopsProps> = ({ navigate, onWorks
         </div>
       </div>
       
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
         {displayedWorkshops.map((workshop) => (
           <Card key={workshop.id} className="bg-[#252535] border-[#3d3d5c] rounded-lg hover:bg-[#2a2a40] transition-colors overflow-hidden">
             <div className="aspect-video overflow-hidden relative">
@@ -155,7 +180,7 @@ const FeaturedWorkshops: React.FC<FeaturedWorkshopsProps> = ({ navigate, onWorks
               <div className="absolute inset-0 bg-gradient-to-t from-[#1a1a20] to-transparent opacity-60"></div>
             </div>
             <CardHeader className="pb-2">
-              <CardTitle className="text-white text-xl">{workshop.title}</CardTitle>
+              <CardTitle className="text-white text-lg sm:text-xl">{workshop.title}</CardTitle>
             </CardHeader>
             <CardFooter>
               <Button 

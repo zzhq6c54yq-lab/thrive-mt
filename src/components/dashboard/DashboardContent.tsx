@@ -38,7 +38,7 @@ const DashboardContent: React.FC<DashboardContentProps> = ({
   };
 
   return (
-    <div className="container mx-auto max-w-6xl px-4 py-6 relative z-10">
+    <div className="container mx-auto max-w-6xl px-4 sm:px-6 py-6 relative z-10">
       <div className="mb-8">
         <Accordion type="single" collapsible className="w-full">
           <AccordionItem value="challenges" className="border-0 mb-4">
@@ -47,7 +47,7 @@ const DashboardContent: React.FC<DashboardContentProps> = ({
                 <div className="bg-white/20 p-2 rounded-full mr-3">
                   <Calendar className="h-5 w-5 text-white" />
                 </div>
-                <span className="text-xl font-semibold">{translations.dailyChallenges}</span>
+                <span className="text-base sm:text-xl font-semibold">{translations.dailyChallenges}</span>
               </div>
             </AccordionTrigger>
             <AccordionContent className="pt-4">
@@ -69,7 +69,7 @@ const DashboardContent: React.FC<DashboardContentProps> = ({
                 <div className="bg-white/20 p-2 rounded-full mr-3">
                   <Calendar className="h-5 w-5 text-white" />
                 </div>
-                <span className="text-xl font-semibold">{translations.upcomingAppointments}</span>
+                <span className="text-base sm:text-xl font-semibold">{translations.upcomingAppointments}</span>
               </div>
             </AccordionTrigger>
             <AccordionContent className="pt-4">
@@ -83,7 +83,7 @@ const DashboardContent: React.FC<DashboardContentProps> = ({
                 <div className="bg-white/20 p-2 rounded-full mr-3">
                   <HelpCircle className="h-5 w-5 text-white" />
                 </div>
-                <span className="text-xl font-semibold">{translations.mentalHealthQuizzes}</span>
+                <span className="text-base sm:text-xl font-semibold">{translations.mentalHealthQuizzes}</span>
               </div>
             </AccordionTrigger>
             <AccordionContent className="pt-4">

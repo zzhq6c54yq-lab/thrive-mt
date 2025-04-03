@@ -146,7 +146,7 @@ const KeyFeatures: React.FC = () => {
       <div className="relative z-10 px-4 pt-8 pb-8">
         <div className="flex items-center justify-between mb-6">
           <div>
-            <h2 className="text-3xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-[#B87333] via-[#E5C5A1] to-[#B87333] animate-gradient-x" style={{backgroundSize: '200% auto'}}>
+            <h2 className="text-2xl sm:text-3xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-[#B87333] via-[#E5C5A1] to-[#B87333] animate-gradient-x" style={{backgroundSize: '200% auto'}}>
               {translations.title}
             </h2>
           </div>
@@ -155,7 +155,7 @@ const KeyFeatures: React.FC = () => {
           </div>
         </div>
         
-        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3">
+        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-2 sm:gap-3">
           {keyFeatures.map((feature, index) => {
             const gradients = [
               "from-[#9333EA]/70 to-[#D946EF]/30",
@@ -196,18 +196,18 @@ const KeyFeatures: React.FC = () => {
                 
                 <div className="absolute inset-0 bg-black/30 backdrop-blur-sm"></div>
                 
-                <div className="relative p-3 flex flex-col items-center text-center h-full">
+                <div className="relative p-2 sm:p-3 flex flex-col items-center text-center h-full">
                   <div 
-                    className="p-2 rounded-lg transform transition-transform mb-2"
+                    className="p-1.5 sm:p-2 rounded-lg transform transition-transform mb-1.5 sm:mb-2"
                     style={{ 
                       background: `${iconColor}30`,
                       border: `1px solid ${iconColor}50`
                     }}
                   >
-                    <IconComponent className="h-5 w-5" style={{ color: iconColor }} />
+                    <IconComponent className="h-4 w-4 sm:h-5 sm:w-5" style={{ color: iconColor }} />
                   </div>
                   
-                  <h3 className="text-sm font-medium text-white">
+                  <h3 className="text-xs sm:text-sm font-medium text-white">
                     {feature.title}
                   </h3>
                 </div>

@@ -3,7 +3,7 @@ import React, { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Dialog, DialogContent } from "@/components/ui/dialog";
-import { CheckCircle2, X } from "lucide-react";
+import { CheckCircle2, X, ArrowRight } from "lucide-react";
 import useTranslation from "@/hooks/useTranslation";
 
 interface TutorialStep {
@@ -84,7 +84,7 @@ const FeatureTutorial: React.FC<FeatureTutorialProps> = ({ featureId, onClose, e
           className="bg-gradient-to-r from-[#B87333] to-[#E5C5A1] hover:from-[#A56625] hover:to-[#D4B48F] text-white"
           onClick={onClose}
         >
-          <CheckCircle2 className="mr-2 h-4 w-4" /> {getTranslatedText('gotIt')}
+          <ArrowRight className="mr-2 h-4 w-4" /> {isSpanish ? "Continuar" : "Continue"}
         </Button>
       </CardFooter>
     </Card>
