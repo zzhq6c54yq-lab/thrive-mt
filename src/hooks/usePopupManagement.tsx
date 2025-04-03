@@ -53,21 +53,22 @@ export const usePopupManagement = (screenState: string) => {
     const prevScreenState = localStorage.getItem('prevScreenState');
     console.log("usePopupManagement - Current screen:", screenState, "Previous screen:", prevScreenState);
     
-    // Show popups during initial flow when transferring to main menu
+    // Show only one welcome tutorial when transferring to main menu from onboarding
     if (screenState === 'main') {
-      // Removed tutorial trigger logic for transitioning from onboarding screens
+      const comingFromOnboarding = prevScreenState === 'visionBoard' || 
+                                  prevScreenState === 'subscription' || 
+                                  prevScreenState === 'moodResponse' || 
+                                  prevScreenState === 'mood' || 
+                                  prevScreenState === 'register';
       
-      // Show co-pay credit popup if not shown yet
-      if (!popupsShown.coPayCredit) {
-        setShowCoPayCredit(true);
-        setPopupsShown(prev => ({ ...prev, coPayCredit: true }));
-      }
-      
-      // Show Henry only when navigating to main from registration or vision board
-      // and if it hasn't been shown before
-      if (!popupsShown.henryIntro) {
-        setShowHenry(true);
-        setPopupsShown(prev => ({ ...prev, henryIntro: true }));
+      if (comingFromOnboarding && !popupsShown.mainTutorial) {
+        // Just show main tutorial, not the other popups
+        setShowMainTutorial(true);
+        setPopupsShown(prev => ({ ...prev, mainTutorial: true }));
+        
+        // Don't show other popups during onboarding transition
+        setShowCoPayCredit(false);
+        setShowHenry(false);
       }
     }
     

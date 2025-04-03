@@ -192,6 +192,7 @@ const MainDashboard: React.FC<MainDashboardProps> = ({
             <FeatureTutorial 
               featureId="dashboard" 
               onClose={handleTutorialClose}
+              userName={userName}
             />
           </div>
         </div>

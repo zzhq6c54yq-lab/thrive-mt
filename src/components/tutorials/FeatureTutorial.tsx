@@ -9,19 +9,22 @@ interface TutorialStep {
   title: string;
   description: string;
   image?: string;
+  isWelcome?: boolean;
+  userName?: string;
 }
 
 interface FeatureTutorialProps {
   featureId: string;
   onClose: () => void;
   embedded?: boolean;
+  userName?: string;
 }
 
-const FeatureTutorial: React.FC<FeatureTutorialProps> = ({ featureId, onClose, embedded = false }) => {
+const FeatureTutorial: React.FC<FeatureTutorialProps> = ({ featureId, onClose, embedded = false, userName = "" }) => {
   const [currentStep, setCurrentStep] = useState(0);
   
   // Get tutorial content based on feature ID
-  const tutorialSteps = getTutorialSteps(featureId);
+  const tutorialSteps = getTutorialSteps(featureId, userName);
   const totalSteps = tutorialSteps.length;
   
   const handleNextStep = () => {
@@ -58,14 +61,18 @@ const FeatureTutorial: React.FC<FeatureTutorialProps> = ({ featureId, onClose, e
             <img 
               src={currentTutorial.image} 
               alt={currentTutorial.title} 
-              className="h-24 w-24 object-contain"
+              className={currentTutorial.isWelcome ? "h-20 w-20 object-contain" : "h-24 w-24 object-contain"}
             />
           </div>
         )}
       </div>
       
       <CardHeader>
-        <CardTitle className="text-xl text-white">{currentTutorial.title}</CardTitle>
+        <CardTitle className="text-xl text-white">
+          {currentTutorial.isWelcome && userName 
+            ? `${currentTutorial.title}, ${userName}!` 
+            : currentTutorial.title}
+        </CardTitle>
         <CardDescription className="text-white/70">
           Step {currentStep + 1} of {totalSteps}
         </CardDescription>
@@ -73,6 +80,22 @@ const FeatureTutorial: React.FC<FeatureTutorialProps> = ({ featureId, onClose, e
       
       <CardContent>
         <p className="text-white/90">{currentTutorial.description}</p>
+        
+        {currentTutorial.isWelcome && (
+          <div className="mt-4 bg-black/20 p-3 rounded-lg border border-white/10">
+            <div className="flex items-center gap-3">
+              <div className="h-12 w-12 rounded-full border-2 border-[#B87333] bg-gradient-to-br from-[#181820] to-[#1f1a25] flex items-center justify-center">
+                <div className="text-[#B87333] font-bold text-lg leading-none tracking-tighter flex flex-col items-center">
+                  <span className="text-[7px] opacity-80 mb-0.5">THRIVE</span>
+                  <span>MT</span>
+                </div>
+              </div>
+              <p className="text-sm text-white/80">
+                Look for this button in the top right corner for a full tutorial anytime.
+              </p>
+            </div>
+          </div>
+        )}
       </CardContent>
       
       <CardFooter className="flex justify-between">
@@ -105,11 +128,18 @@ const FeatureTutorial: React.FC<FeatureTutorialProps> = ({ featureId, onClose, e
   );
 };
 
-// Tutorial steps for different features - removing the welcome slide from dashboard tutorial
-const getTutorialSteps = (featureId: string): TutorialStep[] => {
+// Tutorial steps for different features - showing a personalized welcome for dashboard
+const getTutorialSteps = (featureId: string, userName: string = ""): TutorialStep[] => {
   switch (featureId) {
     case 'dashboard':
       return [
+        {
+          title: "Welcome to Thrive MT",
+          description: "Your personalized mental wellness dashboard is ready. We've designed it to support your journey to better mental health.",
+          image: "/lovable-uploads/f2c6ac08-6331-4884-950d-7f94d68ff15f.png",
+          isWelcome: true,
+          userName: userName
+        },
         {
           title: "Daily Wellness Challenges",
           description: "Engage with daily activities designed to boost your mental wellbeing. Each challenge takes just a few minutes but can have lasting benefits."
