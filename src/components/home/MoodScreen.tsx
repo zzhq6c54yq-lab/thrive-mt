@@ -1,7 +1,7 @@
 
 import React, { useState } from "react";
 import { Button } from "@/components/ui/button";
-import { ArrowLeft, Smile, Meh, Frown, HeartCrack, Angry, Brain } from "lucide-react";
+import { ArrowLeft, Smile, Meh, Frown, HeartCrack, Angry, Brain, ChevronDown } from "lucide-react";
 import { motion } from "framer-motion";
 import { AlertDialog, AlertDialogContent, AlertDialogHeader, AlertDialogTitle, AlertDialogFooter, AlertDialogDescription, AlertDialogAction } from "@/components/ui/alert-dialog";
 import { PhoneCall, MessageSquare, LifeBuoy, Heart, AlertTriangle } from "lucide-react";
@@ -41,6 +41,7 @@ const MoodScreen: React.FC<MoodScreenProps> = ({ onMoodSelect, onPrevious }) => 
     emergencyHelp: isSpanish ? "Ayuda de emergencia" : "Emergency help",
     needHelp: isSpanish ? "¿Necesitas ayuda?" : "Need help?",
     getSupport: isSpanish ? "Obtener apoyo" : "Get support",
+    scrollDown: isSpanish ? "Desplázate para ver opciones" : "Scroll to see options",
   };
   
   // Mood data with simple icons and mental health colors
@@ -209,12 +210,20 @@ const MoodScreen: React.FC<MoodScreenProps> = ({ onMoodSelect, onPrevious }) => 
           </div>
         </div>
         
+        {/* Scroll indicator */}
+        <div className="flex justify-center mt-4 mb-8 text-white/50 animate-bounce">
+          <div className="flex flex-col items-center">
+            <ChevronDown className="h-6 w-6" />
+            <span className="text-sm">{translations.scrollDown}</span>
+          </div>
+        </div>
+        
         {/* Back Button */}
         <motion.div 
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 0.8, duration: 0.5 }}
-          className="mt-8 flex justify-center"
+          className="mt-4 flex justify-center"
         >
           <Button
             onClick={onPrevious}
@@ -264,6 +273,13 @@ const MoodScreen: React.FC<MoodScreenProps> = ({ onMoodSelect, onPrevious }) => 
                   </div>
                 </div>
               ))}
+            </div>
+            
+            {/* Visual cue - up and down arrows */}
+            <div className="flex justify-center my-4">
+              <div className="text-red-400/60 animate-bounce">
+                <ChevronDown className="w-6 h-6" />
+              </div>
             </div>
           </div>
           
