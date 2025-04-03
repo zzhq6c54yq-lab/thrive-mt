@@ -1,8 +1,7 @@
 
-import React, { useState } from "react";
+import React from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
-import { Dialog, DialogContent } from "@/components/ui/dialog";
 import { CheckCircle2, X, ArrowRight } from "lucide-react";
 import useTranslation from "@/hooks/useTranslation";
 
@@ -24,10 +23,11 @@ interface FeatureTutorialProps {
 const FeatureTutorial: React.FC<FeatureTutorialProps> = ({ featureId, onClose, embedded = false, userName = "" }) => {
   const { isSpanish, getTranslatedText } = useTranslation();
   
-  // For dashboard, we'll only show the welcome screen
+  // Get tutorial content for this feature
   const tutorialSteps = getTutorialSteps(featureId, userName, isSpanish);
   
-  const currentTutorial = tutorialSteps[0]; // Always display first step only
+  // Always display first step only for simplicity
+  const currentTutorial = tutorialSteps[0]; 
   
   return (
     <Card className="w-full max-w-md bg-white/10 backdrop-blur-md border border-white/20 shadow-xl overflow-hidden">
@@ -91,7 +91,7 @@ const FeatureTutorial: React.FC<FeatureTutorialProps> = ({ featureId, onClose, e
   );
 };
 
-// Tutorial steps for different features - showing a personalized welcome for dashboard
+// Tutorial steps for different features
 const getTutorialSteps = (featureId: string, userName: string = "", isSpanish: boolean): TutorialStep[] => {
   switch (featureId) {
     case 'dashboard':

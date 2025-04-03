@@ -35,8 +35,6 @@ export const usePopupManagement = (screenState: string) => {
   // Listen for language changes
   useEffect(() => {
     const handleLanguageChange = () => {
-      // No need to do anything special here, just making sure the component re-renders
-      // when language changes
       console.log("Language changed to:", localStorage.getItem('preferredLanguage'));
     };
     
@@ -53,7 +51,8 @@ export const usePopupManagement = (screenState: string) => {
     const prevScreenState = localStorage.getItem('prevScreenState');
     console.log("usePopupManagement - Current screen:", screenState, "Previous screen:", prevScreenState);
     
-    // Show only one welcome tutorial when transferring to main menu from onboarding
+    // Only show the main welcome tutorial when transferring to main menu from onboarding
+    // and only if it hasn't been shown before
     if (screenState === 'main') {
       const comingFromOnboarding = prevScreenState === 'visionBoard' || 
                                   prevScreenState === 'subscription' || 
@@ -61,12 +60,14 @@ export const usePopupManagement = (screenState: string) => {
                                   prevScreenState === 'mood' || 
                                   prevScreenState === 'register';
       
-      if (comingFromOnboarding && !popupsShown.mainTutorial) {
-        // Just show main tutorial, not the other popups
+      // Only show the initial dashboard tutorial when coming from onboarding screens
+      // and it hasn't been shown before
+      if (comingFromOnboarding && !popupsShown.mainTutorial && 
+          localStorage.getItem('dashboardTutorialShown') !== 'true') {
         setShowMainTutorial(true);
         setPopupsShown(prev => ({ ...prev, mainTutorial: true }));
         
-        // Don't show other popups during onboarding transition
+        // Ensure other popups don't show during onboarding transition
         setShowCoPayCredit(false);
         setShowHenry(false);
       }

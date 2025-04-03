@@ -3,7 +3,7 @@ import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { 
   User, Settings, LogOut, Calendar, LineChart, HelpCircle, 
-  Moon, Sun, Bell, Lock, MessageSquare
+  Moon, Sun, Bell, Lock, MessageSquare, ArrowRight
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
@@ -16,7 +16,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { useToast } from "@/hooks/use-toast";
-import WelcomeTutorial from "../tutorials/WelcomeTutorial";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "@/components/ui/dialog";
 
 const Header = () => {
   const { toast } = useToast();
@@ -55,6 +55,12 @@ const Header = () => {
       description: isSpanish ? "El modo oscuro aún no está implementado." : "Dark mode is not implemented yet.",
     });
   };
+
+  // Welcome message content for the Thrive MT button in header
+  const welcomeTitle = isSpanish ? "Bienvenido a Thrive MT" : "Welcome to Thrive MT";
+  const welcomeMessage = isSpanish 
+    ? "Bienvenido a Thrive MT, tu compañero de bienestar mental personalizado. Estamos aquí para apoyarte en tu viaje hacia un mejor bienestar mental."
+    : "Welcome to Thrive MT, your personalized mental wellness companion. We're here to support your journey to better mental wellbeing.";
 
   return (
     <header className="fixed top-0 right-0 z-50 p-4 flex items-center justify-end gap-2">
@@ -146,11 +152,46 @@ const Header = () => {
         </DropdownMenuContent>
       </DropdownMenu>
       
-      {/* Welcome Tutorial Dialog */}
-      <WelcomeTutorial
-        isOpen={showWelcomeTutorial}
-        onClose={() => setShowWelcomeTutorial(false)}
-      />
+      {/* Welcome Tutorial Dialog - Simplified version, doesn't use separate component */}
+      <Dialog open={showWelcomeTutorial} onOpenChange={setShowWelcomeTutorial}>
+        <DialogContent className="bg-[#2a2a3c] border-[#3a3a4c] text-white max-w-md">
+          <DialogHeader className="relative">
+            <Button 
+              variant="ghost" 
+              size="icon" 
+              className="absolute right-0 top-0 rounded-full text-white/70 hover:text-white hover:bg-white/10"
+              onClick={() => setShowWelcomeTutorial(false)}
+            >
+              <HelpCircle className="h-4 w-4" />
+              <span className="sr-only">{isSpanish ? "Cerrar" : "Close"}</span>
+            </Button>
+            <DialogTitle className="text-xl text-white">
+              {welcomeTitle}
+            </DialogTitle>
+          </DialogHeader>
+          
+          <div className="flex flex-col items-center mb-4">
+            <div className="w-20 h-20 rounded-full bg-gradient-to-br from-[#B87333] to-[#E5C5A1] flex items-center justify-center mb-4">
+              <div className="text-white font-bold text-2xl leading-none tracking-tighter flex flex-col items-center">
+                <span className="text-[10px] opacity-90 mb-0.5">THRIVE</span>
+                <span>MT</span>
+              </div>
+            </div>
+            
+            <p className="text-white/90 text-center mb-4">{welcomeMessage}</p>
+          </div>
+          
+          <DialogFooter>
+            <Button 
+              onClick={() => setShowWelcomeTutorial(false)}
+              className="bg-gradient-to-r from-[#B87333] to-[#E5C5A1] hover:from-[#A56625] hover:to-[#D4B48F] text-white w-full sm:w-auto"
+            >
+              <ArrowRight className="mr-2 h-4 w-4" />
+              {isSpanish ? "Continuar" : "Continue"}
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </header>
   );
 };

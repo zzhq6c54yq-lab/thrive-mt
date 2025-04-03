@@ -32,6 +32,7 @@ interface IndexScreenManagerProps {
   handleVisionBoardContinue: () => void;
   handleRegister: (e: React.FormEvent) => void;
   setScreenState: (state: 'intro' | 'mood' | 'moodResponse' | 'register' | 'subscription' | 'visionBoard' | 'main') => void;
+  markTutorialCompleted?: () => void;
 }
 
 const IndexScreenManager: React.FC<IndexScreenManagerProps> = ({
@@ -52,7 +53,8 @@ const IndexScreenManager: React.FC<IndexScreenManagerProps> = ({
   handleSubscriptionContinue,
   handleVisionBoardContinue,
   handleRegister,
-  setScreenState
+  setScreenState,
+  markTutorialCompleted
 }) => {
   const { isSpanish } = useTranslation();
   
@@ -150,6 +152,7 @@ const IndexScreenManager: React.FC<IndexScreenManagerProps> = ({
           selectedQualities={selectedQualities}
           selectedGoals={selectedGoals}
           navigateToFeature={navigateToFeature}
+          markTutorialCompleted={markTutorialCompleted}
         />
       );
     default:

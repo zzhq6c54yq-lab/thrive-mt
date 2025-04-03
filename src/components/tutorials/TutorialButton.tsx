@@ -1,8 +1,7 @@
 
 import React, { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
-import { X } from "lucide-react";
-import FeatureTutorial from "./FeatureTutorial";
+import { X, ArrowRight } from "lucide-react";
 import { useLocation } from "react-router-dom";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "@/components/ui/dialog";
 import useTranslation from "@/hooks/useTranslation";
@@ -48,11 +47,19 @@ const TutorialButton: React.FC<TutorialButtonProps> = ({
     return null;
   }
 
-  // Simple welcome message that will be shown in the popup
+  // Welcome message content
+  const welcomeTitle = isSpanish ? "Bienvenido a Thrive MT" : "Welcome to Thrive MT";
   const welcomeMessage = isSpanish 
     ? "Bienvenido a Thrive MT, tu compañero de bienestar mental personalizado. Estamos aquí para apoyarte en tu viaje hacia un mejor bienestar mental."
     : "Welcome to Thrive MT, your personalized mental wellness companion. We're here to support your journey to better mental wellbeing.";
 
+  // Feature-specific content
+  const featureTitle = isSpanish ? "Tutorial de Función" : "Feature Tutorial";
+  const featureMessage = isSpanish 
+    ? `Esta función le permite ${featureId === 'dashboard' ? 'navegar por su panel principal' : 'acceder a herramientas de bienestar'}.`
+    : `This feature allows you to ${featureId === 'dashboard' ? 'navigate your main dashboard' : 'access wellness tools'}.`;
+
+  // Render the appropriate button based on variant
   if (variant === "logo") {
     return (
       <>
@@ -80,50 +87,51 @@ const TutorialButton: React.FC<TutorialButtonProps> = ({
           </div>
         </Button>
         
-        {showTutorial && (
-          <Dialog open={showTutorial} onOpenChange={setShowTutorial}>
-            <DialogContent className="bg-[#2a2a3c] border-[#3a3a4c] text-white max-w-md">
-              <DialogHeader className="relative">
-                <Button 
-                  variant="ghost" 
-                  size="icon" 
-                  className="absolute right-0 top-0 rounded-full text-white/70 hover:text-white hover:bg-white/10"
-                  onClick={() => setShowTutorial(false)}
-                >
-                  <X className="h-4 w-4" />
-                  <span className="sr-only">{isSpanish ? "Cerrar" : "Close"}</span>
-                </Button>
-                <DialogTitle className="text-xl text-white">
-                  {isSpanish ? "Bienvenido a Thrive MT" : "Welcome to Thrive MT"}
-                </DialogTitle>
-              </DialogHeader>
-              
-              <div className="flex flex-col items-center mb-4">
-                <div className="w-20 h-20 rounded-full bg-gradient-to-br from-[#B87333] to-[#E5C5A1] flex items-center justify-center mb-4">
-                  <div className="text-white font-bold text-2xl leading-none tracking-tighter flex flex-col items-center">
-                    <span className="text-[10px] opacity-90 mb-0.5">THRIVE</span>
-                    <span>MT</span>
-                  </div>
+        {/* Simple Dialog for Logo variant */}
+        <Dialog open={showTutorial} onOpenChange={setShowTutorial}>
+          <DialogContent className="bg-[#2a2a3c] border-[#3a3a4c] text-white max-w-md">
+            <DialogHeader className="relative">
+              <Button 
+                variant="ghost" 
+                size="icon" 
+                className="absolute right-0 top-0 rounded-full text-white/70 hover:text-white hover:bg-white/10"
+                onClick={() => setShowTutorial(false)}
+              >
+                <X className="h-4 w-4" />
+                <span className="sr-only">{isSpanish ? "Cerrar" : "Close"}</span>
+              </Button>
+              <DialogTitle className="text-xl text-white">
+                {welcomeTitle}
+              </DialogTitle>
+            </DialogHeader>
+            
+            <div className="flex flex-col items-center mb-4">
+              <div className="w-20 h-20 rounded-full bg-gradient-to-br from-[#B87333] to-[#E5C5A1] flex items-center justify-center mb-4">
+                <div className="text-white font-bold text-2xl leading-none tracking-tighter flex flex-col items-center">
+                  <span className="text-[10px] opacity-90 mb-0.5">THRIVE</span>
+                  <span>MT</span>
                 </div>
-                
-                <p className="text-white/90 text-center mb-4">{welcomeMessage}</p>
               </div>
               
-              <DialogFooter>
-                <Button 
-                  onClick={() => setShowTutorial(false)}
-                  className="bg-gradient-to-r from-[#B87333] to-[#E5C5A1] hover:from-[#A56625] hover:to-[#D4B48F] text-white w-full sm:w-auto"
-                >
-                  {isSpanish ? "Continuar" : "Continue"}
-                </Button>
-              </DialogFooter>
-            </DialogContent>
-          </Dialog>
-        )}
+              <p className="text-white/90 text-center mb-4">{welcomeMessage}</p>
+            </div>
+            
+            <DialogFooter>
+              <Button 
+                onClick={() => setShowTutorial(false)}
+                className="bg-gradient-to-r from-[#B87333] to-[#E5C5A1] hover:from-[#A56625] hover:to-[#D4B48F] text-white w-full sm:w-auto"
+              >
+                <ArrowRight className="mr-2 h-4 w-4" />
+                {isSpanish ? "Continuar" : "Continue"}
+              </Button>
+            </DialogFooter>
+          </DialogContent>
+        </Dialog>
       </>
     );
   }
 
+  // Default variant (smaller button for features)
   return (
     <>
       <Button
@@ -139,50 +147,46 @@ const TutorialButton: React.FC<TutorialButtonProps> = ({
         {isSpanish ? "Cómo usar esta función" : "How to use this feature"}
       </Button>
       
-      {showTutorial && (
-        <Dialog open={showTutorial} onOpenChange={setShowTutorial}>
-          <DialogContent className="bg-[#2a2a3c] border-[#3a3a4c] text-white max-w-md">
-            <DialogHeader className="relative">
-              <Button 
-                variant="ghost" 
-                size="icon" 
-                className="absolute right-0 top-0 rounded-full text-white/70 hover:text-white hover:bg-white/10"
-                onClick={() => setShowTutorial(false)}
-              >
-                <X className="h-4 w-4" />
-                <span className="sr-only">{isSpanish ? "Cerrar" : "Close"}</span>
-              </Button>
-              <DialogTitle className="text-xl text-white">
-                {isSpanish ? "Tutorial de Función" : "Feature Tutorial"}
-              </DialogTitle>
-            </DialogHeader>
-            
-            <div className="flex flex-col items-center mb-4">
-              <div className="w-16 h-16 rounded-full bg-gradient-to-br from-[#B87333] to-[#E5C5A1] flex items-center justify-center mb-4">
-                <div className="text-white font-bold text-xl leading-none tracking-tighter flex flex-col items-center">
-                  <span className="text-[8px] opacity-90 mb-0.5">THRIVE</span>
-                  <span>MT</span>
-                </div>
+      {/* Simple Dialog for default variant */}
+      <Dialog open={showTutorial} onOpenChange={setShowTutorial}>
+        <DialogContent className="bg-[#2a2a3c] border-[#3a3a4c] text-white max-w-md">
+          <DialogHeader className="relative">
+            <Button 
+              variant="ghost" 
+              size="icon" 
+              className="absolute right-0 top-0 rounded-full text-white/70 hover:text-white hover:bg-white/10"
+              onClick={() => setShowTutorial(false)}
+            >
+              <X className="h-4 w-4" />
+              <span className="sr-only">{isSpanish ? "Cerrar" : "Close"}</span>
+            </Button>
+            <DialogTitle className="text-xl text-white">
+              {featureTitle}
+            </DialogTitle>
+          </DialogHeader>
+          
+          <div className="flex flex-col items-center mb-4">
+            <div className="w-16 h-16 rounded-full bg-gradient-to-br from-[#B87333] to-[#E5C5A1] flex items-center justify-center mb-4">
+              <div className="text-white font-bold text-xl leading-none tracking-tighter flex flex-col items-center">
+                <span className="text-[8px] opacity-90 mb-0.5">THRIVE</span>
+                <span>MT</span>
               </div>
-              
-              <p className="text-white/90 text-center mb-4">
-                {isSpanish 
-                  ? `Esta función le permite ${featureId === 'dashboard' ? 'navegar por su panel principal' : 'acceder a herramientas de bienestar'}.`
-                  : `This feature allows you to ${featureId === 'dashboard' ? 'navigate your main dashboard' : 'access wellness tools'}.`}
-              </p>
             </div>
             
-            <DialogFooter>
-              <Button 
-                onClick={() => setShowTutorial(false)}
-                className="bg-gradient-to-r from-[#B87333] to-[#E5C5A1] hover:from-[#A56625] hover:to-[#D4B48F] text-white w-full sm:w-auto"
-              >
-                {isSpanish ? "Continuar" : "Continue"}
-              </Button>
-            </DialogFooter>
-          </DialogContent>
-        </Dialog>
-      )}
+            <p className="text-white/90 text-center mb-4">{featureMessage}</p>
+          </div>
+          
+          <DialogFooter>
+            <Button 
+              onClick={() => setShowTutorial(false)}
+              className="bg-gradient-to-r from-[#B87333] to-[#E5C5A1] hover:from-[#A56625] hover:to-[#D4B48F] text-white w-full sm:w-auto"
+            >
+              <ArrowRight className="mr-2 h-4 w-4" />
+              {isSpanish ? "Continuar" : "Continue"}
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </>
   );
 };

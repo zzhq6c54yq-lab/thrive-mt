@@ -108,12 +108,16 @@ const IndexContent: React.FC<IndexContentProps> = ({
         handleVisionBoardContinue={handleVisionBoardContinue}
         handleRegister={handleRegister}
         setScreenState={setScreenState}
+        markTutorialCompleted={markTutorialCompleted}
       />
       
-      <WelcomeTutorial
-        isOpen={isFirstVisit}
-        onClose={handleCloseTutorial}
-      />
+      {/* Only show welcome tutorial for tutorial button clicks, not during onboarding-to-main transitions */}
+      {isFirstVisit && !popupsShown.mainTutorial && 
+        <WelcomeTutorial
+          isOpen={isFirstVisit}
+          onClose={handleCloseTutorial}
+        />
+      }
     </div>
   );
 };

@@ -17,6 +17,7 @@ interface MainDashboardProps {
   selectedQualities: string[];
   selectedGoals: string[];
   navigateToFeature: (path: string) => void;
+  markTutorialCompleted?: () => void;
 }
 
 const MainDashboard: React.FC<MainDashboardProps> = ({
@@ -25,52 +26,39 @@ const MainDashboard: React.FC<MainDashboardProps> = ({
   onHenryToggle,
   selectedQualities,
   selectedGoals,
-  navigateToFeature
+  navigateToFeature,
+  markTutorialCompleted
 }) => {
   const navigate = useNavigate();
   const location = useLocation();
-  const { isSpanish, getTranslatedText } = useTranslation();
+  const { isSpanish } = useTranslation();
   const [showTutorial, setShowTutorial] = useState(false);
   const { handleWorkshopClick } = useWorkshopNavigation();
   
-  // Check if coming from onboarding screens and force tutorial if needed
+  // Check if coming from onboarding screens and show tutorial if needed
   useEffect(() => {
     // Check if coming from onboarding screens
     const prevScreenState = localStorage.getItem('prevScreenState');
+    const dashboardTutorialShown = localStorage.getItem('dashboardTutorialShown') === 'true';
     const comingFromOnboarding = prevScreenState === 'visionBoard' || 
                               prevScreenState === 'subscription' || 
                               prevScreenState === 'moodResponse' || 
                               prevScreenState === 'mood' || 
                               prevScreenState === 'register';
     
-    console.log("DASHBOARD TRIGGER: Previous screen state:", prevScreenState);
-    console.log("Coming from onboarding:", comingFromOnboarding);
-    
-    if (comingFromOnboarding) {
-      console.log("MainDashboard forcing tutorial to show");
-      
-      // Force reset the dashboard tutorial flag 
-      localStorage.setItem('dashboardTutorialShown', 'false');
-      
-      // Reset the popupsShown tutorial flags in localStorage as well
-      const popupsShown = localStorage.getItem('popupsShown');
-      if (popupsShown) {
-        const parsedState = JSON.parse(popupsShown);
-        parsedState.mainTutorial = false;
-        parsedState.transitionTutorial = false;
-        localStorage.setItem('popupsShown', JSON.stringify(parsedState));
-      }
-      
-      // Set local tutorial state
+    // Only show tutorial if coming from onboarding and it hasn't been shown before
+    if (comingFromOnboarding && !dashboardTutorialShown) {
+      console.log("Showing dashboard tutorial for first-time onboarding completion");
       setShowTutorial(true);
-      
-      console.log("Reset tutorial flags in MainDashboard, showTutorial =", true);
     }
   }, []);
   
   const handleTutorialClose = () => {
     setShowTutorial(false);
     localStorage.setItem('dashboardTutorialShown', 'true');
+    if (markTutorialCompleted) {
+      markTutorialCompleted();
+    }
   };
   
   return (

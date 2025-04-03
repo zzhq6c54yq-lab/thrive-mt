@@ -1,8 +1,9 @@
 
 import React from "react";
 import { Button } from "@/components/ui/button";
-import { X } from "lucide-react";
-import FeatureTutorial from "@/components/tutorials/FeatureTutorial";
+import { X, ArrowRight } from "lucide-react";
+import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
+import useTranslation from "@/hooks/useTranslation";
 
 interface DashboardTutorialProps {
   showTutorial: boolean;
@@ -15,26 +16,57 @@ const DashboardTutorial: React.FC<DashboardTutorialProps> = ({
   userName,
   onClose
 }) => {
+  const { isSpanish, getTranslatedText } = useTranslation();
+  
   if (!showTutorial) return null;
   
   return (
     <div className="fixed inset-0 bg-black/70 z-50 flex items-center justify-center">
       <div className="w-full max-w-lg mx-4 relative">
-        <Button 
-          variant="ghost" 
-          size="icon" 
-          className="absolute right-2 top-2 z-50 rounded-full bg-black/50 text-white hover:bg-black/70"
-          onClick={onClose}
-        >
-          <X className="h-4 w-4" />
-          <span className="sr-only">Close</span>
-        </Button>
+        <Card className="w-full bg-white/10 backdrop-blur-md border border-white/20 shadow-xl overflow-hidden">
+          <Button 
+            variant="ghost" 
+            size="icon" 
+            className="absolute right-2 top-2 z-50 rounded-full bg-black/50 text-white hover:bg-black/70"
+            onClick={onClose}
+          >
+            <X className="h-4 w-4" />
+            <span className="sr-only">{isSpanish ? "Cerrar" : "Close"}</span>
+          </Button>
 
-        <FeatureTutorial 
-          featureId="dashboard" 
-          onClose={onClose}
-          userName={userName}
-        />
+          <div className="w-full flex justify-center items-center py-6 border-b border-white/10 bg-gradient-to-r from-[#181820] via-[#221F26] to-[#181820]">
+            <img 
+              src="/lovable-uploads/f2c6ac08-6331-4884-950d-7f94d68ff15f.png" 
+              alt="Thrive MT Logo" 
+              className="h-20 w-20 object-contain"
+            />
+          </div>
+          
+          <CardHeader>
+            <CardTitle className="text-xl text-white">
+              {isSpanish 
+                ? `Bienvenido a Thrive MT, ${userName}!` 
+                : `Welcome to Thrive MT, ${userName}!`}
+            </CardTitle>
+          </CardHeader>
+          
+          <CardContent>
+            <p className="text-white/90">
+              {isSpanish 
+                ? "Tu panel de bienestar mental personalizado está listo. Lo hemos diseñado para apoyar tu viaje hacia una mejor salud mental, centrándote en Horizontes Esperanzadores, Empoderamiento a través de la Educación, Conexiones Nutridas, Resiliencia y Recuperación, y asegurando que Tu Viaje Importa."
+                : "Your personalized mental wellness dashboard is ready. We've designed it to support your journey to better mental health, focusing on Hopeful Horizons, Empowerment through Education, Nurtured Connections, Resilience and Recovery, and ensuring Your Journey Matters."}
+            </p>
+          </CardContent>
+          
+          <CardFooter className="flex justify-center">
+            <Button 
+              className="bg-gradient-to-r from-[#B87333] to-[#E5C5A1] hover:from-[#A56625] hover:to-[#D4B48F] text-white"
+              onClick={onClose}
+            >
+              <ArrowRight className="mr-2 h-4 w-4" /> {isSpanish ? "Continuar" : "Continue"}
+            </Button>
+          </CardFooter>
+        </Card>
       </div>
     </div>
   );

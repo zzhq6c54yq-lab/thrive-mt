@@ -12,7 +12,8 @@ export const useScreenHistory = (
     if (location.state && location.state.screenState) {
       setScreenState(location.state.screenState);
       
-      // Removed tutorial trigger logic for transition to 'main'
+      // Don't trigger any tutorial logic on transition to 'main'
+      // This is now handled directly in MainDashboard component
       
       if (location.state.returnToMain) {
         window.history.replaceState(
