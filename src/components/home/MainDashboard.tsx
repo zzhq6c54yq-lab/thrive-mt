@@ -9,6 +9,7 @@ import DashboardContent from "@/components/dashboard/DashboardContent";
 import DashboardTutorial from "@/components/dashboard/DashboardTutorial";
 import { useWorkshopNavigation } from "@/components/dashboard/useWorkshopNavigation";
 import useTranslation from "@/hooks/useTranslation";
+import { useToast } from "@/hooks/use-toast";
 
 interface MainDashboardProps {
   userName: string;
@@ -34,6 +35,7 @@ const MainDashboard: React.FC<MainDashboardProps> = ({
   const { isSpanish } = useTranslation();
   const [showTutorial, setShowTutorial] = useState(false);
   const { handleWorkshopClick } = useWorkshopNavigation();
+  const { toast } = useToast();
   
   // Check if coming from onboarding screens and show tutorial if needed
   useEffect(() => {
@@ -51,7 +53,11 @@ const MainDashboard: React.FC<MainDashboardProps> = ({
     // Only show tutorial if coming from onboarding and it hasn't been shown before
     if (comingFromOnboarding && !dashboardTutorialShown) {
       console.log("Showing dashboard tutorial for first-time onboarding completion");
-      setShowTutorial(true);
+      
+      // Small delay to ensure it renders after the dashboard is loaded
+      setTimeout(() => {
+        setShowTutorial(true);
+      }, 500);
     }
   }, []);
   
@@ -61,6 +67,14 @@ const MainDashboard: React.FC<MainDashboardProps> = ({
     if (markTutorialCompleted) {
       markTutorialCompleted();
     }
+    
+    // Show a toast providing guidance on finding the tutorial again
+    toast({
+      title: isSpanish ? "Tutorial completado" : "Tutorial completed",
+      description: isSpanish 
+        ? "Puedes volver a ver el tutorial completo en cualquier momento haciendo clic en el botón THRIVE MT en la esquina superior derecha."
+        : "You can view the full tutorial again anytime by clicking the THRIVE MT button in the top right corner."
+    });
   };
   
   return (

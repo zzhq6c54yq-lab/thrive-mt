@@ -60,11 +60,11 @@ export const usePopupManagement = (screenState: string) => {
                                   prevScreenState === 'mood' || 
                                   prevScreenState === 'register';
       
-      // Only show the initial dashboard tutorial when coming from onboarding screens
+      // Only show the dashboard tutorial when coming from onboarding screens
       // and it hasn't been shown before
-      if (comingFromOnboarding && !popupsShown.mainTutorial && 
+      if (comingFromOnboarding && 
           localStorage.getItem('dashboardTutorialShown') !== 'true') {
-        setShowMainTutorial(true);
+        console.log("Should show dashboard tutorial - coming from onboarding and tutorial not shown before");
         setPopupsShown(prev => ({ ...prev, mainTutorial: true }));
         
         // Ensure other popups don't show during onboarding transition

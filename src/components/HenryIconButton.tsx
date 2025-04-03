@@ -51,7 +51,7 @@ const HenryIconButton: React.FC<HenryIconButtonProps> = ({
   };
 
   // Determine if we should show the THRIVE logo tutorial button - only on main dashboard
-  const shouldShowThriveButton = location.pathname === "/" && screenState === 'main';
+  const shouldShowThriveButton = false; // Remove this button to avoid duplicates with the Header Thrive button
 
   return (
     <>
@@ -72,15 +72,7 @@ const HenryIconButton: React.FC<HenryIconButtonProps> = ({
           </div>
         </Button>
         
-        {/* Only show the THRIVE tutorial button on the main dashboard */}
-        {shouldShowThriveButton && (
-          <TutorialButton 
-            featureId="dashboard" 
-            variant="logo" 
-            className="shadow-xl hover:shadow-[0_0_25px_rgba(184,115,51,0.6)]"
-            showAnimatedRings={true}
-          />
-        )}
+        {/* Removed the Thrive tutorial button from here to avoid duplicates */}
       </div>
       
       <HelpChatDialog isOpen={isHelpOpen} onOpenChange={setIsHelpOpen} />
