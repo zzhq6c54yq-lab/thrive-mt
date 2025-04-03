@@ -95,7 +95,6 @@ const IndexScreenManager: React.FC<IndexScreenManagerProps> = ({
       return (
         <MoodScreen
           onMoodSelect={onMoodSelect}
-          onPrevious={() => setScreenState('intro')}
         />
       );
     case 'moodResponse':

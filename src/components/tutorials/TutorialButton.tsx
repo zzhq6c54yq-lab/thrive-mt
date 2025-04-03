@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { HelpCircle } from "lucide-react";
@@ -66,6 +67,11 @@ const TutorialButton: React.FC<TutorialButtonProps> = ({
     return null;
   }
 
+  // Simple welcome message that will be shown in the popup
+  const welcomeMessage = isSpanish 
+    ? "Bienvenido a Thrive MT, tu compañero de bienestar mental personalizado. Estamos aquí para apoyarte en tu viaje hacia un mejor bienestar mental."
+    : "Welcome to Thrive MT, your personalized mental wellness companion. We're here to support your journey to better mental wellbeing.";
+
   if (variant === "logo") {
     return (
       <>
@@ -95,28 +101,44 @@ const TutorialButton: React.FC<TutorialButtonProps> = ({
         
         {showTutorial && (
           <Dialog open={showTutorial} onOpenChange={setShowTutorial}>
-            <DialogContent className="bg-[#2a2a3c] border-[#3a3a4c] text-white max-w-lg">
+            <DialogContent className="bg-[#2a2a3c] border-[#3a3a4c] text-white max-w-md">
               <DialogHeader>
                 <DialogTitle className="text-xl text-white">
-                  {isSpanish ? "Tutorial de Thrive" : "Thrive Tutorial"}
+                  {isSpanish ? "Bienvenido a Thrive MT" : "Welcome to Thrive MT"}
                 </DialogTitle>
-                <DialogDescription className="text-gray-300">
-                  {isSpanish ? "Aprenda a usar esta función" : "Learn how to use this feature"}
-                </DialogDescription>
               </DialogHeader>
               
-              <ScrollArea className="max-h-[60vh] pr-4">
-                <FeatureTutorial 
-                  featureId={featureId} 
-                  onClose={() => setShowTutorial(false)} 
-                  embedded={true}
-                />
-              </ScrollArea>
+              <div className="flex flex-col items-center mb-4">
+                <div className="w-20 h-20 rounded-full bg-gradient-to-br from-[#B87333] to-[#E5C5A1] flex items-center justify-center mb-4">
+                  <div className="text-white font-bold text-2xl leading-none tracking-tighter flex flex-col items-center">
+                    <span className="text-[10px] opacity-90 mb-0.5">THRIVE</span>
+                    <span>MT</span>
+                  </div>
+                </div>
+                
+                <p className="text-white/90 text-center mb-4">{welcomeMessage}</p>
+                
+                <div className="bg-black/20 p-3 rounded-lg border border-white/10 w-full mb-4">
+                  <div className="flex items-center gap-3">
+                    <div className="h-12 w-12 rounded-full border-2 border-[#B87333] bg-gradient-to-br from-[#181820] to-[#1f1a25] flex items-center justify-center">
+                      <div className="text-[#B87333] font-bold text-lg leading-none tracking-tighter flex flex-col items-center">
+                        <span className="text-[7px] opacity-80 mb-0.5">THRIVE</span>
+                        <span>MT</span>
+                      </div>
+                    </div>
+                    <p className="text-sm text-white/80">
+                      {isSpanish 
+                        ? "Busque este botón en la esquina superior derecha para obtener ayuda en cualquier momento."
+                        : "Look for this button in the top right corner for help anytime."}
+                    </p>
+                  </div>
+                </div>
+              </div>
               
-              <DialogFooter className="mt-4">
+              <DialogFooter>
                 <Button 
                   onClick={() => setShowTutorial(false)}
-                  className="bg-indigo-500 hover:bg-indigo-600 text-white"
+                  className="bg-gradient-to-r from-[#B87333] to-[#E5C5A1] hover:from-[#A56625] hover:to-[#D4B48F] text-white"
                 >
                   {isSpanish ? "Entendido" : "Got it"}
                 </Button>
@@ -145,7 +167,7 @@ const TutorialButton: React.FC<TutorialButtonProps> = ({
       
       {showTutorial && (
         <Dialog open={showTutorial} onOpenChange={setShowTutorial}>
-          <DialogContent className="bg-[#2a2a3c] border-[#3a3a4c] text-white max-w-lg">
+          <DialogContent className="bg-[#2a2a3c] border-[#3a3a4c] text-white max-w-md">
             <DialogHeader>
               <DialogTitle className="text-xl text-white">
                 {isSpanish ? "Tutorial de Función" : "Feature Tutorial"}
@@ -155,18 +177,25 @@ const TutorialButton: React.FC<TutorialButtonProps> = ({
               </DialogDescription>
             </DialogHeader>
             
-            <ScrollArea className="max-h-[60vh] pr-4">
-              <FeatureTutorial 
-                featureId={featureId} 
-                onClose={() => setShowTutorial(false)} 
-                embedded={true}
-              />
-            </ScrollArea>
+            <div className="flex flex-col items-center mb-4">
+              <div className="w-16 h-16 rounded-full bg-gradient-to-br from-[#B87333] to-[#E5C5A1] flex items-center justify-center mb-4">
+                <div className="text-white font-bold text-xl leading-none tracking-tighter flex flex-col items-center">
+                  <span className="text-[8px] opacity-90 mb-0.5">THRIVE</span>
+                  <span>MT</span>
+                </div>
+              </div>
+              
+              <p className="text-white/90 text-center mb-4">
+                {isSpanish 
+                  ? `Esta función le permite ${featureId === 'dashboard' ? 'navegar por su panel principal' : 'acceder a herramientas de bienestar'}.`
+                  : `This feature allows you to ${featureId === 'dashboard' ? 'navigate your main dashboard' : 'access wellness tools'}.`}
+              </p>
+            </div>
             
-            <DialogFooter className="mt-4">
+            <DialogFooter>
               <Button 
                 onClick={() => setShowTutorial(false)}
-                className="bg-indigo-500 hover:bg-indigo-600 text-white"
+                className="bg-gradient-to-r from-[#B87333] to-[#E5C5A1] hover:from-[#A56625] hover:to-[#D4B48F] text-white"
               >
                 {isSpanish ? "Entendido" : "Got it"}
               </Button>
