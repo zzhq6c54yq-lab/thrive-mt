@@ -124,24 +124,19 @@ const DailyWellnessChallenges: React.FC = () => {
   };
   
   return (
-    <div className="mb-12 bg-gradient-to-br from-[#2a2a3c] to-[#1f1f2c] rounded-3xl overflow-hidden shadow-xl">
+    <div className="bg-gradient-to-br from-[#2a2a3c] to-[#1f1f2c] rounded-2xl overflow-hidden shadow-lg">
       <div className="relative overflow-hidden">
         <div className="absolute inset-0 bg-pattern opacity-5"></div>
         
         <div className="bg-gradient-to-r from-[#8D65C5]/20 via-[#E96DED]/20 to-[#6C85DD]/20 p-6">
-          <div className="flex justify-between items-center mb-4">
-            <h2 className="text-2xl font-bold text-white">{translations.dailyChallenges}</h2>
-            <div className="flex items-center gap-2">
-              <span className="text-amber-400 font-bold">{points}</span>
-              <Award className="h-5 w-5 text-amber-400" />
-            </div>
-          </div>
-          
           {/* Points progress bar */}
           <div className="mb-4">
             <div className="flex justify-between items-center mb-1 text-xs text-gray-300">
               <span>{translations.progressToward}</span>
-              <span>{points}/1000 {translations.points}</span>
+              <div className="flex items-center gap-2">
+                <span>{points}/1000 {translations.points}</span>
+                <Award className="h-4 w-4 text-amber-400" />
+              </div>
             </div>
             <Progress value={(points % 1000) / 10} max={100} className="h-2 bg-[#1e1e2c]">
               <div className="h-full bg-gradient-to-r from-amber-400 to-amber-600 rounded-full"></div>
@@ -223,13 +218,6 @@ const DailyWellnessChallenges: React.FC = () => {
               {translations.redeemForCredits}
               <Award className="ml-2 h-4 w-4" />
             </button>
-          </div>
-          
-          <div className="mt-6 bg-indigo-500/10 p-3 rounded-lg border border-indigo-500/20">
-            <h4 className="text-sm font-medium text-white flex items-center">
-              <Calendar className="h-4 w-4 mr-2 text-indigo-300" />
-              {translations.completeAllBonus}
-            </h4>
           </div>
         </div>
       </div>
