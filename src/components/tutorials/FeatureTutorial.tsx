@@ -1,4 +1,3 @@
-
 import React, { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
@@ -40,6 +39,9 @@ const FeatureTutorial: React.FC<FeatureTutorialProps> = ({ featureId, onClose, e
   
   const currentTutorial = tutorialSteps[currentStep];
   
+  // Determine if this is the first step with the Thrive logo
+  const isFirstStepWithThriveLogo = currentStep === 0 && currentTutorial.image?.includes("f2c6ac08-6331-4884-950d-7f94d68ff15f");
+  
   return (
     <Card className="w-full max-w-md bg-white/10 backdrop-blur-md border border-white/20 shadow-xl overflow-hidden">
       <div className="relative">
@@ -58,7 +60,7 @@ const FeatureTutorial: React.FC<FeatureTutorialProps> = ({ featureId, onClose, e
             <img 
               src={currentTutorial.image} 
               alt={currentTutorial.title} 
-              className="h-24 w-24 object-contain"
+              className={`object-contain ${isFirstStepWithThriveLogo ? "h-16 w-16" : "h-24 w-24"}`}
             />
           </div>
         )}
