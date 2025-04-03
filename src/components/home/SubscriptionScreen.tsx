@@ -128,10 +128,17 @@ const SubscriptionScreen: React.FC<SubscriptionScreenProps> = ({
   ];
 
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center bg-gradient-to-b from-[#1a1a1f] to-[#2a2a35] text-white animate-fade-in py-10">
-      <div className="max-w-5xl w-full mx-auto px-4">
+    <div className="min-h-screen flex flex-col items-center justify-center bg-gradient-to-b from-[#1a1a1f] via-[#242432] to-[#272730] text-white animate-fade-in py-10 relative">
+      {/* Background pattern overlay */}
+      <div className="absolute inset-0 bg-[url('data:image/svg+xml;utf8,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%2220%22 height=%2220%22 viewBox=%220 0 20 20%22><circle cx=%222%22 cy=%222%22 r=%221%22 fill=%22%23B87333%22 fill-opacity=%220.05%22/></svg>')] opacity-20"></div>
+      
+      {/* Decorative elements */}
+      <div className="absolute top-0 right-0 w-80 h-80 bg-gradient-to-br from-[#B87333]/20 to-transparent rounded-full blur-3xl -z-10"></div>
+      <div className="absolute bottom-0 left-0 w-80 h-80 bg-gradient-to-tr from-[#D946EF]/20 to-transparent rounded-full blur-3xl -z-10"></div>
+      
+      <div className="max-w-5xl w-full mx-auto px-4 z-10">
         <div className="text-center mb-10">
-          <h2 className="text-3xl md:text-4xl font-bold mb-3">{translations.title}</h2>
+          <h2 className="text-3xl md:text-4xl font-bold mb-3 text-transparent bg-clip-text bg-gradient-to-r from-[#B87333] to-[#E5C5A1]">{translations.title}</h2>
           <p className="text-xl text-gray-300">{translations.subtitle}</p>
         </div>
         
@@ -139,7 +146,7 @@ const SubscriptionScreen: React.FC<SubscriptionScreenProps> = ({
           {subscriptionPlans.map((plan) => (
             <div 
               key={plan.title}
-              className={`${plan.color} rounded-xl overflow-hidden transition-all duration-300 transform ${selectedPlan === plan.title ? 'scale-105 ring-2 ring-[#B87333]' : 'hover:scale-102'}`}
+              className={`${plan.color} rounded-xl overflow-hidden transition-all duration-300 transform ${selectedPlan === plan.title ? 'scale-105 ring-2 ring-[#B87333]' : 'hover:scale-102'} relative`}
               onClick={() => onPlanSelect(plan.title)}
             >
               <div className="p-6">
@@ -187,7 +194,7 @@ const SubscriptionScreen: React.FC<SubscriptionScreenProps> = ({
             {translations.previous}
           </Button>
           <Button 
-            className="bg-[#B87333] hover:bg-[#B87333]/90 flex items-center gap-2"
+            className="bg-gradient-to-r from-[#B87333] to-[#E5C5A1] hover:from-[#A56625] hover:to-[#D4B48F] text-white flex items-center gap-2"
             onClick={onContinue}
           >
             {translations.continue}
@@ -195,6 +202,7 @@ const SubscriptionScreen: React.FC<SubscriptionScreenProps> = ({
           </Button>
           <Button 
             variant="ghost"
+            className="text-white/80 hover:text-white hover:bg-white/10"
             onClick={onSkip}
           >
             {translations.skip}
