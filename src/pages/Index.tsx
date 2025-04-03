@@ -40,10 +40,8 @@ const Index = () => {
     setShowCoPayCredit, 
     showHenry, 
     setShowHenry,
-    showMainTutorial,
     popupsShown,
-    markTutorialCompleted,
-    resetPopupStates
+    markTutorialCompleted
   } = usePopupManagement(screenState);
 
   // Use the screen history hook
@@ -53,28 +51,15 @@ const Index = () => {
     if (location.state && location.state.showHenry) {
       setShowHenry(true);
     }
-    
-    // Reset states for debugging
-    if (location.search.includes('reset=true')) {
-      console.log("Index: Resetting all popup states due to URL parameter");
-      resetPopupStates();
-    }
-  }, [location.state, location.search, setShowHenry, resetPopupStates]);
+  }, [location.state, setShowHenry]);
 
-  // Check if tutorial should be shown for main screen
   useEffect(() => {
-    console.log("Index: Main screen check with screen:", screenState, "showMainTutorial:", showMainTutorial);
-    
-    if (screenState === 'main') {
-      // Ensure we properly detect first visit for tutorial purposes
-      const isReturningVisitor = localStorage.getItem('mainTutorialShown') === 'true';
-      
-      if (!isReturningVisitor || showMainTutorial) {
-        console.log("Index: Setting isFirstVisit flag for tutorial");
-        setIsFirstVisit(true);
-      }
+    const hasVisited = localStorage.getItem('hasVisitedThriveMT');
+    if (!hasVisited && screenState === 'main') {
+      setIsFirstVisit(true);
+      localStorage.setItem('hasVisitedThriveMT', 'true');
     }
-  }, [screenState, showMainTutorial, setIsFirstVisit]);
+  }, [screenState, setIsFirstVisit]);
 
   const toggleHenry = () => {
     setShowHenry(prev => !prev);
@@ -101,8 +86,6 @@ const Index = () => {
     }
   };
 
-  console.log("Index rendering with screen:", screenState, "isFirstVisit:", isFirstVisit, "showMainTutorial:", showMainTutorial);
-
   return (
     <IndexContent
       screenState={screenState}
@@ -116,7 +99,6 @@ const Index = () => {
       setIsFirstVisit={setIsFirstVisit}
       showCoPayCredit={showCoPayCredit}
       setShowCoPayCredit={setShowCoPayCredit}
-      showMainTutorial={showMainTutorial}
       popupsShown={popupsShown}
       getTranslatedText={getTranslatedText}
       onMoodSelect={handleMoodSelect}

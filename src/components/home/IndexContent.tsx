@@ -1,8 +1,8 @@
 
-import React, { useEffect, useState } from "react";
+import React from "react";
 import CoPayCreditPopup from "@/components/CoPayCreditPopup";
 import IndexScreenManager from "@/components/home/IndexScreenManager";
-import MainTutorial from "@/components/tutorials/MainTutorial";
+import WelcomeTutorial from "@/components/tutorials/WelcomeTutorial";
 import { useToast } from "@/hooks/use-toast";
 
 interface IndexContentProps {
@@ -21,7 +21,6 @@ interface IndexContentProps {
   setIsFirstVisit: (value: boolean) => void;
   showCoPayCredit: boolean;
   setShowCoPayCredit: (value: boolean) => void;
-  showMainTutorial: boolean;
   popupsShown: any;
   getTranslatedText: (key: string) => string;
   onMoodSelect: (mood: 'happy' | 'ok' | 'neutral' | 'down' | 'sad' | 'overwhelmed') => void;
@@ -50,7 +49,6 @@ const IndexContent: React.FC<IndexContentProps> = ({
   setIsFirstVisit,
   showCoPayCredit,
   setShowCoPayCredit,
-  showMainTutorial,
   popupsShown,
   getTranslatedText,
   onMoodSelect,
@@ -67,54 +65,23 @@ const IndexContent: React.FC<IndexContentProps> = ({
   markTutorialCompleted
 }) => {
   const { toast } = useToast();
-  const [tutorialVisible, setTutorialVisible] = useState(false);
-  
-  // Check URL parameters and screen state to determine if tutorial should be shown
-  useEffect(() => {
-    // Get URL parameters and force tutorial flag
-    const queryParams = new URLSearchParams(window.location.search);
-    const forceTutorial = queryParams.has('tutorial') || queryParams.has('reset') || localStorage.getItem('forceTutorial') === 'true';
-    
-    console.log("IndexContent: Checking tutorial visibility. Screen:", screenState, 
-                "showMainTutorial:", showMainTutorial, 
-                "forceTutorial:", forceTutorial,
-                "localStorage.forceTutorial:", localStorage.getItem('forceTutorial'));
-    
-    // Show tutorial if on main screen AND (showMainTutorial OR URL parameter OR force flag)
-    if (screenState === 'main' && (showMainTutorial || forceTutorial)) {
-      console.log("IndexContent: Showing tutorial - conditions met");
-      setTimeout(() => {
-        setTutorialVisible(true);
-      }, 200); // Small delay to ensure state is updated
-      
-      // Set first visit flag for proper animations/transitions
-      if (forceTutorial) {
-        setIsFirstVisit(true);
-      }
-    } else {
-      console.log("IndexContent: Not showing tutorial - conditions not met");
-    }
-  }, [screenState, showMainTutorial, setIsFirstVisit]);
 
-  // Handle tutorial close
-  const handleTutorialClose = () => {
-    console.log("IndexContent: Tutorial closed");
-    setTutorialVisible(false);
+  const handleSkipTutorial = () => {
+    setIsFirstVisit(false);
     markTutorialCompleted();
-    localStorage.removeItem('forceTutorial');
-    
-    // Show welcome toast
-    if (screenState === 'main') {
-      toast({
-        title: getTranslatedText("welcomeToThrive"),
-        description: getTranslatedText("exploreAllFeatures"),
-      });
-    }
+    toast({
+      title: getTranslatedText('skipForNow'),
+      description: getTranslatedText('tutorialAccess'),
+    });
+  };
+
+  const handleCloseTutorial = () => {
+    setIsFirstVisit(false);
+    markTutorialCompleted();
   };
 
   return (
-    <div className="relative z-10">
-      {/* CoPayCredit Popup */}
+    <div className="relative">
       {showCoPayCredit && !popupsShown.coPayCredit && 
         <CoPayCreditPopup 
           open={showCoPayCredit} 
@@ -122,7 +89,6 @@ const IndexContent: React.FC<IndexContentProps> = ({
         />
       }
       
-      {/* Main Content */}
       <IndexScreenManager
         screenState={screenState}
         selectedMood={selectedMood}
@@ -144,10 +110,9 @@ const IndexContent: React.FC<IndexContentProps> = ({
         setScreenState={setScreenState}
       />
       
-      {/* Main Tutorial */}
-      <MainTutorial
-        isOpen={tutorialVisible}
-        onClose={handleTutorialClose}
+      <WelcomeTutorial
+        isOpen={isFirstVisit}
+        onClose={handleCloseTutorial}
       />
     </div>
   );

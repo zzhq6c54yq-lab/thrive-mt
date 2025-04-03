@@ -1,11 +1,11 @@
+
 import React, { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
-import { HelpCircle, ChevronRight, X } from "lucide-react";
+import { HelpCircle } from "lucide-react";
 import FeatureTutorial from "./FeatureTutorial";
 import { useLocation } from "react-router-dom";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter } from "@/components/ui/dialog";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 
 interface TutorialButtonProps {
   featureId: string;
@@ -59,7 +59,6 @@ const TutorialButton: React.FC<TutorialButtonProps> = ({
   }, []);
 
   const handleOpenTutorial = () => {
-    console.log("Opening tutorial for feature:", featureId);
     setShowTutorial(true);
   };
 
@@ -70,75 +69,41 @@ const TutorialButton: React.FC<TutorialButtonProps> = ({
 
   if (variant === "logo") {
     return (
-      <TooltipProvider>
-        <Tooltip>
-          <TooltipTrigger asChild>
-            <Button
-              variant="bronze"
-              size="icon"
-              onClick={handleOpenTutorial}
-              className={`p-0 h-14 w-14 rounded-full shadow-lg hover:shadow-[0_0_25px_rgba(184,115,51,0.6)] relative ${className}`}
-              aria-label={isSpanish ? "Abrir tutorial" : "Open tutorial"}
-            >
-              {showAnimatedRings && (
-                <>
-                  <div className="absolute inset-0 rounded-full border-2 border-[#B87333]/30 animate-ping"></div>
-                  <div className="absolute inset-[-8px] rounded-full border border-[#E5C5A1]/20 animate-pulse"></div>
-                  <div className="absolute inset-[-4px] rounded-full border border-[#B87333]/40" style={{animationDelay: '0.5s'}}></div>
-                </>
-              )}
-              <div className="w-full h-full rounded-full flex items-center justify-center bg-gradient-to-br from-[#B87333] to-[#E5C5A1]">
-                <div className="relative w-8 h-8 overflow-hidden flex items-center justify-center">
-                  <div className="text-white font-bold text-xl leading-none tracking-tighter flex flex-col items-center">
-                    <span className="text-[8px] opacity-90 mb-0.5">THRIVE</span>
-                    <span>MT</span>
-                  </div>
-                </div>
+      <>
+        <Button
+          variant="bronze"
+          size="icon"
+          onClick={handleOpenTutorial}
+          className={`p-0 h-16 w-16 rounded-full shadow-lg hover:shadow-[0_0_25px_rgba(184,115,51,0.6)] relative ${className}`}
+          aria-label={isSpanish ? "Abrir tutorial" : "Open tutorial"}
+        >
+          {showAnimatedRings && (
+            <>
+              <div className="absolute inset-0 rounded-full border-2 border-[#B87333]/30 animate-ping"></div>
+              <div className="absolute inset-[-8px] rounded-full border border-[#E5C5A1]/20 animate-pulse"></div>
+              <div className="absolute inset-[-4px] rounded-full border border-[#B87333]/40" style={{animationDelay: '0.5s'}}></div>
+            </>
+          )}
+          <div className="w-full h-full rounded-full flex items-center justify-center bg-gradient-to-br from-[#B87333] to-[#E5C5A1]">
+            <div className="relative w-8 h-8 overflow-hidden flex items-center justify-center">
+              <div className="text-white font-bold text-xl leading-none tracking-tighter flex flex-col items-center">
+                <span className="text-[8px] opacity-90 mb-0.5">THRIVE</span>
+                <span>MT</span>
               </div>
-            </Button>
-          </TooltipTrigger>
-          <TooltipContent side="left" className="bg-[#2a2a3c] border border-[#B87333]/40 text-white">
-            {isSpanish ? "Abrir Tutorial" : "Open Tutorial"}
-          </TooltipContent>
-        </Tooltip>
+            </div>
+          </div>
+        </Button>
         
         {showTutorial && (
           <Dialog open={showTutorial} onOpenChange={setShowTutorial}>
-            <DialogContent className="bg-[#2a2a3c] border-[#3a3a4c] text-white max-w-lg relative">
-              {/* Close button (X) in the top-right corner */}
-              <Button 
-                variant="ghost" 
-                size="icon" 
-                className="absolute top-2 right-2 h-8 w-8 rounded-full text-gray-400 hover:text-white hover:bg-white/10 z-50"
-                onClick={() => setShowTutorial(false)}
-              >
-                <X className="h-4 w-4" />
-              </Button>
-            
+            <DialogContent className="bg-[#2a2a3c] border-[#3a3a4c] text-white max-w-lg">
               <DialogHeader>
-                <div className="flex items-center gap-3">
-                  {/* Dimensional logo in dialog */}
-                  <div className="relative h-10 w-10 group">
-                    <div className="absolute inset-[-8px] rounded-full bg-gradient-to-r from-[#B87333]/40 to-[#E5C5A1]/40 blur-lg animate-pulse"></div>
-                    <div className="absolute inset-[-12px] rounded-full border border-[#B87333]/30 animate-spin" style={{animationDuration: '15s'}}></div>
-                    <div className="absolute inset-[-8px] rounded-full border border-[#E5C5A1]/20 animate-spin" style={{animationDuration: '10s', animationDirection: 'reverse'}}></div>
-                    <div className="h-10 w-10 rounded-full bg-gradient-to-br from-[#B87333] to-[#E5C5A1] flex items-center justify-center shadow-lg">
-                      <div className="text-white font-bold text-base leading-none tracking-tighter flex flex-col items-center">
-                        <span className="text-[6px] opacity-80 mb-0.5">THRIVE</span>
-                        <span>MT</span>
-                      </div>
-                    </div>
-                  </div>
-                
-                  <div>
-                    <DialogTitle className="text-xl text-white">
-                      {isSpanish ? "Tutorial de Thrive" : "Thrive Tutorial"}
-                    </DialogTitle>
-                    <DialogDescription className="text-gray-300">
-                      {isSpanish ? "Aprenda a usar esta función" : "Learn how to use this feature"}
-                    </DialogDescription>
-                  </div>
-                </div>
+                <DialogTitle className="text-xl text-white">
+                  {isSpanish ? "Tutorial de Thrive" : "Thrive Tutorial"}
+                </DialogTitle>
+                <DialogDescription className="text-gray-300">
+                  {isSpanish ? "Aprenda a usar esta función" : "Learn how to use this feature"}
+                </DialogDescription>
               </DialogHeader>
               
               <ScrollArea className="max-h-[60vh] pr-4">
@@ -149,88 +114,46 @@ const TutorialButton: React.FC<TutorialButtonProps> = ({
                 />
               </ScrollArea>
               
-              <DialogFooter className="mt-4 flex justify-between">
-                <Button 
-                  variant="outline"
-                  onClick={() => setShowTutorial(false)}
-                  className="border-[#3a3a4c] text-gray-300 hover:bg-[#3a3a4c] hover:text-white"
-                >
-                  {isSpanish ? "Cerrar" : "Close"}
-                </Button>
-                
+              <DialogFooter className="mt-4">
                 <Button 
                   onClick={() => setShowTutorial(false)}
-                  className="bg-[#B87333] hover:bg-[#9e6229] text-white"
+                  className="bg-indigo-500 hover:bg-indigo-600 text-white"
                 >
                   {isSpanish ? "Entendido" : "Got it"}
-                  <ChevronRight className="h-4 w-4 ml-1" />
                 </Button>
               </DialogFooter>
             </DialogContent>
           </Dialog>
         )}
-      </TooltipProvider>
+      </>
     );
   }
 
   return (
-    <TooltipProvider>
-      <Tooltip>
-        <TooltipTrigger asChild>
-          <Button
-            variant="outline"
-            size="sm"
-            className={`bg-white/5 hover:bg-white/15 border-white/10 text-white/90 backdrop-blur-sm shadow-md hover:shadow-lg text-xs ${className}`}
-            onClick={handleOpenTutorial}
-          >
-            <div className="text-white/90 font-bold text-xs leading-none tracking-tighter flex flex-col items-center mr-1.5">
-              <span className="text-[5px] opacity-90">THRIVE</span>
-              <span>MT</span>
-            </div>
-            {isSpanish ? "Cómo usar esta función" : "How to use this feature"}
-          </Button>
-        </TooltipTrigger>
-        <TooltipContent side="bottom" className="bg-[#2a2a3c] border border-[#B87333]/40 text-white">
-          {isSpanish ? "Abrir Tutorial" : "Open Tutorial"}
-        </TooltipContent>
-      </Tooltip>
+    <>
+      <Button
+        variant="outline"
+        size="sm"
+        className={`bg-white/5 hover:bg-white/15 border-white/10 text-white/90 backdrop-blur-sm shadow-md hover:shadow-lg text-xs ${className}`}
+        onClick={handleOpenTutorial}
+      >
+        <div className="text-white/90 font-bold text-xs leading-none tracking-tighter flex flex-col items-center mr-1.5">
+          <span className="text-[5px] opacity-90">THRIVE</span>
+          <span>MT</span>
+        </div>
+        {isSpanish ? "Cómo usar esta función" : "How to use this feature"}
+      </Button>
       
       {showTutorial && (
         <Dialog open={showTutorial} onOpenChange={setShowTutorial}>
-          <DialogContent className="bg-[#2a2a3c] border-[#3a3a4c] text-white max-w-lg relative">
-            {/* Close button (X) in the top-right corner */}
-            <Button 
-              variant="ghost" 
-              size="icon" 
-              className="absolute top-2 right-2 h-8 w-8 rounded-full text-gray-400 hover:text-white hover:bg-white/10 z-50"
-              onClick={() => setShowTutorial(false)}
-            >
-              <X className="h-4 w-4" />
-            </Button>
-            
+          <DialogContent className="bg-[#2a2a3c] border-[#3a3a4c] text-white max-w-lg">
             <DialogHeader>
-              <div className="flex items-center gap-3">
-                <div className="relative h-10 w-10 group">
-                  <div className="absolute inset-[-8px] rounded-full bg-gradient-to-r from-[#B87333]/40 to-[#E5C5A1]/40 blur-lg animate-pulse"></div>
-                  <div className="absolute inset-[-12px] rounded-full border border-[#B87333]/30 animate-spin" style={{animationDuration: '15s'}}></div>
-                  <div className="absolute inset-[-8px] rounded-full border border-[#E5C5A1]/20 animate-spin" style={{animationDuration: '10s', animationDirection: 'reverse'}}></div>
-                  <div className="h-10 w-10 rounded-full bg-gradient-to-br from-[#B87333] to-[#E5C5A1] flex items-center justify-center shadow-lg">
-                    <div className="text-white font-bold text-base leading-none tracking-tighter flex flex-col items-center">
-                      <span className="text-[6px] opacity-80 mb-0.5">THRIVE</span>
-                      <span>MT</span>
-                    </div>
-                  </div>
-                </div>
-                
-                <div>
-                  <DialogTitle className="text-xl text-white">
-                    {isSpanish ? "Tutorial de Función" : "Feature Tutorial"}
-                  </DialogTitle>
-                  <DialogDescription className="text-gray-300">
-                    {isSpanish ? "Aprenda a usar esta función" : "Learn how to use this feature"}
-                  </DialogDescription>
-                </div>
-              </div>
+              <DialogTitle className="text-xl text-white">
+                {isSpanish ? "Tutorial de Función" : "Feature Tutorial"}
+              </DialogTitle>
+              <DialogDescription className="text-gray-300">
+                {isSpanish ? "Aprenda a usar esta función" : "Learn how to use this feature"}
+              </DialogDescription>
             </DialogHeader>
             
             <ScrollArea className="max-h-[60vh] pr-4">
@@ -241,27 +164,18 @@ const TutorialButton: React.FC<TutorialButtonProps> = ({
               />
             </ScrollArea>
             
-            <DialogFooter className="mt-4 flex justify-between">
-              <Button 
-                variant="outline"
-                onClick={() => setShowTutorial(false)}
-                className="border-[#3a3a4c] text-gray-300 hover:bg-[#3a3a4c] hover:text-white"
-              >
-                {isSpanish ? "Cerrar" : "Close"}
-              </Button>
-              
+            <DialogFooter className="mt-4">
               <Button 
                 onClick={() => setShowTutorial(false)}
-                className="bg-[#B87333] hover:bg-[#9e6229] text-white"
+                className="bg-indigo-500 hover:bg-indigo-600 text-white"
               >
                 {isSpanish ? "Entendido" : "Got it"}
-                <ChevronRight className="h-4 w-4 ml-1" />
               </Button>
             </DialogFooter>
           </DialogContent>
         </Dialog>
       )}
-    </TooltipProvider>
+    </>
   );
 };
 

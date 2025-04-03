@@ -5,109 +5,94 @@ interface PopupState {
   coPayCredit: boolean;
   henryIntro: boolean;
   mainTutorial: boolean;
+  transitionTutorial: boolean;
 }
 
 export const usePopupManagement = (screenState: string) => {
   const [showCoPayCredit, setShowCoPayCredit] = useState(false);
   const [showHenry, setShowHenry] = useState(false);
+  const [showTransitionTutorial, setShowTransitionTutorial] = useState(false);
   const [showMainTutorial, setShowMainTutorial] = useState(false);
   const [popupsShown, setPopupsShown] = useState<PopupState>(() => {
-    // Initialize state
-    return {
+    // Try to get popup state from localStorage to persist between sessions
+    const savedState = localStorage.getItem('popupsShown');
+    return savedState ? JSON.parse(savedState) : {
       coPayCredit: false,
       henryIntro: false,
-      mainTutorial: localStorage.getItem('mainTutorialShown') === 'true'
+      mainTutorial: false,
+      transitionTutorial: false
     };
   });
 
-  // Reset popup state when URL has reset parameter or when forced tutorial is enabled
+  // Get the preferred language for translations
+  const preferredLanguage = localStorage.getItem('preferredLanguage') || 'English';
+
+  // Save popup state to localStorage whenever it changes
   useEffect(() => {
-    const queryParams = new URLSearchParams(window.location.search);
-    const forceTutorial = localStorage.getItem('forceTutorial') === 'true';
+    localStorage.setItem('popupsShown', JSON.stringify(popupsShown));
+  }, [popupsShown]);
+
+  // Listen for language changes
+  useEffect(() => {
+    const handleLanguageChange = () => {
+      // No need to do anything special here, just making sure the component re-renders
+      // when language changes
+      console.log("Language changed to:", localStorage.getItem('preferredLanguage'));
+    };
     
-    if (queryParams.has('reset') || queryParams.has('tutorial') || forceTutorial) {
-      console.log("usePopupManagement: Resetting popup states due to URL parameter or forceTutorial flag");
-      resetPopupStates();
-      
-      // Force tutorial to show (delay slightly to ensure state updates properly)
-      setTimeout(() => {
-        setShowMainTutorial(true);
-      }, 100);
-    }
+    window.addEventListener('languageChange', handleLanguageChange);
+    
+    return () => {
+      window.removeEventListener('languageChange', handleLanguageChange);
+    };
   }, []);
 
   // Main effect for handling popups based on screen state
   useEffect(() => {
-    console.log("usePopupManagement: Current screen:", screenState, 
-                "showMainTutorial:", showMainTutorial,
-                "forceTutorial:", localStorage.getItem('forceTutorial'),
-                "mainTutorialShown:", localStorage.getItem('mainTutorialShown'));
+    // Track previous screen state
+    const prevScreenState = localStorage.getItem('prevScreenState');
+    console.log("usePopupManagement - Current screen:", screenState, "Previous screen:", prevScreenState);
     
+    // Show popups during initial flow when transferring to main menu
     if (screenState === 'main') {
+      // Removed tutorial trigger logic for transitioning from onboarding screens
+      
       // Show co-pay credit popup if not shown yet
       if (!popupsShown.coPayCredit) {
         setShowCoPayCredit(true);
         setPopupsShown(prev => ({ ...prev, coPayCredit: true }));
       }
       
-      // Show Henry when navigating to main from certain screens
-      const prevScreenState = localStorage.getItem('prevScreenState');
-      if (!popupsShown.henryIntro && 
-          (prevScreenState === 'visionBoard' || prevScreenState === 'subscription')) {
+      // Show Henry only when navigating to main from registration or vision board
+      // and if it hasn't been shown before
+      if (!popupsShown.henryIntro) {
         setShowHenry(true);
         setPopupsShown(prev => ({ ...prev, henryIntro: true }));
       }
-      
-      // Check if tutorial should be shown
-      const tutorialShown = localStorage.getItem('mainTutorialShown') === 'true';
-      const forceTutorial = localStorage.getItem('forceTutorial') === 'true';
-      
-      if (!tutorialShown || forceTutorial) {
-        console.log("usePopupManagement: Main screen - should show tutorial", 
-                    "tutorialShown:", tutorialShown, 
-                    "forceTutorial:", forceTutorial);
-        
-        // Small delay to ensure state is ready
-        setTimeout(() => {
-          setShowMainTutorial(true);
-        }, 100);
-      }
     }
     
-    // Save current screen state for next navigation
+    // Save current screen state as previous for next navigation
     localStorage.setItem('prevScreenState', screenState);
-  }, [screenState]);
+  }, [screenState, popupsShown]);
 
   // Method to mark tutorial as completed
   const markTutorialCompleted = () => {
-    console.log("usePopupManagement: Marking tutorial as completed");
-    setPopupsShown(prev => ({ ...prev, mainTutorial: true }));
+    setPopupsShown(prev => ({ ...prev, mainTutorial: true, transitionTutorial: true }));
     setShowMainTutorial(false);
-    localStorage.setItem('mainTutorialShown', 'true');
-    localStorage.removeItem('forceTutorial');
+    localStorage.setItem('dashboardTutorialShown', 'true');
   };
 
-  // Method to reset popup states
+  // Method to reset popup states (useful for testing)
   const resetPopupStates = () => {
-    console.log("usePopupManagement: Resetting all popup states");
-    
-    // Clean local storage entries
-    localStorage.removeItem('mainTutorialShown');
-    localStorage.removeItem('prevScreenState');
-    localStorage.removeItem('popupsShown');
-    
-    // Set force tutorial flag
-    localStorage.setItem('forceTutorial', 'true');
-    
-    // Reset state
     setPopupsShown({
       coPayCredit: false,
       henryIntro: false,
-      mainTutorial: false
+      mainTutorial: false,
+      transitionTutorial: false
     });
-    
-    // Ensure tutorial will be shown
-    setShowMainTutorial(true);
+    localStorage.removeItem('popupsShown');
+    localStorage.removeItem('dashboardTutorialShown');
+    localStorage.removeItem('prevScreenState');
   };
 
   return {
@@ -115,6 +100,8 @@ export const usePopupManagement = (screenState: string) => {
     setShowCoPayCredit,
     showHenry,
     setShowHenry,
+    showTransitionTutorial,
+    setShowTransitionTutorial,
     showMainTutorial,
     setShowMainTutorial,
     popupsShown,

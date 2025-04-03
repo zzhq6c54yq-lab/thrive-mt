@@ -12,6 +12,8 @@ export const useScreenHistory = (
     if (location.state && location.state.screenState) {
       setScreenState(location.state.screenState);
       
+      // Removed tutorial trigger logic for transition to 'main'
+      
       if (location.state.returnToMain) {
         window.history.replaceState(
           { ...window.history.state, screenState: location.state.screenState, returnToMain: true }, 

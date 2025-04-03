@@ -13,6 +13,7 @@ import SpecializedPrograms from "@/components/dashboard/SpecializedPrograms";
 import GratitudeVisualizer from "@/components/dashboard/GratitudeVisualizer";
 import FeaturedWorkshops from "@/components/dashboard/FeaturedWorkshops";
 import KeyFeatures from "@/components/dashboard/KeyFeatures";
+import FeatureTutorial from "@/components/tutorials/FeatureTutorial";
 
 interface MainDashboardProps {
   userName: string;
@@ -35,6 +36,7 @@ const MainDashboard: React.FC<MainDashboardProps> = ({
   const location = useLocation();
   const { toast } = useToast();
   const [isSpanish, setIsSpanish] = useState<boolean>(false);
+  const [showTutorial, setShowTutorial] = useState(false);
   
   // Check language preference and listen for changes
   useEffect(() => {
@@ -54,6 +56,46 @@ const MainDashboard: React.FC<MainDashboardProps> = ({
       window.removeEventListener('languageChange', checkLanguage);
     };
   }, []);
+  
+  // Check if coming from onboarding screens and force tutorial if needed
+  useEffect(() => {
+    // Check if coming from onboarding screens
+    const prevScreenState = localStorage.getItem('prevScreenState');
+    const comingFromOnboarding = prevScreenState === 'visionBoard' || 
+                                prevScreenState === 'subscription' || 
+                                prevScreenState === 'moodResponse' || 
+                                prevScreenState === 'mood' || 
+                                prevScreenState === 'register';
+    
+    console.log("DASHBOARD TRIGGER: Previous screen state:", prevScreenState);
+    console.log("Coming from onboarding:", comingFromOnboarding);
+    
+    if (comingFromOnboarding) {
+      console.log("MainDashboard forcing tutorial to show");
+      
+      // Force reset the dashboard tutorial flag 
+      localStorage.setItem('dashboardTutorialShown', 'false');
+      
+      // Reset the popupsShown tutorial flags in localStorage as well
+      const popupsShown = localStorage.getItem('popupsShown');
+      if (popupsShown) {
+        const parsedState = JSON.parse(popupsShown);
+        parsedState.mainTutorial = false;
+        parsedState.transitionTutorial = false;
+        localStorage.setItem('popupsShown', JSON.stringify(parsedState));
+      }
+      
+      // Set local tutorial state
+      setShowTutorial(true);
+      
+      console.log("Reset tutorial flags in MainDashboard, showTutorial =", true);
+    }
+  }, []);
+  
+  const handleTutorialClose = () => {
+    setShowTutorial(false);
+    localStorage.setItem('dashboardTutorialShown', 'true');
+  };
   
   const handleWorkshopClick = (workshopId: string, workshopTitle: string) => {
     toast({
@@ -143,6 +185,17 @@ const MainDashboard: React.FC<MainDashboardProps> = ({
 
         <KeyFeatures />
       </div>
+      
+      {showTutorial && (
+        <div className="fixed inset-0 bg-black/70 z-50 flex items-center justify-center">
+          <div className="w-full max-w-lg mx-4">
+            <FeatureTutorial 
+              featureId="dashboard" 
+              onClose={handleTutorialClose}
+            />
+          </div>
+        </div>
+      )}
     </div>
   );
 };

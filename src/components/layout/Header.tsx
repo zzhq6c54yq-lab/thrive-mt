@@ -16,13 +16,12 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { useToast } from "@/hooks/use-toast";
-import MainTutorial from "../tutorials/MainTutorial";
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
+import WelcomeTutorial from "../tutorials/WelcomeTutorial";
 
 const Header = () => {
   const { toast } = useToast();
   const [isSpanish, setIsSpanish] = useState<boolean>(false);
-  const [showTutorial, setShowTutorial] = useState(false);
+  const [showWelcomeTutorial, setShowWelcomeTutorial] = useState(false);
   
   // Check language preference and listen for changes
   useEffect(() => {
@@ -57,124 +56,90 @@ const Header = () => {
     });
   };
 
-  const handleOpenTutorial = () => {
-    console.log("Opening tutorial from header button");
-    
-    // Reset any flags that might prevent tutorial from showing
-    localStorage.removeItem('mainTutorialShown');
-    localStorage.setItem('forceTutorial', 'true');
-    
-    // Force show the tutorial
-    setShowTutorial(true);
-  };
-
-  const handleCloseTutorial = () => {
-    console.log("Closing tutorial from header");
-    setShowTutorial(false);
-    localStorage.setItem('mainTutorialShown', 'true');
-  };
-
   return (
-    <TooltipProvider>
-      <header className="fixed top-0 right-0 z-50 p-4 flex items-center justify-end gap-2">
-        {/* Enhanced Tutorial Button with animated logo */}
-        <Tooltip>
-          <TooltipTrigger asChild>
-            <Button 
-              variant="outline" 
-              size="icon" 
-              className="h-10 w-10 rounded-full border-2 border-[#B87333] bg-white/10 backdrop-blur-sm shadow-lg hover:bg-[#B87333]/20 transition-all duration-300 hover:shadow-[0_0_15px_#B87333] relative overflow-hidden"
-              aria-label={isSpanish ? "Tutorial de la Aplicación" : "App Tutorial"}
-              onClick={handleOpenTutorial}
-              title={isSpanish ? "Abrir Tutorial" : "Open Tutorial"}
-            >
-              {/* Animated rings */}
-              <div className="absolute inset-[-5px] rounded-full border border-[#B87333]/30 animate-spin" style={{animationDuration: '15s'}}></div>
-              <div className="absolute inset-[-3px] rounded-full border border-[#B87333]/20 animate-spin" style={{animationDuration: '10s', animationDirection: 'reverse'}}></div>
-              
-              {/* Glow effect */}
-              <div className="absolute inset-0 rounded-full bg-gradient-to-r from-[#B87333]/20 via-transparent to-[#B87333]/20 animate-pulse" style={{animationDuration: '3s'}}></div>
-              
-              {/* Logo */}
-              <div className="relative z-10 text-[#B87333] font-bold text-base leading-none tracking-tighter flex flex-col items-center">
-                <span className="text-[6px] opacity-80 mb-0.5">THRIVE</span>
-                <span>MT</span>
-              </div>
-            </Button>
-          </TooltipTrigger>
-          <TooltipContent side="bottom" className="bg-[#2a2a3c] border border-[#B87333]/40 text-white">
-            {isSpanish ? "Abrir Tutorial" : "Open Tutorial"}
-          </TooltipContent>
-        </Tooltip>
-        
-        {/* User Menu */}
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button 
-              variant="outline" 
-              size="icon" 
-              className="h-10 w-10 rounded-full border-2 border-[#B87333] bg-white/10 backdrop-blur-sm shadow-lg hover:bg-[#B87333]/20 transition-all duration-300 hover:shadow-[0_0_15px_#B87333]"
-              aria-label={isSpanish ? "Menú de usuario" : "User menu"}
-              title={isSpanish ? "Menú de usuario" : "User menu"}
-            >
-              <User className="h-5 w-5 text-[#B87333]" />
-            </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent className="w-56 mt-2 mr-2 bg-white/95 backdrop-blur-sm border border-[#B87333]/20">
-            <DropdownMenuLabel className="font-normal">
-              <div className="flex flex-col space-y-1">
-                <p className="text-sm font-medium leading-none">{isSpanish ? "Mi Perfil" : "My Profile"}</p>
-                <p className="text-xs leading-none text-muted-foreground">
-                  {isSpanish ? "Administra tu cuenta" : "Manage your account"}
-                </p>
-              </div>
-            </DropdownMenuLabel>
-            <DropdownMenuSeparator />
-            <DropdownMenuGroup>
-              <DropdownMenuItem>
-                <User className="mr-2 h-4 w-4" />
-                <span>{isSpanish ? "Perfil" : "Profile"}</span>
-              </DropdownMenuItem>
-              <DropdownMenuItem>
-                <Settings className="mr-2 h-4 w-4" />
-                <span>{isSpanish ? "Configuración" : "Settings"}</span>
-              </DropdownMenuItem>
-              <DropdownMenuItem onClick={handleThemeToggle}>
-                <Moon className="mr-2 h-4 w-4" />
-                <span>{isSpanish ? "Modo Oscuro" : "Dark Mode"}</span>
-              </DropdownMenuItem>
-            </DropdownMenuGroup>
-            <DropdownMenuSeparator />
-            <DropdownMenuGroup>
-              <DropdownMenuItem>
-                <Bell className="mr-2 h-4 w-4" />
-                <span>{isSpanish ? "Notificaciones" : "Notifications"}</span>
-              </DropdownMenuItem>
-              <DropdownMenuItem>
-                <Lock className="mr-2 h-4 w-4" />
-                <span>{isSpanish ? "Configuración de Privacidad" : "Privacy Settings"}</span>
-              </DropdownMenuItem>
-            </DropdownMenuGroup>
-            <DropdownMenuSeparator />
+    <header className="fixed top-0 right-0 z-50 p-4 flex items-center justify-end gap-2">
+      {/* Tutorial Button */}
+      <Button 
+        variant="outline" 
+        size="icon" 
+        className="h-10 w-10 rounded-full border-2 border-[#B87333] bg-white shadow-lg hover:bg-[#B87333]/10 transition-all duration-300 hover:shadow-[0_0_15px_#B87333]"
+        aria-label={isSpanish ? "Tutorial de la Aplicación" : "App Tutorial"}
+        title={isSpanish ? "Tutorial de la Aplicación" : "App Tutorial"}
+        onClick={() => setShowWelcomeTutorial(true)}
+      >
+        <div className="text-[#B87333] font-bold text-base leading-none tracking-tighter flex flex-col items-center">
+          <span className="text-[6px] opacity-80 mb-0.5">THRIVE</span>
+          <span>MT</span>
+        </div>
+      </Button>
+      
+      {/* User Menu */}
+      <DropdownMenu>
+        <DropdownMenuTrigger asChild>
+          <Button 
+            variant="outline" 
+            size="icon" 
+            className="h-10 w-10 rounded-full border-2 border-[#B87333] bg-white shadow-lg hover:bg-[#B87333]/10 transition-all duration-300 hover:shadow-[0_0_15px_#B87333]"
+            aria-label={isSpanish ? "Menú de usuario" : "User menu"}
+            title={isSpanish ? "Menú de usuario" : "User menu"}
+          >
+            <User className="h-5 w-5 text-[#B87333]" />
+          </Button>
+        </DropdownMenuTrigger>
+        <DropdownMenuContent className="w-56 mt-2 mr-2 bg-white/95 backdrop-blur-sm border border-[#B87333]/20">
+          <DropdownMenuLabel className="font-normal">
+            <div className="flex flex-col space-y-1">
+              <p className="text-sm font-medium leading-none">{isSpanish ? "Mi Perfil" : "My Profile"}</p>
+              <p className="text-xs leading-none text-muted-foreground">
+                {isSpanish ? "Administra tu cuenta" : "Manage your account"}
+              </p>
+            </div>
+          </DropdownMenuLabel>
+          <DropdownMenuSeparator />
+          <DropdownMenuGroup>
             <DropdownMenuItem>
-              <MessageSquare className="mr-2 h-4 w-4" />
-              <span>{isSpanish ? "Comentarios" : "Feedback"}</span>
+              <User className="mr-2 h-4 w-4" />
+              <span>{isSpanish ? "Perfil" : "Profile"}</span>
             </DropdownMenuItem>
-            <DropdownMenuSeparator />
-            <DropdownMenuItem onClick={handleLogout}>
-              <LogOut className="mr-2 h-4 w-4" />
-              <span>{isSpanish ? "Cerrar sesión" : "Log out"}</span>
+            <DropdownMenuItem>
+              <Settings className="mr-2 h-4 w-4" />
+              <span>{isSpanish ? "Configuración" : "Settings"}</span>
             </DropdownMenuItem>
-          </DropdownMenuContent>
-        </DropdownMenu>
-        
-        {/* Main Tutorial Dialog - Using MainTutorial directly */}
-        <MainTutorial
-          isOpen={showTutorial}
-          onClose={handleCloseTutorial}
-        />
-      </header>
-    </TooltipProvider>
+            <DropdownMenuItem onClick={handleThemeToggle}>
+              <Moon className="mr-2 h-4 w-4" />
+              <span>{isSpanish ? "Modo Oscuro" : "Dark Mode"}</span>
+            </DropdownMenuItem>
+          </DropdownMenuGroup>
+          <DropdownMenuSeparator />
+          <DropdownMenuGroup>
+            <DropdownMenuItem>
+              <Bell className="mr-2 h-4 w-4" />
+              <span>{isSpanish ? "Notificaciones" : "Notifications"}</span>
+            </DropdownMenuItem>
+            <DropdownMenuItem>
+              <Lock className="mr-2 h-4 w-4" />
+              <span>{isSpanish ? "Configuración de Privacidad" : "Privacy Settings"}</span>
+            </DropdownMenuItem>
+          </DropdownMenuGroup>
+          <DropdownMenuSeparator />
+          <DropdownMenuItem>
+            <MessageSquare className="mr-2 h-4 w-4" />
+            <span>{isSpanish ? "Comentarios" : "Feedback"}</span>
+          </DropdownMenuItem>
+          <DropdownMenuSeparator />
+          <DropdownMenuItem onClick={handleLogout}>
+            <LogOut className="mr-2 h-4 w-4" />
+            <span>{isSpanish ? "Cerrar sesión" : "Log out"}</span>
+          </DropdownMenuItem>
+        </DropdownMenuContent>
+      </DropdownMenu>
+      
+      {/* Welcome Tutorial Dialog */}
+      <WelcomeTutorial
+        isOpen={showWelcomeTutorial}
+        onClose={() => setShowWelcomeTutorial(false)}
+      />
+    </header>
   );
 };
 
