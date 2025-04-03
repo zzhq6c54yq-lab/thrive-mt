@@ -95,7 +95,7 @@ const getTutorialSteps = (featureId: string, userName: string = ""): TutorialSte
       return [
         {
           title: "Welcome to Thrive MT",
-          description: "Your personalized mental wellness dashboard is ready. We've designed it to support your journey to better mental health. Click the Thrive MT button in the top right corner anytime you need help navigating the platform.",
+          description: "Your personalized mental wellness dashboard is ready. We've designed it to support your journey to better mental health, focusing on Hopeful Horizons, Empowerment through Education, Nurtured Connections, Resilience and Recovery, and ensuring Your Journey Matters. Click the Thrive MT button in the top right corner anytime you need help navigating the platform.",
           image: "/lovable-uploads/f2c6ac08-6331-4884-950d-7f94d68ff15f.png",
           isWelcome: true,
           userName: userName

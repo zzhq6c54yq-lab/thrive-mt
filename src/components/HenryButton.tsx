@@ -39,8 +39,8 @@ const HenryButton: React.FC<HenryButtonProps> = ({
     else timeOfDay = "evening";
     
     const greeting = userName 
-      ? `Good ${timeOfDay}, ${userName}! I'm H.E.N.R.Y., your Thrive navigator. Hope, Empathy, Nurturing, Resilience, and You - that's what I'm here for. How can I help you today?`
-      : `Good ${timeOfDay}! I'm H.E.N.R.Y., your Thrive navigator. Hope, Empathy, Nurturing, Resilience, and You - that's what I'm here for. How can I help you today?`;
+      ? `Good ${timeOfDay}, ${userName}! I'm H.E.N.R.Y., your Thrive navigator. Hopeful Horizons, Empowerment through Education, Nurtured Connections, Resilience and Recovery, and Your Journey Matters - that's what I'm here for. How can I help you today?`
+      : `Good ${timeOfDay}! I'm H.E.N.R.Y., your Thrive navigator. Hopeful Horizons, Empowerment through Education, Nurtured Connections, Resilience and Recovery, and Your Journey Matters - that's what I'm here for. How can I help you today?`;
       
     return greeting;
   };
@@ -102,7 +102,7 @@ const HenryButton: React.FC<HenryButtonProps> = ({
             Your helpful navigator through Thrive MT
           </DialogDescription>
           <div className="mt-2 text-xs text-white/60 px-4">
-            <p><span className="text-[#B87333] font-bold">H</span>ope • <span className="text-[#B87333] font-bold">E</span>mpathy • <span className="text-[#B87333] font-bold">N</span>urturing • <span className="text-[#B87333] font-bold">R</span>esilience • <span className="text-[#B87333] font-bold">Y</span>ou</p>
+            <p><span className="text-[#B87333] font-bold">H</span>opeful Horizons • <span className="text-[#B87333] font-bold">E</span>mpowerment • <span className="text-[#B87333] font-bold">N</span>urtured Connections • <span className="text-[#B87333] font-bold">R</span>esilience • <span className="text-[#B87333] font-bold">Y</span>our Journey</p>
           </div>
         </DialogHeader>
         

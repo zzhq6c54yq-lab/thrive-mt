@@ -3,7 +3,7 @@ import React from "react";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter, DialogClose } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
-import { Heart, Brain, Smile, Sparkles, ArrowRight, MessageCircle, HandHeart, X } from "lucide-react";
+import { Sparkles, ArrowRight, MessageCircle, HandHeart, X } from "lucide-react";
 import { ScrollArea } from "@/components/ui/scroll-area";
 
 interface HenryIntroDialogProps {
@@ -52,23 +52,23 @@ const HenryIntroDialog: React.FC<HenryIntroDialogProps> = ({ open, onOpenChange,
               <ul className="space-y-2">
                 <li className="flex items-center gap-2">
                   <HandHeart className="h-5 w-5 text-[#B87333]" />
-                  <span><span className="font-bold text-[#B87333]">H</span>elpful friend who's ready to listen anytime</span>
-                </li>
-                <li className="flex items-center gap-2">
-                  <Brain className="h-5 w-5 text-[#B87333]" />
-                  <span><span className="font-bold text-[#B87333]">E</span>mpathetic guide for your emotional wellbeing</span>
+                  <span><span className="font-bold text-[#B87333]">H</span>opeful Horizons: Embrace a future filled with possibilities and the belief that change is achievable.</span>
                 </li>
                 <li className="flex items-center gap-2">
                   <MessageCircle className="h-5 w-5 text-[#B87333]" />
-                  <span><span className="font-bold text-[#B87333]">N</span>on-judgmental space for whatever you're feeling</span>
+                  <span><span className="font-bold text-[#B87333]">E</span>mpowerment through Education: Equip individuals with knowledge about mental health, fostering autonomy and informed choices.</span>
+                </li>
+                <li className="flex items-center gap-2">
+                  <HandHeart className="h-5 w-5 text-[#B87333]" />
+                  <span><span className="font-bold text-[#B87333]">N</span>urtured Connections: Prioritize the importance of supportive relationships that provide encouragement and understanding.</span>
                 </li>
                 <li className="flex items-center gap-2">
                   <Sparkles className="h-5 w-5 text-[#B87333]" />
-                  <span><span className="font-bold text-[#B87333]">R</span>eliable companion through good days and tough ones</span>
+                  <span><span className="font-bold text-[#B87333]">R</span>esilience and Recovery: Focus on building strength to overcome adversity and promote paths to healing.</span>
                 </li>
                 <li className="flex items-center gap-2">
-                  <Heart className="h-5 w-5 text-[#B87333]" />
-                  <span><span className="font-bold text-[#B87333]">Y</span>our biggest supporter as you grow and heal</span>
+                  <Sparkles className="h-5 w-5 text-[#B87333]" />
+                  <span><span className="font-bold text-[#B87333]">Y</span>our Journey Matters: Acknowledge that each person's experience is unique and valuable, deserving of respect and attention.</span>
                 </li>
               </ul>
             </div>

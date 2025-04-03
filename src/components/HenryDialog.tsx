@@ -33,7 +33,7 @@ const HenryDialog: React.FC<HenryDialogProps> = ({ isOpen, onOpenChange }) => {
           </div>
           <DialogTitle className="text-xl text-transparent bg-clip-text bg-gradient-to-r from-[#B87333] to-[#e5c5a1]">Meet Henry</DialogTitle>
           <DialogDescription className="text-white/70 text-sm">
-            Helpful Electronic Navigator Responding Yes
+            Your personal mental health guide
           </DialogDescription>
         </DialogHeader>
         
@@ -42,16 +42,14 @@ const HenryDialog: React.FC<HenryDialogProps> = ({ isOpen, onOpenChange }) => {
             Hi there! I'm Henry, your personal navigator through the Thrive MT platform.
           </p>
           <p>
-            My name stands for <span className="text-[#B87333]">H</span>elpful <span className="text-[#B87333]">E</span>lectronic <span className="text-[#B87333]">N</span>avigator <span className="text-[#B87333]">R</span>esponding <span className="text-[#B87333]">Y</span>es.
-          </p>
-          <p>
-            I can help you:
+            My name stands for:
           </p>
           <ul className="list-disc pl-5 space-y-2">
-            <li>Navigate through all the features of Thrive MT</li>
-            <li>Find the right resources for your mental wellness journey</li>
-            <li>Answer questions about the platform's tools and workshops</li>
-            <li>Connect you with support resources when needed</li>
+            <li><span className="text-[#B87333]">H</span>opeful Horizons: Embrace a future filled with possibilities and the belief that change is achievable.</li>
+            <li><span className="text-[#B87333]">E</span>mpowerment through Education: Equip individuals with knowledge about mental health, fostering autonomy and informed choices.</li>
+            <li><span className="text-[#B87333]">N</span>urtured Connections: Prioritize the importance of supportive relationships that provide encouragement and understanding.</li>
+            <li><span className="text-[#B87333]">R</span>esilience and Recovery: Focus on building strength to overcome adversity and promote paths to healing.</li>
+            <li><span className="text-[#B87333]">Y</span>our Journey Matters: Acknowledge that each person's experience is unique and valuable, deserving of respect and attention.</li>
           </ul>
           <p>
             Look for me (the floating H button) throughout your journey on Thrive MT. I'm always here to assist!

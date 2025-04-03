@@ -55,8 +55,8 @@ const HenryIntroDialog: React.FC<HenryIntroDialogProps> = ({ open, onOpenChange 
                   <span>
                     <span className="font-bold text-[#B87333]">H</span>
                     {isSpanish 
-                      ? "orientación útil a través de tu viaje de salud mental" 
-                      : "elpful guidance through your mental health journey"}
+                      ? "orizontes esperanzadores: Abraza un futuro lleno de posibilidades y la creencia de que el cambio es posible" 
+                      : "opeful Horizons: Embrace a future filled with possibilities and the belief that change is achievable"}
                   </span>
                 </li>
                 <li className="flex items-center gap-2">
@@ -64,8 +64,8 @@ const HenryIntroDialog: React.FC<HenryIntroDialogProps> = ({ open, onOpenChange 
                   <span>
                     <span className="font-bold text-[#B87333]">E</span>
                     {isSpanish 
-                      ? "strategias basadas en evidencia para el bienestar emocional" 
-                      : "vidence-based strategies for emotional wellbeing"}
+                      ? "mpoderamiento a través de la educación: Equipa a las personas con conocimientos sobre la salud mental" 
+                      : "mpowerment through Education: Equip individuals with knowledge about mental health, fostering autonomy"}
                   </span>
                 </li>
                 <li className="flex items-center gap-2">
@@ -73,8 +73,8 @@ const HenryIntroDialog: React.FC<HenryIntroDialogProps> = ({ open, onOpenChange 
                   <span>
                     <span className="font-bold text-[#B87333]">N</span>
                     {isSpanish 
-                      ? "utriente apoyo cuando lo necesites" 
-                      : "urturing support whenever you need it"}
+                      ? "utridas conexiones: Prioriza la importancia de las relaciones de apoyo" 
+                      : "urtured Connections: Prioritize the importance of supportive relationships"}
                   </span>
                 </li>
                 <li className="flex items-center gap-2">
@@ -82,8 +82,8 @@ const HenryIntroDialog: React.FC<HenryIntroDialogProps> = ({ open, onOpenChange 
                   <span>
                     <span className="font-bold text-[#B87333]">R</span>
                     {isSpanish 
-                      ? "ecursos confiables adaptados a tus necesidades" 
-                      : "eliable resources tailored to your needs"}
+                      ? "esiliencia y recuperación: Centrarse en desarrollar fortaleza para superar la adversidad" 
+                      : "esilience and Recovery: Focus on building strength to overcome adversity"}
                   </span>
                 </li>
                 <li className="flex items-center gap-2">
@@ -91,8 +91,8 @@ const HenryIntroDialog: React.FC<HenryIntroDialogProps> = ({ open, onOpenChange 
                   <span>
                     <span className="font-bold text-[#B87333]">Y</span>
                     {isSpanish 
-                      ? " tu compañero en el camino hacia el bienestar mental" 
-                      : "our companion on the path to mental wellness"}
+                      ? " tu viaje importa: Reconoce que la experiencia de cada persona es única y valiosa" 
+                      : "our Journey Matters: Acknowledge that each person's experience is unique and valuable"}
                   </span>
                 </li>
               </ul>
