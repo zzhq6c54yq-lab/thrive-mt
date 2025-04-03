@@ -5,6 +5,7 @@ import { X, ArrowRight } from "lucide-react";
 import { useLocation } from "react-router-dom";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "@/components/ui/dialog";
 import useTranslation from "@/hooks/useTranslation";
+import FeatureTutorial from "./FeatureTutorial";
 
 interface TutorialButtonProps {
   featureId: string;
@@ -20,6 +21,7 @@ const TutorialButton: React.FC<TutorialButtonProps> = ({
   showAnimatedRings = false
 }) => {
   const [showTutorial, setShowTutorial] = useState(false);
+  const [showDialog, setShowDialog] = useState(false);
   const { isSpanish, getTranslatedText } = useTranslation();
   const location = useLocation();
   
@@ -39,7 +41,17 @@ const TutorialButton: React.FC<TutorialButtonProps> = ({
   };
 
   const handleOpenTutorial = () => {
-    setShowTutorial(true);
+    if (featureId === "dashboard" && variant === "logo") {
+      // For logo variant on dashboard, open the full tutorial
+      setShowTutorial(true);
+    } else {
+      // For other features, open the simple dialog
+      setShowDialog(true);
+    }
+  };
+
+  const handleCloseTutorial = () => {
+    setShowTutorial(false);
   };
 
   // Don't render if we shouldn't show the button
@@ -87,15 +99,26 @@ const TutorialButton: React.FC<TutorialButtonProps> = ({
           </div>
         </Button>
         
-        {/* Simple Dialog for Logo variant */}
-        <Dialog open={showTutorial} onOpenChange={setShowTutorial}>
-          <DialogContent className="bg-[#2a2a3c] border-[#3a3a4c] text-white max-w-md">
+        {/* Full featured tutorial for dashboard */}
+        {showTutorial && (
+          <div className="fixed inset-0 bg-black/70 z-50 flex items-center justify-center">
+            <FeatureTutorial 
+              featureId={featureId}
+              onClose={handleCloseTutorial}
+              userName={localStorage.getItem('userName') || ''}
+            />
+          </div>
+        )}
+        
+        {/* Simple Dialog for other scenarios */}
+        <Dialog open={showDialog} onOpenChange={setShowDialog}>
+          <DialogContent className="bg-[#1a1a1f] border-[#3a3a4c] text-white max-w-md">
             <DialogHeader className="relative">
               <Button 
                 variant="ghost" 
                 size="icon" 
                 className="absolute right-0 top-0 rounded-full text-white/70 hover:text-white hover:bg-white/10"
-                onClick={() => setShowTutorial(false)}
+                onClick={() => setShowDialog(false)}
               >
                 <X className="h-4 w-4" />
                 <span className="sr-only">{isSpanish ? "Cerrar" : "Close"}</span>
@@ -118,7 +141,7 @@ const TutorialButton: React.FC<TutorialButtonProps> = ({
             
             <DialogFooter>
               <Button 
-                onClick={() => setShowTutorial(false)}
+                onClick={() => setShowDialog(false)}
                 className="bg-gradient-to-r from-[#B87333] to-[#E5C5A1] hover:from-[#A56625] hover:to-[#D4B48F] text-white w-full sm:w-auto"
               >
                 <ArrowRight className="mr-2 h-4 w-4" />
@@ -148,14 +171,14 @@ const TutorialButton: React.FC<TutorialButtonProps> = ({
       </Button>
       
       {/* Simple Dialog for default variant */}
-      <Dialog open={showTutorial} onOpenChange={setShowTutorial}>
-        <DialogContent className="bg-[#2a2a3c] border-[#3a3a4c] text-white max-w-md">
+      <Dialog open={showDialog} onOpenChange={setShowDialog}>
+        <DialogContent className="bg-[#1a1a1f] border-[#3a3a4c] text-white max-w-md">
           <DialogHeader className="relative">
             <Button 
               variant="ghost" 
               size="icon" 
               className="absolute right-0 top-0 rounded-full text-white/70 hover:text-white hover:bg-white/10"
-              onClick={() => setShowTutorial(false)}
+              onClick={() => setShowDialog(false)}
             >
               <X className="h-4 w-4" />
               <span className="sr-only">{isSpanish ? "Cerrar" : "Close"}</span>
@@ -178,7 +201,7 @@ const TutorialButton: React.FC<TutorialButtonProps> = ({
           
           <DialogFooter>
             <Button 
-              onClick={() => setShowTutorial(false)}
+              onClick={() => setShowDialog(false)}
               className="bg-gradient-to-r from-[#B87333] to-[#E5C5A1] hover:from-[#A56625] hover:to-[#D4B48F] text-white w-full sm:w-auto"
             >
               <ArrowRight className="mr-2 h-4 w-4" />

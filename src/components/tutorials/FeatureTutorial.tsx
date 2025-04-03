@@ -40,7 +40,7 @@ const FeatureTutorial: React.FC<FeatureTutorialProps> = ({
   };
   
   return (
-    <Card className={`${embedded ? "" : "w-full max-w-md"} bg-white/10 backdrop-blur-md border border-white/20 shadow-xl overflow-hidden`}>
+    <Card className={`${embedded ? "" : "w-full max-w-md"} bg-[#1a1a1f] backdrop-blur-md border border-white/20 shadow-xl overflow-hidden text-white`}>
       <TutorialHeader 
         currentTutorial={currentTutorial}
         onClose={onClose}

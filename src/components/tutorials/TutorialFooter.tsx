@@ -44,7 +44,7 @@ const TutorialFooter: React.FC<TutorialFooterProps> = ({
           </>
         ) : (
           <>
-            <ArrowRight className="mr-2 h-4 w-4" /> {isSpanish ? "Finalizar" : "Finish"}
+            {isSpanish ? "Finalizar" : "Finish"} <ArrowRight className="ml-2 h-4 w-4" />
           </>
         )}
       </Button>
