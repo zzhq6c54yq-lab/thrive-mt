@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { X, ArrowRight } from "lucide-react";
@@ -30,6 +29,13 @@ const TutorialButton: React.FC<TutorialButtonProps> = ({
   
   // Check if we should show the tutorial button based on the current route
   const shouldShowTutorialButton = () => {
+    const path = location.pathname;
+    
+    // Hide button on DoD Portal first two screens
+    if (path === "/dod-portal" || path === "/department-of-defense") {
+      return false;
+    }
+    
     // Only show logo variant on main dashboard
     const state = location.state as { screenState?: string } | null;
     const screenState = state?.screenState;
@@ -39,7 +45,7 @@ const TutorialButton: React.FC<TutorialButtonProps> = ({
       return location.pathname === "/" && screenState === 'main';
     }
     
-    // For default variant, show on all screens except emotional check-in
+    // For default variant, show on all screens except emotional check-in and specific DoD pages
     return !(location.pathname === "/" && screenState !== 'main');
   };
 

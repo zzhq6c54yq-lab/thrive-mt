@@ -33,3 +33,25 @@
   z-index: -1;
   pointer-events: none;
 }
+
+/* Button variants for DoD Portal */
+.btn-bronze {
+  @apply bg-gradient-to-br from-[#B87333] to-[#E5C5A1] hover:from-[#A56625] hover:to-[#D4B48F] text-white;
+}
+
+.btn-navy {
+  @apply bg-gradient-to-r from-blue-800 to-blue-700 hover:from-blue-900 hover:to-blue-800 text-white;
+}
+
+.btn-military {
+  @apply bg-[#0A4C2C] hover:bg-[#083D23] text-white;
+}
+
+/* Tabs for DoD Portal */
+.military-tabs .tabs-list {
+  @apply bg-[#141921] border border-blue-900/30;
+}
+
+.military-tabs .tab-trigger[data-state="active"] {
+  @apply bg-blue-900/30 text-blue-400 shadow-[0_0_10px_rgba(59,130,246,0.5)];
+}
