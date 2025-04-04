@@ -89,8 +89,8 @@ const DoDPortal = () => {
 
   // Main portal with tabbed interface
   return (
-    <Page className="military-theme bg-[#0A0C10] min-h-screen" title="Military Support Portal">
-      <div className="max-w-[1400px] mx-auto">
+    <Page title="Military Support Portal">
+      <div className="max-w-[1400px] mx-auto bg-[#0A0C10] min-h-screen">
         <div className="flex items-center justify-between mb-6 px-4">
           <div className="flex items-center">
             <Button 
