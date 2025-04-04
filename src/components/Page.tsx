@@ -80,6 +80,9 @@ const Page: React.FC<PageProps> = ({
     
     return isSpanish ? translations[key]['Español'] : translations[key]['English'];
   };
+
+  // Determine the feature ID based on the current path if not provided
+  const currentFeatureId = featureId || location.pathname.split('/')[1] || 'dashboard';
   
   return (
     <div className="min-h-screen bg-gradient-to-b from-[#1a1a1f] via-[#242432] to-[#272730] text-white py-1 px-1 relative overflow-x-hidden">
@@ -121,8 +124,8 @@ const Page: React.FC<PageProps> = ({
           </div>
           
           {/* Add tutorial button if featureId is provided */}
-          {featureId && (
-            <TutorialButton featureId={featureId} />
+          {currentFeatureId && (
+            <TutorialButton featureId={currentFeatureId} />
           )}
         </div>
         
@@ -141,6 +144,8 @@ const Page: React.FC<PageProps> = ({
             src="/lovable-uploads/f2c6ac08-6331-4884-950d-7f94d68ff15f.png" 
             alt="Thrive MT Logo" 
             className="h-5 opacity-60 hover:opacity-100 transition-opacity duration-300 filter drop-shadow-[0_0_3px_rgba(184,115,51,0.4)]"
+            onClick={handleHomeClick}
+            style={{ cursor: 'pointer' }}
           />
         </div>
       </div>

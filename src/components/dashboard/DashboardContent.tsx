@@ -20,11 +20,17 @@ import { Calendar, HelpCircle } from "lucide-react";
 interface DashboardContentProps {
   navigate: NavigateFunction;
   onWorkshopClick: (workshopId: string, workshopTitle: string) => void;
+  navigateToFeature?: (path: string) => void;
+  selectedQualities?: string[];
+  selectedGoals?: string[];
 }
 
 const DashboardContent: React.FC<DashboardContentProps> = ({ 
   navigate, 
-  onWorkshopClick 
+  onWorkshopClick,
+  navigateToFeature,
+  selectedQualities = [],
+  selectedGoals = []
 }) => {
   // Get preferred language
   const preferredLanguage = localStorage.getItem('preferredLanguage') || 'English';
@@ -35,6 +41,15 @@ const DashboardContent: React.FC<DashboardContentProps> = ({
     dailyChallenges: isSpanish ? "Desafíos Diarios" : "Daily Challenges",
     upcomingAppointments: isSpanish ? "Próximas Citas" : "Upcoming Appointments",
     mentalHealthQuizzes: isSpanish ? "Cuestionarios de Salud Mental" : "Mental Health Quizzes",
+  };
+
+  // Create a function that uses navigate if navigateToFeature is not provided
+  const handleFeatureClick = (path: string) => {
+    if (navigateToFeature) {
+      navigateToFeature(path);
+    } else {
+      navigate(path);
+    }
   };
 
   return (
@@ -98,7 +113,11 @@ const DashboardContent: React.FC<DashboardContentProps> = ({
         onWorkshopClick={onWorkshopClick}
       />
 
-      <KeyFeatures />
+      <KeyFeatures 
+        navigateToFeature={handleFeatureClick}
+        selectedQualities={selectedQualities}
+        selectedGoals={selectedGoals}
+      />
     </div>
   );
 };

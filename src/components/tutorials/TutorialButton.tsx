@@ -66,12 +66,70 @@ const TutorialButton: React.FC<TutorialButtonProps> = ({
 
   const handleCloseTutorial = () => {
     setShowTutorial(false);
+    setShowDialog(false);
   };
 
   // Don't render if we shouldn't show the button
   if (!shouldShowTutorialButton()) {
     return null;
   }
+
+  // Get the feature name for display in the tutorial
+  const getFeatureName = () => {
+    const featureNames: Record<string, Record<string, string>> = {
+      'dashboard': {
+        'English': 'Dashboard',
+        'Español': 'Panel Principal'
+      },
+      'workshops': {
+        'English': 'Workshops',
+        'Español': 'Talleres'
+      },
+      'real-time-therapy': {
+        'English': 'Therapy Options',
+        'Español': 'Opciones de Terapia'
+      },
+      'journaling': {
+        'English': 'Journaling',
+        'Español': 'Diario'
+      },
+      'mindfulness': {
+        'English': 'Mindfulness & Sleep',
+        'Español': 'Mindfulness y Sueño'
+      },
+      'video-diary': {
+        'English': 'Video Diary',
+        'Español': 'Diario en Video'
+      },
+      'binaural-beats': {
+        'English': 'Binaural Beats',
+        'Español': 'Ritmos Binaurales'
+      },
+      'mental-wellness-tools': {
+        'English': 'Mental Wellness Tools',
+        'Español': 'Herramientas de Bienestar Mental'
+      },
+      'games-and-quizzes': {
+        'English': 'Games & Quizzes',
+        'Español': 'Juegos y Cuestionarios'
+      },
+      'community-support': {
+        'English': 'Community Support',
+        'Español': 'Apoyo Comunitario'
+      },
+      'resource-library': {
+        'English': 'Resource Library',
+        'Español': 'Biblioteca de Recursos'
+      }
+    };
+    
+    // Handle any feature not explicitly defined
+    if (!featureNames[currentFeatureId]) {
+      return isSpanish ? 'Esta Función' : 'This Feature';
+    }
+    
+    return isSpanish ? featureNames[currentFeatureId]['Español'] : featureNames[currentFeatureId]['English'];
+  };
 
   // Welcome message content
   const welcomeTitle = isSpanish ? "Bienvenido a Thrive MT" : "Welcome to Thrive MT";
@@ -80,10 +138,10 @@ const TutorialButton: React.FC<TutorialButtonProps> = ({
     : "Welcome to Thrive MT, your personalized mental wellness companion. We're here to support your journey to better mental wellbeing.";
 
   // Feature-specific content
-  const featureTitle = isSpanish ? "Tutorial de Función" : "Feature Tutorial";
+  const featureTitle = isSpanish ? `Tutorial de ${getFeatureName()}` : `${getFeatureName()} Tutorial`;
   const featureMessage = isSpanish 
-    ? `Esta función le permite ${currentFeatureId === 'dashboard' ? 'navegar por su panel principal' : 'acceder a herramientas de bienestar'}.`
-    : `This feature allows you to ${currentFeatureId === 'dashboard' ? 'navigate your main dashboard' : 'access wellness tools'}.`;
+    ? `Esta función te permite acceder a herramientas especializadas para ${getFeatureName()}.`
+    : `This feature allows you to access specialized tools for ${getFeatureName()}.`;
 
   // Render the appropriate button based on variant
   if (variant === "logo") {
@@ -138,7 +196,7 @@ const TutorialButton: React.FC<TutorialButtonProps> = ({
                 <span className="sr-only">{isSpanish ? "Cerrar" : "Close"}</span>
               </Button>
               <DialogTitle className="text-xl text-white">
-                {welcomeTitle}
+                {featureTitle}
               </DialogTitle>
             </DialogHeader>
             
@@ -150,7 +208,7 @@ const TutorialButton: React.FC<TutorialButtonProps> = ({
                 </div>
               </div>
               
-              <p className="text-white/90 text-center mb-4">{welcomeMessage}</p>
+              <p className="text-white/90 text-center mb-4">{featureMessage}</p>
             </div>
             
             <DialogFooter>

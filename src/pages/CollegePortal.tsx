@@ -67,8 +67,6 @@ const CollegePortal: React.FC = () => {
   const navigate = useNavigate();
   const { toast } = useToast();
 
-  // Removed auto-transition effect since we're now using a Next button
-
   const handleContinueToIntro = () => {
     setScreenState('intro');
   };
@@ -98,6 +96,14 @@ const CollegePortal: React.FC = () => {
     }
   };
 
+  const handleHenryClick = () => {
+    toast({
+      title: "Henry is here to help",
+      description: "Your AI wellness companion is ready to assist you with any questions about college mental health.",
+      duration: 3000
+    });
+  };
+
   return (
     <div className="min-h-screen bg-gradient-to-b from-[#1a1a1f] via-[#242432] to-[#272730] text-white py-8 px-4 relative">
       <div className="absolute inset-0 bg-[url('data:image/svg+xml;utf8,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%2220%22 height=%2220%22 viewBox=%220 0 20 20%22><circle cx=%222%22 cy=%222%22 r=%221%22 fill=%22%238B5CF6%22 fill-opacity=%220.05%22/></svg>')] opacity-20"></div>
@@ -111,7 +117,9 @@ const CollegePortal: React.FC = () => {
       </div>
       
       {/* Show Henry on all screens in the college portal */}
-      <HenryButton />
+      <div onClick={handleHenryClick} className="cursor-pointer">
+        <HenryButton />
+      </div>
     </div>
   );
 };

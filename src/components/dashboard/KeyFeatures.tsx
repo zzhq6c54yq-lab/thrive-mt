@@ -8,7 +8,17 @@ import {
 import { useNavigate } from "react-router-dom";
 import { useToast } from "@/hooks/use-toast";
 
-const KeyFeatures: React.FC = () => {
+interface KeyFeaturesProps {
+  navigateToFeature: (path: string) => void;
+  selectedQualities?: string[];
+  selectedGoals?: string[];
+}
+
+const KeyFeatures: React.FC<KeyFeaturesProps> = ({ 
+  navigateToFeature,
+  selectedQualities = [],
+  selectedGoals = [] 
+}) => {
   const { toast } = useToast();
   const navigate = useNavigate();
   const [isSpanish, setIsSpanish] = useState<boolean>(false);
@@ -129,7 +139,7 @@ const KeyFeatures: React.FC = () => {
       duration: 1500,
     });
     
-    navigate(path);
+    navigateToFeature(path);
   };
 
   return (

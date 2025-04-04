@@ -60,6 +60,9 @@ const MainDashboard: React.FC<MainDashboardProps> = ({
       <DashboardContent 
         navigate={navigate}
         onWorkshopClick={handleWorkshopClick}
+        navigateToFeature={navigateToFeature}
+        selectedQualities={selectedQualities}
+        selectedGoals={selectedGoals}
       />
     </DashboardBackground>
   );

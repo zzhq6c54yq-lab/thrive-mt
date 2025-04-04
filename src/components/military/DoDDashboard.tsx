@@ -4,9 +4,45 @@ import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }
 import { Button } from "@/components/ui/button";
 import { useNavigate } from "react-router-dom";
 import { Shield, Award, Calendar, Star, ChevronRight, Zap, AlertCircle } from "lucide-react";
+import { useToast } from "@/hooks/use-toast";
 
 const DoDDashboard = () => {
   const navigate = useNavigate();
+  const { toast } = useToast();
+  
+  const handleButtonClick = (path: string, title: string) => {
+    toast({
+      title: `Navigating to ${title}`,
+      description: "Loading your requested resource...",
+      duration: 1500,
+    });
+    navigate(path);
+  };
+  
+  const handleAssessmentClick = (assessmentType: string) => {
+    toast({
+      title: `Starting ${assessmentType} Assessment`,
+      description: "Loading assessment questions...",
+      duration: 1500,
+    });
+    // In a real app, we'd navigate to the assessment page or open a modal
+    // For now, we'll just show a toast
+    setTimeout(() => {
+      toast({
+        title: "Assessment Ready",
+        description: `Your ${assessmentType} assessment is ready to take.`,
+        duration: 3000,
+      });
+    }, 2000);
+  };
+  
+  const handleEventRegistration = (eventName: string, date: string) => {
+    toast({
+      title: `Registered for ${eventName}`,
+      description: `You are now registered for ${eventName} on ${date}. A confirmation has been sent to your email.`,
+      duration: 3000,
+    });
+  };
   
   return (
     <div className="space-y-8">
@@ -21,14 +57,14 @@ const DoDDashboard = () => {
           <div className="flex flex-wrap gap-3">
             <Button 
               className="bg-blue-700 hover:bg-blue-800 text-white" 
-              onClick={() => navigate('/resource-library')}
+              onClick={() => handleButtonClick("/resource-library", "Resource Library")}
             >
               Explore Resources
             </Button>
             <Button 
               variant="outline" 
               className="border-blue-500 text-blue-300 hover:bg-blue-900/50" 
-              onClick={() => navigate('/crisis-support')}
+              onClick={() => handleButtonClick("/crisis-support", "Crisis Support")}
             >
               Get Immediate Help
             </Button>
@@ -40,7 +76,11 @@ const DoDDashboard = () => {
       <div>
         <div className="flex items-center justify-between mb-4">
           <h2 className="text-2xl font-bold text-white">Featured Programs</h2>
-          <Button variant="link" className="text-blue-400" onClick={() => navigate('/military-support')}>
+          <Button 
+            variant="link" 
+            className="text-blue-400" 
+            onClick={() => handleButtonClick("/military-support", "Military Support Programs")}
+          >
             View All <ChevronRight className="h-4 w-4 ml-1" />
           </Button>
         </div>
@@ -60,7 +100,10 @@ const DoDDashboard = () => {
               </p>
             </CardContent>
             <CardFooter>
-              <Button className="w-full bg-blue-700 hover:bg-blue-800 text-white">
+              <Button 
+                className="w-full bg-blue-700 hover:bg-blue-800 text-white"
+                onClick={() => handleButtonClick("/military-resources/combat-stress", "Combat Stress Recovery")}
+              >
                 Learn More
               </Button>
             </CardFooter>
@@ -80,7 +123,10 @@ const DoDDashboard = () => {
               </p>
             </CardContent>
             <CardFooter>
-              <Button className="w-full bg-blue-700 hover:bg-blue-800 text-white">
+              <Button 
+                className="w-full bg-blue-700 hover:bg-blue-800 text-white"
+                onClick={() => handleButtonClick("/military-resources/transition", "Transition Support")}
+              >
                 Learn More
               </Button>
             </CardFooter>
@@ -100,7 +146,10 @@ const DoDDashboard = () => {
               </p>
             </CardContent>
             <CardFooter>
-              <Button className="w-full bg-blue-700 hover:bg-blue-800 text-white">
+              <Button 
+                className="w-full bg-blue-700 hover:bg-blue-800 text-white"
+                onClick={() => handleButtonClick("/military-resources/family", "Family Resilience")}
+              >
                 Learn More
               </Button>
             </CardFooter>
@@ -120,7 +169,11 @@ const DoDDashboard = () => {
               <h3 className="font-medium text-white">PTSD Screening</h3>
               <p className="text-sm text-white/70">Quick 5-minute assessment</p>
             </div>
-            <Button size="sm" className="bg-blue-700 hover:bg-blue-800 text-white">
+            <Button 
+              size="sm" 
+              className="bg-blue-700 hover:bg-blue-800 text-white"
+              onClick={() => handleAssessmentClick("PTSD")}
+            >
               Start
             </Button>
           </Card>
@@ -133,7 +186,11 @@ const DoDDashboard = () => {
               <h3 className="font-medium text-white">Depression Check</h3>
               <p className="text-sm text-white/70">Standard PHQ-9 assessment</p>
             </div>
-            <Button size="sm" className="bg-blue-700 hover:bg-blue-800 text-white">
+            <Button 
+              size="sm" 
+              className="bg-blue-700 hover:bg-blue-800 text-white"
+              onClick={() => handleAssessmentClick("Depression")}
+            >
               Start
             </Button>
           </Card>
@@ -154,7 +211,12 @@ const DoDDashboard = () => {
                 <h3 className="font-medium text-white">Resilience Workshop</h3>
                 <p className="text-sm text-white/70">Virtual | 2:00 PM ET</p>
               </div>
-              <Button variant="outline" size="sm" className="border-blue-500 text-blue-300 hover:bg-blue-900/50">
+              <Button 
+                variant="outline" 
+                size="sm" 
+                className="border-blue-500 text-blue-300 hover:bg-blue-900/50"
+                onClick={() => handleEventRegistration("Resilience Workshop", "April 15")}
+              >
                 Register
               </Button>
             </CardContent>
@@ -170,7 +232,12 @@ const DoDDashboard = () => {
                 <h3 className="font-medium text-white">PTSD Support Group</h3>
                 <p className="text-sm text-white/70">Online | 7:00 PM ET</p>
               </div>
-              <Button variant="outline" size="sm" className="border-blue-500 text-blue-300 hover:bg-blue-900/50">
+              <Button 
+                variant="outline" 
+                size="sm" 
+                className="border-blue-500 text-blue-300 hover:bg-blue-900/50"
+                onClick={() => handleEventRegistration("PTSD Support Group", "April 22")}
+              >
                 Register
               </Button>
             </CardContent>
