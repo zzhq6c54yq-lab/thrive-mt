@@ -32,38 +32,18 @@ export const usePopupManagement = (screenState: string) => {
     localStorage.setItem('popupsShown', JSON.stringify(popupsShown));
   }, [popupsShown]);
 
-  // Listen for language changes
-  useEffect(() => {
-    const handleLanguageChange = () => {
-      console.log("Language changed to:", localStorage.getItem('preferredLanguage'));
-    };
-    
-    window.addEventListener('languageChange', handleLanguageChange);
-    
-    return () => {
-      window.removeEventListener('languageChange', handleLanguageChange);
-    };
-  }, []);
-
   // Main effect for handling popups based on screen state
   useEffect(() => {
     // Track previous screen state
     const prevScreenState = localStorage.getItem('prevScreenState');
     console.log("usePopupManagement - Current screen:", screenState, "Previous screen:", prevScreenState);
     
-    // We want to show the transition tutorial when coming from onboarding to main
+    // To prevent duplicate tutorials, always mark the dashboard tutorial as shown
+    // The user can access it via the button in the header
     if (screenState === 'main') {
-      const comingFromOnboarding = prevScreenState === 'visionBoard' || 
-                                 prevScreenState === 'subscription' || 
-                                 prevScreenState === 'moodResponse' || 
-                                 prevScreenState === 'mood' || 
-                                 prevScreenState === 'register';
-      
-      // Set the flag to show the dashboard tutorial in MainDashboard
-      if (comingFromOnboarding && localStorage.getItem('dashboardTutorialShown') !== 'true') {
-        console.log("Setting flag to show dashboard tutorial from onboarding");
-        localStorage.setItem('shouldShowDashboardTutorial', 'true');
-      }
+      // Always disable automatic tutorials, user can access them via the THRIVE MT button
+      localStorage.setItem('dashboardTutorialShown', 'true');
+      localStorage.removeItem('shouldShowDashboardTutorial');
     }
     
     // Save current screen state as previous for next navigation

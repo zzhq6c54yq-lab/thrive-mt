@@ -3,7 +3,7 @@ import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { 
   User, Settings, LogOut, Calendar, LineChart, HelpCircle, 
-  Moon, Sun, Bell, Lock, MessageSquare, ArrowRight
+  Moon, Sun, Bell, Lock, MessageSquare
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
@@ -16,7 +16,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { useToast } from "@/hooks/use-toast";
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "@/components/ui/dialog";
+import { Dialog, DialogContent } from "@/components/ui/dialog";
 import FeatureTutorial from "@/components/tutorials/FeatureTutorial";
 import { 
   Tooltip,

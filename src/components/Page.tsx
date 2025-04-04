@@ -2,9 +2,8 @@
 import React, { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { useNavigate, useLocation } from "react-router-dom";
-import { ArrowLeft, Home, Languages, HelpCircle } from "lucide-react";
+import { ArrowLeft, Home } from "lucide-react";
 import TutorialButton from "./tutorials/TutorialButton";
-import WelcomeTutorial from "./tutorials/WelcomeTutorial";
 
 interface PageProps {
   title: string;
@@ -27,26 +26,12 @@ const Page: React.FC<PageProps> = ({
 }) => {
   const navigate = useNavigate();
   const location = useLocation();
-  const [showWelcomeTutorial, setShowWelcomeTutorial] = useState(false);
   const [isSpanish, setIsSpanish] = useState<boolean>(false);
   
-  // Check language preference and listen for changes
+  // Check language preference
   useEffect(() => {
-    const checkLanguage = () => {
-      const preferredLanguage = localStorage.getItem('preferredLanguage') || 'English';
-      setIsSpanish(preferredLanguage === 'Español');
-    };
-    
-    // Check initial language
-    checkLanguage();
-    
-    // Listen for language change events
-    window.addEventListener('languageChange', checkLanguage);
-    
-    // Cleanup
-    return () => {
-      window.removeEventListener('languageChange', checkLanguage);
-    };
+    const preferredLanguage = localStorage.getItem('preferredLanguage') || 'English';
+    setIsSpanish(preferredLanguage === 'Español');
   }, []);
   
   useEffect(() => {
@@ -72,18 +57,6 @@ const Page: React.FC<PageProps> = ({
     navigate("/", { state: { screenState: 'main' } });
   };
   
-  const toggleLanguage = () => {
-    const newLanguage = isSpanish ? 'English' : 'Español';
-    localStorage.setItem('preferredLanguage', newLanguage);
-    setIsSpanish(!isSpanish);
-    
-    // Force a re-render of the app to apply the language change immediately
-    window.dispatchEvent(new Event('languageChange'));
-    
-    // Log the language change
-    console.log(`Language toggled to: ${newLanguage}`);
-  };
-  
   // Determine if this is the main dashboard page
   const isMainDashboard = location.pathname === "/" && 
     location.state && location.state.screenState === 'main';
@@ -102,10 +75,6 @@ const Page: React.FC<PageProps> = ({
       'comingSoon': {
         'English': 'Coming soon! This feature is under development.',
         'Español': '¡Próximamente! Esta función está en desarrollo.'
-      },
-      'tutorial': {
-        'English': 'App Tutorial',
-        'Español': 'Tutorial de la App'
       }
     };
     
@@ -146,28 +115,6 @@ const Page: React.FC<PageProps> = ({
               {getTranslation('home')}
             </Button>
             
-            {/* Language toggle button */}
-            <Button
-              variant="outline"
-              size="sm"
-              className="mr-2 bg-white/5 hover:bg-white/15 border-white/10 text-white/90 text-xs h-7"
-              onClick={toggleLanguage}
-            >
-              <Languages className="h-4 w-4 mr-1" />
-              {isSpanish ? "English" : "Español"}
-            </Button>
-            
-            {/* Welcome Tutorial Button */}
-            <Button
-              variant="outline"
-              size="sm"
-              className="mr-2 bg-white/5 hover:bg-white/15 border-white/10 text-white/90 text-xs h-7"
-              onClick={() => setShowWelcomeTutorial(true)}
-            >
-              <HelpCircle className="h-4 w-4 mr-1" />
-              {getTranslation('tutorial')}
-            </Button>
-            
             <h1 className="text-lg md:text-xl font-light tracking-tight">
               <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#B87333] to-[#e5c5a1] drop-shadow-sm">{title}</span>
             </h1>
@@ -197,12 +144,6 @@ const Page: React.FC<PageProps> = ({
           />
         </div>
       </div>
-      
-      {/* Welcome Tutorial Dialog */}
-      <WelcomeTutorial
-        isOpen={showWelcomeTutorial}
-        onClose={() => setShowWelcomeTutorial(false)}
-      />
     </div>
   );
 };

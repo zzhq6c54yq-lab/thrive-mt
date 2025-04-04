@@ -1,4 +1,5 @@
-import React, { useState, useEffect } from "react";
+
+import React, { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { X, ArrowRight } from "lucide-react";
 import { useLocation } from "react-router-dom";
@@ -45,8 +46,12 @@ const TutorialButton: React.FC<TutorialButtonProps> = ({
       return location.pathname === "/" && screenState === 'main';
     }
     
-    // For default variant, show on all screens except emotional check-in and specific DoD pages
-    return !(location.pathname === "/" && screenState !== 'main');
+    // For default variant, only show on feature pages, not on onboarding or initial screens
+    if (location.pathname === "/") {
+      if (screenState !== 'main') return false;
+    }
+    
+    return true;
   };
 
   const handleOpenTutorial = () => {
