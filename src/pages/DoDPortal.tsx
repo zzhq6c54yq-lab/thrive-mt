@@ -1,13 +1,14 @@
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/hooks/use-toast";
-import { ArrowRight, Shield, Calendar, Target, BookOpen, Users, Heart, Award, BrainCircuit, Sparkles, Globe, MessageSquare, FileText, Lightbulb, Medal, Star, Clock } from "lucide-react";
+import { ArrowRight, Shield, Calendar, Target, BookOpen, Users, Heart, Award, BrainCircuit, Sparkles, Globe, MessageSquare, FileText, Lightbulb, Medal, Star, Clock, Headphones, Phone, HelpCircle, ExternalLink } from "lucide-react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle, CardFooter } from "@/components/ui/card";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import HomeButton from "@/components/HomeButton";
+import TutorialButton from "@/components/tutorials/TutorialButton";
 
 // Resource Card Component
 const ResourceCard: React.FC<{
@@ -84,12 +85,46 @@ const FeaturedExpert: React.FC<{
   </div>
 );
 
+// Emergency Resources Component
+const EmergencyResourcesBox: React.FC = () => (
+  <div className="bg-gradient-to-r from-[#e63b3b]/80 to-[#b91c1c]/80 p-4 rounded-xl text-white mb-6">
+    <div className="flex items-center gap-3 mb-3">
+      <Phone className="h-6 w-6 text-white animate-pulse" />
+      <h3 className="text-lg font-bold">24/7 Crisis Resources</h3>
+    </div>
+    <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+      <div className="bg-white/20 backdrop-blur-sm rounded-lg p-3">
+        <h4 className="font-medium mb-1">Veterans Crisis Line</h4>
+        <div className="flex items-center justify-between">
+          <p className="text-white font-bold">988, Press 1</p>
+          <Button size="sm" variant="outline" className="bg-white/20 hover:bg-white/30 border-white/40">
+            <ExternalLink className="h-4 w-4 mr-1" /> Website
+          </Button>
+        </div>
+      </div>
+      <div className="bg-white/20 backdrop-blur-sm rounded-lg p-3">
+        <h4 className="font-medium mb-1">Military OneSource</h4>
+        <div className="flex items-center justify-between">
+          <p className="text-white font-bold">800-342-9647</p>
+          <Button size="sm" variant="outline" className="bg-white/20 hover:bg-white/30 border-white/40">
+            <ExternalLink className="h-4 w-4 mr-1" /> Website
+          </Button>
+        </div>
+      </div>
+    </div>
+  </div>
+);
+
 // Welcome screens before the main portal
 const WelcomeScreen: React.FC<{ onContinue: () => void }> = ({ onContinue }) => {
   return (
     <div className="flex flex-col items-center justify-center min-h-[70vh] text-center px-4 animate-fade-in">
       <div className="absolute top-4 right-4 z-20">
         <HomeButton />
+      </div>
+      
+      <div className="absolute top-4 left-4 z-20">
+        <TutorialButton featureId="military-support" />
       </div>
       
       <div className="mb-6">
@@ -104,15 +139,15 @@ const WelcomeScreen: React.FC<{ onContinue: () => void }> = ({ onContinue }) => 
         <div className="absolute -inset-1 bg-gradient-to-r from-[#0EA5E9]/20 to-[#2563EB]/20 rounded-lg blur"></div>
         <div className="relative bg-black/40 backdrop-blur-md rounded-xl p-6 border border-[#0EA5E9]/30">
           <p className="text-xl mb-6 text-white/90 font-medium">
-            Thank you for your service and sacrifice. Your mental health matters deeply 
-            to us, and we're honored to support your journey toward wellness.
+            This specialized portal provides comprehensive mental health support tailored for service members, 
+            veterans, and their families. We understand the unique challenges of military life.
           </p>
           <p className="text-lg mb-6 text-white/90 font-medium">
-            Here, you'll find resources tailored specifically for active duty members, veterans, 
-            and military families facing the unique challenges of military life.
+            You'll find resources for PTSD, combat stress, deployment challenges, and transition assistance. 
+            Our goal is to ensure that no warrior faces their battles alone.
           </p>
-          <p className="text-lg mb-8 text-white/90 font-medium">
-            You are not alone in this journey. We're here to support you every step of the way.
+          <p className="text-lg mb-4 text-white/90 font-medium">
+            Your service matters. Your mental health matters. Let us support you in your journey.
           </p>
         </div>
       </div>
@@ -134,6 +169,10 @@ const PortalIntroScreen: React.FC<{ onEnterPortal: () => void }> = ({ onEnterPor
         <HomeButton />
       </div>
       
+      <div className="absolute top-4 left-4 z-20">
+        <TutorialButton featureId="military-support" />
+      </div>
+      
       <h1 className="text-4xl md:text-5xl font-bold mb-8 text-transparent bg-clip-text bg-gradient-to-r from-[#0EA5E9] to-[#2563EB] drop-shadow-[0_0_5px_rgba(14,165,233,0.5)]">
         Welcome to Your Military Support Portal
       </h1>
@@ -142,31 +181,31 @@ const PortalIntroScreen: React.FC<{ onEnterPortal: () => void }> = ({ onEnterPor
         <div className="absolute -inset-1 bg-gradient-to-r from-[#0EA5E9]/20 to-[#2563EB]/20 rounded-lg blur"></div>
         <div className="relative bg-black/40 backdrop-blur-md rounded-xl p-6 border border-[#0EA5E9]/30">
           <p className="text-xl mb-6 text-white/90 font-medium">
-            This secure space is designed specifically for service members, veterans, 
-            and their families to access mental health resources.
+            This secure space provides military personnel and veterans with specialized mental health 
+            resources designed to address the unique challenges you face, both during service and beyond.
           </p>
           
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
             <div className="bg-white/10 backdrop-blur-sm p-4 rounded-lg text-left">
               <Shield className="h-6 w-6 text-[#0EA5E9] mb-2" />
               <h3 className="text-white font-medium mb-1">Specialized Support</h3>
-              <p className="text-white/80 text-sm">Resources designed for the unique challenges of military life</p>
+              <p className="text-white/80 text-sm">Evidence-based resources for combat stress, PTSD, and reintegration challenges</p>
             </div>
             <div className="bg-white/10 backdrop-blur-sm p-4 rounded-lg text-left">
               <Users className="h-6 w-6 text-[#0EA5E9] mb-2" />
-              <h3 className="text-white font-medium mb-1">Community Connection</h3>
-              <p className="text-white/80 text-sm">Connect with peers who understand your experiences</p>
+              <h3 className="text-white font-medium mb-1">For You & Your Family</h3>
+              <p className="text-white/80 text-sm">Support extends to families who serve alongside you</p>
             </div>
             <div className="bg-white/10 backdrop-blur-sm p-4 rounded-lg text-left">
               <BrainCircuit className="h-6 w-6 text-[#0EA5E9] mb-2" />
-              <h3 className="text-white font-medium mb-1">Holistic Wellness</h3>
-              <p className="text-white/80 text-sm">Tools for mental, emotional, and physical health</p>
+              <h3 className="text-white font-medium mb-1">Confidential Access</h3>
+              <p className="text-white/80 text-sm">Secure resources that respect your privacy and service</p>
             </div>
           </div>
           
           <p className="text-lg mb-4 text-white/90 font-medium">
-            Browse our comprehensive collection of resources, connect with 
-            specialized support, and access tools designed for military life.
+            From combat stress to civilian transition, from deployment to returning home—we're here for every 
+            step of your journey. Your strength got you through service; let us help with what comes next.
           </p>
         </div>
       </div>
@@ -198,13 +237,22 @@ const PortalScreen: React.FC<{ onNavigateToSupport: () => void }> = ({ onNavigat
             Military Mental Health Hub
           </h1>
         </div>
-        <HomeButton />
+        <div className="flex items-center gap-2">
+          <TutorialButton featureId="military-support" />
+          <HomeButton />
+        </div>
       </div>
+
+      {/* Emergency Resources Box */}
+      <EmergencyResourcesBox />
       
       {/* Hero Banner */}
       <div className="relative rounded-2xl overflow-hidden mb-8 group">
         <div className="absolute inset-0 bg-gradient-to-r from-[#0c1a2f] via-[#0f2547] to-[#0c1a2f] opacity-90"></div>
         <div className="absolute inset-0 bg-[url('data:image/svg+xml;utf8,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%2220%22 height=%2220%22 viewBox=%220 0 20 20%22><rect width=%223%22 height=%223%22 fill=%22%230EA5E9%22 fill-opacity=%220.05%22/></svg>')] opacity-30"></div>
+        
+        {/* Subtle American flag pattern overlay */}
+        <div className="absolute inset-0 bg-[url('data:image/svg+xml;utf8,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%22100%22 height=%2230%22 viewBox=%220 0 100 30%22><rect width=%22100%22 height=%223%22 fill=%22%23BF0A30%22 y=%220%22 fill-opacity=%220.1%22/><rect width=%22100%22 height=%223%22 fill=%22%23FFFFFF%22 y=%223%22 fill-opacity=%220.1%22/><rect width=%22100%22 height=%223%22 fill=%22%23BF0A30%22 y=%226%22 fill-opacity=%220.1%22/><rect width=%22100%22 height=%223%22 fill=%22%23FFFFFF%22 y=%229%22 fill-opacity=%220.1%22/><rect width=%22100%22 height=%223%22 fill=%22%23BF0A30%22 y=%2212%22 fill-opacity=%220.1%22/><rect width=%22100%22 height=%223%22 fill=%22%23FFFFFF%22 y=%2215%22 fill-opacity=%220.1%22/><rect width=%22100%22 height=%223%22 fill=%22%23BF0A30%22 y=%2218%22 fill-opacity=%220.1%22/><rect width=%22100%22 height=%223%22 fill=%22%23FFFFFF%22 y=%2221%22 fill-opacity=%220.1%22/><rect width=%22100%22 height=%223%22 fill=%22%23BF0A30%22 y=%2224%22 fill-opacity=%220.1%22/><rect width=%22100%22 height=%223%22 fill=%22%23FFFFFF%22 y=%2227%22 fill-opacity=%220.1%22/><rect width=%2230%22 height=%2215%22 fill=%22%23002868%22 fill-opacity=%220.15%22/></svg>')] bg-repeat"></div>
         
         <div className="relative p-8 md:p-12 z-10">
           <div className="flex flex-col md:flex-row items-center gap-8">
@@ -213,8 +261,10 @@ const PortalScreen: React.FC<{ onNavigateToSupport: () => void }> = ({ onNavigat
                 Your Mental Health <span className="text-[#0EA5E9]">Matters</span>
               </h2>
               <p className="text-xl text-white/80 mb-6">
-                Discover resources specifically designed for military personnel and their families. 
-                Our comprehensive support systems are here to help you navigate the unique challenges of service life.
+                As a service member or veteran, you've shown extraordinary strength. 
+                The challenges of military life—deployment, combat, and transition—can 
+                affect your mental health in unique ways. You deserve support that 
+                understands your service and sacrifice.
               </p>
               <div className="flex flex-wrap gap-3">
                 <Button 
@@ -537,6 +587,127 @@ const PortalScreen: React.FC<{ onNavigateToSupport: () => void }> = ({ onNavigat
         </Tabs>
       </div>
       
+      {/* Interactive Assessment Section - NEW SECTION */}
+      <div className="mb-10">
+        <div className="flex items-center gap-3 mb-6">
+          <div className="h-8 w-1 bg-gradient-to-b from-[#0EA5E9] to-[#2563EB] rounded-full"></div>
+          <h2 className="text-2xl font-bold text-white">Mental Health Check-in</h2>
+        </div>
+        
+        <div className="bg-gradient-to-r from-[#0c1a2f]/90 to-[#0f2547]/90 rounded-xl p-6 relative overflow-hidden">
+          <div className="absolute top-0 right-0 w-40 h-40 bg-blue-500/10 rounded-full transform translate-x-20 -translate-y-20"></div>
+          <div className="absolute bottom-0 left-0 w-40 h-40 bg-blue-500/10 rounded-full transform -translate-x-20 translate-y-20"></div>
+          
+          <div className="relative z-10">
+            <h3 className="text-xl font-bold text-white mb-4">Confidential Self-Assessment</h3>
+            <p className="text-white/80 mb-6">
+              Not sure where to start? Take our confidential assessment to get personalized recommendations 
+              based on your current needs and experiences.
+            </p>
+            
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-3 mb-6">
+              <div className="bg-black/30 backdrop-blur-sm rounded-lg p-4">
+                <h4 className="font-medium text-white mb-2">PTSD Screening</h4>
+                <p className="text-white/70 text-sm mb-3">Brief 5-question assessment based on PCL-5 criteria.</p>
+                <Button size="sm" className="w-full bg-white/20 hover:bg-white/30 text-white">
+                  Start Assessment
+                </Button>
+              </div>
+              <div className="bg-black/30 backdrop-blur-sm rounded-lg p-4">
+                <h4 className="font-medium text-white mb-2">Depression Check</h4>
+                <p className="text-white/70 text-sm mb-3">Based on PHQ-9 to identify depression symptoms.</p>
+                <Button size="sm" className="w-full bg-white/20 hover:bg-white/30 text-white">
+                  Start Assessment
+                </Button>
+              </div>
+              <div className="bg-black/30 backdrop-blur-sm rounded-lg p-4">
+                <h4 className="font-medium text-white mb-2">Anxiety Assessment</h4>
+                <p className="text-white/70 text-sm mb-3">Quick GAD-7 assessment for anxiety symptoms.</p>
+                <Button size="sm" className="w-full bg-white/20 hover:bg-white/30 text-white">
+                  Start Assessment
+                </Button>
+              </div>
+            </div>
+            
+            <div className="flex items-center text-white/70 text-sm">
+              <HelpCircle className="h-4 w-4 mr-2 text-[#0EA5E9]" />
+              <p>All assessments are confidential and for informational purposes only, not diagnostic.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      {/* Audio/Visual Resources - NEW SECTION */}
+      <div className="mb-10">
+        <div className="flex items-center gap-3 mb-6">
+          <div className="h-8 w-1 bg-gradient-to-b from-[#0EA5E9] to-[#2563EB] rounded-full"></div>
+          <h2 className="text-2xl font-bold text-white">Multimedia Resources</h2>
+        </div>
+        
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div className="bg-black/30 backdrop-blur-md rounded-xl p-6 border border-[#0EA5E9]/30">
+            <div className="flex items-center gap-3 mb-4">
+              <div className="bg-[#0EA5E9]/20 p-3 rounded-lg">
+                <Headphones className="h-6 w-6 text-[#0EA5E9]" />
+              </div>
+              <h3 className="text-xl font-semibold text-white">Guided Meditation Sessions</h3>
+            </div>
+            <p className="text-white/80 mb-4">
+              Combat-focused mindfulness meditations designed specifically for service members 
+              and veterans experiencing hypervigilance and stress responses.
+            </p>
+            <div className="grid grid-cols-1 gap-3">
+              <Button 
+                variant="outline" 
+                className="justify-between border-[#0EA5E9]/40 hover:bg-[#0EA5E9]/10"
+                onClick={() => navigate("/binaural-beats")}
+              >
+                <span>Combat Stress Reduction (10 min)</span>
+                <Headphones className="h-4 w-4" />
+              </Button>
+              <Button 
+                variant="outline" 
+                className="justify-between border-[#0EA5E9]/40 hover:bg-[#0EA5E9]/10"
+                onClick={() => navigate("/binaural-beats")}
+              >
+                <span>Sleep Preparation for Veterans (20 min)</span>
+                <Headphones className="h-4 w-4" />
+              </Button>
+            </div>
+          </div>
+          
+          <div className="bg-black/30 backdrop-blur-md rounded-xl p-6 border border-[#0EA5E9]/30">
+            <div className="flex items-center gap-3 mb-4">
+              <div className="bg-[#0EA5E9]/20 p-3 rounded-lg">
+                <Users className="h-6 w-6 text-[#0EA5E9]" />
+              </div>
+              <h3 className="text-xl font-semibold text-white">Veteran Stories</h3>
+            </div>
+            <p className="text-white/80 mb-4">
+              Hear from veterans who have navigated their mental health journeys and found paths to healing.
+            </p>
+            <div className="grid grid-cols-1 gap-3">
+              <Button 
+                variant="outline" 
+                className="justify-between border-[#0EA5E9]/40 hover:bg-[#0EA5E9]/10"
+                onClick={() => navigate("/military-blog")}
+              >
+                <span>From Combat to Counselor: SSgt. Martin's Journey</span>
+                <ExternalLink className="h-4 w-4" />
+              </Button>
+              <Button 
+                variant="outline" 
+                className="justify-between border-[#0EA5E9]/40 hover:bg-[#0EA5E9]/10"
+                onClick={() => navigate("/military-blog")}
+              >
+                <span>Finding Peace: A Marine's PTSD Recovery</span>
+                <ExternalLink className="h-4 w-4" />
+              </Button>
+            </div>
+          </div>
+        </div>
+      </div>
+      
       {/* Upcoming Events Section */}
       <div className="mb-10">
         <div className="flex items-center gap-3 mb-6">
@@ -655,6 +826,10 @@ const PortalScreen: React.FC<{ onNavigateToSupport: () => void }> = ({ onNavigat
       {/* Call to Action */}
       <div className="relative rounded-xl overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-r from-[#0EA5E9] to-[#2563EB] opacity-90"></div>
+        
+        {/* Very subtle flag pattern */}
+        <div className="absolute inset-0 bg-[url('data:image/svg+xml;utf8,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%22100%22 height=%2230%22 viewBox=%220 0 100 30%22><rect width=%22100%22 height=%223%22 fill=%22%23FFFFFF%22 y=%220%22 fill-opacity=%220.07%22/><rect width=%22100%22 height=%223%22 fill=%22%23FFFFFF%22 y=%226%22 fill-opacity=%220.07%22/><rect width=%22100%22 height=%223%22 fill=%22%23FFFFFF%22 y=%2212%22 fill-opacity=%220.07%22/><rect width=%22100%22 height=%223%22 fill=%22%23FFFFFF%22 y=%2218%22 fill-opacity=%220.07%22/><rect width=%22100%22 height=%223%22 fill=%22%23FFFFFF%22 y=%2224%22 fill-opacity=%220.07%22/></svg>')] bg-repeat"></div>
+        
         <div className="relative p-8 z-10">
           <div className="flex flex-col md:flex-row items-center justify-between gap-6">
             <div>
@@ -691,6 +866,19 @@ const DoDPortal: React.FC = () => {
   const location = useLocation();
   const { toast } = useToast();
 
+  useEffect(() => {
+    // Add a subtle American flag background pattern to the main content
+    const addPatrioticBackground = () => {
+      document.body.classList.add('military-theme');
+    };
+    
+    addPatrioticBackground();
+    
+    return () => {
+      document.body.classList.remove('military-theme');
+    };
+  }, []);
+
   const handleContinueToIntro = () => {
     setScreenState('intro');
     window.scrollTo(0, 0);
@@ -726,11 +914,17 @@ const DoDPortal: React.FC = () => {
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-[#1a1a1f] via-[#242432] to-[#272730] text-white py-8 px-4 relative">
+      {/* American flag subtle background pattern */}
+      <div className="absolute inset-0 bg-[url('data:image/svg+xml;utf8,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%22100%22 height=%2230%22 viewBox=%220 0 100 30%22><rect width=%22100%22 height=%223%22 fill=%22%23BF0A30%22 y=%220%22 fill-opacity=%220.03%22/><rect width=%22100%22 height=%223%22 fill=%22%23FFFFFF%22 y=%223%22 fill-opacity=%220.03%22/><rect width=%22100%22 height=%223%22 fill=%22%23BF0A30%22 y=%226%22 fill-opacity=%220.03%22/><rect width=%22100%22 height=%223%22 fill=%22%23FFFFFF%22 y=%229%22 fill-opacity=%220.03%22/><rect width=%22100%22 height=%223%22 fill=%22%23BF0A30%22 y=%2212%22 fill-opacity=%220.03%22/><rect width=%22100%22 height=%223%22 fill=%22%23FFFFFF%22 y=%2215%22 fill-opacity=%220.03%22/><rect width=%22100%22 height=%223%22 fill=%22%23BF0A30%22 y=%2218%22 fill-opacity=%220.03%22/><rect width=%22100%22 height=%223%22 fill=%22%23FFFFFF%22 y=%2221%22 fill-opacity=%220.03%22/><rect width=%22100%22 height=%223%22 fill=%22%23BF0A30%22 y=%2224%22 fill-opacity=%220.03%22/><rect width=%22100%22 height=%223%22 fill=%22%23FFFFFF%22 y=%2227%22 fill-opacity=%220.03%22/></svg>')] bg-repeat opacity-50"></div>
+      
+      {/* Stars pattern in the background */}
       <div className="absolute inset-0 bg-[url('data:image/svg+xml;utf8,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%2220%22 height=%2220%22 viewBox=%220 0 20 20%22><circle cx=%222%22 cy=%222%22 r=%221%22 fill=%22%230EA5E9%22 fill-opacity=%220.05%22/></svg>')] opacity-20"></div>
       
       <div className="max-w-7xl mx-auto bg-white/5 backdrop-blur-md rounded-2xl shadow-xl relative overflow-hidden border border-[#0EA5E9]/20">
+        {/* Glow effects */}
         <div className="absolute top-0 right-0 w-80 h-80 bg-gradient-to-br from-[#0EA5E9]/20 to-transparent rounded-full blur-3xl -z-10"></div>
         <div className="absolute bottom-0 left-0 w-80 h-80 bg-gradient-to-tr from-[#2563EB]/20 to-transparent rounded-full blur-3xl -z-10"></div>
+        <div className="absolute top-1/2 left-1/4 w-60 h-60 bg-gradient-to-tr from-[#BF0A30]/10 to-transparent rounded-full blur-3xl -z-10"></div>
         
         {renderCurrentScreen()}
       </div>
@@ -739,3 +933,4 @@ const DoDPortal: React.FC = () => {
 };
 
 export default DoDPortal;
+
