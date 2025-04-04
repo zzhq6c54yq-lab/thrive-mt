@@ -7,6 +7,7 @@ import {
 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { useToast } from "@/hooks/use-toast";
+import TutorialButton from "@/components/tutorials/TutorialButton";
 
 const KeyFeatures: React.FC = () => {
   const { toast } = useToast();
@@ -43,82 +44,98 @@ const KeyFeatures: React.FC = () => {
     {
       title: isSpanish ? "Diario en Video" : "Video Diary",
       icon: Video,
-      path: "/video-diary"
+      path: "/video-diary",
+      featureId: "video-diary"
     },
     {
       title: isSpanish ? "Desafíos de Bienestar" : "Wellness Challenges",
       icon: ListChecks,
-      path: "/wellness-challenges"
+      path: "/wellness-challenges",
+      featureId: "wellness-challenges"
     },
     {
       title: isSpanish ? "Contenido Personalizado" : "Personalized Content",
       icon: Brain,
-      path: "/personalized-content"
+      path: "/personalized-content",
+      featureId: "personalized-content"
     },
     {
       title: isSpanish ? "Juegos y Cuestionarios" : "Games & Quizzes",
       icon: Heart,
-      path: "/games-and-quizzes"
+      path: "/games-and-quizzes",
+      featureId: "games-quizzes"
     },
     {
       title: isSpanish ? "Biblioteca de Recursos" : "Resource Library",
       icon: Library,
-      path: "/resource-library"
+      path: "/resource-library",
+      featureId: "resource-library"
     },
     {
       title: isSpanish ? "Apoyo Comunitario" : "Community Support",
       icon: Users,
-      path: "/community-support"
+      path: "/community-support",
+      featureId: "community-support"
     },
     {
       title: isSpanish ? "Mi Patrocinador N.A/A.A" : "My N.A/A.A Sponsor",
       icon: HeartHandshake,
-      path: "/my-sponsor"
+      path: "/my-sponsor",
+      featureId: "sponsor"
     },
     {
       title: isSpanish ? "Ritmos Binaurales" : "Binaural Beats",
       icon: Headphones,
-      path: "/binaural-beats"
+      path: "/binaural-beats",
+      featureId: "binaural-beats"
     },
     {
       title: isSpanish ? "Herramientas de Bienestar Mental" : "Mental Wellness Tools",
       icon: LeafyGreen,
-      path: "/mental-wellness-tools"
+      path: "/mental-wellness-tools",
+      featureId: "wellness-tools"
     },
     {
       title: isSpanish ? "Seguimiento de Progreso" : "Progress Tracking",
       icon: ListChecks,
-      path: "/progress-reports"
+      path: "/progress-reports",
+      featureId: "progress-tracking"
     },
     {
       title: isSpanish ? "Recursos Familiares" : "Family Resources",
       icon: HandHeart,
-      path: "/family-support"
+      path: "/family-support",
+      featureId: "family-resources"
     },
     {
       title: isSpanish ? "Terapias Alternativas" : "Alternative Therapies",
       icon: FlameKindling,
-      path: "/therapist-questionnaire"
+      path: "/therapist-questionnaire",
+      featureId: "alternative-therapies"
     },
     {
       title: isSpanish ? "Mindfulness y Sueño" : "Mindfulness & Sleep",
       icon: Moon,
-      path: "/mindfulness"
+      path: "/mindfulness",
+      featureId: "mindfulness"
     },
     {
       title: isSpanish ? "Opciones de Terapia" : "Therapy Options",
       icon: GraduationCap,
-      path: "/real-time-therapy"
+      path: "/real-time-therapy",
+      featureId: "therapy-options"
     },
     {
       title: isSpanish ? "Talleres" : "Workshops",
       icon: CalendarRange,
-      path: "/workshops"
+      path: "/workshops",
+      featureId: "workshops"
     },
     {
       title: isSpanish ? "Escritura de Diario" : "Journaling",
       icon: Heart,
-      path: "/journaling"
+      path: "/journaling",
+      featureId: "journaling"
     }
   ];
 
@@ -189,27 +206,40 @@ const KeyFeatures: React.FC = () => {
             return (
               <div 
                 key={index}
-                onClick={() => handleFeatureClick(feature.path)}
-                className="cursor-pointer overflow-hidden rounded-xl backdrop-blur-md shadow-md transition-all duration-300 hover:shadow-lg transform hover:-translate-y-1 hover:scale-[1.02]"
+                className="relative cursor-pointer overflow-hidden rounded-xl backdrop-blur-md shadow-md transition-all duration-300 hover:shadow-lg transform hover:-translate-y-1 hover:scale-[1.02]"
               >
-                <div className={`absolute inset-0 bg-gradient-to-br ${gradients[gradientIndex]} opacity-80`}></div>
+                {/* Tutorial Button in top left corner */}
+                <div className="absolute top-1 left-1 z-20">
+                  <TutorialButton 
+                    featureId={feature.featureId} 
+                    className="bg-white/10 border-white/5 backdrop-blur-xl text-[10px]"
+                  />
+                </div>
                 
-                <div className="absolute inset-0 bg-black/30 backdrop-blur-sm"></div>
-                
-                <div className="relative p-2 sm:p-3 flex flex-col items-center text-center h-full">
-                  <div 
-                    className="p-1.5 sm:p-2 rounded-lg transform transition-transform mb-1.5 sm:mb-2"
-                    style={{ 
-                      background: `${iconColor}30`,
-                      border: `1px solid ${iconColor}50`
-                    }}
-                  >
-                    <IconComponent className="h-4 w-4 sm:h-5 sm:w-5" style={{ color: iconColor }} />
-                  </div>
+                {/* Main Feature Card - onClick moved from parent to this div to avoid conflict with tutorial button */}
+                <div 
+                  onClick={() => handleFeatureClick(feature.path)}
+                  className="relative h-full w-full"
+                >
+                  <div className={`absolute inset-0 bg-gradient-to-br ${gradients[gradientIndex]} opacity-80`}></div>
                   
-                  <h3 className="text-xs sm:text-sm font-medium text-white">
-                    {feature.title}
-                  </h3>
+                  <div className="absolute inset-0 bg-black/30 backdrop-blur-sm"></div>
+                  
+                  <div className="relative p-2 sm:p-3 flex flex-col items-center text-center h-full">
+                    <div 
+                      className="p-1.5 sm:p-2 rounded-lg transform transition-transform mb-1.5 sm:mb-2"
+                      style={{ 
+                        background: `${iconColor}30`,
+                        border: `1px solid ${iconColor}50`
+                      }}
+                    >
+                      <IconComponent className="h-4 w-4 sm:h-5 sm:w-5" style={{ color: iconColor }} />
+                    </div>
+                    
+                    <h3 className="text-xs sm:text-sm font-medium text-white">
+                      {feature.title}
+                    </h3>
+                  </div>
                 </div>
               </div>
             );
