@@ -38,12 +38,19 @@ export const usePopupManagement = (screenState: string) => {
     const prevScreenState = localStorage.getItem('prevScreenState');
     console.log("usePopupManagement - Current screen:", screenState, "Previous screen:", prevScreenState);
     
+    // Check if tutorials should be prevented
+    const preventTutorial = sessionStorage.getItem('preventTutorial') === 'true';
+    
     // To prevent duplicate tutorials, always mark the dashboard tutorial as shown
     // The user can access it via the button in the header
     if (screenState === 'main') {
-      // Always disable automatic tutorials, user can access them via the THRIVE MT button
-      localStorage.setItem('dashboardTutorialShown', 'true');
-      localStorage.removeItem('shouldShowDashboardTutorial');
+      if (preventTutorial) {
+        localStorage.setItem('dashboardTutorialShown', 'true');
+        localStorage.removeItem('shouldShowDashboardTutorial');
+      }
+      
+      // Clear the prevention flag after using it
+      sessionStorage.removeItem('preventTutorial');
     }
     
     // Save current screen state as previous for next navigation
@@ -71,6 +78,7 @@ export const usePopupManagement = (screenState: string) => {
     localStorage.removeItem('dashboardTutorialShown');
     localStorage.removeItem('shouldShowDashboardTutorial');
     localStorage.removeItem('prevScreenState');
+    sessionStorage.removeItem('preventTutorial');
   };
 
   return {

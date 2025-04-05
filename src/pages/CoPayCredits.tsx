@@ -27,10 +27,22 @@ const CoPayCredits = () => {
   };
 
   const handleUpgradePlan = (plan: string) => {
+    const upgradeCost = plan === "gold" ? 5 : (currentPlan === "basic" && plan === "platinum") ? 10 : 5;
+    
+    if (credits < upgradeCost) {
+      toast({
+        title: "Not enough credits",
+        description: `You need at least $${upgradeCost} in credits to upgrade to the ${plan} plan.`,
+        variant: "destructive"
+      });
+      return;
+    }
+    
+    setCredits(prev => prev - upgradeCost);
     setCurrentPlan(plan);
     toast({
       title: `Upgraded to ${plan.charAt(0).toUpperCase() + plan.slice(1)} Plan!`,
-      description: `You've successfully upgraded to the ${plan} membership plan.`,
+      description: `You've successfully upgraded to the ${plan} membership plan for $${upgradeCost}.`,
     });
   };
 
@@ -54,6 +66,24 @@ const CoPayCredits = () => {
     toast({
       title: "Points Redeemed!",
       description: `You've converted ${pointsToDeduct} points into $${creditsToRedeem} co-pay credits.`,
+    });
+  };
+
+  // Handle cash out of credits in $5 increments
+  const handleCashOut = (amount: number) => {
+    if (credits < amount) {
+      toast({
+        title: "Not enough credits",
+        description: `You need at least $${amount} in credits to cash out.`,
+        variant: "destructive"
+      });
+      return;
+    }
+    
+    setCredits(prev => prev - amount);
+    toast({
+      title: "Credits Cashed Out!",
+      description: `You've successfully cashed out $${amount} in Thrive credits.`,
     });
   };
 
@@ -244,7 +274,7 @@ const CoPayCredits = () => {
                       onClick={() => handleUpgradePlan("gold")}
                       className="w-full text-black bg-amber-500 hover:bg-amber-600 font-medium shadow-md"
                     >
-                      Upgrade to Gold
+                      Upgrade for $5 Credits
                     </Button>
                   )}
                 </CardFooter>
@@ -305,7 +335,7 @@ const CoPayCredits = () => {
                       onClick={() => handleUpgradePlan("platinum")}
                       className="w-full text-white bg-purple-600 hover:bg-purple-700 font-medium shadow-md"
                     >
-                      Upgrade to Platinum
+                      {currentPlan === "basic" ? "Upgrade for $10 Credits" : "Upgrade for $5 Credits"}
                     </Button>
                   )}
                 </CardFooter>
@@ -323,7 +353,7 @@ const CoPayCredits = () => {
           </CardContent>
         </Card>
 
-        {/* Credit Overview - Redesigned with more attractive cards */}
+        {/* Credit Overview - Updated with cash out options */}
         <div className="grid grid-cols-1 md:grid-cols-12 gap-6">
           <Card className="md:col-span-8 bg-white shadow-md border border-amber-200">
             <CardHeader className="bg-gradient-to-r from-amber-50 to-amber-100 border-b border-amber-200">
@@ -339,16 +369,44 @@ const CoPayCredits = () => {
                   <span className="text-4xl font-bold text-amber-600">${credits}</span>
                   <span className="text-gray-500 ml-2">credits available</span>
                 </div>
-                <Button className="bg-amber-500 hover:bg-amber-600 text-black font-medium shadow-md">Use Credits</Button>
+                <Button 
+                  className="bg-amber-500 hover:bg-amber-600 text-black font-medium shadow-md"
+                  onClick={() => handleCashOut(5)}
+                >
+                  Use Credits
+                </Button>
               </div>
               <div className="mb-3">
                 <Progress value={credits} max={100} className="h-3 bg-gray-100">
                   <div className="h-full bg-gradient-to-r from-amber-400 to-amber-600 rounded-full"></div>
                 </Progress>
               </div>
-              <p className="text-sm text-gray-500 mb-8">
-                {credits >= 100 ? "You have enough credits for a free session!" : `$${100 - credits} more credits needed for a free session`}
-              </p>
+              
+              {/* Updated Credit Cashout Section */}
+              <div className="mt-8 p-6 rounded-lg border border-amber-300 shadow-md bg-gradient-to-r from-amber-50 to-amber-100">
+                <div className="flex items-center gap-3 mb-4">
+                  <div className="p-3 rounded-full bg-amber-200">
+                    <Wallet className="h-6 w-6 text-amber-700" />
+                  </div>
+                  <h4 className="font-semibold text-gray-800 text-lg">Cash Out Credits</h4>
+                </div>
+                <p className="text-gray-600 mb-6">
+                  Convert your earned credits to usable Thrive credits in $5 increments. Available for immediate use.
+                </p>
+                
+                <div className="grid grid-cols-1 sm:grid-cols-5 gap-3">
+                  {[5, 10, 15, 20, 25].map((amount) => (
+                    <Button 
+                      key={amount}
+                      onClick={() => handleCashOut(amount)}
+                      disabled={credits < amount}
+                      className={`${credits >= amount ? 'bg-amber-500 hover:bg-amber-600 text-black' : 'bg-gray-200 text-gray-500'} font-semibold`}
+                    >
+                      ${amount}
+                    </Button>
+                  ))}
+                </div>
+              </div>
               
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 mt-8">
                 <div className="bg-white p-6 rounded-lg border border-gray-200 shadow-sm hover:shadow-md transition-shadow">
@@ -359,7 +417,10 @@ const CoPayCredits = () => {
                     <h4 className="font-semibold text-gray-800 text-lg">Gold Membership</h4>
                   </div>
                   <p className="text-gray-600 pl-12">Earn $5 back on every $100 spent on therapy costs and monthly subscriptions.</p>
-                  <Button className="mt-4 w-full bg-amber-500 hover:bg-amber-600 text-black font-semibold shadow-sm">
+                  <Button 
+                    className="mt-4 w-full bg-amber-500 hover:bg-amber-600 text-black font-semibold shadow-sm"
+                    onClick={() => handleUpgradePlan("gold")}
+                  >
                     Get Started
                   </Button>
                 </div>
@@ -372,7 +433,10 @@ const CoPayCredits = () => {
                     <h4 className="font-semibold text-gray-800 text-lg">Platinum Membership</h4>
                   </div>
                   <p className="text-gray-600 pl-12">Enjoy greater rewards with $10 back on every $100 spent, designed for those who want to maximize benefits.</p>
-                  <Button className="mt-4 w-full bg-amber-600 hover:bg-amber-700 text-black font-semibold shadow-sm">
+                  <Button 
+                    className="mt-4 w-full bg-amber-600 hover:bg-amber-700 text-black font-semibold shadow-sm"
+                    onClick={() => handleUpgradePlan("platinum")}
+                  >
                     Upgrade Now
                   </Button>
                 </div>
@@ -428,7 +492,14 @@ const CoPayCredits = () => {
               </div>
             </CardContent>
             <CardFooter className="pt-2 bg-amber-50">
-              <Button variant="outline" className="w-full text-amber-700 border-amber-300 hover:bg-amber-100">
+              <Button 
+                variant="outline" 
+                className="w-full text-amber-700 border-amber-300 hover:bg-amber-100"
+                onClick={() => toast({
+                  title: "Transactions Downloaded",
+                  description: "Your transaction history has been downloaded successfully."
+                })}
+              >
                 <Download className="h-4 w-4 mr-2" />
                 View All Transactions
               </Button>
@@ -436,7 +507,7 @@ const CoPayCredits = () => {
           </Card>
         </div>
         
-        {/* Main Content Tabs - Improved styling and clarity */}
+        {/* Main Content Tabs - Updated with new credit values */}
         <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
           <TabsList className="w-full grid grid-cols-3 bg-amber-100 p-1 rounded-lg">
             <TabsTrigger 
@@ -524,214 +595,4 @@ const CoPayCredits = () => {
                 
                 <div className="p-6 rounded-lg bg-gradient-to-r from-amber-100 to-amber-200 border border-amber-300">
                   <h3 className="text-lg font-medium mb-3 text-amber-800">Getting Started</h3>
-                  <p className="text-gray-700 mb-4">
-                    Sign up today to start earning co-pay credits and take the first step towards a healthier, happier you. 
-                    These co-pay credits have real dollar value and can be used to offset future expenses within our services or shop at thrive-apparel.com.
-                  </p>
-                  <Button className="bg-amber-600 hover:bg-amber-700 text-black font-semibold">
-                    Upgrade to Platinum
-                  </Button>
-                </div>
-              </CardContent>
-            </Card>
-          </TabsContent>
-          
-          <TabsContent value="earn" className="mt-6">
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-              <Card className="bg-white border border-amber-200 shadow-md hover:border-amber-400 transition-all">
-                <CardHeader>
-                  <CardTitle className="flex items-center gap-2 text-amber-800">
-                    <Heart className="h-5 w-5 text-amber-600" />
-                    Complete Wellness Activities
-                  </CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <p className="text-gray-600 mb-4">
-                    Earn dollar-value credits by completing daily wellness challenges, practicing mindfulness, or tracking your mood.
-                  </p>
-                  <div className="bg-amber-50 rounded-lg p-3 mb-4 border border-amber-200">
-                    <div className="flex justify-between items-center">
-                      <span className="font-medium text-gray-800">Daily Wellness Challenge</span>
-                      <span className="text-amber-700 font-bold">+$5</span>
-                    </div>
-                  </div>
-                </CardContent>
-                <CardFooter>
-                  <Button 
-                    className="w-full bg-amber-500 hover:bg-amber-600 text-black font-medium"
-                    onClick={() => handleEarnCredits(5, "Daily Wellness Challenge")}
-                  >
-                    Complete Challenge
-                  </Button>
-                </CardFooter>
-              </Card>
-              
-              <Card className="bg-white border border-amber-200 shadow-md hover:border-amber-400 transition-all">
-                <CardHeader>
-                  <CardTitle className="flex items-center gap-2 text-amber-800">
-                    <Users className="h-5 w-5 text-amber-600" />
-                    Refer Friends & Family
-                  </CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <p className="text-gray-600 mb-4">
-                    Invite others to Thrive MT and earn dollar-value credits when they sign up or attend their first session.
-                  </p>
-                  <div className="bg-amber-50 rounded-lg p-3 mb-4 border border-amber-200">
-                    <div className="flex justify-between items-center">
-                      <span className="font-medium text-gray-800">New Member Referral</span>
-                      <span className="text-amber-700 font-bold">+$30</span>
-                    </div>
-                  </div>
-                </CardContent>
-                <CardFooter>
-                  <Button 
-                    className="w-full bg-amber-500 hover:bg-amber-600 text-black font-medium"
-                    onClick={() => handleEarnCredits(30, "Friend Referral")}
-                  >
-                    Invite Friends
-                  </Button>
-                </CardFooter>
-              </Card>
-              
-              <Card className="bg-white border border-amber-200 shadow-md hover:border-amber-400 transition-all">
-                <CardHeader>
-                  <CardTitle className="flex items-center gap-2 text-amber-800">
-                    <ClipboardCheck className="h-5 w-5 text-amber-600" />
-                    Participate in Research
-                  </CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <p className="text-gray-600 mb-4">
-                    Contribute to mental health research by participating in surveys and studies.
-                  </p>
-                  <div className="bg-amber-50 rounded-lg p-3 mb-4 border border-amber-200">
-                    <div className="flex justify-between items-center">
-                      <span className="font-medium text-gray-800">Quarterly Survey</span>
-                      <span className="text-amber-700 font-bold">+$20</span>
-                    </div>
-                  </div>
-                </CardContent>
-                <CardFooter>
-                  <Button 
-                    className="w-full bg-amber-500 hover:bg-amber-600 text-black font-medium"
-                    onClick={() => handleEarnCredits(20, "Research Participation")}
-                  >
-                    Take Survey
-                  </Button>
-                </CardFooter>
-              </Card>
-            </div>
-          </TabsContent>
-          
-          <TabsContent value="redeem" className="mt-6">
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-              <Card className="bg-white border border-amber-200 shadow-md hover:border-amber-400 transition-all">
-                <CardHeader className="bg-gradient-to-r from-amber-50 to-amber-100 rounded-t-lg">
-                  <CardTitle className="text-amber-800">Standard Session Credit</CardTitle>
-                  <CardDescription>Reduce your copay for individual therapy</CardDescription>
-                </CardHeader>
-                <CardContent className="pt-6">
-                  <div className="text-center mb-6">
-                    <span className="text-4xl font-bold text-amber-600">$25</span>
-                    <span className="text-gray-500 ml-2">credit value</span>
-                  </div>
-                  <ul className="space-y-2 text-gray-700 mb-6">
-                    <li className="flex items-center">
-                      <Star className="h-4 w-4 text-amber-600 mr-2 flex-shrink-0" />
-                      Reduce standard session copay by $25
-                    </li>
-                    <li className="flex items-center">
-                      <Star className="h-4 w-4 text-amber-600 mr-2 flex-shrink-0" />
-                      Valid for any individual therapy session
-                    </li>
-                    <li className="flex items-center">
-                      <Star className="h-4 w-4 text-amber-600 mr-2 flex-shrink-0" />
-                      No limit on usage (with available credits)
-                    </li>
-                  </ul>
-                </CardContent>
-                <CardFooter>
-                  <Button className="w-full bg-amber-500 hover:bg-amber-600 text-black font-medium">
-                    Redeem $25 Credits
-                  </Button>
-                </CardFooter>
-              </Card>
-              
-              <Card className="bg-white border border-amber-200 shadow-md hover:border-amber-400 transition-all">
-                <CardHeader className="bg-gradient-to-r from-amber-50 to-amber-100 rounded-t-lg">
-                  <CardTitle className="text-amber-800">Full Session Coverage</CardTitle>
-                  <CardDescription>Completely eliminate your copay</CardDescription>
-                </CardHeader>
-                <CardContent className="pt-6">
-                  <div className="text-center mb-6">
-                    <span className="text-4xl font-bold text-amber-600">$100</span>
-                    <span className="text-gray-500 ml-2">credit value</span>
-                  </div>
-                  <ul className="space-y-2 text-gray-700 mb-6">
-                    <li className="flex items-center">
-                      <Star className="h-4 w-4 text-amber-600 mr-2 flex-shrink-0" />
-                      Cover your entire session copay
-                    </li>
-                    <li className="flex items-center">
-                      <Star className="h-4 w-4 text-amber-600 mr-2 flex-shrink-0" />
-                      Premium therapist sessions included
-                    </li>
-                    <li className="flex items-center">
-                      <Star className="h-4 w-4 text-amber-600 mr-2 flex-shrink-0" />
-                      Best value for your credits
-                    </li>
-                  </ul>
-                </CardContent>
-                <CardFooter>
-                  <Button className="w-full bg-amber-500 hover:bg-amber-600 text-black font-medium">
-                    Redeem $100 Credits
-                  </Button>
-                </CardFooter>
-              </Card>
-              
-              <Card className="bg-white border border-amber-200 shadow-md hover:border-amber-400 transition-all">
-                <CardHeader className="bg-gradient-to-r from-amber-50 to-amber-100 rounded-t-lg">
-                  <CardTitle className="text-amber-800 flex items-center gap-2">
-                    <ShoppingBag className="h-5 w-5" />
-                    Thrive Apparel
-                  </CardTitle>
-                  <CardDescription>Shop with your earned credits</CardDescription>
-                </CardHeader>
-                <CardContent className="pt-6">
-                  <div className="text-center mb-6">
-                    <span className="text-4xl font-bold text-amber-600">1:1</span>
-                    <span className="text-gray-500 ml-2">conversion rate</span>
-                  </div>
-                  <ul className="space-y-2 text-gray-700 mb-6">
-                    <li className="flex items-center">
-                      <Star className="h-4 w-4 text-amber-600 mr-2 flex-shrink-0" />
-                      Each $1 in credits = $1 at thrive-apparel.com
-                    </li>
-                    <li className="flex items-center">
-                      <Star className="h-4 w-4 text-amber-600 mr-2 flex-shrink-0" />
-                      Shop exclusive mental wellness merchandise
-                    </li>
-                    <li className="flex items-center">
-                      <Star className="h-4 w-4 text-amber-600 mr-2 flex-shrink-0" />
-                      Credits available immediately at checkout
-                    </li>
-                  </ul>
-                </CardContent>
-                <CardFooter>
-                  <a href="https://thrive-apparel.com" target="_blank" rel="noopener noreferrer" className="w-full">
-                    <Button className="w-full bg-amber-500 hover:bg-amber-600 text-black font-medium">
-                      Shop with Credits
-                    </Button>
-                  </a>
-                </CardFooter>
-              </Card>
-            </div>
-          </TabsContent>
-        </Tabs>
-      </div>
-    </Page>
-  );
-};
-
-export default CoPayCredits;
+                  <p className="text-gray-70

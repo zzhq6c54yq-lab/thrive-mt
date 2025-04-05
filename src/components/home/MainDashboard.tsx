@@ -40,8 +40,17 @@ const MainDashboard: React.FC<MainDashboardProps> = ({
     const dashboardTutorialShown = localStorage.getItem('dashboardTutorialShown') === 'true';
     const shouldShow = localStorage.getItem('shouldShowDashboardTutorial') === 'true';
     
-    // Only show tutorial if it's explicitly requested and hasn't been shown before
-    setShowTutorial(!dashboardTutorialShown && shouldShow);
+    // Check if tutorials should be prevented (from location state)
+    const preventTutorial = location.state && location.state.preventTutorial === true;
+    
+    if (preventTutorial) {
+      // Store this in sessionStorage so it persists across the current session
+      sessionStorage.setItem('preventTutorial', 'true');
+      setShowTutorial(false);
+    } else {
+      // Only show tutorial if it's explicitly requested and hasn't been shown before
+      setShowTutorial(!dashboardTutorialShown && shouldShow);
+    }
     
     // Mark any tutorial as completed on load
     // This prevents the automatic tutorial from showing again
@@ -52,7 +61,7 @@ const MainDashboard: React.FC<MainDashboardProps> = ({
     // Always mark dashboard tutorial as shown to prevent duplicates
     localStorage.setItem('dashboardTutorialShown', 'true');
     localStorage.removeItem('shouldShowDashboardTutorial');
-  }, [markTutorialCompleted]);
+  }, [markTutorialCompleted, location.state]);
   
   const handleCloseTutorial = () => {
     setShowTutorial(false);
