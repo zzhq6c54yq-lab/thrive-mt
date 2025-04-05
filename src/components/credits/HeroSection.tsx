@@ -1,7 +1,8 @@
 
 import React from "react";
-import { Wallet } from "lucide-react";
+import { Wallet, Users } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { Link } from "react-router-dom";
 
 interface HeroSectionProps {
   credits: number;
@@ -33,6 +34,14 @@ const HeroSection: React.FC<HeroSectionProps> = ({ credits, setActiveTab }) => {
             >
               How It Works
             </Button>
+            <Link to="/family-support">
+              <Button
+                className="bg-indigo-600 hover:bg-indigo-700 text-white font-medium px-6 py-6 h-auto text-lg shadow-md transition-transform hover:scale-105"
+              >
+                <Users className="mr-2 h-5 w-5" />
+                Family Support
+              </Button>
+            </Link>
           </div>
         </div>
         <div className="md:w-1/3 flex justify-center">

@@ -28,6 +28,7 @@ import GamesAndQuizzes from './pages/GamesAndQuizzes';
 import Scheduling from './pages/Scheduling';
 import PrivacySecurity from './pages/PrivacySecurity';
 import FamilySupport from './pages/FamilySupport';
+import FamilyLinkPage from './pages/FamilyLinkPage';
 import AlternativeTherapies from './pages/AlternativeTherapies';
 import AlternativeTherapyDetail from './pages/AlternativeTherapyDetail';
 import MindfulnessSleep from './pages/MindfulnessSleep';
@@ -88,6 +89,7 @@ function App() {
         <Route path="/progress-reports" element={<ProgressReports />} />
         <Route path="/holistic-wellness" element={<HolisticWellness />} />
         <Route path="/family-support" element={<FamilySupport />} />
+        <Route path="/family-link" element={<FamilyLinkPage />} />
         <Route path="/alternative-therapies" element={<AlternativeTherapies />} />
         <Route path="/alternative-therapies/:therapyId" element={<AlternativeTherapyDetail />} />
         <Route path="/mindfulness" element={<MindfulnessSleep />} />
