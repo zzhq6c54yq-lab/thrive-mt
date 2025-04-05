@@ -114,7 +114,7 @@ const SubscriptionScreen: React.FC<SubscriptionScreenProps> = ({
       features: translations.gold.features,
       icon: Trophy,
       color: "bg-[#FEF7CD] text-[#B87333] border-[#B87333]/30",
-      recommended: true
+      recommended: false
     },
     {
       title: translations.platinum.title,
@@ -123,7 +123,7 @@ const SubscriptionScreen: React.FC<SubscriptionScreenProps> = ({
       features: translations.platinum.features,
       icon: Gem,
       color: "bg-[#E5DEFF] text-[#7E69AB] border-[#7E69AB]/30",
-      recommended: false
+      recommended: true
     }
   ];
 

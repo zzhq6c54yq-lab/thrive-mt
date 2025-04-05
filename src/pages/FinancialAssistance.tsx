@@ -1,417 +1,458 @@
 
 import React, { useState } from "react";
-import { ArrowLeft, DollarSign, ClipboardList, FileText, HelpCircle, CheckCircle } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import HomeButton from "@/components/HomeButton";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle, CardFooter } from "@/components/ui/card";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
-import { useToast } from "@/hooks/use-toast";
 import { useNavigate } from "react-router-dom";
 import Page from "@/components/Page";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
+import { Label } from "@/components/ui/label";
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { ArrowLeft, Check, FileText, Loader2 } from "lucide-react";
+import { useToast } from "@/hooks/use-toast";
 
 const FinancialAssistance = () => {
-  const { toast } = useToast();
   const navigate = useNavigate();
-  const [activeTab, setActiveTab] = useState<string>("programs");
-  const [applicationStep, setApplicationStep] = useState<number>(0);
+  const { toast } = useToast();
+  const [step, setStep] = useState(1);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [formData, setFormData] = useState({
+    fullName: "",
+    email: "",
+    phone: "",
+    incomeRange: "",
+    sessionCost: 200,
+    canContribute: "",
+    reason: "",
+    preferredService: "",
+    howHeard: "",
+    availability: [],
+    agreeToPolicies: false,
+  });
 
-  const handleApplyClick = (program?: string) => {
-    setActiveTab("apply");
-    toast({
-      title: "Application Started",
-      description: program ? `You're applying for the ${program} program` : "Your financial assistance application has been initiated.",
+  const updateForm = (field: string, value: any) => {
+    setFormData((prev) => ({
+      ...prev,
+      [field]: value,
+    }));
+  };
+
+  const validateStep = (currentStep: number): boolean => {
+    switch (currentStep) {
+      case 1:
+        if (!formData.fullName || !formData.email || !formData.phone) {
+          toast({
+            title: "Missing information",
+            description: "Please fill out all required fields.",
+            variant: "destructive",
+          });
+          return false;
+        }
+        return true;
+
+      case 2:
+        if (!formData.incomeRange || !formData.canContribute || !formData.reason) {
+          toast({
+            title: "Missing information",
+            description: "Please fill out all required fields.",
+            variant: "destructive",
+          });
+          return false;
+        }
+        return true;
+
+      case 3:
+        if (!formData.preferredService || formData.availability.length === 0) {
+          toast({
+            title: "Missing information",
+            description: "Please select your preferred service and availability.",
+            variant: "destructive",
+          });
+          return false;
+        }
+        return true;
+
+      case 4:
+        if (!formData.agreeToPolicies) {
+          toast({
+            title: "Agreement required",
+            description: "You must agree to our policies to continue.",
+            variant: "destructive",
+          });
+          return false;
+        }
+        return true;
+
+      default:
+        return true;
+    }
+  };
+
+  const nextStep = () => {
+    if (validateStep(step)) {
+      setStep((prevStep) => prevStep + 1);
+      window.scrollTo(0, 0);
+    }
+  };
+
+  const prevStep = () => {
+    setStep((prevStep) => prevStep - 1);
+    window.scrollTo(0, 0);
+  };
+
+  const handleSubmit = () => {
+    if (!validateStep(4)) return;
+
+    setIsSubmitting(true);
+    
+    // Simulate API call
+    setTimeout(() => {
+      setIsSubmitting(false);
+      toast({
+        title: "Application submitted!",
+        description: "We'll review your application and contact you within 2 business days.",
+      });
+      navigate("/barter-system?success=true");
+    }, 2000);
+  };
+
+  const toggleAvailability = (day: string) => {
+    setFormData((prev) => {
+      const currentAvailability = [...prev.availability];
+      if (currentAvailability.includes(day)) {
+        return {
+          ...prev,
+          availability: currentAvailability.filter((d) => d !== day),
+        };
+      } else {
+        return {
+          ...prev,
+          availability: [...currentAvailability, day],
+        };
+      }
     });
   };
 
-  const handleBackClick = () => {
-    navigate(-1);
-  };
-
-  const startApplicationStep = (step: number) => {
-    setApplicationStep(step);
-    toast({
-      title: `Step ${step} Started`,
-      description: `You've started step ${step} of the application process.`,
-    });
+  const renderStepIndicator = () => {
+    return (
+      <div className="flex justify-between items-center mb-8 relative">
+        <div className="absolute h-1 bg-gray-200 left-0 right-0 top-1/2 transform -translate-y-1/2 z-0"></div>
+        {[1, 2, 3, 4].map((i) => (
+          <div 
+            key={i}
+            className={`w-10 h-10 rounded-full flex items-center justify-center z-10 ${
+              i < step ? "bg-[#B87333] text-white" : 
+              i === step ? "bg-[#B87333] text-white" : 
+              "bg-white border border-gray-300 text-gray-500"
+            }`}
+          >
+            {i < step ? <Check className="h-5 w-5" /> : i}
+          </div>
+        ))}
+      </div>
+    );
   };
 
   return (
-    <Page title="Financial Assistance">
-      <div className="min-h-screen bg-gradient-to-b from-[#f8f9fa] to-[#eef1f5]">
-        <div className="bg-gradient-to-r from-[#1a1a1f] to-[#212124] text-white py-12 relative">
-          <div className="container px-4 max-w-6xl mx-auto">
-            <div className="flex justify-between items-center mb-6">
-              <Button 
-                onClick={handleBackClick}
-                variant="ghost" 
-                className="text-green-400 hover:text-green-300 hover:bg-transparent p-0"
-              >
-                <ArrowLeft className="mr-2 h-4 w-4" />
-                Back
-              </Button>
-              <HomeButton />
+    <Page title="Financial Assistance Application" showBackButton={true}>
+      <div className="max-w-3xl mx-auto">
+        <Card className="border-white/10 bg-[#1a1a1f]/80 shadow-lg overflow-hidden">
+          <CardHeader className="bg-gradient-to-r from-[#B87333]/20 to-[#B87333]/5 border-b border-[#B87333]/20">
+            <div className="flex items-center justify-between">
+              <div>
+                <CardTitle className="text-xl text-white">Barter System Application</CardTitle>
+                <CardDescription className="text-white/70">
+                  Step {step} of 4: {
+                    step === 1 ? "Personal Information" :
+                    step === 2 ? "Financial Information" :
+                    step === 3 ? "Service Preferences" :
+                    "Review & Submit"
+                  }
+                </CardDescription>
+              </div>
+              <div className="bg-[#B87333]/20 p-2 rounded-full">
+                <FileText className="h-5 w-5 text-[#B87333]" />
+              </div>
             </div>
-            
-            <h1 className="text-4xl md:text-5xl font-light mb-4">Financial Assistance</h1>
-            <p className="text-xl text-gray-300 max-w-3xl">Resources and programs to help make mental healthcare affordable.</p>
-          </div>
-        </div>
+          </CardHeader>
+          
+          <CardContent className="p-6">
+            {renderStepIndicator()}
 
-        <div className="container px-4 py-12 max-w-6xl mx-auto">
-          <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-            <TabsList className="grid w-full grid-cols-3 mb-8">
-              <TabsTrigger value="programs">Assistance Programs</TabsTrigger>
-              <TabsTrigger value="apply">Apply</TabsTrigger>
-              <TabsTrigger value="faq">FAQ</TabsTrigger>
-            </TabsList>
-            
-            <TabsContent value="programs" className="space-y-6">
-              <Card>
-                <CardHeader>
-                  <CardTitle className="flex items-center gap-2">
-                    <DollarSign className="h-5 w-5 text-green-500" />
-                    Available Financial Assistance
-                  </CardTitle>
-                  <CardDescription>
-                    Programs designed to make mental healthcare accessible to everyone
-                  </CardDescription>
-                </CardHeader>
-                <CardContent>
-                  <div className="space-y-6">
-                    <div className="p-5 border rounded-lg hover:shadow-md transition-shadow">
-                      <h3 className="text-xl font-medium mb-2">Sliding Scale Fee Program</h3>
-                      <p className="text-gray-700 mb-4">
-                        Our sliding scale fee program adjusts the cost of therapy based on your income level. 
-                        Pay what you can afford, ensuring that quality mental healthcare is accessible regardless of financial situation.
-                      </p>
-                      <div className="grid grid-cols-2 gap-4 mb-4">
-                        <div className="flex items-start gap-2">
-                          <CheckCircle className="h-5 w-5 text-green-500 flex-shrink-0 mt-0.5" />
-                          <span className="text-gray-700">Based on household income</span>
-                        </div>
-                        <div className="flex items-start gap-2">
-                          <CheckCircle className="h-5 w-5 text-green-500 flex-shrink-0 mt-0.5" />
-                          <span className="text-gray-700">No minimum payment</span>
-                        </div>
-                        <div className="flex items-start gap-2">
-                          <CheckCircle className="h-5 w-5 text-green-500 flex-shrink-0 mt-0.5" />
-                          <span className="text-gray-700">Reevaluated annually</span>
-                        </div>
-                        <div className="flex items-start gap-2">
-                          <CheckCircle className="h-5 w-5 text-green-500 flex-shrink-0 mt-0.5" />
-                          <span className="text-gray-700">Simple application process</span>
-                        </div>
-                      </div>
-                      <Button 
-                        className="w-full" 
-                        onClick={() => handleApplyClick("Sliding Scale Fee")}
-                      >
-                        Learn More & Apply
-                      </Button>
-                    </div>
-                    
-                    <div className="p-5 border rounded-lg hover:shadow-md transition-shadow">
-                      <h3 className="text-xl font-medium mb-2">Therapy Scholarship Fund</h3>
-                      <p className="text-gray-700 mb-4">
-                        Our scholarship fund provides fully-funded therapy sessions for individuals facing significant financial hardship.
-                        Limited scholarships are available based on need and are renewed every three months.
-                      </p>
-                      <div className="grid grid-cols-2 gap-4 mb-4">
-                        <div className="flex items-start gap-2">
-                          <CheckCircle className="h-5 w-5 text-green-500 flex-shrink-0 mt-0.5" />
-                          <span className="text-gray-700">100% covered sessions</span>
-                        </div>
-                        <div className="flex items-start gap-2">
-                          <CheckCircle className="h-5 w-5 text-green-500 flex-shrink-0 mt-0.5" />
-                          <span className="text-gray-700">3-month commitment</span>
-                        </div>
-                        <div className="flex items-start gap-2">
-                          <CheckCircle className="h-5 w-5 text-green-500 flex-shrink-0 mt-0.5" />
-                          <span className="text-gray-700">Requires documentation</span>
-                        </div>
-                        <div className="flex items-start gap-2">
-                          <CheckCircle className="h-5 w-5 text-green-500 flex-shrink-0 mt-0.5" />
-                          <span className="text-gray-700">Competitive application</span>
-                        </div>
-                      </div>
-                      <Button 
-                        className="w-full" 
-                        onClick={() => handleApplyClick("Therapy Scholarship Fund")}
-                      >
-                        Learn More & Apply
-                      </Button>
-                    </div>
-                    
-                    <div className="p-5 border rounded-lg hover:shadow-md transition-shadow">
-                      <h3 className="text-xl font-medium mb-2">Payment Plans</h3>
-                      <p className="text-gray-700 mb-4">
-                        Flexible payment plans allow you to spread the cost of therapy over time with no interest charges.
-                        Design a payment schedule that works with your budget.
-                      </p>
-                      <div className="grid grid-cols-2 gap-4 mb-4">
-                        <div className="flex items-start gap-2">
-                          <CheckCircle className="h-5 w-5 text-green-500 flex-shrink-0 mt-0.5" />
-                          <span className="text-gray-700">0% interest</span>
-                        </div>
-                        <div className="flex items-start gap-2">
-                          <CheckCircle className="h-5 w-5 text-green-500 flex-shrink-0 mt-0.5" />
-                          <span className="text-gray-700">Customizable schedule</span>
-                        </div>
-                        <div className="flex items-start gap-2">
-                          <CheckCircle className="h-5 w-5 text-green-500 flex-shrink-0 mt-0.5" />
-                          <span className="text-gray-700">No credit check</span>
-                        </div>
-                        <div className="flex items-start gap-2">
-                          <CheckCircle className="h-5 w-5 text-green-500 flex-shrink-0 mt-0.5" />
-                          <span className="text-gray-700">Easy setup</span>
-                        </div>
-                      </div>
-                      <Button 
-                        className="w-full" 
-                        onClick={() => handleApplyClick("Payment Plan")}
-                      >
-                        Set Up Payment Plan
-                      </Button>
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
-            </TabsContent>
-            
-            <TabsContent value="apply" className="space-y-6">
-              <Card>
-                <CardHeader>
-                  <CardTitle className="flex items-center gap-2">
-                    <ClipboardList className="h-5 w-5 text-blue-500" />
-                    Financial Assistance Application
-                  </CardTitle>
-                  <CardDescription>
-                    Start your application for financial support
-                  </CardDescription>
-                </CardHeader>
-                <CardContent>
-                  <div className="space-y-6">
-                    <div className="p-4 border rounded-lg bg-blue-50">
-                      <h3 className="font-medium mb-2 flex items-center gap-2">
-                        <HelpCircle className="h-4 w-4 text-blue-500" />
-                        Before You Begin
-                      </h3>
-                      <p className="text-gray-700 mb-2">
-                        You'll need the following documents ready for upload:
-                      </p>
-                      <ul className="list-disc pl-6 space-y-1 text-gray-700">
-                        <li>Proof of income (pay stubs, tax returns, etc.)</li>
-                        <li>Proof of expenses (rent/mortgage, utilities, etc.)</li>
-                        <li>Insurance information (if applicable)</li>
-                        <li>Any relevant documentation of financial hardship</li>
-                      </ul>
-                    </div>
-                    
-                    <div className="space-y-4">
-                      <h3 className="font-medium">Application Steps</h3>
-                      <div className="flex items-start gap-4">
-                        <div className={`flex items-center justify-center w-8 h-8 rounded-full ${applicationStep === 1 ? 'bg-blue-500 text-white' : 'bg-blue-100 text-blue-800'} font-medium flex-shrink-0`}>
-                          1
-                        </div>
-                        <div>
-                          <h4 className="font-medium">Personal Information</h4>
-                          <p className="text-gray-700 mb-2">
-                            Basic contact details and demographic information.
-                          </p>
-                          <Button 
-                            size="sm"
-                            onClick={() => startApplicationStep(1)}
-                          >
-                            {applicationStep === 1 ? 'Currently in Progress' : 'Start Step 1'}
-                          </Button>
-                        </div>
-                      </div>
-                      
-                      <div className="flex items-start gap-4">
-                        <div className={`flex items-center justify-center w-8 h-8 rounded-full ${applicationStep === 2 ? 'bg-blue-500 text-white' : (applicationStep > 0 ? 'bg-blue-100 text-blue-800' : 'bg-gray-100 text-gray-800')} font-medium flex-shrink-0`}>
-                          2
-                        </div>
-                        <div>
-                          <h4 className={`font-medium ${applicationStep < 1 ? 'text-gray-500' : ''}`}>Financial Information</h4>
-                          <p className={`${applicationStep < 1 ? 'text-gray-500' : 'text-gray-700'} mb-2`}>
-                            Income details, expenses, and financial obligations.
-                          </p>
-                          <Button 
-                            size="sm" 
-                            variant={applicationStep < 1 ? "outline" : "default"}
-                            disabled={applicationStep < 1}
-                            onClick={() => applicationStep >= 1 && startApplicationStep(2)}
-                          >
-                            {applicationStep === 2 ? 'Currently in Progress' : (applicationStep < 1 ? 'Complete Step 1 First' : 'Start Step 2')}
-                          </Button>
-                        </div>
-                      </div>
-                      
-                      <div className="flex items-start gap-4">
-                        <div className={`flex items-center justify-center w-8 h-8 rounded-full ${applicationStep === 3 ? 'bg-blue-500 text-white' : (applicationStep > 1 ? 'bg-blue-100 text-blue-800' : 'bg-gray-100 text-gray-800')} font-medium flex-shrink-0`}>
-                          3
-                        </div>
-                        <div>
-                          <h4 className={`font-medium ${applicationStep < 2 ? 'text-gray-500' : ''}`}>Document Upload</h4>
-                          <p className={`${applicationStep < 2 ? 'text-gray-500' : 'text-gray-700'} mb-2`}>
-                            Upload required financial documentation.
-                          </p>
-                          <Button 
-                            size="sm" 
-                            variant={applicationStep < 2 ? "outline" : "default"}
-                            disabled={applicationStep < 2}
-                            onClick={() => applicationStep >= 2 && startApplicationStep(3)}
-                          >
-                            {applicationStep === 3 ? 'Currently in Progress' : (applicationStep < 2 ? 'Complete Step 2 First' : 'Start Step 3')}
-                          </Button>
-                        </div>
-                      </div>
-                      
-                      <div className="flex items-start gap-4">
-                        <div className={`flex items-center justify-center w-8 h-8 rounded-full ${applicationStep === 4 ? 'bg-blue-500 text-white' : (applicationStep > 2 ? 'bg-blue-100 text-blue-800' : 'bg-gray-100 text-gray-800')} font-medium flex-shrink-0`}>
-                          4
-                        </div>
-                        <div>
-                          <h4 className={`font-medium ${applicationStep < 3 ? 'text-gray-500' : ''}`}>Review & Submit</h4>
-                          <p className={`${applicationStep < 3 ? 'text-gray-500' : 'text-gray-700'} mb-2`}>
-                            Review your application and submit for consideration.
-                          </p>
-                          <Button 
-                            size="sm" 
-                            variant={applicationStep < 3 ? "outline" : "default"}
-                            disabled={applicationStep < 3}
-                            onClick={() => applicationStep >= 3 && startApplicationStep(4)}
-                          >
-                            {applicationStep === 4 ? 'Submit Application' : (applicationStep < 3 ? 'Complete Previous Steps' : 'Review & Submit')}
-                          </Button>
-                        </div>
-                      </div>
-                      
-                      {applicationStep === 4 && (
-                        <div className="mt-6 p-4 bg-green-50 border border-green-200 rounded-lg">
-                          <h4 className="text-green-700 font-medium">Ready to Submit</h4>
-                          <p className="text-green-700 mb-4">Your application is complete and ready for submission.</p>
-                          <Button 
-                            className="w-full bg-green-600 hover:bg-green-700"
-                            onClick={() => {
-                              toast({
-                                title: "Application Submitted",
-                                description: "Your financial assistance application has been submitted successfully. We'll review it within 5-7 business days.",
-                              });
-                              setApplicationStep(0);
-                              setActiveTab("programs");
-                            }}
-                          >
-                            Submit Application
-                          </Button>
-                        </div>
-                      )}
-                    </div>
-                  </div>
-                </CardContent>
-                <CardFooter>
-                  <p className="text-sm text-gray-500">
-                    Applications are typically reviewed within 5-7 business days. You will be notified via email once a decision has been made.
-                  </p>
-                </CardFooter>
-              </Card>
-            </TabsContent>
-            
-            <TabsContent value="faq" className="space-y-6">
-              <Card>
-                <CardHeader>
-                  <CardTitle className="flex items-center gap-2">
-                    <FileText className="h-5 w-5 text-purple-500" />
-                    Frequently Asked Questions
-                  </CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <Accordion type="single" collapsible className="w-full">
-                    <AccordionItem value="item-1">
-                      <AccordionTrigger>Who qualifies for financial assistance?</AccordionTrigger>
-                      <AccordionContent>
-                        <p className="text-gray-700">
-                          Our financial assistance programs are designed to help individuals who face financial barriers to 
-                          accessing mental healthcare. Eligibility is primarily based on income, expenses, and financial need. 
-                          We use a sliding scale approach, meaning that the amount of assistance varies based on your specific 
-                          financial situation. Our goal is to ensure that anyone who needs mental health support can access it, 
-                          regardless of financial circumstances.
-                        </p>
-                      </AccordionContent>
-                    </AccordionItem>
-                    
-                    <AccordionItem value="item-2">
-                      <AccordionTrigger>How much can I expect to pay with financial assistance?</AccordionTrigger>
-                      <AccordionContent>
-                        <p className="text-gray-700">
-                          Payment amounts vary widely based on individual financial circumstances. With our sliding scale program, 
-                          you might pay anywhere from $5 to the full session fee based on your income and expenses. The Therapy 
-                          Scholarship Fund may cover 100% of costs for those with significant financial hardship. During the application 
-                          process, we'll provide an estimate of what your session costs would be with assistance.
-                        </p>
-                      </AccordionContent>
-                    </AccordionItem>
-                    
-                    <AccordionItem value="item-3">
-                      <AccordionTrigger>How long does the application process take?</AccordionTrigger>
-                      <AccordionContent>
-                        <p className="text-gray-700">
-                          The application itself typically takes about 30 minutes to complete if you have all required documents ready. 
-                          Once submitted, applications are usually reviewed within 5-7 business days. In urgent situations, we can expedite 
-                          the process - please contact our support team if you need immediate assistance.
-                        </p>
-                      </AccordionContent>
-                    </AccordionItem>
-                    
-                    <AccordionItem value="item-4">
-                      <AccordionTrigger>Will applying for financial assistance affect my credit score?</AccordionTrigger>
-                      <AccordionContent>
-                        <p className="text-gray-700">
-                          No, applying for our financial assistance programs will not affect your credit score. We do not run credit checks 
-                          as part of the application process, and your information is kept strictly confidential.
-                        </p>
-                      </AccordionContent>
-                    </AccordionItem>
-                    
-                    <AccordionItem value="item-5">
-                      <AccordionTrigger>What if my financial situation changes?</AccordionTrigger>
-                      <AccordionContent>
-                        <p className="text-gray-700">
-                          We understand that financial circumstances can change. If your situation improves or worsens after you've 
-                          been approved for assistance, please contact us to reassess your eligibility. Our sliding scale is designed 
-                          to be flexible and accommodate changes in your financial situation.
-                        </p>
-                      </AccordionContent>
-                    </AccordionItem>
-                    
-                    <AccordionItem value="item-6">
-                      <AccordionTrigger>Can I still choose my therapist with financial assistance?</AccordionTrigger>
-                      <AccordionContent>
-                        <p className="text-gray-700">
-                          Yes, receiving financial assistance does not limit your choice of therapists. You can work with any therapist 
-                          in our network who is accepting new clients. However, please note that some specialists with unique expertise 
-                          may have limited availability for subsidized sessions.
-                        </p>
-                      </AccordionContent>
-                    </AccordionItem>
-                  </Accordion>
-                </CardContent>
-                <CardFooter>
-                  <Button className="w-full" variant="outline" onClick={() => {
-                    toast({
-                      title: "Contact Support",
-                      description: "Our financial support team will reach out to you within 24 hours.",
-                    });
-                  }}>
-                    <HelpCircle className="mr-2 h-4 w-4" />
-                    Ask a Different Question
+            {step === 1 && (
+              <div className="space-y-4 text-white">
+                <h3 className="text-lg font-semibold mb-4">Personal Information</h3>
+                
+                <div className="space-y-2">
+                  <Label htmlFor="fullName">Full Name *</Label>
+                  <Input
+                    id="fullName"
+                    placeholder="Enter your full name"
+                    value={formData.fullName}
+                    onChange={(e) => updateForm("fullName", e.target.value)}
+                    className="bg-white/10 border-white/20 text-white"
+                  />
+                </div>
+                
+                <div className="space-y-2">
+                  <Label htmlFor="email">Email Address *</Label>
+                  <Input
+                    id="email"
+                    type="email"
+                    placeholder="your.email@example.com"
+                    value={formData.email}
+                    onChange={(e) => updateForm("email", e.target.value)}
+                    className="bg-white/10 border-white/20 text-white"
+                  />
+                </div>
+                
+                <div className="space-y-2">
+                  <Label htmlFor="phone">Phone Number *</Label>
+                  <Input
+                    id="phone"
+                    placeholder="(123) 456-7890"
+                    value={formData.phone}
+                    onChange={(e) => updateForm("phone", e.target.value)}
+                    className="bg-white/10 border-white/20 text-white"
+                  />
+                </div>
+                
+                <div className="space-y-2">
+                  <Label htmlFor="howHeard">How did you hear about us?</Label>
+                  <Select 
+                    value={formData.howHeard}
+                    onValueChange={(value) => updateForm("howHeard", value)}
+                  >
+                    <SelectTrigger className="bg-white/10 border-white/20 text-white">
+                      <SelectValue placeholder="Select an option" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="friend">Friend or Family</SelectItem>
+                      <SelectItem value="social">Social Media</SelectItem>
+                      <SelectItem value="search">Search Engine</SelectItem>
+                      <SelectItem value="healthcare">Healthcare Provider</SelectItem>
+                      <SelectItem value="other">Other</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+                
+                <div className="pt-4 flex justify-end">
+                  <Button onClick={nextStep} className="bg-[#B87333] hover:bg-[#B87333]/90 text-white">
+                    Next Step
                   </Button>
-                </CardFooter>
-              </Card>
-            </TabsContent>
-          </Tabs>
-        </div>
+                </div>
+              </div>
+            )}
+
+            {step === 2 && (
+              <div className="space-y-4 text-white">
+                <h3 className="text-lg font-semibold mb-4">Financial Information</h3>
+                
+                <div className="space-y-2">
+                  <Label htmlFor="incomeRange">Annual Household Income *</Label>
+                  <Select 
+                    value={formData.incomeRange}
+                    onValueChange={(value) => updateForm("incomeRange", value)}
+                  >
+                    <SelectTrigger className="bg-white/10 border-white/20 text-white">
+                      <SelectValue placeholder="Select an income range" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="under15k">Under $15,000</SelectItem>
+                      <SelectItem value="15k-30k">$15,000 - $30,000</SelectItem>
+                      <SelectItem value="30k-50k">$30,000 - $50,000</SelectItem>
+                      <SelectItem value="50k-75k">$50,000 - $75,000</SelectItem>
+                      <SelectItem value="over75k">Over $75,000</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+                
+                <div className="bg-white/5 p-4 rounded-lg mb-4">
+                  <p className="text-sm">Standard session cost: <span className="font-semibold">${formData.sessionCost}</span></p>
+                </div>
+                
+                <div className="space-y-2">
+                  <Label htmlFor="canContribute">How much can you contribute per session? *</Label>
+                  <Input
+                    id="canContribute"
+                    type="number"
+                    min="0"
+                    placeholder="Enter amount in dollars"
+                    value={formData.canContribute}
+                    onChange={(e) => updateForm("canContribute", e.target.value)}
+                    className="bg-white/10 border-white/20 text-white"
+                  />
+                </div>
+                
+                <div className="space-y-2">
+                  <Label htmlFor="reason">Please briefly explain why you're seeking financial assistance *</Label>
+                  <Textarea
+                    id="reason"
+                    placeholder="Share your current situation..."
+                    value={formData.reason}
+                    onChange={(e) => updateForm("reason", e.target.value)}
+                    className="bg-white/10 border-white/20 text-white min-h-[100px]"
+                  />
+                </div>
+                
+                <div className="pt-4 flex justify-between">
+                  <Button variant="outline" onClick={prevStep} className="border-white/20 text-white hover:bg-white/10">
+                    <ArrowLeft className="mr-2 h-4 w-4" />
+                    Previous
+                  </Button>
+                  <Button onClick={nextStep} className="bg-[#B87333] hover:bg-[#B87333]/90 text-white">
+                    Next Step
+                  </Button>
+                </div>
+              </div>
+            )}
+
+            {step === 3 && (
+              <div className="space-y-4 text-white">
+                <h3 className="text-lg font-semibold mb-4">Service Preferences</h3>
+                
+                <div className="space-y-2">
+                  <Label htmlFor="preferredService">Preferred Service Type *</Label>
+                  <Select 
+                    value={formData.preferredService}
+                    onValueChange={(value) => updateForm("preferredService", value)}
+                  >
+                    <SelectTrigger className="bg-white/10 border-white/20 text-white">
+                      <SelectValue placeholder="Select service type" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="individual">Individual Therapy</SelectItem>
+                      <SelectItem value="group">Group Therapy</SelectItem>
+                      <SelectItem value="family">Family Counseling</SelectItem>
+                      <SelectItem value="substance">Substance Use Treatment</SelectItem>
+                      <SelectItem value="other">Other Services</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+                
+                <div className="space-y-2">
+                  <Label>Availability for Community Service (Select all that apply) *</Label>
+                  <div className="grid grid-cols-2 gap-2 mt-2">
+                    {["Weekday Mornings", "Weekday Afternoons", "Weekday Evenings", "Weekend Mornings", "Weekend Afternoons", "Weekend Evenings"].map((day) => (
+                      <div
+                        key={day}
+                        onClick={() => toggleAvailability(day)}
+                        className={`p-3 rounded-md cursor-pointer transition-colors ${
+                          formData.availability.includes(day)
+                            ? "bg-[#B87333]/30 border border-[#B87333]/50"
+                            : "bg-white/10 border border-white/20 hover:bg-white/20"
+                        }`}
+                      >
+                        <div className="flex items-center">
+                          <div className={`w-4 h-4 mr-2 rounded border ${
+                            formData.availability.includes(day)
+                              ? "bg-[#B87333] border-[#B87333]"
+                              : "border-white/50"
+                          }`}>
+                            {formData.availability.includes(day) && <Check className="h-3 w-3 text-white" />}
+                          </div>
+                          <span>{day}</span>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+                
+                <div className="pt-4 flex justify-between">
+                  <Button variant="outline" onClick={prevStep} className="border-white/20 text-white hover:bg-white/10">
+                    <ArrowLeft className="mr-2 h-4 w-4" />
+                    Previous
+                  </Button>
+                  <Button onClick={nextStep} className="bg-[#B87333] hover:bg-[#B87333]/90 text-white">
+                    Next Step
+                  </Button>
+                </div>
+              </div>
+            )}
+
+            {step === 4 && (
+              <div className="space-y-4 text-white">
+                <h3 className="text-lg font-semibold mb-4">Review & Submit</h3>
+                
+                <div className="space-y-4">
+                  <div className="bg-white/5 p-4 rounded-lg">
+                    <h4 className="font-medium mb-2">Personal Information</h4>
+                    <p>Name: {formData.fullName}</p>
+                    <p>Email: {formData.email}</p>
+                    <p>Phone: {formData.phone}</p>
+                  </div>
+                  
+                  <div className="bg-white/5 p-4 rounded-lg">
+                    <h4 className="font-medium mb-2">Financial Information</h4>
+                    <p>Income Range: {
+                      formData.incomeRange === "under15k" ? "Under $15,000" :
+                      formData.incomeRange === "15k-30k" ? "$15,000 - $30,000" :
+                      formData.incomeRange === "30k-50k" ? "$30,000 - $50,000" :
+                      formData.incomeRange === "50k-75k" ? "$50,000 - $75,000" :
+                      formData.incomeRange === "over75k" ? "Over $75,000" :
+                      "Not specified"
+                    }</p>
+                    <p>Session Cost: ${formData.sessionCost}</p>
+                    <p>Your Contribution: ${formData.canContribute || 0}</p>
+                    <p className="font-medium text-[#B87333]">Balance to be covered by community service: ${(formData.sessionCost - (parseInt(formData.canContribute) || 0)) || 0}</p>
+                  </div>
+                  
+                  <div className="bg-white/5 p-4 rounded-lg">
+                    <h4 className="font-medium mb-2">Service Preferences</h4>
+                    <p>Preferred Service: {
+                      formData.preferredService === "individual" ? "Individual Therapy" :
+                      formData.preferredService === "group" ? "Group Therapy" :
+                      formData.preferredService === "family" ? "Family Counseling" :
+                      formData.preferredService === "substance" ? "Substance Use Treatment" :
+                      formData.preferredService === "other" ? "Other Services" :
+                      "Not specified"
+                    }</p>
+                    <p>Available for community service: {formData.availability.join(", ") || "None selected"}</p>
+                  </div>
+                </div>
+                
+                <div className="bg-[#B87333]/10 p-4 rounded-lg border border-[#B87333]/30">
+                  <div className="flex items-start space-x-2">
+                    <div 
+                      className={`w-5 h-5 rounded border mt-1 cursor-pointer flex items-center justify-center ${
+                        formData.agreeToPolicies ? "bg-[#B87333] border-[#B87333]" : "border-white/50"
+                      }`}
+                      onClick={() => updateForm("agreeToPolicies", !formData.agreeToPolicies)}
+                    >
+                      {formData.agreeToPolicies && <Check className="h-3 w-3 text-white" />}
+                    </div>
+                    <div>
+                      <Label className="text-sm">
+                        I understand that by applying for financial assistance, I am committing to participate in community service hours at the rate of the state minimum wage to cover the balance of my therapy costs. I also understand that all information provided will be kept confidential and used solely for determining financial assistance eligibility. *
+                      </Label>
+                    </div>
+                  </div>
+                </div>
+                
+                <div className="pt-4 flex justify-between">
+                  <Button variant="outline" onClick={prevStep} className="border-white/20 text-white hover:bg-white/10">
+                    <ArrowLeft className="mr-2 h-4 w-4" />
+                    Previous
+                  </Button>
+                  <Button 
+                    onClick={handleSubmit} 
+                    disabled={isSubmitting} 
+                    className="bg-[#B87333] hover:bg-[#B87333]/90 text-white"
+                  >
+                    {isSubmitting ? (
+                      <>
+                        <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                        Submitting...
+                      </>
+                    ) : (
+                      'Submit Application'
+                    )}
+                  </Button>
+                </div>
+              </div>
+            )}
+          </CardContent>
+        </Card>
       </div>
     </Page>
   );

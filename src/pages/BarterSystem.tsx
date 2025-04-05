@@ -1,17 +1,55 @@
 
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { HandHeart, Handshake, Landmark, ArrowRight, CreditCard, Clock, Users } from "lucide-react";
+import { HandHeart, Handshake, Landmark, ArrowRight, CreditCard, Clock, Users, Check } from "lucide-react";
 import Page from "@/components/Page";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
+import { useToast } from "@/hooks/use-toast";
 
 const BarterSystem = () => {
   const navigate = useNavigate();
+  const location = useLocation();
+  const { toast } = useToast();
+  const [showSuccess, setShowSuccess] = useState(false);
+
+  useEffect(() => {
+    // Check if there's a success query parameter
+    const urlParams = new URLSearchParams(location.search);
+    const success = urlParams.get('success');
+    
+    if (success === 'true') {
+      setShowSuccess(true);
+      toast({
+        title: "Application Submitted Successfully!",
+        description: "We've received your barter system application and will review it shortly.",
+      });
+      
+      // Clean up the URL
+      navigate('/barter-system', { replace: true });
+    }
+  }, [location, navigate, toast]);
 
   return (
     <Page title="Barter System" showBackButton={true}>
       <div className="space-y-8">
+        {showSuccess && (
+          <div className="bg-[#B87333]/10 border border-[#B87333]/30 p-6 rounded-xl mb-8 animate-fade-in">
+            <div className="flex items-center gap-4">
+              <div className="bg-[#B87333]/20 p-3 rounded-full">
+                <Check className="h-6 w-6 text-[#B87333]" />
+              </div>
+              <div>
+                <h2 className="text-xl font-semibold text-[#B87333] mb-1">Application Submitted Successfully!</h2>
+                <p className="text-white/80">
+                  Thank you for applying to our barter system program. We'll review your application and 
+                  get back to you within 2 business days with next steps.
+                </p>
+              </div>
+            </div>
+          </div>
+        )}
+
         {/* Hero Section */}
         <div className="relative rounded-xl overflow-hidden bg-gradient-to-r from-[#221F26] to-[#1a1a1f] p-8 mb-8">
           <div className="absolute inset-0 bg-[url('data:image/svg+xml;utf8,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%2220%22 height=%2220%22 viewBox=%220 0 20 20%22><circle cx=%222%22 cy=%222%22 r=%221%22 fill=%22%23B87333%22 fill-opacity=%220.05%22/></svg>')] opacity-20"></div>

@@ -51,7 +51,7 @@ const subscriptionPlans: SubscriptionPlan[] = [
     icon: Trophy,
     color: "text-[#B87333]",
     bgGradient: "from-[#FEF7CD] to-[#F8E4B8]",
-    recommended: true
+    recommended: false
   },
   {
     id: "platinum",
@@ -71,7 +71,7 @@ const subscriptionPlans: SubscriptionPlan[] = [
     icon: Gem,
     color: "text-[#7E69AB]",
     bgGradient: "from-[#E5DEFF] to-[#D5C8F8]",
-    recommended: false
+    recommended: true
   }
 ];
 

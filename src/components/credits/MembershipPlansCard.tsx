@@ -113,8 +113,13 @@ const MembershipPlansCard: React.FC<MembershipPlansCardProps> = ({ currentPlan, 
             )}
           </div>
           
-          {/* Platinum Plan */}
-          <div className={`border rounded-xl p-5 ${currentPlan === 'platinum' ? 'bg-gradient-to-br from-[#B87333]/10 to-amber-50 border-[#B87333]/30' : 'border-gray-200 bg-white'}`}>
+          {/* Platinum Plan - Now marked as popular */}
+          <div className={`border rounded-xl p-5 relative ${currentPlan === 'platinum' ? 'bg-gradient-to-br from-[#B87333]/10 to-amber-50 border-[#B87333]/30' : 'border-gray-200 bg-white'}`}>
+            {/* Popular badge */}
+            <div className="absolute top-0 right-0 bg-[#B87333] text-white text-xs font-bold px-4 py-1 rounded-bl-lg shadow-md">
+              MOST POPULAR
+            </div>
+            
             <div className="flex items-center justify-between mb-4">
               <h3 className="text-lg font-semibold text-[#B87333]">Platinum</h3>
               {currentPlan === 'platinum' && (
