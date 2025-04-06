@@ -52,6 +52,9 @@ const Page: React.FC<PageProps> = ({
   const handleBackClick = () => {
     if (onBackClick) {
       onBackClick();
+    } else if (returnToMain) {
+      // Navigate to main dashboard with state to prevent intro screens
+      navigate("/", { state: { screenState: 'main', preventTutorial: true } });
     } else {
       // Default behavior: go back to previous page using the browser history
       navigate(-1);

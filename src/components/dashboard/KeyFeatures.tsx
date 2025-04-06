@@ -88,7 +88,7 @@ const KeyFeatures: React.FC<KeyFeaturesProps> = ({
       </h2>
       
       <motion.div 
-        className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-2" 
+        className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-2.5" 
         variants={container}
         initial="hidden"
         animate="show"
@@ -97,7 +97,7 @@ const KeyFeatures: React.FC<KeyFeaturesProps> = ({
         <motion.div variants={item} whileHover={{ y: -3, scale: 1.02 }} transition={{ duration: 0.2 }}>
           <Button
             variant="outline"
-            className={`w-full h-auto flex flex-col items-center gap-1.5 py-3 px-2 group border-none bg-gradient-to-br from-[#5B51DD] to-[#332E82] hover:shadow-[0_0_15px_rgba(99,102,241,0.7)] ${
+            className={`w-full h-auto flex flex-col items-center gap-1.5 py-3 px-2 group border-none bg-gradient-to-br from-[#4842c7] to-[#281f75] hover:shadow-[0_0_15px_rgba(99,102,241,0.7)] ${
               isRecommended("progress-reports")
                 ? "shadow-[0_0_20px_rgba(99,102,241,0.5)]"
                 : ""
@@ -118,7 +118,7 @@ const KeyFeatures: React.FC<KeyFeaturesProps> = ({
         <motion.div variants={item} whileHover={{ y: -3, scale: 1.02 }} transition={{ duration: 0.2 }}>
           <Button
             variant="outline"
-            className={`w-full h-auto flex flex-col items-center gap-1.5 py-3 px-2 group border-none bg-gradient-to-br from-[#C837EC] to-[#7B36AB] hover:shadow-[0_0_15px_rgba(217,70,239,0.7)] ${
+            className={`w-full h-auto flex flex-col items-center gap-1.5 py-3 px-2 group border-none bg-gradient-to-br from-[#a51dc3] to-[#6a1b8b] hover:shadow-[0_0_15px_rgba(217,70,239,0.7)] ${
               isRecommended("family-resources")
                 ? "shadow-[0_0_20px_rgba(217,70,239,0.5)]"
                 : ""
@@ -139,7 +139,7 @@ const KeyFeatures: React.FC<KeyFeaturesProps> = ({
         <motion.div variants={item} whileHover={{ y: -3, scale: 1.02 }} transition={{ duration: 0.2 }}>
           <Button
             variant="outline"
-            className={`w-full h-auto flex flex-col items-center gap-1.5 py-3 px-2 group border-none bg-gradient-to-br from-[#3069F2] to-[#173F9D] hover:shadow-[0_0_15px_rgba(59,130,246,0.7)] ${
+            className={`w-full h-auto flex flex-col items-center gap-1.5 py-3 px-2 group border-none bg-gradient-to-br from-[#2255e0] to-[#123792] hover:shadow-[0_0_15px_rgba(59,130,246,0.7)] ${
               isRecommended("mental-wellness")
                 ? "shadow-[0_0_20px_rgba(59,130,246,0.5)]"
                 : ""
@@ -160,7 +160,7 @@ const KeyFeatures: React.FC<KeyFeaturesProps> = ({
         <motion.div variants={item} whileHover={{ y: -3, scale: 1.02 }} transition={{ duration: 0.2 }}>
           <Button
             variant="outline"
-            className={`w-full h-auto flex flex-col items-center gap-1.5 py-3 px-2 group border-none bg-gradient-to-br from-[#F05D17] to-[#9D370B] hover:shadow-[0_0_15px_rgba(249,115,22,0.7)] ${
+            className={`w-full h-auto flex flex-col items-center gap-1.5 py-3 px-2 group border-none bg-gradient-to-br from-[#e04414] to-[#8f290b] hover:shadow-[0_0_15px_rgba(249,115,22,0.7)] ${
               isRecommended("games")
                 ? "shadow-[0_0_20px_rgba(249,115,22,0.5)]"
                 : ""
@@ -181,7 +181,7 @@ const KeyFeatures: React.FC<KeyFeaturesProps> = ({
         <motion.div variants={item} whileHover={{ y: -3, scale: 1.02 }} transition={{ duration: 0.2 }}>
           <Button
             variant="outline"
-            className={`w-full h-auto flex flex-col items-center gap-1.5 py-3 px-2 group border-none bg-gradient-to-br from-[#F5900C] to-[#A54C08] hover:shadow-[0_0_15px_rgba(245,158,11,0.7)] ${
+            className={`w-full h-auto flex flex-col items-center gap-1.5 py-3 px-2 group border-none bg-gradient-to-br from-[#dd7707] to-[#8f4a06] hover:shadow-[0_0_15px_rgba(245,158,11,0.7)] ${
               isRecommended("video-diary")
                 ? "shadow-[0_0_20px_rgba(245,158,11,0.5)]"
                 : ""
@@ -202,7 +202,7 @@ const KeyFeatures: React.FC<KeyFeaturesProps> = ({
         <motion.div variants={item} whileHover={{ y: -3, scale: 1.02 }} transition={{ duration: 0.2 }}>
           <Button
             variant="outline"
-            className={`w-full h-auto flex flex-col items-center gap-1.5 py-3 px-2 group border-none bg-gradient-to-br from-[#0AA36E] to-[#065E42] hover:shadow-[0_0_15px_rgba(16,185,129,0.7)] ${
+            className={`w-full h-auto flex flex-col items-center gap-1.5 py-3 px-2 group border-none bg-gradient-to-br from-[#088851] to-[#05563c] hover:shadow-[0_0_15px_rgba(16,185,129,0.7)] ${
               isRecommended("wellness-challenges")
                 ? "shadow-[0_0_20px_rgba(16,185,129,0.5)]"
                 : ""
@@ -223,7 +223,7 @@ const KeyFeatures: React.FC<KeyFeaturesProps> = ({
         <motion.div variants={item} whileHover={{ y: -3, scale: 1.02 }} transition={{ duration: 0.2 }}>
           <Button
             variant="outline"
-            className={`w-full h-auto flex flex-col items-center gap-1.5 py-3 px-2 group border-none bg-gradient-to-br from-[#0385AF] to-[#074B70] hover:shadow-[0_0_15px_rgba(3,105,161,0.7)] ${
+            className={`w-full h-auto flex flex-col items-center gap-1.5 py-3 px-2 group border-none bg-gradient-to-br from-[#0275a8] to-[#053f5e] hover:shadow-[0_0_15px_rgba(3,105,161,0.7)] ${
               isRecommended("resource-library")
                 ? "shadow-[0_0_20px_rgba(3,105,161,0.5)]"
                 : ""
@@ -244,7 +244,7 @@ const KeyFeatures: React.FC<KeyFeaturesProps> = ({
         <motion.div variants={item} whileHover={{ y: -3, scale: 1.02 }} transition={{ duration: 0.2 }}>
           <Button
             variant="outline"
-            className={`w-full h-auto flex flex-col items-center gap-1.5 py-3 px-2 group border-none bg-gradient-to-br from-[#E43392] to-[#9A1559] hover:shadow-[0_0_15px_rgba(236,72,153,0.7)] ${
+            className={`w-full h-auto flex flex-col items-center gap-1.5 py-3 px-2 group border-none bg-gradient-to-br from-[#d12a82] to-[#86134e] hover:shadow-[0_0_15px_rgba(236,72,153,0.7)] ${
               isRecommended("sponsor-alternative")
                 ? "shadow-[0_0_20px_rgba(236,72,153,0.5)]"
                 : ""
@@ -265,7 +265,7 @@ const KeyFeatures: React.FC<KeyFeaturesProps> = ({
         <motion.div variants={item} whileHover={{ y: -3, scale: 1.02 }} transition={{ duration: 0.2 }}>
           <Button
             variant="outline"
-            className={`w-full h-auto flex flex-col items-center gap-1.5 py-3 px-2 group border-none bg-gradient-to-br from-[#7B39F5] to-[#4A1DAC] hover:shadow-[0_0_15px_rgba(139,92,246,0.7)] ${
+            className={`w-full h-auto flex flex-col items-center gap-1.5 py-3 px-2 group border-none bg-gradient-to-br from-[#6826e0] to-[#3a1686] hover:shadow-[0_0_15px_rgba(139,92,246,0.7)] ${
               isRecommended("binaural-beats")
                 ? "shadow-[0_0_20px_rgba(139,92,246,0.5)]"
                 : ""
@@ -286,7 +286,7 @@ const KeyFeatures: React.FC<KeyFeaturesProps> = ({
         <motion.div variants={item} whileHover={{ y: -3, scale: 1.02 }} transition={{ duration: 0.2 }}>
           <Button
             variant="outline"
-            className={`w-full h-auto flex flex-col items-center gap-1.5 py-3 px-2 group border-none bg-gradient-to-br from-[#048760] to-[#045738] hover:shadow-[0_0_15px_rgba(5,150,105,0.7)] ${
+            className={`w-full h-auto flex flex-col items-center gap-1.5 py-3 px-2 group border-none bg-gradient-to-br from-[#03734f] to-[#034d35] hover:shadow-[0_0_15px_rgba(5,150,105,0.7)] ${
               isRecommended("workshops")
                 ? "shadow-[0_0_20px_rgba(5,150,105,0.5)]"
                 : ""
@@ -307,7 +307,7 @@ const KeyFeatures: React.FC<KeyFeaturesProps> = ({
         <motion.div variants={item} whileHover={{ y: -3, scale: 1.02 }} transition={{ duration: 0.2 }}>
           <Button
             variant="outline"
-            className={`w-full h-auto flex flex-col items-center gap-1.5 py-3 px-2 group border-none bg-gradient-to-br from-[#0077B3] to-[#004C73] hover:shadow-[0_0_15px_rgba(2,132,199,0.7)] ${
+            className={`w-full h-auto flex flex-col items-center gap-1.5 py-3 px-2 group border-none bg-gradient-to-br from-[#0066a3] to-[#00395c] hover:shadow-[0_0_15px_rgba(2,132,199,0.7)] ${
               isRecommended("journaling")
                 ? "shadow-[0_0_20px_rgba(2,132,199,0.5)]"
                 : ""
@@ -328,7 +328,7 @@ const KeyFeatures: React.FC<KeyFeaturesProps> = ({
         <motion.div variants={item} whileHover={{ y: -3, scale: 1.02 }} transition={{ duration: 0.2 }}>
           <Button
             variant="outline"
-            className={`w-full h-auto flex flex-col items-center gap-1.5 py-3 px-2 group border-none bg-gradient-to-br from-[#6625DD] to-[#3B1A8A] hover:shadow-[0_0_15px_rgba(124,58,237,0.7)] ${
+            className={`w-full h-auto flex flex-col items-center gap-1.5 py-3 px-2 group border-none bg-gradient-to-br from-[#5820c6] to-[#2d1070] hover:shadow-[0_0_15px_rgba(124,58,237,0.7)] ${
               isRecommended("mindfulness")
                 ? "shadow-[0_0_20px_rgba(124,58,237,0.5)]"
                 : ""
@@ -349,7 +349,7 @@ const KeyFeatures: React.FC<KeyFeaturesProps> = ({
         <motion.div variants={item} whileHover={{ y: -3, scale: 1.02 }} transition={{ duration: 0.2 }}>
           <Button
             variant="outline"
-            className={`w-full h-auto flex flex-col items-center gap-1.5 py-3 px-2 group border-none bg-gradient-to-br from-[#D01134] to-[#870C25] hover:shadow-[0_0_15px_rgba(225,29,72,0.7)] ${
+            className={`w-full h-auto flex flex-col items-center gap-1.5 py-3 px-2 group border-none bg-gradient-to-br from-[#c00f2e] to-[#7a0a21] hover:shadow-[0_0_15px_rgba(225,29,72,0.7)] ${
               isRecommended("real-time-therapy")
                 ? "shadow-[0_0_20px_rgba(225,29,72,0.5)]"
                 : ""
@@ -370,7 +370,7 @@ const KeyFeatures: React.FC<KeyFeaturesProps> = ({
         <motion.div variants={item} whileHover={{ y: -3, scale: 1.02 }} transition={{ duration: 0.2 }}>
           <Button
             variant="outline"
-            className={`w-full h-auto flex flex-col items-center gap-1.5 py-3 px-2 group border-none bg-gradient-to-br from-[#578D0C] to-[#375A0C] hover:shadow-[0_0_15px_rgba(101,163,13,0.7)] ${
+            className={`w-full h-auto flex flex-col items-center gap-1.5 py-3 px-2 group border-none bg-gradient-to-br from-[#4c7c08] to-[#2e4a08] hover:shadow-[0_0_15px_rgba(101,163,13,0.7)] ${
               isRecommended("holistic-wellness")
                 ? "shadow-[0_0_20px_rgba(101,163,13,0.5)]"
                 : ""
@@ -391,7 +391,7 @@ const KeyFeatures: React.FC<KeyFeaturesProps> = ({
         <motion.div variants={item} whileHover={{ y: -3, scale: 1.02 }} transition={{ duration: 0.2 }}>
           <Button
             variant="outline"
-            className={`w-full h-auto flex flex-col items-center gap-1.5 py-3 px-2 group border-none bg-gradient-to-br from-[#0C8580] to-[#0A6661] hover:shadow-[0_0_15px_rgba(13,148,136,0.7)] ${
+            className={`w-full h-auto flex flex-col items-center gap-1.5 py-3 px-2 group border-none bg-gradient-to-br from-[#077572] to-[#08585a] hover:shadow-[0_0_15px_rgba(13,148,136,0.7)] ${
               isRecommended("alternative-therapies")
                 ? "shadow-[0_0_20px_rgba(13,148,136,0.5)]"
                 : ""
@@ -412,7 +412,7 @@ const KeyFeatures: React.FC<KeyFeaturesProps> = ({
         <motion.div variants={item} whileHover={{ y: -3, scale: 1.02 }} transition={{ duration: 0.2 }}>
           <Button
             variant="outline"
-            className={`w-full h-auto flex flex-col items-center gap-1.5 py-3 px-2 group border-none bg-gradient-to-br from-[#1E51E0] to-[#15389E] hover:shadow-[0_0_15px_rgba(37,99,235,0.7)] ${
+            className={`w-full h-auto flex flex-col items-center gap-1.5 py-3 px-2 group border-none bg-gradient-to-br from-[#1947d1] to-[#12328f] hover:shadow-[0_0_15px_rgba(37,99,235,0.7)] ${
               isRecommended("community-support")
                 ? "shadow-[0_0_20px_rgba(37,99,235,0.5)]"
                 : ""

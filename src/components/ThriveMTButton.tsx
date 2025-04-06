@@ -10,7 +10,13 @@ const ThriveMTButton: React.FC = () => {
   
   const handleMainDashboard = () => {
     // Always navigate to main screen with the 'main' screenState to avoid intro screens
-    navigate("/", { state: { screenState: 'main' } });
+    // Also prevent tutorials from showing
+    navigate("/", { 
+      state: { 
+        screenState: 'main',
+        preventTutorial: true 
+      } 
+    });
   };
   
   return (
