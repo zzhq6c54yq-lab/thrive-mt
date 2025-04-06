@@ -1,12 +1,11 @@
-
 import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useNavigate } from "react-router-dom";
 import {
   Heart, Phone, MessageSquare, Video, Calendar, Clock, 
   Info, ArrowLeft, PenSquare, FileText, CheckSquare, ChevronDown,
-  Upload, Download, AlertTriangle, Share2, Sparkles, Users,
-  EyeOff, Eye, Lock, Mail, MapPin, Headphones, ArrowRight
+  Upload, Download, AlertTriangle, Share2, Sparkles,
+  Headphones, ArrowRight, Book
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
@@ -213,7 +212,6 @@ const MySponsor: React.FC = () => {
   
   const [showCallOptions, setShowCallOptions] = useState(false);
   
-  // Simulated time since last contact
   const [lastContactTime, setLastContactTime] = useState("2 days ago");
   
   const handleSubmitJournal = () => {
@@ -268,7 +266,6 @@ const MySponsor: React.FC = () => {
     });
     
     setShowCallOptions(false);
-    // In a real app, this would initiate actual contact functionality
   };
   
   const toggleExpandStep = (stepId: number) => {
@@ -321,13 +318,11 @@ const MySponsor: React.FC = () => {
   
   return (
     <div className="min-h-screen bg-gradient-to-b from-[#f8f9fa] to-[#edf2f7]">
-      {/* Animated background elements */}
       <div className="fixed inset-0 z-0 overflow-hidden pointer-events-none">
         <div className="absolute top-0 right-0 w-80 h-80 rounded-full bg-gradient-to-br from-[#9b87f5]/5 to-transparent blur-3xl"></div>
         <div className="absolute bottom-0 left-0 w-80 h-80 rounded-full bg-gradient-to-tr from-[#D946EF]/5 to-transparent blur-3xl"></div>
       </div>
       
-      {/* Header */}
       <div className="bg-gradient-to-r from-[#1a1a1f] to-[#272730] text-white py-8 px-4 relative overflow-hidden">
         <motion.div 
           className="absolute top-[-20%] right-[-10%] w-[40%] h-[70%] rounded-full bg-gradient-to-br from-[#9b87f5]/20 to-transparent blur-3xl"
@@ -421,7 +416,6 @@ const MySponsor: React.FC = () => {
         </div>
       </div>
       
-      {/* Main Content */}
       <div className="max-w-6xl mx-auto px-4 py-8 relative z-10">
         <Tabs defaultValue="dashboard" value={activeTab} onValueChange={setActiveTab} className="w-full">
           <TabsList className="mb-8 grid grid-cols-4 bg-white/80">
@@ -439,7 +433,6 @@ const MySponsor: React.FC = () => {
             </TabsTrigger>
           </TabsList>
           
-          {/* Dashboard Tab */}
           <TabsContent value="dashboard">
             <motion.div
               initial={{ opacity: 0 }}
@@ -447,7 +440,6 @@ const MySponsor: React.FC = () => {
               transition={{ duration: 0.5 }}
             >
               <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                {/* Sponsor Info Card */}
                 <motion.div
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
@@ -510,7 +502,6 @@ const MySponsor: React.FC = () => {
                   </Card>
                 </motion.div>
                 
-                {/* Upcoming Meetings Card */}
                 <motion.div
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
@@ -588,7 +579,6 @@ const MySponsor: React.FC = () => {
                   </Card>
                 </motion.div>
                 
-                {/* Current Step Card */}
                 <motion.div
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
@@ -618,7 +608,7 @@ const MySponsor: React.FC = () => {
                         </div>
                         
                         <div className="mt-4">
-                          <h4 className="text-sm font-semibold text-blue-800 mb-2">This Week's Focus:</h4>
+                          <h4 className="text-sm font-medium mb-2">This Week's Focus:</h4>
                           <ul className="text-sm text-blue-700 space-y-1">
                             <li className="flex items-start gap-2">
                               <CheckSquare className="h-4 w-4 mt-0.5 text-green-600" />
@@ -652,7 +642,6 @@ const MySponsor: React.FC = () => {
             </motion.div>
           </TabsContent>
           
-          {/* Recovery Journal Tab */}
           <TabsContent value="journal">
             <motion.div
               initial={{ opacity: 0 }}
@@ -660,7 +649,6 @@ const MySponsor: React.FC = () => {
               transition={{ duration: 0.5 }}
               className="space-y-8"
             >
-              {/* New Journal Entry Section */}
               <Card className="bg-white">
                 <CardHeader>
                   <CardTitle className="flex items-center gap-2">
@@ -723,7 +711,6 @@ const MySponsor: React.FC = () => {
                 </CardFooter>
               </Card>
               
-              {/* Journal Entries List */}
               <div>
                 <h2 className="text-xl font-semibold mb-4 flex items-center gap-2">
                   <FileText className="h-5 w-5 text-[#9b87f5]" />
@@ -786,7 +773,6 @@ const MySponsor: React.FC = () => {
             </motion.div>
           </TabsContent>
           
-          {/* 12 Steps Progress Tab */}
           <TabsContent value="twelve-steps">
             <motion.div
               initial={{ opacity: 0 }}
@@ -911,7 +897,6 @@ const MySponsor: React.FC = () => {
             </motion.div>
           </TabsContent>
           
-          {/* Resources & Tools Tab */}
           <TabsContent value="resources">
             <motion.div
               initial={{ opacity: 0 }}
@@ -920,7 +905,6 @@ const MySponsor: React.FC = () => {
               className="space-y-8"
             >
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
-                {/* Resources shared by your sponsor */}
                 <Card className="bg-white h-full">
                   <CardHeader>
                     <CardTitle className="flex items-center gap-2">
@@ -960,7 +944,6 @@ const MySponsor: React.FC = () => {
                   </CardContent>
                 </Card>
                 
-                {/* Step-specific resources */}
                 <Card className="bg-white h-full">
                   <CardHeader className="bg-blue-50">
                     <CardTitle className="flex items-center gap-2">
@@ -1018,7 +1001,6 @@ const MySponsor: React.FC = () => {
                 </Card>
               </div>
               
-              {/* Community Resources */}
               <div>
                 <h2 className="text-xl font-semibold mb-4 flex items-center gap-2">
                   <Users className="h-5 w-5 text-[#9b87f5]" />
@@ -1063,151 +1045,6 @@ const MySponsor: React.FC = () => {
         </Tabs>
       </div>
     </div>
-  );
-};
-
-// Missing components for the imports
-const Users = ({ className }: { className?: string }) => {
-  return (
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      width="24"
-      height="24"
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="2"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      className={className}
-    >
-      <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" />
-      <circle cx="9" cy="7" r="4" />
-      <path d="M22 21v-2a4 4 0 0 0-3-3.87" />
-      <path d="M16 3.13a4 4 0 0 1 0 7.75" />
-    </svg>
-  );
-};
-
-const User = ({ className }: { className?: string }) => {
-  return (
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      width="24"
-      height="24"
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="2"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      className={className}
-    >
-      <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2" />
-      <circle cx="12" cy="7" r="4" />
-    </svg>
-  );
-};
-
-const Mail = ({ className }: { className?: string }) => {
-  return (
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      width="24"
-      height="24"
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="2"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      className={className}
-    >
-      <rect width="20" height="16" x="2" y="4" rx="2" />
-      <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7" />
-    </svg>
-  );
-};
-
-const MapPin = ({ className }: { className?: string }) => {
-  return (
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      width="24"
-      height="24"
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="2"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      className={className}
-    >
-      <path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z" />
-      <circle cx="12" cy="10" r="3" />
-    </svg>
-  );
-};
-
-const Eye = ({ className }: { className?: string }) => {
-  return (
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      width="24"
-      height="24"
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="2"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      className={className}
-    >
-      <path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z" />
-      <circle cx="12" cy="12" r="3" />
-    </svg>
-  );
-};
-
-const EyeOff = ({ className }: { className?: string }) => {
-  return (
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      width="24"
-      height="24"
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="2"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      className={className}
-    >
-      <path d="M9.88 9.88a3 3 0 1 0 4.24 4.24" />
-      <path d="M10.73 5.08A10.43 10.43 0 0 1 12 5c7 0 10 7 10 7a13.16 13.16 0 0 1-1.67 2.68" />
-      <path d="M6.61 6.61A13.526 13.526 0 0 0 2 12s3 7 10 7a9.74 9.74 0 0 0 5.39-1.61" />
-      <line x1="2" x2="22" y1="2" y2="22" />
-    </svg>
-  );
-};
-
-const Lock = ({ className }: { className?: string }) => {
-  return (
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      width="24"
-      height="24"
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="2"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      className={className}
-    >
-      <rect width="18" height="11" x="3" y="11" rx="2" ry="2" />
-      <path d="M7 11V7a5 5 0 0 1 10 0v4" />
-    </svg>
   );
 };
 
