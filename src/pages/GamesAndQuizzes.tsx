@@ -174,7 +174,7 @@ const GamesAndQuizzes = () => {
     <div className="min-h-screen bg-[#fcfdfe] relative">
       {/* Animated background elements */}
       <div className="fixed inset-0 z-0 overflow-hidden pointer-events-none">
-        <div className="absolute top-0 left-0 w-full h-full bg-[url('data:image/svg+xml;utf8,<svg width=\"400\" height=\"400\" viewBox=\"0 0 100 100\" xmlns=\"http://www.w3.org/2000/svg\"><circle fill=\"%239b87f5\" fill-opacity=\"0.03\" cx=\"50\" cy=\"50\" r=\"40\"/></svg>')] bg-[length:400px_400px]"></div>
+        <div className="absolute top-0 left-0 w-full h-full bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAwIiBoZWlnaHQ9IjQwMCIgdmlld0JveD0iMCAwIDEwMCAxMDAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGNpcmNsZSBmaWxsPSIjOWI4N2Y1IiBmaWxsLW9wYWNpdHk9IjAuMDMiIGN4PSI1MCIgY3k9IjUwIiByPSI0MCIvPjwvc3ZnPg==')] bg-[length:400px_400px]"></div>
         <motion.div 
           className="absolute top-10 -right-20 w-80 h-80 rounded-full bg-gradient-to-br from-purple-300/10 to-transparent"
           animate={{ 
@@ -218,7 +218,7 @@ const GamesAndQuizzes = () => {
       {/* Header section */}
       <div className="relative z-10 bg-gradient-to-r from-[#1a1a1f] to-[#272730] text-white py-12 px-4 overflow-hidden">
         <div className="absolute inset-0 z-0">
-          <div className="absolute top-0 right-0 w-full h-full bg-[url('data:image/svg+xml;utf8,<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"30\" height=\"30\" viewBox=\"0 0 30 30\"><circle cx=\"3\" cy=\"3\" r=\"1\" fill=\"%23ffffff\" fill-opacity=\"0.05\"/></svg>')] opacity-30"></div>
+          <div className="absolute top-0 right-0 w-full h-full bg-[url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIzMCIgaGVpZ2h0PSIzMCIgdmlld0JveD0iMCAwIDMwIDMwIj48Y2lyY2xlIGN4PSIzIiBjeT0iMyIgcj0iMSIgZmlsbD0iI2ZmZmZmZiIgZmlsbC1vcGFjaXR5PSIwLjA1Ii8+PC9zdmc+')] opacity-30"></div>
           <motion.div 
             className="absolute top-[-10%] right-[-10%] w-[50%] h-[50%] rounded-full bg-gradient-to-br from-[#9b87f5]/20 to-transparent blur-3xl"
             animate={{ 
