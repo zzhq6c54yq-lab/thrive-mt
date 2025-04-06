@@ -1,189 +1,135 @@
 
-import React, { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import React from "react";
 import Page from "@/components/Page";
 import { Button } from "@/components/ui/button";
-import { ArrowLeft, Shield, Book, CalendarCheck, Clipboard, Activity, Home, FileText, MessageSquare, Brain, AlertCircle } from "lucide-react";
-import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
-import DoDDashboard from "@/components/military/DoDDashboard";
-import DoDResources from "@/components/military/DoDResources";
-import DoDWorkshops from "@/components/military/DoDWorkshops";
-import DoDAssessments from "@/components/military/DoDAssessments";
-import DoDCommunity from "@/components/military/DoDCommunity";
+import { Shield, Sparkles, Briefcase, Globe, BookOpen, HeartPulse } from "lucide-react";
+import { useNavigate } from "react-router-dom";
+import { useToast } from "@/hooks/use-toast";
+import useTranslation from "@/hooks/useTranslation";
 
-const DoDPortal = () => {
+const FeatureCard = ({ title, description, icon: Icon, color, onClick }) => (
+  <div 
+    onClick={onClick}
+    className={`bg-white/10 backdrop-blur-sm rounded-xl p-6 border border-white/10 hover:border-white/20 shadow-lg hover:shadow-xl transform transition-all duration-300 hover:scale-[1.02] cursor-pointer flex flex-col h-full`}
+  >
+    <div className={`p-3 rounded-full ${color} mb-4 inline-flex self-start`}>
+      <Icon className="h-6 w-6 text-white" />
+    </div>
+    <h3 className="text-lg font-semibold text-white mb-2">{title}</h3>
+    <p className="text-white/70 text-sm flex-grow">{description}</p>
+  </div>
+);
+
+const DoDPortal: React.FC = () => {
   const navigate = useNavigate();
-  const [showWelcome, setShowWelcome] = useState(true);
-  const [activeTab, setActiveTab] = useState("dashboard");
+  const { toast } = useToast();
+  const { isSpanish } = useTranslation();
   
-  // Apply military theme class to body on component mount
-  useEffect(() => {
-    document.body.classList.add('military-theme');
+  const handleFeatureClick = (feature: string) => {
+    toast({
+      title: isSpanish ? "Navegando" : "Navigating", 
+      description: isSpanish ? "Accediendo a recursos específicos para personal militar" : "Accessing specific resources for military personnel",
+      duration: 2000
+    });
     
-    // Clean up function to remove the class when component unmounts
-    return () => {
-      document.body.classList.remove('military-theme');
-    };
-  }, []);
-
-  const handleContinue = () => {
-    setShowWelcome(false);
+    navigate(`/${feature}`, { 
+      state: { 
+        fromSpecializedProgram: true, 
+        preventTutorial: true 
+      }
+    });
   };
 
-  const handleBack = () => {
-    navigate(-1);
-  };
+  const dodFeatures = [
+    {
+      title: isSpanish ? "Apoyo para PTSD" : "PTSD Support",
+      description: isSpanish 
+        ? "Recursos especializados para el manejo del trastorno de estrés postraumático" 
+        : "Specialized resources for managing post-traumatic stress disorder",
+      icon: Shield,
+      color: "bg-blue-600",
+      path: "mental-wellness"
+    },
+    {
+      title: isSpanish ? "Transición a la Vida Civil" : "Transition to Civilian Life", 
+      description: isSpanish 
+        ? "Apoyo para una transición exitosa a la vida después del servicio militar" 
+        : "Support for a successful transition to life after military service",
+      icon: Briefcase,
+      color: "bg-purple-600",
+      path: "resource-library"
+    },
+    {
+      title: isSpanish ? "Apoyo Familiar" : "Family Support",
+      description: isSpanish 
+        ? "Recursos para las familias de personal militar durante el despliegue y después" 
+        : "Resources for military families during deployment and beyond",
+      icon: HeartPulse,
+      color: "bg-emerald-600",
+      path: "family-resources"
+    },
+    {
+      title: isSpanish ? "Comunidad de Veteranos" : "Veteran Community",
+      description: isSpanish 
+        ? "Conéctate con otros veteranos para compartir experiencias y apoyo" 
+        : "Connect with other veterans for shared experiences and support",
+      icon: Globe,
+      color: "bg-amber-600",
+      path: "community-support"
+    },
+    {
+      title: isSpanish ? "Manejo del Estrés en Combate" : "Combat Stress Management",
+      description: isSpanish 
+        ? "Técnicas y herramientas específicas para el manejo del estrés en situaciones de combate" 
+        : "Specific techniques and tools for managing stress in combat situations",
+      icon: Sparkles,
+      color: "bg-rose-600",
+      path: "workshops"
+    },
+    {
+      title: isSpanish ? "Educación y Entrenamiento" : "Education & Training",
+      description: isSpanish 
+        ? "Oportunidades educativas y de entrenamiento para personal militar y veteranos" 
+        : "Educational and training opportunities for military personnel and veterans",
+      icon: BookOpen,
+      color: "bg-cyan-600",
+      path: "resource-library"
+    }
+  ];
 
-  // Welcome screen content
-  if (showWelcome) {
-    return (
-      <div className="min-h-screen flex flex-col bg-[#0A0C10] text-white relative overflow-hidden">
-        <div className="absolute inset-0">
-          <div className="absolute inset-0 bg-gradient-to-b from-[#0A0C10]/95 via-[#0A0C10]/90 to-[#0A0C10]/95 z-10"></div>
-          <div className="absolute inset-0 bg-[url('/lovable-uploads/bce2b3d1-dbc0-4e7c-a7d1-98811182fe0a.png')] bg-cover bg-center opacity-10"></div>
-        </div>
-        
-        <div className="relative z-20 flex-1 flex flex-col items-center justify-center p-6">
-          <Button 
-            variant="ghost" 
-            size="icon" 
-            className="absolute top-4 left-4 text-white/70 hover:text-white hover:bg-white/10"
-            onClick={handleBack}
-          >
-            <ArrowLeft className="h-6 w-6" />
-            <span className="sr-only">Back</span>
-          </Button>
-
-          <div className="flex flex-col items-center text-center max-w-3xl mx-auto">
-            <Shield className="h-16 w-16 text-blue-400 mb-6" />
-            <h1 className="text-4xl md:text-5xl font-bold text-white mb-6">
-              Department of Defense
-              <span className="block text-lg md:text-xl mt-2 text-blue-400">Mental Health Support Portal</span>
-            </h1>
-
-            <p className="text-xl text-white/80 mb-8 max-w-2xl">
-              Supporting the mental health and wellbeing of active duty military personnel, veterans, and their families with specialized resources, tools, and professional support.
-            </p>
-
-            <div className="bg-blue-900/20 border border-blue-400/20 rounded-lg p-6 mb-8 max-w-2xl w-full">
-              <h2 className="text-2xl font-semibold text-blue-400 mb-4">Our Mission</h2>
-              <p className="text-white/70 mb-4">
-                To provide comprehensive mental health support tailored to the unique needs and experiences of military personnel and their families, ensuring they have the resources they need to thrive both in service and beyond.
-              </p>
-              <p className="text-white/70">
-                This portal offers specialized mental health resources, confidential assessments, peer support programs, and crisis intervention services designed specifically for the military community.
+  return (
+    <Page title={isSpanish ? "Departamento de Defensa" : "Department of Defense"} returnToMain>
+      <div className="space-y-6">
+        <div className="bg-gradient-to-r from-[#0EA5E9]/30 to-[#2563EB]/30 p-6 rounded-xl backdrop-blur-md border border-blue-500/30">
+          <div className="flex flex-col md:flex-row items-center gap-6">
+            <div className="p-4 bg-white/10 rounded-full">
+              <Shield className="h-10 w-10 text-[#0EA5E9]" />
+            </div>
+            <div>
+              <h2 className="text-2xl font-bold text-white mb-2">
+                {isSpanish ? "Recursos para el Personal Militar y Veteranos" : "Resources for Military Personnel & Veterans"}
+              </h2>
+              <p className="text-white/80">
+                {isSpanish 
+                  ? "Recursos especializados de bienestar mental diseñados específicamente para miembros actuales y anteriores de las fuerzas armadas y sus familias."
+                  : "Specialized mental wellness resources designed specifically for current and former members of the armed forces and their families."}
               </p>
             </div>
-
-            <Button 
-              onClick={handleContinue}
-              className="bg-blue-700 hover:bg-blue-800 text-white px-8 py-6 rounded-md text-lg"
-            >
-              Enter Military Support Portal
-            </Button>
           </div>
         </div>
-      </div>
-    );
-  }
 
-  // Main portal with tabbed interface
-  return (
-    <Page title="Military Support Portal">
-      <div className="max-w-[1400px] mx-auto bg-[#0A0C10] min-h-screen">
-        <div className="flex items-center justify-between mb-6 px-4">
-          <div className="flex items-center">
-            <Button 
-              variant="ghost" 
-              size="icon" 
-              className="mr-2 text-white/70 hover:text-white hover:bg-white/10"
-              onClick={() => navigate('/')}
-            >
-              <Home className="h-5 w-5" />
-              <span className="sr-only">Home</span>
-            </Button>
-            <h1 className="text-2xl font-bold text-white">
-              <span className="text-blue-400">DoD</span> Mental Health Portal
-            </h1>
-          </div>
-          
-          <div className="flex items-center gap-2">
-            <Button 
-              variant="outline" 
-              size="sm" 
-              className="bg-red-700/20 hover:bg-red-700/30 text-white border-red-700/50"
-              onClick={() => navigate('/crisis-support')}
-            >
-              Emergency Resources
-            </Button>
-          </div>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+          {dodFeatures.map((feature, index) => (
+            <FeatureCard
+              key={index}
+              title={feature.title}
+              description={feature.description}
+              icon={feature.icon}
+              color={feature.color}
+              onClick={() => handleFeatureClick(feature.path)}
+            />
+          ))}
         </div>
-        
-        <Tabs defaultValue="dashboard" className="w-full" value={activeTab} onValueChange={setActiveTab}>
-          <TabsList className="grid grid-cols-5 mb-8 bg-[#141921] border border-blue-900/30">
-            <TabsTrigger 
-              value="dashboard" 
-              className="data-[state=active]:bg-blue-900/30 data-[state=active]:text-blue-400 data-[state=active]:shadow-[0_0_10px_rgba(59,130,246,0.5)]"
-            >
-              <Shield className="h-4 w-4 mr-2" />
-              Dashboard
-            </TabsTrigger>
-            
-            <TabsTrigger 
-              value="resources" 
-              className="data-[state=active]:bg-blue-900/30 data-[state=active]:text-blue-400 data-[state=active]:shadow-[0_0_10px_rgba(59,130,246,0.5)]"
-            >
-              <Book className="h-4 w-4 mr-2" />
-              Resources
-            </TabsTrigger>
-            
-            <TabsTrigger 
-              value="workshops" 
-              className="data-[state=active]:bg-blue-900/30 data-[state=active]:text-blue-400 data-[state=active]:shadow-[0_0_10px_rgba(59,130,246,0.5)]"
-            >
-              <CalendarCheck className="h-4 w-4 mr-2" />
-              Workshops
-            </TabsTrigger>
-            
-            <TabsTrigger 
-              value="assessments" 
-              className="data-[state=active]:bg-blue-900/30 data-[state=active]:text-blue-400 data-[state=active]:shadow-[0_0_10px_rgba(59,130,246,0.5)]"
-            >
-              <Clipboard className="h-4 w-4 mr-2" />
-              Assessments
-            </TabsTrigger>
-            
-            <TabsTrigger 
-              value="community" 
-              className="data-[state=active]:bg-blue-900/30 data-[state=active]:text-blue-400 data-[state=active]:shadow-[0_0_10px_rgba(59,130,246,0.5)]"
-            >
-              <Activity className="h-4 w-4 mr-2" />
-              Community
-            </TabsTrigger>
-          </TabsList>
-          
-          <div className="px-4">
-            <TabsContent value="dashboard">
-              <DoDDashboard />
-            </TabsContent>
-            
-            <TabsContent value="resources">
-              <DoDResources />
-            </TabsContent>
-            
-            <TabsContent value="workshops">
-              <DoDWorkshops />
-            </TabsContent>
-            
-            <TabsContent value="assessments">
-              <DoDAssessments />
-            </TabsContent>
-            
-            <TabsContent value="community">
-              <DoDCommunity />
-            </TabsContent>
-          </div>
-        </Tabs>
       </div>
     </Page>
   );

@@ -16,6 +16,7 @@ import {
   AccordionTrigger,
 } from "@/components/ui/accordion";
 import { Calendar, HelpCircle } from "lucide-react";
+import { useToast } from "@/hooks/use-toast";
 
 interface DashboardContentProps {
   navigate: NavigateFunction;
@@ -35,6 +36,7 @@ const DashboardContent: React.FC<DashboardContentProps> = ({
   // Get preferred language
   const preferredLanguage = localStorage.getItem('preferredLanguage') || 'English';
   const isSpanish = preferredLanguage === 'Español';
+  const { toast } = useToast();
   
   // Translations
   const translations = {
@@ -48,7 +50,19 @@ const DashboardContent: React.FC<DashboardContentProps> = ({
     if (navigateToFeature) {
       navigateToFeature(path);
     } else {
-      navigate(path);
+      // Add state to navigation to ensure proper back navigation
+      toast({
+        title: isSpanish ? "Navegando..." : "Navigating...",
+        description: isSpanish ? "Cargando recurso solicitado" : "Loading requested resource",
+        duration: 1500,
+      });
+      
+      navigate(path, { 
+        state: { 
+          fromMainMenu: true,
+          preventTutorial: true 
+        } 
+      });
     }
   };
 

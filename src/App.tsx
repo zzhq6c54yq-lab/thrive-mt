@@ -4,9 +4,9 @@ import { Routes, Route, Navigate } from "react-router-dom";
 import Index from "@/pages/Index";
 import Home from "@/pages/Home";
 import ProgressReports from "@/pages/ProgressReports";
-import MentalWellnessTools from "@/pages/MentalWellnessTools"; // Changed from MentalWellness
+import MentalWellnessTools from "@/pages/MentalWellnessTools";
 import GamesAndQuizzes from "@/pages/GamesAndQuizzes";
-import GamePage from "@/pages/GamePage"; // Changed from GamePlay
+import GamePage from "@/pages/GamePage";
 import SmallBusinessExperience from "@/pages/SmallBusinessExperience";
 import EmployeeWelcome from "@/pages/EmployeeWelcome";
 import EmployeeReadiness from "@/pages/EmployeeReadiness";
@@ -23,12 +23,13 @@ import ResourceLibrary from "@/pages/ResourceLibrary";
 import WellnessChallenges from "@/pages/WellnessChallenges";
 import MySponsor from "@/pages/MySponsor";
 import Workshops from "@/pages/Workshops";
-import WorkshopDetail from "@/pages/WorkshopDetail"; // New import
+import WorkshopDetail from "@/pages/WorkshopDetail";
 import HelpNavButton from "@/components/help/HelpNavButton";
 import CrisisSupport from "@/pages/CrisisSupport";
 import LearnMoreAboutThrive from "@/pages/LearnMoreAboutThrive";
 import CoPay from "@/pages/CoPay";
 import DoDPortal from "@/pages/DoDPortal";
+import CollegePortal from "@/pages/CollegePortal";
 
 function App() {
   return (
@@ -48,13 +49,17 @@ function App() {
         <Route path="/crisis-support" element={<CrisisSupport />} />
         <Route path="/learn-more" element={<LearnMoreAboutThrive />} />
         <Route path="/co-pay" element={<CoPay />} />
+        
+        {/* Specialized Programs Routes */}
+        <Route path="/department-of-defense" element={<DoDPortal />} />
         <Route path="/dod-portal" element={<DoDPortal />} />
+        <Route path="/college-portal" element={<CollegePortal />} />
         
         {/* Workshop Routes */}
         <Route path="/workshops" element={<Workshops />} />
         <Route path="/workshop/:workshopId" element={<WorkshopDetail />} />
         
-        {/* Restored Routes */}
+        {/* Mental Wellness Routes */}
         <Route path="/real-time-therapy" element={<RealTimeTherapy />} />
         <Route path="/holistic-wellness" element={<HolisticWellness />} />
         <Route path="/alternative-therapies" element={<AlternativeTherapies />} />

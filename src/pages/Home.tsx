@@ -2,16 +2,33 @@
 import React from "react";
 import Page from "@/components/Page";
 import MainDashboard from "@/components/home/MainDashboard";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
+import { useToast } from "@/hooks/use-toast";
+import useTranslation from "@/hooks/useTranslation";
 
 const Home = () => {
   const location = useLocation();
-  const userName = "User";
+  const navigate = useNavigate();
+  const { toast } = useToast();
+  const { isSpanish } = useTranslation();
+  
+  const userName = localStorage.getItem('userName') || "User";
   const selectedQualities = location.state?.qualities || [];
   const selectedGoals = location.state?.goals || [];
   
   const navigateToFeature = (path: string) => {
-    window.location.href = path;
+    toast({
+      title: isSpanish ? "Navegando..." : "Navigating...",
+      description: isSpanish ? "Cargando recurso solicitado" : "Loading requested resource",
+      duration: 1500,
+    });
+    
+    navigate(path, { 
+      state: { 
+        fromMainMenu: true,
+        preventTutorial: true 
+      } 
+    });
   };
 
   return (

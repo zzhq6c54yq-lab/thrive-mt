@@ -56,8 +56,16 @@ const Page: React.FC<PageProps> = ({
       // Navigate to main dashboard with state to prevent intro screens
       navigate("/", { state: { screenState: 'main', preventTutorial: true } });
     } else {
-      // Default behavior: go back to previous page using the browser history
-      navigate(-1);
+      // Check if we have state indicating where we came from
+      const fromMainMenu = location.state && location.state.fromMainMenu === true;
+      
+      if (fromMainMenu) {
+        // If we came from the main menu, go directly back to it
+        navigate("/", { state: { screenState: 'main', preventTutorial: true } });
+      } else {
+        // Default behavior: go back to previous page using the browser history
+        navigate(-1);
+      }
     }
   };
   

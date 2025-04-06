@@ -72,7 +72,12 @@ const SpecializedPrograms: React.FC = () => {
       duration: 1500,
     });
     
-    navigate(path);
+    navigate(path, { 
+      state: { 
+        fromMainMenu: true,
+        preventTutorial: true 
+      }
+    });
   };
 
   return (

@@ -1,4 +1,3 @@
-
 import React from "react";
 import { Button } from "@/components/ui/button";
 import { 
@@ -7,6 +6,7 @@ import {
   Sparkles, MessageCircle, Leaf, Rocket, Globe
 } from "lucide-react";
 import { motion } from "framer-motion";
+import { useToast } from "@/hooks/use-toast";
 
 interface KeyFeaturesProps {
   navigateToFeature: (path: string) => void;
@@ -19,9 +19,12 @@ const KeyFeatures: React.FC<KeyFeaturesProps> = ({
   selectedQualities = [],
   selectedGoals = []
 }) => {
-  // Helper to check if a feature should be highlighted based on user's qualities and goals
+  const { toast } = useToast();
+  
+  const preferredLanguage = localStorage.getItem('preferredLanguage') || 'English';
+  const isSpanish = preferredLanguage === 'Español';
+  
   const isRecommended = (feature: string) => {
-    // Map features to relevant qualities and goals
     const featureMap: { [key: string]: string[] } = {
       "progress-reports": ["consistency", "data-driven", "reflective", "goal-oriented"],
       "family-resources": ["supportive", "family-oriented", "compassionate", "community"],
@@ -41,12 +44,10 @@ const KeyFeatures: React.FC<KeyFeaturesProps> = ({
       "alternative-therapies": ["experimental", "open-minded", "holistic", "healing-focused"]
     };
     
-    // Check if any of the user's qualities match the feature's relevant qualities
     const qualityMatch = selectedQualities.some(quality => 
       featureMap[feature] && featureMap[feature].includes(quality.toLowerCase())
     );
     
-    // Check if any of the user's goals match the feature
     const goalMatch = selectedGoals.some(goal => 
       goal.toLowerCase().includes(feature.replace('-', ' '))
     );
@@ -55,11 +56,15 @@ const KeyFeatures: React.FC<KeyFeaturesProps> = ({
   };
   
   const handleNavigate = (path: string) => {
-    // Pass fromMainMenu flag to new pages for proper back navigation
+    toast({
+      title: isSpanish ? "Navegando..." : "Navigating...",
+      description: isSpanish ? "Cargando recurso solicitado" : "Loading requested resource",
+      duration: 1500,
+    });
+    
     navigateToFeature(path);
   };
   
-  // Container animation
   const container = {
     hidden: { opacity: 0 },
     show: {
@@ -70,7 +75,6 @@ const KeyFeatures: React.FC<KeyFeaturesProps> = ({
     }
   };
 
-  // Item animation
   const item = {
     hidden: { y: 20, opacity: 0 },
     show: { y: 0, opacity: 1 }

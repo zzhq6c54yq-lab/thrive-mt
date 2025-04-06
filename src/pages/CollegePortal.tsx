@@ -1,155 +1,132 @@
 
-import React, { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import React from "react";
+import Page from "@/components/Page";
 import { Button } from "@/components/ui/button";
+import { GraduationCap, BookOpen, Brain, HeartPulse, Users, Coffee } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 import { useToast } from "@/hooks/use-toast";
-import { ArrowRight } from "lucide-react";
-import HenryButton from "@/components/henry/HenryButton";
 import useTranslation from "@/hooks/useTranslation";
 
-// Welcome screens before the main portal
-const WelcomeScreen: React.FC<{ onContinue: () => void, isSpanish: boolean }> = ({ onContinue, isSpanish }) => {
-  return (
-    <div className="flex flex-col items-center justify-center min-h-[70vh] text-center px-4 animate-fade-in">
-      <h1 className="text-4xl md:text-5xl font-light mb-8 text-transparent bg-clip-text bg-gradient-to-r from-[#8B5CF6] to-[#D946EF]">
-        {isSpanish ? "Portal de Salud Mental Universitaria" : "College Mental Health Portal"}
-      </h1>
-      <div className="max-w-2xl">
-        <p className="text-xl mb-6 text-white/90 font-medium">
-          {isSpanish
-            ? "Bienvenido a tu espacio dedicado de salud mental. La universidad es emocionante pero también puede ser desafiante - estamos aquí para apoyar tu viaje."
-            : "Welcome to your dedicated mental health space. College is exciting but can also be challenging – we're here to support your journey."}
-        </p>
-        <p className="text-lg mb-6 text-white/90 font-medium">
-          {isSpanish
-            ? "Aquí encontrarás recursos adaptados específicamente para estudiantes universitarios que enfrentan presión académica, desafíos sociales y oportunidades de crecimiento personal."
-            : "Here, you'll find resources tailored specifically for college students facing academic pressure, social challenges, and personal growth opportunities."}
-        </p>
-        <p className="text-lg mb-8 text-white/90 font-medium">
-          {isSpanish
-            ? "Tu bienestar mental importa tanto como tu promedio académico. Vamos a priorizar ambos juntos."
-            : "Your mental wellbeing matters as much as your GPA. Let's prioritize both together."}
-        </p>
-      </div>
-      <Button 
-        onClick={onContinue}
-        className="bg-[#8B5CF6] hover:bg-[#7c4fe7] text-white text-lg px-8 py-6 h-auto transition-all duration-300 transform hover:scale-105 shadow-[0_0_15px_rgba(139,92,246,0.3)]"
-      >
-        {isSpanish ? "Siguiente" : "Next"} <ArrowRight className="ml-1 h-5 w-5" />
-      </Button>
+const FeatureCard = ({ title, description, icon: Icon, color, onClick }) => (
+  <div 
+    onClick={onClick}
+    className={`bg-white/10 backdrop-blur-sm rounded-xl p-6 border border-white/10 hover:border-white/20 shadow-lg hover:shadow-xl transform transition-all duration-300 hover:scale-[1.02] cursor-pointer flex flex-col h-full`}
+  >
+    <div className={`p-3 rounded-full ${color} mb-4 inline-flex self-start`}>
+      <Icon className="h-6 w-6 text-white" />
     </div>
-  );
-};
-
-const PortalIntroScreen: React.FC<{ onEnterPortal: () => void, isSpanish: boolean }> = ({ onEnterPortal, isSpanish }) => {
-  return (
-    <div className="flex flex-col items-center justify-center min-h-[70vh] text-center px-4 animate-fade-in">
-      <h1 className="text-4xl md:text-5xl font-light mb-8 text-transparent bg-clip-text bg-gradient-to-r from-[#8B5CF6] to-[#D946EF]">
-        {isSpanish ? "Bienvenido a Tu Centro de Bienestar Universitario" : "Welcome to Your College Wellness Hub"}
-      </h1>
-      <div className="max-w-2xl mb-8">
-        <p className="text-xl mb-6 text-white/90 font-medium">
-          {isSpanish
-            ? "Este espacio está diseñado específicamente para estudiantes como tú, equilibrando la vida académica, social y el bienestar personal."
-            : "This space is designed specifically for students like you, balancing academics, social life, and personal wellbeing."}
-        </p>
-        <p className="text-lg mb-8 text-white/90 font-medium">
-          {isSpanish
-            ? "Haz clic a continuación para acceder a recursos especializados, redes de apoyo entre compañeros y herramientas diseñadas pensando en la vida universitaria."
-            : "Click below to access specialized resources, peer support networks, and tools designed with campus life in mind."}
-        </p>
-      </div>
-      <Button 
-        onClick={onEnterPortal}
-        className="bg-[#8B5CF6] hover:bg-[#7c4fe7] text-white text-lg px-8 py-6 h-auto transition-all duration-300 transform hover:scale-105 shadow-[0_0_15px_rgba(139,92,246,0.3)]"
-      >
-        {isSpanish ? "Entrar al Portal" : "Enter Portal"}
-      </Button>
-    </div>
-  );
-};
+    <h3 className="text-lg font-semibold text-white mb-2">{title}</h3>
+    <p className="text-white/70 text-sm flex-grow">{description}</p>
+  </div>
+);
 
 const CollegePortal: React.FC = () => {
-  const [screenState, setScreenState] = useState<'welcome' | 'intro' | 'portal'>('welcome');
   const navigate = useNavigate();
   const { toast } = useToast();
   const { isSpanish } = useTranslation();
-
-  // Listen for language changes
-  useEffect(() => {
-    const handleLanguageChange = () => {
-      // Force re-render when language changes
-      setScreenState(screenState);
-    };
-    
-    window.addEventListener('languageChange', handleLanguageChange);
-    return () => {
-      window.removeEventListener('languageChange', handleLanguageChange);
-    };
-  }, [screenState]);
-
-  const handleContinueToIntro = () => {
-    setScreenState('intro');
-  };
-
-  const handleEnterPortal = () => {
+  
+  const handleFeatureClick = (feature: string) => {
     toast({
-      title: isSpanish 
-        ? "Bienvenido al Centro de Bienestar Universitario" 
-        : "Welcome to the College Wellness Hub",
-      description: isSpanish 
-        ? "Accediendo a tus recursos universitarios..." 
-        : "Accessing your campus resources...",
-      duration: 3000
+      title: isSpanish ? "Navegando" : "Navigating", 
+      description: isSpanish ? "Accediendo a recursos específicos para estudiantes universitarios" : "Accessing specific resources for college students",
+      duration: 2000
     });
     
-    // Navigate to the college experience page
-    // Adding a small delay to ensure toast is visible before navigation
-    setTimeout(() => {
-      navigate("/college-experience");
-    }, 500);
+    navigate(`/${feature}`);
   };
 
-  const renderCurrentScreen = () => {
-    switch (screenState) {
-      case 'welcome':
-        return <WelcomeScreen onContinue={handleContinueToIntro} isSpanish={isSpanish} />;
-      case 'intro':
-        return <PortalIntroScreen onEnterPortal={handleEnterPortal} isSpanish={isSpanish} />;
-      default:
-        return null;
+  const collegeFeatures = [
+    {
+      title: isSpanish ? "Manejo del Estrés Académico" : "Academic Stress Management",
+      description: isSpanish 
+        ? "Herramientas y técnicas para manejar la presión de exámenes, plazos y carga de trabajo" 
+        : "Tools and techniques for managing exam pressure, deadlines, and workload",
+      icon: BookOpen,
+      color: "bg-blue-600",
+      path: "workshops"
+    },
+    {
+      title: isSpanish ? "Equilibrio de Vida" : "Life Balance", 
+      description: isSpanish 
+        ? "Estrategias para equilibrar los estudios, la vida social, el trabajo y el autocuidado" 
+        : "Strategies for balancing studies, social life, work, and self-care",
+      icon: Coffee,
+      color: "bg-purple-600",
+      path: "wellness-challenges"
+    },
+    {
+      title: isSpanish ? "Bienestar Mental" : "Mental Wellbeing",
+      description: isSpanish 
+        ? "Recursos para la ansiedad, depresión y otros desafíos comunes de salud mental" 
+        : "Resources for anxiety, depression, and other common mental health challenges",
+      icon: Brain,
+      color: "bg-emerald-600",
+      path: "mental-wellness"
+    },
+    {
+      title: isSpanish ? "Apoyo Entre Pares" : "Peer Support",
+      description: isSpanish 
+        ? "Conéctate con otros estudiantes para compartir experiencias y consejos" 
+        : "Connect with other students to share experiences and advice",
+      icon: Users,
+      color: "bg-amber-600",
+      path: "community-support"
+    },
+    {
+      title: isSpanish ? "Hábitos Saludables" : "Healthy Habits",
+      description: isSpanish 
+        ? "Consejos para dormir, nutrición y ejercicio adaptados a la vida universitaria" 
+        : "Sleep, nutrition, and exercise tips tailored for college life",
+      icon: HeartPulse,
+      color: "bg-rose-600",
+      path: "holistic-wellness"
+    },
+    {
+      title: isSpanish ? "Éxito Académico" : "Academic Success",
+      description: isSpanish 
+        ? "Técnicas de estudio, gestión del tiempo y estrategias para mejorar el rendimiento" 
+        : "Study techniques, time management, and strategies to improve performance",
+      icon: GraduationCap,
+      color: "bg-cyan-600",
+      path: "resource-library"
     }
-  };
-
-  const handleHenryClick = () => {
-    toast({
-      title: isSpanish 
-        ? "Henry está aquí para ayudar" 
-        : "Henry is here to help",
-      description: isSpanish 
-        ? "Tu asistente de bienestar IA está listo para ayudarte con cualquier pregunta sobre la salud mental universitaria."
-        : "Your AI wellness companion is ready to assist you with any questions about college mental health.",
-      duration: 3000
-    });
-  };
+  ];
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-[#1a1a1f] via-[#242432] to-[#272730] text-white py-8 px-4 relative">
-      <div className="absolute inset-0 bg-[url('data:image/svg+xml;utf8,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%2220%22 height=%2220%22 viewBox=%220 0 20 20%22><circle cx=%222%22 cy=%222%22 r=%221%22 fill=%22%238B5CF6%22 fill-opacity=%220.05%22/></svg>')] opacity-20"></div>
-      
-      <div className="max-w-5xl mx-auto bg-white/10 backdrop-blur-md rounded-2xl p-8 shadow-xl relative overflow-hidden border border-white/5">
-        {/* Decorative elements */}
-        <div className="absolute top-0 right-0 w-80 h-80 bg-gradient-to-br from-[#8B5CF6]/20 to-transparent rounded-full blur-3xl -z-10"></div>
-        <div className="absolute bottom-0 left-0 w-80 h-80 bg-gradient-to-tr from-[#D946EF]/20 to-transparent rounded-full blur-3xl -z-10"></div>
-        
-        {renderCurrentScreen()}
+    <Page title={isSpanish ? "La Experiencia Universitaria" : "The College Experience"} returnToMain>
+      <div className="space-y-6">
+        <div className="bg-gradient-to-r from-[#8B5CF6]/30 to-[#6366F1]/30 p-6 rounded-xl backdrop-blur-md border border-purple-500/30">
+          <div className="flex flex-col md:flex-row items-center gap-6">
+            <div className="p-4 bg-white/10 rounded-full">
+              <GraduationCap className="h-10 w-10 text-[#8B5CF6]" />
+            </div>
+            <div>
+              <h2 className="text-2xl font-bold text-white mb-2">
+                {isSpanish ? "Bienestar Mental para Estudiantes Universitarios" : "Mental Wellness for College Students"}
+              </h2>
+              <p className="text-white/80">
+                {isSpanish 
+                  ? "Recursos especializados para ayudarte a navegar los desafíos únicos de la vida universitaria mientras priorizas tu salud mental y bienestar."
+                  : "Specialized resources to help you navigate the unique challenges of college life while prioritizing your mental health and wellbeing."}
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+          {collegeFeatures.map((feature, index) => (
+            <FeatureCard
+              key={index}
+              title={feature.title}
+              description={feature.description}
+              icon={feature.icon}
+              color={feature.color}
+              onClick={() => handleFeatureClick(feature.path)}
+            />
+          ))}
+        </div>
       </div>
-      
-      {/* Show Henry on all screens in the college portal */}
-      <div onClick={handleHenryClick} className="cursor-pointer">
-        <HenryButton />
-      </div>
-    </div>
+    </Page>
   );
 };
 

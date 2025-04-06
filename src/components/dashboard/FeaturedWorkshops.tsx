@@ -4,6 +4,7 @@ import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/componen
 import { Button } from "@/components/ui/button";
 import { ArrowRight, ChevronLeft, ChevronRight } from "lucide-react";
 import { NavigateFunction } from "react-router-dom";
+import { useToast } from "@/hooks/use-toast";
 
 interface FeaturedWorkshopsProps {
   navigate: NavigateFunction;
@@ -12,6 +13,8 @@ interface FeaturedWorkshopsProps {
 
 const FeaturedWorkshops: React.FC<FeaturedWorkshopsProps> = ({ navigate, onWorkshopClick }) => {
   const [currentPage, setCurrentPage] = useState(0);
+  const { toast } = useToast();
+  
   // Adjust workshops per page based on screen size
   const getWorkshopsPerPage = () => {
     // Using window.innerWidth directly for responsiveness
@@ -131,6 +134,21 @@ const FeaturedWorkshops: React.FC<FeaturedWorkshopsProps> = ({ navigate, onWorks
     setCurrentPage((prev) => (prev - 1 + pageCount) % pageCount);
   };
 
+  const handleWorkshopClick = (workshopId: string, workshopTitle: string) => {
+    toast({
+      title: isSpanish ? "Abriendo taller" : "Opening workshop",
+      description: isSpanish ? `Cargando: ${workshopTitle}` : `Loading: ${workshopTitle}`,
+      duration: 2000
+    });
+    
+    navigate(`/workshop/${workshopId}`, { 
+      state: { 
+        workshopTitle,
+        preventTutorial: true 
+      } 
+    });
+  };
+
   return (
     <div className="mb-12">
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 gap-3 sm:gap-0">
@@ -160,7 +178,7 @@ const FeaturedWorkshops: React.FC<FeaturedWorkshopsProps> = ({ navigate, onWorks
           <Button 
             variant="link" 
             className="text-[#E5C5A1] px-0 flex items-center ml-2 sm:ml-4"
-            onClick={() => navigate("/workshops")}
+            onClick={() => navigate("/workshops", { state: { preventTutorial: true } })}
           >
             {translations.viewAll}
             <ArrowRight className="ml-1 h-4 w-4" />
@@ -185,7 +203,7 @@ const FeaturedWorkshops: React.FC<FeaturedWorkshopsProps> = ({ navigate, onWorks
             <CardFooter>
               <Button 
                 className="w-full bg-[#B87333] hover:bg-[#a66a2e] text-white"
-                onClick={() => onWorkshopClick(workshop.id, workshop.title)}
+                onClick={() => handleWorkshopClick(workshop.id, workshop.title)}
               >
                 {translations.viewWorkshop}
               </Button>
