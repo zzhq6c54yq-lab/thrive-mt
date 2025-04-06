@@ -16,7 +16,14 @@ const DoDDashboard = () => {
       description: "Loading your requested resource...",
       duration: 1500,
     });
-    navigate(path);
+    
+    // Make sure to use the state to prevent returning to intro screens
+    navigate(path, {
+      state: {
+        preventTutorial: true,
+        returnToMain: true
+      }
+    });
   };
   
   const handleAssessmentClick = (assessmentType: string) => {
@@ -25,15 +32,15 @@ const DoDDashboard = () => {
       description: "Loading assessment questions...",
       duration: 1500,
     });
-    // In a real app, we'd navigate to the assessment page or open a modal
-    // For now, we'll just show a toast
-    setTimeout(() => {
-      toast({
-        title: "Assessment Ready",
-        description: `Your ${assessmentType} assessment is ready to take.`,
-        duration: 3000,
-      });
-    }, 2000);
+    // Navigate to the mental wellness tools page with the assessment type as a parameter
+    navigate("/mental-wellness-tools", {
+      state: {
+        preventTutorial: true,
+        returnToMain: true,
+        assessmentType,
+        openAssessment: true
+      }
+    });
   };
   
   const handleEventRegistration = (eventName: string, date: string) => {
@@ -41,6 +48,14 @@ const DoDDashboard = () => {
       title: `Registered for ${eventName}`,
       description: `You are now registered for ${eventName} on ${date}. A confirmation has been sent to your email.`,
       duration: 3000,
+    });
+    // Navigate to workshops with specific workshop highlighted
+    navigate("/workshops", {
+      state: {
+        preventTutorial: true,
+        returnToMain: true,
+        highlightWorkshop: eventName
+      }
     });
   };
   

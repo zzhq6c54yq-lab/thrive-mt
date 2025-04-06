@@ -36,6 +36,8 @@ import DoDWelcome from "@/pages/DoDWelcome";
 import CollegeWelcome from "@/pages/CollegeWelcome";
 import SmallBusinessWelcome from "@/pages/SmallBusinessWelcome";
 import SmallBusinessPortal from "@/pages/SmallBusinessPortal";
+import MilitarySupport from "@/pages/MilitarySupport";
+import MilitaryResources from "@/pages/MilitaryResources";
 
 function App() {
   return (
@@ -69,6 +71,13 @@ function App() {
         <Route path="/dod-portal" element={<DoDPortal />} />
         <Route path="/college-welcome" element={<CollegeWelcome />} />
         <Route path="/college-portal" element={<CollegePortal />} />
+        
+        {/* Military Specific Routes */}
+        <Route path="/military-support" element={<MilitarySupport />} />
+        <Route path="/military-resources" element={<MilitaryResources />} />
+        <Route path="/military-resources/combat-stress" element={<MilitaryResources />} />
+        <Route path="/military-resources/transition" element={<MilitaryResources />} />
+        <Route path="/military-resources/family" element={<MilitaryResources />} />
         
         {/* Workshop Routes */}
         <Route path="/workshops" element={<Workshops />} />

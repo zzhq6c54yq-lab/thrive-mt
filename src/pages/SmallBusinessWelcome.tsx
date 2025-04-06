@@ -25,7 +25,9 @@ const SmallBusinessWelcome: React.FC = () => {
       setTimeout(() => {
         navigate("/small-business-portal", { 
           state: { 
-            fromWelcome: true 
+            fromWelcome: true,
+            preventTutorial: true,
+            returnToMain: true 
           }
         });
       }, 500);
