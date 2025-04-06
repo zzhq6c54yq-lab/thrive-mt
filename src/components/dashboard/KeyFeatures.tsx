@@ -1,12 +1,8 @@
 
-import React, { useState, useEffect } from "react";
-import {
-  Brain, Library, Users, Heart, GraduationCap, CalendarRange, LeafyGreen,
-  Moon, HandHeart, ListChecks, FlameKindling, Footprints, ArrowRight,
-  Sparkles, Video, Headphones, HeartHandshake, MessageSquare
-} from "lucide-react";
-import { useNavigate } from "react-router-dom";
-import { useToast } from "@/hooks/use-toast";
+import React from "react";
+import { Button } from "@/components/ui/button";
+import { Activity, BookOpen, Dumbbell, Heart, Users, HandHeart, Brain, BarChart3 } from "lucide-react";
+import { motion } from "framer-motion";
 
 interface KeyFeaturesProps {
   navigateToFeature: (path: string) => void;
@@ -17,215 +13,190 @@ interface KeyFeaturesProps {
 const KeyFeatures: React.FC<KeyFeaturesProps> = ({ 
   navigateToFeature,
   selectedQualities = [],
-  selectedGoals = [] 
+  selectedGoals = []
 }) => {
-  const { toast } = useToast();
-  const navigate = useNavigate();
-  const [isSpanish, setIsSpanish] = useState<boolean>(false);
-  
-  // Check language preference and listen for changes
-  useEffect(() => {
-    const checkLanguage = () => {
-      const preferredLanguage = localStorage.getItem('preferredLanguage') || 'English';
-      setIsSpanish(preferredLanguage === 'Español');
+  // Helper to check if a feature should be highlighted based on user's qualities and goals
+  const isRecommended = (feature: string) => {
+    // Map features to relevant qualities and goals
+    const featureMap: { [key: string]: string[] } = {
+      "progress-reports": ["consistency", "data-driven", "reflective", "goal-oriented"],
+      "family-resources": ["supportive", "family-oriented", "compassionate", "community"],
+      "mental-wellness": ["mindful", "balanced", "wellness-focused", "creative"],
+      "brain-games": ["curious", "analytical", "intellectual", "playful"],
+      "physical-wellness": ["active", "energetic", "disciplined", "health-conscious"],
+      "community-support": ["social", "collaborative", "communicative", "empathetic"]
     };
     
-    // Check initial language
-    checkLanguage();
+    // Check if any of the user's qualities match the feature's relevant qualities
+    const qualityMatch = selectedQualities.some(quality => 
+      featureMap[feature] && featureMap[feature].includes(quality.toLowerCase())
+    );
     
-    // Listen for language change events
-    window.addEventListener('languageChange', checkLanguage);
+    // Check if any of the user's goals match the feature
+    const goalMatch = selectedGoals.some(goal => 
+      goal.toLowerCase().includes(feature.replace('-', ' '))
+    );
     
-    // Cleanup
-    return () => {
-      window.removeEventListener('languageChange', checkLanguage);
-    };
-  }, []);
+    return qualityMatch || goalMatch;
+  };
   
-  // Translations
-  const translations = {
-    title: isSpanish ? "Características Principales" : "Key Features",
-    navigating: isSpanish ? "Navegando..." : "Navigating...",
-    takingTo: isSpanish ? "Llevándote a la función seleccionada" : "Taking you to your selected feature"
+  const handleNavigate = (path: string) => {
+    // Pass fromMainMenu flag to new pages for proper back navigation
+    navigateToFeature(path);
+  };
+  
+  // Container animation
+  const container = {
+    hidden: { opacity: 0 },
+    show: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.1
+      }
+    }
   };
 
-  const keyFeatures = [
-    {
-      title: isSpanish ? "Diario en Video" : "Video Diary",
-      icon: Video,
-      path: "/video-diary"
-    },
-    {
-      title: isSpanish ? "Desafíos de Bienestar" : "Wellness Challenges",
-      icon: ListChecks,
-      path: "/wellness-challenges"
-    },
-    {
-      title: isSpanish ? "Contenido Personalizado" : "Personalized Content",
-      icon: Brain,
-      path: "/personalized-content"
-    },
-    {
-      title: isSpanish ? "Juegos y Cuestionarios" : "Games & Quizzes",
-      icon: Heart,
-      path: "/games-and-quizzes"
-    },
-    {
-      title: isSpanish ? "Biblioteca de Recursos" : "Resource Library",
-      icon: Library,
-      path: "/resource-library"
-    },
-    {
-      title: isSpanish ? "Contacto Personalizado" : "Personalized Contact",
-      icon: MessageSquare,
-      path: "/personalized-contact"
-    },
-    {
-      title: isSpanish ? "Apoyo Comunitario" : "Community Support",
-      icon: Users,
-      path: "/community-support"
-    },
-    {
-      title: isSpanish ? "Mi Patrocinador N.A/A.A" : "My N.A/A.A Sponsor",
-      icon: HeartHandshake,
-      path: "/my-sponsor"
-    },
-    {
-      title: isSpanish ? "Ritmos Binaurales" : "Binaural Beats",
-      icon: Headphones,
-      path: "/binaural-beats"
-    },
-    {
-      title: isSpanish ? "Herramientas de Bienestar Mental" : "Mental Wellness Tools",
-      icon: LeafyGreen,
-      path: "/mental-wellness-tools"
-    },
-    {
-      title: isSpanish ? "Seguimiento de Progreso" : "Progress Tracking",
-      icon: ListChecks,
-      path: "/progress-reports"
-    },
-    {
-      title: isSpanish ? "Recursos Familiares" : "Family Resources",
-      icon: HandHeart,
-      path: "/family-support"
-    },
-    {
-      title: isSpanish ? "Terapias Alternativas" : "Alternative Therapies",
-      icon: FlameKindling,
-      path: "/therapist-questionnaire"
-    },
-    {
-      title: isSpanish ? "Mindfulness y Sueño" : "Mindfulness & Sleep",
-      icon: Moon,
-      path: "/mindfulness"
-    },
-    {
-      title: isSpanish ? "Opciones de Terapia" : "Therapy Options",
-      icon: GraduationCap,
-      path: "/real-time-therapy"
-    },
-    {
-      title: isSpanish ? "Talleres" : "Workshops",
-      icon: CalendarRange,
-      path: "/workshops"
-    }
-  ];
-
-  const handleFeatureClick = (path: string) => {
-    toast({
-      title: translations.navigating,
-      description: translations.takingTo,
-      duration: 1500,
-    });
-    
-    navigateToFeature(path);
+  // Item animation
+  const item = {
+    hidden: { y: 20, opacity: 0 },
+    show: { y: 0, opacity: 1 }
   };
 
   return (
-    <div className="mb-12 relative">
-      <div className="absolute inset-0 bg-gradient-to-br from-[#1E1E2D]/50 to-[#2D2D3D]/50 rounded-3xl overflow-hidden">
-        <div className="absolute top-0 left-0 w-full h-full opacity-20">
-          <div className="absolute top-0 left-0 right-0 h-32 bg-gradient-to-r from-[#B87333]/20 via-[#E5C5A1]/30 to-[#B87333]/20 transform -skew-y-3"></div>
-          <div className="absolute top-40 left-0 right-0 h-32 bg-gradient-to-r from-[#8B5CF6]/20 via-[#D946EF]/30 to-[#8B5CF6]/20 transform skew-y-3"></div>
-          <div className="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-r from-[#0EA5E9]/20 via-[#2563EB]/30 to-[#0EA5E9]/20 transform -skew-y-3"></div>
-        </div>
-        <div className="absolute inset-0 backdrop-blur-[2px]"></div>
-      </div>
+    <div className="mt-8">
+      <h2 className="text-lg md:text-xl font-medium mb-5 flex items-center gap-2">
+        <span className="p-1 rounded-full bg-[#9b87f5]/10">
+          <Heart className="h-5 w-5 text-[#9b87f5]" />
+        </span>
+        Key Features
+      </h2>
       
-      <div className="relative z-10 px-4 pt-8 pb-8">
-        <div className="flex items-center justify-between mb-6">
-          <div>
-            <h2 className="text-2xl sm:text-3xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-[#B87333] via-[#E5C5A1] to-[#B87333] animate-gradient-x" style={{backgroundSize: '200% auto'}}>
-              {translations.title}
-            </h2>
-          </div>
-          <div className="hidden md:block">
-            <Sparkles className="h-8 w-8 text-[#E5C5A1] opacity-60 animate-pulse" />
-          </div>
-        </div>
+      <motion.div 
+        className="grid grid-cols-2 md:grid-cols-3 gap-3" 
+        variants={container}
+        initial="hidden"
+        animate="show"
+      >
+        <motion.div variants={item} whileHover={{ y: -5 }} transition={{ duration: 0.2 }}>
+          <Button
+            variant="outline"
+            className={`w-full h-auto flex flex-col items-center gap-2 p-4 group border-[#9b87f5]/10 ${
+              isRecommended("progress-reports")
+                ? "bg-gradient-to-br from-[#9b87f5]/20 to-[#6C85DD]/10"
+                : "bg-white/5"
+            }`}
+            onClick={() => handleNavigate('/progress-reports')}
+          >
+            <div className="p-2 rounded-full bg-white/10 group-hover:bg-[#9b87f5]/20 transition-colors">
+              <BarChart3 className="h-5 w-5 text-[#9b87f5]" />
+            </div>
+            <span className="text-sm font-medium">Progress Reports</span>
+            {isRecommended("progress-reports") && (
+              <span className="text-xs px-2 py-0.5 rounded-full bg-[#9b87f5] text-white">Recommended</span>
+            )}
+          </Button>
+        </motion.div>
         
-        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-2 sm:gap-3">
-          {keyFeatures.map((feature, index) => {
-            const gradients = [
-              "from-[#9333EA]/70 to-[#D946EF]/30",
-              "from-[#0EA5E9]/70 to-[#2563EB]/30",
-              "from-[#F97316]/70 to-[#F59E0B]/30",
-              "from-[#10B981]/70 to-[#34D399]/30",
-              "from-[#EC4899]/70 to-[#F472B6]/30",
-              "from-[#6366F1]/70 to-[#A5B4FC]/30",
-              "from-[#84CC16]/70 to-[#BEF264]/20",
-              "from-[#EF4444]/70 to-[#FCA5A5]/30",
-              "from-[#B87333]/70 to-[#E5C5A1]/30",
-            ];
-            
-            const iconColors = [
-              "#D946EF",
-              "#2563EB",
-              "#F59E0B",
-              "#34D399",
-              "#F472B6",
-              "#A5B4FC",
-              "#BEF264",
-              "#FCA5A5",
-              "#E5C5A1",
-            ];
-            
-            const gradientIndex = index % gradients.length;
-            const iconColor = iconColors[gradientIndex];
-            
-            const IconComponent = feature.icon;
-            
-            return (
-              <div 
-                key={index}
-                onClick={() => handleFeatureClick(feature.path)}
-                className="cursor-pointer overflow-hidden rounded-xl backdrop-blur-md shadow-md transition-all duration-300 hover:shadow-lg transform hover:-translate-y-1 hover:scale-[1.02]"
-              >
-                <div className={`absolute inset-0 bg-gradient-to-br ${gradients[gradientIndex]} opacity-80`}></div>
-                
-                <div className="absolute inset-0 bg-black/30 backdrop-blur-sm"></div>
-                
-                <div className="relative p-2 sm:p-3 flex flex-col items-center text-center h-full">
-                  <div 
-                    className="p-1.5 sm:p-2 rounded-lg transform transition-transform mb-1.5 sm:mb-2"
-                    style={{ 
-                      background: `${iconColor}30`,
-                      border: `1px solid ${iconColor}50`
-                    }}
-                  >
-                    <IconComponent className="h-4 w-4 sm:h-5 sm:w-5" style={{ color: iconColor }} />
-                  </div>
-                  
-                  <h3 className="text-xs sm:text-sm font-medium text-white">
-                    {feature.title}
-                  </h3>
-                </div>
-              </div>
-            );
-          })}
-        </div>
-      </div>
+        <motion.div variants={item} whileHover={{ y: -5 }} transition={{ duration: 0.2 }}>
+          <Button
+            variant="outline"
+            className={`w-full h-auto flex flex-col items-center gap-2 p-4 group border-[#D946EF]/10 ${
+              isRecommended("family-resources")
+                ? "bg-gradient-to-br from-[#D946EF]/20 to-[#8D65C5]/10"
+                : "bg-white/5"
+            }`}
+            onClick={() => handleNavigate('/family-resources')}
+          >
+            <div className="p-2 rounded-full bg-white/10 group-hover:bg-[#D946EF]/20 transition-colors">
+              <HandHeart className="h-5 w-5 text-[#D946EF]" />
+            </div>
+            <span className="text-sm font-medium">Family Resources</span>
+            {isRecommended("family-resources") && (
+              <span className="text-xs px-2 py-0.5 rounded-full bg-[#D946EF] text-white">Recommended</span>
+            )}
+          </Button>
+        </motion.div>
+        
+        <motion.div variants={item} whileHover={{ y: -5 }} transition={{ duration: 0.2 }}>
+          <Button
+            variant="outline"
+            className={`w-full h-auto flex flex-col items-center gap-2 p-4 group border-[#6C85DD]/10 ${
+              isRecommended("mental-wellness")
+                ? "bg-gradient-to-br from-[#6C85DD]/20 to-[#9b87f5]/10"
+                : "bg-white/5"
+            }`}
+            onClick={() => handleNavigate('/mental-wellness')}
+          >
+            <div className="p-2 rounded-full bg-white/10 group-hover:bg-[#6C85DD]/20 transition-colors">
+              <BookOpen className="h-5 w-5 text-[#6C85DD]" />
+            </div>
+            <span className="text-sm font-medium">Mental Wellness</span>
+            {isRecommended("mental-wellness") && (
+              <span className="text-xs px-2 py-0.5 rounded-full bg-[#6C85DD] text-white">Recommended</span>
+            )}
+          </Button>
+        </motion.div>
+        
+        <motion.div variants={item} whileHover={{ y: -5 }} transition={{ duration: 0.2 }}>
+          <Button
+            variant="outline"
+            className={`w-full h-auto flex flex-col items-center gap-2 p-4 group border-[#FF8364]/10 ${
+              isRecommended("brain-games")
+                ? "bg-gradient-to-br from-[#FF8364]/20 to-[#FF97A1]/10"
+                : "bg-white/5"
+            }`}
+            onClick={() => handleNavigate('/games-and-quizzes')}
+          >
+            <div className="p-2 rounded-full bg-white/10 group-hover:bg-[#FF8364]/20 transition-colors">
+              <Brain className="h-5 w-5 text-[#FF8364]" />
+            </div>
+            <span className="text-sm font-medium">Brain Games</span>
+            {isRecommended("brain-games") && (
+              <span className="text-xs px-2 py-0.5 rounded-full bg-[#FF8364] text-white">Recommended</span>
+            )}
+          </Button>
+        </motion.div>
+        
+        <motion.div variants={item} whileHover={{ y: -5 }} transition={{ duration: 0.2 }}>
+          <Button
+            variant="outline"
+            className={`w-full h-auto flex flex-col items-center gap-2 p-4 group border-[#10B981]/10 ${
+              isRecommended("physical-wellness")
+                ? "bg-gradient-to-br from-[#10B981]/20 to-[#6EE7B7]/10"
+                : "bg-white/5"
+            }`}
+            onClick={() => handleNavigate('/physical-wellness')}
+          >
+            <div className="p-2 rounded-full bg-white/10 group-hover:bg-[#10B981]/20 transition-colors">
+              <Dumbbell className="h-5 w-5 text-[#10B981]" />
+            </div>
+            <span className="text-sm font-medium">Physical Wellness</span>
+            {isRecommended("physical-wellness") && (
+              <span className="text-xs px-2 py-0.5 rounded-full bg-[#10B981] text-white">Recommended</span>
+            )}
+          </Button>
+        </motion.div>
+        
+        <motion.div variants={item} whileHover={{ y: -5 }} transition={{ duration: 0.2 }}>
+          <Button
+            variant="outline"
+            className={`w-full h-auto flex flex-col items-center gap-2 p-4 group border-[#F59E0B]/10 ${
+              isRecommended("community-support")
+                ? "bg-gradient-to-br from-[#F59E0B]/20 to-[#FBBF24]/10"
+                : "bg-white/5"
+            }`}
+            onClick={() => handleNavigate('/community-support')}
+          >
+            <div className="p-2 rounded-full bg-white/10 group-hover:bg-[#F59E0B]/20 transition-colors">
+              <Users className="h-5 w-5 text-[#F59E0B]" />
+            </div>
+            <span className="text-sm font-medium">Community Support</span>
+            {isRecommended("community-support") && (
+              <span className="text-xs px-2 py-0.5 rounded-full bg-[#F59E0B] text-white">Recommended</span>
+            )}
+          </Button>
+        </motion.div>
+      </motion.div>
     </div>
   );
 };
