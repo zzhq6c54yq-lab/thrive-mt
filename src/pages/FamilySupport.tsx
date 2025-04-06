@@ -1,533 +1,719 @@
 
 import React, { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
-import { ArrowLeft, Heart, Users, BookOpen, MessageCircle, Video, Calendar, Download, Lightbulb, Check } from "lucide-react";
+import { useNavigate } from "react-router-dom";
+import { motion } from "framer-motion";
+import { 
+  ArrowLeft, Heart, Users, BookOpen, Calendar, MessageSquare, 
+  PhoneCall, Video, HandHeart, Share2, ChevronRight, Star,
+  GraduationCap, FileText
+} from "lucide-react";
 import { Button } from "@/components/ui/button";
-import HomeButton from "@/components/HomeButton";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle, CardFooter } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Badge } from "@/components/ui/badge";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { useToast } from "@/hooks/use-toast";
 
-const FamilySupport = () => {
-  const { toast } = useToast();
-  const navigate = useNavigate();
-  const [activeTab, setActiveTab] = useState("resources");
+// Sample data for resources
+const resourceCategories = [
+  {
+    id: "partners",
+    name: "Partners & Spouses",
+    description: "Resources for those supporting a partner or spouse with mental health challenges",
+    color: "from-pink-500 to-rose-600"
+  },
+  {
+    id: "parents",
+    name: "Parents & Caregivers",
+    description: "Support for parents of children experiencing mental health issues",
+    color: "from-blue-500 to-cyan-600"
+  },
+  {
+    id: "children",
+    name: "Children of Parents",
+    description: "Help for those with a parent or guardian facing mental health challenges",
+    color: "from-amber-500 to-orange-600"
+  },
+  {
+    id: "siblings",
+    name: "Siblings & Relatives",
+    description: "Resources for siblings and extended family members",
+    color: "from-purple-500 to-violet-600"
+  }
+];
 
-  const handleResourceAction = (action: string, resourceName?: string) => {
-    if (action === "Resource Saved") {
-      toast({
-        title: action,
-        description: resourceName ? `${resourceName} has been saved to your library.` : "Resource added to your saved items.",
-        duration: 2000
-      });
-    } else if (action === "Resource Downloaded") {
-      toast({
-        title: "Downloading Resource",
-        description: resourceName ? `${resourceName} is being downloaded.` : "Your resource is being downloaded.",
-        duration: 2000
-      });
-      
-      // Simulate download completion
-      setTimeout(() => {
-        toast({
-          title: "Download Complete",
-          description: "Your download has completed successfully.",
-          duration: 2000
-        });
-      }, 2000);
-    } else if (action === "Toolkit Downloaded") {
-      toast({
-        title: "Family Mental Health Toolkit",
-        description: "The complete toolkit is being prepared for download.",
-        duration: 2000
-      });
-      
-      // Simulate download completion
-      setTimeout(() => {
-        toast({
-          title: "Toolkit Downloaded",
-          description: "The Family Mental Health Toolkit has been successfully downloaded.",
-          duration: 3000
-        });
-      }, 2500);
-    } else if (action === "More Information") {
-      toast({
-        title: action,
-        description: resourceName ? `Details about ${resourceName} are now available.` : "Additional information is now available.",
-        duration: 2000
-      });
-    } else if (action === "Registration Confirmed") {
-      toast({
-        title: action,
-        description: resourceName ? `You've been registered for ${resourceName}.` : "Your registration has been confirmed.",
-        duration: 2000
-      });
-      
-      // Navigate to workshops or related page
-      if (resourceName?.includes("Workshop")) {
-        navigate("/workshops");
+const upcomingEvents = [
+  {
+    id: 1,
+    title: "Family Support Group",
+    date: "Apr 10, 2025",
+    time: "7:00 PM - 8:30 PM",
+    location: "Virtual (Zoom)",
+    description: "A supportive space for family members to share experiences and learn coping strategies",
+    type: "group"
+  },
+  {
+    id: 2,
+    title: "Parenting Workshop",
+    date: "Apr 15, 2025",
+    time: "12:00 PM - 1:30 PM",
+    location: "Community Center",
+    description: "Learn effective communication techniques for supporting children with anxiety",
+    type: "workshop"
+  },
+  {
+    id: 3,
+    title: "Partner Support Webinar",
+    date: "Apr 22, 2025",
+    time: "6:00 PM - 7:00 PM",
+    location: "Virtual (Zoom)",
+    description: "Understanding depression and how to support your partner through their journey",
+    type: "webinar"
+  }
+];
+
+const featuredResources = [
+  {
+    id: 1,
+    title: "Supporting a Loved One with Anxiety",
+    type: "guide",
+    format: "PDF",
+    icon: <FileText className="h-6 w-6 text-blue-400" />,
+    popular: true
+  },
+  {
+    id: 2,
+    title: "Communication Strategies for Families",
+    type: "video",
+    format: "Video",
+    icon: <Video className="h-6 w-6 text-red-400" />,
+    popular: true
+  },
+  {
+    id: 3,
+    title: "Self-Care for Caregivers",
+    type: "article",
+    format: "Article",
+    icon: <Heart className="h-6 w-6 text-pink-400" />,
+    popular: false
+  },
+  {
+    id: 4,
+    title: "Family Therapy: What to Expect",
+    type: "video",
+    format: "Video",
+    icon: <Video className="h-6 w-6 text-red-400" />,
+    popular: false
+  },
+  {
+    id: 5,
+    title: "Setting Boundaries While Supporting Others",
+    type: "guide",
+    format: "PDF",
+    icon: <FileText className="h-6 w-6 text-blue-400" />,
+    popular: true
+  }
+];
+
+const testimonials = [
+  {
+    id: 1,
+    name: "Sarah M.",
+    relationship: "Spouse",
+    content: "The resources here have been invaluable for understanding how to support my husband through his depression while taking care of myself too.",
+    avatar: "S"
+  },
+  {
+    id: 2,
+    name: "David L.",
+    relationship: "Parent",
+    content: "The parent support group changed everything for us. Finally connecting with others who understand what we're going through with our teenager.",
+    avatar: "D"
+  },
+  {
+    id: 3,
+    name: "Michelle K.",
+    relationship: "Adult Child",
+    content: "Growing up with a mother with bipolar disorder was challenging. These resources helped me understand her condition and improve our relationship.",
+    avatar: "M"
+  }
+];
+
+const FamilySupport: React.FC = () => {
+  const navigate = useNavigate();
+  const { toast } = useToast();
+  const [activeTab, setActiveTab] = useState("resources");
+  const [activeCategory, setActiveCategory] = useState("all");
+  const [searchQuery, setSearchQuery] = useState("");
+
+  const handleGoBack = () => {
+    navigate('/home');
+  };
+
+  const handleResourceClick = (resourceId: number) => {
+    toast({
+      title: "Opening Resource",
+      description: "Loading your selected resource...",
+      duration: 1500,
+    });
+    // In a real app, we'd navigate to the resource page
+    // For now, just show a toast
+  };
+
+  const handleRegisterEvent = (eventId: number) => {
+    toast({
+      title: "Registration Successful",
+      description: "You've been registered for this event. A confirmation has been sent to your email.",
+      duration: 2500,
+    });
+  };
+
+  const handleCategoryChange = (category: string) => {
+    setActiveCategory(category);
+  };
+
+  const handleConnectWithProfessional = () => {
+    navigate('/real-time-therapy');
+  };
+
+  // Animation variants for framer-motion
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.1
       }
-    } else if (action === "Request Submitted") {
-      toast({
-        title: action,
-        description: "Thank you for your workshop request. Our team will contact you within 48 hours.",
-        duration: 3000
-      });
-    } else if (action === "Group Joined") {
-      toast({
-        title: action,
-        description: resourceName ? `You've been added to the ${resourceName} group.` : "You've joined the support group successfully.",
-        duration: 2000
-      });
-      
-      // Navigate to virtual meetings or related page
-      navigate("/virtual-meetings");
-    } else if (action === "Consultation Request Sent") {
-      toast({
-        title: action,
-        description: "A family support specialist will contact you within 24 hours to schedule your consultation.",
-        duration: 3000
-      });
-    } else if (action === "Referral Process Started") {
-      toast({
-        title: action,
-        description: "We've initiated your family therapy referral. A specialist will contact you shortly to discuss your needs.",
-        duration: 3000
-      });
-    } else if (action === "Crisis Support") {
-      toast({
-        title: action,
-        description: "Connecting you with our crisis support team immediately.",
-        variant: "destructive",
-        duration: 3000
-      });
-      
-      // Navigate to crisis support page
-      navigate("/crisis-support");
-    } else if (action === "Support Options") {
-      toast({
-        title: action,
-        description: "Our team will contact you to discuss insurance and financial support options.",
-        duration: 3000
-      });
-      
-      // Navigate to financial assistance page
-      navigate("/financial-assistance");
     }
   };
 
-  const resources = [
-    {
-      title: "Supporting a Loved One with Depression",
-      description: "Learn how to provide meaningful support to family members experiencing depression.",
-      type: "Guide",
-      time: "15 min read"
-    },
-    {
-      title: "Communication Strategies for Families",
-      description: "Effective techniques for improving communication about mental health within families.",
-      type: "Article",
-      time: "10 min read"
-    },
-    {
-      title: "Recognizing Warning Signs",
-      description: "How to identify signs that your loved one may need additional mental health support.",
-      type: "Checklist",
-      time: "5 min read"
-    },
-    {
-      title: "Self-Care for Caregivers",
-      description: "Maintaining your own mental health while supporting others.",
-      type: "Guide",
-      time: "12 min read"
+  const itemVariants = {
+    hidden: { y: 20, opacity: 0 },
+    visible: {
+      y: 0,
+      opacity: 1,
+      transition: { duration: 0.4 }
     }
-  ];
-
-  const workshops = [
-    {
-      title: "Family Communication Workshop",
-      date: "June 25, 2023",
-      time: "7:00 PM EST",
-      description: "Learn effective communication techniques for discussing mental health within families.",
-      participants: 24
-    },
-    {
-      title: "Supporting Teens with Anxiety",
-      date: "July 2, 2023",
-      time: "6:30 PM EST",
-      description: "Specialized guidance for parents of teenagers experiencing anxiety disorders.",
-      participants: 18
-    },
-    {
-      title: "Caregiver Resilience Building",
-      date: "July 10, 2023",
-      time: "7:00 PM EST",
-      description: "Strategies to maintain your wellbeing while supporting a family member with mental health challenges.",
-      participants: 15
-    }
-  ];
-
-  const supportGroups = [
-    {
-      name: "Parents Supporting Teens",
-      description: "For parents of teenagers with anxiety, depression, or other mental health challenges",
-      schedule: "Tuesdays, 7:00 PM EST",
-      type: "Weekly"
-    },
-    {
-      name: "Partners and Spouses Circle",
-      description: "Support for those whose partners are experiencing mental health challenges",
-      schedule: "Every other Thursday, 8:00 PM EST",
-      type: "Bi-weekly"
-    },
-    {
-      name: "Siblings Support Network",
-      description: "For siblings of individuals with serious mental illness",
-      schedule: "First Saturday of each month, 11:00 AM EST",
-      type: "Monthly"
-    }
-  ];
+  };
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-[#f8f9fa] to-[#eef1f5]">
-      <div className="bg-gradient-to-r from-[#1a1a1f] to-[#212124] text-white py-12 relative overflow-hidden">
-        <div className="absolute inset-0 opacity-30">
-          <div className="absolute top-0 left-0 right-0 h-20 bg-gradient-to-r from-[#B87333]/15 via-[#E5C5A1]/25 to-[#B87333]/15 transform -skew-y-3"></div>
-          <div className="absolute top-10 left-0 right-0 h-28 bg-gradient-to-r from-[#E5C5A1]/10 via-[#B87333]/15 to-[#E5C5A1]/10 transform skew-y-2"></div>
-        </div>
-        <div className="container px-4 max-w-6xl mx-auto relative z-10">
-          <div className="flex justify-between items-center mb-6">
-            <Link to="/" className="inline-flex items-center text-[#B87333] hover:text-[#B87333]/80 transition-colors">
-              <ArrowLeft className="mr-2 h-4 w-4" />
-              Back to Home
-            </Link>
-            <HomeButton />
+    <div className="min-h-screen bg-gradient-to-b from-[#1a1a1f] via-[#242432] to-[#272730] text-white pb-12">
+      {/* Decorative Elements */}
+      <div className="absolute inset-0 overflow-hidden pointer-events-none">
+        <div className="absolute top-0 right-0 w-80 h-80 bg-gradient-to-br from-pink-500/20 to-transparent rounded-full blur-3xl"></div>
+        <div className="absolute bottom-0 left-0 w-80 h-80 bg-gradient-to-tr from-amber-500/20 to-transparent rounded-full blur-3xl"></div>
+        <div className="absolute top-1/2 left-1/4 w-40 h-40 bg-gradient-to-br from-purple-500/10 to-transparent rounded-full blur-3xl"></div>
+      </div>
+
+      {/* Header */}
+      <div className="relative bg-gradient-to-r from-[#1a1a1f] to-[#272730] py-6 px-4 shadow-md">
+        <div className="max-w-6xl mx-auto">
+          <div className="flex items-center space-x-4">
+            <Button
+              variant="ghost"
+              size="icon"
+              onClick={handleGoBack}
+              className="rounded-full bg-white/10 hover:bg-white/20"
+              aria-label="Go back"
+            >
+              <ArrowLeft className="h-5 w-5 text-white" />
+            </Button>
+            
+            <div>
+              <h1 className="text-2xl md:text-3xl font-bold flex items-center">
+                <HandHeart className="inline mr-2 h-6 w-6 text-pink-400" /> 
+                Family Resources
+              </h1>
+              <p className="text-gray-300 text-sm md:text-base">
+                Support for families and loved ones on the mental health journey
+              </p>
+            </div>
           </div>
-          
-          <h1 className="text-4xl md:text-5xl font-light mb-4">Family & Caregiver Support</h1>
-          <p className="text-xl text-gray-300 max-w-3xl">Resources and guidance for supporting loved ones through their mental health journey.</p>
         </div>
       </div>
 
-      <div className="container px-4 py-12 max-w-6xl mx-auto">
-        <Tabs defaultValue="resources" value={activeTab} onValueChange={setActiveTab} className="w-full">
-          <TabsList className="grid w-full grid-cols-4 mb-8">
-            <TabsTrigger value="resources">Resources</TabsTrigger>
-            <TabsTrigger value="workshops">Workshops</TabsTrigger>
-            <TabsTrigger value="support">Support Groups</TabsTrigger>
-            <TabsTrigger value="consultation">Consultation</TabsTrigger>
+      {/* Main Content */}
+      <div className="max-w-6xl mx-auto px-4 mt-8 relative z-10">
+        <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
+          <TabsList className="grid grid-cols-4 mb-8 bg-white/5 backdrop-blur-sm">
+            <TabsTrigger value="resources" className="data-[state=active]:bg-pink-500 data-[state=active]:text-white">
+              Resources
+            </TabsTrigger>
+            <TabsTrigger value="support" className="data-[state=active]:bg-pink-500 data-[state=active]:text-white">
+              Support Groups
+            </TabsTrigger>
+            <TabsTrigger value="events" className="data-[state=active]:bg-pink-500 data-[state=active]:text-white">
+              Events
+            </TabsTrigger>
+            <TabsTrigger value="connect" className="data-[state=active]:bg-pink-500 data-[state=active]:text-white">
+              Connect
+            </TabsTrigger>
           </TabsList>
           
-          <TabsContent value="resources" className="space-y-6 animate-fade-in">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              {resources.map((resource, index) => (
-                <Card key={index} className="border-[#B87333]/30 hover:shadow-md transition-all">
-                  <CardHeader className="pb-2">
-                    <div className="flex justify-between items-start">
-                      <CardTitle className="text-xl">{resource.title}</CardTitle>
-                      <span className="px-2 py-1 bg-[#B87333]/10 text-[#B87333] text-xs rounded-full">
-                        {resource.type}
-                      </span>
-                    </div>
-                    <CardDescription>{resource.description}</CardDescription>
-                  </CardHeader>
-                  <CardContent>
-                    <p className="text-sm text-gray-500">{resource.time}</p>
-                  </CardContent>
-                  <CardFooter className="flex justify-between">
-                    <Button 
-                      variant="outline" 
-                      size="sm"
-                      className="text-[#B87333] border-[#B87333] hover:bg-[#B87333]/10"
-                      onClick={() => handleResourceAction("Resource Saved", resource.title)}
+          {/* Resources Tab */}
+          <TabsContent value="resources" className="focus:outline-none">
+            <motion.div
+              variants={containerVariants}
+              initial="hidden"
+              animate="visible"
+              className="space-y-6"
+            >
+              {/* Search Bar */}
+              <motion.div variants={itemVariants} className="relative">
+                <input
+                  type="text"
+                  placeholder="Search resources..."
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  className="w-full p-3 bg-white/10 border border-white/20 rounded-lg focus:outline-none focus:ring-2 focus:ring-pink-500 focus:border-transparent text-white placeholder-gray-400"
+                />
+              </motion.div>
+              
+              {/* Categories */}
+              <motion.div variants={itemVariants}>
+                <h2 className="text-xl font-bold text-white mb-4">Browse by Family Role</h2>
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
+                  {resourceCategories.map((category) => (
+                    <Card 
+                      key={category.id}
+                      className="bg-white/10 backdrop-blur-sm border-0 shadow-lg overflow-hidden cursor-pointer transition-transform hover:scale-105"
+                      onClick={() => handleCategoryChange(category.id)}
                     >
-                      <BookOpen className="mr-2 h-4 w-4" />
-                      Read Now
-                    </Button>
-                    <Button 
-                      variant="outline" 
-                      size="sm"
-                      onClick={() => handleResourceAction("Resource Downloaded", resource.title)}
-                    >
-                      <Download className="mr-2 h-4 w-4" />
-                      Download
-                    </Button>
-                  </CardFooter>
-                </Card>
-              ))}
-            </div>
-            
-            <Card className="border-[#B87333]/30 bg-[#B87333]/5 mt-6">
-              <CardHeader>
-                <CardTitle className="text-xl flex items-center gap-2">
-                  <Lightbulb className="h-5 w-5 text-[#B87333]" />
-                  Featured Guide
-                </CardTitle>
-                <CardDescription>
-                  Comprehensive resource for families and caregivers
-                </CardDescription>
-              </CardHeader>
-              <CardContent>
-                <div className="bg-white p-4 rounded-lg shadow-sm">
-                  <h3 className="font-medium text-lg mb-2">The Family Mental Health Toolkit</h3>
-                  <p className="text-gray-700 mb-4">
-                    A complete guide for families supporting loved ones with mental health challenges. Includes communication strategies, crisis planning, self-care tips, and resource directories.
-                  </p>
-                  <div className="flex flex-wrap gap-2 mb-4">
-                    <span className="px-2 py-1 bg-blue-100 text-blue-800 text-xs rounded-full">
-                      30+ resources
-                    </span>
-                    <span className="px-2 py-1 bg-green-100 text-green-800 text-xs rounded-full">
-                      Printable worksheets
-                    </span>
-                    <span className="px-2 py-1 bg-purple-100 text-purple-800 text-xs rounded-full">
-                      Expert reviewed
-                    </span>
-                  </div>
-                  <Button 
-                    className="w-full bg-[#B87333] hover:bg-[#A56625]"
-                    onClick={() => handleResourceAction("Toolkit Downloaded")}
-                  >
-                    Download Toolkit
-                  </Button>
-                </div>
-              </CardContent>
-            </Card>
-          </TabsContent>
-          
-          <TabsContent value="workshops" className="space-y-6 animate-fade-in">
-            <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-              {workshops.map((workshop, index) => (
-                <Card key={index} className="border-[#B87333]/30 hover:shadow-md transition-all">
-                  <CardHeader className="pb-2">
-                    <CardTitle className="text-xl">{workshop.title}</CardTitle>
-                    <CardDescription className="flex items-center gap-2">
-                      <Calendar className="h-4 w-4" />
-                      {workshop.date} • {workshop.time}
-                    </CardDescription>
-                  </CardHeader>
-                  <CardContent>
-                    <p className="text-gray-700 mb-3">{workshop.description}</p>
-                    <div className="flex items-center text-sm text-gray-500">
-                      <Users className="h-4 w-4 mr-1" />
-                      <span>{workshop.participants} participants registered</span>
-                    </div>
-                  </CardContent>
-                  <CardFooter className="flex justify-between">
-                    <Button 
-                      variant="outline" 
-                      className="text-[#B87333] border-[#B87333] hover:bg-[#B87333]/10"
-                      onClick={() => handleResourceAction("More Information", workshop.title)}
-                    >
-                      More Info
-                    </Button>
-                    <Button 
-                      className="bg-[#B87333] hover:bg-[#A56625]"
-                      onClick={() => handleResourceAction("Registration Confirmed", workshop.title)}
-                    >
-                      Register
-                    </Button>
-                  </CardFooter>
-                </Card>
-              ))}
-            </div>
-            
-            <Card className="border-[#B87333]/30 mt-6">
-              <CardHeader>
-                <CardTitle className="text-xl">Workshop Request</CardTitle>
-                <CardDescription>
-                  Don't see a workshop that meets your family's needs?
-                </CardDescription>
-              </CardHeader>
-              <CardContent>
-                <p className="text-gray-700 mb-4">
-                  We can create customized workshops for specific family situations and mental health conditions. 
-                  Let us know what topics would be most helpful for you and your family.
-                </p>
-                <Button 
-                  className="w-full bg-[#B87333] hover:bg-[#A56625]"
-                  onClick={() => handleResourceAction("Request Submitted")}
-                >
-                  Request a Workshop
-                </Button>
-              </CardContent>
-            </Card>
-          </TabsContent>
-          
-          <TabsContent value="support" className="space-y-6 animate-fade-in">
-            <Card className="border-[#B87333]/30">
-              <CardHeader>
-                <CardTitle className="text-2xl font-light flex items-center gap-2">
-                  <Users className="h-5 w-5 text-[#B87333]" />
-                  Family Support Groups
-                </CardTitle>
-                <CardDescription>
-                  Connect with other families and caregivers who understand what you're going through
-                </CardDescription>
-              </CardHeader>
-              <CardContent>
-                <div className="space-y-4">
-                  {supportGroups.map((group, index) => (
-                    <div key={index} className="p-4 border rounded-lg hover:shadow-md transition-shadow">
-                      <div className="flex justify-between items-start mb-2">
-                        <div>
-                          <h3 className="font-medium">{group.name}</h3>
-                          <p className="text-sm text-gray-600">{group.description}</p>
-                        </div>
-                        <span className={`px-2 py-1 ${
-                          group.type === 'Weekly' ? 'bg-green-100 text-green-800' : 
-                          group.type === 'Bi-weekly' ? 'bg-blue-100 text-blue-800' :
-                          'bg-purple-100 text-purple-800'
-                        } text-xs rounded-full`}>
-                          {group.type}
-                        </span>
-                      </div>
-                      <div className="flex items-center gap-4 mt-3 text-sm">
-                        <div className="flex items-center gap-1">
-                          <Calendar className="h-4 w-4 text-gray-500" />
-                          <span>{group.schedule}</span>
-                        </div>
-                        <div className="flex items-center gap-1">
-                          <Video className="h-4 w-4 text-gray-500" />
-                          <span>Virtual Meeting</span>
-                        </div>
-                      </div>
-                      <Button 
-                        className="mt-4 bg-[#B87333] hover:bg-[#A56625]"
-                        onClick={() => handleResourceAction("Group Joined", group.name)}
-                      >
-                        Join Group
-                      </Button>
-                    </div>
+                      <div 
+                        className={`h-2 bg-gradient-to-r ${category.color}`}
+                      ></div>
+                      <CardContent className="p-4">
+                        <h3 className="font-semibold text-white mb-1">{category.name}</h3>
+                        <p className="text-xs text-gray-300">{category.description}</p>
+                      </CardContent>
+                    </Card>
                   ))}
                 </div>
-              </CardContent>
-            </Card>
-            
-            <Card className="border-[#B87333]/30 bg-[#B87333]/5 mt-4">
-              <CardHeader className="pb-2">
-                <CardTitle className="text-xl flex items-center gap-2">
-                  <Heart className="h-5 w-5 text-[#B87333]" />
-                  Community Guidelines
-                </CardTitle>
-              </CardHeader>
-              <CardContent>
-                <p className="text-gray-700 mb-4">
-                  Our support groups are safe spaces for families and caregivers to share experiences and find comfort. To ensure a supportive environment for all participants, we ask everyone to follow these guidelines:
-                </p>
-                <ul className="list-disc pl-6 space-y-2 text-gray-700">
-                  <li>Respect confidentiality — what's shared in the group stays in the group</li>
-                  <li>Practice active listening without judgment</li>
-                  <li>Share your experiences but avoid giving direct advice</li>
-                  <li>Recognize that everyone's journey is unique</li>
-                  <li>Be mindful of sharing time so everyone has a chance to speak</li>
-                  <li>Focus on support rather than criticism</li>
-                </ul>
-              </CardContent>
-            </Card>
+              </motion.div>
+              
+              {/* Featured Resources */}
+              <motion.div variants={itemVariants}>
+                <div className="flex justify-between items-center mb-4">
+                  <h2 className="text-xl font-bold text-white">Featured Resources</h2>
+                  <Button variant="link" className="text-pink-400">
+                    View All <ChevronRight className="h-4 w-4 ml-1" />
+                  </Button>
+                </div>
+                
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                  {featuredResources.map((resource) => (
+                    <Card 
+                      key={resource.id}
+                      className="bg-white/10 backdrop-blur-sm border-0 shadow-lg cursor-pointer hover:bg-white/15 transition-colors"
+                      onClick={() => handleResourceClick(resource.id)}
+                    >
+                      <CardContent className="p-4 flex items-start gap-3">
+                        <div className="p-3 rounded-lg bg-white/10">
+                          {resource.icon}
+                        </div>
+                        <div>
+                          <div className="flex items-center gap-2 mb-1">
+                            {resource.popular && (
+                              <Badge className="bg-amber-600/70 text-white text-xs">Popular</Badge>
+                            )}
+                            <Badge variant="outline" className="text-white/70 text-xs border-white/20">
+                              {resource.format}
+                            </Badge>
+                          </div>
+                          <h3 className="font-medium text-white">{resource.title}</h3>
+                        </div>
+                      </CardContent>
+                    </Card>
+                  ))}
+                </div>
+              </motion.div>
+              
+              {/* Testimonials */}
+              <motion.div variants={itemVariants}>
+                <h2 className="text-xl font-bold text-white mb-4 flex items-center">
+                  <Star className="h-5 w-5 text-amber-400 mr-2" />
+                  Family Success Stories
+                </h2>
+                
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                  {testimonials.map((testimonial) => (
+                    <Card 
+                      key={testimonial.id}
+                      className="bg-white/10 backdrop-blur-sm border-0 shadow-lg"
+                    >
+                      <CardContent className="p-5">
+                        <div className="flex items-center gap-3 mb-3">
+                          <Avatar>
+                            <AvatarFallback className="bg-pink-500/20 text-pink-200">
+                              {testimonial.avatar}
+                            </AvatarFallback>
+                          </Avatar>
+                          <div>
+                            <h4 className="font-medium text-white">{testimonial.name}</h4>
+                            <p className="text-xs text-gray-400">{testimonial.relationship}</p>
+                          </div>
+                        </div>
+                        <p className="text-sm text-gray-300 italic">"{testimonial.content}"</p>
+                      </CardContent>
+                    </Card>
+                  ))}
+                </div>
+              </motion.div>
+            </motion.div>
           </TabsContent>
           
-          <TabsContent value="consultation" className="space-y-6 animate-fade-in">
-            <Card className="border-[#B87333]/30">
-              <CardHeader>
-                <CardTitle className="text-2xl font-light flex items-center gap-2">
-                  <MessageCircle className="h-5 w-5 text-[#B87333]" />
-                  Family Consultation Services
-                </CardTitle>
-                <CardDescription>
-                  One-on-one guidance for specific family situations
-                </CardDescription>
-              </CardHeader>
-              <CardContent>
-                <div className="space-y-6">
-                  <div className="p-5 border rounded-lg hover:shadow-md transition-shadow">
-                    <h3 className="text-xl font-medium mb-2">Family Support Specialist Consultation</h3>
-                    <p className="text-gray-700 mb-4">
-                      Schedule a private session with a family support specialist who can provide personalized guidance 
-                      for your specific situation. Our specialists are trained to help families navigate the mental health system, 
-                      develop coping strategies, and create supportive home environments.
-                    </p>
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
-                      <div className="flex items-start gap-2">
-                        <Check className="h-5 w-5 text-green-500 flex-shrink-0 mt-0.5" />
-                        <span className="text-gray-700">Personalized action plans</span>
-                      </div>
-                      <div className="flex items-start gap-2">
-                        <Check className="h-5 w-5 text-green-500 flex-shrink-0 mt-0.5" />
-                        <span className="text-gray-700">Communication strategies</span>
-                      </div>
-                      <div className="flex items-start gap-2">
-                        <Check className="h-5 w-5 text-green-500 flex-shrink-0 mt-0.5" />
-                        <span className="text-gray-700">Resource coordination</span>
-                      </div>
-                      <div className="flex items-start gap-2">
-                        <Check className="h-5 w-5 text-green-500 flex-shrink-0 mt-0.5" />
-                        <span className="text-gray-700">Crisis prevention planning</span>
+          {/* Support Groups Tab */}
+          <TabsContent value="support" className="focus:outline-none">
+            <motion.div
+              variants={containerVariants}
+              initial="hidden"
+              animate="visible"
+              className="space-y-6"
+            >
+              <motion.div variants={itemVariants}>
+                <Card className="bg-white/10 backdrop-blur-sm border-0 shadow-lg p-6">
+                  <h2 className="text-xl font-bold text-white mb-4 flex items-center">
+                    <Users className="h-5 w-5 text-pink-400 mr-2" />
+                    Support Groups
+                  </h2>
+                  
+                  <p className="text-gray-300 mb-6">
+                    Connect with others who understand what you're going through. Our support groups
+                    provide a safe space to share experiences and learn from others on similar journeys.
+                  </p>
+                  
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div className="bg-white/5 p-4 rounded-lg border border-white/10">
+                      <h3 className="font-medium text-white mb-1">Partner & Spouse Group</h3>
+                      <p className="text-sm text-gray-400 mb-3">Weekly meetings for partners of individuals with mental health challenges</p>
+                      <div className="flex justify-between items-center text-sm text-gray-300">
+                        <div className="flex items-center gap-1">
+                          <Calendar className="h-4 w-4 text-pink-400" />
+                          <span>Wednesdays, 7PM</span>
+                        </div>
+                        <div className="flex items-center gap-1">
+                          <Video className="h-4 w-4 text-blue-400" />
+                          <span>Virtual</span>
+                        </div>
                       </div>
                     </div>
-                    <Button 
-                      className="w-full bg-[#B87333] hover:bg-[#A56625]"
-                      onClick={() => handleResourceAction("Consultation Request Sent")}
-                    >
-                      Request Consultation
-                    </Button>
+                    
+                    <div className="bg-white/5 p-4 rounded-lg border border-white/10">
+                      <h3 className="font-medium text-white mb-1">Parents Support Circle</h3>
+                      <p className="text-sm text-gray-400 mb-3">For parents of children with mental health issues</p>
+                      <div className="flex justify-between items-center text-sm text-gray-300">
+                        <div className="flex items-center gap-1">
+                          <Calendar className="h-4 w-4 text-pink-400" />
+                          <span>Mondays, 6:30PM</span>
+                        </div>
+                        <div className="flex items-center gap-1">
+                          <MessageSquare className="h-4 w-4 text-green-400" />
+                          <span>In-person & Virtual</span>
+                        </div>
+                      </div>
+                    </div>
+                    
+                    <div className="bg-white/5 p-4 rounded-lg border border-white/10">
+                      <h3 className="font-medium text-white mb-1">Adult Children Group</h3>
+                      <p className="text-sm text-gray-400 mb-3">For adult children of parents with mental health conditions</p>
+                      <div className="flex justify-between items-center text-sm text-gray-300">
+                        <div className="flex items-center gap-1">
+                          <Calendar className="h-4 w-4 text-pink-400" />
+                          <span>Thursdays, 7:30PM</span>
+                        </div>
+                        <div className="flex items-center gap-1">
+                          <MessageSquare className="h-4 w-4 text-green-400" />
+                          <span>In-person & Virtual</span>
+                        </div>
+                      </div>
+                    </div>
+                    
+                    <div className="bg-white/5 p-4 rounded-lg border border-white/10">
+                      <h3 className="font-medium text-white mb-1">Siblings & Family Support</h3>
+                      <p className="text-sm text-gray-400 mb-3">For siblings and extended family members</p>
+                      <div className="flex justify-between items-center text-sm text-gray-300">
+                        <div className="flex items-center gap-1">
+                          <Calendar className="h-4 w-4 text-pink-400" />
+                          <span>Tuesdays, 6PM</span>
+                        </div>
+                        <div className="flex items-center gap-1">
+                          <Video className="h-4 w-4 text-blue-400" />
+                          <span>Virtual</span>
+                        </div>
+                      </div>
+                    </div>
                   </div>
                   
-                  <div className="p-5 border rounded-lg hover:shadow-md transition-shadow">
-                    <h3 className="text-xl font-medium mb-2">Family Therapy Referral</h3>
-                    <p className="text-gray-700 mb-4">
-                      For families seeking ongoing therapeutic support, our referral specialists can connect you with 
-                      licensed family therapists who specialize in mental health-related family dynamics. We'll help match 
-                      you with a therapist who fits your family's unique needs and preferences.
-                    </p>
-                    <Button 
-                      className="w-full bg-[#B87333] hover:bg-[#A56625]"
-                      onClick={() => handleResourceAction("Referral Process Started")}
-                    >
-                      Start Referral Process
+                  <div className="mt-6 text-center">
+                    <Button className="bg-pink-500 hover:bg-pink-600 text-white">
+                      Register for a Group
                     </Button>
                   </div>
-                </div>
-              </CardContent>
-            </Card>
-            
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6">
-              <Card className="border-[#B87333]/30">
-                <CardHeader className="pb-2">
-                  <CardTitle className="text-xl">Crisis Support</CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <p className="text-gray-700 mb-4">
-                    For urgent situations when a family member is in crisis, our crisis support team is available 24/7.
-                  </p>
-                  <Button 
-                    variant="destructive"
-                    className="w-full"
-                    onClick={() => handleResourceAction("Crisis Support")}
-                  >
-                    Access Crisis Support
-                  </Button>
-                </CardContent>
-              </Card>
+                </Card>
+              </motion.div>
               
-              <Card className="border-[#B87333]/30">
-                <CardHeader className="pb-2">
-                  <CardTitle className="text-xl">Insurance & Financial Support</CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <p className="text-gray-700 mb-4">
-                    Get assistance with insurance questions and financial support options for family therapy and support services.
+              <motion.div variants={itemVariants}>
+                <Card className="bg-white/10 backdrop-blur-sm border-0 shadow-lg p-6">
+                  <h2 className="text-xl font-bold text-white mb-4 flex items-center">
+                    <MessageSquare className="h-5 w-5 text-pink-400 mr-2" />
+                    Online Communities
+                  </h2>
+                  
+                  <p className="text-gray-300 mb-6">
+                    Join our moderated online communities for 24/7 peer support. Connect with others who understand,
+                    share resources, and find encouragement any time you need it.
                   </p>
-                  <Button 
-                    variant="outline"
-                    className="w-full text-[#B87333] border-[#B87333] hover:bg-[#B87333]/10"
-                    onClick={() => handleResourceAction("Support Options")}
-                  >
-                    Explore Options
+                  
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <Button className="bg-[#4267B2] hover:bg-[#365899] flex items-center justify-center gap-2 h-12">
+                      <Users className="h-5 w-5" />
+                      Join Facebook Group
+                    </Button>
+                    
+                    <Button variant="outline" className="border-white/20 text-white hover:bg-white/10 flex items-center justify-center gap-2 h-12">
+                      <MessageSquare className="h-5 w-5" />
+                      Join Discord Community
+                    </Button>
+                  </div>
+                </Card>
+              </motion.div>
+            </motion.div>
+          </TabsContent>
+          
+          {/* Events Tab */}
+          <TabsContent value="events" className="focus:outline-none">
+            <motion.div
+              variants={containerVariants}
+              initial="hidden"
+              animate="visible"
+              className="space-y-6"
+            >
+              <motion.div variants={itemVariants}>
+                <Card className="bg-white/10 backdrop-blur-sm border-0 shadow-lg">
+                  <CardHeader>
+                    <CardTitle className="flex items-center gap-2">
+                      <Calendar className="h-5 w-5 text-pink-400" />
+                      Upcoming Events
+                    </CardTitle>
+                    <CardDescription className="text-gray-400">
+                      Workshops, webinars, and groups for family members
+                    </CardDescription>
+                  </CardHeader>
+                  
+                  <CardContent className="p-4">
+                    <div className="space-y-4">
+                      {upcomingEvents.map((event) => (
+                        <Card 
+                          key={event.id}
+                          className="bg-white/5 border-white/10 relative overflow-hidden"
+                        >
+                          <div 
+                            className="absolute top-0 left-0 w-1 h-full" 
+                            style={{ 
+                              background: event.type === 'workshop' 
+                                ? 'linear-gradient(to bottom, #ec4899, #db2777)' 
+                                : event.type === 'webinar' 
+                                  ? 'linear-gradient(to bottom, #8b5cf6, #6d28d9)'
+                                  : 'linear-gradient(to bottom, #10b981, #047857)'
+                            }} 
+                          />
+                          
+                          <CardContent className="p-4">
+                            <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
+                              <div>
+                                <h3 className="font-semibold text-white mb-1">{event.title}</h3>
+                                <div className="flex flex-wrap items-center gap-x-4 gap-y-2 text-sm text-gray-400">
+                                  <div className="flex items-center gap-1">
+                                    <Calendar className="h-3.5 w-3.5" />
+                                    <span>{event.date}</span>
+                                  </div>
+                                  <div className="flex items-center gap-1">
+                                    <Clock className="h-3.5 w-3.5" />
+                                    <span>{event.time}</span>
+                                  </div>
+                                  <div className="flex items-center gap-1">
+                                    <MapPin className="h-3.5 w-3.5" />
+                                    <span>{event.location}</span>
+                                  </div>
+                                </div>
+                                <p className="text-gray-300 text-sm mt-2">{event.description}</p>
+                              </div>
+                              
+                              <div className="flex gap-2">
+                                <Badge 
+                                  className={`uppercase text-white ${
+                                    event.type === 'workshop' 
+                                      ? 'bg-pink-600/70' 
+                                      : event.type === 'webinar' 
+                                        ? 'bg-purple-600/70'
+                                        : 'bg-green-600/70'
+                                  }`}
+                                >
+                                  {event.type}
+                                </Badge>
+                                
+                                <Button 
+                                  size="sm" 
+                                  className="bg-pink-500 hover:bg-pink-600 text-white whitespace-nowrap"
+                                  onClick={() => handleRegisterEvent(event.id)}
+                                >
+                                  Register
+                                </Button>
+                              </div>
+                            </div>
+                          </CardContent>
+                        </Card>
+                      ))}
+                    </div>
+                  </CardContent>
+                  
+                  <CardFooter>
+                    <Button variant="outline" className="w-full border-white/20 text-white hover:bg-white/10">
+                      View All Events
+                    </Button>
+                  </CardFooter>
+                </Card>
+              </motion.div>
+              
+              <motion.div variants={itemVariants}>
+                <Card className="bg-white/10 backdrop-blur-sm border-0 shadow-lg p-6">
+                  <h2 className="text-xl font-bold text-white mb-4 flex items-center">
+                    <GraduationCap className="h-5 w-5 text-pink-400 mr-2" />
+                    Educational Programs
+                  </h2>
+                  
+                  <p className="text-gray-300 mb-6">
+                    Our structured educational programs provide in-depth knowledge and practical skills for supporting
+                    loved ones with mental health conditions.
+                  </p>
+                  
+                  <div className="space-y-4">
+                    <div className="bg-white/5 p-4 rounded-lg border border-white/10">
+                      <h3 className="font-medium text-white mb-1">Family-to-Family</h3>
+                      <p className="text-sm text-gray-400 mb-2">
+                        An 8-week course for family members of adults living with mental health conditions.
+                      </p>
+                      <Badge className="bg-amber-600/70 text-white">Starting April 20</Badge>
+                    </div>
+                    
+                    <div className="bg-white/5 p-4 rounded-lg border border-white/10">
+                      <h3 className="font-medium text-white mb-1">Supporting Youth</h3>
+                      <p className="text-sm text-gray-400 mb-2">
+                        A 6-week program for parents and caregivers of children and teenagers.
+                      </p>
+                      <Badge className="bg-amber-600/70 text-white">Starting May 5</Badge>
+                    </div>
+                    
+                    <div className="bg-white/5 p-4 rounded-lg border border-white/10">
+                      <h3 className="font-medium text-white mb-1">Partner Support Intensive</h3>
+                      <p className="text-sm text-gray-400 mb-2">
+                        Weekend intensive workshop for partners and spouses.
+                      </p>
+                      <Badge className="bg-amber-600/70 text-white">June 10-12</Badge>
+                    </div>
+                  </div>
+                </Card>
+              </motion.div>
+            </motion.div>
+          </TabsContent>
+          
+          {/* Connect Tab */}
+          <TabsContent value="connect" className="focus:outline-none">
+            <motion.div
+              variants={containerVariants}
+              initial="hidden"
+              animate="visible"
+              className="space-y-6"
+            >
+              <motion.div variants={itemVariants}>
+                <Card className="bg-white/10 backdrop-blur-sm border-0 shadow-lg p-6">
+                  <h2 className="text-xl font-bold text-white mb-4 flex items-center">
+                    <PhoneCall className="h-5 w-5 text-pink-400 mr-2" />
+                    Talk to Someone
+                  </h2>
+                  
+                  <p className="text-gray-300 mb-6">
+                    Our trained family support specialists are here to help you navigate the challenges
+                    of supporting a loved one with mental health conditions.
+                  </p>
+                  
+                  <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    <Card className="bg-white/5 border-white/10">
+                      <CardContent className="p-4 text-center">
+                        <PhoneCall className="h-8 w-8 text-pink-400 mx-auto mb-3" />
+                        <h3 className="font-medium text-white mb-1">Phone Support</h3>
+                        <p className="text-sm text-gray-400 mb-3">Talk one-on-one with a specialist</p>
+                        <Button className="bg-pink-500 hover:bg-pink-600 w-full">
+                          Request Call
+                        </Button>
+                      </CardContent>
+                    </Card>
+                    
+                    <Card className="bg-white/5 border-white/10">
+                      <CardContent className="p-4 text-center">
+                        <Video className="h-8 w-8 text-pink-400 mx-auto mb-3" />
+                        <h3 className="font-medium text-white mb-1">Video Chat</h3>
+                        <p className="text-sm text-gray-400 mb-3">Face-to-face virtual support</p>
+                        <Button className="bg-pink-500 hover:bg-pink-600 w-full">
+                          Schedule Session
+                        </Button>
+                      </CardContent>
+                    </Card>
+                    
+                    <Card className="bg-white/5 border-white/10">
+                      <CardContent className="p-4 text-center">
+                        <MessageSquare className="h-8 w-8 text-pink-400 mx-auto mb-3" />
+                        <h3 className="font-medium text-white mb-1">Text Chat</h3>
+                        <p className="text-sm text-gray-400 mb-3">Message with a support specialist</p>
+                        <Button className="bg-pink-500 hover:bg-pink-600 w-full">
+                          Start Chat
+                        </Button>
+                      </CardContent>
+                    </Card>
+                  </div>
+                </Card>
+              </motion.div>
+              
+              <motion.div variants={itemVariants}>
+                <Card className="bg-gradient-to-br from-pink-500/30 to-purple-500/30 backdrop-blur-sm border-0 shadow-lg">
+                  <CardContent className="p-6 flex flex-col md:flex-row items-center gap-6">
+                    <div className="md:w-2/3">
+                      <h2 className="text-xl font-bold text-white mb-2">
+                        Need Professional Support?
+                      </h2>
+                      <p className="text-gray-300 mb-4">
+                        Connect with licensed therapists who specialize in family therapy and supporting
+                        loved ones of those with mental health conditions.
+                      </p>
+                      <Button className="bg-white text-pink-600 hover:bg-gray-100" onClick={handleConnectWithProfessional}>
+                        Find a Therapist
+                      </Button>
+                    </div>
+                    <div className="md:w-1/3 flex justify-center">
+                      <Heart className="h-24 w-24 text-pink-300/50" />
+                    </div>
+                  </CardContent>
+                </Card>
+              </motion.div>
+              
+              <motion.div variants={itemVariants}>
+                <Card className="bg-white/10 backdrop-blur-sm border-0 shadow-lg p-6">
+                  <h2 className="text-xl font-bold text-white mb-4 flex items-center">
+                    <Share2 className="h-5 w-5 text-pink-400 mr-2" />
+                    Share Your Story
+                  </h2>
+                  
+                  <p className="text-gray-300 mb-4">
+                    Your experience could help others on their journey. Consider sharing your story
+                    to inspire and support other family members.
+                  </p>
+                  
+                  <Button variant="outline" className="border-white/20 text-white hover:bg-white/10">
+                    Submit Your Story
                   </Button>
-                </CardContent>
-              </Card>
-            </div>
+                </Card>
+              </motion.div>
+            </motion.div>
           </TabsContent>
         </Tabs>
       </div>

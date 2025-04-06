@@ -731,4 +731,345 @@ const MySponsor: React.FC = () => {
                         <CardHeader className="pb-2">
                           <div className="flex justify-between items-start">
                             <CardTitle className="text-lg">{entry.date}</CardTitle>
-                            <Badge className={`${getMoodColor
+                            <Badge className={`${getMoodColor(entry.mood)} ${getStatusColor(entry.status)}`}>
+                              {getMoodEmoji(entry.mood)}
+                            </Badge>
+                          </div>
+                          <CardDescription>{entry.content}</CardDescription>
+                        </CardHeader>
+                      </Card>
+                    </motion.div>
+                  ))}
+                </div>
+              </div>
+            </motion.div>
+          </TabsContent>
+          
+          <TabsContent value="twelve-steps">
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ duration: 0.5 }}
+            >
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <motion.div
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.5 }}
+                  className="md:col-span-1"
+                >
+                  <Card className="bg-white h-full border-[#9b87f5]/30">
+                    <CardHeader className="pb-2 bg-gradient-to-r from-[#9b87f5]/10 to-transparent">
+                      <CardTitle className="text-xl flex items-center gap-2">
+                        <CheckSquare className="h-5 w-5 text-[#9b87f5]" />
+                        Current Step Work
+                      </CardTitle>
+                      <CardDescription>Your progress in the 12-step journey</CardDescription>
+                    </CardHeader>
+                    <CardContent className="pt-6">
+                      <div className="mb-6 p-4 bg-blue-50 border border-blue-100 rounded-lg">
+                        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
+                          <div>
+                            <h3 className="font-semibold text-lg text-blue-800">Step 3: Surrender & Decision</h3>
+                            <p className="text-blue-600 max-w-2xl">
+                              "We made a decision to turn our will and our lives over to the care of God as we understood Him."
+                            </p>
+                          </div>
+                          <Badge className="bg-blue-100 text-blue-800 hover:bg-blue-200 border-blue-200">
+                            In Progress
+                          </Badge>
+                        </div>
+                        
+                        <div className="mt-4">
+                          <h4 className="text-sm font-medium mb-2">This Week's Focus:</h4>
+                          <ul className="text-sm text-blue-700 space-y-1">
+                            <li className="flex items-start gap-2">
+                              <CheckSquare className="h-4 w-4 mt-0.5 text-green-600" />
+                              Complete the Step 3 worksheet by Thursday
+                            </li>
+                            <li className="flex items-start gap-2">
+                              <CheckSquare className="h-4 w-4 mt-0.5 text-blue-600" />
+                              Journal about your concept of surrender daily
+                            </li>
+                            <li className="flex items-start gap-2">
+                              <CheckSquare className="h-4 w-4 mt-0.5 text-blue-600" />
+                              Practice the Step 3 prayer each morning and evening
+                            </li>
+                          </ul>
+                        </div>
+                      </div>
+                      
+                      <div className="flex justify-between items-center border-t border-gray-100 pt-4">
+                        <div className="flex items-center gap-2">
+                          <Info className="h-4 w-4 text-gray-500" />
+                          <span className="text-sm text-gray-600">Next step review meeting: July 15, 2023</span>
+                        </div>
+                        <Button variant="link" className="text-[#9b87f5]" onClick={() => setActiveTab("twelve-steps")}>
+                          View All Steps
+                        </Button>
+                      </div>
+                    </CardContent>
+                  </Card>
+                </motion.div>
+                
+                <motion.div
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.5, delay: 0.1 }}
+                  className="md:col-span-2"
+                >
+                  <Card className="bg-white h-full">
+                    <CardHeader className="pb-2">
+                      <CardTitle className="text-xl flex items-center gap-2">
+                        <CheckSquare className="h-5 w-5 text-[#9b87f5]" />
+                        Current Step Work
+                      </CardTitle>
+                      <CardDescription>Your progress in the 12-step journey</CardDescription>
+                    </CardHeader>
+                    <CardContent className="pt-6">
+                      <div className="mb-6 p-4 bg-blue-50 border border-blue-100 rounded-lg">
+                        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
+                          <div>
+                            <h3 className="font-semibold text-lg text-blue-800">Step 4: Moral Inventory</h3>
+                            <p className="text-blue-600 max-w-2xl">
+                              "We made a searching and fearless moral inventory of ourselves."
+                            </p>
+                          </div>
+                          <Badge className="bg-blue-100 text-blue-800 hover:bg-blue-200 border-blue-200">
+                            Upcoming
+                          </Badge>
+                        </div>
+                        
+                        <div className="mt-4">
+                          <h4 className="text-sm font-medium mb-2">This Week's Focus:</h4>
+                          <ul className="text-sm text-blue-700 space-y-1">
+                            <li className="flex items-start gap-2">
+                              <CheckSquare className="h-4 w-4 mt-0.5 text-green-600" />
+                              Set aside regular time for self-reflection and writing
+                            </li>
+                            <li className="flex items-start gap-2">
+                              <CheckSquare className="h-4 w-4 mt-0.5 text-blue-600" />
+                              Be honest about both positive and negative aspects of your character
+                            </li>
+                            <li className="flex items-start gap-2">
+                              <CheckSquare className="h-4 w-4 mt-0.5 text-blue-600" />
+                              Focus on patterns rather than isolated incidents
+                            </li>
+                            <li className="flex items-start gap-2">
+                              <CheckSquare className="h-4 w-4 mt-0.5 text-blue-600" />
+                              Use the worksheets provided by your sponsor
+                            </li>
+                          </ul>
+                        </div>
+                      </div>
+                      
+                      <div className="flex justify-between items-center border-t border-gray-100 pt-4">
+                        <div className="flex items-center gap-2">
+                          <Info className="h-4 w-4 text-gray-500" />
+                          <span className="text-sm text-gray-600">Next step review meeting: July 15, 2023</span>
+                        </div>
+                        <Button variant="link" className="text-[#9b87f5]" onClick={() => setActiveTab("twelve-steps")}>
+                          View All Steps
+                        </Button>
+                      </div>
+                    </CardContent>
+                  </Card>
+                </motion.div>
+                
+                <motion.div
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.5, delay: 0.2 }}
+                  className="md:col-span-3"
+                >
+                  <Card className="bg-white border-[#9b87f5]/30">
+                    <CardHeader className="pb-2 bg-gradient-to-r from-[#9b87f5]/10 to-transparent">
+                      <CardTitle className="text-xl flex items-center gap-2">
+                        <CheckSquare className="h-5 w-5 text-[#9b87f5]" />
+                        Current Step Work
+                      </CardTitle>
+                      <CardDescription>Your progress in the 12-step journey</CardDescription>
+                    </CardHeader>
+                    <CardContent className="pt-6">
+                      <div className="mb-6 p-4 bg-blue-50 border border-blue-100 rounded-lg">
+                        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
+                          <div>
+                            <h3 className="font-semibold text-lg text-blue-800">Step 5: Affirmation</h3>
+                            <p className="text-blue-600 max-w-2xl">
+                              "We affirm that we are powerless over our addiction—that our lives had become unmanageable."
+                            </p>
+                          </div>
+                          <Badge className="bg-blue-100 text-blue-800 hover:bg-blue-200 border-blue-200">
+                            Completed
+                          </Badge>
+                        </div>
+                        
+                        <div className="mt-4">
+                          <h4 className="text-sm font-medium mb-2">This Week's Focus:</h4>
+                          <ul className="text-sm text-blue-700 space-y-1">
+                            <li className="flex items-start gap-2">
+                              <CheckSquare className="h-4 w-4 mt-0.5 text-green-600" />
+                              Reflect on the ways addiction has affected your life
+                            </li>
+                            <li className="flex items-start gap-2">
+                              <CheckSquare className="h-4 w-4 mt-0.5 text-blue-600" />
+                              Identify patterns of unmanageable behavior
+                            </li>
+                            <li className="flex items-start gap-2">
+                              <CheckSquare className="h-4 w-4 mt-0.5 text-blue-600" />
+                              Share honest reflections with your sponsor
+                            </li>
+                            <li className="flex items-start gap-2">
+                              <CheckSquare className="h-4 w-4 mt-0.5 text-blue-600" />
+                              Accept support from the recovery community
+                            </li>
+                          </ul>
+                        </div>
+                      </div>
+                      
+                      <div className="flex justify-between items-center border-t border-gray-100 pt-4">
+                        <div className="flex items-center gap-2">
+                          <Info className="h-4 w-4 text-gray-500" />
+                          <span className="text-sm text-gray-600">Next step review meeting: July 15, 2023</span>
+                        </div>
+                        <Button variant="link" className="text-[#9b87f5]" onClick={() => setActiveTab("twelve-steps")}>
+                          View All Steps
+                        </Button>
+                      </div>
+                    </CardContent>
+                  </Card>
+                </motion.div>
+              </div>
+            </motion.div>
+          </TabsContent>
+          
+          <TabsContent value="resources">
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ duration: 0.5 }}
+            >
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <motion.div
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.5 }}
+                  className="md:col-span-1"
+                >
+                  <Card className="bg-white h-full border-[#9b87f5]/30">
+                    <CardHeader className="pb-2 bg-gradient-to-r from-[#9b87f5]/10 to-transparent">
+                      <CardTitle className="text-xl flex items-center gap-2">
+                        <FileText className="h-5 w-5 text-[#9b87f5]" />
+                        The NA Basic Text (PDF)
+                      </CardTitle>
+                      <CardDescription>The primary text for Narcotics Anonymous fellowship.</CardDescription>
+                    </CardHeader>
+                    <CardContent className="pt-6">
+                      <div className="flex flex-col gap-4">
+                        <div className="text-center mb-4">
+                          <div className="w-24 h-24 mx-auto bg-gradient-to-br from-[#9b87f5] to-[#7E69AB] rounded-full flex items-center justify-center text-white text-2xl font-bold">
+                            T
+                          </div>
+                          <h3 className="text-xl font-semibold mt-2">The NA Basic Text (PDF)</h3>
+                        </div>
+                        
+                        <div className="space-y-3 text-sm">
+                          <div className="flex justify-between items-center py-2 border-b border-gray-100">
+                            <span className="text-gray-600">Type:</span>
+                            <span className="font-medium">PDF</span>
+                          </div>
+                          <div className="flex justify-between items-center py-2 border-b border-gray-100">
+                            <span className="text-gray-600">Description:</span>
+                            <span className="font-medium">The primary text for Narcotics Anonymous fellowship.</span>
+                          </div>
+                        </div>
+                      </div>
+                    </CardContent>
+                  </Card>
+                </motion.div>
+                
+                <motion.div
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.5, delay: 0.1 }}
+                  className="md:col-span-2"
+                >
+                  <Card className="bg-white h-full">
+                    <CardHeader className="pb-2">
+                      <CardTitle className="text-xl flex items-center gap-2">
+                        <CheckSquare className="h-5 w-5 text-[#9b87f5]" />
+                        Step 3 Worksheet
+                      </CardTitle>
+                      <CardDescription>Guided questions and exercises for working through Step 3.</CardDescription>
+                    </CardHeader>
+                    <CardContent className="pt-6">
+                      <div className="flex flex-col gap-4">
+                        <div className="text-center mb-4">
+                          <div className="w-24 h-24 mx-auto bg-gradient-to-br from-[#9b87f5] to-[#7E69AB] rounded-full flex items-center justify-center text-white text-2xl font-bold">
+                            S
+                          </div>
+                          <h3 className="text-xl font-semibold mt-2">Step 3 Worksheet</h3>
+                        </div>
+                        
+                        <div className="space-y-3 text-sm">
+                          <div className="flex justify-between items-center py-2 border-b border-gray-100">
+                            <span className="text-gray-600">Type:</span>
+                            <span className="font-medium">PDF</span>
+                          </div>
+                          <div className="flex justify-between items-center py-2 border-b border-gray-100">
+                            <span className="text-gray-600">Description:</span>
+                            <span className="font-medium">Guided questions and exercises for working through Step 3.</span>
+                          </div>
+                        </div>
+                      </div>
+                    </CardContent>
+                  </Card>
+                </motion.div>
+                
+                <motion.div
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.5, delay: 0.2 }}
+                  className="md:col-span-3"
+                >
+                  <Card className="bg-white border-[#9b87f5]/30">
+                    <CardHeader className="pb-2 bg-gradient-to-r from-[#9b87f5]/10 to-transparent">
+                      <CardTitle className="text-xl flex items-center gap-2">
+                        <Download className="h-5 w-5 text-[#9b87f5]" />
+                        Recovery Meditation Series
+                      </CardTitle>
+                      <CardDescription>Guided meditations focused on recovery principles.</CardDescription>
+                    </CardHeader>
+                    <CardContent className="pt-6">
+                      <div className="flex flex-col gap-4">
+                        <div className="text-center mb-4">
+                          <div className="w-24 h-24 mx-auto bg-gradient-to-br from-[#9b87f5] to-[#7E69AB] rounded-full flex items-center justify-center text-white text-2xl font-bold">
+                            R
+                          </div>
+                          <h3 className="text-xl font-semibold mt-2">Recovery Meditation Series</h3>
+                        </div>
+                        
+                        <div className="space-y-3 text-sm">
+                          <div className="flex justify-between items-center py-2 border-b border-gray-100">
+                            <span className="text-gray-600">Type:</span>
+                            <span className="font-medium">Audio</span>
+                          </div>
+                          <div className="flex justify-between items-center py-2 border-b border-gray-100">
+                            <span className="text-gray-600">Description:</span>
+                            <span className="font-medium">Guided meditations focused on recovery principles.</span>
+                          </div>
+                        </div>
+                      </div>
+                    </CardContent>
+                  </Card>
+                </motion.div>
+              </div>
+            </motion.div>
+          </TabsContent>
+        </Tabs>
+      </div>
+    </div>
+  );
+};
+
+export default MySponsor;
