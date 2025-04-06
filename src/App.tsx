@@ -35,6 +35,7 @@ import TherapistQuestionnaire from "./pages/TherapistQuestionnaire";
 import Journaling from "./pages/Journaling";
 import GamePage from "./pages/GamePage";
 import MentalHealthGames from "./pages/MentalHealthGames";
+import NotFound from "./pages/NotFound";
 
 function App() {
   const location = useLocation();
@@ -78,6 +79,7 @@ function App() {
         <Route path="/family-support" element={<FamilySupport />} />
         <Route path="/therapist-questionnaire" element={<TherapistQuestionnaire />} />
         <Route path="/journaling" element={<Journaling />} />
+        <Route path="*" element={<NotFound />} />
       </Routes>
       <Toaster />
     </>
