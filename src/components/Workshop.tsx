@@ -40,6 +40,80 @@ interface JournalEntry {
   exerciseId: string;
 }
 
+// Map workshop IDs to relevant YouTube video IDs
+const getVideoForWorkshop = (workshopId: string, sectionIndex: number): string => {
+  const videoMappings: {[key: string]: string[]} = {
+    "mindful-communication": [
+      "aseNAGQBxNc", // Communication skills
+      "HAnw168huqA", // Active listening
+      "R1vskiVDwl4"  // Mindful speaking
+    ],
+    "emotional-regulation": [
+      "vz6k_GnReUs", // Emotional regulation techniques
+      "F2hc2FLOdhI", // Managing difficult emotions
+      "QTsUEOUaWpY"  // Mindfulness for emotions
+    ],
+    "stress-management": [
+      "0fL-pn80s-c", // Stress management techniques
+      "ztvojZb_NzU", // Deep breathing
+      "gnVdXN_pRtw"  // Progressive muscle relaxation
+    ],
+    "better-sleep": [
+      "acEH2JnBDpI", // Sleep hygiene
+      "A5dE25ANU0k", // Bedtime routine
+      "t0kACis_dJE"  // Managing insomnia
+    ],
+    "cognitive-reframing": [
+      "RORPx-Y6ByY", // Cognitive reframing
+      "ZU3MPwU8Gv4", // Recognizing cognitive distortions
+      "hQkXJE0fAh0"  // Positive thinking strategies
+    ],
+    "gratitude-practice": [
+      "WPPPFqsECz0", // Benefits of gratitude
+      "sCV-MSIryic", // Gratitude journal techniques
+      "aqKvjXXBvW4"  // Daily gratitude practices
+    ],
+    "self-compassion": [
+      "Nzq_i8U4Kgs", // Self-compassion techniques
+      "dz0pNiJwudM", // Overcoming self-criticism
+      "Nee-XT5Yerg"  // Self-compassion meditation
+    ],
+    "social-connection": [
+      "HDZs6JY8zms", // Building meaningful connections
+      "ByqYjnZVLmE", // Social wellness tips
+      "k6uVnG4Uxkk"  // Communication in relationships
+    ],
+    "anxiety-management": [
+      "WWloIAQpMcQ", // Anxiety management tools
+      "O-6f5wQXSu8", // Grounding techniques
+      "qvaB2d5yDf8"  // Breaking the anxiety cycle
+    ],
+    "boundary-setting": [
+      "s8IqpwOYYhI", // Setting healthy boundaries
+      "ZQrFHHsF4eo", // Assertive communication
+      "rtsHUeKnkC8"  // Boundary setting examples
+    ],
+    "values-alignment": [
+      "uaq9Ysi2T1g", // Values clarification
+      "Zh3vAcAsFpk", // Living your values
+      "Y8hi_x7cC8c"  // Values-based decisions
+    ],
+    "habit-formation": [
+      "FSZnIjO5mFI", // Habit formation science
+      "AdKUJxjn-R8", // Building healthy habits
+      "U_nzRU35qSM"  // Breaking bad habits
+    ]
+  };
+  
+  // Return default video if workshop ID isn't found
+  if (!videoMappings[workshopId]) {
+    return "L8tONnEoSNE"; // Default video about mental wellness
+  }
+  
+  // Return specific section video if available, otherwise first video
+  return videoMappings[workshopId][sectionIndex] || videoMappings[workshopId][0];
+};
+
 const Workshop: React.FC<WorkshopProps> = ({ workshopData }) => {
   const [activeVideoSection, setActiveVideoSection] = useState<number | null>(null);
   const [completedExercises, setCompletedExercises] = useState<Set<string>>(new Set());
@@ -317,18 +391,13 @@ const Workshop: React.FC<WorkshopProps> = ({ workshopData }) => {
                 {activeVideoSection === sectionIndex && (
                   <div className="px-6 pb-4">
                     <div className="relative rounded-md overflow-hidden bg-black aspect-video mb-3">
-                      <video 
-                        className="w-full h-full object-cover"
-                        autoPlay
-                        controls
-                        loop
-                        muted={isMuted}
-                        poster={`https://picsum.photos/seed/${workshopData.id}-${sectionIndex}/1280/720`}
-                      >
-                        {/* Using a sample video URL - in production you would use actual workshop videos */}
-                        <source src="https://interactive-examples.mdn.mozilla.net/media/cc0-videos/flower.mp4" type="video/mp4" />
-                        Your browser does not support the video tag.
-                      </video>
+                      <iframe
+                        className="w-full h-full"
+                        src={`https://www.youtube.com/embed/${getVideoForWorkshop(workshopData.id, sectionIndex)}?autoplay=1${isMuted ? '&mute=1' : ''}`}
+                        title={`${section.title} Workshop Video`}
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                        allowFullScreen
+                      ></iframe>
                       
                       <div className="absolute bottom-4 left-4 flex gap-2">
                         <Button

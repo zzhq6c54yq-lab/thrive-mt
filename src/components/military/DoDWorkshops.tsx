@@ -1,4 +1,3 @@
-
 import React, { useState } from "react";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -24,7 +23,8 @@ const DoDWorkshops = () => {
       facilitator: "Dr. Michael Rivera, Military Psychologist",
       spots: 15,
       image: "/lovable-uploads/bce2b3d1-dbc0-4e7c-a7d1-98811182fe0a.png",
-      tags: ["stress", "combat", "coping"]
+      tags: ["stress", "combat", "coping"],
+      videoId: "0fL-pn80s-c"
     },
     {
       id: "w2",
@@ -37,7 +37,8 @@ const DoDWorkshops = () => {
       facilitator: "Sarah Johnson, LMFT, Military Family Specialist",
       spots: 20,
       image: "/lovable-uploads/bce2b3d1-dbc0-4e7c-a7d1-98811182fe0a.png",
-      tags: ["family", "communication", "resilience"]
+      tags: ["family", "communication", "resilience"],
+      videoId: "HDZs6JY8zms"
     },
     {
       id: "w3",
@@ -49,7 +50,8 @@ const DoDWorkshops = () => {
       facilitator: "Col. James Peterson (Ret.), PhD, Trauma Specialist",
       spots: 12,
       image: "/lovable-uploads/bce2b3d1-dbc0-4e7c-a7d1-98811182fe0a.png",
-      tags: ["ptsd", "trauma", "recovery"]
+      tags: ["ptsd", "trauma", "recovery"],
+      videoId: "F2hc2FLOdhI"
     },
     {
       id: "w4",
@@ -62,7 +64,8 @@ const DoDWorkshops = () => {
       facilitator: "Veteran Transition Team & Career Counselors",
       spots: 30,
       image: "/lovable-uploads/bce2b3d1-dbc0-4e7c-a7d1-98811182fe0a.png",
-      tags: ["transition", "career", "civilian"]
+      tags: ["transition", "career", "civilian"],
+      videoId: "uaq9Ysi2T1g"
     },
     {
       id: "w5",
@@ -75,7 +78,8 @@ const DoDWorkshops = () => {
       facilitator: "Dr. Elena Martinez, MST Program Coordinator",
       spots: 8,
       image: "/lovable-uploads/bce2b3d1-dbc0-4e7c-a7d1-98811182fe0a.png",
-      tags: ["mst", "support", "trauma"]
+      tags: ["mst", "support", "trauma"],
+      videoId: "Nee-XT5Yerg"
     },
     {
       id: "w6",
@@ -87,7 +91,8 @@ const DoDWorkshops = () => {
       facilitator: "Master Sgt. Robert Williams (Ret.), Mindfulness Instructor",
       spots: 25,
       image: "/lovable-uploads/bce2b3d1-dbc0-4e7c-a7d1-98811182fe0a.png",
-      tags: ["mindfulness", "meditation", "coping"]
+      tags: ["mindfulness", "meditation", "coping"],
+      videoId: "aseNAGQBxNc"
     }
   ];
   
@@ -147,7 +152,8 @@ const DoDWorkshops = () => {
     navigate(`/workshop/${workshopMapping[workshop.id] || workshop.id}`, { 
       state: { 
         workshopTitle: workshop.title,
-        activeTab: "content"
+        activeTab: "content",
+        videoId: workshop.videoId
       }
     });
   };
@@ -218,6 +224,20 @@ const DoDWorkshops = () => {
                   className="absolute inset-0 opacity-30 bg-cover bg-center"
                   style={{ backgroundImage: `url(${workshop.image})` }}
                 ></div>
+                <div className="absolute inset-0 flex items-center justify-center z-20">
+                  <Button 
+                    variant="outline" 
+                    size="sm"
+                    className="bg-white/30 backdrop-blur-sm hover:bg-white/50 border-white/50 text-white"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      window.open(`https://www.youtube.com/watch?v=${workshop.videoId}`, '_blank');
+                    }}
+                  >
+                    <Play className="h-4 w-4 mr-2" />
+                    Preview Workshop
+                  </Button>
+                </div>
                 <div className="absolute top-3 right-3 z-20">
                   <div className="flex items-center gap-1.5 bg-[#0c1016]/80 backdrop-blur-sm py-1 px-2 rounded-md border border-blue-900/30">
                     {getWorkshopTypeIcon(workshop.type)}

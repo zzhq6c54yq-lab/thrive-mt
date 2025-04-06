@@ -4,6 +4,8 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { FileText, Building, Users, Calendar } from "lucide-react";
 import useTranslation from "@/hooks/useTranslation";
+import FeatureCard from "./FeatureCard";
+import { workshopData } from "@/data/workshopData";
 
 interface WorkshopsTabProps {
   onFeatureClick: (path: string) => void;
@@ -11,6 +13,12 @@ interface WorkshopsTabProps {
 
 const WorkshopsTab: React.FC<WorkshopsTabProps> = ({ onFeatureClick }) => {
   const { isSpanish } = useTranslation();
+  
+  // Select a few featured workshops
+  const featuredWorkshops = [
+    workshopData.find(w => w.id === "stress-management"),
+    workshopData.find(w => w.id === "mindful-communication"),
+  ].filter(Boolean);
   
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-6">
@@ -37,7 +45,7 @@ const WorkshopsTab: React.FC<WorkshopsTabProps> = ({ onFeatureClick }) => {
           </div>
           <Button 
             className="w-full bg-amber-700 hover:bg-amber-800 text-white"
-            onClick={() => onFeatureClick("workshops")}
+            onClick={() => onFeatureClick("workshops/stress-management")}
           >
             {isSpanish ? "Registrarse Ahora" : "Register Now"}
           </Button>
@@ -67,7 +75,7 @@ const WorkshopsTab: React.FC<WorkshopsTabProps> = ({ onFeatureClick }) => {
           </div>
           <Button 
             className="w-full bg-amber-700 hover:bg-amber-800 text-white"
-            onClick={() => onFeatureClick("workshops")}
+            onClick={() => onFeatureClick("workshops/social-connection")}
           >
             {isSpanish ? "Registrarse Ahora" : "Register Now"}
           </Button>
@@ -97,6 +105,27 @@ const WorkshopsTab: React.FC<WorkshopsTabProps> = ({ onFeatureClick }) => {
           </Button>
         </CardContent>
       </Card>
+      
+      {/* Display a few featured workshops */}
+      <div className="col-span-1 md:col-span-2 mt-4">
+        <h3 className="text-xl font-bold text-white mb-4">
+          {isSpanish ? "Talleres Recomendados" : "Featured Workshops"}
+        </h3>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+          {featuredWorkshops.map((workshop) => (
+            workshop && (
+              <FeatureCard
+                key={workshop.id}
+                title={workshop.title}
+                description={workshop.description}
+                icon={workshop.icon}
+                color={workshop.color}
+                onClick={() => onFeatureClick(`workshops/${workshop.id}`)}
+              />
+            )
+          ))}
+        </div>
+      </div>
     </div>
   );
 };
