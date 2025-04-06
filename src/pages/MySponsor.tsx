@@ -5,7 +5,8 @@ import { useNavigate } from "react-router-dom";
 import {
   Heart, Phone, MessageSquare, Video, Calendar, Clock, 
   Info, ArrowLeft, PenSquare, FileText, CheckSquare, ChevronDown,
-  Upload, Download, AlertTriangle, Share2, Sparkles
+  Upload, Download, AlertTriangle, Share2, Sparkles, Users,
+  EyeOff, Eye, Lock, Mail, MapPin, Headphones, ArrowRight
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
