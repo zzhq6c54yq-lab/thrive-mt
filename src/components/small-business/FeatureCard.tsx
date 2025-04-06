@@ -20,7 +20,15 @@ const FeatureCard: React.FC<FeatureCardProps> = ({
 }) => (
   <Card 
     onClick={onClick}
-    className="bg-[#1F1B15] border-amber-900/30 hover:border-amber-700/50 transition-colors shadow-lg cursor-pointer hover:shadow-xl"
+    role="button"
+    tabIndex={0}
+    onKeyDown={(e) => {
+      if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        onClick();
+      }
+    }}
+    className="bg-[#1F1B15] border-amber-900/30 hover:border-amber-700/50 transition-colors shadow-lg cursor-pointer hover:shadow-xl focus:outline-none focus:ring-2 focus:ring-amber-500 focus:ring-opacity-50"
   >
     <CardContent className="p-6">
       <div className="flex items-center gap-3 mb-4">

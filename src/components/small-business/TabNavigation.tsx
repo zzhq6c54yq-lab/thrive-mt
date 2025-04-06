@@ -1,5 +1,6 @@
 
 import React from "react";
+import useTranslation from "@/hooks/useTranslation";
 
 interface TabNavigationProps {
   activeTab: 'business' | 'employee' | 'resources' | 'workshops';
@@ -7,6 +8,8 @@ interface TabNavigationProps {
 }
 
 const TabNavigation: React.FC<TabNavigationProps> = ({ activeTab, onTabChange }) => {
+  const { isSpanish } = useTranslation();
+
   return (
     <div className="flex overflow-x-auto scrollbar-hide">
       <button
@@ -17,7 +20,7 @@ const TabNavigation: React.FC<TabNavigationProps> = ({ activeTab, onTabChange })
         }`}
         onClick={() => onTabChange('business')}
       >
-        For Business Owners
+        {isSpanish ? "Para Emprendedores" : "For Business Owners"}
       </button>
       <button
         className={`px-6 py-4 font-medium text-sm flex-shrink-0 border-b-2 ${
@@ -27,7 +30,7 @@ const TabNavigation: React.FC<TabNavigationProps> = ({ activeTab, onTabChange })
         }`}
         onClick={() => onTabChange('employee')}
       >
-        For Employees
+        {isSpanish ? "Para Empleados" : "For Employees"}
       </button>
       <button
         className={`px-6 py-4 font-medium text-sm flex-shrink-0 border-b-2 ${
@@ -37,7 +40,7 @@ const TabNavigation: React.FC<TabNavigationProps> = ({ activeTab, onTabChange })
         }`}
         onClick={() => onTabChange('resources')}
       >
-        Resources
+        {isSpanish ? "Recursos" : "Resources"}
       </button>
       <button
         className={`px-6 py-4 font-medium text-sm flex-shrink-0 border-b-2 ${
@@ -47,7 +50,7 @@ const TabNavigation: React.FC<TabNavigationProps> = ({ activeTab, onTabChange })
         }`}
         onClick={() => onTabChange('workshops')}
       >
-        Workshops
+        {isSpanish ? "Talleres" : "Workshops"}
       </button>
     </div>
   );
