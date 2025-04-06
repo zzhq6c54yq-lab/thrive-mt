@@ -79,7 +79,7 @@ const KeyFeatures: React.FC<KeyFeaturesProps> = ({
   return (
     <div className="mt-8">
       <h2 className="text-xl md:text-2xl font-semibold mb-5 flex items-center gap-2 text-white">
-        <span className="p-1 rounded-full bg-[#9b87f5]/20">
+        <span className="p-1 rounded-full bg-[#9b87f5]/30">
           <Heart className="h-5 w-5 text-[#9b87f5]" />
         </span>
         Key Features
@@ -92,337 +92,337 @@ const KeyFeatures: React.FC<KeyFeaturesProps> = ({
         animate="show"
       >
         {/* Progress Reports */}
-        <motion.div variants={item} whileHover={{ y: -5 }} transition={{ duration: 0.2 }}>
+        <motion.div variants={item} whileHover={{ y: -5, scale: 1.03 }} transition={{ duration: 0.2 }}>
           <Button
             variant="outline"
-            className={`w-full h-auto flex flex-col items-center gap-2 p-4 group border-transparent ${
+            className={`w-full h-auto flex flex-col items-center gap-2 p-4 group border-none bg-gradient-to-br from-[#6366F1] to-[#4338CA] hover:shadow-[0_0_15px_rgba(99,102,241,0.7)] ${
               isRecommended("progress-reports")
-                ? "bg-gradient-to-br from-[#9b87f5] to-[#6C85DD]"
-                : "bg-gradient-to-br from-[#9b87f5]/80 to-[#6C85DD]/80"
+                ? "shadow-[0_0_20px_rgba(99,102,241,0.5)]"
+                : ""
             }`}
             onClick={() => handleNavigate('/progress-reports')}
           >
-            <div className="p-2 rounded-full bg-white/20 group-hover:bg-white/30 transition-colors">
-              <BarChart3 className="h-5 w-5 text-white" />
+            <div className="p-2 rounded-full bg-white/20 group-hover:bg-white/30 group-hover:scale-110 transition-all duration-300">
+              <BarChart3 className="h-6 w-6 text-white drop-shadow-[0_2px_3px_rgba(0,0,0,0.3)]" />
             </div>
-            <span className="text-sm font-medium text-white">Progress Reports</span>
+            <span className="text-sm md:text-base font-bold text-white drop-shadow-[0_2px_3px_rgba(0,0,0,0.3)]">Progress Reports</span>
             {isRecommended("progress-reports") && (
-              <span className="text-xs px-2 py-0.5 rounded-full bg-white/30 text-white">Recommended</span>
+              <span className="text-xs px-2 py-0.5 rounded-full bg-white/30 text-white font-medium animate-pulse">Recommended</span>
             )}
           </Button>
         </motion.div>
         
         {/* Family Resources */}
-        <motion.div variants={item} whileHover={{ y: -5 }} transition={{ duration: 0.2 }}>
+        <motion.div variants={item} whileHover={{ y: -5, scale: 1.03 }} transition={{ duration: 0.2 }}>
           <Button
             variant="outline"
-            className={`w-full h-auto flex flex-col items-center gap-2 p-4 group border-transparent ${
+            className={`w-full h-auto flex flex-col items-center gap-2 p-4 group border-none bg-gradient-to-br from-[#D946EF] to-[#8B5CF6] hover:shadow-[0_0_15px_rgba(217,70,239,0.7)] ${
               isRecommended("family-resources")
-                ? "bg-gradient-to-br from-[#D946EF] to-[#8D65C5]"
-                : "bg-gradient-to-br from-[#D946EF]/80 to-[#8D65C5]/80"
+                ? "shadow-[0_0_20px_rgba(217,70,239,0.5)]"
+                : ""
             }`}
             onClick={() => handleNavigate('/family-resources')}
           >
-            <div className="p-2 rounded-full bg-white/20 group-hover:bg-white/30 transition-colors">
-              <HandHeart className="h-5 w-5 text-white" />
+            <div className="p-2 rounded-full bg-white/20 group-hover:bg-white/30 group-hover:scale-110 transition-all duration-300">
+              <HandHeart className="h-6 w-6 text-white drop-shadow-[0_2px_3px_rgba(0,0,0,0.3)]" />
             </div>
-            <span className="text-sm font-medium text-white">Family Resources</span>
+            <span className="text-sm md:text-base font-bold text-white drop-shadow-[0_2px_3px_rgba(0,0,0,0.3)]">Family Resources</span>
             {isRecommended("family-resources") && (
-              <span className="text-xs px-2 py-0.5 rounded-full bg-white/30 text-white">Recommended</span>
+              <span className="text-xs px-2 py-0.5 rounded-full bg-white/30 text-white font-medium animate-pulse">Recommended</span>
             )}
           </Button>
         </motion.div>
         
         {/* Mental Wellness */}
-        <motion.div variants={item} whileHover={{ y: -5 }} transition={{ duration: 0.2 }}>
+        <motion.div variants={item} whileHover={{ y: -5, scale: 1.03 }} transition={{ duration: 0.2 }}>
           <Button
             variant="outline"
-            className={`w-full h-auto flex flex-col items-center gap-2 p-4 group border-transparent ${
+            className={`w-full h-auto flex flex-col items-center gap-2 p-4 group border-none bg-gradient-to-br from-[#3B82F6] to-[#1E40AF] hover:shadow-[0_0_15px_rgba(59,130,246,0.7)] ${
               isRecommended("mental-wellness")
-                ? "bg-gradient-to-br from-[#6C85DD] to-[#6366F1]"
-                : "bg-gradient-to-br from-[#6C85DD]/80 to-[#6366F1]/80"
+                ? "shadow-[0_0_20px_rgba(59,130,246,0.5)]"
+                : ""
             }`}
             onClick={() => handleNavigate('/mental-wellness')}
           >
-            <div className="p-2 rounded-full bg-white/20 group-hover:bg-white/30 transition-colors">
-              <BookOpen className="h-5 w-5 text-white" />
+            <div className="p-2 rounded-full bg-white/20 group-hover:bg-white/30 group-hover:scale-110 transition-all duration-300">
+              <BookOpen className="h-6 w-6 text-white drop-shadow-[0_2px_3px_rgba(0,0,0,0.3)]" />
             </div>
-            <span className="text-sm font-medium text-white">Mental Wellness</span>
+            <span className="text-sm md:text-base font-bold text-white drop-shadow-[0_2px_3px_rgba(0,0,0,0.3)]">Mental Wellness</span>
             {isRecommended("mental-wellness") && (
-              <span className="text-xs px-2 py-0.5 rounded-full bg-white/30 text-white">Recommended</span>
+              <span className="text-xs px-2 py-0.5 rounded-full bg-white/30 text-white font-medium animate-pulse">Recommended</span>
             )}
           </Button>
         </motion.div>
         
         {/* Brain Games */}
-        <motion.div variants={item} whileHover={{ y: -5 }} transition={{ duration: 0.2 }}>
+        <motion.div variants={item} whileHover={{ y: -5, scale: 1.03 }} transition={{ duration: 0.2 }}>
           <Button
             variant="outline"
-            className={`w-full h-auto flex flex-col items-center gap-2 p-4 group border-transparent ${
+            className={`w-full h-auto flex flex-col items-center gap-2 p-4 group border-none bg-gradient-to-br from-[#F97316] to-[#C2410C] hover:shadow-[0_0_15px_rgba(249,115,22,0.7)] ${
               isRecommended("games")
-                ? "bg-gradient-to-br from-[#FF8364] to-[#FF97A1]"
-                : "bg-gradient-to-br from-[#FF8364]/80 to-[#FF97A1]/80"
+                ? "shadow-[0_0_20px_rgba(249,115,22,0.5)]"
+                : ""
             }`}
             onClick={() => handleNavigate('/games-and-quizzes')}
           >
-            <div className="p-2 rounded-full bg-white/20 group-hover:bg-white/30 transition-colors">
-              <Brain className="h-5 w-5 text-white" />
+            <div className="p-2 rounded-full bg-white/20 group-hover:bg-white/30 group-hover:scale-110 transition-all duration-300">
+              <Brain className="h-6 w-6 text-white drop-shadow-[0_2px_3px_rgba(0,0,0,0.3)]" />
             </div>
-            <span className="text-sm font-medium text-white">Brain Games</span>
+            <span className="text-sm md:text-base font-bold text-white drop-shadow-[0_2px_3px_rgba(0,0,0,0.3)]">Brain Games</span>
             {isRecommended("games") && (
-              <span className="text-xs px-2 py-0.5 rounded-full bg-white/30 text-white">Recommended</span>
+              <span className="text-xs px-2 py-0.5 rounded-full bg-white/30 text-white font-medium animate-pulse">Recommended</span>
             )}
           </Button>
         </motion.div>
         
         {/* Video Diary */}
-        <motion.div variants={item} whileHover={{ y: -5 }} transition={{ duration: 0.2 }}>
+        <motion.div variants={item} whileHover={{ y: -5, scale: 1.03 }} transition={{ duration: 0.2 }}>
           <Button
             variant="outline"
-            className={`w-full h-auto flex flex-col items-center gap-2 p-4 group border-transparent ${
+            className={`w-full h-auto flex flex-col items-center gap-2 p-4 group border-none bg-gradient-to-br from-[#F59E0B] to-[#B45309] hover:shadow-[0_0_15px_rgba(245,158,11,0.7)] ${
               isRecommended("video-diary")
-                ? "bg-gradient-to-br from-[#F59E0B] to-[#FBBF24]"
-                : "bg-gradient-to-br from-[#F59E0B]/80 to-[#FBBF24]/80"
+                ? "shadow-[0_0_20px_rgba(245,158,11,0.5)]"
+                : ""
             }`}
             onClick={() => handleNavigate('/video-diary')}
           >
-            <div className="p-2 rounded-full bg-white/20 group-hover:bg-white/30 transition-colors">
-              <Video className="h-5 w-5 text-white" />
+            <div className="p-2 rounded-full bg-white/20 group-hover:bg-white/30 group-hover:scale-110 transition-all duration-300">
+              <Video className="h-6 w-6 text-white drop-shadow-[0_2px_3px_rgba(0,0,0,0.3)]" />
             </div>
-            <span className="text-sm font-medium text-white">Video Diary</span>
+            <span className="text-sm md:text-base font-bold text-white drop-shadow-[0_2px_3px_rgba(0,0,0,0.3)]">Video Diary</span>
             {isRecommended("video-diary") && (
-              <span className="text-xs px-2 py-0.5 rounded-full bg-white/30 text-white">Recommended</span>
+              <span className="text-xs px-2 py-0.5 rounded-full bg-white/30 text-white font-medium animate-pulse">Recommended</span>
             )}
           </Button>
         </motion.div>
         
         {/* Wellness Challenges */}
-        <motion.div variants={item} whileHover={{ y: -5 }} transition={{ duration: 0.2 }}>
+        <motion.div variants={item} whileHover={{ y: -5, scale: 1.03 }} transition={{ duration: 0.2 }}>
           <Button
             variant="outline"
-            className={`w-full h-auto flex flex-col items-center gap-2 p-4 group border-transparent ${
+            className={`w-full h-auto flex flex-col items-center gap-2 p-4 group border-none bg-gradient-to-br from-[#10B981] to-[#047857] hover:shadow-[0_0_15px_rgba(16,185,129,0.7)] ${
               isRecommended("wellness-challenges")
-                ? "bg-gradient-to-br from-[#10B981] to-[#6EE7B7]"
-                : "bg-gradient-to-br from-[#10B981]/80 to-[#6EE7B7]/80"
+                ? "shadow-[0_0_20px_rgba(16,185,129,0.5)]"
+                : ""
             }`}
             onClick={() => handleNavigate('/wellness-challenges')}
           >
-            <div className="p-2 rounded-full bg-white/20 group-hover:bg-white/30 transition-colors">
-              <Activity className="h-5 w-5 text-white" />
+            <div className="p-2 rounded-full bg-white/20 group-hover:bg-white/30 group-hover:scale-110 transition-all duration-300">
+              <Activity className="h-6 w-6 text-white drop-shadow-[0_2px_3px_rgba(0,0,0,0.3)]" />
             </div>
-            <span className="text-sm font-medium text-white">Wellness Challenges</span>
+            <span className="text-sm md:text-base font-bold text-white drop-shadow-[0_2px_3px_rgba(0,0,0,0.3)]">Wellness Challenges</span>
             {isRecommended("wellness-challenges") && (
-              <span className="text-xs px-2 py-0.5 rounded-full bg-white/30 text-white">Recommended</span>
+              <span className="text-xs px-2 py-0.5 rounded-full bg-white/30 text-white font-medium animate-pulse">Recommended</span>
             )}
           </Button>
         </motion.div>
         
         {/* Resource Library */}
-        <motion.div variants={item} whileHover={{ y: -5 }} transition={{ duration: 0.2 }}>
+        <motion.div variants={item} whileHover={{ y: -5, scale: 1.03 }} transition={{ duration: 0.2 }}>
           <Button
             variant="outline"
-            className={`w-full h-auto flex flex-col items-center gap-2 p-4 group border-transparent ${
+            className={`w-full h-auto flex flex-col items-center gap-2 p-4 group border-none bg-gradient-to-br from-[#0369A1] to-[#075985] hover:shadow-[0_0_15px_rgba(3,105,161,0.7)] ${
               isRecommended("resource-library")
-                ? "bg-gradient-to-br from-[#3B82F6] to-[#93C5FD]"
-                : "bg-gradient-to-br from-[#3B82F6]/80 to-[#93C5FD]/80"
+                ? "shadow-[0_0_20px_rgba(3,105,161,0.5)]"
+                : ""
             }`}
             onClick={() => handleNavigate('/resource-library')}
           >
-            <div className="p-2 rounded-full bg-white/20 group-hover:bg-white/30 transition-colors">
-              <BookText className="h-5 w-5 text-white" />
+            <div className="p-2 rounded-full bg-white/20 group-hover:bg-white/30 group-hover:scale-110 transition-all duration-300">
+              <BookText className="h-6 w-6 text-white drop-shadow-[0_2px_3px_rgba(0,0,0,0.3)]" />
             </div>
-            <span className="text-sm font-medium text-white">Resource Library</span>
+            <span className="text-sm md:text-base font-bold text-white drop-shadow-[0_2px_3px_rgba(0,0,0,0.3)]">Resource Library</span>
             {isRecommended("resource-library") && (
-              <span className="text-xs px-2 py-0.5 rounded-full bg-white/30 text-white">Recommended</span>
+              <span className="text-xs px-2 py-0.5 rounded-full bg-white/30 text-white font-medium animate-pulse">Recommended</span>
             )}
           </Button>
         </motion.div>
         
         {/* My Sponsor (NA/AA alternative) */}
-        <motion.div variants={item} whileHover={{ y: -5 }} transition={{ duration: 0.2 }}>
+        <motion.div variants={item} whileHover={{ y: -5, scale: 1.03 }} transition={{ duration: 0.2 }}>
           <Button
             variant="outline"
-            className={`w-full h-auto flex flex-col items-center gap-2 p-4 group border-transparent ${
+            className={`w-full h-auto flex flex-col items-center gap-2 p-4 group border-none bg-gradient-to-br from-[#EC4899] to-[#BE185D] hover:shadow-[0_0_15px_rgba(236,72,153,0.7)] ${
               isRecommended("sponsor-alternative")
-                ? "bg-gradient-to-br from-[#EC4899] to-[#F9A8D4]"
-                : "bg-gradient-to-br from-[#EC4899]/80 to-[#F9A8D4]/80"
+                ? "shadow-[0_0_20px_rgba(236,72,153,0.5)]"
+                : ""
             }`}
             onClick={() => handleNavigate('/my-sponsor')}
           >
-            <div className="p-2 rounded-full bg-white/20 group-hover:bg-white/30 transition-colors">
-              <Users className="h-5 w-5 text-white" />
+            <div className="p-2 rounded-full bg-white/20 group-hover:bg-white/30 group-hover:scale-110 transition-all duration-300">
+              <Users className="h-6 w-6 text-white drop-shadow-[0_2px_3px_rgba(0,0,0,0.3)]" />
             </div>
-            <span className="text-sm font-medium text-white">My Sponsor</span>
+            <span className="text-sm md:text-base font-bold text-white drop-shadow-[0_2px_3px_rgba(0,0,0,0.3)]">My Sponsor</span>
             {isRecommended("sponsor-alternative") && (
-              <span className="text-xs px-2 py-0.5 rounded-full bg-white/30 text-white">Recommended</span>
+              <span className="text-xs px-2 py-0.5 rounded-full bg-white/30 text-white font-medium animate-pulse">Recommended</span>
             )}
           </Button>
         </motion.div>
         
         {/* Binaural Beats */}
-        <motion.div variants={item} whileHover={{ y: -5 }} transition={{ duration: 0.2 }}>
+        <motion.div variants={item} whileHover={{ y: -5, scale: 1.03 }} transition={{ duration: 0.2 }}>
           <Button
             variant="outline"
-            className={`w-full h-auto flex flex-col items-center gap-2 p-4 group border-transparent ${
+            className={`w-full h-auto flex flex-col items-center gap-2 p-4 group border-none bg-gradient-to-br from-[#8B5CF6] to-[#6D28D9] hover:shadow-[0_0_15px_rgba(139,92,246,0.7)] ${
               isRecommended("binaural-beats")
-                ? "bg-gradient-to-br from-[#8B5CF6] to-[#C4B5FD]"
-                : "bg-gradient-to-br from-[#8B5CF6]/80 to-[#C4B5FD]/80"
+                ? "shadow-[0_0_20px_rgba(139,92,246,0.5)]"
+                : ""
             }`}
             onClick={() => handleNavigate('/binaural-beats')}
           >
-            <div className="p-2 rounded-full bg-white/20 group-hover:bg-white/30 transition-colors">
-              <Headphones className="h-5 w-5 text-white" />
+            <div className="p-2 rounded-full bg-white/20 group-hover:bg-white/30 group-hover:scale-110 transition-all duration-300">
+              <Headphones className="h-6 w-6 text-white drop-shadow-[0_2px_3px_rgba(0,0,0,0.3)]" />
             </div>
-            <span className="text-sm font-medium text-white">Binaural Beats</span>
+            <span className="text-sm md:text-base font-bold text-white drop-shadow-[0_2px_3px_rgba(0,0,0,0.3)]">Binaural Beats</span>
             {isRecommended("binaural-beats") && (
-              <span className="text-xs px-2 py-0.5 rounded-full bg-white/30 text-white">Recommended</span>
+              <span className="text-xs px-2 py-0.5 rounded-full bg-white/30 text-white font-medium animate-pulse">Recommended</span>
             )}
           </Button>
         </motion.div>
         
         {/* Workshops */}
-        <motion.div variants={item} whileHover={{ y: -5 }} transition={{ duration: 0.2 }}>
+        <motion.div variants={item} whileHover={{ y: -5, scale: 1.03 }} transition={{ duration: 0.2 }}>
           <Button
             variant="outline"
-            className={`w-full h-auto flex flex-col items-center gap-2 p-4 group border-transparent ${
+            className={`w-full h-auto flex flex-col items-center gap-2 p-4 group border-none bg-gradient-to-br from-[#059669] to-[#065F46] hover:shadow-[0_0_15px_rgba(5,150,105,0.7)] ${
               isRecommended("workshops")
-                ? "bg-gradient-to-br from-[#059669] to-[#34D399]"
-                : "bg-gradient-to-br from-[#059669]/80 to-[#34D399]/80"
+                ? "shadow-[0_0_20px_rgba(5,150,105,0.5)]"
+                : ""
             }`}
             onClick={() => handleNavigate('/workshops')}
           >
-            <div className="p-2 rounded-full bg-white/20 group-hover:bg-white/30 transition-colors">
-              <Calendar className="h-5 w-5 text-white" />
+            <div className="p-2 rounded-full bg-white/20 group-hover:bg-white/30 group-hover:scale-110 transition-all duration-300">
+              <Calendar className="h-6 w-6 text-white drop-shadow-[0_2px_3px_rgba(0,0,0,0.3)]" />
             </div>
-            <span className="text-sm font-medium text-white">Workshops</span>
+            <span className="text-sm md:text-base font-bold text-white drop-shadow-[0_2px_3px_rgba(0,0,0,0.3)]">Workshops</span>
             {isRecommended("workshops") && (
-              <span className="text-xs px-2 py-0.5 rounded-full bg-white/30 text-white">Recommended</span>
+              <span className="text-xs px-2 py-0.5 rounded-full bg-white/30 text-white font-medium animate-pulse">Recommended</span>
             )}
           </Button>
         </motion.div>
         
         {/* Journaling */}
-        <motion.div variants={item} whileHover={{ y: -5 }} transition={{ duration: 0.2 }}>
+        <motion.div variants={item} whileHover={{ y: -5, scale: 1.03 }} transition={{ duration: 0.2 }}>
           <Button
             variant="outline"
-            className={`w-full h-auto flex flex-col items-center gap-2 p-4 group border-transparent ${
+            className={`w-full h-auto flex flex-col items-center gap-2 p-4 group border-none bg-gradient-to-br from-[#0284C7] to-[#075985] hover:shadow-[0_0_15px_rgba(2,132,199,0.7)] ${
               isRecommended("journaling")
-                ? "bg-gradient-to-br from-[#0284C7] to-[#38BDF8]"
-                : "bg-gradient-to-br from-[#0284C7]/80 to-[#38BDF8]/80"
+                ? "shadow-[0_0_20px_rgba(2,132,199,0.5)]"
+                : ""
             }`}
             onClick={() => handleNavigate('/journaling')}
           >
-            <div className="p-2 rounded-full bg-white/20 group-hover:bg-white/30 transition-colors">
-              <BookText className="h-5 w-5 text-white" />
+            <div className="p-2 rounded-full bg-white/20 group-hover:bg-white/30 group-hover:scale-110 transition-all duration-300">
+              <BookText className="h-6 w-6 text-white drop-shadow-[0_2px_3px_rgba(0,0,0,0.3)]" />
             </div>
-            <span className="text-sm font-medium text-white">Journaling</span>
+            <span className="text-sm md:text-base font-bold text-white drop-shadow-[0_2px_3px_rgba(0,0,0,0.3)]">Journaling</span>
             {isRecommended("journaling") && (
-              <span className="text-xs px-2 py-0.5 rounded-full bg-white/30 text-white">Recommended</span>
+              <span className="text-xs px-2 py-0.5 rounded-full bg-white/30 text-white font-medium animate-pulse">Recommended</span>
             )}
           </Button>
         </motion.div>
         
         {/* Mindfulness & Sleep */}
-        <motion.div variants={item} whileHover={{ y: -5 }} transition={{ duration: 0.2 }}>
+        <motion.div variants={item} whileHover={{ y: -5, scale: 1.03 }} transition={{ duration: 0.2 }}>
           <Button
             variant="outline"
-            className={`w-full h-auto flex flex-col items-center gap-2 p-4 group border-transparent ${
+            className={`w-full h-auto flex flex-col items-center gap-2 p-4 group border-none bg-gradient-to-br from-[#7C3AED] to-[#5B21B6] hover:shadow-[0_0_15px_rgba(124,58,237,0.7)] ${
               isRecommended("mindfulness")
-                ? "bg-gradient-to-br from-[#7C3AED] to-[#A78BFA]"
-                : "bg-gradient-to-br from-[#7C3AED]/80 to-[#A78BFA]/80"
+                ? "shadow-[0_0_20px_rgba(124,58,237,0.5)]"
+                : ""
             }`}
             onClick={() => handleNavigate('/mindfulness-sleep')}
           >
-            <div className="p-2 rounded-full bg-white/20 group-hover:bg-white/30 transition-colors">
-              <Sparkles className="h-5 w-5 text-white" />
+            <div className="p-2 rounded-full bg-white/20 group-hover:bg-white/30 group-hover:scale-110 transition-all duration-300">
+              <Sparkles className="h-6 w-6 text-white drop-shadow-[0_2px_3px_rgba(0,0,0,0.3)]" />
             </div>
-            <span className="text-sm font-medium text-white">Mindfulness & Sleep</span>
+            <span className="text-sm md:text-base font-bold text-white drop-shadow-[0_2px_3px_rgba(0,0,0,0.3)]">Mindfulness & Sleep</span>
             {isRecommended("mindfulness") && (
-              <span className="text-xs px-2 py-0.5 rounded-full bg-white/30 text-white">Recommended</span>
+              <span className="text-xs px-2 py-0.5 rounded-full bg-white/30 text-white font-medium animate-pulse">Recommended</span>
             )}
           </Button>
         </motion.div>
         
         {/* Real-Time Therapy */}
-        <motion.div variants={item} whileHover={{ y: -5 }} transition={{ duration: 0.2 }}>
+        <motion.div variants={item} whileHover={{ y: -5, scale: 1.03 }} transition={{ duration: 0.2 }}>
           <Button
             variant="outline"
-            className={`w-full h-auto flex flex-col items-center gap-2 p-4 group border-transparent ${
+            className={`w-full h-auto flex flex-col items-center gap-2 p-4 group border-none bg-gradient-to-br from-[#E11D48] to-[#9F1239] hover:shadow-[0_0_15px_rgba(225,29,72,0.7)] ${
               isRecommended("real-time-therapy")
-                ? "bg-gradient-to-br from-[#E11D48] to-[#FB7185]"
-                : "bg-gradient-to-br from-[#E11D48]/80 to-[#FB7185]/80"
+                ? "shadow-[0_0_20px_rgba(225,29,72,0.5)]"
+                : ""
             }`}
             onClick={() => handleNavigate('/real-time-therapy')}
           >
-            <div className="p-2 rounded-full bg-white/20 group-hover:bg-white/30 transition-colors">
-              <MessageCircle className="h-5 w-5 text-white" />
+            <div className="p-2 rounded-full bg-white/20 group-hover:bg-white/30 group-hover:scale-110 transition-all duration-300">
+              <MessageCircle className="h-6 w-6 text-white drop-shadow-[0_2px_3px_rgba(0,0,0,0.3)]" />
             </div>
-            <span className="text-sm font-medium text-white">Real-Time Therapy</span>
+            <span className="text-sm md:text-base font-bold text-white drop-shadow-[0_2px_3px_rgba(0,0,0,0.3)]">Real-Time Therapy</span>
             {isRecommended("real-time-therapy") && (
-              <span className="text-xs px-2 py-0.5 rounded-full bg-white/30 text-white">Recommended</span>
+              <span className="text-xs px-2 py-0.5 rounded-full bg-white/30 text-white font-medium animate-pulse">Recommended</span>
             )}
           </Button>
         </motion.div>
         
         {/* Holistic Wellness */}
-        <motion.div variants={item} whileHover={{ y: -5 }} transition={{ duration: 0.2 }}>
+        <motion.div variants={item} whileHover={{ y: -5, scale: 1.03 }} transition={{ duration: 0.2 }}>
           <Button
             variant="outline"
-            className={`w-full h-auto flex flex-col items-center gap-2 p-4 group border-transparent ${
+            className={`w-full h-auto flex flex-col items-center gap-2 p-4 group border-none bg-gradient-to-br from-[#65A30D] to-[#3F6212] hover:shadow-[0_0_15px_rgba(101,163,13,0.7)] ${
               isRecommended("holistic-wellness")
-                ? "bg-gradient-to-br from-[#65A30D] to-[#A3E635]"
-                : "bg-gradient-to-br from-[#65A30D]/80 to-[#A3E635]/80"
+                ? "shadow-[0_0_20px_rgba(101,163,13,0.5)]"
+                : ""
             }`}
             onClick={() => handleNavigate('/holistic-wellness')}
           >
-            <div className="p-2 rounded-full bg-white/20 group-hover:bg-white/30 transition-colors">
-              <Leaf className="h-5 w-5 text-white" />
+            <div className="p-2 rounded-full bg-white/20 group-hover:bg-white/30 group-hover:scale-110 transition-all duration-300">
+              <Leaf className="h-6 w-6 text-white drop-shadow-[0_2px_3px_rgba(0,0,0,0.3)]" />
             </div>
-            <span className="text-sm font-medium text-white">Holistic Wellness</span>
+            <span className="text-sm md:text-base font-bold text-white drop-shadow-[0_2px_3px_rgba(0,0,0,0.3)]">Holistic Wellness</span>
             {isRecommended("holistic-wellness") && (
-              <span className="text-xs px-2 py-0.5 rounded-full bg-white/30 text-white">Recommended</span>
+              <span className="text-xs px-2 py-0.5 rounded-full bg-white/30 text-white font-medium animate-pulse">Recommended</span>
             )}
           </Button>
         </motion.div>
         
         {/* Alternative Therapies */}
-        <motion.div variants={item} whileHover={{ y: -5 }} transition={{ duration: 0.2 }}>
+        <motion.div variants={item} whileHover={{ y: -5, scale: 1.03 }} transition={{ duration: 0.2 }}>
           <Button
             variant="outline"
-            className={`w-full h-auto flex flex-col items-center gap-2 p-4 group border-transparent ${
+            className={`w-full h-auto flex flex-col items-center gap-2 p-4 group border-none bg-gradient-to-br from-[#0D9488] to-[#0F766E] hover:shadow-[0_0_15px_rgba(13,148,136,0.7)] ${
               isRecommended("alternative-therapies")
-                ? "bg-gradient-to-br from-[#0D9488] to-[#5EEAD4]"
-                : "bg-gradient-to-br from-[#0D9488]/80 to-[#5EEAD4]/80"
+                ? "shadow-[0_0_20px_rgba(13,148,136,0.5)]"
+                : ""
             }`}
             onClick={() => handleNavigate('/alternative-therapies')}
           >
-            <div className="p-2 rounded-full bg-white/20 group-hover:bg-white/30 transition-colors">
-              <Rocket className="h-5 w-5 text-white" />
+            <div className="p-2 rounded-full bg-white/20 group-hover:bg-white/30 group-hover:scale-110 transition-all duration-300">
+              <Rocket className="h-6 w-6 text-white drop-shadow-[0_2px_3px_rgba(0,0,0,0.3)]" />
             </div>
-            <span className="text-sm font-medium text-white">Alternative Therapies</span>
+            <span className="text-sm md:text-base font-bold text-white drop-shadow-[0_2px_3px_rgba(0,0,0,0.3)]">Alternative Therapies</span>
             {isRecommended("alternative-therapies") && (
-              <span className="text-xs px-2 py-0.5 rounded-full bg-white/30 text-white">Recommended</span>
+              <span className="text-xs px-2 py-0.5 rounded-full bg-white/30 text-white font-medium animate-pulse">Recommended</span>
             )}
           </Button>
         </motion.div>
         
         {/* Community Support */}
-        <motion.div variants={item} whileHover={{ y: -5 }} transition={{ duration: 0.2 }}>
+        <motion.div variants={item} whileHover={{ y: -5, scale: 1.03 }} transition={{ duration: 0.2 }}>
           <Button
             variant="outline"
-            className={`w-full h-auto flex flex-col items-center gap-2 p-4 group border-transparent ${
+            className={`w-full h-auto flex flex-col items-center gap-2 p-4 group border-none bg-gradient-to-br from-[#2563EB] to-[#1D4ED8] hover:shadow-[0_0_15px_rgba(37,99,235,0.7)] ${
               isRecommended("community-support")
-                ? "bg-gradient-to-br from-[#2563EB] to-[#60A5FA]"
-                : "bg-gradient-to-br from-[#2563EB]/80 to-[#60A5FA]/80"
+                ? "shadow-[0_0_20px_rgba(37,99,235,0.5)]"
+                : ""
             }`}
             onClick={() => handleNavigate('/community-support')}
           >
-            <div className="p-2 rounded-full bg-white/20 group-hover:bg-white/30 transition-colors">
-              <Globe className="h-5 w-5 text-white" />
+            <div className="p-2 rounded-full bg-white/20 group-hover:bg-white/30 group-hover:scale-110 transition-all duration-300">
+              <Globe className="h-6 w-6 text-white drop-shadow-[0_2px_3px_rgba(0,0,0,0.3)]" />
             </div>
-            <span className="text-sm font-medium text-white">Community Support</span>
+            <span className="text-sm md:text-base font-bold text-white drop-shadow-[0_2px_3px_rgba(0,0,0,0.3)]">Community Support</span>
             {isRecommended("community-support") && (
-              <span className="text-xs px-2 py-0.5 rounded-full bg-white/30 text-white">Recommended</span>
+              <span className="text-xs px-2 py-0.5 rounded-full bg-white/30 text-white font-medium animate-pulse">Recommended</span>
             )}
           </Button>
         </motion.div>
