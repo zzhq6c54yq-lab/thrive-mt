@@ -18,12 +18,7 @@ const NewFeatures: React.FC = () => {
       duration: 2000
     });
     
-    // Special case for upgrade plan - now navigate to the dedicated page
-    if (path === "/subscription-plans") {
-      navigate("/subscription-plans");
-    } else {
-      navigate(path);
-    }
+    navigate(path);
   };
 
   return (

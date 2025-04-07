@@ -39,6 +39,9 @@ import SmallBusinessPortal from "@/pages/SmallBusinessPortal";
 import MilitarySupport from "@/pages/MilitarySupport";
 import MilitaryResources from "@/pages/MilitaryResources";
 import VirtualMeetings from "@/pages/VirtualMeetings";
+import CoPayCredits from "@/pages/CoPayCredits";
+import BarterSystem from "@/pages/BarterSystem";
+import SubscriptionPlansPage from "@/pages/SubscriptionPlansPage";
 
 function App() {
   return (
@@ -66,6 +69,11 @@ function App() {
         <Route path="/learn-more" element={<LearnMoreAboutThrive />} />
         <Route path="/co-pay" element={<CoPay />} />
         <Route path="/virtual-meetings" element={<VirtualMeetings />} />
+        
+        {/* Add missing routes */}
+        <Route path="/copay-credits" element={<CoPayCredits />} />
+        <Route path="/barter-system" element={<BarterSystem />} />
+        <Route path="/subscription-plans" element={<SubscriptionPlansPage />} />
         
         {/* Specialized Programs Routes */}
         <Route path="/department-of-defense" element={<DoDWelcome />} />
