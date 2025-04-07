@@ -13,14 +13,33 @@ interface VideoListItemProps {
 const VideoListItem: React.FC<VideoListItemProps> = ({ entry, onView, onShare }) => {
   const { toast } = useToast();
 
+  const handleItemClick = (e: React.MouseEvent) => {
+    e.preventDefault();
+    onView(entry.id);
+  };
+
+  const handleShareClick = (e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    onShare(entry);
+  };
+
+  const handleDeleteClick = (e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    toast({
+      title: "Video Deleted",
+      description: "Your video has been removed",
+      duration: 1500
+    });
+  };
+
   return (
     <div 
-      className="bg-[#2a2a3c]/80 rounded-xl overflow-hidden shadow-lg hover:shadow-xl transition-all"
+      className="bg-[#2a2a3c]/80 rounded-xl overflow-hidden shadow-lg hover:shadow-xl transition-all cursor-pointer"
+      onClick={handleItemClick}
     >
-      <div 
-        className="relative cursor-pointer" 
-        onClick={() => onView(entry.id)}
-      >
+      <div className="relative">
         <img 
           src={entry.thumbnail}
           alt={entry.title}
@@ -48,24 +67,14 @@ const VideoListItem: React.FC<VideoListItemProps> = ({ entry, onView, onShare })
         <div className="flex mt-4 pt-4 border-t border-gray-700/50 justify-between">
           <button 
             className="text-indigo-400 hover:text-indigo-300 transition-colors flex items-center text-sm"
-            onClick={(e) => {
-              e.stopPropagation();
-              onShare(entry);
-            }}
+            onClick={handleShareClick}
           >
             <Share2 className="h-4 w-4 mr-1" />
             Share
           </button>
           <button 
             className="text-red-400 hover:text-red-300 transition-colors flex items-center text-sm"
-            onClick={(e) => {
-              e.stopPropagation();
-              toast({
-                title: "Video Deleted",
-                description: "Your video has been removed",
-                duration: 1500
-              });
-            }}
+            onClick={handleDeleteClick}
           >
             <Trash2 className="h-4 w-4 mr-1" />
             Delete

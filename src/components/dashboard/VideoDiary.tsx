@@ -49,7 +49,10 @@ const VideoDiary: React.FC = () => {
     });
   };
   
-  const handleVideoClick = (id: string) => {
+  const handleVideoClick = (id: string, e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    
     if (activeVideoId === id) {
       // Toggle play/pause
       const videoElement = videoRefs.current[id];
@@ -120,6 +123,7 @@ const VideoDiary: React.FC = () => {
                 <div 
                   key={video.id}
                   className="group cursor-pointer relative"
+                  onClick={() => navigate(`/video-diary/${video.id}`)}
                 >
                   <div className="relative rounded-lg overflow-hidden mb-2">
                     {activeVideoId === video.id ? (
@@ -128,6 +132,7 @@ const VideoDiary: React.FC = () => {
                         src={video.videoUrl} 
                         className="w-full h-24 object-cover" 
                         onEnded={() => handleVideoEnd(video.id)}
+                        onClick={(e) => e.stopPropagation()}
                       />
                     ) : (
                       <img 
@@ -143,7 +148,7 @@ const VideoDiary: React.FC = () => {
                     
                     <div 
                       className="absolute inset-0 bg-black/30 flex items-center justify-center transition-opacity hover:opacity-100"
-                      onClick={() => handleVideoClick(video.id)}
+                      onClick={(e) => handleVideoClick(video.id, e)}
                       style={{
                         opacity: activeVideoId === video.id ? 1 : 0
                       }}

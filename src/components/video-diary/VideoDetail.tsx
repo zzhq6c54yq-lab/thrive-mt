@@ -43,6 +43,12 @@ const VideoDetail: React.FC<VideoDetailProps> = ({ videoId, currentVideo, onBack
     }
   };
 
+  const handleVideoPlay = (e: React.MouseEvent<HTMLVideoElement>) => {
+    e.preventDefault();
+    e.stopPropagation();
+    // This ensures clicks on the video don't propagate to parent elements
+  };
+
   if (!currentVideo) {
     return (
       <div className="text-center py-8">
@@ -68,6 +74,8 @@ const VideoDetail: React.FC<VideoDetailProps> = ({ videoId, currentVideo, onBack
             poster={currentVideo.thumbnail}
             preload="auto"
             onCanPlay={() => setIsVideoLoaded(true)}
+            onClick={handleVideoPlay}
+            onTouchStart={handleVideoPlay}
           />
         </div>
         
@@ -90,7 +98,8 @@ const VideoDetail: React.FC<VideoDetailProps> = ({ videoId, currentVideo, onBack
               </button>
               <button 
                 className="text-red-400 hover:text-red-300 transition-colors flex items-center"
-                onClick={() => {
+                onClick={(e) => {
+                  e.stopPropagation();
                   toast({
                     title: "Video Deleted",
                     description: "Your video has been removed",

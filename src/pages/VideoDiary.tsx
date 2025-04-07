@@ -124,6 +124,8 @@ const VideoDiary: React.FC = () => {
       
       if (video) {
         setCurrentVideo(video);
+      } else {
+        console.log("Video not found:", id);
       }
     } else {
       setCurrentVideo(null);
