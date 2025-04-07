@@ -1,12 +1,11 @@
 import React from "react";
-import { Button } from "@/components/ui/button";
-import { 
-  Activity, BookOpen, Dumbbell, Heart, Users, HandHeart, 
-  Brain, BarChart3, Video, Calendar, Headphones, BookText, 
-  Sparkles, MessageCircle, Leaf, Rocket, Globe
-} from "lucide-react";
 import { motion } from "framer-motion";
+import { useNavigate } from "react-router-dom";
 import { useToast } from "@/hooks/use-toast";
+import { 
+  Activity, BookOpen, Brain, BarChart3, Video, Calendar, Headphones,
+  BookText, Sparkles, MessageCircle, Leaf, Rocket, Globe, Heart, Users, HandHeart
+} from "lucide-react";
 
 interface KeyFeaturesProps {
   navigateToFeature: (path: string) => void;
@@ -20,6 +19,7 @@ const KeyFeatures: React.FC<KeyFeaturesProps> = ({
   selectedGoals = []
 }) => {
   const { toast } = useToast();
+  const navigate = useNavigate();
   
   const preferredLanguage = localStorage.getItem('preferredLanguage') || 'English';
   const isSpanish = preferredLanguage === 'Español';
@@ -64,21 +64,152 @@ const KeyFeatures: React.FC<KeyFeaturesProps> = ({
     
     navigateToFeature(path);
   };
-  
+
   const container = {
     hidden: { opacity: 0 },
     show: {
       opacity: 1,
       transition: {
-        staggerChildren: 0.05
+        staggerChildren: 0.08
       }
     }
   };
 
   const item = {
     hidden: { y: 20, opacity: 0 },
-    show: { y: 0, opacity: 1 }
+    show: { y: 0, opacity: 1, transition: { duration: 0.5 } }
   };
+
+  const features = [
+    {
+      id: "progress-reports",
+      title: "Progress Reports",
+      icon: <BarChart3 />,
+      path: "/progress-reports",
+      color: "from-purple-600 to-blue-600",
+      description: "Track your mental wellness journey"
+    },
+    {
+      id: "family-resources",
+      title: "Family Resources",
+      icon: <HandHeart />,
+      path: "/family-resources",
+      color: "from-pink-600 to-purple-600",
+      description: "Support for you and your loved ones"
+    },
+    {
+      id: "mental-wellness",
+      title: "Mental Wellness",
+      icon: <BookOpen />,
+      path: "/mental-wellness",
+      color: "from-blue-600 to-indigo-600",
+      description: "Tools and assessments for your wellbeing"
+    },
+    {
+      id: "games",
+      title: "Brain Games",
+      icon: <Brain />,
+      path: "/games-and-quizzes",
+      color: "from-orange-600 to-red-600",
+      description: "Fun activities to engage your mind"
+    },
+    {
+      id: "video-diary",
+      title: "Video Diary",
+      icon: <Video />,
+      path: "/video-diary",
+      color: "from-amber-500 to-orange-600",
+      description: "Record and reflect on your journey"
+    },
+    {
+      id: "wellness-challenges",
+      title: "Wellness Challenges",
+      icon: <Activity />,
+      path: "/wellness-challenges",
+      color: "from-emerald-600 to-green-600",
+      description: "Daily challenges to boost wellbeing"
+    },
+    {
+      id: "resource-library",
+      title: "Resource Library",
+      icon: <BookText />,
+      path: "/resource-library",
+      color: "from-cyan-600 to-blue-600",
+      description: "Extensive collection of helpful materials"
+    },
+    {
+      id: "sponsor-alternative",
+      title: "My Sponsor",
+      icon: <Users />,
+      path: "/my-sponsor",
+      color: "from-rose-600 to-pink-600",
+      description: "Support for your recovery journey"
+    },
+    {
+      id: "binaural-beats",
+      title: "Binaural Beats",
+      icon: <Headphones />,
+      path: "/binaural-beats",
+      color: "from-violet-600 to-purple-600",
+      description: "Audio therapy for relaxation"
+    },
+    {
+      id: "workshops",
+      title: "Workshops",
+      icon: <Calendar />,
+      path: "/workshops",
+      color: "from-emerald-600 to-teal-600",
+      description: "Interactive sessions with professionals"
+    },
+    {
+      id: "journaling",
+      title: "Journaling",
+      icon: <BookText />,
+      path: "/journaling",
+      color: "from-blue-600 to-cyan-600",
+      description: "Express thoughts and track emotions"
+    },
+    {
+      id: "mindfulness",
+      title: "Mindfulness & Sleep",
+      icon: <Sparkles />,
+      path: "/mindfulness-sleep",
+      color: "from-violet-600 to-indigo-600",
+      description: "Practices for better rest and awareness"
+    },
+    {
+      id: "real-time-therapy",
+      title: "Real-Time Therapy",
+      icon: <MessageCircle />,
+      path: "/real-time-therapy",
+      color: "from-red-600 to-rose-600",
+      description: "Connect with therapists instantly"
+    },
+    {
+      id: "holistic-wellness",
+      title: "Holistic Wellness",
+      icon: <Leaf />,
+      path: "/holistic-wellness",
+      color: "from-green-600 to-lime-600",
+      description: "Whole-person approach to wellbeing"
+    },
+    {
+      id: "alternative-therapies",
+      title: "Alternative Therapies",
+      icon: <Rocket />,
+      path: "/alternative-therapies",
+      color: "from-teal-600 to-cyan-600",
+      description: "Explore innovative healing methods"
+    },
+    {
+      id: "community-support",
+      title: "Community Support",
+      icon: <Globe />,
+      path: "/community-support",
+      color: "from-blue-600 to-indigo-600",
+      description: "Connect with others on similar journeys"
+    },
+  ];
 
   return (
     <div className="mt-8">
@@ -92,346 +223,59 @@ const KeyFeatures: React.FC<KeyFeaturesProps> = ({
       </h2>
       
       <motion.div 
-        className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-2.5" 
+        className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3"
         variants={container}
         initial="hidden"
         animate="show"
       >
-        {/* Progress Reports */}
-        <motion.div variants={item} whileHover={{ y: -3, scale: 1.02 }} transition={{ duration: 0.2 }}>
-          <Button
-            variant="outline"
-            className={`w-full h-auto flex flex-col items-center gap-1.5 py-3 px-2 group border-none bg-gradient-to-br from-[#4842c7] to-[#281f75] hover:shadow-[0_0_15px_rgba(99,102,241,0.7)] ${
-              isRecommended("progress-reports")
-                ? "shadow-[0_0_20px_rgba(99,102,241,0.5)]"
-                : ""
-            }`}
-            onClick={() => handleNavigate('/progress-reports')}
+        {features.map((feature) => (
+          <motion.div 
+            key={feature.id}
+            variants={item}
+            className="relative"
+            whileHover={{ y: -5, scale: 1.03 }}
+            transition={{ duration: 0.2 }}
           >
-            <div className="p-1.5 rounded-full bg-white/20 group-hover:bg-white/30 group-hover:scale-110 transition-all duration-300">
-              <BarChart3 className="h-4 w-4 text-white drop-shadow-[0_2px_3px_rgba(0,0,0,0.3)]" />
-            </div>
-            <span className="text-xs font-bold text-white drop-shadow-[0_2px_3px_rgba(0,0,0,0.3)]">Progress Reports</span>
-            {isRecommended("progress-reports") && (
-              <span className="text-[10px] px-1.5 py-0.5 rounded-full bg-white/30 text-white font-medium animate-pulse">Recommended</span>
-            )}
-          </Button>
-        </motion.div>
-        
-        {/* Family Resources */}
-        <motion.div variants={item} whileHover={{ y: -3, scale: 1.02 }} transition={{ duration: 0.2 }}>
-          <Button
-            variant="outline"
-            className={`w-full h-auto flex flex-col items-center gap-1.5 py-3 px-2 group border-none bg-gradient-to-br from-[#a51dc3] to-[#6a1b8b] hover:shadow-[0_0_15px_rgba(217,70,239,0.7)] ${
-              isRecommended("family-resources")
-                ? "shadow-[0_0_20px_rgba(217,70,239,0.5)]"
-                : ""
-            }`}
-            onClick={() => handleNavigate('/family-resources')}
-          >
-            <div className="p-1.5 rounded-full bg-white/20 group-hover:bg-white/30 group-hover:scale-110 transition-all duration-300">
-              <HandHeart className="h-4 w-4 text-white drop-shadow-[0_2px_3px_rgba(0,0,0,0.3)]" />
-            </div>
-            <span className="text-xs font-bold text-white drop-shadow-[0_2px_3px_rgba(0,0,0,0.3)]">Family Resources</span>
-            {isRecommended("family-resources") && (
-              <span className="text-[10px] px-1.5 py-0.5 rounded-full bg-white/30 text-white font-medium animate-pulse">Recommended</span>
-            )}
-          </Button>
-        </motion.div>
-        
-        {/* Mental Wellness */}
-        <motion.div variants={item} whileHover={{ y: -3, scale: 1.02 }} transition={{ duration: 0.2 }}>
-          <Button
-            variant="outline"
-            className={`w-full h-auto flex flex-col items-center gap-1.5 py-3 px-2 group border-none bg-gradient-to-br from-[#2255e0] to-[#123792] hover:shadow-[0_0_15px_rgba(59,130,246,0.7)] ${
-              isRecommended("mental-wellness")
-                ? "shadow-[0_0_20px_rgba(59,130,246,0.5)]"
-                : ""
-            }`}
-            onClick={() => handleNavigate('/mental-wellness')}
-          >
-            <div className="p-1.5 rounded-full bg-white/20 group-hover:bg-white/30 group-hover:scale-110 transition-all duration-300">
-              <BookOpen className="h-4 w-4 text-white drop-shadow-[0_2px_3px_rgba(0,0,0,0.3)]" />
-            </div>
-            <span className="text-xs font-bold text-white drop-shadow-[0_2px_3px_rgba(0,0,0,0.3)]">Mental Wellness</span>
-            {isRecommended("mental-wellness") && (
-              <span className="text-[10px] px-1.5 py-0.5 rounded-full bg-white/30 text-white font-medium animate-pulse">Recommended</span>
-            )}
-          </Button>
-        </motion.div>
-        
-        {/* Brain Games */}
-        <motion.div variants={item} whileHover={{ y: -3, scale: 1.02 }} transition={{ duration: 0.2 }}>
-          <Button
-            variant="outline"
-            className={`w-full h-auto flex flex-col items-center gap-1.5 py-3 px-2 group border-none bg-gradient-to-br from-[#e04414] to-[#8f290b] hover:shadow-[0_0_15px_rgba(249,115,22,0.7)] ${
-              isRecommended("games")
-                ? "shadow-[0_0_20px_rgba(249,115,22,0.5)]"
-                : ""
-            }`}
-            onClick={() => handleNavigate('/games-and-quizzes')}
-          >
-            <div className="p-1.5 rounded-full bg-white/20 group-hover:bg-white/30 group-hover:scale-110 transition-all duration-300">
-              <Brain className="h-4 w-4 text-white drop-shadow-[0_2px_3px_rgba(0,0,0,0.3)]" />
-            </div>
-            <span className="text-xs font-bold text-white drop-shadow-[0_2px_3px_rgba(0,0,0,0.3)]">Brain Games</span>
-            {isRecommended("games") && (
-              <span className="text-[10px] px-1.5 py-0.5 rounded-full bg-white/30 text-white font-medium animate-pulse">Recommended</span>
-            )}
-          </Button>
-        </motion.div>
-        
-        {/* Video Diary */}
-        <motion.div variants={item} whileHover={{ y: -3, scale: 1.02 }} transition={{ duration: 0.2 }}>
-          <Button
-            variant="outline"
-            className={`w-full h-auto flex flex-col items-center gap-1.5 py-3 px-2 group border-none bg-gradient-to-br from-[#dd7707] to-[#8f4a06] hover:shadow-[0_0_15px_rgba(245,158,11,0.7)] ${
-              isRecommended("video-diary")
-                ? "shadow-[0_0_20px_rgba(245,158,11,0.5)]"
-                : ""
-            }`}
-            onClick={() => handleNavigate('/video-diary')}
-          >
-            <div className="p-1.5 rounded-full bg-white/20 group-hover:bg-white/30 group-hover:scale-110 transition-all duration-300">
-              <Video className="h-4 w-4 text-white drop-shadow-[0_2px_3px_rgba(0,0,0,0.3)]" />
-            </div>
-            <span className="text-xs font-bold text-white drop-shadow-[0_2px_3px_rgba(0,0,0,0.3)]">Video Diary</span>
-            {isRecommended("video-diary") && (
-              <span className="text-[10px] px-1.5 py-0.5 rounded-full bg-white/30 text-white font-medium animate-pulse">Recommended</span>
-            )}
-          </Button>
-        </motion.div>
-        
-        {/* Wellness Challenges */}
-        <motion.div variants={item} whileHover={{ y: -3, scale: 1.02 }} transition={{ duration: 0.2 }}>
-          <Button
-            variant="outline"
-            className={`w-full h-auto flex flex-col items-center gap-1.5 py-3 px-2 group border-none bg-gradient-to-br from-[#088851] to-[#05563c] hover:shadow-[0_0_15px_rgba(16,185,129,0.7)] ${
-              isRecommended("wellness-challenges")
-                ? "shadow-[0_0_20px_rgba(16,185,129,0.5)]"
-                : ""
-            }`}
-            onClick={() => handleNavigate('/wellness-challenges')}
-          >
-            <div className="p-1.5 rounded-full bg-white/20 group-hover:bg-white/30 group-hover:scale-110 transition-all duration-300">
-              <Activity className="h-4 w-4 text-white drop-shadow-[0_2px_3px_rgba(0,0,0,0.3)]" />
-            </div>
-            <span className="text-xs font-bold text-white drop-shadow-[0_2px_3px_rgba(0,0,0,0.3)]">Wellness Challenges</span>
-            {isRecommended("wellness-challenges") && (
-              <span className="text-[10px] px-1.5 py-0.5 rounded-full bg-white/30 text-white font-medium animate-pulse">Recommended</span>
-            )}
-          </Button>
-        </motion.div>
-        
-        {/* Resource Library */}
-        <motion.div variants={item} whileHover={{ y: -3, scale: 1.02 }} transition={{ duration: 0.2 }}>
-          <Button
-            variant="outline"
-            className={`w-full h-auto flex flex-col items-center gap-1.5 py-3 px-2 group border-none bg-gradient-to-br from-[#0275a8] to-[#053f5e] hover:shadow-[0_0_15px_rgba(3,105,161,0.7)] ${
-              isRecommended("resource-library")
-                ? "shadow-[0_0_20px_rgba(3,105,161,0.5)]"
-                : ""
-            }`}
-            onClick={() => handleNavigate('/resource-library')}
-          >
-            <div className="p-1.5 rounded-full bg-white/20 group-hover:bg-white/30 group-hover:scale-110 transition-all duration-300">
-              <BookText className="h-4 w-4 text-white drop-shadow-[0_2px_3px_rgba(0,0,0,0.3)]" />
-            </div>
-            <span className="text-xs font-bold text-white drop-shadow-[0_2px_3px_rgba(0,0,0,0.3)]">Resource Library</span>
-            {isRecommended("resource-library") && (
-              <span className="text-[10px] px-1.5 py-0.5 rounded-full bg-white/30 text-white font-medium animate-pulse">Recommended</span>
-            )}
-          </Button>
-        </motion.div>
-        
-        {/* My Sponsor (NA/AA alternative) */}
-        <motion.div variants={item} whileHover={{ y: -3, scale: 1.02 }} transition={{ duration: 0.2 }}>
-          <Button
-            variant="outline"
-            className={`w-full h-auto flex flex-col items-center gap-1.5 py-3 px-2 group border-none bg-gradient-to-br from-[#d12a82] to-[#86134e] hover:shadow-[0_0_15px_rgba(236,72,153,0.7)] ${
-              isRecommended("sponsor-alternative")
-                ? "shadow-[0_0_20px_rgba(236,72,153,0.5)]"
-                : ""
-            }`}
-            onClick={() => handleNavigate('/my-sponsor')}
-          >
-            <div className="p-1.5 rounded-full bg-white/20 group-hover:bg-white/30 group-hover:scale-110 transition-all duration-300">
-              <Users className="h-4 w-4 text-white drop-shadow-[0_2px_3px_rgba(0,0,0,0.3)]" />
-            </div>
-            <span className="text-xs font-bold text-white drop-shadow-[0_2px_3px_rgba(0,0,0,0.3)]">My Sponsor</span>
-            {isRecommended("sponsor-alternative") && (
-              <span className="text-[10px] px-1.5 py-0.5 rounded-full bg-white/30 text-white font-medium animate-pulse">Recommended</span>
-            )}
-          </Button>
-        </motion.div>
-        
-        {/* Binaural Beats */}
-        <motion.div variants={item} whileHover={{ y: -3, scale: 1.02 }} transition={{ duration: 0.2 }}>
-          <Button
-            variant="outline"
-            className={`w-full h-auto flex flex-col items-center gap-1.5 py-3 px-2 group border-none bg-gradient-to-br from-[#6826e0] to-[#3a1686] hover:shadow-[0_0_15px_rgba(139,92,246,0.7)] ${
-              isRecommended("binaural-beats")
-                ? "shadow-[0_0_20px_rgba(139,92,246,0.5)]"
-                : ""
-            }`}
-            onClick={() => handleNavigate('/binaural-beats')}
-          >
-            <div className="p-1.5 rounded-full bg-white/20 group-hover:bg-white/30 group-hover:scale-110 transition-all duration-300">
-              <Headphones className="h-4 w-4 text-white drop-shadow-[0_2px_3px_rgba(0,0,0,0.3)]" />
-            </div>
-            <span className="text-xs font-bold text-white drop-shadow-[0_2px_3px_rgba(0,0,0,0.3)]">Binaural Beats</span>
-            {isRecommended("binaural-beats") && (
-              <span className="text-[10px] px-1.5 py-0.5 rounded-full bg-white/30 text-white font-medium animate-pulse">Recommended</span>
-            )}
-          </Button>
-        </motion.div>
-        
-        {/* Workshops */}
-        <motion.div variants={item} whileHover={{ y: -3, scale: 1.02 }} transition={{ duration: 0.2 }}>
-          <Button
-            variant="outline"
-            className={`w-full h-auto flex flex-col items-center gap-1.5 py-3 px-2 group border-none bg-gradient-to-br from-[#03734f] to-[#034d35] hover:shadow-[0_0_15px_rgba(5,150,105,0.7)] ${
-              isRecommended("workshops")
-                ? "shadow-[0_0_20px_rgba(5,150,105,0.5)]"
-                : ""
-            }`}
-            onClick={() => handleNavigate('/workshops')}
-          >
-            <div className="p-1.5 rounded-full bg-white/20 group-hover:bg-white/30 group-hover:scale-110 transition-all duration-300">
-              <Calendar className="h-4 w-4 text-white drop-shadow-[0_2px_3px_rgba(0,0,0,0.3)]" />
-            </div>
-            <span className="text-xs font-bold text-white drop-shadow-[0_2px_3px_rgba(0,0,0,0.3)]">Workshops</span>
-            {isRecommended("workshops") && (
-              <span className="text-[10px] px-1.5 py-0.5 rounded-full bg-white/30 text-white font-medium animate-pulse">Recommended</span>
-            )}
-          </Button>
-        </motion.div>
-        
-        {/* Journaling */}
-        <motion.div variants={item} whileHover={{ y: -3, scale: 1.02 }} transition={{ duration: 0.2 }}>
-          <Button
-            variant="outline"
-            className={`w-full h-auto flex flex-col items-center gap-1.5 py-3 px-2 group border-none bg-gradient-to-br from-[#0066a3] to-[#00395c] hover:shadow-[0_0_15px_rgba(2,132,199,0.7)] ${
-              isRecommended("journaling")
-                ? "shadow-[0_0_20px_rgba(2,132,199,0.5)]"
-                : ""
-            }`}
-            onClick={() => handleNavigate('/journaling')}
-          >
-            <div className="p-1.5 rounded-full bg-white/20 group-hover:bg-white/30 group-hover:scale-110 transition-all duration-300">
-              <BookText className="h-4 w-4 text-white drop-shadow-[0_2px_3px_rgba(0,0,0,0.3)]" />
-            </div>
-            <span className="text-xs font-bold text-white drop-shadow-[0_2px_3px_rgba(0,0,0,0.3)]">Journaling</span>
-            {isRecommended("journaling") && (
-              <span className="text-[10px] px-1.5 py-0.5 rounded-full bg-white/30 text-white font-medium animate-pulse">Recommended</span>
-            )}
-          </Button>
-        </motion.div>
-        
-        {/* Mindfulness & Sleep */}
-        <motion.div variants={item} whileHover={{ y: -3, scale: 1.02 }} transition={{ duration: 0.2 }}>
-          <Button
-            variant="outline"
-            className={`w-full h-auto flex flex-col items-center gap-1.5 py-3 px-2 group border-none bg-gradient-to-br from-[#5820c6] to-[#2d1070] hover:shadow-[0_0_15px_rgba(124,58,237,0.7)] ${
-              isRecommended("mindfulness")
-                ? "shadow-[0_0_20px_rgba(124,58,237,0.5)]"
-                : ""
-            }`}
-            onClick={() => handleNavigate('/mindfulness-sleep')}
-          >
-            <div className="p-1.5 rounded-full bg-white/20 group-hover:bg-white/30 group-hover:scale-110 transition-all duration-300">
-              <Sparkles className="h-4 w-4 text-white drop-shadow-[0_2px_3px_rgba(0,0,0,0.3)]" />
-            </div>
-            <span className="text-xs font-bold text-white drop-shadow-[0_2px_3px_rgba(0,0,0,0.3)]">Mindfulness & Sleep</span>
-            {isRecommended("mindfulness") && (
-              <span className="text-[10px] px-1.5 py-0.5 rounded-full bg-white/30 text-white font-medium animate-pulse">Recommended</span>
-            )}
-          </Button>
-        </motion.div>
-        
-        {/* Real-Time Therapy */}
-        <motion.div variants={item} whileHover={{ y: -3, scale: 1.02 }} transition={{ duration: 0.2 }}>
-          <Button
-            variant="outline"
-            className={`w-full h-auto flex flex-col items-center gap-1.5 py-3 px-2 group border-none bg-gradient-to-br from-[#c00f2e] to-[#7a0a21] hover:shadow-[0_0_15px_rgba(225,29,72,0.7)] ${
-              isRecommended("real-time-therapy")
-                ? "shadow-[0_0_20px_rgba(225,29,72,0.5)]"
-                : ""
-            }`}
-            onClick={() => handleNavigate('/real-time-therapy')}
-          >
-            <div className="p-1.5 rounded-full bg-white/20 group-hover:bg-white/30 group-hover:scale-110 transition-all duration-300">
-              <MessageCircle className="h-4 w-4 text-white drop-shadow-[0_2px_3px_rgba(0,0,0,0.3)]" />
-            </div>
-            <span className="text-xs font-bold text-white drop-shadow-[0_2px_3px_rgba(0,0,0,0.3)]">Real-Time Therapy</span>
-            {isRecommended("real-time-therapy") && (
-              <span className="text-[10px] px-1.5 py-0.5 rounded-full bg-white/30 text-white font-medium animate-pulse">Recommended</span>
-            )}
-          </Button>
-        </motion.div>
-        
-        {/* Holistic Wellness */}
-        <motion.div variants={item} whileHover={{ y: -3, scale: 1.02 }} transition={{ duration: 0.2 }}>
-          <Button
-            variant="outline"
-            className={`w-full h-auto flex flex-col items-center gap-1.5 py-3 px-2 group border-none bg-gradient-to-br from-[#4c7c08] to-[#2e4a08] hover:shadow-[0_0_15px_rgba(101,163,13,0.7)] ${
-              isRecommended("holistic-wellness")
-                ? "shadow-[0_0_20px_rgba(101,163,13,0.5)]"
-                : ""
-            }`}
-            onClick={() => handleNavigate('/holistic-wellness')}
-          >
-            <div className="p-1.5 rounded-full bg-white/20 group-hover:bg-white/30 group-hover:scale-110 transition-all duration-300">
-              <Leaf className="h-4 w-4 text-white drop-shadow-[0_2px_3px_rgba(0,0,0,0.3)]" />
-            </div>
-            <span className="text-xs font-bold text-white drop-shadow-[0_2px_3px_rgba(0,0,0,0.3)]">Holistic Wellness</span>
-            {isRecommended("holistic-wellness") && (
-              <span className="text-[10px] px-1.5 py-0.5 rounded-full bg-white/30 text-white font-medium animate-pulse">Recommended</span>
-            )}
-          </Button>
-        </motion.div>
-        
-        {/* Alternative Therapies */}
-        <motion.div variants={item} whileHover={{ y: -3, scale: 1.02 }} transition={{ duration: 0.2 }}>
-          <Button
-            variant="outline"
-            className={`w-full h-auto flex flex-col items-center gap-1.5 py-3 px-2 group border-none bg-gradient-to-br from-[#077572] to-[#08585a] hover:shadow-[0_0_15px_rgba(13,148,136,0.7)] ${
-              isRecommended("alternative-therapies")
-                ? "shadow-[0_0_20px_rgba(13,148,136,0.5)]"
-                : ""
-            }`}
-            onClick={() => handleNavigate('/alternative-therapies')}
-          >
-            <div className="p-1.5 rounded-full bg-white/20 group-hover:bg-white/30 group-hover:scale-110 transition-all duration-300">
-              <Rocket className="h-4 w-4 text-white drop-shadow-[0_2px_3px_rgba(0,0,0,0.3)]" />
-            </div>
-            <span className="text-xs font-bold text-white drop-shadow-[0_2px_3px_rgba(0,0,0,0.3)]">Alternative Therapies</span>
-            {isRecommended("alternative-therapies") && (
-              <span className="text-[10px] px-1.5 py-0.5 rounded-full bg-white/30 text-white font-medium animate-pulse">Recommended</span>
-            )}
-          </Button>
-        </motion.div>
-        
-        {/* Community Support */}
-        <motion.div variants={item} whileHover={{ y: -3, scale: 1.02 }} transition={{ duration: 0.2 }}>
-          <Button
-            variant="outline"
-            className={`w-full h-auto flex flex-col items-center gap-1.5 py-3 px-2 group border-none bg-gradient-to-br from-[#1947d1] to-[#12328f] hover:shadow-[0_0_15px_rgba(37,99,235,0.7)] ${
-              isRecommended("community-support")
-                ? "shadow-[0_0_20px_rgba(37,99,235,0.5)]"
-                : ""
-            }`}
-            onClick={() => handleNavigate('/community-support')}
-          >
-            <div className="p-1.5 rounded-full bg-white/20 group-hover:bg-white/30 group-hover:scale-110 transition-all duration-300">
-              <Globe className="h-4 w-4 text-white drop-shadow-[0_2px_3px_rgba(0,0,0,0.3)]" />
-            </div>
-            <span className="text-xs font-bold text-white drop-shadow-[0_2px_3px_rgba(0,0,0,0.3)]">Community Support</span>
-            {isRecommended("community-support") && (
-              <span className="text-[10px] px-1.5 py-0.5 rounded-full bg-white/30 text-white font-medium animate-pulse">Recommended</span>
-            )}
-          </Button>
-        </motion.div>
+            <button
+              onClick={() => handleNavigate(feature.path)}
+              className="w-full h-full text-left"
+              aria-label={feature.title}
+            >
+              <div className={`relative overflow-hidden rounded-xl p-4 h-full bg-gradient-to-br ${feature.color} shadow-lg hover:shadow-xl transition-all duration-300`}>
+                <div className="absolute -right-8 -top-8 w-16 h-16 rounded-full bg-white/10 blur-xl"></div>
+                <div className="absolute -left-4 -bottom-4 w-12 h-12 rounded-full bg-white/10 blur-lg"></div>
+                
+                <div className="flex flex-col h-full z-10 relative">
+                  <div className="p-2.5 rounded-full bg-white/20 w-fit mb-3 backdrop-blur-sm">
+                    {React.cloneElement(feature.icon, { className: "h-5 w-5 text-white drop-shadow-sm" })}
+                  </div>
+                  
+                  <h3 className="font-bold text-sm text-white mb-1">
+                    {feature.title}
+                  </h3>
+                  
+                  <p className="text-xs text-white/80 mb-2 line-clamp-2">
+                    {feature.description}
+                  </p>
+                  
+                  {isRecommended(feature.id) && (
+                    <div className="mt-auto">
+                      <span className="text-[10px] px-1.5 py-0.5 rounded-full bg-white/30 text-white font-medium inline-block">
+                        Recommended
+                      </span>
+                    </div>
+                  )}
+                  
+                  <div className="absolute bottom-1.5 right-1.5">
+                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" className="opacity-70">
+                      <path d="M7 17L17 7M17 7H8M17 7V16" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                    </svg>
+                  </div>
+                </div>
+              </div>
+            </button>
+          </motion.div>
+        ))}
       </motion.div>
     </div>
   );
