@@ -30,6 +30,16 @@ const BarterSystem = () => {
     }
   }, [location, navigate, toast]);
 
+  // This function properly navigates to the financial assistance page
+  const handleStartApplication = () => {
+    navigate("/financial-assistance");
+  };
+
+  // This function properly navigates to the contact support page  
+  const handleContactSupport = () => {
+    navigate("/contact");
+  };
+
   return (
     <Page title="Barter System" showBackButton={true}>
       <div className="space-y-8">
@@ -217,7 +227,7 @@ const BarterSystem = () => {
                   <Button 
                     variant="gold" 
                     className="w-full group"
-                    onClick={() => navigate("/financial-assistance")}
+                    onClick={handleStartApplication}
                   >
                     Start Application
                     <ArrowRight className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform" />
@@ -245,7 +255,7 @@ const BarterSystem = () => {
                 <Button 
                   variant="gold-outline" 
                   className="w-full"
-                  onClick={() => navigate("/contact")}
+                  onClick={handleContactSupport}
                 >
                   Contact Support
                 </Button>

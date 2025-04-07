@@ -42,6 +42,8 @@ import VirtualMeetings from "@/pages/VirtualMeetings";
 import CoPayCredits from "@/pages/CoPayCredits";
 import BarterSystem from "@/pages/BarterSystem";
 import SubscriptionPlansPage from "@/pages/SubscriptionPlansPage";
+import FinancialAssistance from "@/pages/FinancialAssistance";
+import ContactSupport from "@/pages/ContactSupport";
 
 function App() {
   return (
@@ -74,6 +76,8 @@ function App() {
         <Route path="/copay-credits" element={<CoPayCredits />} />
         <Route path="/barter-system" element={<BarterSystem />} />
         <Route path="/subscription-plans" element={<SubscriptionPlansPage />} />
+        <Route path="/financial-assistance" element={<FinancialAssistance />} />
+        <Route path="/contact" element={<ContactSupport />} />
         
         {/* Specialized Programs Routes */}
         <Route path="/department-of-defense" element={<DoDWelcome />} />
