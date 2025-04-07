@@ -1,4 +1,3 @@
-
 import React from "react";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -6,9 +5,77 @@ import { Badge } from "@/components/ui/badge";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import { useNavigate } from "react-router-dom";
 import { MessageSquare, Users, Calendar, Shield, Medal, Sparkles } from "lucide-react";
+import { useToast } from "@/hooks/use-toast";
 
 const DoDCommunity = () => {
   const navigate = useNavigate();
+  const { toast } = useToast();
+
+  const handleJoinGroup = (groupName) => {
+    toast({
+      title: "Group Joined",
+      description: `You have successfully joined the ${groupName} group.`,
+      duration: 2000
+    });
+  };
+
+  const handleLearnMore = (groupName) => {
+    toast({
+      title: "Group Details",
+      description: `Viewing more information about ${groupName}.`,
+      duration: 2000
+    });
+  };
+
+  const handlePostAction = () => {
+    toast({
+      title: "Post Shared",
+      description: "Your message has been shared with the community.",
+      duration: 2000
+    });
+  };
+
+  const handlePostInteraction = (action, count) => {
+    toast({
+      title: action === 'like' ? "Post Liked" : "Reply Added",
+      description: action === 'like' ? 
+        "You've added your support to this post." : 
+        "Your reply has been added to the conversation.",
+      duration: 2000
+    });
+  };
+
+  const handleViewAllGroups = () => {
+    toast({
+      title: "All Groups",
+      description: "Loading all available support groups.",
+      duration: 2000
+    });
+  };
+
+  const handleViewAllPosts = () => {
+    toast({
+      title: "Community Posts",
+      description: "Loading all community discussions.",
+      duration: 2000
+    });
+  };
+
+  const handleReadFullStory = (storyTitle) => {
+    toast({
+      title: "Success Story",
+      description: `Reading the full story: "${storyTitle}"`,
+      duration: 2000
+    });
+  };
+
+  const handleShareYourStory = () => {
+    toast({
+      title: "Share Your Journey",
+      description: "Opening the form to share your own success story.",
+      duration: 2000
+    });
+  };
 
   const supportGroups = [
     {
@@ -110,7 +177,6 @@ const DoDCommunity = () => {
 
   return (
     <div className="space-y-8">
-      {/* Header section */}
       <div>
         <h2 className="text-3xl font-bold text-white mb-2">Military Community Support</h2>
         <p className="text-blue-200/80 mb-6">
@@ -118,7 +184,6 @@ const DoDCommunity = () => {
         </p>
       </div>
       
-      {/* Featured Success Story */}
       {successStories.filter(story => story.featured).map(story => (
         <Card key={story.id} className="bg-gradient-to-r from-blue-900/20 to-blue-800/20 border-blue-700/30">
           <CardContent className="p-6">
@@ -136,7 +201,13 @@ const DoDCommunity = () => {
                 </blockquote>
                 <div className="flex justify-between items-center">
                   <p className="text-blue-400">— {story.author}</p>
-                  <Button variant="link" className="text-blue-400">Read Full Story</Button>
+                  <Button 
+                    variant="link" 
+                    className="text-blue-400"
+                    onClick={() => handleReadFullStory(story.title)}
+                  >
+                    Read Full Story
+                  </Button>
                 </div>
               </div>
             </div>
@@ -144,11 +215,16 @@ const DoDCommunity = () => {
         </Card>
       ))}
       
-      {/* Support Groups */}
       <div>
         <div className="flex items-center justify-between mb-4">
           <h3 className="text-xl font-semibold text-white">Support Groups</h3>
-          <Button variant="link" className="text-blue-400">See All Groups</Button>
+          <Button 
+            variant="link" 
+            className="text-blue-400"
+            onClick={handleViewAllGroups}
+          >
+            See All Groups
+          </Button>
         </div>
         
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -185,12 +261,14 @@ const DoDCommunity = () => {
               <CardFooter className="flex justify-between">
                 <Button 
                   className="bg-blue-700 hover:bg-blue-800 text-white"
+                  onClick={() => handleJoinGroup(group.name)}
                 >
                   Join Group
                 </Button>
                 <Button 
                   variant="outline" 
                   className="border-blue-500 text-blue-300 hover:bg-blue-900/50"
+                  onClick={() => handleLearnMore(group.name)}
                 >
                   Learn More
                 </Button>
@@ -200,11 +278,16 @@ const DoDCommunity = () => {
         </div>
       </div>
       
-      {/* Community Discussion */}
       <div>
         <div className="flex items-center justify-between mb-4">
           <h3 className="text-xl font-semibold text-white">Community Discussions</h3>
-          <Button variant="link" className="text-blue-400">View All</Button>
+          <Button 
+            variant="link" 
+            className="text-blue-400"
+            onClick={handleViewAllPosts}
+          >
+            View All
+          </Button>
         </div>
         
         <Card className="bg-[#141921] border-blue-900/30">
@@ -228,7 +311,13 @@ const DoDCommunity = () => {
                 placeholder="Share your thoughts with the community..." 
                 className="flex-grow bg-transparent border-none text-white placeholder-blue-400/50 focus:outline-none focus:ring-0"
               />
-              <Button size="sm" className="bg-blue-700 hover:bg-blue-800 text-white">Post</Button>
+              <Button 
+                size="sm" 
+                className="bg-blue-700 hover:bg-blue-800 text-white"
+                onClick={handlePostAction}
+              >
+                Post
+              </Button>
             </div>
           </div>
           
@@ -262,11 +351,21 @@ const DoDCommunity = () => {
                 <p className="text-white/90 mb-3">{post.content}</p>
                 
                 <div className="flex items-center gap-6">
-                  <Button variant="ghost" size="sm" className="text-blue-400 hover:bg-blue-900/30">
+                  <Button 
+                    variant="ghost" 
+                    size="sm" 
+                    className="text-blue-400 hover:bg-blue-900/30"
+                    onClick={() => handlePostInteraction('like', post.likes)}
+                  >
                     <Shield className="h-4 w-4 mr-1.5" />
                     Like ({post.likes})
                   </Button>
-                  <Button variant="ghost" size="sm" className="text-blue-400 hover:bg-blue-900/30">
+                  <Button 
+                    variant="ghost" 
+                    size="sm" 
+                    className="text-blue-400 hover:bg-blue-900/30"
+                    onClick={() => handlePostInteraction('reply', post.comments)}
+                  >
                     <MessageSquare className="h-4 w-4 mr-1.5" />
                     Reply ({post.comments})
                   </Button>
@@ -276,21 +375,30 @@ const DoDCommunity = () => {
           </div>
           
           <CardFooter>
-            <Button variant="link" className="text-blue-400 w-full">
+            <Button 
+              variant="link" 
+              className="text-blue-400 w-full"
+              onClick={handleViewAllPosts}
+            >
               View More Community Posts
             </Button>
           </CardFooter>
         </Card>
       </div>
       
-      {/* Success Stories */}
       <div>
         <div className="flex items-center justify-between mb-4">
           <div className="flex items-center gap-2">
             <h3 className="text-xl font-semibold text-white">Success Stories</h3>
             <Badge className="bg-gradient-to-r from-blue-500/50 to-purple-500/50 text-white">Inspiring</Badge>
           </div>
-          <Button variant="link" className="text-blue-400">Share Your Story</Button>
+          <Button 
+            variant="link" 
+            className="text-blue-400"
+            onClick={handleShareYourStory}
+          >
+            Share Your Story
+          </Button>
         </div>
         
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -312,6 +420,7 @@ const DoDCommunity = () => {
                 <Button 
                   variant="outline" 
                   className="w-full border-blue-500 text-blue-300 hover:bg-blue-900/50"
+                  onClick={() => handleReadFullStory(story.title)}
                 >
                   Read Full Story
                 </Button>
