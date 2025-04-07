@@ -92,9 +92,11 @@ const VideoDiary: React.FC = () => {
   return (
     <div className="mb-12 bg-gradient-to-br from-[#2a2a3c] to-[#1f1f2c] rounded-3xl overflow-hidden shadow-xl">
       <div className="relative overflow-hidden">
+        {/* Background pattern */}
         <div className="absolute inset-0 bg-pattern opacity-5"></div>
         
-        <div className="bg-gradient-to-r from-[#F97316]/20 via-[#F59E0B]/20 to-[#F97316]/20 p-6">
+        {/* Content container with improved gradient */}
+        <div className="bg-gradient-to-r from-[#F97316]/10 via-[#F59E0B]/10 to-[#F97316]/10 p-6">
           <div className="flex justify-between items-center mb-4">
             <h2 className="text-2xl font-bold text-white">Video Diary</h2>
             <Video className="h-6 w-6 text-orange-300" />
@@ -104,9 +106,10 @@ const VideoDiary: React.FC = () => {
             Record video messages for yourself or share with family members
           </p>
           
+          {/* Record button with improved hover effects */}
           <button
             onClick={handleCreateNew}
-            className="w-full py-3 bg-gradient-to-r from-orange-500 to-amber-500 rounded-xl flex items-center justify-center text-white font-medium mb-6 hover:opacity-90 transition-opacity"
+            className="w-full py-3 bg-gradient-to-r from-orange-600 to-amber-600 rounded-xl flex items-center justify-center text-white font-medium mb-6 hover:brightness-110 transition-all shadow-lg"
           >
             <Plus className="mr-2 h-5 w-5" />
             Record New Video
@@ -118,19 +121,20 @@ const VideoDiary: React.FC = () => {
               Recent Recordings
             </h3>
             
+            {/* Video grid with clearer separations and enhanced visuals */}
             <div className="grid grid-cols-2 gap-4">
               {recentVideos.map((video) => (
                 <div 
                   key={video.id}
-                  className="group cursor-pointer relative"
+                  className="group cursor-pointer relative bg-[#292938] rounded-xl overflow-hidden shadow-md border border-[#393950] hover:border-orange-500/50 transition-all"
                   onClick={() => navigate(`/video-diary/${video.id}`)}
                 >
-                  <div className="relative rounded-lg overflow-hidden mb-2">
+                  <div className="relative rounded-t-lg overflow-hidden mb-2">
                     {activeVideoId === video.id ? (
                       <video 
                         ref={el => videoRefs.current[video.id] = el}
                         src={video.videoUrl} 
-                        className="w-full h-24 object-cover" 
+                        className="w-full h-28 object-cover" 
                         onEnded={() => handleVideoEnd(video.id)}
                         onClick={(e) => e.stopPropagation()}
                       />
@@ -138,7 +142,7 @@ const VideoDiary: React.FC = () => {
                       <img 
                         src={video.thumbnail} 
                         alt={video.title}
-                        className="w-full h-24 object-cover transform transition-transform group-hover:scale-105" 
+                        className="w-full h-28 object-cover transform transition-transform group-hover:scale-105" 
                       />
                     )}
                     
@@ -147,36 +151,41 @@ const VideoDiary: React.FC = () => {
                     </div>
                     
                     <div 
-                      className="absolute inset-0 bg-black/30 flex items-center justify-center transition-opacity hover:opacity-100"
+                      className="absolute inset-0 bg-black/40 flex items-center justify-center transition-opacity group-hover:opacity-100"
                       onClick={(e) => handleVideoClick(video.id, e)}
                       style={{
-                        opacity: activeVideoId === video.id ? 1 : 0
+                        opacity: activeVideoId === video.id || (video.id === activeVideoId) ? 1 : 0
                       }}
                     >
                       {isPlaying(video.id) ? (
-                        <div className="bg-orange-500/90 rounded-full p-1.5">
+                        <div className="bg-orange-500 rounded-full p-1.5 shadow-lg">
                           <Pause className="h-6 w-6 text-white" />
                         </div>
                       ) : (
-                        <div className="bg-orange-500/90 rounded-full p-1.5">
+                        <div className="bg-orange-500 rounded-full p-1.5 shadow-lg">
                           <Play className="h-6 w-6 text-white" />
                         </div>
                       )}
                     </div>
                   </div>
-                  <h4 className="text-white text-sm font-medium truncate">{video.title}</h4>
-                  <p className="text-gray-400 text-xs">{video.date}</p>
+                  
+                  {/* Video info with improved spacing */}
+                  <div className="p-3">
+                    <h4 className="text-white text-sm font-medium truncate">{video.title}</h4>
+                    <p className="text-gray-400 text-xs mt-1">{video.date}</p>
+                  </div>
                 </div>
               ))}
             </div>
           </div>
           
+          {/* View all button with enhanced interactivity */}
           <button 
             onClick={handleViewAll}
-            className="mt-6 flex items-center text-orange-300 hover:text-orange-200 text-sm font-medium transition-colors"
+            className="mt-6 flex items-center text-orange-300 hover:text-orange-200 text-sm font-medium transition-colors group"
           >
             View all recordings
-            <ArrowRight className="ml-2 h-4 w-4" />
+            <ArrowRight className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform" />
           </button>
         </div>
       </div>
