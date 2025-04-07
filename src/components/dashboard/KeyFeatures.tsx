@@ -5,7 +5,7 @@ import { useNavigate } from "react-router-dom";
 import { useToast } from "@/hooks/use-toast";
 import { 
   Activity, BookOpen, Brain, BarChart3, Video, Calendar, Headphones,
-  BookText, Sparkles, MessageCircle, Leaf, Rocket, Globe, Heart, Users, HandHeart
+  BookText, Sparkles, MessageCircle, Leaf, Rocket, Globe, Heart, Users, HandHeart, Gamepad
 } from "lucide-react";
 
 interface KeyFeaturesProps {
@@ -70,7 +70,7 @@ const KeyFeatures: React.FC<KeyFeaturesProps> = ({
           from: window.location.pathname,
           qualities: selectedQualities, 
           goals: selectedGoals,
-          activeTab: "games" // Ensure games tab is active by default
+          activeTab: path === '/games-and-quizzes' ? "games" : "games" // Ensure games tab is active by default
         }
       });
     } else {

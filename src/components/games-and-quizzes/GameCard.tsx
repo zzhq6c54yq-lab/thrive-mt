@@ -51,6 +51,10 @@ const GameCard: React.FC<GameCardProps> = ({ game, onStartGame }) => {
             src={game.coverImage} 
             alt={game.title}
             className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+            onError={(e) => {
+              // Fallback image if the original fails to load
+              e.currentTarget.src = "https://images.unsplash.com/photo-1550745165-9bc0b252726f?auto=format&fit=crop&w=800&q=80";
+            }}
           />
           <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
           <div className="absolute top-2 right-2">

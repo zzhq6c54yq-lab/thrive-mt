@@ -21,6 +21,16 @@ const GameComponentSelector: React.FC<GameComponentSelectorProps> = ({
   activeGame,
   onComplete
 }) => {
+  // Check if activeGame is valid
+  if (!activeGame || !activeGame.id) {
+    console.error("Invalid game data provided to GameComponentSelector");
+    return (
+      <div className="p-6 text-center">
+        <p className="text-red-500">Error loading game. Please try again later.</p>
+      </div>
+    );
+  }
+  
   // Choose the correct game component based on the game ID
   switch (activeGame.id) {
     case "memory-match":
@@ -54,7 +64,12 @@ const GameComponentSelector: React.FC<GameComponentSelectorProps> = ({
       return <GameShapeFit game={activeGame} onComplete={onComplete} />;
       
     default:
-      return null;
+      console.warn(`No game component found for game ID: ${activeGame.id}`);
+      return (
+        <div className="p-6 text-center">
+          <p>This game is coming soon! Please check back later.</p>
+        </div>
+      );
   }
 };
 

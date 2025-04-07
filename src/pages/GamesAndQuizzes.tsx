@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { useNavigate, useLocation } from "react-router-dom";
@@ -48,6 +47,17 @@ const GamesAndQuizzes = () => {
   
   const navigate = useNavigate();
   const { toast } = useToast();
+
+  // Log the active tab and state from location on component mount
+  useEffect(() => {
+    console.log("Current active tab:", activeTab);
+    console.log("Location state:", location.state);
+    
+    // Ensure activeTab is properly set from location state
+    if (location.state?.activeTab) {
+      setActiveTab(location.state.activeTab);
+    }
+  }, [location.state]);
 
   useEffect(() => {
     let filtered = [...gamesData];
@@ -138,6 +148,7 @@ const GamesAndQuizzes = () => {
   }, []);
 
   const handleStartGame = (game: Game) => {
+    console.log("Starting game:", game.title);
     setActiveGame(game);
     setGameInstructionsOpen(true);
   };
@@ -162,6 +173,7 @@ const GamesAndQuizzes = () => {
   };
   
   const handlePlayGame = () => {
+    console.log("Playing game:", activeGame?.title);
     setGameInstructionsOpen(false);
     setGamePlayOpen(true);
   };
