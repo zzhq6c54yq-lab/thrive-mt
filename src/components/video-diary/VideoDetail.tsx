@@ -48,6 +48,13 @@ const VideoDetail: React.FC<VideoDetailProps> = ({ videoId, currentVideo, onBack
     e.stopPropagation();
     // This ensures clicks on the video don't propagate to parent elements
   };
+  
+  // Separate handler for touch events
+  const handleVideoTouch = (e: React.TouchEvent<HTMLVideoElement>) => {
+    e.preventDefault();
+    e.stopPropagation();
+    // This ensures touches on the video don't propagate to parent elements
+  };
 
   if (!currentVideo) {
     return (
@@ -75,7 +82,7 @@ const VideoDetail: React.FC<VideoDetailProps> = ({ videoId, currentVideo, onBack
             preload="auto"
             onCanPlay={() => setIsVideoLoaded(true)}
             onClick={handleVideoPlay}
-            onTouchStart={handleVideoPlay}
+            onTouchStart={handleVideoTouch}
           />
         </div>
         
