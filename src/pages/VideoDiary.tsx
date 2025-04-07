@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from "react";
 import { useNavigate, useParams, useLocation } from "react-router-dom";
 import { useToast } from "@/hooks/use-toast";
@@ -132,11 +133,12 @@ const VideoDiary: React.FC = () => {
   }, [id]);
   
   const handleBack = () => {
-    // Fix back button navigation
+    // FIX: Improved back button navigation
+    // If we know where we came from (via location state), go there
     if (location.state && location.state.from) {
       navigate(location.state.from);
     } else {
-      // Navigate to /home instead of going back to initial screen
+      // If not explicitly specified, go back to home instead of initial screen
       navigate("/home");
     }
   };
