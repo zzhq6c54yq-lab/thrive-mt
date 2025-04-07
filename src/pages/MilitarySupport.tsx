@@ -112,7 +112,7 @@ const MilitarySupport: React.FC = () => {
                 />
                 <FeatureCard 
                   title="Virtual Meetings" 
-                  description="Online support groups and virtual meetings"
+                  description="Online AA/NA support groups and virtual meetings"
                   icon={<MessageSquare className="h-6 w-6 text-white" />} 
                   link="/virtual-meetings"
                 />
@@ -195,9 +195,9 @@ const MilitarySupport: React.FC = () => {
             <Button 
               variant="gold" 
               className="mx-2"
-              onClick={() => navigate("/real-time-therapy")}
+              onClick={() => navigate("/virtual-meetings")}
             >
-              Find a Therapist
+              Join Virtual AA/NA Meeting
             </Button>
           </div>
         </div>

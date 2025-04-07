@@ -1,3 +1,4 @@
+
 import React, { useState } from "react";
 import Page from "@/components/Page";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -324,7 +325,7 @@ const VirtualMeetings = () => {
             <div className="space-y-2">
               <h3 className="text-sm font-medium">What to Expect</h3>
               <p className="text-sm text-gray-500">
-                This 45-minute session includes videos, exercises, and information designed to help you understand and practice the concepts. You'll be able to interact with the instructor and other participants.
+                This session includes discussions, sharing opportunities, and resources designed to support your recovery journey. You'll be able to interact with the facilitator and other participants in a confidential, supportive environment.
               </p>
             </div>
           </div>

@@ -38,6 +38,7 @@ import SmallBusinessWelcome from "@/pages/SmallBusinessWelcome";
 import SmallBusinessPortal from "@/pages/SmallBusinessPortal";
 import MilitarySupport from "@/pages/MilitarySupport";
 import MilitaryResources from "@/pages/MilitaryResources";
+import VirtualMeetings from "@/pages/VirtualMeetings";
 
 function App() {
   return (
@@ -64,6 +65,7 @@ function App() {
         <Route path="/crisis-support" element={<CrisisSupport />} />
         <Route path="/learn-more" element={<LearnMoreAboutThrive />} />
         <Route path="/co-pay" element={<CoPay />} />
+        <Route path="/virtual-meetings" element={<VirtualMeetings />} />
         
         {/* Specialized Programs Routes */}
         <Route path="/department-of-defense" element={<DoDWelcome />} />
