@@ -42,7 +42,6 @@ const AlternativeTherapies = () => {
   const { toast } = useToast();
   const [activeTab, setActiveTab] = useState("all");
   
-  // Get the return path from location state, or default to "/"
   const returnPath = location.state?.from || "/";
   
   const handleBack = () => {
@@ -61,7 +60,6 @@ const AlternativeTherapies = () => {
     });
   };
   
-  // Our alternative therapies
   const therapies: Therapy[] = [
     {
       id: "mindfulness",
@@ -219,7 +217,6 @@ const AlternativeTherapies = () => {
   return (
     <Page title="Explore Alternative Therapies" showBackButton={true} onBackClick={handleBack}>
       <div className="space-y-6">
-        {/* Hero Section */}
         <div className="bg-gradient-to-r from-[#6E59A5]/30 to-[#D946EF]/30 p-5 rounded-xl">
           <div className="flex flex-col md:flex-row gap-5 items-center">
             <div className="md:w-2/3">
@@ -239,7 +236,6 @@ const AlternativeTherapies = () => {
           </div>
         </div>
         
-        {/* Category Tabs */}
         <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
           <TabsList className="grid grid-cols-3 md:grid-cols-6 gap-2 w-full bg-transparent h-auto p-0">
             {categories.map(category => (
@@ -253,7 +249,6 @@ const AlternativeTherapies = () => {
             ))}
           </TabsList>
           
-          {/* Therapy Cards */}
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-6">
             {filteredTherapies.map(therapy => (
               <motion.div
@@ -299,7 +294,7 @@ const AlternativeTherapies = () => {
                       color: '#fff'
                     }}
                     onClick={(e) => {
-                      e.stopPropagation(); // Prevent triggering the parent onClick
+                      e.stopPropagation();
                       handleGuidedPractice(therapy.id, therapy.name);
                     }}
                   >
