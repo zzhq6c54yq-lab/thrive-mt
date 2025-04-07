@@ -28,13 +28,7 @@ const DashboardContent: React.FC<DashboardContentProps> = ({
   return (
     <div className="container mx-auto px-4 pb-24">
       <div className="space-y-6">
-        {/* Featured Workshops */}
-        <FeaturedWorkshops 
-          navigate={navigate}
-          onWorkshopClick={onWorkshopClick}
-        />
-        
-        {/* Specialized Programs */}
+        {/* Specialized Programs - Now first under New Features banner */}
         <div className="mt-8">
           <h2 className="text-xl md:text-2xl font-semibold mb-5 flex items-center gap-2">
             <div className="p-1.5 rounded-full bg-[#9b87f5]/30">
@@ -50,6 +44,18 @@ const DashboardContent: React.FC<DashboardContentProps> = ({
         {/* Gratitude Visualizer */}
         <GratitudeVisualizer />
         
+        {/* Upcoming Appointments */}
+        <UpcomingAppointments />
+        
+        {/* Daily Wellness Challenges */}
+        <DailyWellnessChallenges />
+        
+        {/* Featured Workshops */}
+        <FeaturedWorkshops 
+          navigate={navigate}
+          onWorkshopClick={onWorkshopClick}
+        />
+        
         {/* Brain Games & Quizzes */}
         <div className="mt-8">
           <h2 className="text-xl font-semibold mb-4 flex items-center gap-2">
@@ -61,12 +67,6 @@ const DashboardContent: React.FC<DashboardContentProps> = ({
             </span>
           </h2>
           <QuizzesSection />
-        </div>
-        
-        {/* First Row */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-          <DailyWellnessChallenges />
-          <UpcomingAppointments />
         </div>
         
         {/* Key Features - moved to the last section */}

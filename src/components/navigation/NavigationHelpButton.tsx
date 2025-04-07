@@ -18,6 +18,9 @@ const NavigationHelpButton: React.FC = () => {
   const isButtonVisible = useButtonVisibility();
   const { isSpanish } = useTranslation();
   
+  // Check if we're on the main dashboard
+  const isMainDashboard = location.pathname === '/' || location.pathname === '/home';
+  
   // Handle opening the help dialog
   const openHelp = (e: React.MouseEvent) => {
     e.stopPropagation();
@@ -67,21 +70,24 @@ const NavigationHelpButton: React.FC = () => {
           </Avatar>
         </Button>
         
-        <Button
-          onClick={handleMainDashboard}
-          className="h-12 w-12 rounded-full bg-gradient-to-br from-[#0EA5E9] to-[#2563EB] text-white shadow-lg hover:shadow-xl transition-all duration-300 flex items-center justify-center"
-          size="icon"
-          aria-label={isSpanish ? "Volver al Panel Principal" : "Return to Main Dashboard"}
-          title={isSpanish ? "Volver al Panel Principal" : "Return to Main Dashboard"}
-        >
-          <div className="relative w-5 h-5 overflow-hidden">
-            <img 
-              src="/lovable-uploads/f2c6ac08-6331-4884-950d-7f94d68ff15f.png" 
-              alt="Thrive MT Logo" 
-              className="h-5 w-5 filter drop-shadow-[0_0_5px_rgba(184,115,51,0.8)] transition-all duration-300 hover:drop-shadow-[0_0_8px_rgba(184,115,51,1)]"
-            />
-          </div>
-        </Button>
+        {/* Only show the return to dashboard button if not on main dashboard */}
+        {!isMainDashboard && (
+          <Button
+            onClick={handleMainDashboard}
+            className="h-12 w-12 rounded-full bg-gradient-to-br from-[#0EA5E9] to-[#2563EB] text-white shadow-lg hover:shadow-xl transition-all duration-300 flex items-center justify-center"
+            size="icon"
+            aria-label={isSpanish ? "Volver al Panel Principal" : "Return to Main Dashboard"}
+            title={isSpanish ? "Volver al Panel Principal" : "Return to Main Dashboard"}
+          >
+            <div className="relative w-5 h-5 overflow-hidden">
+              <img 
+                src="/lovable-uploads/f2c6ac08-6331-4884-950d-7f94d68ff15f.png" 
+                alt="Thrive MT Logo" 
+                className="h-5 w-5 filter drop-shadow-[0_0_5px_rgba(184,115,51,0.8)] transition-all duration-300 hover:drop-shadow-[0_0_8px_rgba(184,115,51,1)]"
+              />
+            </div>
+          </Button>
+        )}
       </div>
       
       <HenryIntroDialog 
