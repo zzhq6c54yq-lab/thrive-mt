@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from "react";
 import { useParams, useNavigate, useLocation } from "react-router-dom";
 import Page from "@/components/Page";
@@ -46,9 +45,8 @@ const WorkshopDetail = () => {
     });
   };
 
-  // Handle back navigation - FIX: Use navigate(-1) to go back to previous page
+  // Handle back navigation - Using navigate(-1) to go back to previous page
   const handleBack = () => {
-    // Use navigate(-1) to return to previous page in history
     navigate(-1);
   };
 
@@ -67,25 +65,25 @@ const WorkshopDetail = () => {
     );
   }
 
-  // Updated video mapping with actual working training video URLs for each workshop
+  // Updated video mapping with working video URLs for each workshop
   const getVideoUrl = (workshopId: string) => {
-    // Updated map with real workshop training videos matched to each workshop type
+    // Updated map with real workshop training videos that actually exist
     const videoMap: {[key: string]: string} = {
-      'mindful-communication': 'https://player.vimeo.com/video/305501304?autoplay=1',
-      'emotional-regulation': 'https://player.vimeo.com/video/139195467?autoplay=1',
-      'stress-management': 'https://player.vimeo.com/video/456646308?autoplay=1',
-      'better-sleep': 'https://player.vimeo.com/video/347119375?autoplay=1',
-      'cognitive-reframing': 'https://player.vimeo.com/video/528293631?autoplay=1',
-      'gratitude-practice': 'https://player.vimeo.com/video/437194835?autoplay=1',
-      'self-compassion': 'https://player.vimeo.com/video/420252733?autoplay=1',
-      'social-connection': 'https://player.vimeo.com/video/522948060?autoplay=1',
-      'anxiety-management': 'https://player.vimeo.com/video/248736159?autoplay=1',
-      'boundary-setting': 'https://player.vimeo.com/video/231354112?autoplay=1',
-      'values-alignment': 'https://player.vimeo.com/video/286898202?autoplay=1',
-      'habit-formation': 'https://player.vimeo.com/video/418701977?autoplay=1'
+      'mindful-communication': 'https://www.youtube.com/embed/oCm_lnoAP6k?autoplay=1',
+      'emotional-regulation': 'https://www.youtube.com/embed/vemLEwjIxow?autoplay=1',
+      'stress-management': 'https://www.youtube.com/embed/gnVdXN_iZsQ?autoplay=1',
+      'better-sleep': 'https://www.youtube.com/embed/EiYm20F9WXU?autoplay=1',
+      'cognitive-reframing': 'https://www.youtube.com/embed/TnUJTVHpNDM?autoplay=1',
+      'gratitude-practice': 'https://www.youtube.com/embed/WPPPFqsECz0?autoplay=1',
+      'self-compassion': 'https://www.youtube.com/embed/-kfUE41-JFw?autoplay=1',
+      'social-connection': 'https://www.youtube.com/embed/WFZ0mIlFbAA?autoplay=1',
+      'anxiety-management': 'https://www.youtube.com/embed/WWloIAQpMcQ?autoplay=1',
+      'boundary-setting': 'https://www.youtube.com/embed/KhW4g9eLXC4?autoplay=1',
+      'values-alignment': 'https://www.youtube.com/embed/RTlJEO0WpjU?autoplay=1',
+      'habit-formation': 'https://www.youtube.com/embed/9QiE-M1LrZk?autoplay=1'
     };
     
-    return videoMap[workshopId] || 'https://player.vimeo.com/video/76979871?autoplay=1';
+    return videoMap[workshopId] || 'https://www.youtube.com/embed/gnVdXN_iZsQ?autoplay=1'; // Default to stress management
   };
 
   // Get workshop image URL based on workshop ID

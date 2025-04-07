@@ -67,19 +67,34 @@ const Index = () => {
 
   const navigateToFeature = (path: string) => {
     if (path.startsWith('/')) {
+      // Special case for workshop paths
+      if (path.startsWith('/workshop/')) {
+        navigate(path, { 
+          state: { 
+            qualities: selectedQualities, 
+            goals: selectedGoals,
+            activeTab: "workshop",
+            preventTutorial: true
+          }
+        });
+        return;
+      }
+      
       if (path === '/small-business-portal') {
         navigate(path, { 
           state: { 
             qualities: selectedQualities, 
             goals: selectedGoals,
-            fromMainMenu: true 
+            fromMainMenu: true,
+            preventTutorial: true
           }
         });
       } else {
         navigate(path, { 
           state: { 
             qualities: selectedQualities, 
-            goals: selectedGoals 
+            goals: selectedGoals,
+            preventTutorial: true
           }
         });
       }
