@@ -2,7 +2,7 @@
 import React from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Sparkles, Shield, GraduationCap, Briefcase } from "lucide-react";
+import { Sparkles, Shield, GraduationCap, Briefcase, Flag } from "lucide-react";
 
 export interface SpecializedProgramsProps {
   navigateToFeature: (path: string) => void;
@@ -17,7 +17,7 @@ const SpecializedPrograms: React.FC<SpecializedProgramsProps> = ({ navigateToFea
       path: "/military-support",
       coverImage: "https://images.unsplash.com/photo-1543781977-41e2323338f1?ixlib=rb-1.2.1&auto=format&fit=crop&w=1000&q=80",
       color: "from-blue-700 to-red-600",
-      icon: <Shield className="h-5 w-5 text-white" />
+      icon: <Flag className="h-5 w-5 text-white" />
     },
     {
       id: "college",
@@ -106,7 +106,7 @@ const SpecializedPrograms: React.FC<SpecializedProgramsProps> = ({ navigateToFea
                   </div>
                 )}
                 
-                {/* Icon with glowing effect */}
+                {/* Custom Icon with glowing effect */}
                 <div className="absolute top-4 right-4 p-2 rounded-full bg-gradient-to-br from-white/20 to-white/5 backdrop-blur-sm z-20 group-hover:animate-pulse">
                   {program.icon}
                 </div>
