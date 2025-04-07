@@ -3,6 +3,9 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Page from "@/components/Page";
 import SponsorChatbot from "@/components/SponsorChatbot";
+import StepWorksheets from "@/components/sponsor/StepWorksheets";
+import StepProgressTracker from "@/components/sponsor/StepProgressTracker";
+import RecoveryJournal from "@/components/sponsor/RecoveryJournal";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -11,7 +14,7 @@ import { Separator } from "@/components/ui/separator";
 import { useToast } from "@/hooks/use-toast";
 import { 
   MapPin, Calendar, MessageSquare, ExternalLink, Users, 
-  Map, Search, Phone, Globe, Clock, User, ThumbsUp, Heart 
+  Map, Search, Phone, Globe, Clock, User, ThumbsUp, Heart, FileText, BookOpen
 } from "lucide-react";
 
 const MySponsor = () => {
@@ -19,6 +22,8 @@ const MySponsor = () => {
   const { toast } = useToast();
   const [zipCode, setZipCode] = useState("");
   const [searchMade, setSearchMade] = useState(false);
+  const [currentStep, setCurrentStep] = useState(3);
+  const [completedSteps, setCompletedSteps] = useState([1, 2]);
 
   const handleMeetingSearch = () => {
     if (!zipCode || zipCode.length !== 5 || isNaN(Number(zipCode))) {
@@ -47,6 +52,13 @@ const MySponsor = () => {
   
   const handleJoinVirtualMeeting = () => {
     navigate("/virtual-meetings");
+  };
+
+  const handleNextStep = () => {
+    if (currentStep < 12) {
+      setCurrentStep(currentStep + 1);
+      setCompletedSteps([...completedSteps, currentStep]);
+    }
   };
   
   const mockMeetings = [
@@ -126,10 +138,13 @@ const MySponsor = () => {
         </div>
         
         <Tabs defaultValue="find-meetings" className="w-full">
-          <TabsList className="grid grid-cols-3 mb-6">
+          <TabsList className="grid grid-cols-6 mb-6">
             <TabsTrigger value="find-meetings">Find Meetings</TabsTrigger>
             <TabsTrigger value="virtual-meetings">Virtual Meetings</TabsTrigger>
             <TabsTrigger value="sponsor-chat">Sponsor Chat</TabsTrigger>
+            <TabsTrigger value="twelve-steps">12 Steps</TabsTrigger>
+            <TabsTrigger value="worksheets">Worksheets</TabsTrigger>
+            <TabsTrigger value="journal">Recovery Journal</TabsTrigger>
           </TabsList>
           
           <TabsContent value="find-meetings" className="space-y-6">
@@ -362,6 +377,67 @@ const MySponsor = () => {
                 </div>
               </CardContent>
             </Card>
+          </TabsContent>
+          
+          <TabsContent value="twelve-steps" className="space-y-6">
+            <Card className="border-2 border-purple-100">
+              <CardHeader className="bg-gradient-to-r from-purple-800 to-indigo-800 text-white">
+                <CardTitle className="flex items-center">
+                  <BookOpen className="mr-2 h-5 w-5" />
+                  12 Steps Journey
+                </CardTitle>
+                <CardDescription className="text-purple-100">
+                  Track your progress through the 12 steps of recovery
+                </CardDescription>
+              </CardHeader>
+              <CardContent className="pt-6">
+                <StepProgressTracker 
+                  currentStep={currentStep}
+                  completedSteps={completedSteps}
+                  onNextStep={handleNextStep}
+                />
+              </CardContent>
+            </Card>
+            
+            <Card>
+              <CardHeader>
+                <CardTitle>The 12 Traditions</CardTitle>
+                <CardDescription>
+                  The guiding principles that help groups and members maintain sobriety and carry the message
+                </CardDescription>
+              </CardHeader>
+              <CardContent>
+                <div className="space-y-4">
+                  <div className="border-l-4 border-purple-300 pl-4 py-2">
+                    <p className="font-medium">1. Unity</p>
+                    <p className="text-sm text-gray-600">Our common welfare should come first; personal recovery depends upon unity.</p>
+                  </div>
+                  
+                  <div className="border-l-4 border-purple-300 pl-4 py-2">
+                    <p className="font-medium">2. Group Conscience</p>
+                    <p className="text-sm text-gray-600">For our group purpose there is but one ultimate authority—a loving Higher Power as expressed in our group conscience.</p>
+                  </div>
+                  
+                  <div className="border-l-4 border-purple-300 pl-4 py-2">
+                    <p className="font-medium">3. Membership</p>
+                    <p className="text-sm text-gray-600">The only requirement for membership is a desire to stop using.</p>
+                  </div>
+                  
+                  <Button variant="outline" className="w-full">
+                    <FileText className="mr-2 h-4 w-4" />
+                    View All 12 Traditions
+                  </Button>
+                </div>
+              </CardContent>
+            </Card>
+          </TabsContent>
+          
+          <TabsContent value="worksheets">
+            <StepWorksheets />
+          </TabsContent>
+          
+          <TabsContent value="journal">
+            <RecoveryJournal />
           </TabsContent>
         </Tabs>
       </div>
