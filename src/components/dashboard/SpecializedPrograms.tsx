@@ -4,7 +4,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Sparkles } from "lucide-react";
 
-interface SpecializedProgramsProps {
+export interface SpecializedProgramsProps {
   navigateToFeature: (path: string) => void;
 }
 

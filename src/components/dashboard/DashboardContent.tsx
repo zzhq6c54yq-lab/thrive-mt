@@ -1,7 +1,7 @@
 
 import React from "react";
 import DailyWellnessChallenges from "@/components/dashboard/DailyWellnessChallenges";
-import SpecializedPrograms from "@/components/dashboard/SpecializedPrograms";
+import SpecializedPrograms, { SpecializedProgramsProps } from "@/components/dashboard/SpecializedPrograms";
 import GratitudeVisualizer from "@/components/dashboard/GratitudeVisualizer";
 import UpcomingAppointments from "@/components/dashboard/UpcomingAppointments";
 import KeyFeatures from "@/components/dashboard/KeyFeatures";
