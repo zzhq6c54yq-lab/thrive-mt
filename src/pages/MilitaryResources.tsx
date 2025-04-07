@@ -1,10 +1,9 @@
-
 import React, { useState } from "react";
 import { Link, useNavigate, useLocation } from "react-router-dom";
 import { 
   ArrowLeft, BookOpen, Download, FileText, 
   ExternalLink, Bookmark, Search, Filter, 
-  Wrench, Play
+  Wrench, Play, Star
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
