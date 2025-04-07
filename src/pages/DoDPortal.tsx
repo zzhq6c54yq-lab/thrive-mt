@@ -1,3 +1,4 @@
+
 import React, { useState } from "react";
 import Page from "@/components/Page";
 import { Button } from "@/components/ui/button";
@@ -44,7 +45,7 @@ const DoDPortal: React.FC = () => {
         state: { 
           fromSpecializedProgram: true,
           preventTutorial: true,
-          returnToPortal: "/dod-portal", // Add this to enable returning to portal
+          returnToPortal: "/dod-portal",
           portalState: {
             activeTab,
             returnToMain,
@@ -284,7 +285,8 @@ const DoDPortal: React.FC = () => {
       title={isSpanish ? "Departamento de Defensa" : "Department of Defense"} 
       returnToMain={returnToMain}
     >
-      <div className="space-y-6">
+      {/* Full width container */}
+      <div className="space-y-6 w-full">
         <div className="bg-gradient-to-r from-[#0c193d] to-[#0d2563] p-6 rounded-xl backdrop-blur-md border border-blue-500/30 shadow-lg relative overflow-hidden">
           {/* Patriotic flag background element */}
           <div className="absolute inset-0 pointer-events-none overflow-hidden">
@@ -334,7 +336,8 @@ const DoDPortal: React.FC = () => {
           </div>
         </div>
 
-        <div className="bg-[#0F1319] border border-blue-900/30 rounded-lg overflow-hidden shadow-lg">
+        {/* Full width content container with expanded tab area */}
+        <div className="bg-[#0F1319] border border-blue-900/30 rounded-lg overflow-hidden shadow-lg w-full">
           <div className="flex overflow-x-auto scrollbar-hide">
             <button
               className={`px-6 py-4 font-medium text-sm flex-shrink-0 border-b-2 ${
@@ -388,7 +391,8 @@ const DoDPortal: React.FC = () => {
             </button>
           </div>
           
-          <div className="p-6">
+          {/* Expanded content area with wider padding */}
+          <div className="p-4 md:p-6 w-full">
             {activeTab === 'dashboard' && <DoDDashboard />}
             {activeTab === 'resources' && <DoDResources />}
             {activeTab === 'community' && <CommunitySupport />}

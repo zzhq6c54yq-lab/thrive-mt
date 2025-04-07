@@ -15,24 +15,24 @@ const DoDWelcome: React.FC = () => {
 
   return (
     <div className="min-h-screen text-white py-8 px-4 relative">
-      {/* Patriotic background with American flag elements */}
+      {/* Enhanced patriotic background with improved American flag elements */}
       <div className="fixed inset-0 -z-10 bg-gradient-to-b from-[#0c1b44] via-[#101d36] to-[#1a1e2c]">
-        {/* Red and white stripes - patriotic background element */}
-        <div className="absolute bottom-0 left-0 right-0 h-80 opacity-10">
+        {/* Red and white stripes - more visible */}
+        <div className="absolute bottom-0 left-0 right-0 h-full opacity-20">
           {[...Array(13)].map((_, i) => (
             <div 
               key={i} 
-              className={`h-[15px] w-full ${i % 2 === 0 ? 'bg-red-700' : 'bg-white'}`}
+              className={`h-[7.69%] w-full ${i % 2 === 0 ? 'bg-red-700' : 'bg-white'}`}
             />
           ))}
         </div>
         
-        {/* Stars field in the upper left - patriotic background element */}
-        <div className="absolute top-0 left-0 w-1/3 h-1/3 opacity-10">
-          <div className="grid grid-cols-6 gap-4 p-4">
+        {/* Stars field in the upper left - more prominent */}
+        <div className="absolute top-0 left-0 w-1/3 h-1/3 opacity-25">
+          <div className="grid grid-cols-6 gap-6 p-6">
             {[...Array(30)].map((_, i) => (
               <div key={i} className="text-white">
-                <Star className="h-4 w-4 fill-white" />
+                <Star className="h-5 w-5 fill-white" />
               </div>
             ))}
           </div>
