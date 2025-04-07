@@ -8,6 +8,7 @@ import KeyFeatures from "@/components/dashboard/KeyFeatures";
 import FeaturedWorkshops from "@/components/dashboard/FeaturedWorkshops";
 import { NavigateFunction } from "react-router-dom";
 import QuizzesSection from "@/components/dashboard/QuizzesSection";
+import { Brain } from "lucide-react";
 
 interface DashboardContentProps {
   navigate: NavigateFunction;

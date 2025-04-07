@@ -88,6 +88,17 @@ const KeyFeatures: React.FC<KeyFeaturesProps> = ({
     hidden: { y: 20, opacity: 0 },
     show: { y: 0, opacity: 1, transition: { duration: 0.5 } }
   };
+  
+  // Define the container animation variant
+  const container = {
+    hidden: { opacity: 0 },
+    show: { 
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.1
+      }
+    }
+  };
 
   const features = [
     {
