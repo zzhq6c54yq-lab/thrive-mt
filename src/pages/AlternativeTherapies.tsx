@@ -19,7 +19,7 @@ const AlternativeTherapies = () => {
   type Therapy = {
     id: string;
     name: string;
-    icon: React.ReactNode;
+    icon: React.ReactElement;
     shortDescription: string;
     description: string;
     benefits: string[];
