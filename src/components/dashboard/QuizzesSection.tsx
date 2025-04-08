@@ -44,10 +44,10 @@ const QuizzesSection = () => {
       questions: 12,
       timeEstimate: "5-7 min",
       image: "https://images.unsplash.com/photo-1517837314158-c0af6f92b2d3?auto=format&fit=crop&w=500&q=80",
-      accentColor: "border-indigo-500",
-      icon: <Brain className="h-5 w-5 text-indigo-500" />,
-      gradientFrom: "from-indigo-700",
-      gradientTo: "to-indigo-900",
+      accentColor: "border-[#B87333]",
+      icon: <Brain className="h-5 w-5 text-[#B87333]" />,
+      gradientFrom: "from-[#1a0d29]",
+      gradientTo: "to-[#2d1a46]",
       popular: false
     },
     {
@@ -57,11 +57,11 @@ const QuizzesSection = () => {
       timeEstimate: "3-5 min",
       completionRate: 25,
       image: "https://images.unsplash.com/photo-1470813740244-df37b8c1edcb?auto=format&fit=crop&w=500&q=80",
-      accentColor: "border-emerald-500",
-      icon: <Lightbulb className="h-5 w-5 text-emerald-500" />,
+      accentColor: "border-[#E5C5A1]",
+      icon: <Lightbulb className="h-5 w-5 text-[#E5C5A1]" />,
       popular: true,
-      gradientFrom: "from-emerald-700",
-      gradientTo: "to-emerald-900"
+      gradientFrom: "from-[#1a0d29]",
+      gradientTo: "to-[#2d1a46]"
     },
     {
       id: "sleep-quality",
@@ -69,10 +69,10 @@ const QuizzesSection = () => {
       questions: 10,
       timeEstimate: "4-6 min",
       image: "https://images.unsplash.com/photo-1585645568795-f2d004bff7e8?auto=format&fit=crop&w=500&q=80",
-      accentColor: "border-blue-500",
-      icon: <LineChart className="h-5 w-5 text-blue-500" />,
-      gradientFrom: "from-blue-700",
-      gradientTo: "to-blue-900",
+      accentColor: "border-[#B87333]/80",
+      icon: <LineChart className="h-5 w-5 text-[#B87333]/80" />,
+      gradientFrom: "from-[#1a0d29]",
+      gradientTo: "to-[#2d1a46]",
       popular: false
     },
     {
@@ -81,10 +81,10 @@ const QuizzesSection = () => {
       questions: 15,
       timeEstimate: "6-8 min",
       image: "https://images.unsplash.com/photo-1529156069898-49953e39b3ac?auto=format&fit=crop&w=500&q=80",
-      accentColor: "border-pink-500",
-      icon: <Heart className="h-5 w-5 text-pink-500" />,
-      gradientFrom: "from-pink-700",
-      gradientTo: "to-pink-900",
+      accentColor: "border-[#E5C5A1]/80",
+      icon: <Heart className="h-5 w-5 text-[#E5C5A1]/80" />,
+      gradientFrom: "from-[#1a0d29]",
+      gradientTo: "to-[#2d1a46]",
       popular: false
     }
   ];
@@ -147,28 +147,28 @@ const QuizzesSection = () => {
   };
 
   return (
-    <div className="space-y-4">
+    <div className="space-y-6">
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
         {quizzes.map((quiz) => (
           <Card 
             key={quiz.id}
             onClick={() => handleQuizClick(quiz.id, quiz.title)}
-            className="overflow-hidden hover:shadow-md transition-all cursor-pointer group border-0 rounded-xl transform hover:scale-[1.02]"
+            className="overflow-hidden hover:shadow-2xl shadow-lg shadow-black/20 transition-all cursor-pointer group border-0 rounded-xl transform hover:scale-[1.02]"
           >
             <div className="relative h-80 flex flex-col">
               {/* Top section with title */}
-              <div className={`bg-gradient-to-r ${quiz.gradientFrom || 'from-purple-700'} ${quiz.gradientTo || 'to-purple-900'} px-4 py-3`}>
+              <div className={`bg-gradient-to-r ${quiz.gradientFrom} ${quiz.gradientTo} border-b ${quiz.accentColor} px-4 py-4`}>
                 <div className="flex justify-between items-center">
-                  <h3 className="font-semibold text-white text-lg drop-shadow-md">
+                  <h3 className="font-semibold text-transparent bg-clip-text bg-gradient-to-r from-[#B87333] to-[#E5C5A1] text-lg">
                     {quiz.title}
                   </h3>
-                  <div className="p-1.5 rounded-full bg-white/10 backdrop-blur-sm">
+                  <div className="p-1.5 rounded-full bg-gradient-to-br from-[#B87333]/20 to-[#E5C5A1]/10 backdrop-blur-sm border border-[#B87333]/30">
                     {quiz.icon}
                   </div>
                 </div>
                 
                 {quiz.popular && (
-                  <div className="absolute top-3 right-12 z-10 bg-[#D946EF] text-white text-xs font-medium px-2 py-1 rounded-full flex items-center">
+                  <div className="absolute top-3 right-12 z-10 bg-gradient-to-r from-[#B87333] to-[#E5C5A1] text-white text-xs font-medium px-2 py-1 rounded-full flex items-center">
                     <Star className="h-3 w-3 mr-1 fill-white" />
                     Popular
                   </div>
@@ -185,31 +185,31 @@ const QuizzesSection = () => {
                     e.currentTarget.src = getDefaultImage(quiz.id);
                   }}
                 />
-                <div className="absolute inset-0 bg-black/20"></div>
+                <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent"></div>
                 
                 {/* Quiz metadata badges */}
                 <div className="absolute bottom-2 left-2 flex items-center gap-2">
-                  <div className="flex items-center gap-1 bg-black/40 backdrop-blur-sm py-1 px-2 rounded-full">
-                    <Brain className="h-3 w-3 text-white/80" />
+                  <div className="flex items-center gap-1 bg-black/40 backdrop-blur-sm py-1 px-2 rounded-full border border-[#B87333]/20">
+                    <Brain className="h-3 w-3 text-[#E5C5A1]/80" />
                     <span className="text-xs text-white/90">{quiz.questions} questions</span>
                   </div>
                   
-                  <div className="flex items-center gap-1 bg-black/40 backdrop-blur-sm py-1 px-2 rounded-full">
-                    <Clock className="h-3 w-3 text-white/80" />
+                  <div className="flex items-center gap-1 bg-black/40 backdrop-blur-sm py-1 px-2 rounded-full border border-[#E5C5A1]/20">
+                    <Clock className="h-3 w-3 text-[#B87333]/80" />
                     <span className="text-xs text-white/90">{quiz.timeEstimate}</span>
                   </div>
                 </div>
               </div>
               
               {/* Bottom section with button */}
-              <div className={`bg-gradient-to-r ${quiz.gradientFrom || 'from-purple-700'} ${quiz.gradientTo || 'to-purple-900'} px-4 py-3`}>
+              <div className={`bg-gradient-to-r ${quiz.gradientFrom} ${quiz.gradientTo} border-t ${quiz.accentColor} px-4 py-4`}>
                 <Button
                   variant="ghost" 
                   size="sm"
-                  className="w-full justify-between border border-white/20 text-white hover:bg-white/10 hover:text-white transition-all"
+                  className="w-full justify-between border border-[#B87333]/30 text-transparent bg-clip-text bg-gradient-to-r from-[#B87333] to-[#E5C5A1] hover:bg-[#B87333]/10 hover:text-white transition-all group"
                 >
                   <span>{quiz.completionRate ? "Continue" : "Start"} Assessment</span>
-                  <ArrowRight className="h-4 w-4 group-hover:translate-x-1 transition-transform" />
+                  <ArrowRight className="h-4 w-4 text-[#E5C5A1] group-hover:translate-x-1 transition-transform" />
                 </Button>
               </div>
             </div>
@@ -221,10 +221,10 @@ const QuizzesSection = () => {
         <Button 
           variant="outline"
           onClick={handleViewMoreClick}
-          className="border-[#8B5CF6]/30 text-[#8B5CF6] hover:bg-[#8B5CF6]/5"
+          className="border-[#B87333]/30 bg-gradient-to-r from-transparent to-transparent hover:from-[#B87333]/10 hover:to-[#E5C5A1]/10 text-transparent bg-clip-text bg-gradient-to-r from-[#B87333] to-[#E5C5A1]"
         >
           View More Assessments
-          <ArrowRight className="ml-2 h-4 w-4" />
+          <ArrowRight className="ml-2 h-4 w-4 text-[#E5C5A1]" />
         </Button>
       </div>
     </div>

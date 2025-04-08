@@ -25,10 +25,10 @@ interface DashboardContentProps {
   selectedGoals: string[];
 }
 
-// Common styling for all section headers with improved gradients
-const sectionHeaderClass = "bg-gradient-to-r from-violet-300 via-purple-200 to-white bg-clip-text text-transparent font-semibold text-lg";
-const sectionWrapperClass = "mb-8 overflow-hidden";
-const sectionHeaderWrapperClass = "p-4 flex items-center justify-between cursor-pointer bg-gradient-to-r from-purple-900/90 via-[#2d1a46] to-purple-900/90 backdrop-blur-sm rounded-t-xl";
+// Common styling for all section headers with improved gold gradients
+const sectionHeaderClass = "bg-gradient-to-r from-[#B87333] to-[#E5C5A1] bg-clip-text text-transparent font-semibold text-lg";
+const sectionWrapperClass = "mb-8 overflow-hidden transition-all duration-300 transform hover:scale-[1.005] hover:shadow-lg rounded-xl";
+const sectionHeaderWrapperClass = "p-5 flex items-center justify-between cursor-pointer bg-gradient-to-r from-[#1a0d29]/90 via-[#2d1a46]/90 to-[#1a0d29]/90 backdrop-blur-sm rounded-xl border border-[#B87333]/20";
 
 const DashboardContent: React.FC<DashboardContentProps> = ({
   navigate,
@@ -55,8 +55,8 @@ const DashboardContent: React.FC<DashboardContentProps> = ({
   };
 
   return (
-    <div className="container mx-auto px-4 pb-24 max-w-full">
-      <div className="space-y-6">
+    <div className="container mx-auto px-6 pb-24 max-w-7xl">
+      <div className="space-y-8">
         {/* Specialized Programs Section */}
         <div className={sectionWrapperClass}>
           <Collapsible 
@@ -66,30 +66,33 @@ const DashboardContent: React.FC<DashboardContentProps> = ({
           >
             <CollapsibleTrigger asChild>
               <div className={sectionHeaderWrapperClass}>
-                <div className="flex items-center gap-2">
-                  <div className="p-1.5 rounded-full bg-[#9b87f5]/20">
-                    <Sparkles className="h-5 w-5 text-[#9b87f5]" />
+                <div className="flex items-center gap-3">
+                  <div className="p-2 rounded-full bg-gradient-to-br from-[#B87333]/20 to-[#E5C5A1]/10 shadow-inner border border-[#B87333]/20">
+                    <Sparkles className="h-5 w-5 text-[#B87333]" />
                   </div>
                   <span className={sectionHeaderClass}>Specialized Programs</span>
                 </div>
                 <Button 
                   variant="ghost"
                   size="sm"
-                  className="text-white hover:bg-white/10 border border-white/20"
+                  className="text-white hover:bg-white/5 border border-[#B87333]/30 group"
                 >
                   {sectionsCollapsed.programs ? "Expand" : "Collapse"}
-                  {sectionsCollapsed.programs ? <ChevronDown className="ml-2 h-4 w-4" /> : <ChevronUp className="ml-2 h-4 w-4" />}
+                  {sectionsCollapsed.programs ? 
+                    <ChevronDown className="ml-2 h-4 w-4 group-hover:translate-y-1 transition-transform" /> : 
+                    <ChevronUp className="ml-2 h-4 w-4 group-hover:-translate-y-1 transition-transform" />
+                  }
                 </Button>
               </div>
             </CollapsibleTrigger>
-            <CollapsibleContent className="bg-purple-900/20 backdrop-blur-sm p-6 rounded-b-xl">
+            <CollapsibleContent className="bg-[#1a0d29]/50 backdrop-blur-sm p-8 rounded-b-xl border-x border-b border-[#B87333]/20 animate-in transition-all duration-300">
               <SpecializedPrograms navigateToFeature={navigateToFeature} />
             </CollapsibleContent>
           </Collapsible>
         </div>
         
         {/* Two column layout for appointments and wellness/gratitude */}
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           {/* Column 1: Upcoming Appointments */}
           <div className="lg:col-span-1">
             <div className={sectionWrapperClass}>
@@ -100,23 +103,26 @@ const DashboardContent: React.FC<DashboardContentProps> = ({
               >
                 <CollapsibleTrigger asChild>
                   <div className={sectionHeaderWrapperClass}>
-                    <div className="flex items-center gap-2">
-                      <div className="p-1.5 rounded-full bg-amber-100">
-                        <Calendar className="h-5 w-5 text-amber-600" />
+                    <div className="flex items-center gap-3">
+                      <div className="p-2 rounded-full bg-gradient-to-br from-[#B87333]/20 to-[#E5C5A1]/10 shadow-inner border border-[#B87333]/20">
+                        <Calendar className="h-5 w-5 text-[#B87333]" />
                       </div>
                       <span className={sectionHeaderClass}>Schedule Center</span>
                     </div>
                     <Button 
                       variant="ghost"
                       size="sm"
-                      className="text-white hover:bg-white/10 border border-white/20"
+                      className="text-white hover:bg-white/5 border border-[#B87333]/30 group"
                     >
                       {sectionsCollapsed.appointments ? "Expand" : "Collapse"}
-                      {sectionsCollapsed.appointments ? <ChevronDown className="ml-2 h-4 w-4" /> : <ChevronUp className="ml-2 h-4 w-4" />}
+                      {sectionsCollapsed.appointments ? 
+                        <ChevronDown className="ml-2 h-4 w-4 group-hover:translate-y-1 transition-transform" /> : 
+                        <ChevronUp className="ml-2 h-4 w-4 group-hover:-translate-y-1 transition-transform" />
+                      }
                     </Button>
                   </div>
                 </CollapsibleTrigger>
-                <CollapsibleContent className="bg-purple-900/20 backdrop-blur-sm p-6 rounded-b-xl">
+                <CollapsibleContent className="bg-[#1a0d29]/50 backdrop-blur-sm p-8 rounded-b-xl border-x border-b border-[#B87333]/20 animate-in transition-all duration-300">
                   <UpcomingAppointments />
                 </CollapsibleContent>
               </Collapsible>
@@ -134,30 +140,33 @@ const DashboardContent: React.FC<DashboardContentProps> = ({
               >
                 <CollapsibleTrigger asChild>
                   <div className={sectionHeaderWrapperClass}>
-                    <div className="flex items-center gap-2">
-                      <div className="p-1.5 rounded-full bg-pink-100">
-                        <Heart className="h-5 w-5 text-pink-500" />
+                    <div className="flex items-center gap-3">
+                      <div className="p-2 rounded-full bg-gradient-to-br from-[#B87333]/20 to-[#E5C5A1]/10 shadow-inner border border-[#B87333]/20">
+                        <Heart className="h-5 w-5 text-[#B87333]" />
                       </div>
                       <span className={sectionHeaderClass}>Gratitude Visualizer</span>
                     </div>
                     <Button 
                       variant="ghost"
                       size="sm"
-                      className="text-white hover:bg-white/10 border border-white/20"
+                      className="text-white hover:bg-white/5 border border-[#B87333]/30 group"
                     >
                       {sectionsCollapsed.gratitude ? "Expand" : "Collapse"}
-                      {sectionsCollapsed.gratitude ? <ChevronDown className="ml-2 h-4 w-4" /> : <ChevronUp className="ml-2 h-4 w-4" />}
+                      {sectionsCollapsed.gratitude ? 
+                        <ChevronDown className="ml-2 h-4 w-4 group-hover:translate-y-1 transition-transform" /> : 
+                        <ChevronUp className="ml-2 h-4 w-4 group-hover:-translate-y-1 transition-transform" />
+                      }
                     </Button>
                   </div>
                 </CollapsibleTrigger>
-                <CollapsibleContent className="bg-purple-900/20 backdrop-blur-sm p-6 rounded-b-xl">
+                <CollapsibleContent className="bg-[#1a0d29]/50 backdrop-blur-sm p-8 rounded-b-xl border-x border-b border-[#B87333]/20 animate-in transition-all duration-300">
                   <GratitudeVisualizer />
                 </CollapsibleContent>
               </Collapsible>
             </div>
             
             {/* Daily Wellness Challenges */}
-            <div className={`${sectionWrapperClass} mt-6`}>
+            <div className={`${sectionWrapperClass} mt-8`}>
               <Collapsible 
                 open={!sectionsCollapsed.wellness}
                 onOpenChange={() => toggleSection('wellness')}
@@ -165,23 +174,26 @@ const DashboardContent: React.FC<DashboardContentProps> = ({
               >
                 <CollapsibleTrigger asChild>
                   <div className={sectionHeaderWrapperClass}>
-                    <div className="flex items-center gap-2">
-                      <div className="p-1.5 rounded-full bg-emerald-100">
-                        <HeartPulse className="h-5 w-5 text-emerald-600" />
+                    <div className="flex items-center gap-3">
+                      <div className="p-2 rounded-full bg-gradient-to-br from-[#B87333]/20 to-[#E5C5A1]/10 shadow-inner border border-[#B87333]/20">
+                        <HeartPulse className="h-5 w-5 text-[#B87333]" />
                       </div>
                       <span className={sectionHeaderClass}>Wellness Center</span>
                     </div>
                     <Button 
                       variant="ghost"
                       size="sm"
-                      className="text-white hover:bg-white/10 border border-white/20"
+                      className="text-white hover:bg-white/5 border border-[#B87333]/30 group"
                     >
                       {sectionsCollapsed.wellness ? "Expand" : "Collapse"}
-                      {sectionsCollapsed.wellness ? <ChevronDown className="ml-2 h-4 w-4" /> : <ChevronUp className="ml-2 h-4 w-4" />}
+                      {sectionsCollapsed.wellness ? 
+                        <ChevronDown className="ml-2 h-4 w-4 group-hover:translate-y-1 transition-transform" /> : 
+                        <ChevronUp className="ml-2 h-4 w-4 group-hover:-translate-y-1 transition-transform" />
+                      }
                     </Button>
                   </div>
                 </CollapsibleTrigger>
-                <CollapsibleContent className="bg-purple-900/20 backdrop-blur-sm p-6 rounded-b-xl">
+                <CollapsibleContent className="bg-[#1a0d29]/50 backdrop-blur-sm p-8 rounded-b-xl border-x border-b border-[#B87333]/20 animate-in transition-all duration-300">
                   <DailyWellnessChallenges />
                 </CollapsibleContent>
               </Collapsible>
@@ -198,23 +210,26 @@ const DashboardContent: React.FC<DashboardContentProps> = ({
           >
             <CollapsibleTrigger asChild>
               <div className={sectionHeaderWrapperClass}>
-                <div className="flex items-center gap-2">
-                  <div className="p-1.5 rounded-full bg-gray-200">
-                    <Star className="h-5 w-5 text-gray-700" />
+                <div className="flex items-center gap-3">
+                  <div className="p-2 rounded-full bg-gradient-to-br from-[#B87333]/20 to-[#E5C5A1]/10 shadow-inner border border-[#B87333]/20">
+                    <Star className="h-5 w-5 text-[#B87333]" />
                   </div>
                   <span className={sectionHeaderClass}>Monthly Featured Workshops</span>
                 </div>
                 <Button 
                   variant="ghost"
                   size="sm"
-                  className="text-white hover:bg-white/10 border border-white/20"
+                  className="text-white hover:bg-white/5 border border-[#B87333]/30 group"
                 >
                   {sectionsCollapsed.workshops ? "Expand" : "Collapse"}
-                  {sectionsCollapsed.workshops ? <ChevronDown className="ml-2 h-4 w-4" /> : <ChevronUp className="ml-2 h-4 w-4" />}
+                  {sectionsCollapsed.workshops ? 
+                    <ChevronDown className="ml-2 h-4 w-4 group-hover:translate-y-1 transition-transform" /> : 
+                    <ChevronUp className="ml-2 h-4 w-4 group-hover:-translate-y-1 transition-transform" />
+                  }
                 </Button>
               </div>
             </CollapsibleTrigger>
-            <CollapsibleContent className="bg-purple-900/20 backdrop-blur-sm p-6 rounded-b-xl">
+            <CollapsibleContent className="bg-[#1a0d29]/50 backdrop-blur-sm p-8 rounded-b-xl border-x border-b border-[#B87333]/20 animate-in transition-all duration-300">
               <FeaturedWorkshops 
                 navigate={navigate}
                 onWorkshopClick={onWorkshopClick}
@@ -232,23 +247,26 @@ const DashboardContent: React.FC<DashboardContentProps> = ({
           >
             <CollapsibleTrigger asChild>
               <div className={sectionHeaderWrapperClass}>
-                <div className="flex items-center gap-2">
-                  <div className="p-1.5 rounded-full bg-purple-100">
-                    <Brain className="h-5 w-5 text-[#D946EF]" />
+                <div className="flex items-center gap-3">
+                  <div className="p-2 rounded-full bg-gradient-to-br from-[#B87333]/20 to-[#E5C5A1]/10 shadow-inner border border-[#B87333]/20">
+                    <Brain className="h-5 w-5 text-[#B87333]" />
                   </div>
                   <span className={sectionHeaderClass}>Brain Games & Assessments</span>
                 </div>
                 <Button 
                   variant="ghost"
                   size="sm"
-                  className="text-white hover:bg-white/10 border border-white/20"
+                  className="text-white hover:bg-white/5 border border-[#B87333]/30 group"
                 >
                   {sectionsCollapsed.brainGames ? "Expand" : "Collapse"}
-                  {sectionsCollapsed.brainGames ? <ChevronDown className="ml-2 h-4 w-4" /> : <ChevronUp className="ml-2 h-4 w-4" />}
+                  {sectionsCollapsed.brainGames ? 
+                    <ChevronDown className="ml-2 h-4 w-4 group-hover:translate-y-1 transition-transform" /> : 
+                    <ChevronUp className="ml-2 h-4 w-4 group-hover:-translate-y-1 transition-transform" />
+                  }
                 </Button>
               </div>
             </CollapsibleTrigger>
-            <CollapsibleContent className="bg-purple-900/20 backdrop-blur-sm p-6 rounded-b-xl">
+            <CollapsibleContent className="bg-[#1a0d29]/50 backdrop-blur-sm p-8 rounded-b-xl border-x border-b border-[#B87333]/20 animate-in transition-all duration-300">
               <QuizzesSection />
             </CollapsibleContent>
           </Collapsible>
@@ -263,23 +281,26 @@ const DashboardContent: React.FC<DashboardContentProps> = ({
           >
             <CollapsibleTrigger asChild>
               <div className={sectionHeaderWrapperClass}>
-                <div className="flex items-center gap-2">
-                  <div className="p-1.5 rounded-full bg-blue-100">
-                    <Workflow className="h-5 w-5 text-blue-600" />
+                <div className="flex items-center gap-3">
+                  <div className="p-2 rounded-full bg-gradient-to-br from-[#B87333]/20 to-[#E5C5A1]/10 shadow-inner border border-[#B87333]/20">
+                    <Workflow className="h-5 w-5 text-[#B87333]" />
                   </div>
                   <span className={sectionHeaderClass}>Key Features</span>
                 </div>
                 <Button 
                   variant="ghost"
                   size="sm"
-                  className="text-white hover:bg-white/10 border border-white/20"
+                  className="text-white hover:bg-white/5 border border-[#B87333]/30 group"
                 >
                   {sectionsCollapsed.keyFeatures ? "Expand" : "Collapse"}
-                  {sectionsCollapsed.keyFeatures ? <ChevronDown className="ml-2 h-4 w-4" /> : <ChevronUp className="ml-2 h-4 w-4" />}
+                  {sectionsCollapsed.keyFeatures ? 
+                    <ChevronDown className="ml-2 h-4 w-4 group-hover:translate-y-1 transition-transform" /> : 
+                    <ChevronUp className="ml-2 h-4 w-4 group-hover:-translate-y-1 transition-transform" />
+                  }
                 </Button>
               </div>
             </CollapsibleTrigger>
-            <CollapsibleContent className="bg-purple-900/20 backdrop-blur-sm p-6 rounded-b-xl">
+            <CollapsibleContent className="bg-[#1a0d29]/50 backdrop-blur-sm p-8 rounded-b-xl border-x border-b border-[#B87333]/20 animate-in transition-all duration-300">
               <KeyFeatures 
                 navigateToFeature={navigateToFeature}
                 selectedQualities={selectedQualities}
