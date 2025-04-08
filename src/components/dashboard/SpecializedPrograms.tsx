@@ -36,7 +36,8 @@ const SpecializedPrograms: React.FC<SpecializedProgramsProps> = ({ navigateToFea
       gradientTo: "to-indigo-800",
       accentColor: "border-red-500",
       buttonColor: "bg-gradient-to-r from-red-600 via-blue-600 to-blue-700 hover:from-red-700 hover:via-blue-700 to-blue-800",
-      isVeteran: true
+      isVeteran: true,
+      image: "https://images.unsplash.com/photo-1503177119275-0aa32b3a9368?auto=format&fit=crop&w=600&q=80"
     },
     {
       id: "college",
@@ -50,7 +51,8 @@ const SpecializedPrograms: React.FC<SpecializedProgramsProps> = ({ navigateToFea
       gradientFrom: "from-purple-900",
       gradientTo: "to-violet-800",
       accentColor: "border-yellow-400",
-      buttonColor: "bg-purple-600 hover:bg-purple-700"
+      buttonColor: "bg-purple-600 hover:bg-purple-700",
+      image: "https://images.unsplash.com/photo-1523240795612-9a054b0db644?auto=format&fit=crop&w=600&q=80"
     },
     {
       id: "business",
@@ -64,7 +66,8 @@ const SpecializedPrograms: React.FC<SpecializedProgramsProps> = ({ navigateToFea
       gradientFrom: "from-emerald-900",
       gradientTo: "to-green-800",
       accentColor: "border-amber-400",
-      buttonColor: "bg-emerald-600 hover:bg-emerald-700"
+      buttonColor: "bg-emerald-600 hover:bg-emerald-700",
+      image: "https://images.unsplash.com/photo-1542744173-8e7e53415bb0?auto=format&fit=crop&w=600&q=80"
     }
   ];
 
@@ -120,12 +123,26 @@ const SpecializedPrograms: React.FC<SpecializedProgramsProps> = ({ navigateToFea
                   </div>
                 </div>
                 
+                {/* Apply realistic photo on top with blend mode */}
+                <div className="absolute inset-0">
+                  <img 
+                    src={program.image} 
+                    alt={program.title}
+                    className="w-full h-full object-cover mix-blend-overlay opacity-60"
+                  />
+                </div>
+                
                 {/* Semi-transparent overlay */}
-                <div className="absolute inset-0 bg-black/50"></div>
+                <div className="absolute inset-0 bg-black/30"></div>
               </div>
             ) : (
               <div className="absolute inset-0">
-                <div className={`absolute inset-0 bg-gradient-to-b ${program.gradientFrom} ${program.gradientTo} opacity-90`}></div>
+                <img 
+                  src={program.image}
+                  alt={program.title}
+                  className="w-full h-full object-cover"
+                />
+                <div className={`absolute inset-0 bg-gradient-to-b ${program.gradientFrom} ${program.gradientTo} opacity-70`}></div>
               </div>
             )}
 

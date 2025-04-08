@@ -26,10 +26,10 @@ interface DashboardContentProps {
   selectedGoals: string[];
 }
 
-// Common styling for all section headers
-const sectionHeaderClass = "bg-gradient-to-r from-purple-600 via-blue-500 to-indigo-400 bg-clip-text text-transparent font-semibold text-lg";
+// Common styling for all section headers - updated with dark blue/black background and gold/white gradient text
+const sectionHeaderClass = "bg-gradient-to-r from-amber-300 via-yellow-100 to-white bg-clip-text text-transparent font-semibold text-lg";
 const sectionWrapperClass = "rounded-xl border border-gray-100 shadow-sm hover:shadow-md transition-all duration-300 mb-8 overflow-hidden";
-const sectionHeaderWrapperClass = "p-4 flex items-center justify-between cursor-pointer bg-white/60 backdrop-blur-sm";
+const sectionHeaderWrapperClass = "p-4 flex items-center justify-between cursor-pointer bg-[#0a1929] backdrop-blur-sm";
 
 const DashboardContent: React.FC<DashboardContentProps> = ({
   navigate,
@@ -76,7 +76,7 @@ const DashboardContent: React.FC<DashboardContentProps> = ({
                 <Button 
                   variant="outline"
                   size="sm"
-                  className="bg-white/80 border-gray-200 hover:bg-gray-100"
+                  className="bg-white text-gray-800 border-gray-200 hover:bg-gray-100"
                 >
                   {sectionsCollapsed.programs ? "Expand" : "Collapse"}
                   {sectionsCollapsed.programs ? <ChevronDown className="ml-2 h-4 w-4" /> : <ChevronUp className="ml-2 h-4 w-4" />}
@@ -110,7 +110,7 @@ const DashboardContent: React.FC<DashboardContentProps> = ({
                     <Button 
                       variant="outline"
                       size="sm"
-                      className="bg-white/80 border-gray-200 hover:bg-gray-100"
+                      className="bg-white text-gray-800 border-gray-200 hover:bg-gray-100"
                     >
                       {sectionsCollapsed.appointments ? "Expand" : "Collapse"}
                       {sectionsCollapsed.appointments ? <ChevronDown className="ml-2 h-4 w-4" /> : <ChevronUp className="ml-2 h-4 w-4" />}
@@ -144,7 +144,7 @@ const DashboardContent: React.FC<DashboardContentProps> = ({
                     <Button 
                       variant="outline"
                       size="sm"
-                      className="bg-white/80 border-gray-200 hover:bg-gray-100"
+                      className="bg-white text-gray-800 border-gray-200 hover:bg-gray-100"
                     >
                       {sectionsCollapsed.gratitude ? "Expand" : "Collapse"}
                       {sectionsCollapsed.gratitude ? <ChevronDown className="ml-2 h-4 w-4" /> : <ChevronUp className="ml-2 h-4 w-4" />}
@@ -175,7 +175,7 @@ const DashboardContent: React.FC<DashboardContentProps> = ({
                     <Button 
                       variant="outline"
                       size="sm"
-                      className="bg-white/80 border-gray-200 hover:bg-gray-100"
+                      className="bg-white text-gray-800 border-gray-200 hover:bg-gray-100"
                     >
                       {sectionsCollapsed.wellness ? "Expand" : "Collapse"}
                       {sectionsCollapsed.wellness ? <ChevronDown className="ml-2 h-4 w-4" /> : <ChevronUp className="ml-2 h-4 w-4" />}
@@ -208,7 +208,7 @@ const DashboardContent: React.FC<DashboardContentProps> = ({
                 <Button 
                   variant="outline"
                   size="sm"
-                  className="bg-white/80 border-gray-200 hover:bg-gray-100"
+                  className="bg-white text-gray-800 border-gray-200 hover:bg-gray-100"
                 >
                   {sectionsCollapsed.workshops ? "Expand" : "Collapse"}
                   {sectionsCollapsed.workshops ? <ChevronDown className="ml-2 h-4 w-4" /> : <ChevronUp className="ml-2 h-4 w-4" />}
@@ -242,7 +242,7 @@ const DashboardContent: React.FC<DashboardContentProps> = ({
                 <Button 
                   variant="outline"
                   size="sm"
-                  className="bg-white/80 border-gray-200 hover:bg-gray-100"
+                  className="bg-white text-gray-800 border-gray-200 hover:bg-gray-100"
                 >
                   {sectionsCollapsed.brainGames ? "Expand" : "Collapse"}
                   {sectionsCollapsed.brainGames ? <ChevronDown className="ml-2 h-4 w-4" /> : <ChevronUp className="ml-2 h-4 w-4" />}
@@ -273,7 +273,7 @@ const DashboardContent: React.FC<DashboardContentProps> = ({
                 <Button 
                   variant="outline"
                   size="sm"
-                  className="bg-white/80 border-gray-200 hover:bg-gray-100"
+                  className="bg-white text-gray-800 border-gray-200 hover:bg-gray-100"
                 >
                   {sectionsCollapsed.keyFeatures ? "Expand" : "Collapse"}
                   {sectionsCollapsed.keyFeatures ? <ChevronDown className="ml-2 h-4 w-4" /> : <ChevronUp className="ml-2 h-4 w-4" />}
