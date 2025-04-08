@@ -124,24 +124,24 @@ const DailyWellnessChallenges: React.FC = () => {
   };
   
   return (
-    <div className="bg-gradient-to-br from-[#FFF8E9] to-[#FCF1DC] rounded-2xl overflow-hidden shadow-lg border border-amber-100">
+    <div className="bg-gradient-to-br from-[#2a2a3c] to-[#1f1f2c] rounded-2xl overflow-hidden shadow-lg">
       <div className="relative overflow-hidden">
-        <div className="absolute inset-0 bg-[url('data:image/svg+xml;utf8,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%2220%22 height=%2220%22 viewBox=%220 0 20 20%22><circle cx=%222%22 cy=%222%22 r=%221%22 fill=%22%23B87333%22 fill-opacity=%220.05%22/></svg>')] opacity-30"></div>
+        <div className="absolute inset-0 bg-pattern opacity-5"></div>
         
-        <div className="p-6 relative z-10">
+        <div className="bg-gradient-to-r from-[#8D65C5]/20 via-[#E96DED]/20 to-[#6C85DD]/20 p-6">
           {/* Points progress bar */}
           <div className="mb-4">
-            <div className="flex justify-between items-center mb-1 text-xs text-gray-600">
+            <div className="flex justify-between items-center mb-1 text-xs text-gray-300">
               <span>{translations.progressToward}</span>
               <div className="flex items-center gap-2">
                 <span>{points}/1000 {translations.points}</span>
                 <Award className="h-4 w-4 text-amber-400" />
               </div>
             </div>
-            <Progress value={(points % 1000) / 10} className="h-2 bg-amber-100">
-              <div className="h-full bg-gradient-to-r from-amber-300 to-amber-500 rounded-full"></div>
+            <Progress value={(points % 1000) / 10} max={100} className="h-2 bg-[#1e1e2c]">
+              <div className="h-full bg-gradient-to-r from-amber-400 to-amber-600 rounded-full"></div>
             </Progress>
-            <p className="text-xs text-gray-500 mt-1 text-right">
+            <p className="text-xs text-gray-400 mt-1 text-right">
               {1000 - (points % 1000)} {translations.morePointsNeeded}
             </p>
           </div>
@@ -151,8 +151,8 @@ const DailyWellnessChallenges: React.FC = () => {
               onClick={() => setActiveTab('wellness')}
               className={`px-4 py-2 rounded-full text-sm font-medium transition-all ${
                 activeTab === 'wellness'
-                  ? 'bg-amber-400 text-white'
-                  : 'bg-amber-100 text-amber-800 hover:bg-amber-200'
+                  ? 'bg-indigo-500 text-white'
+                  : 'bg-[#3a3a4c]/50 text-gray-300 hover:bg-[#3a3a4c]'
               }`}
             >
               {translations.wellnessChallenges}
@@ -161,8 +161,8 @@ const DailyWellnessChallenges: React.FC = () => {
               onClick={() => setActiveTab('mental')}
               className={`px-4 py-2 rounded-full text-sm font-medium transition-all ${
                 activeTab === 'mental'
-                  ? 'bg-amber-500 text-white'
-                  : 'bg-amber-100 text-amber-800 hover:bg-amber-200'
+                  ? 'bg-purple-500 text-white'
+                  : 'bg-[#3a3a4c]/50 text-gray-300 hover:bg-[#3a3a4c]'
               }`}
             >
               {translations.mentalHealth}
@@ -173,27 +173,27 @@ const DailyWellnessChallenges: React.FC = () => {
             {activeChallenges.map((challenge) => (
               <div 
                 key={challenge.id}
-                className="bg-white/80 backdrop-blur-sm rounded-xl p-4 flex items-start border border-amber-100/50 hover:border-amber-200 transition-all cursor-pointer shadow-sm hover:shadow-md"
+                className="bg-[#2a2a3c]/80 backdrop-blur-sm rounded-xl p-4 flex items-start hover:bg-[#2a2a3c] transition-all cursor-pointer"
                 onClick={() => handleChallengeClick(challenge.id)}
               >
-                <div className={`p-2 rounded-lg mr-3 ${challenge.completed ? 'bg-green-100' : 'bg-amber-100'}`}>
-                  <challenge.icon className={`h-5 w-5 ${challenge.completed ? 'text-green-500' : 'text-amber-500'}`} />
+                <div className={`p-2 rounded-lg mr-3 ${challenge.completed ? 'bg-green-500/20' : 'bg-indigo-500/20'}`}>
+                  <challenge.icon className={`h-5 w-5 ${challenge.completed ? 'text-green-400' : 'text-indigo-400'}`} />
                 </div>
                 
                 <div className="flex-1">
                   <div className="flex justify-between items-start">
-                    <h3 className="font-medium text-gray-800">{challenge.title}</h3>
-                    <span className="text-amber-600 text-sm font-medium">+{challenge.points} pts</span>
+                    <h3 className="font-medium text-white">{challenge.title}</h3>
+                    <span className="text-amber-400 text-sm font-medium">+{challenge.points} pts</span>
                   </div>
-                  <p className="text-sm text-gray-600 mt-1">{challenge.description}</p>
+                  <p className="text-sm text-gray-400 mt-1">{challenge.description}</p>
                 </div>
                 
                 <button
                   onClick={(e) => handleToggleCompletion(challenge.id, e)}
                   className={`ml-3 p-2 rounded-full ${
                     challenge.completed 
-                      ? 'bg-green-100 text-green-500' 
-                      : 'bg-amber-100 text-amber-600 hover:bg-amber-200'
+                      ? 'bg-green-500/20 text-green-400' 
+                      : 'bg-gray-700/50 text-gray-400 hover:bg-gray-700 hover:text-white'
                   } transition-colors`}
                 >
                   <CheckCircle className="h-5 w-5" />
@@ -205,7 +205,7 @@ const DailyWellnessChallenges: React.FC = () => {
           <div className="flex justify-between items-center mt-6">
             <button 
               onClick={handleViewAll}
-              className="flex items-center text-amber-700 hover:text-amber-800 text-sm font-medium transition-colors"
+              className="flex items-center text-indigo-300 hover:text-indigo-200 text-sm font-medium transition-colors"
             >
               {translations.viewAllChallenges}
               <ArrowRight className="ml-2 h-4 w-4" />
@@ -213,7 +213,7 @@ const DailyWellnessChallenges: React.FC = () => {
             
             <button
               onClick={() => navigate("/copay-credits")}
-              className="flex items-center text-amber-700 hover:text-amber-800 text-sm font-medium transition-colors"
+              className="flex items-center text-amber-300 hover:text-amber-200 text-sm font-medium transition-colors"
             >
               {translations.redeemForCredits}
               <Award className="ml-2 h-4 w-4" />

@@ -1,5 +1,5 @@
 
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import Page from "@/components/Page";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
@@ -288,9 +288,9 @@ const DoDPortal: React.FC = () => {
       {/* Full width container */}
       <div className="space-y-6 w-full">
         <div className="bg-gradient-to-r from-[#0c193d] to-[#0d2563] p-6 rounded-xl backdrop-blur-md border border-blue-500/30 shadow-lg relative overflow-hidden">
-          {/* Patriotic flag background element - enhanced */}
+          {/* Patriotic flag background element */}
           <div className="absolute inset-0 pointer-events-none overflow-hidden">
-            <div className="absolute top-0 right-0 w-full h-full opacity-15">
+            <div className="absolute top-0 right-0 w-full h-full opacity-10">
               {/* Red and white stripes */}
               <div className="absolute bottom-0 left-0 right-0 h-full">
                 {[...Array(7)].map((_, i) => (

@@ -15,10 +15,10 @@ const DoDWelcome: React.FC = () => {
 
   return (
     <div className="min-h-screen text-white py-8 px-4 relative">
-      {/* Enhanced patriotic background with American flag elements */}
-      <div className="fixed inset-0 -z-10 bg-gradient-to-b from-[#0a1845] via-[#0c1b44] to-[#1a1e2c]">
+      {/* Enhanced patriotic background with improved American flag elements */}
+      <div className="fixed inset-0 -z-10 bg-gradient-to-b from-[#0c1b44] via-[#101d36] to-[#1a1e2c]">
         {/* Red and white stripes - more visible */}
-        <div className="absolute bottom-0 left-0 right-0 h-full opacity-25">
+        <div className="absolute bottom-0 left-0 right-0 h-full opacity-20">
           {[...Array(13)].map((_, i) => (
             <div 
               key={i} 
@@ -27,8 +27,8 @@ const DoDWelcome: React.FC = () => {
           ))}
         </div>
         
-        {/* Stars field in the upper left */}
-        <div className="absolute top-0 left-0 w-1/3 h-1/3 opacity-30">
+        {/* Stars field in the upper left - more prominent */}
+        <div className="absolute top-0 left-0 w-1/3 h-1/3 opacity-25">
           <div className="grid grid-cols-6 gap-6 p-6">
             {[...Array(30)].map((_, i) => (
               <div key={i} className="text-white">
@@ -37,19 +37,11 @@ const DoDWelcome: React.FC = () => {
             ))}
           </div>
         </div>
-        
-        {/* Additional patriotic elements */}
-        <div className="absolute top-1/4 right-1/4 opacity-20">
-          <Flag className="h-32 w-32 text-white" />
-        </div>
-        <div className="absolute bottom-1/4 left-1/4 opacity-10">
-          <Medal className="h-40 w-40 text-amber-300" />
-        </div>
       </div>
       
       <SpecializedProgramWelcome
-        title="Service Members & Veterans - We Honor Your Service"
-        description="Welcome to a dedicated space created with deep appreciation for your sacrifice and commitment to our nation. Your service has protected our freedom, and now we're here to support your well-being journey with resources tailored specifically for those who have bravely worn the uniform."
+        title="Service Member & Veteran Support"
+        description="Welcome to a space designed specifically for those who have bravely served our nation. Your service matters, and so does your wellbeing."
         whatToExpect={whatToExpect}
         color="blue-600"
         gradientFrom="blue-700"
@@ -59,7 +51,7 @@ const DoDWelcome: React.FC = () => {
         icon={<Shield className="h-12 w-12 text-blue-300" />}
         textColor="text-white"
         descriptionTextColor="text-white"
-        backgroundColor="bg-gradient-to-b from-[#0a1845] via-[#0c1b44] to-[#1a1e2c]"
+        backgroundColor="bg-gradient-to-b from-[#0c1b44] via-[#101d36] to-[#1a1e2c]"
       />
     </div>
   );

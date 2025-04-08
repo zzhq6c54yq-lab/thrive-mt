@@ -8,7 +8,7 @@ import KeyFeatures from "@/components/dashboard/KeyFeatures";
 import FeaturedWorkshops from "@/components/dashboard/FeaturedWorkshops";
 import { NavigateFunction } from "react-router-dom";
 import QuizzesSection from "@/components/dashboard/QuizzesSection";
-import { Brain, Trophy, Sparkles } from "lucide-react";
+import { Brain, Sparkles } from "lucide-react";
 
 interface DashboardContentProps {
   navigate: NavigateFunction;
@@ -27,14 +27,14 @@ const DashboardContent: React.FC<DashboardContentProps> = ({
 }) => {
   return (
     <div className="container mx-auto px-4 pb-24">
-      <div className="space-y-8">
+      <div className="space-y-6">
         {/* Specialized Programs - Now first under New Features banner */}
-        <div className="mt-10">
-          <h2 className="text-2xl md:text-3xl font-semibold mb-6 flex items-center gap-3 pl-2">
-            <div className="p-2 rounded-full bg-[#F6D9A7]/60 shadow-lg">
-              <Sparkles className="h-6 w-6 text-[#B87333]" />
+        <div className="mt-8">
+          <h2 className="text-xl md:text-2xl font-semibold mb-5 flex items-center gap-2">
+            <div className="p-1.5 rounded-full bg-[#9b87f5]/30">
+              <Sparkles className="h-5 w-5 text-[#9b87f5]" />
             </div>
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#E5C5A1] via-[#B87333] to-[#E5C5A1] border-b-2 border-[#F6D9A7]/60 pb-1">
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#9b87f5] via-[#ffffff] to-[#ffffff] border-b-2 border-[#9b87f5]/30 pb-1">
               Specialized Programs
             </span>
           </h2>
@@ -47,18 +47,8 @@ const DashboardContent: React.FC<DashboardContentProps> = ({
         {/* Upcoming Appointments */}
         <UpcomingAppointments />
         
-        {/* Daily Wellness Challenges - Updated colors */}
-        <div className="mt-10">
-          <h2 className="text-2xl md:text-3xl font-semibold mb-6 flex items-center gap-3 pl-2">
-            <div className="p-2 rounded-full bg-[#F6D9A7]/60 shadow-lg">
-              <Trophy className="h-6 w-6 text-[#B87333]" />
-            </div>
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#B87333] via-[#E5C5A1] to-[#B87333] border-b-2 border-[#F6D9A7]/60 pb-1">
-              Daily Wellness Challenges
-            </span>
-          </h2>
-          <DailyWellnessChallenges />
-        </div>
+        {/* Daily Wellness Challenges */}
+        <DailyWellnessChallenges />
         
         {/* Featured Workshops */}
         <FeaturedWorkshops 
@@ -67,12 +57,12 @@ const DashboardContent: React.FC<DashboardContentProps> = ({
         />
         
         {/* Brain Games & Quizzes */}
-        <div className="mt-10">
-          <h2 className="text-2xl md:text-3xl font-semibold mb-6 flex items-center gap-3 pl-2">
-            <div className="p-2 rounded-full bg-[#F6D9A7]/60 shadow-lg">
-              <Brain className="h-6 w-6 text-[#B87333]" />
+        <div className="mt-8">
+          <h2 className="text-xl font-semibold mb-4 flex items-center gap-2">
+            <div className="p-1.5 rounded-full bg-[#9b87f5]/30">
+              <Brain className="h-5 w-5 text-[#9b87f5]" />
             </div>
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#B87333] via-[#E5C5A1] to-[#B87333] border-b-2 border-[#F6D9A7]/60 pb-1">
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#9b87f5] via-[#8B5CF6] to-[#7C3AED]">
               Brain Games & Assessments
             </span>
           </h2>

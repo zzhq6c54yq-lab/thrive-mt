@@ -100,15 +100,14 @@ const KeyFeatures: React.FC<KeyFeaturesProps> = ({
     }
   };
 
-  // Updated feature colors with mental health friendly palette
+  // Updated feature colors with warmer, more inviting palette
   const features = [
     {
       id: "progress-reports",
       title: "Progress Reports",
       icon: <BarChart3 />,
       path: "/progress-reports",
-      color: "bg-amber-500",
-      textColor: "text-amber-800",
+      color: "from-amber-400 to-amber-600",
       description: "Track your mental wellness journey",
       coverImage: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?ixlib=rb-1.2.1&auto=format&fit=crop&w=1000&q=80"
     },
@@ -117,8 +116,7 @@ const KeyFeatures: React.FC<KeyFeaturesProps> = ({
       title: "Family Resources",
       icon: <HandHeart />,
       path: "/family-resources",
-      color: "bg-rose-400",
-      textColor: "text-rose-800",
+      color: "from-rose-400 to-pink-500",
       description: "Support for you and your loved ones",
       coverImage: "https://images.unsplash.com/photo-1511895426328-dc8714191300?ixlib=rb-1.2.1&auto=format&fit=crop&w=1000&q=80"
     },
@@ -127,8 +125,7 @@ const KeyFeatures: React.FC<KeyFeaturesProps> = ({
       title: "Mental Wellness",
       icon: <BookOpen />,
       path: "/mental-wellness",
-      color: "bg-sky-400",
-      textColor: "text-sky-800",
+      color: "from-sky-400 to-indigo-500",
       description: "Tools and assessments for your wellbeing",
       coverImage: "https://images.unsplash.com/photo-1506126613408-eca07ce68773?ixlib=rb-1.2.1&auto=format&fit=crop&w=1000&q=80"
     },
@@ -137,8 +134,7 @@ const KeyFeatures: React.FC<KeyFeaturesProps> = ({
       title: "Brain Games",
       icon: <Brain />,
       path: "/games-and-quizzes",
-      color: "bg-orange-400",
-      textColor: "text-orange-800",
+      color: "from-orange-400 to-orange-600",
       description: "Fun activities to engage your mind",
       coverImage: "https://images.unsplash.com/photo-1596496181871-9681eacf9764?ixlib=rb-1.2.1&auto=format&fit=crop&w=1000&q=80"
     },
@@ -147,8 +143,7 @@ const KeyFeatures: React.FC<KeyFeaturesProps> = ({
       title: "Video Diary",
       icon: <Video />,
       path: "/video-diary",
-      color: "bg-amber-400",
-      textColor: "text-amber-800",
+      color: "from-amber-400 to-orange-500",
       description: "Record and reflect on your journey",
       coverImage: "https://images.unsplash.com/photo-1492691527719-9d1e07e534b4?ixlib=rb-1.2.1&auto=format&fit=crop&w=1000&q=80"
     },
@@ -157,8 +152,7 @@ const KeyFeatures: React.FC<KeyFeaturesProps> = ({
       title: "Wellness Challenges",
       icon: <Activity />,
       path: "/wellness-challenges",
-      color: "bg-green-400",
-      textColor: "text-green-800",
+      color: "from-lime-400 to-green-500",
       description: "Daily challenges to boost wellbeing",
       coverImage: "https://images.unsplash.com/photo-1517836357463-d25dfeac3438?ixlib=rb-1.2.1&auto=format&fit=crop&w=1000&q=80"
     },
@@ -167,8 +161,7 @@ const KeyFeatures: React.FC<KeyFeaturesProps> = ({
       title: "Resource Library",
       icon: <BookText />,
       path: "/resource-library",
-      color: "bg-teal-400",
-      textColor: "text-teal-800",
+      color: "from-teal-400 to-sky-500",
       description: "Extensive collection of helpful materials",
       coverImage: "https://images.unsplash.com/photo-1507842217343-583bb7270b66?ixlib=rb-1.2.1&auto=format&fit=crop&w=1000&q=80"
     },
@@ -177,8 +170,7 @@ const KeyFeatures: React.FC<KeyFeaturesProps> = ({
       title: "My Sponsor",
       icon: <Users />,
       path: "/my-sponsor",
-      color: "bg-pink-400",
-      textColor: "text-pink-800",
+      color: "from-pink-400 to-rose-500",
       description: "Support for your recovery journey",
       coverImage: "https://images.unsplash.com/photo-1573497620053-ea5300f94f21?ixlib=rb-1.2.1&auto=format&fit=crop&w=1000&q=80"
     },
@@ -187,8 +179,7 @@ const KeyFeatures: React.FC<KeyFeaturesProps> = ({
       title: "Binaural Beats",
       icon: <Headphones />,
       path: "/binaural-beats",
-      color: "bg-purple-400",
-      textColor: "text-purple-800",
+      color: "from-purple-400 to-violet-500",
       description: "Audio therapy for relaxation",
       coverImage: "https://images.unsplash.com/photo-1519681393784-d120267933ba?ixlib=rb-1.2.1&auto=format&fit=crop&w=1000&q=80"
     },
@@ -197,8 +188,7 @@ const KeyFeatures: React.FC<KeyFeaturesProps> = ({
       title: "Workshops",
       icon: <Calendar />,
       path: "/workshops",
-      color: "bg-emerald-400",
-      textColor: "text-emerald-800",
+      color: "from-emerald-400 to-teal-500",
       description: "Interactive sessions with professionals",
       coverImage: "https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?ixlib=rb-1.2.1&auto=format&fit=crop&w=1000&q=80"
     },
@@ -207,8 +197,7 @@ const KeyFeatures: React.FC<KeyFeaturesProps> = ({
       title: "Journaling",
       icon: <BookText />,
       path: "/journaling",
-      color: "bg-blue-400",
-      textColor: "text-blue-800",
+      color: "from-blue-400 to-cyan-500",
       description: "Express thoughts and track emotions",
       coverImage: "https://images.unsplash.com/photo-1455390582262-044cdead277a?ixlib=rb-1.2.1&auto=format&fit=crop&w=1000&q=80"
     },
@@ -217,8 +206,7 @@ const KeyFeatures: React.FC<KeyFeaturesProps> = ({
       title: "Mindfulness & Sleep",
       icon: <Sparkles />,
       path: "/mindfulness-sleep",
-      color: "bg-indigo-400",
-      textColor: "text-indigo-800",
+      color: "from-indigo-400 to-violet-500",
       description: "Practices for better rest and awareness",
       coverImage: "https://images.unsplash.com/photo-1541199249251-f713e6145474?ixlib=rb-1.2.1&auto=format&fit=crop&w=1000&q=80"
     },
@@ -227,8 +215,7 @@ const KeyFeatures: React.FC<KeyFeaturesProps> = ({
       title: "Real-Time Therapy",
       icon: <MessageCircle />,
       path: "/real-time-therapy",
-      color: "bg-red-400",
-      textColor: "text-red-800",
+      color: "from-red-400 to-rose-500",
       description: "Connect with therapists instantly",
       coverImage: "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?ixlib=rb-1.2.1&auto=format&fit=crop&w=1000&q=80"
     },
@@ -237,8 +224,7 @@ const KeyFeatures: React.FC<KeyFeaturesProps> = ({
       title: "Holistic Wellness",
       icon: <Leaf />,
       path: "/holistic-wellness",
-      color: "bg-green-400",
-      textColor: "text-green-800",
+      color: "from-green-400 to-lime-500",
       description: "Whole-person approach to wellbeing",
       coverImage: "https://images.unsplash.com/photo-1506126613408-eca07ce68773?ixlib=rb-1.2.1&auto=format&fit=crop&w=1000&q=80"
     },
@@ -247,8 +233,7 @@ const KeyFeatures: React.FC<KeyFeaturesProps> = ({
       title: "Alternative Therapies",
       icon: <Rocket />,
       path: "/alternative-therapies",
-      color: "bg-cyan-400",
-      textColor: "text-cyan-800",
+      color: "from-teal-400 to-cyan-500",
       description: "Explore innovative healing methods",
       coverImage: "https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?ixlib=rb-1.2.1&auto=format&fit=crop&w=1000&q=80"
     },
@@ -257,8 +242,7 @@ const KeyFeatures: React.FC<KeyFeaturesProps> = ({
       title: "Community Support",
       icon: <Globe />,
       path: "/community-support",
-      color: "bg-blue-400",
-      textColor: "text-blue-800",
+      color: "from-blue-400 to-indigo-500",
       description: "Connect with others on similar journeys",
       coverImage: "https://images.unsplash.com/photo-1529156069898-49953e39b3ac?ixlib=rb-1.2.1&auto=format&fit=crop&w=1000&q=80"
     },
@@ -294,9 +278,10 @@ const KeyFeatures: React.FC<KeyFeaturesProps> = ({
               className="w-full h-full text-left"
               aria-label={feature.title}
             >
-              <div className="relative overflow-hidden rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 bg-white flex flex-col h-full">
-                {/* Top half - Cover Image */}
-                <div className="relative w-full h-24 overflow-hidden">
+              <div className="relative overflow-hidden rounded-xl p-4 h-full shadow-lg hover:shadow-xl transition-all duration-300 bg-white/10 backdrop-blur-sm border border-white/20">
+                {/* Cover Image Background with softer overlay */}
+                <div className="absolute inset-0 z-0">
+                  <div className="absolute inset-0 bg-gradient-to-br from-black/40 to-black/20 z-10"></div>
                   <img 
                     src={feature.coverImage} 
                     alt={feature.title} 
@@ -306,26 +291,28 @@ const KeyFeatures: React.FC<KeyFeaturesProps> = ({
                       e.currentTarget.src = "https://images.unsplash.com/photo-1550745165-9bc0b252726f?auto=format&fit=crop&w=1000&q=80";
                     }}
                   />
-                  
-                  {/* Small icon overlay on image */}
-                  <div className="absolute top-2 left-2 p-1.5 rounded-full bg-white/30 backdrop-blur-sm">
-                    {React.cloneElement(feature.icon, { className: "h-4 w-4 text-white drop-shadow-sm" })}
-                  </div>
                 </div>
                 
-                {/* Bottom half - Solid color with white gradient text */}
-                <div className={`${feature.color} p-3 flex-1 flex flex-col`}>
-                  <h3 className={`font-bold text-sm ${feature.textColor} mb-1`}>
+                {/* Warmer gradient overlay */}
+                <div className={`absolute inset-0 bg-gradient-to-br ${feature.color} opacity-60 mix-blend-soft-light z-20`}></div>
+                
+                {/* Content */}
+                <div className="flex flex-col h-full z-30 relative">
+                  <div className="p-2.5 rounded-full bg-white/30 w-fit mb-3 backdrop-blur-sm">
+                    {React.cloneElement(feature.icon, { className: "h-5 w-5 text-white drop-shadow-sm" })}
+                  </div>
+                  
+                  <h3 className="font-bold text-sm text-white mb-1">
                     {feature.title}
                   </h3>
                   
-                  <p className={`text-xs ${feature.textColor} opacity-90 mb-2 line-clamp-2`}>
+                  <p className="text-xs text-white/90 mb-2 line-clamp-2">
                     {feature.description}
                   </p>
                   
                   {isRecommended(feature.id) && (
                     <div className="mt-auto">
-                      <span className="text-[10px] px-1.5 py-0.5 rounded-full bg-white text-gray-800 font-medium inline-block">
+                      <span className="text-[10px] px-1.5 py-0.5 rounded-full bg-white/40 text-white font-medium inline-block">
                         Recommended
                       </span>
                     </div>
@@ -333,7 +320,7 @@ const KeyFeatures: React.FC<KeyFeaturesProps> = ({
                   
                   <div className="absolute bottom-1.5 right-1.5">
                     <svg width="12" height="12" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" className="opacity-70">
-                      <path d="M7 17L17 7M17 7H8M17 7V16" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                      <path d="M7 17L17 7M17 7H8M17 7V16" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
                     </svg>
                   </div>
                 </div>
