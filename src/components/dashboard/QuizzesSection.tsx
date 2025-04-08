@@ -1,4 +1,3 @@
-
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import { Card, CardContent } from "@/components/ui/card";
@@ -57,7 +56,8 @@ const QuizzesSection = () => {
       accentColor: "border-indigo-500",
       icon: <Brain className="h-5 w-5 text-indigo-500" />,
       gradientFrom: "from-indigo-700",
-      gradientTo: "to-indigo-900"
+      gradientTo: "to-indigo-900",
+      popular: false
     },
     {
       id: "stress-check",
@@ -95,7 +95,8 @@ const QuizzesSection = () => {
       accentColor: "border-blue-500",
       icon: <LineChart className="h-5 w-5 text-blue-500" />,
       gradientFrom: "from-blue-700",
-      gradientTo: "to-blue-900"
+      gradientTo: "to-blue-900",
+      popular: false
     },
     {
       id: "relationship-health",
@@ -113,7 +114,8 @@ const QuizzesSection = () => {
       accentColor: "border-pink-500",
       icon: <Heart className="h-5 w-5 text-pink-500" />,
       gradientFrom: "from-pink-700",
-      gradientTo: "to-pink-900"
+      gradientTo: "to-pink-900",
+      popular: false
     }
   ];
 
@@ -183,10 +185,26 @@ const QuizzesSection = () => {
             onClick={() => handleQuizClick(quiz.id, quiz.title)}
             className={`overflow-hidden hover:shadow-md transition-all cursor-pointer group border-0 rounded-xl transform hover:scale-[1.02] ${quiz.accentColor} border-l-4`}
           >
-            {/* Card with 3/4 image, 1/4 gradient bottom */}
-            <div className="relative h-80">
-              {/* Image covering top 3/4 */}
-              <div className="absolute inset-0 h-3/4 overflow-hidden">
+            <div className="relative h-80 flex flex-col">
+              <div className={`bg-gradient-to-r ${quiz.gradientFrom || 'from-purple-700'} ${quiz.gradientTo || 'to-purple-900'} px-4 py-3`}>
+                <div className="flex justify-between items-center">
+                  <h3 className="font-semibold text-white text-lg drop-shadow-md">
+                    {quiz.title}
+                  </h3>
+                  <div className="p-1.5 rounded-full bg-white/10 backdrop-blur-sm">
+                    {quiz.icon}
+                  </div>
+                </div>
+                
+                {quiz.popular && (
+                  <div className="absolute top-3 right-12 z-10 bg-[#D946EF] text-white text-xs font-medium px-2 py-1 rounded-full flex items-center">
+                    <Star className="h-3 w-3 mr-1 fill-white" />
+                    Popular
+                  </div>
+                )}
+              </div>
+              
+              <div className="flex-grow relative">
                 <img 
                   src={quiz.image || getDefaultImage(quiz.category)} 
                   alt={quiz.title}
@@ -195,55 +213,30 @@ const QuizzesSection = () => {
                     e.currentTarget.src = getDefaultImage(quiz.category);
                   }}
                 />
-                <div className="absolute inset-0 bg-black/30"></div>
+                <div className="absolute inset-0 bg-black/20"></div>
                 
-                {/* Popular badge if applicable */}
-                {quiz.popular && (
-                  <div className="absolute top-3 right-3 z-10 bg-[#D946EF] text-white text-xs font-medium px-2 py-1 rounded-full flex items-center">
-                    <Star className="h-3 w-3 mr-1 fill-white" />
-                    Popular
-                  </div>
-                )}
-                
-                {/* Content overlay */}
-                <div className="absolute inset-0 p-4">
-                  <div className="flex justify-between items-start mb-2">
-                    <h3 className="font-semibold text-white text-lg drop-shadow-md">
-                      {quiz.title}
-                    </h3>
-                    <div className="p-1.5 rounded-full bg-white/10 backdrop-blur-sm">
-                      {quiz.icon}
-                    </div>
+                <div className="absolute bottom-2 left-2 flex items-center gap-2">
+                  <div className="flex items-center gap-1 bg-black/40 backdrop-blur-sm py-1 px-2 rounded-full">
+                    <Brain className="h-3 w-3 text-white/80" />
+                    <span className="text-xs text-white/90">{quiz.questions} questions</span>
                   </div>
                   
-                  <p className="text-sm text-white/90 mb-3 drop-shadow-md">{quiz.description}</p>
-                  
-                  <div className="flex items-center justify-between mt-auto">
-                    <div className="flex items-center gap-1 bg-black/40 backdrop-blur-sm py-1 px-2 rounded-full">
-                      <Brain className="h-3 w-3 text-white/80" />
-                      <span className="text-xs text-white/90">{quiz.questions} questions</span>
-                    </div>
-                    
-                    <div className="flex items-center gap-1 bg-black/40 backdrop-blur-sm py-1 px-2 rounded-full">
-                      <Clock className="h-3 w-3 text-white/80" />
-                      <span className="text-xs text-white/90">{quiz.timeEstimate}</span>
-                    </div>
+                  <div className="flex items-center gap-1 bg-black/40 backdrop-blur-sm py-1 px-2 rounded-full">
+                    <Clock className="h-3 w-3 text-white/80" />
+                    <span className="text-xs text-white/90">{quiz.timeEstimate}</span>
                   </div>
                 </div>
               </div>
               
-              {/* Gradient bottom 1/4 */}
-              <div className={`absolute bottom-0 left-0 right-0 h-1/4 bg-gradient-to-r ${quiz.gradientFrom || 'from-purple-700'} ${quiz.gradientTo || 'to-purple-900'}`}>
-                <div className="h-full flex items-center justify-center px-4">
-                  <Button
-                    variant="ghost" 
-                    size="sm"
-                    className="w-full justify-between border border-white/20 text-white hover:bg-white/10 hover:text-white transition-all"
-                  >
-                    <span>{quiz.completionRate ? "Continue" : "Start"} Assessment</span>
-                    <ArrowRight className="h-4 w-4 group-hover:translate-x-1 transition-transform" />
-                  </Button>
-                </div>
+              <div className={`bg-gradient-to-r ${quiz.gradientFrom || 'from-purple-700'} ${quiz.gradientTo || 'to-purple-900'} px-4 py-3`}>
+                <Button
+                  variant="ghost" 
+                  size="sm"
+                  className="w-full justify-between border border-white/20 text-white hover:bg-white/10 hover:text-white transition-all"
+                >
+                  <span>{quiz.completionRate ? "Continue" : "Start"} Assessment</span>
+                  <ArrowRight className="h-4 w-4 group-hover:translate-x-1 transition-transform" />
+                </Button>
               </div>
             </div>
           </Card>
