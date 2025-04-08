@@ -14,7 +14,7 @@ const SpecializedPrograms: React.FC<SpecializedProgramsProps> = ({ navigateToFea
       id: "veterans",
       title: "Veterans Program",
       path: "/dod-welcome",
-      coverImage: "https://images.unsplash.com/photo-1519451241324-20b4ea2c4220?ixlib=rb-1.2.1&auto=format&fit=crop&w=1000&q=80",
+      coverImage: "https://images.unsplash.com/photo-1586893079425-527e5052b4b1?ixlib=rb-1.2.1&auto=format&fit=crop&w=1000&q=80", // American flag image
       color: "blue",
       icon: <Shield className="h-6 w-6 text-white" />
     },
@@ -82,7 +82,7 @@ const SpecializedPrograms: React.FC<SpecializedProgramsProps> = ({ navigateToFea
               <img 
                 src={program.coverImage} 
                 alt={program.title} 
-                className="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-700"
+                className={`w-full h-full object-cover transform ${program.id === "veterans" ? "opacity-60" : ""} group-hover:scale-110 transition-transform duration-700`}
                 onError={(e) => {
                   e.currentTarget.src = "https://images.unsplash.com/photo-1550745165-9bc0b252726f?auto=format&fit=crop&w=800&q=80";
                 }}
@@ -94,24 +94,27 @@ const SpecializedPrograms: React.FC<SpecializedProgramsProps> = ({ navigateToFea
               {/* Special effects for Veterans card */}
               {program.id === "veterans" && (
                 <div className="absolute inset-0">
-                  {/* Red and white stripes at bottom */}
-                  <div className="absolute bottom-0 left-0 right-0 h-12 opacity-20">
-                    {[...Array(6)].map((_, i) => (
-                      <div 
-                        key={i} 
-                        className={`h-[4px] w-full ${i % 2 === 0 ? 'bg-red-700' : 'bg-white'}`}
-                      />
-                    ))}
-                  </div>
-                  
-                  {/* Stars in top left */}
-                  <div className="absolute top-2 left-2 opacity-40">
-                    <div className="grid grid-cols-3 gap-1">
-                      {[...Array(6)].map((_, i) => (
-                        <div key={i}>
-                          <Sparkles className="h-2 w-2 text-white" />
-                        </div>
+                  {/* Enhanced American flag styling */}
+                  <div className="absolute inset-0 bg-gradient-to-b from-blue-900/30 to-transparent">
+                    {/* Enhanced red and white stripes at bottom with better visibility */}
+                    <div className="absolute bottom-0 left-0 right-0 h-24 opacity-30">
+                      {[...Array(7)].map((_, i) => (
+                        <div 
+                          key={i} 
+                          className={`h-[14.3%] w-full ${i % 2 === 0 ? 'bg-red-700' : 'bg-white'}`}
+                        />
                       ))}
+                    </div>
+                    
+                    {/* Stars in top left with better visibility */}
+                    <div className="absolute top-2 left-2 h-16 w-24 bg-blue-900/40 opacity-60">
+                      <div className="grid grid-cols-4 gap-1 p-1">
+                        {[...Array(12)].map((_, i) => (
+                          <div key={i} className="flex items-center justify-center">
+                            <Sparkles className="h-2 w-2 text-white" />
+                          </div>
+                        ))}
+                      </div>
                     </div>
                   </div>
                 </div>
