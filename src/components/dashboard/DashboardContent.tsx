@@ -26,9 +26,9 @@ interface DashboardContentProps {
 }
 
 // Redesigned section headers with black to white gradient
-const sectionHeaderClass = "bg-gradient-to-r from-[#B87333] via-[#E5C5A1] to-[#B87333] bg-clip-text text-transparent font-semibold text-xl";
+const sectionHeaderClass = "bg-gradient-to-r from-[#E5C5A1] via-[#ffffff] to-[#B87333] bg-clip-text text-transparent font-semibold text-xl";
 const sectionWrapperClass = "mb-8 overflow-hidden transition-all duration-700 transform hover:scale-[1.005] rounded-xl";
-const sectionHeaderWrapperClass = "p-6 flex items-center justify-between cursor-pointer bg-gradient-to-r from-black via-[#222] to-[#111] backdrop-blur-sm rounded-xl border border-white/10";
+const sectionHeaderWrapperClass = "p-6 flex items-center justify-between cursor-pointer bg-gradient-to-r from-black/90 via-white/5 to-black/90 backdrop-blur-sm rounded-xl border border-white/5";
 
 const DashboardContent: React.FC<DashboardContentProps> = ({
   navigate,
@@ -67,15 +67,15 @@ const DashboardContent: React.FC<DashboardContentProps> = ({
             <CollapsibleTrigger asChild>
               <div className={sectionHeaderWrapperClass}>
                 <div className="flex items-center gap-4">
-                  <div className="p-3 rounded-full bg-gradient-to-br from-[#E5C5A1]/25 to-[#B87333]/15 shadow-inner border border-[#B87333]/30">
-                    <Sparkles className="h-6 w-6 text-[#E5C5A1]" />
+                  <div className="p-3 rounded-full bg-gradient-to-br from-[#E5C5A1]/25 to-[#B87333]/15 shadow-inner border border-[#B87333]/30 rotate-12">
+                    <Sparkles className="h-6 w-6 text-[#E5C5A1] -rotate-12" />
                   </div>
                   <span className={sectionHeaderClass}>Specialized Programs</span>
                 </div>
                 <Button 
                   variant="ghost"
                   size="sm"
-                  className="text-white hover:bg-white/5 border border-[#B87333]/40 group transition-all duration-500"
+                  className="text-white hover:bg-white/5 border border-[#c0c0c0]/40 group transition-all duration-500"
                 >
                   {sectionsCollapsed.programs ? "Expand" : "Collapse"}
                   {sectionsCollapsed.programs ? 
@@ -85,7 +85,7 @@ const DashboardContent: React.FC<DashboardContentProps> = ({
                 </Button>
               </div>
             </CollapsibleTrigger>
-            <CollapsibleContent className="bg-black/70 backdrop-blur-sm p-10 rounded-b-xl border-x border-b border-white/10 animate-in transition-all duration-700 ease-in-out">
+            <CollapsibleContent className="bg-gradient-to-b from-black/90 to-black/70 backdrop-blur-sm p-10 rounded-b-xl border-x border-b border-white/5 animate-in transition-all duration-700 ease-in-out">
               <SpecializedPrograms navigateToFeature={navigateToFeature} />
             </CollapsibleContent>
           </Collapsible>
@@ -104,15 +104,15 @@ const DashboardContent: React.FC<DashboardContentProps> = ({
                 <CollapsibleTrigger asChild>
                   <div className={sectionHeaderWrapperClass}>
                     <div className="flex items-center gap-4">
-                      <div className="p-3 rounded-full bg-gradient-to-br from-[#E5C5A1]/25 to-[#B87333]/15 shadow-inner border border-[#B87333]/30">
-                        <Calendar className="h-6 w-6 text-[#E5C5A1]" />
+                      <div className="p-3 rounded-full bg-gradient-to-br from-[#E5C5A1]/25 to-[#B87333]/15 shadow-inner border border-[#B87333]/30 -rotate-6">
+                        <Calendar className="h-6 w-6 text-[#E5C5A1] rotate-6" />
                       </div>
                       <span className={sectionHeaderClass}>Schedule Center</span>
                     </div>
                     <Button 
                       variant="ghost"
                       size="sm"
-                      className="text-white hover:bg-white/5 border border-[#B87333]/40 group transition-all duration-500"
+                      className="text-white hover:bg-white/5 border border-[#c0c0c0]/40 group transition-all duration-500"
                     >
                       {sectionsCollapsed.appointments ? "Expand" : "Collapse"}
                       {sectionsCollapsed.appointments ? 
@@ -122,7 +122,7 @@ const DashboardContent: React.FC<DashboardContentProps> = ({
                     </Button>
                   </div>
                 </CollapsibleTrigger>
-                <CollapsibleContent className="bg-black/70 backdrop-blur-sm p-10 rounded-b-xl border-x border-b border-white/10 animate-in transition-all duration-700 ease-in-out">
+                <CollapsibleContent className="bg-gradient-to-b from-black/90 to-black/70 backdrop-blur-sm p-10 rounded-b-xl border-x border-b border-white/5 animate-in transition-all duration-700 ease-in-out">
                   <UpcomingAppointments />
                 </CollapsibleContent>
               </Collapsible>
@@ -141,15 +141,15 @@ const DashboardContent: React.FC<DashboardContentProps> = ({
                 <CollapsibleTrigger asChild>
                   <div className={sectionHeaderWrapperClass}>
                     <div className="flex items-center gap-4">
-                      <div className="p-3 rounded-full bg-gradient-to-br from-[#E5C5A1]/25 to-[#B87333]/15 shadow-inner border border-[#B87333]/30">
-                        <Heart className="h-6 w-6 text-[#E5C5A1]" />
+                      <div className="p-3 rounded-full bg-gradient-to-br from-[#E5C5A1]/25 to-[#B87333]/15 shadow-inner border border-[#B87333]/30 rotate-6">
+                        <Heart className="h-6 w-6 text-[#E5C5A1] -rotate-6" />
                       </div>
                       <span className={sectionHeaderClass}>Gratitude Visualizer</span>
                     </div>
                     <Button 
                       variant="ghost"
                       size="sm"
-                      className="text-white hover:bg-white/5 border border-[#B87333]/40 group transition-all duration-500"
+                      className="text-white hover:bg-white/5 border border-[#c0c0c0]/40 group transition-all duration-500"
                     >
                       {sectionsCollapsed.gratitude ? "Expand" : "Collapse"}
                       {sectionsCollapsed.gratitude ? 
@@ -159,7 +159,7 @@ const DashboardContent: React.FC<DashboardContentProps> = ({
                     </Button>
                   </div>
                 </CollapsibleTrigger>
-                <CollapsibleContent className="bg-black/70 backdrop-blur-sm p-10 rounded-b-xl border-x border-b border-white/10 animate-in transition-all duration-700 ease-in-out">
+                <CollapsibleContent className="bg-gradient-to-b from-black/90 to-black/70 backdrop-blur-sm p-10 rounded-b-xl border-x border-b border-white/5 animate-in transition-all duration-700 ease-in-out">
                   <GratitudeVisualizer />
                 </CollapsibleContent>
               </Collapsible>
@@ -175,15 +175,15 @@ const DashboardContent: React.FC<DashboardContentProps> = ({
                 <CollapsibleTrigger asChild>
                   <div className={sectionHeaderWrapperClass}>
                     <div className="flex items-center gap-4">
-                      <div className="p-3 rounded-full bg-gradient-to-br from-[#E5C5A1]/25 to-[#B87333]/15 shadow-inner border border-[#B87333]/30">
-                        <HeartPulse className="h-6 w-6 text-[#E5C5A1]" />
+                      <div className="p-3 rounded-full bg-gradient-to-br from-[#E5C5A1]/25 to-[#B87333]/15 shadow-inner border border-[#B87333]/30 -rotate-12">
+                        <HeartPulse className="h-6 w-6 text-[#E5C5A1] rotate-12" />
                       </div>
                       <span className={sectionHeaderClass}>Wellness Center</span>
                     </div>
                     <Button 
                       variant="ghost"
                       size="sm"
-                      className="text-white hover:bg-white/5 border border-[#B87333]/40 group transition-all duration-500"
+                      className="text-white hover:bg-white/5 border border-[#c0c0c0]/40 group transition-all duration-500"
                     >
                       {sectionsCollapsed.wellness ? "Expand" : "Collapse"}
                       {sectionsCollapsed.wellness ? 
@@ -193,7 +193,7 @@ const DashboardContent: React.FC<DashboardContentProps> = ({
                     </Button>
                   </div>
                 </CollapsibleTrigger>
-                <CollapsibleContent className="bg-black/70 backdrop-blur-sm p-10 rounded-b-xl border-x border-b border-white/10 animate-in transition-all duration-700 ease-in-out">
+                <CollapsibleContent className="bg-gradient-to-b from-black/90 to-black/70 backdrop-blur-sm p-10 rounded-b-xl border-x border-b border-white/5 animate-in transition-all duration-700 ease-in-out">
                   <DailyWellnessChallenges />
                 </CollapsibleContent>
               </Collapsible>
@@ -211,15 +211,15 @@ const DashboardContent: React.FC<DashboardContentProps> = ({
             <CollapsibleTrigger asChild>
               <div className={sectionHeaderWrapperClass}>
                 <div className="flex items-center gap-4">
-                  <div className="p-3 rounded-full bg-gradient-to-br from-[#E5C5A1]/25 to-[#B87333]/15 shadow-inner border border-[#B87333]/30">
-                    <Star className="h-6 w-6 text-[#E5C5A1]" />
+                  <div className="p-3 rounded-full bg-gradient-to-br from-[#E5C5A1]/25 to-[#B87333]/15 shadow-inner border border-[#B87333]/30 rotate-3">
+                    <Star className="h-6 w-6 text-[#E5C5A1] -rotate-3" />
                   </div>
                   <span className={sectionHeaderClass}>Monthly Featured Workshops</span>
                 </div>
                 <Button 
                   variant="ghost"
                   size="sm"
-                  className="text-white hover:bg-white/5 border border-[#B87333]/40 group transition-all duration-500"
+                  className="text-white hover:bg-white/5 border border-[#c0c0c0]/40 group transition-all duration-500"
                 >
                   {sectionsCollapsed.workshops ? "Expand" : "Collapse"}
                   {sectionsCollapsed.workshops ? 
@@ -229,7 +229,7 @@ const DashboardContent: React.FC<DashboardContentProps> = ({
                 </Button>
               </div>
             </CollapsibleTrigger>
-            <CollapsibleContent className="bg-black/70 backdrop-blur-sm p-10 rounded-b-xl border-x border-b border-white/10 animate-in transition-all duration-700 ease-in-out">
+            <CollapsibleContent className="bg-gradient-to-b from-black/90 to-black/70 backdrop-blur-sm p-10 rounded-b-xl border-x border-b border-white/5 animate-in transition-all duration-700 ease-in-out">
               <FeaturedWorkshops 
                 navigate={navigate}
                 onWorkshopClick={onWorkshopClick}
@@ -248,15 +248,15 @@ const DashboardContent: React.FC<DashboardContentProps> = ({
             <CollapsibleTrigger asChild>
               <div className={sectionHeaderWrapperClass}>
                 <div className="flex items-center gap-4">
-                  <div className="p-3 rounded-full bg-gradient-to-br from-[#E5C5A1]/25 to-[#B87333]/15 shadow-inner border border-[#B87333]/30">
-                    <Brain className="h-6 w-6 text-[#E5C5A1]" />
+                  <div className="p-3 rounded-full bg-gradient-to-br from-[#E5C5A1]/25 to-[#B87333]/15 shadow-inner border border-[#B87333]/30 -rotate-6">
+                    <Brain className="h-6 w-6 text-[#E5C5A1] rotate-6" />
                   </div>
                   <span className={sectionHeaderClass}>Brain Games & Assessments</span>
                 </div>
                 <Button 
                   variant="ghost"
                   size="sm"
-                  className="text-white hover:bg-white/5 border border-[#B87333]/40 group transition-all duration-500"
+                  className="text-white hover:bg-white/5 border border-[#c0c0c0]/40 group transition-all duration-500"
                 >
                   {sectionsCollapsed.brainGames ? "Expand" : "Collapse"}
                   {sectionsCollapsed.brainGames ? 
@@ -266,7 +266,7 @@ const DashboardContent: React.FC<DashboardContentProps> = ({
                 </Button>
               </div>
             </CollapsibleTrigger>
-            <CollapsibleContent className="bg-black/70 backdrop-blur-sm p-10 rounded-b-xl border-x border-b border-white/10 animate-in transition-all duration-700 ease-in-out">
+            <CollapsibleContent className="bg-gradient-to-b from-black/90 to-black/70 backdrop-blur-sm p-10 rounded-b-xl border-x border-b border-white/5 animate-in transition-all duration-700 ease-in-out">
               <QuizzesSection />
             </CollapsibleContent>
           </Collapsible>
@@ -282,15 +282,15 @@ const DashboardContent: React.FC<DashboardContentProps> = ({
             <CollapsibleTrigger asChild>
               <div className={sectionHeaderWrapperClass}>
                 <div className="flex items-center gap-4">
-                  <div className="p-3 rounded-full bg-gradient-to-br from-[#E5C5A1]/25 to-[#B87333]/15 shadow-inner border border-[#B87333]/30">
-                    <Workflow className="h-6 w-6 text-[#E5C5A1]" />
+                  <div className="p-3 rounded-full bg-gradient-to-br from-[#E5C5A1]/25 to-[#B87333]/15 shadow-inner border border-[#B87333]/30 rotate-12">
+                    <Workflow className="h-6 w-6 text-[#E5C5A1] -rotate-12" />
                   </div>
                   <span className={sectionHeaderClass}>Key Features</span>
                 </div>
                 <Button 
                   variant="ghost"
                   size="sm"
-                  className="text-white hover:bg-white/5 border border-[#B87333]/40 group transition-all duration-500"
+                  className="text-white hover:bg-white/5 border border-[#c0c0c0]/40 group transition-all duration-500"
                 >
                   {sectionsCollapsed.keyFeatures ? "Expand" : "Collapse"}
                   {sectionsCollapsed.keyFeatures ? 
@@ -300,7 +300,7 @@ const DashboardContent: React.FC<DashboardContentProps> = ({
                 </Button>
               </div>
             </CollapsibleTrigger>
-            <CollapsibleContent className="bg-black/70 backdrop-blur-sm p-10 rounded-b-xl border-x border-b border-white/10 animate-in transition-all duration-700 ease-in-out">
+            <CollapsibleContent className="bg-gradient-to-b from-black/90 to-black/70 backdrop-blur-sm p-10 rounded-b-xl border-x border-b border-white/5 animate-in transition-all duration-700 ease-in-out">
               <KeyFeatures 
                 navigateToFeature={navigateToFeature}
                 selectedQualities={selectedQualities}
