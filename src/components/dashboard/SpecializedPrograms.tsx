@@ -80,10 +80,10 @@ const SpecializedPrograms: React.FC<SpecializedProgramsProps> = ({ navigateToFea
                       </span>
                     </h3>
                     
-                    {/* Explore button - gold accent */}
+                    {/* Explore button - high contrast */}
                     <Button 
                       size="sm"
-                      className="bg-amber-300 text-[#041E42] hover:bg-amber-200 shadow-md hover:shadow-lg"
+                      className="bg-amber-300 text-[#041E42] hover:bg-amber-200 shadow-md hover:shadow-lg font-bold"
                       onClick={(e) => {
                         e.stopPropagation();
                         navigateToFeature(program.path);
@@ -107,29 +107,29 @@ const SpecializedPrograms: React.FC<SpecializedProgramsProps> = ({ navigateToFea
           );
         }
         
-        // Define program-specific styles for other programs
+        // Define program-specific styles with higher contrast buttons
         const getStyles = () => {
           switch(program.id) {
             case "college":
               return {
-                overlayGradient: "from-indigo-600/80 to-purple-500/50",
+                overlayGradient: "from-indigo-900/80 to-indigo-700/50",
                 iconBg: "bg-indigo-500",
                 starColor: "text-indigo-200",
-                buttonClass: "bg-white text-indigo-800 hover:bg-indigo-50"
+                buttonClass: "bg-indigo-300 text-indigo-900 hover:bg-indigo-200 font-bold"
               };
             case "business":
               return {
-                overlayGradient: "from-emerald-700/80 to-emerald-500/40",
-                iconBg: "bg-emerald-500",
+                overlayGradient: "from-emerald-900/80 to-emerald-700/50",
+                iconBg: "bg-emerald-600",
                 starColor: "text-emerald-200",
-                buttonClass: "bg-white text-emerald-800 hover:bg-emerald-50"
+                buttonClass: "bg-emerald-300 text-emerald-900 hover:bg-emerald-200 font-bold"
               };
             default:
               return {
-                overlayGradient: "from-blue-900/80 to-blue-700/40",
+                overlayGradient: "from-blue-900/80 to-blue-700/50",
                 iconBg: "bg-blue-600",
                 starColor: "text-blue-200",
-                buttonClass: "bg-white text-gray-800 hover:bg-blue-50"
+                buttonClass: "bg-blue-300 text-blue-900 hover:bg-blue-200 font-bold"
               };
           }
         };
@@ -153,7 +153,7 @@ const SpecializedPrograms: React.FC<SpecializedProgramsProps> = ({ navigateToFea
                 }}
               />
               
-              {/* Gradient overlay */}
+              {/* Darker, more saturated gradient overlay for better contrast */}
               <div className={`absolute inset-0 bg-gradient-to-t ${styles.overlayGradient}`}></div>
               
               {/* Content */}
@@ -163,7 +163,7 @@ const SpecializedPrograms: React.FC<SpecializedProgramsProps> = ({ navigateToFea
                   {program.title}
                 </h3>
                 
-                {/* Explore button */}
+                {/* Explore button - higher contrast */}
                 <Button 
                   size="sm"
                   className={`${styles.buttonClass} shadow-md hover:shadow-lg`}
