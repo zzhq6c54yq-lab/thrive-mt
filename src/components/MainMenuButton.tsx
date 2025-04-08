@@ -50,15 +50,15 @@ const MainMenuButton: React.FC<MainMenuButtonProps> = ({
       variant="bronze"
       size="icon"
       onClick={handleMainMenuClick}
-      className={`p-0 ${sizeClasses} rounded-full shadow-lg hover:shadow-[0_0_25px_rgba(184,115,51,0.6)] relative ${className}`}
+      className={`p-0 ${sizeClasses} rounded-full shadow-lg hover:shadow-[0_0_25px_rgba(184,115,51,0.8)] relative transition-all duration-300 hover:scale-105 ${className}`}
       aria-label={isSpanish ? "Menú Principal" : "Main Menu"}
       title={isSpanish ? "Ir al Menú Principal" : "Go to Main Menu"}
     >
       {showAnimatedRings && (
         <>
-          <div className="absolute inset-0 rounded-full border-2 border-[#B87333]/30 animate-ping" style={{margin: '-2px'}}></div>
-          <div className="absolute rounded-full border border-[#E5C5A1]/20 animate-pulse" style={{inset: '-6px'}}></div>
-          <div className="absolute rounded-full border border-[#B87333]/40" style={{inset: '-3px', animationDelay: '0.5s'}}></div>
+          <div className="absolute inset-0 rounded-full border-2 border-[#B87333]/40 animate-ping" style={{margin: '-2px', animationDuration: '2s'}}></div>
+          <div className="absolute rounded-full border border-[#E5C5A1]/30 animate-pulse" style={{inset: '-6px', animationDuration: '3s'}}></div>
+          <div className="absolute rounded-full border border-[#B87333]/50" style={{inset: '-3px', animationDelay: '0.5s'}}></div>
         </>
       )}
       <div className="w-full h-full rounded-full flex items-center justify-center bg-gradient-to-br from-[#B87333] to-[#E5C5A1]">
