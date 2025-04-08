@@ -1,4 +1,3 @@
-
 import React from "react";
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -17,13 +16,12 @@ const DoDAssessments = () => {
       duration: 1500,
     });
     
-    // Navigate to the mental wellness tools page with assessment parameter
-    navigate("/mental-wellness/assessments", {
+    // Navigate to the dedicated military assessment page
+    navigate("/military-assessment", {
       state: {
         preventTutorial: true,
         returnToPortal: "/dod-portal",
         assessmentType,
-        openAssessment: true,
         assessmentTitle: title
       }
     });
@@ -32,10 +30,10 @@ const DoDAssessments = () => {
   return (
     <div className="space-y-6">
       {/* Header with American flag-themed styling */}
-      <div className="relative overflow-hidden p-6 rounded-lg bg-gradient-to-r from-blue-950 to-blue-900 border border-blue-800/50">
-        {/* Flag styling in background */}
+      <div className="relative overflow-hidden rounded-lg border border-blue-800/50 bg-gradient-to-r from-blue-950 to-blue-900 p-6">
+        {/* Subtle flag background */}
         <div className="absolute inset-0 pointer-events-none overflow-hidden opacity-10">
-          <div className="absolute top-0 left-0 w-1/3 h-1/2 bg-blue-900">
+          <div className="absolute top-0 left-0 w-1/4 h-1/3 bg-blue-700">
             <div className="grid grid-cols-4 gap-1 p-1">
               {[...Array(12)].map((_, i) => (
                 <div key={i} className="flex items-center justify-center text-white">
@@ -44,7 +42,7 @@ const DoDAssessments = () => {
               ))}
             </div>
           </div>
-          <div className="absolute bottom-0 left-0 right-0 h-full">
+          <div className="absolute bottom-0 left-0 right-0 h-2/3">
             {[...Array(7)].map((_, i) => (
               <div 
                 key={i} 

@@ -45,6 +45,7 @@ import SubscriptionPlansPage from "@/pages/SubscriptionPlansPage";
 import FinancialAssistance from "@/pages/FinancialAssistance";
 import ContactSupport from "@/pages/ContactSupport";
 import GuidedPractice from "@/pages/GuidedPractice";
+import MilitaryAssessmentPage from "@/pages/MilitaryAssessment";
 
 function App() {
   return (
@@ -99,6 +100,7 @@ function App() {
         <Route path="/military-resources/combat-stress" element={<MilitaryResources />} />
         <Route path="/military-resources/transition" element={<MilitaryResources />} />
         <Route path="/military-resources/family" element={<MilitaryResources />} />
+        <Route path="/military-assessment" element={<MilitaryAssessmentPage />} />
         
         {/* Workshop Routes */}
         <Route path="/workshops" element={<Workshops />} />
