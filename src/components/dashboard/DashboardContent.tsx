@@ -9,7 +9,6 @@ import FeaturedWorkshops from "@/components/dashboard/FeaturedWorkshops";
 import { NavigateFunction } from "react-router-dom";
 import QuizzesSection from "@/components/dashboard/QuizzesSection";
 import { Brain, Sparkles } from "lucide-react";
-import NewFeatures from "@/components/dashboard/NewFeatures";
 
 interface DashboardContentProps {
   navigate: NavigateFunction;
@@ -29,9 +28,6 @@ const DashboardContent: React.FC<DashboardContentProps> = ({
   return (
     <div className="container mx-auto px-4 pb-24">
       <div className="space-y-6">
-        {/* New Features Banner */}
-        <NewFeatures />
-      
         {/* Specialized Programs - Now first under New Features banner */}
         <div className="mt-8">
           <h2 className="text-xl md:text-2xl font-semibold mb-5 flex items-center gap-2">

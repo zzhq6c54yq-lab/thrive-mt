@@ -7,6 +7,7 @@ import usePopupManagement from "@/hooks/usePopupManagement";
 import useTranslation from "@/hooks/useTranslation";
 import useIndexState from "@/hooks/useIndexState";
 import IndexContent from "@/components/home/IndexContent";
+import MainMenuButton from "@/components/MainMenuButton";
 
 const Index = () => {
   // Custom hooks
@@ -101,34 +102,45 @@ const Index = () => {
     }
   };
 
+  // Show MainMenuButton only on intro and mood screens
+  const showMainMenuButton = screenState === 'intro' || screenState === 'mood';
+
   return (
-    <IndexContent
-      screenState={screenState}
-      selectedMood={selectedMood}
-      userInfo={userInfo}
-      selectedPlan={selectedPlan}
-      selectedQualities={selectedQualities}
-      selectedGoals={selectedGoals}
-      showHenry={showHenry}
-      isFirstVisit={isFirstVisit}
-      setIsFirstVisit={setIsFirstVisit}
-      showCoPayCredit={showCoPayCredit}
-      setShowCoPayCredit={setShowCoPayCredit}
-      popupsShown={popupsShown}
-      getTranslatedText={getTranslatedText}
-      onMoodSelect={handleMoodSelect}
-      onUserInfoChange={handleUserInfoChange}
-      onQualityToggle={toggleQuality}
-      onGoalToggle={toggleGoal}
-      onPlanSelect={onPlanSelect}
-      onHenryToggle={toggleHenry}
-      navigateToFeature={navigateToFeature}
-      handleSubscriptionContinue={handleSubscriptionContinue}
-      handleVisionBoardContinue={handleVisionBoardContinue}
-      handleRegister={handleRegister}
-      setScreenState={setScreenState}
-      markTutorialCompleted={markTutorialCompleted}
-    />
+    <>
+      {showMainMenuButton && (
+        <div className="fixed top-5 right-5 z-50">
+          <MainMenuButton size="large" showAnimatedRings={true} />
+        </div>
+      )}
+      
+      <IndexContent
+        screenState={screenState}
+        selectedMood={selectedMood}
+        userInfo={userInfo}
+        selectedPlan={selectedPlan}
+        selectedQualities={selectedQualities}
+        selectedGoals={selectedGoals}
+        showHenry={showHenry}
+        isFirstVisit={isFirstVisit}
+        setIsFirstVisit={setIsFirstVisit}
+        showCoPayCredit={showCoPayCredit}
+        setShowCoPayCredit={setShowCoPayCredit}
+        popupsShown={popupsShown}
+        getTranslatedText={getTranslatedText}
+        onMoodSelect={handleMoodSelect}
+        onUserInfoChange={handleUserInfoChange}
+        onQualityToggle={toggleQuality}
+        onGoalToggle={toggleGoal}
+        onPlanSelect={onPlanSelect}
+        onHenryToggle={toggleHenry}
+        navigateToFeature={navigateToFeature}
+        handleSubscriptionContinue={handleSubscriptionContinue}
+        handleVisionBoardContinue={handleVisionBoardContinue}
+        handleRegister={handleRegister}
+        setScreenState={setScreenState}
+        markTutorialCompleted={markTutorialCompleted}
+      />
+    </>
   );
 };
 
