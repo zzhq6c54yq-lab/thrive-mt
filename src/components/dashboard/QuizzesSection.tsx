@@ -48,7 +48,7 @@ const QuizzesSection = () => {
       category: "wellbeing",
       questions: 10,
       timeEstimate: "4-6 min",
-      image: "https://images.unsplash.com/photo-1585645568795-f2d004bff7e8?auto=format&fit=crop&w=500&q=80"
+      image: "https://images.unsplash.com/photo-585645568795-f2d004bff7e8?auto=format&fit=crop&w=500&q=80"
     }
   ];
 
@@ -59,13 +59,23 @@ const QuizzesSection = () => {
       duration: 1500,
     });
     
-    // Navigate to the specific assessment page
-    navigate(`/mental-wellness/assessments/${quizId}`, { 
+    // For better alignment with our military-oriented assessments
+    const assessmentTypeMap: Record<string, string> = {
+      "anxiety-assessment": "anxiety",
+      "stress-check": "stress",
+      "sleep-quality": "wellbeing"
+    };
+    
+    const assessmentType = assessmentTypeMap[quizId] || quizId;
+    
+    // Navigate to the mental wellness assessments page
+    navigate("/mental-wellness", { 
       state: { 
-        quizId, 
-        quizTitle,
+        activeTab: "assessments",
         preventTutorial: true,
-        fromQuizCard: true
+        openAssessment: true,
+        assessmentType,
+        assessmentTitle: quizTitle
       } 
     });
   };
@@ -91,8 +101,7 @@ const QuizzesSection = () => {
         {quizzes.map((quiz) => (
           <Card 
             key={quiz.id}
-            className="bg-white overflow-hidden hover:shadow-md transition-all cursor-pointer group border border-gray-200"
-            onClick={() => handleQuizClick(quiz.id, quiz.title)}
+            className="bg-white overflow-hidden hover:shadow-md transition-all cursor-pointer group border border-gray-200 relative"
           >
             {quiz.image && (
               <div className="h-32 w-full overflow-hidden">
@@ -107,7 +116,9 @@ const QuizzesSection = () => {
                 />
               </div>
             )}
-            <div className="h-2 bg-gradient-to-r from-[#8B5CF6] to-[#D946EF]"></div>
+            <div 
+              className="h-2 bg-gradient-to-r from-[#8B5CF6] to-[#D946EF]"
+            ></div>
             <CardContent className="p-4">
               <div className="flex justify-between items-start mb-2">
                 <h3 className="font-semibold text-gray-800 group-hover:text-[#8B5CF6] transition-colors">
@@ -143,15 +154,21 @@ const QuizzesSection = () => {
                 variant="ghost" 
                 size="sm"
                 className="w-full justify-between border border-gray-200 hover:bg-[#8B5CF6]/5 hover:text-[#8B5CF6] group-hover:border-[#8B5CF6]/30 transition-all"
-                onClick={(e) => {
-                  e.stopPropagation();
-                  handleQuizClick(quiz.id, quiz.title);
-                }}
+                onClick={() => handleQuizClick(quiz.id, quiz.title)}
               >
                 <span>{quiz.completionRate ? "Continue" : "Start"} Assessment</span>
                 <ArrowRight className="h-4 w-4 group-hover:translate-x-1 transition-transform" />
               </Button>
             </CardContent>
+            
+            {/* Add an overlay that makes the entire card clickable */}
+            <div 
+              className="absolute inset-0 cursor-pointer z-10"
+              onClick={() => handleQuizClick(quiz.id, quiz.title)}
+              aria-label={`Start ${quiz.title} assessment`}
+            >
+              <span className="sr-only">Start {quiz.title}</span>
+            </div>
           </Card>
         ))}
       </div>
