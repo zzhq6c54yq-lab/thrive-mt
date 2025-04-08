@@ -1,4 +1,3 @@
-
 import React, { useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -16,7 +15,6 @@ const DoDAssessments = () => {
   const [responses, setResponses] = useState<{[key: string]: string}>({});
   const [result, setResult] = useState<"low" | "moderate" | "high" | null>(null);
   
-  // Define available assessments
   const assessments = [
     {
       id: "ptsd",
@@ -184,13 +182,11 @@ const DoDAssessments = () => {
     if (currentStep < totalQuestions) {
       setCurrentStep(currentStep + 1);
     } else {
-      // Calculate result
       const totalScore = Object.values(responses).reduce((sum, value) => sum + parseInt(value), 0);
       
       let resultLevel: "low" | "moderate" | "high";
       
       if (activeAssessment === "ptsd") {
-        // PTSD PC-5 scoring
         if (totalScore >= 3) {
           resultLevel = "high";
         } else if (totalScore >= 2) {
@@ -199,7 +195,6 @@ const DoDAssessments = () => {
           resultLevel = "low";
         }
       } else if (activeAssessment === "depression") {
-        // PHQ-9 scoring
         if (totalScore >= 15) {
           resultLevel = "high";
         } else if (totalScore >= 10) {
@@ -208,7 +203,6 @@ const DoDAssessments = () => {
           resultLevel = "low";
         }
       } else {
-        // GAD-7 scoring
         if (totalScore >= 15) {
           resultLevel = "high";
         } else if (totalScore >= 10) {
@@ -281,7 +275,6 @@ const DoDAssessments = () => {
   
   return (
     <div className="space-y-8">
-      {/* Header */}
       <div>
         <h2 className="text-3xl font-bold text-white mb-2">Military-Specific Mental Health Assessments</h2>
         <p className="text-blue-200/80 mb-6">
@@ -289,9 +282,7 @@ const DoDAssessments = () => {
         </p>
       </div>
       
-      {/* Assessment content */}
       {!activeAssessment ? (
-        // Assessment selection
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           {assessments.map((assessment) => (
             <Card key={assessment.id} className="bg-[#141921] border-blue-900/30 hover:border-blue-700/50 transition-colors">
@@ -314,7 +305,6 @@ const DoDAssessments = () => {
           ))}
         </div>
       ) : (
-        // Active assessment
         <Card className="bg-[#141921] border-blue-900/30">
           <CardHeader>
             <div className="flex items-center justify-between">
@@ -333,21 +323,22 @@ const DoDAssessments = () => {
               </Button>
             </div>
             
-            {/* Progress bar */}
             {!result && (
               <div className="mt-2">
                 <div className="flex justify-between text-sm text-white/70 mb-1">
                   <span>Question {currentStep} of {currentAssessment?.questions.length}</span>
                   <span>{Math.round(getProgressPercentage())}%</span>
                 </div>
-                <Progress value={getProgressPercentage()} className="h-2 bg-blue-900/30" indicatorClassName="bg-blue-500" />
+                <Progress 
+                  value={getProgressPercentage()} 
+                  className="h-2 bg-blue-900/30"
+                />
               </div>
             )}
           </CardHeader>
           
           <CardContent>
             {result ? (
-              // Result view
               <div className="flex flex-col items-center text-center py-8 space-y-6">
                 {getResultIcon()}
                 <h3 className="text-2xl font-bold text-white">
@@ -382,7 +373,6 @@ const DoDAssessments = () => {
                 </div>
               </div>
             ) : (
-              // Question view
               <div className="py-6">
                 {currentAssessment && currentStep <= currentAssessment.questions.length && (
                   <div className="space-y-6">
@@ -435,7 +425,6 @@ const DoDAssessments = () => {
         </Card>
       )}
       
-      {/* Disclaimer */}
       <div className="bg-blue-900/20 border border-blue-900/30 rounded-lg p-4 text-center">
         <p className="text-white/80 text-sm">
           These assessments are for informational purposes only and not intended to replace professional medical advice. 
