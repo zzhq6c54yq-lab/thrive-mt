@@ -9,7 +9,6 @@ import FeaturedWorkshops from "@/components/dashboard/FeaturedWorkshops";
 import { NavigateFunction } from "react-router-dom";
 import QuizzesSection from "@/components/dashboard/QuizzesSection";
 import { Brain, Sparkles, Calendar, HeartPulse, ChevronDown, ChevronUp, Star, Workflow, Heart } from "lucide-react";
-import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { 
@@ -26,10 +25,10 @@ interface DashboardContentProps {
   selectedGoals: string[];
 }
 
-// Common styling for all section headers - updated with dark blue/black background and gold/white gradient text
-const sectionHeaderClass = "bg-gradient-to-r from-amber-300 via-yellow-100 to-white bg-clip-text text-transparent font-semibold text-lg";
-const sectionWrapperClass = "rounded-xl border border-gray-100 shadow-sm hover:shadow-md transition-all duration-300 mb-8 overflow-hidden";
-const sectionHeaderWrapperClass = "p-4 flex items-center justify-between cursor-pointer bg-[#0a1929] backdrop-blur-sm";
+// Common styling for all section headers with improved gradients
+const sectionHeaderClass = "bg-gradient-to-r from-violet-300 via-purple-200 to-white bg-clip-text text-transparent font-semibold text-lg";
+const sectionWrapperClass = "mb-8 overflow-hidden";
+const sectionHeaderWrapperClass = "p-4 flex items-center justify-between cursor-pointer bg-gradient-to-r from-purple-900/90 via-[#2d1a46] to-purple-900/90 backdrop-blur-sm rounded-t-xl";
 
 const DashboardContent: React.FC<DashboardContentProps> = ({
   navigate,
@@ -56,7 +55,7 @@ const DashboardContent: React.FC<DashboardContentProps> = ({
   };
 
   return (
-    <div className="container mx-auto px-4 pb-24">
+    <div className="container mx-auto px-4 pb-24 max-w-full">
       <div className="space-y-6">
         {/* Specialized Programs Section */}
         <div className={sectionWrapperClass}>
@@ -74,16 +73,16 @@ const DashboardContent: React.FC<DashboardContentProps> = ({
                   <span className={sectionHeaderClass}>Specialized Programs</span>
                 </div>
                 <Button 
-                  variant="outline"
+                  variant="ghost"
                   size="sm"
-                  className="bg-white text-gray-800 border-gray-200 hover:bg-gray-100"
+                  className="text-white hover:bg-white/10 border border-white/20"
                 >
                   {sectionsCollapsed.programs ? "Expand" : "Collapse"}
                   {sectionsCollapsed.programs ? <ChevronDown className="ml-2 h-4 w-4" /> : <ChevronUp className="ml-2 h-4 w-4" />}
                 </Button>
               </div>
             </CollapsibleTrigger>
-            <CollapsibleContent className="bg-white/40 p-4">
+            <CollapsibleContent className="bg-purple-900/20 backdrop-blur-sm p-6 rounded-b-xl">
               <SpecializedPrograms navigateToFeature={navigateToFeature} />
             </CollapsibleContent>
           </Collapsible>
@@ -108,16 +107,16 @@ const DashboardContent: React.FC<DashboardContentProps> = ({
                       <span className={sectionHeaderClass}>Schedule Center</span>
                     </div>
                     <Button 
-                      variant="outline"
+                      variant="ghost"
                       size="sm"
-                      className="bg-white text-gray-800 border-gray-200 hover:bg-gray-100"
+                      className="text-white hover:bg-white/10 border border-white/20"
                     >
                       {sectionsCollapsed.appointments ? "Expand" : "Collapse"}
                       {sectionsCollapsed.appointments ? <ChevronDown className="ml-2 h-4 w-4" /> : <ChevronUp className="ml-2 h-4 w-4" />}
                     </Button>
                   </div>
                 </CollapsibleTrigger>
-                <CollapsibleContent className="bg-white/40">
+                <CollapsibleContent className="bg-purple-900/20 backdrop-blur-sm p-6 rounded-b-xl">
                   <UpcomingAppointments />
                 </CollapsibleContent>
               </Collapsible>
@@ -142,16 +141,16 @@ const DashboardContent: React.FC<DashboardContentProps> = ({
                       <span className={sectionHeaderClass}>Gratitude Visualizer</span>
                     </div>
                     <Button 
-                      variant="outline"
+                      variant="ghost"
                       size="sm"
-                      className="bg-white text-gray-800 border-gray-200 hover:bg-gray-100"
+                      className="text-white hover:bg-white/10 border border-white/20"
                     >
                       {sectionsCollapsed.gratitude ? "Expand" : "Collapse"}
                       {sectionsCollapsed.gratitude ? <ChevronDown className="ml-2 h-4 w-4" /> : <ChevronUp className="ml-2 h-4 w-4" />}
                     </Button>
                   </div>
                 </CollapsibleTrigger>
-                <CollapsibleContent className="bg-white/40 p-4">
+                <CollapsibleContent className="bg-purple-900/20 backdrop-blur-sm p-6 rounded-b-xl">
                   <GratitudeVisualizer />
                 </CollapsibleContent>
               </Collapsible>
@@ -173,16 +172,16 @@ const DashboardContent: React.FC<DashboardContentProps> = ({
                       <span className={sectionHeaderClass}>Wellness Center</span>
                     </div>
                     <Button 
-                      variant="outline"
+                      variant="ghost"
                       size="sm"
-                      className="bg-white text-gray-800 border-gray-200 hover:bg-gray-100"
+                      className="text-white hover:bg-white/10 border border-white/20"
                     >
                       {sectionsCollapsed.wellness ? "Expand" : "Collapse"}
                       {sectionsCollapsed.wellness ? <ChevronDown className="ml-2 h-4 w-4" /> : <ChevronUp className="ml-2 h-4 w-4" />}
                     </Button>
                   </div>
                 </CollapsibleTrigger>
-                <CollapsibleContent className="bg-white/40 p-4">
+                <CollapsibleContent className="bg-purple-900/20 backdrop-blur-sm p-6 rounded-b-xl">
                   <DailyWellnessChallenges />
                 </CollapsibleContent>
               </Collapsible>
@@ -206,16 +205,16 @@ const DashboardContent: React.FC<DashboardContentProps> = ({
                   <span className={sectionHeaderClass}>Monthly Featured Workshops</span>
                 </div>
                 <Button 
-                  variant="outline"
+                  variant="ghost"
                   size="sm"
-                  className="bg-white text-gray-800 border-gray-200 hover:bg-gray-100"
+                  className="text-white hover:bg-white/10 border border-white/20"
                 >
                   {sectionsCollapsed.workshops ? "Expand" : "Collapse"}
                   {sectionsCollapsed.workshops ? <ChevronDown className="ml-2 h-4 w-4" /> : <ChevronUp className="ml-2 h-4 w-4" />}
                 </Button>
               </div>
             </CollapsibleTrigger>
-            <CollapsibleContent className="bg-white/40 p-4">
+            <CollapsibleContent className="bg-purple-900/20 backdrop-blur-sm p-6 rounded-b-xl">
               <FeaturedWorkshops 
                 navigate={navigate}
                 onWorkshopClick={onWorkshopClick}
@@ -240,16 +239,16 @@ const DashboardContent: React.FC<DashboardContentProps> = ({
                   <span className={sectionHeaderClass}>Brain Games & Assessments</span>
                 </div>
                 <Button 
-                  variant="outline"
+                  variant="ghost"
                   size="sm"
-                  className="bg-white text-gray-800 border-gray-200 hover:bg-gray-100"
+                  className="text-white hover:bg-white/10 border border-white/20"
                 >
                   {sectionsCollapsed.brainGames ? "Expand" : "Collapse"}
                   {sectionsCollapsed.brainGames ? <ChevronDown className="ml-2 h-4 w-4" /> : <ChevronUp className="ml-2 h-4 w-4" />}
                 </Button>
               </div>
             </CollapsibleTrigger>
-            <CollapsibleContent className="bg-white/40 p-4">
+            <CollapsibleContent className="bg-purple-900/20 backdrop-blur-sm p-6 rounded-b-xl">
               <QuizzesSection />
             </CollapsibleContent>
           </Collapsible>
@@ -271,16 +270,16 @@ const DashboardContent: React.FC<DashboardContentProps> = ({
                   <span className={sectionHeaderClass}>Key Features</span>
                 </div>
                 <Button 
-                  variant="outline"
+                  variant="ghost"
                   size="sm"
-                  className="bg-white text-gray-800 border-gray-200 hover:bg-gray-100"
+                  className="text-white hover:bg-white/10 border border-white/20"
                 >
                   {sectionsCollapsed.keyFeatures ? "Expand" : "Collapse"}
                   {sectionsCollapsed.keyFeatures ? <ChevronDown className="ml-2 h-4 w-4" /> : <ChevronUp className="ml-2 h-4 w-4" />}
                 </Button>
               </div>
             </CollapsibleTrigger>
-            <CollapsibleContent className="bg-white/40 p-4">
+            <CollapsibleContent className="bg-purple-900/20 backdrop-blur-sm p-6 rounded-b-xl">
               <KeyFeatures 
                 navigateToFeature={navigateToFeature}
                 selectedQualities={selectedQualities}

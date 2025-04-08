@@ -70,13 +70,13 @@ const SpecializedPrograms: React.FC<SpecializedProgramsProps> = ({ navigateToFea
       {programs.map(program => (
         <Card 
           key={program.id} 
-          className={`overflow-hidden border-0 hover:shadow-xl transition-all duration-500 cursor-pointer rounded-xl h-auto transform hover:scale-[1.02] ${program.accentColor} border-l-4`}
+          className={`overflow-hidden border-0 hover:shadow-xl transition-all duration-500 cursor-pointer rounded-xl h-auto transform hover:scale-[1.02]`}
           onClick={() => navigateToFeature(program.path)}
         >
           <div className="relative h-96 flex flex-col">
             {/* Top colored section with title */}
-            <div className={`bg-gradient-to-r ${program.gradientFrom} ${program.gradientTo} px-6 py-4`}>
-              <div className="flex items-center gap-3">
+            <div className={`bg-gradient-to-r ${program.gradientFrom} ${program.gradientTo} px-6 py-5`}>
+              <div className="flex items-center gap-3 justify-center">
                 <div className="p-3 rounded-full bg-white/10 backdrop-blur-sm shadow-inner border border-white/20">
                   {program.primaryIcon}
                 </div>
@@ -94,24 +94,10 @@ const SpecializedPrograms: React.FC<SpecializedProgramsProps> = ({ navigateToFea
                 className="w-full h-full object-cover"
               />
               <div className="absolute inset-0 bg-black/10"></div>
-              
-              {/* Decorative icons overlay */}
-              <div className="absolute right-6 bottom-4 opacity-10">
-                {program.secondaryIcon &&
-                  <div className="absolute right-0 bottom-0">
-                    {React.cloneElement(program.secondaryIcon, { className: "h-20 w-20 text-white" })}
-                  </div>
-                }
-                {program.tertiaryIcon &&
-                  <div className="absolute right-20 bottom-0">
-                    {React.cloneElement(program.tertiaryIcon, { className: "h-16 w-16 text-white/40" })}
-                  </div>
-                }
-              </div>
             </div>
             
             {/* Bottom section with button */}
-            <div className={`bg-gradient-to-r ${program.gradientFrom} ${program.gradientTo} px-6 py-4`}>
+            <div className={`bg-gradient-to-r ${program.gradientFrom} ${program.gradientTo} px-6 py-5`}>
               <Button 
                 className={`w-full text-white ${program.buttonColor} shadow-lg`}
                 onClick={(e) => {
