@@ -78,7 +78,7 @@ const SpecializedPrograms: React.FC<SpecializedProgramsProps> = ({ navigateToFea
         return (
           <Card 
             key={program.id} 
-            className="overflow-hidden border-0 h-48 rounded-xl hover:shadow-xl transition-all duration-500 group cursor-pointer relative"
+            className="overflow-hidden border-0 h-60 rounded-xl hover:shadow-xl transition-all duration-500 group cursor-pointer relative"
             onClick={() => navigateToFeature(program.path)}
           >
             {/* Top half: Image with overlay */}
@@ -124,6 +124,54 @@ const SpecializedPrograms: React.FC<SpecializedProgramsProps> = ({ navigateToFea
                 </div>
               )}
               
+              {/* College-specific design elements */}
+              {program.id === "college" && (
+                <div className="absolute inset-0">
+                  <div className="absolute bottom-2 right-2 w-20 h-20 opacity-20">
+                    <div className="relative w-full h-full">
+                      <div className="absolute inset-0 border-[3px] border-purple-200 rounded-full"></div>
+                      <div className="absolute inset-2 border-[3px] border-purple-300 rounded-full"></div>
+                      <div className="absolute inset-4 border-[3px] border-purple-400 rounded-full"></div>
+                      <div className="absolute inset-6 border-[3px] border-purple-500 rounded-full"></div>
+                    </div>
+                  </div>
+                  {/* Floating graduation caps */}
+                  <div className="absolute top-4 left-8">
+                    <GraduationCap className="h-4 w-4 text-purple-200 animate-bounce" style={{animationDuration: '3s'}} />
+                  </div>
+                  <div className="absolute bottom-8 right-10">
+                    <GraduationCap className="h-3 w-3 text-purple-200 animate-bounce" style={{animationDuration: '2.3s', animationDelay: '0.5s'}} />
+                  </div>
+                </div>
+              )}
+              
+              {/* Business-specific design elements */}
+              {program.id === "business" && (
+                <div className="absolute inset-0">
+                  <div className="absolute inset-0">
+                    {/* Abstract grid pattern for business */}
+                    <div className="absolute inset-0 opacity-20">
+                      <div className="h-full w-full grid grid-cols-8 grid-rows-5">
+                        {[...Array(40)].map((_, i) => (
+                          <div key={i} className={`border border-emerald-400 ${i % 6 === 0 ? 'bg-emerald-500/20' : ''}`}></div>
+                        ))}
+                      </div>
+                    </div>
+                    {/* Growth chart */}
+                    <div className="absolute bottom-4 left-2 right-2 h-12 opacity-30">
+                      <div className="relative h-full w-full">
+                        <div className="absolute bottom-0 left-0 right-0 h-[1px] bg-emerald-200"></div>
+                        <div className="absolute bottom-0 left-[20%] h-2 w-1 bg-emerald-300"></div>
+                        <div className="absolute bottom-0 left-[40%] h-4 w-1 bg-emerald-400"></div>
+                        <div className="absolute bottom-0 left-[60%] h-6 w-1 bg-emerald-500"></div>
+                        <div className="absolute bottom-0 left-[80%] h-9 w-1 bg-emerald-600"></div>
+                        <div className="absolute bottom-0 left-0 right-0 h-8 border-b border-l border-emerald-400/50"></div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              )}
+              
               {/* Icon */}
               <div className={`absolute top-4 right-4 p-2 rounded-full ${styles.iconBg} backdrop-blur-sm z-20`}>
                 {program.icon}
@@ -155,7 +203,7 @@ const SpecializedPrograms: React.FC<SpecializedProgramsProps> = ({ navigateToFea
                   navigateToFeature(program.path);
                 }}
               >
-                <span>Explore</span>
+                <span>Explore Program</span>
                 <span className="ml-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300">&rarr;</span>
               </Button>
             </div>
