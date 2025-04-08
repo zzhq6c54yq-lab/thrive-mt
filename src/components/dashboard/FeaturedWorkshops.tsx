@@ -1,5 +1,5 @@
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { ArrowRight, ChevronLeft, ChevronRight } from "lucide-react";
@@ -21,15 +21,15 @@ const FeaturedWorkshops: React.FC<FeaturedWorkshopsProps> = ({ navigate, onWorks
     if (typeof window !== 'undefined') {
       if (window.innerWidth < 640) return 1; // Mobile
       if (window.innerWidth < 1024) return 2; // Tablet
-      return 3; // Desktop
+      return 4; // Desktop - increased to show more at once in dropdown style
     }
-    return 3; // Default to desktop
+    return 4; // Default to desktop
   };
   
   const [workshopsPerPage, setWorkshopsPerPage] = useState(getWorkshopsPerPage());
   
   // Update workshopsPerPage on window resize
-  React.useEffect(() => {
+  useEffect(() => {
     const handleResize = () => {
       setWorkshopsPerPage(getWorkshopsPerPage());
     };
@@ -150,9 +150,8 @@ const FeaturedWorkshops: React.FC<FeaturedWorkshopsProps> = ({ navigate, onWorks
   };
 
   return (
-    <div className="mb-12">
+    <div>
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 gap-3 sm:gap-0">
-        <h2 className="text-xl sm:text-2xl font-bold">{translations.title}</h2>
         <div className="flex items-center gap-2">
           <Button 
             variant="outline" 
@@ -175,39 +174,47 @@ const FeaturedWorkshops: React.FC<FeaturedWorkshopsProps> = ({ navigate, onWorks
           >
             <ChevronRight className="h-4 w-4" />
           </Button>
-          <Button 
-            variant="link" 
-            className="text-[#E5C5A1] px-0 flex items-center ml-2 sm:ml-4"
-            onClick={() => navigate("/workshops", { state: { preventTutorial: true } })}
-          >
-            {translations.viewAll}
-            <ArrowRight className="ml-1 h-4 w-4" />
-          </Button>
         </div>
+        <Button 
+          variant="link" 
+          className="text-[#E5C5A1] px-0 flex items-center"
+          onClick={() => navigate("/workshops", { state: { preventTutorial: true } })}
+        >
+          {translations.viewAll}
+          <ArrowRight className="ml-1 h-4 w-4" />
+        </Button>
       </div>
       
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
+      <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
         {displayedWorkshops.map((workshop) => (
-          <Card key={workshop.id} className="bg-[#252535] border-[#3d3d5c] rounded-lg hover:bg-[#2a2a40] transition-colors overflow-hidden">
-            <div className="aspect-video overflow-hidden relative">
-              <img 
-                src={workshop.image} 
-                alt={workshop.title} 
-                className="w-full h-full object-cover rounded-t-lg"
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-[#1a1a20] to-transparent opacity-60"></div>
+          <Card 
+            key={workshop.id} 
+            className="bg-[#252535] border-[#3d3d5c] rounded-lg hover:bg-[#2a2a40] transition-colors overflow-hidden cursor-pointer h-36 sm:h-40"
+            onClick={() => handleWorkshopClick(workshop.id, workshop.title)}
+          >
+            <div className="h-full relative">
+              <div className="absolute inset-0 opacity-50">
+                <img 
+                  src={workshop.image} 
+                  alt={workshop.title} 
+                  className="w-full h-full object-cover"
+                />
+              </div>
+              
+              <div className="absolute inset-0 bg-gradient-to-t from-[#1a1a20] to-transparent"></div>
+              
+              <div className="relative h-full p-3 flex flex-col justify-between">
+                <CardTitle className="text-white text-sm sm:text-base line-clamp-2">
+                  {workshop.title}
+                </CardTitle>
+                
+                <div className="flex justify-end">
+                  <button className="text-xs bg-[#B87333] hover:bg-[#a66a2e] text-white px-3 py-1 rounded">
+                    {translations.viewWorkshop}
+                  </button>
+                </div>
+              </div>
             </div>
-            <CardHeader className="pb-2">
-              <CardTitle className="text-white text-lg sm:text-xl">{workshop.title}</CardTitle>
-            </CardHeader>
-            <CardFooter>
-              <Button 
-                className="w-full bg-[#B87333] hover:bg-[#a66a2e] text-white"
-                onClick={() => handleWorkshopClick(workshop.id, workshop.title)}
-              >
-                {translations.viewWorkshop}
-              </Button>
-            </CardFooter>
           </Card>
         ))}
       </div>
