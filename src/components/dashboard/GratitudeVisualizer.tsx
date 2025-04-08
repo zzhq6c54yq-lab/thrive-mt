@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Heart, Image, X, RefreshCw, Sparkles, Stars, Flower } from "lucide-react";
+import { Heart, Image, RefreshCw, Sparkles, Stars, Flower } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/hooks/use-toast";
 import { cn } from "@/lib/utils";
@@ -125,25 +125,9 @@ const GratitudeVisualizer: React.FC<GratitudeVisualizerProps> = ({ onReset }) =>
   const currentBackgroundClass = customBackground ? "" : backgrounds[selectedBackground];
   
   return (
-    <div className="mb-12 transform transition-all duration-500 hover:scale-[1.01]">
-      <div className="mb-8 relative">
-        <h2 className="text-3xl font-bold inline-flex items-center gap-3 relative">
-          <div className="relative w-10 h-10">
-            <div className="absolute inset-0 rounded-full bg-gradient-to-r from-[#FF9A9E] to-[#FECFEF] opacity-20 animate-pulse"></div>
-            <Heart className="h-7 w-7 text-[#FF9A9E] absolute inset-0 m-auto animate-pulse" style={{animationDuration: '2s'}} />
-            <div className="absolute -right-1 -top-1 w-4 h-4">
-              <Sparkles className="h-full w-full text-[#FECFEF] animate-pulse" style={{animationDuration: '3s', animationDelay: '0.5s'}} />
-            </div>
-          </div>
-          <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#FF9A9E] via-[#ffffff] to-[#ffffff] tracking-tight">
-            {translations.title}
-          </span>
-        </h2>
-        <div className="absolute -bottom-2 left-0 w-64 h-[3px] bg-gradient-to-r from-[#FF9A9E] via-[#F6416C] to-transparent rounded-full"></div>
-      </div>
-      
+    <div className="mb-6 transform transition-all duration-500 hover:scale-[1.01]">
       {!savedGratitude ? (
-        <div className="bg-white/10 backdrop-blur-md rounded-2xl p-8 shadow-xl border border-white/20 transform transition-all duration-500 hover:shadow-[0_10px_40px_-15px_rgba(255,154,158,0.3)] relative overflow-hidden">
+        <div className="bg-white rounded-2xl p-8 shadow-xl border border-white/20 transform transition-all duration-500 hover:shadow-[0_10px_40px_-15px_rgba(255,154,158,0.3)] relative overflow-hidden">
           <div className="absolute top-0 right-0 w-40 h-40 bg-gradient-to-br from-[#FF9A9E]/20 to-transparent rounded-full blur-3xl -z-10"></div>
           <div className="absolute bottom-0 left-0 w-40 h-40 bg-gradient-to-tr from-[#FECFEF]/20 to-transparent rounded-full blur-3xl -z-10"></div>
           
@@ -151,7 +135,7 @@ const GratitudeVisualizer: React.FC<GratitudeVisualizerProps> = ({ onReset }) =>
             <Stars className="w-full h-full" />
           </div>
           
-          <p className="text-white/80 mb-6 text-lg">
+          <p className="text-gray-700 mb-6 text-lg">
             {translations.instruction}
           </p>
           
@@ -159,14 +143,14 @@ const GratitudeVisualizer: React.FC<GratitudeVisualizerProps> = ({ onReset }) =>
             <textarea
               value={gratitude}
               onChange={(e) => setGratitude(e.target.value)}
-              className="w-full bg-white/10 border border-white/20 rounded-xl p-5 text-white placeholder-white/50 focus:ring-2 focus:ring-[#FF9A9E] focus:border-transparent resize-none text-lg shadow-inner"
+              className="w-full bg-gray-50 border border-gray-200 rounded-xl p-5 text-gray-700 placeholder-gray-400 focus:ring-2 focus:ring-[#FF9A9E] focus:border-transparent resize-none text-lg shadow-inner"
               placeholder={translations.placeholder}
               rows={3}
             />
           </div>
           
           <div className="mb-8">
-            <p className="text-white/90 mb-3 font-medium flex items-center">
+            <p className="text-gray-700 mb-3 font-medium flex items-center">
               <Sparkles className="h-4 w-4 mr-2 text-[#FECFEF]" />
               {translations.chooseBackground}
             </p>
@@ -179,7 +163,7 @@ const GratitudeVisualizer: React.FC<GratitudeVisualizerProps> = ({ onReset }) =>
                     bg, 
                     "w-16 h-16 rounded-xl border-2 transition-all duration-300 relative overflow-hidden",
                     selectedBackground === index && !customBackground
-                      ? "border-white scale-110 shadow-lg shadow-[rgba(255,154,158,0.3)]" 
+                      ? "border-gray-700 scale-110 shadow-lg shadow-[rgba(255,154,158,0.3)]" 
                       : "border-transparent opacity-70 hover:opacity-100 hover:scale-105"
                   )}
                 >
@@ -194,10 +178,10 @@ const GratitudeVisualizer: React.FC<GratitudeVisualizerProps> = ({ onReset }) =>
               ))}
               
               <label className={cn(
-                "w-16 h-16 rounded-xl border-2 flex items-center justify-center cursor-pointer bg-white/10 transition-all duration-300 hover:bg-white/20 hover:scale-105 relative overflow-hidden",
-                customBackground ? "border-white scale-110 shadow-lg shadow-[rgba(255,154,158,0.3)]" : "border-transparent opacity-70"
+                "w-16 h-16 rounded-xl border-2 flex items-center justify-center cursor-pointer bg-gray-100 transition-all duration-300 hover:bg-gray-200 hover:scale-105 relative overflow-hidden",
+                customBackground ? "border-gray-700 scale-110 shadow-lg shadow-[rgba(255,154,158,0.3)]" : "border-transparent opacity-70"
               )}>
-                <Image size={24} className="text-white" />
+                <Image size={24} className="text-gray-700" />
                 <input
                   type="file"
                   accept="image/*"
@@ -230,7 +214,7 @@ const GratitudeVisualizer: React.FC<GratitudeVisualizerProps> = ({ onReset }) =>
           )}
           style={currentBackgroundStyle}
         >
-          <div className="absolute inset-0 bg-black/40 backdrop-blur-[2px]"></div>
+          <div className="absolute inset-0 bg-black/50 backdrop-blur-[2px]"></div>
           
           <div className="relative z-10 text-center max-w-md mx-auto">
             <h3 className="text-2xl font-bold text-white mb-4 drop-shadow-md">
@@ -246,7 +230,7 @@ const GratitudeVisualizer: React.FC<GratitudeVisualizerProps> = ({ onReset }) =>
                 onClick={handleReset}
                 size="sm"
                 variant="outline"
-                className="bg-white/20 border-white/40 text-white hover:bg-white/30 transition-all duration-300 backdrop-blur-md shadow-md"
+                className="bg-white/30 border-white/60 text-white hover:bg-white/40 transition-all duration-300 backdrop-blur-md shadow-md"
               >
                 <RefreshCw className="mr-2 h-4 w-4" />
                 {translations.resetGratitude}
@@ -256,7 +240,7 @@ const GratitudeVisualizer: React.FC<GratitudeVisualizerProps> = ({ onReset }) =>
                 onClick={() => setSavedGratitude(null)}
                 size="sm"
                 variant="outline"
-                className="bg-white/20 border-white/40 text-white hover:bg-white/30 transition-all duration-300 backdrop-blur-md shadow-md"
+                className="bg-white/30 border-white/60 text-white hover:bg-white/40 transition-all duration-300 backdrop-blur-md shadow-md"
               >
                 <Image className="mr-2 h-4 w-4" />
                 {translations.changeBackground}

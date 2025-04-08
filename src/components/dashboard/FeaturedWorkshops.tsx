@@ -1,6 +1,6 @@
 
 import React, { useState, useEffect } from "react";
-import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { ArrowRight, ChevronLeft, ChevronRight } from "lucide-react";
 import { NavigateFunction } from "react-router-dom";
@@ -15,15 +15,14 @@ const FeaturedWorkshops: React.FC<FeaturedWorkshopsProps> = ({ navigate, onWorks
   const [currentPage, setCurrentPage] = useState(0);
   const { toast } = useToast();
   
-  // Adjust workshops per page based on screen size
+  // Show more workshops per page
   const getWorkshopsPerPage = () => {
-    // Using window.innerWidth directly for responsiveness
     if (typeof window !== 'undefined') {
-      if (window.innerWidth < 640) return 1; // Mobile
-      if (window.innerWidth < 1024) return 2; // Tablet
-      return 4; // Desktop - increased to show more at once in dropdown style
+      if (window.innerWidth < 640) return 2; // Mobile
+      if (window.innerWidth < 1024) return 4; // Tablet
+      return 8; // Desktop - increased to show more at once
     }
-    return 4; // Default to desktop
+    return 8; // Default to desktop
   };
   
   const [workshopsPerPage, setWorkshopsPerPage] = useState(getWorkshopsPerPage());
@@ -156,19 +155,19 @@ const FeaturedWorkshops: React.FC<FeaturedWorkshopsProps> = ({ navigate, onWorks
           <Button 
             variant="outline" 
             size="sm"
-            className="border-[#3d3d5c] text-gray-300 flex items-center"
+            className="border-[#3d3d5c] text-gray-600 flex items-center"
             onClick={prevPage}
             aria-label={translations.prev}
           >
             <ChevronLeft className="h-4 w-4" />
           </Button>
-          <span className="text-xs sm:text-sm text-gray-300">
+          <span className="text-xs sm:text-sm text-gray-600">
             {translations.page} {currentPage + 1} {translations.of} {pageCount}
           </span>
           <Button 
             variant="outline" 
             size="sm"
-            className="border-[#3d3d5c] text-gray-300 flex items-center"
+            className="border-[#3d3d5c] text-gray-600 flex items-center"
             onClick={nextPage}
             aria-label={translations.next}
           >
@@ -177,7 +176,7 @@ const FeaturedWorkshops: React.FC<FeaturedWorkshopsProps> = ({ navigate, onWorks
         </div>
         <Button 
           variant="link" 
-          className="text-[#E5C5A1] px-0 flex items-center"
+          className="text-blue-500 px-0 flex items-center"
           onClick={() => navigate("/workshops", { state: { preventTutorial: true } })}
         >
           {translations.viewAll}
@@ -185,15 +184,15 @@ const FeaturedWorkshops: React.FC<FeaturedWorkshopsProps> = ({ navigate, onWorks
         </Button>
       </div>
       
-      <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
+      <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-4 xl:grid-cols-8 gap-4">
         {displayedWorkshops.map((workshop) => (
           <Card 
             key={workshop.id} 
-            className="bg-[#252535] border-[#3d3d5c] rounded-lg hover:bg-[#2a2a40] transition-colors overflow-hidden cursor-pointer h-36 sm:h-40"
+            className="bg-white border border-gray-200 rounded-lg hover:shadow-md transition-colors overflow-hidden cursor-pointer h-36"
             onClick={() => handleWorkshopClick(workshop.id, workshop.title)}
           >
             <div className="h-full relative">
-              <div className="absolute inset-0 opacity-50">
+              <div className="absolute inset-0">
                 <img 
                   src={workshop.image} 
                   alt={workshop.title} 
@@ -201,18 +200,12 @@ const FeaturedWorkshops: React.FC<FeaturedWorkshopsProps> = ({ navigate, onWorks
                 />
               </div>
               
-              <div className="absolute inset-0 bg-gradient-to-t from-[#1a1a20] to-transparent"></div>
+              <div className="absolute inset-0 bg-gradient-to-t from-black to-transparent"></div>
               
-              <div className="relative h-full p-3 flex flex-col justify-between">
-                <CardTitle className="text-white text-sm sm:text-base line-clamp-2">
+              <div className="relative h-full p-3 flex flex-col justify-end">
+                <h3 className="text-white text-sm font-medium line-clamp-2 drop-shadow-md">
                   {workshop.title}
-                </CardTitle>
-                
-                <div className="flex justify-end">
-                  <button className="text-xs bg-[#B87333] hover:bg-[#a66a2e] text-white px-3 py-1 rounded">
-                    {translations.viewWorkshop}
-                  </button>
-                </div>
+                </h3>
               </div>
             </div>
           </Card>
