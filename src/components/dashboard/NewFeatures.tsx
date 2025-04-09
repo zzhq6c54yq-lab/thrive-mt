@@ -22,27 +22,17 @@ const NewFeatures: React.FC = () => {
   };
 
   return (
-    <div className="w-full bg-gradient-to-r from-white/5 to-white/5 border-y border-[#B87333]/30 py-6 px-4 shadow-lg relative z-10 overflow-hidden">
-      {/* Enhanced texture with silver and white */}
-      <div className="absolute inset-0 bg-[url('data:image/svg+xml;utf8,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%2240%22 height=%2240%22 viewBox=%220 0 40 40%22><path d=%22M0 20 L40 20%22 stroke=%22%23ffffff%22 stroke-opacity=%220.05%22 stroke-width=%221%22/></svg>')] opacity-50"></div>
-      <div className="absolute inset-0 bg-[url('data:image/svg+xml;utf8,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%2260%22 height=%2260%22 viewBox=%220 0 60 60%22><circle cx=%2230%22 cy=%2230%22 r=%222%22 fill=%22%23c0c0c0%22 fill-opacity=%220.06%22/></svg>')] opacity-40"></div>
+    <div className="w-full bg-gradient-to-r from-[#1c2e4a] to-[#2d3748] border-y border-[#B87333]/20 py-6 px-4 shadow-lg relative z-10 overflow-hidden">
+      <div className="absolute inset-0 bg-[url('data:image/svg+xml;utf8,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%2240%22 height=%2240%22 viewBox=%220 0 40 40%22><path d=%22M0 20 L40 20%22 stroke=%22%23B87333%22 stroke-opacity=%220.05%22 stroke-width=%221%22/></svg>')] opacity-40"></div>
+      <div className="absolute inset-0 bg-[url('data:image/svg+xml;utf8,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%2260%22 height=%2260%22 viewBox=%220 0 60 60%22><circle cx=%2230%22 cy=%2230%22 r=%222%22 fill=%22%23B87333%22 fill-opacity=%220.05%22/></svg>')] opacity-30"></div>
       
-      {/* Enhanced gold/platinum glowing elements */}
-      <div className="absolute top-0 right-0 w-96 h-96 bg-gradient-to-br from-[#c0c0c0]/20 via-[#B87333]/10 to-transparent rounded-full blur-3xl"></div>
-      <div className="absolute bottom-0 left-0 w-96 h-96 bg-gradient-to-tr from-[#ffffff]/15 via-[#B87333]/10 to-transparent rounded-full blur-3xl"></div>
-      
-      {/* Enhanced diagonal gold/silver accents */}
-      <div className="absolute inset-0 overflow-hidden">
-        <div className="absolute h-[1px] w-full bg-gradient-to-r from-transparent via-[#E5C5A1]/30 to-transparent top-1/3 transform rotate-[20deg]"></div>
-        <div className="absolute h-[1px] w-full bg-gradient-to-r from-transparent via-[#c0c0c0]/30 to-transparent bottom-1/3 transform -rotate-[15deg]"></div>
-        <div className="absolute h-[1px] w-full bg-gradient-to-r from-transparent via-[#B87333]/20 to-transparent top-2/3 transform rotate-[10deg]"></div>
-        <div className="absolute h-[1px] w-full bg-gradient-to-r from-transparent via-[#ffffff]/25 to-transparent bottom-2/3 transform -rotate-[5deg]"></div>
-      </div>
+      <div className="absolute top-0 right-0 w-96 h-96 bg-gradient-to-br from-[#B87333]/10 to-transparent rounded-full blur-3xl"></div>
+      <div className="absolute bottom-0 left-0 w-96 h-96 bg-gradient-to-tr from-[#8B5CF6]/10 to-transparent rounded-full blur-3xl"></div>
       
       <div className="container mx-auto max-w-6xl relative">
         <h3 className="text-xl font-semibold text-white mb-6 flex items-center">
-          <Sparkles className="h-5 w-5 text-[#c0c0c0] mr-2" />
-          <span className="gradient-heading text-transparent bg-clip-text bg-gradient-to-r from-[#B87333] via-[#ffffff] to-[#E5C5A1]">
+          <Sparkles className="h-5 w-5 text-[#B87333] mr-2" />
+          <span className="gradient-heading text-transparent bg-clip-text bg-gradient-to-r from-[#B87333] via-[#E5C5A1] to-[#B87333]">
             {getTranslatedText('newFeatures')}
           </span>
         </h3>
@@ -50,16 +40,13 @@ const NewFeatures: React.FC = () => {
         <div className="flex flex-wrap justify-center sm:justify-between gap-6">
           <Button 
             variant="bronze"
-            className="flex items-center gap-2 px-6 py-6 rounded-lg transform transition-all duration-300 hover:scale-105 shadow-[0_4px_12px_rgba(0,0,0,0.25)] group bg-[#111] border border-[#B87333]/30"
+            className="flex items-center gap-2 px-6 py-6 rounded-lg transform transition-all duration-300 hover:scale-105 shadow-[0_4px_12px_rgba(0,0,0,0.25)] group"
             onClick={() => handleNavigation("/barter-system", getTranslatedText('barterSystem'))}
           >
-            <div className="p-2 rounded-full bg-[#B87333]/30 group-hover:bg-[#B87333]/40 transition-colors">
+            <div className="p-2 rounded-full bg-[#B87333]/20 group-hover:bg-[#B87333]/30 transition-colors">
               <Handshake className="h-5 w-5 text-[#E5C5A1] group-hover:text-white transition-colors" />
             </div>
             <span className="font-medium">{getTranslatedText('barterSystem')}</span>
-            
-            {/* Add subtle silver accent line */}
-            <div className="absolute h-[1px] w-3/4 left-[12.5%] bottom-3 bg-[#c0c0c0]/20"></div>
           </Button>
           
           <Button 
@@ -67,13 +54,12 @@ const NewFeatures: React.FC = () => {
             className="flex items-center gap-2 px-5 py-5 rounded-lg transform transition-all duration-300 hover:scale-105 shadow-[0_4px_12px_rgba(0,0,0,0.25)] group relative overflow-hidden"
             onClick={() => handleNavigation("/subscription-plans", getTranslatedText('upgradePlan'))}
           >
-            <div className="absolute inset-0 bg-gradient-to-r from-[#B87333] via-[#ffffff] to-[#B87333] opacity-100 background-animate" style={{backgroundSize: '200% auto'}}></div>
+            <div className="absolute inset-0 bg-gradient-to-r from-[#B87333] via-[#E5C5A1] to-[#B87333] opacity-100 background-animate" style={{backgroundSize: '200% auto'}}></div>
             
             <div className="absolute top-0 left-0 w-full h-full">
-              <div className="absolute top-1/4 left-1/4 w-1 h-1 rounded-full bg-white/90 animate-ping" style={{animationDuration: '3s'}}></div>
-              <div className="absolute top-3/4 right-1/4 w-1 h-1 rounded-full bg-white/90 animate-ping" style={{animationDuration: '2s'}}></div>
-              <div className="absolute top-2/4 left-3/4 w-1 h-1 rounded-full bg-white/90 animate-ping" style={{animationDuration: '4s'}}></div>
-              <div className="absolute top-1/3 right-1/3 w-1 h-1 rounded-full bg-[#c0c0c0]/90 animate-ping" style={{animationDuration: '3.5s'}}></div>
+              <div className="absolute top-1/4 left-1/4 w-1 h-1 rounded-full bg-white/80 animate-ping" style={{animationDuration: '3s'}}></div>
+              <div className="absolute top-3/4 right-1/4 w-1 h-1 rounded-full bg-white/80 animate-ping" style={{animationDuration: '2s'}}></div>
+              <div className="absolute top-2/4 left-3/4 w-1 h-1 rounded-full bg-white/80 animate-ping" style={{animationDuration: '4s'}}></div>
             </div>
             
             <div className="p-2 rounded-full bg-black/30 backdrop-blur-sm z-10 group-hover:bg-black/40 transition-colors">
@@ -89,16 +75,13 @@ const NewFeatures: React.FC = () => {
           
           <Button 
             variant="bronze"
-            className="flex items-center gap-2 px-6 py-6 rounded-lg transform transition-all duration-300 hover:scale-105 shadow-[0_4px_12px_rgba(0,0,0,0.25)] group bg-[#111] border border-[#B87333]/30"
+            className="flex items-center gap-2 px-6 py-6 rounded-lg transform transition-all duration-300 hover:scale-105 shadow-[0_4px_12px_rgba(0,0,0,0.25)] group"
             onClick={() => handleNavigation("/copay-credits", getTranslatedText('coPayCredits'))}
           >
-            <div className="p-2 rounded-full bg-[#B87333]/30 group-hover:bg-[#B87333]/40 transition-colors">
+            <div className="p-2 rounded-full bg-[#B87333]/20 group-hover:bg-[#B87333]/30 transition-colors">
               <WalletCards className="h-5 w-5 text-[#E5C5A1] group-hover:text-white transition-colors" />
             </div>
             <span className="font-medium">{getTranslatedText('coPayCredits')}</span>
-            
-            {/* Add subtle silver accent line */}
-            <div className="absolute h-[1px] w-3/4 left-[12.5%] bottom-3 bg-[#c0c0c0]/20"></div>
           </Button>
         </div>
       </div>

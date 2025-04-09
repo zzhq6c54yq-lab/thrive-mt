@@ -1,148 +1,138 @@
 
-import React from "react";
-import { Card, CardContent } from "@/components/ui/card";
+import React, { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
-import { 
-  Sparkles, 
-  Shield, 
-  GraduationCap, 
-  Briefcase,
-  Medal,
-  Users,
-  Flag,
-  Award,
-  Anchor,
-  BookOpen,
-  Laptop,
-  Building
-} from "lucide-react";
+import { Shield, GraduationCap, Briefcase, Sparkles } from "lucide-react";
+import { useNavigate } from "react-router-dom";
+import { useToast } from "@/hooks/use-toast";
+import useTranslation from "@/hooks/useTranslation";
 
-export interface SpecializedProgramsProps {
-  navigateToFeature: (path: string) => void;
-}
+const SpecializedPrograms: React.FC = () => {
+  const { toast } = useToast();
+  const navigate = useNavigate();
+  const { isSpanish } = useTranslation();
 
-const SpecializedPrograms: React.FC<SpecializedProgramsProps> = ({ navigateToFeature }) => {
-  const programs = [
+  // Translations
+  const translations = {
+    title: isSpanish ? "Programas Especializados" : "Specialized Programs",
+    navigating: isSpanish ? "Navegando..." : "Navigating...",
+    takingYou: isSpanish ? "Llevándote a la función seleccionada" : "Taking you to your selected feature",
+    exploreProgram: isSpanish ? "Explorar Programa" : "Explore Program"
+  };
+
+  const specializedPrograms = [
     {
-      id: "veterans",
-      title: "Veterans Program",
+      title: isSpanish ? "Departamento de Defensa" : "Department of Defense",
+      description: isSpanish 
+        ? "Recursos y apoyo para personal militar y veteranos" 
+        : "Resources and support for military personnel and veterans",
+      icon: Shield,
       path: "/dod-welcome",
-      primaryIcon: <Shield className="h-6 w-6 text-white" />,
-      secondaryIcon: <Medal className="h-6 w-6" />,
-      tertiaryIcon: <Flag className="h-6 w-6" />,
-      backgroundColor: "bg-black",
-      accentColor: "border-[#B87333]",
-      buttonColor: "bg-[#B87333] hover:bg-[#B87333]/90",
-      isVeteran: true,
-      image: "https://images.unsplash.com/photo-1503177119275-0aa32b3a9368?auto=format&fit=crop&w=600&q=80"
+      gradient: "from-[#0EA5E9]/80 to-[#2563EB]/80",
+      borderColor: "#0EA5E9"
     },
     {
-      id: "college",
-      title: "College Students",
+      title: isSpanish ? "La Experiencia Universitaria" : "The College Experience",
+      description: isSpanish 
+        ? "Apoyo de salud mental para estudiantes en la vida universitaria" 
+        : "Mental health support for students navigating campus life",
+      icon: GraduationCap,
       path: "/college-welcome",
-      primaryIcon: <GraduationCap className="h-6 w-6 text-white" />,
-      secondaryIcon: <BookOpen className="h-6 w-6" />,
-      tertiaryIcon: <Laptop className="h-6 w-6" />,
-      backgroundColor: "bg-black",
-      accentColor: "border-[#E5C5A1]",
-      buttonColor: "bg-[#E5C5A1] hover:bg-[#E5C5A1]/90",
-      image: "https://images.unsplash.com/photo-1523240795612-9a054b0db644?auto=format&fit=crop&w=600&q=80"
+      gradient: "from-[#8B5CF6]/80 to-[#6366F1]/80",
+      borderColor: "#8B5CF6"
     },
     {
-      id: "business",
-      title: "Small Business",
+      title: isSpanish ? "Pequeñas Empresas" : "Small Business",
+      description: isSpanish 
+        ? "Recursos de salud mental para emprendedores y dueños de pequeñas empresas" 
+        : "Mental health resources for entrepreneurs and small business owners",
+      icon: Briefcase,
       path: "/small-business-welcome",
-      primaryIcon: <Briefcase className="h-6 w-6 text-white" />,
-      secondaryIcon: <Building className="h-6 w-6" />,
-      tertiaryIcon: <Users className="h-6 w-6" />,
-      backgroundColor: "bg-black",
-      accentColor: "border-[#B87333]/70",
-      buttonColor: "bg-[#B87333]/80 hover:bg-[#B87333]",
-      image: "https://images.unsplash.com/photo-1542744173-8e7e53415bb0?auto=format&fit=crop&w=600&q=80"
+      gradient: "from-[#F97316]/80 to-[#FB923C]/80",
+      borderColor: "#F97316"
     }
   ];
+  
+  // Listen for language changes
+  useEffect(() => {
+    const handleLanguageChange = () => {
+      // Force component to re-render when language changes
+      console.log("Language changed, updating specialized programs");
+    };
+    
+    window.addEventListener('languageChange', handleLanguageChange);
+    return () => {
+      window.removeEventListener('languageChange', handleLanguageChange);
+    };
+  }, []);
+  
+  const handleFeatureClick = (path: string) => {
+    toast({
+      title: translations.navigating,
+      description: translations.takingYou,
+      duration: 1500,
+    });
+    
+    navigate(path, { 
+      state: { 
+        fromMainMenu: true,
+        preventTutorial: true 
+      }
+    });
+  };
 
   return (
-    <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-      {programs.map(program => (
-        <Card 
-          key={program.id} 
-          className={`overflow-hidden border-0 hover:shadow-2xl transition-all duration-700 cursor-pointer rounded-xl h-auto transform hover:scale-[1.03] shadow-xl shadow-black`}
-          onClick={() => navigateToFeature(program.path)}
-        >
-          <div className="relative h-[460px] flex flex-col">
-            {/* Top colored section with title - now with solid colors and silver accents */}
-            <div className={`${program.backgroundColor} border-b-2 ${program.accentColor} px-6 py-8 relative overflow-hidden`}>
-              {/* Diagonal silver/gold accent lines */}
-              <div className="absolute -inset-full h-20 w-[200%] bg-gradient-to-r from-transparent via-[#c0c0c0]/20 to-transparent transform rotate-45 translate-x-[25%] translate-y-[-60%] animate-pulse" style={{animationDuration: '5s'}}></div>
-              <div className="absolute -inset-full h-20 w-[200%] bg-gradient-to-r from-transparent via-[#B87333]/20 to-transparent transform -rotate-30 translate-x-[-25%] translate-y-[-40%] animate-pulse" style={{animationDuration: '7s'}}></div>
-              
-              <div className="flex items-center gap-3 justify-center relative z-10">
-                <div className="p-3 rounded-full bg-[#B87333]/30 backdrop-blur-sm shadow-inner border border-[#c0c0c0]/40 rotate-6">
-                  {program.primaryIcon}
+    <div className="mb-10">
+      <div className="mb-6 relative">
+        <h2 className="text-3xl font-bold inline-flex items-center gap-3 relative">
+          <Sparkles className="h-6 w-6 text-[#B87333]" />
+          <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#B87333] via-[#ffffff] to-[#ffffff] tracking-tight">
+            {translations.title}
+          </span>
+        </h2>
+        <div className="absolute -bottom-2 left-0 w-64 h-[2px] bg-gradient-to-r from-[#B87333] via-[#E5C5A1] to-transparent"></div>
+      </div>
+      
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+        {specializedPrograms.map((program, index) => (
+          <div 
+            key={index}
+            onClick={() => handleFeatureClick(program.path)}
+            className="relative overflow-hidden rounded-xl cursor-pointer transform transition-all duration-300 hover:scale-105 group"
+          >
+            <div className={`absolute inset-0 bg-gradient-to-br ${program.gradient} opacity-90`}></div>
+            <div className="absolute inset-0 bg-black/30"></div>
+            <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent"></div>
+            
+            <div className="relative z-10 p-5 flex flex-col h-full min-h-[180px]">
+              <div className="flex items-center gap-3 mb-3">
+                <div className="p-2.5 rounded-full bg-white/20 backdrop-blur-sm">
+                  <program.icon className="h-6 w-6 text-white" />
                 </div>
-                <h3 className="font-bold text-2xl text-transparent bg-clip-text bg-gradient-to-r from-[#B87333] via-[#ffffff] to-[#E5C5A1] drop-shadow-md -rotate-1">
-                  {program.title}
-                </h3>
+                <h3 className="text-xl font-bold text-white">{program.title}</h3>
               </div>
               
-              {/* Bottom silver/gold accent lines */}
-              <div className="absolute -inset-full h-10 w-[200%] bg-gradient-to-r from-transparent via-[#E5C5A1]/20 to-transparent transform -rotate-45 translate-x-[-20%] translate-y-[200%] animate-pulse" style={{animationDuration: '7s'}}></div>
-              <div className="absolute -inset-full h-10 w-[200%] bg-gradient-to-r from-transparent via-[#ffffff]/15 to-transparent transform rotate-30 translate-x-[20%] translate-y-[180%] animate-pulse" style={{animationDuration: '9s'}}></div>
-            </div>
-            
-            {/* Middle image section with enhanced silver/gold/white accents */}
-            <div className="flex-grow relative">
-              <img 
-                src={program.image}
-                alt={program.title}
-                className="w-full h-full object-cover transition-all duration-700 hover:scale-105"
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-black/20"></div>
-              
-              {/* Overlay icons with silver accents */}
-              <div className="absolute top-4 right-4 p-2 rounded-full bg-black/40 backdrop-blur-sm border border-[#c0c0c0]/50 rotate-12">
-                {program.secondaryIcon}
-              </div>
-              <div className="absolute bottom-4 left-4 p-2 rounded-full bg-black/40 backdrop-blur-sm border border-[#E5C5A1]/50 -rotate-6">
-                {program.tertiaryIcon}
-              </div>
-              
-              {/* Enhanced diagonal silver/gold accents */}
-              <div className="absolute inset-0 overflow-hidden">
-                <div className="absolute h-[1px] w-[200%] bg-gradient-to-r from-transparent via-[#ffffff]/40 to-transparent top-1/3 -left-1/2 rotate-[30deg] transform"></div>
-                <div className="absolute h-[1px] w-[200%] bg-gradient-to-r from-transparent via-[#c0c0c0]/40 to-transparent bottom-1/3 -left-1/2 -rotate-[20deg] transform"></div>
-                <div className="absolute h-[1px] w-[200%] bg-gradient-to-r from-transparent via-[#B87333]/30 to-transparent top-2/3 -left-1/2 rotate-[15deg] transform"></div>
-              </div>
-              
-              {/* Additional floating platinum & gold particles for luxury effect */}
-              <div className="absolute top-1/4 left-1/4 w-1 h-1 rounded-full bg-white/70 animate-pulse" style={{animationDuration: '3s'}}></div>
-              <div className="absolute bottom-1/3 right-1/3 w-1 h-1 rounded-full bg-[#E5C5A1]/70 animate-pulse" style={{animationDuration: '4s'}}></div>
-              <div className="absolute top-1/2 right-1/4 w-1 h-1 rounded-full bg-[#c0c0c0]/70 animate-pulse" style={{animationDuration: '5s'}}></div>
-              <div className="absolute bottom-1/4 left-1/3 w-1 h-1 rounded-full bg-[#B87333]/70 animate-pulse" style={{animationDuration: '3.5s'}}></div>
-            </div>
-            
-            {/* Bottom section with solid black backgrounds */}
-            <div className={`${program.backgroundColor} border-t-2 ${program.accentColor} px-6 py-6 relative overflow-hidden`}>
-              {/* Diagonal silver/gold accents for bottom section */}
-              <div className="absolute -inset-full h-20 w-[200%] bg-gradient-to-r from-transparent via-[#ffffff]/15 to-transparent transform -rotate-45 translate-y-[-60%] animate-pulse" style={{animationDuration: '8s'}}></div>
-              <div className="absolute -inset-full h-15 w-[200%] bg-gradient-to-r from-transparent via-[#c0c0c0]/15 to-transparent transform rotate-30 translate-y-[-40%] animate-pulse" style={{animationDuration: '10s'}}></div>
+              <p className="text-white/90 mb-4 flex-grow">{program.description}</p>
               
               <Button 
-                className={`w-full text-black font-medium ${program.buttonColor} shadow-lg group transition-all duration-500 relative z-10`}
+                className="mt-auto self-start bg-white/20 backdrop-blur-sm text-white border border-white/40 hover:bg-white/30 transition-all duration-300"
                 onClick={(e) => {
                   e.stopPropagation();
-                  navigateToFeature(program.path);
+                  handleFeatureClick(program.path);
                 }}
               >
-                <span className="mr-2 opacity-0 group-hover:opacity-100 transition-all duration-500">•</span>
-                <span>Explore Program</span>
-                <span className="ml-2 opacity-0 group-hover:opacity-100 transition-all duration-500 transform group-hover:translate-x-1">&rarr;</span>
+                {translations.exploreProgram}
               </Button>
             </div>
+            
+            <div 
+              className="absolute inset-0 border-2 opacity-50 group-hover:opacity-100 transition-opacity"
+              style={{ borderColor: program.borderColor }}  
+            ></div>
+            
+            <div className="absolute top-0 right-0 h-20 w-20 bg-white/10 rounded-bl-full transform translate-x-10 -translate-y-10 group-hover:translate-x-8 group-hover:-translate-y-8 transition-transform duration-500"></div>
           </div>
-        </Card>
-      ))}
+        ))}
+      </div>
     </div>
   );
 };

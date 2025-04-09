@@ -1,495 +1,389 @@
 
 import React, { useState } from "react";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { useNavigate, useLocation } from "react-router-dom";
+import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Shield, Calendar, ChevronDown, ChevronUp, Brain, Heart, Users, BookOpen, Activity, Clock, MapPin, Briefcase, ChevronRight } from "lucide-react";
-import { useNavigate } from "react-router-dom";
+import { Calendar, Users, Video, Filter, Search, Clock, MapPin, CalendarDays, Play } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
+
+// Workshop data
+const workshops = [
+  {
+    id: 1,
+    title: "Combat Stress Management",
+    type: "Virtual Workshop",
+    description: "Learn effective techniques for managing stress related to combat experiences and deployment.",
+    instructor: "Col. James Harrison, PhD",
+    date: "April 15, 2023",
+    time: "2:00 PM - 4:00 PM ET",
+    format: "Virtual",
+    participants: 42,
+    thumbnail: "https://images.unsplash.com/photo-1518152006812-edab29b069ac?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=640&h=360&q=80",
+    featured: true,
+    tags: ["PTSD", "Stress", "Combat"]
+  },
+  {
+    id: 2,
+    title: "Military to Civilian Transition",
+    type: "On-demand Course",
+    description: "A comprehensive program to help service members successfully transition to civilian life and careers.",
+    instructor: "Linda Martinez, Career Specialist",
+    date: "Self-paced",
+    time: "On-demand",
+    format: "On-demand",
+    participants: 128,
+    thumbnail: "https://images.unsplash.com/photo-1607707972895-7f994d4c8203?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=640&h=360&q=80",
+    featured: true,
+    tags: ["Career", "Transition", "Civilian Life"]
+  },
+  {
+    id: 3,
+    title: "Family Resilience Building",
+    type: "In-person Workshop",
+    description: "Strategies and support for military families dealing with deployment, relocation, and reintegration.",
+    instructor: "Dr. Sarah Thompson",
+    date: "April 22, 2023",
+    time: "10:00 AM - 3:00 PM PT",
+    format: "In-person",
+    location: "Fort Bragg Family Center",
+    participants: 35,
+    thumbnail: "https://images.unsplash.com/photo-1528712623442-24d329292bc6?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=640&h=360&q=80",
+    featured: false,
+    tags: ["Family", "Resilience", "Support"]
+  },
+  {
+    id: 4,
+    title: "Mindfulness for Veterans",
+    type: "Virtual Workshop",
+    description: "Introduction to mindfulness practices specifically adapted for veterans and military personnel.",
+    instructor: "Mark Johnson, Mindfulness Coach",
+    date: "April 30, 2023",
+    time: "7:00 PM - 8:30 PM ET",
+    format: "Virtual",
+    participants: 64,
+    thumbnail: "https://images.unsplash.com/photo-1506126613408-eca07ce68773?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=640&h=360&q=80",
+    featured: false,
+    tags: ["Mindfulness", "Meditation", "Mental Health"]
+  },
+  {
+    id: 5,
+    title: "Military Sexual Trauma: Healing Path",
+    type: "Support Group",
+    description: "Confidential support group for service members affected by military sexual trauma.",
+    instructor: "Dr. Jennifer Williams & Capt. David Miller",
+    date: "Weekly - Thursdays",
+    time: "6:00 PM - 7:30 PM CT",
+    format: "Virtual",
+    participants: 18,
+    thumbnail: "https://images.unsplash.com/photo-1573497620053-ea5300f94f21?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=640&h=360&q=80",
+    featured: false,
+    tags: ["MST", "Trauma", "Support Group"]
+  },
+  {
+    id: 6,
+    title: "Financial Readiness for Veterans",
+    type: "Virtual Workshop",
+    description: "Learn financial planning strategies specifically for veterans transitioning to civilian life.",
+    instructor: "Michael Stevens, Financial Advisor",
+    date: "May 10, 2023",
+    time: "1:00 PM - 3:00 PM ET",
+    format: "Virtual",
+    participants: 52,
+    thumbnail: "https://images.unsplash.com/photo-1560472355-536de3962603?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=640&h=360&q=80",
+    featured: false,
+    tags: ["Financial", "Planning", "Benefits"]
+  }
+];
+
+const WorkshopCard = ({ 
+  workshop, 
+  featured = false,
+  onRegister,
+  onLearnMore
+}) => {
+  return (
+    <Card className={`overflow-hidden h-full flex flex-col ${
+      featured 
+        ? 'border-blue-600/30 bg-gradient-to-b from-blue-900/30 to-blue-950/30' 
+        : 'border-blue-900/30 bg-[#141921]'
+    }`}>
+      <div className="relative h-[180px] overflow-hidden">
+        <img 
+          src={workshop.thumbnail} 
+          alt={workshop.title}
+          className="w-full h-full object-cover transition-transform duration-500 hover:scale-110"
+        />
+        
+        {featured && (
+          <div className="absolute top-2 right-2 bg-blue-600 text-white text-xs font-medium py-1 px-2 rounded-full">
+            Featured
+          </div>
+        )}
+        
+        <div className="absolute top-2 left-2 bg-[#141921]/90 backdrop-blur-sm text-white text-xs font-medium py-1 px-2 rounded-full flex items-center gap-1">
+          {workshop.format === "Virtual" ? (
+            <Video className="h-3 w-3 text-blue-400" />
+          ) : workshop.format === "In-person" ? (
+            <MapPin className="h-3 w-3 text-blue-400" />
+          ) : (
+            <Play className="h-3 w-3 text-blue-400" />
+          )}
+          <span>{workshop.type}</span>
+        </div>
+      </div>
+      
+      <CardHeader className="pb-2">
+        <div className="flex justify-between items-start">
+          <div className="flex gap-2 flex-wrap mb-1">
+            {workshop.tags.map((tag, i) => (
+              <span 
+                key={i} 
+                className="text-xs bg-blue-900/30 text-blue-400 px-2 py-0.5 rounded-full"
+              >
+                {tag}
+              </span>
+            ))}
+          </div>
+        </div>
+        <CardTitle className="text-xl text-white">{workshop.title}</CardTitle>
+        <CardDescription className="flex items-center gap-1 text-white/70">
+          <Users className="h-3 w-3" />
+          <span>Instructor: {workshop.instructor}</span>
+        </CardDescription>
+      </CardHeader>
+      
+      <CardContent className="text-sm text-white/80">
+        <p className="mb-4">{workshop.description}</p>
+        
+        <div className="flex flex-col space-y-2">
+          <div className="flex items-center gap-2 text-blue-300">
+            <Calendar className="h-4 w-4" />
+            <span>{workshop.date}</span>
+          </div>
+          
+          <div className="flex items-center gap-2 text-blue-300">
+            <Clock className="h-4 w-4" />
+            <span>{workshop.time}</span>
+          </div>
+          
+          {workshop.location && (
+            <div className="flex items-center gap-2 text-blue-300">
+              <MapPin className="h-4 w-4" />
+              <span>{workshop.location}</span>
+            </div>
+          )}
+          
+          <div className="flex items-center gap-2 text-blue-300">
+            <Users className="h-4 w-4" />
+            <span>{workshop.participants} participants</span>
+          </div>
+        </div>
+      </CardContent>
+      
+      <CardFooter className="mt-auto pt-2">
+        <div className="w-full grid grid-cols-2 gap-2">
+          <Button 
+            variant="outline" 
+            className="border-blue-500 text-blue-300 hover:bg-blue-900/50"
+            onClick={() => onLearnMore(workshop)}
+          >
+            Learn More
+          </Button>
+          <Button 
+            className="bg-blue-700 hover:bg-blue-800 text-white"
+            onClick={() => onRegister(workshop)}
+          >
+            Register
+          </Button>
+        </div>
+      </CardFooter>
+    </Card>
+  );
+};
 
 const DoDWorkshops = () => {
   const navigate = useNavigate();
+  const location = useLocation();
   const { toast } = useToast();
-  const [expandedSection, setExpandedSection] = useState<string | null>("upcoming");
+  const [searchTerm, setSearchTerm] = useState("");
+  const [visibleWorkshops, setVisibleWorkshops] = useState(workshops);
   
-  const toggleSection = (section: string) => {
-    setExpandedSection(expandedSection === section ? null : section);
-  };
+  // Get the return portal path from location state
+  const returnToPortal = location.state?.returnToPortal || "/dod-portal";
   
-  const handleRegisterWorkshop = (workshopId: string, workshopTitle: string) => {
+  // Handle workshop registration
+  const handleRegisterWorkshop = (workshop) => {
     toast({
       title: "Workshop Registration",
-      description: `You've successfully registered for "${workshopTitle}"`,
+      description: `You've successfully registered for "${workshop.title}"`,
       duration: 2000,
     });
-    
-    navigate(`/workshop/${workshopId}`, {
+  };
+  
+  // Handle learn more about workshop
+  const handleLearnMoreWorkshop = (workshop) => {
+    // Navigate to workshop detail with navigation state to allow returning to portal
+    navigate(`/workshop/${workshop.id}`, {
       state: {
         preventTutorial: true,
-        returnToPortal: "/dod-portal",
-        registered: true,
-        workshopTitle
+        returnToPortal: returnToPortal,
+        workshopData: workshop
       }
     });
   };
   
-  const handleJoinNow = (workshopId: string, workshopTitle: string) => {
-    toast({
-      title: "Joining Workshop",
-      description: "Loading workshop content...",
-      duration: 1500,
-    });
+  // Handle search
+  const handleSearchChange = (e) => {
+    const term = e.target.value;
+    setSearchTerm(term);
     
-    navigate(`/workshop/${workshopId}`, {
-      state: {
-        preventTutorial: true,
-        returnToPortal: "/dod-portal",
-        activeTab: "workshop",
-        workshopTitle
-      }
-    });
+    if (!term) {
+      setVisibleWorkshops(workshops);
+    } else {
+      const filtered = workshops.filter(workshop => 
+        workshop.title.toLowerCase().includes(term.toLowerCase()) ||
+        workshop.description.toLowerCase().includes(term.toLowerCase()) ||
+        workshop.tags.some(tag => tag.toLowerCase().includes(term.toLowerCase()))
+      );
+      setVisibleWorkshops(filtered);
+    }
   };
 
   return (
     <div className="space-y-8">
-      {/* Header with patriotic styling */}
-      <div className="relative overflow-hidden rounded-lg border border-blue-800/50 bg-gradient-to-r from-blue-950 to-blue-900 p-6">
-        {/* Subtle flag background */}
-        <div className="absolute inset-0 pointer-events-none opacity-5">
-          <div className="absolute top-0 left-0 w-1/4 h-1/3 bg-blue-700">
-            <div className="grid grid-cols-4 gap-1 p-1">
-              {[...Array(12)].map((_, i) => (
-                <div key={i} className="flex items-center justify-center text-white">
-                  ★
-                </div>
-              ))}
-            </div>
+      {/* Header section */}
+      <div>
+        <h2 className="text-3xl font-bold text-white mb-2">Military-Specific Workshops</h2>
+        <p className="text-blue-200/80 mb-6">
+          Specialized workshops and training sessions designed for service members, veterans, and military families.
+        </p>
+        
+        {/* Search and filters */}
+        <div className="flex flex-col md:flex-row gap-4 mb-8">
+          <div className="relative flex-grow">
+            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-blue-400/50 h-5 w-5" />
+            <input
+              type="text"
+              placeholder="Search workshops by title, description, or tags..."
+              className="w-full py-2.5 pl-10 pr-4 bg-[#0c1016] border border-blue-900/30 rounded-md text-white placeholder-blue-400/50 focus:outline-none focus:ring-2 focus:ring-blue-500/50"
+              value={searchTerm}
+              onChange={handleSearchChange}
+            />
           </div>
-          <div className="absolute bottom-0 left-0 right-0 h-2/3">
-            {[...Array(7)].map((_, i) => (
-              <div 
-                key={i} 
-                className={`h-[14.28%] w-full ${i % 2 === 0 ? 'bg-red-700' : 'bg-white'}`}
+          <Button 
+            variant="outline" 
+            className="border-blue-500 text-blue-300 hover:bg-blue-900/50 whitespace-nowrap"
+            onClick={() => {
+              toast({
+                title: "Filters",
+                description: "Opening workshop filter options",
+                duration: 1500
+              });
+            }}
+          >
+            <Filter className="h-4 w-4 mr-2" />
+            Filters
+          </Button>
+        </div>
+      </div>
+      
+      {/* Featured Workshops */}
+      <div>
+        <div className="flex justify-between items-center mb-4">
+          <h3 className="text-2xl font-bold text-white">Featured Workshops</h3>
+          <Button 
+            variant="link" 
+            className="text-blue-400"
+            onClick={() => {
+              toast({
+                title: "Calendar View",
+                description: "Opening monthly workshop calendar",
+                duration: 1500
+              });
+            }}
+          >
+            <CalendarDays className="h-4 w-4 mr-2" />
+            Calendar View
+          </Button>
+        </div>
+        
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+          {visibleWorkshops
+            .filter(workshop => workshop.featured)
+            .map(workshop => (
+              <WorkshopCard 
+                key={workshop.id} 
+                workshop={workshop} 
+                featured={true}
+                onRegister={handleRegisterWorkshop}
+                onLearnMore={handleLearnMoreWorkshop}
               />
             ))}
-          </div>
         </div>
+      </div>
+      
+      {/* All Workshops */}
+      <div>
+        <h3 className="text-2xl font-bold text-white mb-4">Upcoming Workshops</h3>
         
-        <div className="relative z-10">
-          <h2 className="text-3xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-red-400 via-white to-blue-400 mb-2">
-            Military Mental Health Workshops
-          </h2>
-          <p className="text-blue-200/80 mb-6 max-w-3xl">
-            Specialized workshops designed for service members, veterans, and military families to build resilience, manage stress, and support mental wellbeing.
-          </p>
-          <div className="flex flex-wrap gap-4">
-            <Button 
-              className="bg-blue-700 hover:bg-blue-800 text-white"
-              onClick={() => {
-                navigate("/workshops", {
-                  state: {
-                    preventTutorial: true,
-                    returnToPortal: "/dod-portal",
-                    filterBy: "military"
-                  }
-                });
-              }}
-            >
-              Browse All Workshops
-            </Button>
+        {visibleWorkshops.length === 0 ? (
+          <div className="bg-blue-900/20 border border-blue-900/30 rounded-lg p-6 text-center">
+            <p className="text-white text-lg mb-2">No workshops match your search</p>
+            <p className="text-blue-200/70">Try adjusting your search terms or filters</p>
             <Button 
               variant="outline" 
-              className="border-blue-500 text-blue-300 hover:bg-blue-900/30"
+              className="mt-4 border-blue-500 text-blue-300 hover:bg-blue-900/50"
               onClick={() => {
-                const element = document.getElementById("upcoming-workshops");
-                if (element) {
-                  element.scrollIntoView({ behavior: "smooth" });
-                }
-                setExpandedSection("upcoming");
+                setSearchTerm("");
+                setVisibleWorkshops(workshops);
               }}
             >
-              See Upcoming Schedule
+              Clear Search
             </Button>
           </div>
-        </div>
+        ) : (
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            {visibleWorkshops
+              .filter(workshop => !workshop.featured)
+              .map(workshop => (
+                <WorkshopCard 
+                  key={workshop.id} 
+                  workshop={workshop} 
+                  onRegister={handleRegisterWorkshop}
+                  onLearnMore={handleLearnMoreWorkshop}
+                />
+              ))}
+          </div>
+        )}
       </div>
       
-      {/* Live Now Workshop */}
-      <Card className="bg-gradient-to-r from-blue-900/30 to-blue-800/30 border-blue-500/30 overflow-hidden">
-        <div className="absolute top-0 left-0 bg-blue-500 text-white px-3 py-1 text-xs font-medium">
-          LIVE NOW
-        </div>
-        <CardContent className="p-6 pt-10">
-          <div className="flex flex-col md:flex-row gap-6 items-center">
-            <div className="w-full md:w-2/3">
-              <h3 className="text-2xl font-bold text-white mb-2">Combat Stress Management</h3>
-              <p className="text-blue-200 mb-4">
-                Learn effective techniques to manage stress responses related to combat experiences and build resilience.
-              </p>
-              <div className="flex flex-wrap gap-x-4 gap-y-2 mb-4">
-                <div className="flex items-center text-sm text-blue-300">
-                  <Clock className="h-4 w-4 mr-1" />
-                  <span>45 minutes</span>
-                </div>
-                <div className="flex items-center text-sm text-blue-300">
-                  <Users className="h-4 w-4 mr-1" />
-                  <span>24 participants</span>
-                </div>
-                <div className="flex items-center text-sm text-blue-300">
-                  <Brain className="h-4 w-4 mr-1" />
-                  <span>Led by Dr. James Carter, Combat Veteran</span>
-                </div>
+      {/* Request Section */}
+      <div className="mt-10">
+        <Card className="bg-gradient-to-r from-blue-900/30 to-blue-800/30 border-blue-700/30">
+          <CardContent className="p-6">
+            <div className="flex flex-col md:flex-row items-center justify-between gap-6">
+              <div>
+                <h3 className="text-2xl font-bold text-white mb-2">Need a Specific Workshop?</h3>
+                <p className="text-blue-200/80 mb-4">
+                  Don't see what you're looking for? Request a workshop on a specific topic or for your unit.
+                </p>
               </div>
-            </div>
-            <div className="w-full md:w-1/3 flex justify-center md:justify-end">
               <Button 
-                className="bg-red-600 hover:bg-red-700 text-white w-full md:w-auto"
-                onClick={() => handleJoinNow("stress-management", "Combat Stress Management")}
-              >
-                Join Live Now
-              </Button>
-            </div>
-          </div>
-        </CardContent>
-      </Card>
-      
-      {/* Upcoming Workshops Section */}
-      <div id="upcoming-workshops" className="scroll-mt-4">
-        <div 
-          className="flex justify-between items-center mb-4 cursor-pointer"
-          onClick={() => toggleSection("upcoming")}
-        >
-          <h3 className="text-xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-red-400 via-white to-blue-400 flex items-center gap-2">
-            <Calendar className="h-5 w-5 text-blue-400" />
-            Upcoming Workshops
-          </h3>
-          <Button variant="ghost" size="sm" className="p-1">
-            {expandedSection === "upcoming" ? (
-              <ChevronUp className="h-5 w-5 text-blue-400" />
-            ) : (
-              <ChevronDown className="h-5 w-5 text-blue-400" />
-            )}
-          </Button>
-        </div>
-        
-        {expandedSection === "upcoming" && (
-          <div className="space-y-4">
-            <Card className="bg-[#141921] border-blue-900/30">
-              <CardContent className="p-4 flex flex-col md:flex-row gap-4">
-                <div className="bg-blue-900/20 text-blue-400 p-3 rounded-lg text-center min-w-[80px] md:h-20 flex flex-col justify-center">
-                  <span className="block text-sm">APR</span>
-                  <span className="block text-xl font-bold">15</span>
-                </div>
-                <div className="flex-grow">
-                  <h4 className="font-medium text-white text-lg">Mindful Communication for Military Families</h4>
-                  <div className="flex flex-wrap gap-x-4 gap-y-1 my-2 text-sm text-blue-200/70">
-                    <div className="flex items-center">
-                      <Clock className="h-3 w-3 mr-1" />
-                      <span>11:00 AM ET</span>
-                    </div>
-                    <div className="flex items-center">
-                      <Users className="h-3 w-3 mr-1" />
-                      <span>Virtual</span>
-                    </div>
-                    <div className="flex items-center">
-                      <Heart className="h-3 w-3 mr-1" />
-                      <span>Family Focus</span>
-                    </div>
-                  </div>
-                  <p className="text-white/70 text-sm mb-3">
-                    Improve communication between military service members and their families during deployment and reunion.
-                  </p>
-                  <Button 
-                    size="sm" 
-                    className="bg-blue-700 hover:bg-blue-800 text-white"
-                    onClick={() => handleRegisterWorkshop("mindful-communication", "Mindful Communication for Military Families")}
-                  >
-                    Register
-                  </Button>
-                </div>
-              </CardContent>
-            </Card>
-            
-            <Card className="bg-[#141921] border-blue-900/30">
-              <CardContent className="p-4 flex flex-col md:flex-row gap-4">
-                <div className="bg-blue-900/20 text-blue-400 p-3 rounded-lg text-center min-w-[80px] md:h-20 flex flex-col justify-center">
-                  <span className="block text-sm">APR</span>
-                  <span className="block text-xl font-bold">22</span>
-                </div>
-                <div className="flex-grow">
-                  <h4 className="font-medium text-white text-lg">Transition to Civilian Life</h4>
-                  <div className="flex flex-wrap gap-x-4 gap-y-1 my-2 text-sm text-blue-200/70">
-                    <div className="flex items-center">
-                      <Clock className="h-3 w-3 mr-1" />
-                      <span>2:00 PM ET</span>
-                    </div>
-                    <div className="flex items-center">
-                      <Users className="h-3 w-3 mr-1" />
-                      <span>Virtual</span>
-                    </div>
-                    <div className="flex items-center">
-                      <Briefcase className="h-3 w-3 mr-1" />
-                      <span>Career Transition</span>
-                    </div>
-                  </div>
-                  <p className="text-white/70 text-sm mb-3">
-                    Navigate the emotional and practical challenges of transitioning from military to civilian life.
-                  </p>
-                  <Button 
-                    size="sm" 
-                    className="bg-blue-700 hover:bg-blue-800 text-white"
-                    onClick={() => handleRegisterWorkshop("emotional-regulation", "Transition to Civilian Life")}
-                  >
-                    Register
-                  </Button>
-                </div>
-              </CardContent>
-            </Card>
-            
-            <Card className="bg-[#141921] border-blue-900/30">
-              <CardContent className="p-4 flex flex-col md:flex-row gap-4">
-                <div className="bg-blue-900/20 text-blue-400 p-3 rounded-lg text-center min-w-[80px] md:h-20 flex flex-col justify-center">
-                  <span className="block text-sm">APR</span>
-                  <span className="block text-xl font-bold">29</span>
-                </div>
-                <div className="flex-grow">
-                  <h4 className="font-medium text-white text-lg">Sleep Improvement for Service Members</h4>
-                  <div className="flex flex-wrap gap-x-4 gap-y-1 my-2 text-sm text-blue-200/70">
-                    <div className="flex items-center">
-                      <Clock className="h-3 w-3 mr-1" />
-                      <span>7:00 PM ET</span>
-                    </div>
-                    <div className="flex items-center">
-                      <Users className="h-3 w-3 mr-1" />
-                      <span>Virtual</span>
-                    </div>
-                    <div className="flex items-center">
-                      <Activity className="h-3 w-3 mr-1" />
-                      <span>Wellness</span>
-                    </div>
-                  </div>
-                  <p className="text-white/70 text-sm mb-3">
-                    Practical techniques for improving sleep quality despite challenges like PTSD, night shifts, and deployments.
-                  </p>
-                  <Button 
-                    size="sm" 
-                    className="bg-blue-700 hover:bg-blue-800 text-white"
-                    onClick={() => handleRegisterWorkshop("better-sleep", "Sleep Improvement for Service Members")}
-                  >
-                    Register
-                  </Button>
-                </div>
-              </CardContent>
-            </Card>
-            
-            <Card className="bg-[#141921] border-blue-900/30">
-              <CardContent className="p-4 flex flex-col md:flex-row gap-4">
-                <div className="bg-blue-900/20 text-blue-400 p-3 rounded-lg text-center min-w-[80px] md:h-20 flex flex-col justify-center">
-                  <span className="block text-sm">MAY</span>
-                  <span className="block text-xl font-bold">6</span>
-                </div>
-                <div className="flex-grow">
-                  <h4 className="font-medium text-white text-lg">Deployment Resilience</h4>
-                  <div className="flex flex-wrap gap-x-4 gap-y-1 my-2 text-sm text-blue-200/70">
-                    <div className="flex items-center">
-                      <Clock className="h-3 w-3 mr-1" />
-                      <span>11:00 AM ET</span>
-                    </div>
-                    <div className="flex items-center">
-                      <MapPin className="h-3 w-3 mr-1" />
-                      <span>In-Person & Virtual</span>
-                    </div>
-                    <div className="flex items-center">
-                      <Shield className="h-3 w-3 mr-1" />
-                      <span>Pre-Deployment</span>
-                    </div>
-                  </div>
-                  <p className="text-white/70 text-sm mb-3">
-                    Building mental resilience skills before, during, and after deployment for service members.
-                  </p>
-                  <Button 
-                    size="sm" 
-                    className="bg-blue-700 hover:bg-blue-800 text-white"
-                    onClick={() => handleRegisterWorkshop("values-alignment", "Deployment Resilience")}
-                  >
-                    Register
-                  </Button>
-                </div>
-              </CardContent>
-            </Card>
-            
-            <div className="flex justify-end mt-2">
-              <Button 
-                variant="outline" 
-                size="sm" 
-                className="text-blue-400 hover:text-blue-300"
+                className="bg-blue-700 hover:bg-blue-800 text-white"
                 onClick={() => {
-                  navigate("/workshops", {
-                    state: {
-                      preventTutorial: true,
-                      returnToPortal: "/dod-portal",
-                      filterBy: "military"
-                    }
-                  });
-                }}
-              >
-                View All Workshops <ChevronRight className="h-4 w-4 ml-1" />
-              </Button>
-            </div>
-          </div>
-        )}
-      </div>
-      
-      {/* Recorded Workshops Section */}
-      <div>
-        <div 
-          className="flex justify-between items-center mb-4 cursor-pointer"
-          onClick={() => toggleSection("recorded")}
-        >
-          <h3 className="text-xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-red-400 via-white to-blue-400 flex items-center gap-2">
-            <BookOpen className="h-5 w-5 text-blue-400" />
-            Recorded Workshops Library
-          </h3>
-          <Button variant="ghost" size="sm" className="p-1">
-            {expandedSection === "recorded" ? (
-              <ChevronUp className="h-5 w-5 text-blue-400" />
-            ) : (
-              <ChevronDown className="h-5 w-5 text-blue-400" />
-            )}
-          </Button>
-        </div>
-        
-        {expandedSection === "recorded" && (
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <Card className="bg-[#141921] border-blue-900/30">
-              <CardContent className="p-4">
-                <div className="flex items-start gap-3 mb-3">
-                  <div className="p-2 bg-blue-900/20 rounded-lg">
-                    <Brain className="h-5 w-5 text-blue-400" />
-                  </div>
-                  <div>
-                    <h4 className="font-medium text-white mb-1">Managing Combat-Related Trauma</h4>
-                    <p className="text-sm text-white/60 mb-3">
-                      Techniques for processing traumatic experiences from deployment.
-                    </p>
-                    <Button 
-                      size="sm" 
-                      className="bg-blue-700 hover:bg-blue-800 text-white"
-                      onClick={() => handleJoinNow("stress-management", "Managing Combat-Related Trauma")}
-                    >
-                      Watch Recording
-                    </Button>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
-            
-            <Card className="bg-[#141921] border-blue-900/30">
-              <CardContent className="p-4">
-                <div className="flex items-start gap-3 mb-3">
-                  <div className="p-2 bg-blue-900/20 rounded-lg">
-                    <Heart className="h-5 w-5 text-blue-400" />
-                  </div>
-                  <div>
-                    <h4 className="font-medium text-white mb-1">Building Military Family Connections</h4>
-                    <p className="text-sm text-white/60 mb-3">
-                      Strategies for maintaining strong relationships despite separations.
-                    </p>
-                    <Button 
-                      size="sm" 
-                      className="bg-blue-700 hover:bg-blue-800 text-white"
-                      onClick={() => handleJoinNow("social-connection", "Building Military Family Connections")}
-                    >
-                      Watch Recording
-                    </Button>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
-            
-            <Card className="bg-[#141921] border-blue-900/30">
-              <CardContent className="p-4">
-                <div className="flex items-start gap-3 mb-3">
-                  <div className="p-2 bg-blue-900/20 rounded-lg">
-                    <Shield className="h-5 w-5 text-blue-400" />
-                  </div>
-                  <div>
-                    <h4 className="font-medium text-white mb-1">Navigating VA Benefits</h4>
-                    <p className="text-sm text-white/60 mb-3">
-                      Understanding and accessing mental health benefits through the VA.
-                    </p>
-                    <Button 
-                      size="sm" 
-                      className="bg-blue-700 hover:bg-blue-800 text-white"
-                      onClick={() => handleJoinNow("boundary-setting", "Navigating VA Benefits")}
-                    >
-                      Watch Recording
-                    </Button>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
-            
-            <Card className="bg-[#141921] border-blue-900/30">
-              <CardContent className="p-4">
-                <div className="flex items-start gap-3 mb-3">
-                  <div className="p-2 bg-blue-900/20 rounded-lg">
-                    <Activity className="h-5 w-5 text-blue-400" />
-                  </div>
-                  <div>
-                    <h4 className="font-medium text-white mb-1">Military Mindfulness Practice</h4>
-                    <p className="text-sm text-white/60 mb-3">
-                      Adapted mindfulness techniques for active duty and veterans.
-                    </p>
-                    <Button 
-                      size="sm" 
-                      className="bg-blue-700 hover:bg-blue-800 text-white"
-                      onClick={() => handleJoinNow("gratitude-practice", "Military Mindfulness Practice")}
-                    >
-                      Watch Recording
-                    </Button>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
-          </div>
-        )}
-      </div>
-      
-      {/* Request Workshop */}
-      <Card className="bg-gradient-to-r from-blue-900/30 to-blue-800/30 border-blue-700/30">
-        <CardContent className="p-6">
-          <div className="flex flex-col md:flex-row gap-6 items-center">
-            <div className="w-full md:w-2/3">
-              <h3 className="text-xl font-bold text-white mb-2">Request a Custom Workshop</h3>
-              <p className="text-blue-200/80 mb-4">
-                Need a specialized workshop for your unit, base, or military family group? We can create custom content tailored to your specific needs.
-              </p>
-            </div>
-            <div className="w-full md:w-1/3 flex justify-center md:justify-end">
-              <Button 
-                className="bg-blue-700 hover:bg-blue-800 text-white w-full md:w-auto"
-                onClick={() => {
-                  navigate("/contact", {
-                    state: {
-                      preventTutorial: true,
-                      returnToPortal: "/dod-portal",
-                      requestType: "workshop",
-                      subject: "Custom Military Workshop Request"
-                    }
-                  });
                   toast({
-                    title: "Request Form",
-                    description: "Opening custom workshop request form",
-                    duration: 2000
+                    title: "Workshop Request",
+                    description: "Opening workshop request form",
+                    duration: 1500
                   });
                 }}
               >
                 Request Workshop
               </Button>
             </div>
-          </div>
-        </CardContent>
-      </Card>
+          </CardContent>
+        </Card>
+      </div>
     </div>
   );
 };

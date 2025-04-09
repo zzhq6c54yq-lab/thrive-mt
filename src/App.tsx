@@ -45,16 +45,13 @@ import SubscriptionPlansPage from "@/pages/SubscriptionPlansPage";
 import FinancialAssistance from "@/pages/FinancialAssistance";
 import ContactSupport from "@/pages/ContactSupport";
 import GuidedPractice from "@/pages/GuidedPractice";
-import MilitaryAssessmentPage from "@/pages/MilitaryAssessment";
 
 function App() {
   return (
     <>
       <HelpNavButton />
       <Routes>
-        {/* Changed the root path to redirect to /home */}
-        <Route path="/" element={<Navigate to="/home" replace />} />
-        <Route path="/index" element={<Index />} />
+        <Route path="/" element={<Index />} />
         <Route path="/home" element={<Home />} />
         <Route path="/progress-reports" element={<ProgressReports />} />
         <Route path="/mental-wellness" element={<MentalWellnessTools />} />
@@ -67,25 +64,16 @@ function App() {
         <Route path="/cosmic-games" element={<CosmicGames />} />
         <Route path="/game-play/:gameId" element={<GamePage />} />
         <Route path="/games/:gameId" element={<GamePage />} />
-        
-        {/* Specialized Program Routes */}
         <Route path="/small-business-portal" element={<SmallBusinessPortal />} />
         <Route path="/small-business-welcome" element={<SmallBusinessWelcome />} />
-        <Route path="/department-of-defense" element={<DoDWelcome />} />
-        <Route path="/dod-welcome" element={<DoDWelcome />} />
-        <Route path="/dod-portal" element={<DoDPortal />} />
-        <Route path="/college-welcome" element={<CollegeWelcome />} />
-        <Route path="/college-portal" element={<CollegePortal />} />
-        
-        {/* Employee Routes */}
         <Route path="/employee-welcome" element={<EmployeeWelcome />} />
         <Route path="/employee-readiness" element={<EmployeeReadiness />} />
-        
-        {/* Crisis and Support Routes */}
         <Route path="/crisis-support" element={<CrisisSupport />} />
         <Route path="/learn-more" element={<LearnMoreAboutThrive />} />
         <Route path="/co-pay" element={<CoPay />} />
         <Route path="/virtual-meetings" element={<VirtualMeetings />} />
+        
+        {/* Add missing routes */}
         <Route path="/copay-credits" element={<CoPayCredits />} />
         <Route path="/barter-system" element={<BarterSystem />} />
         <Route path="/subscription-plans" element={<SubscriptionPlansPage />} />
@@ -96,13 +84,19 @@ function App() {
         <Route path="/alternative-therapies" element={<AlternativeTherapies />} />
         <Route path="/guided-practice/:therapyId" element={<GuidedPractice />} />
         
+        {/* Specialized Programs Routes */}
+        <Route path="/department-of-defense" element={<DoDWelcome />} />
+        <Route path="/dod-welcome" element={<DoDWelcome />} />
+        <Route path="/dod-portal" element={<DoDPortal />} />
+        <Route path="/college-welcome" element={<CollegeWelcome />} />
+        <Route path="/college-portal" element={<CollegePortal />} />
+        
         {/* Military Specific Routes */}
         <Route path="/military-support" element={<MilitarySupport />} />
         <Route path="/military-resources" element={<MilitaryResources />} />
         <Route path="/military-resources/combat-stress" element={<MilitaryResources />} />
         <Route path="/military-resources/transition" element={<MilitaryResources />} />
         <Route path="/military-resources/family" element={<MilitaryResources />} />
-        <Route path="/military-assessment" element={<MilitaryAssessmentPage />} />
         
         {/* Workshop Routes */}
         <Route path="/workshops" element={<Workshops />} />

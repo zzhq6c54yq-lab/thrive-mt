@@ -1,6 +1,6 @@
 
-import React, { useState, useEffect } from "react";
-import { Card, CardContent } from "@/components/ui/card";
+import React, { useState } from "react";
+import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { ArrowRight, ChevronLeft, ChevronRight } from "lucide-react";
 import { NavigateFunction } from "react-router-dom";
@@ -15,20 +15,21 @@ const FeaturedWorkshops: React.FC<FeaturedWorkshopsProps> = ({ navigate, onWorks
   const [currentPage, setCurrentPage] = useState(0);
   const { toast } = useToast();
   
-  // Show more workshops per page
+  // Adjust workshops per page based on screen size
   const getWorkshopsPerPage = () => {
+    // Using window.innerWidth directly for responsiveness
     if (typeof window !== 'undefined') {
-      if (window.innerWidth < 640) return 2; // Mobile
-      if (window.innerWidth < 1024) return 4; // Tablet
-      return 8; // Desktop - increased to show more at once
+      if (window.innerWidth < 640) return 1; // Mobile
+      if (window.innerWidth < 1024) return 2; // Tablet
+      return 3; // Desktop
     }
-    return 8; // Default to desktop
+    return 3; // Default to desktop
   };
   
   const [workshopsPerPage, setWorkshopsPerPage] = useState(getWorkshopsPerPage());
   
   // Update workshopsPerPage on window resize
-  useEffect(() => {
+  React.useEffect(() => {
     const handleResize = () => {
       setWorkshopsPerPage(getWorkshopsPerPage());
     };
@@ -149,65 +150,64 @@ const FeaturedWorkshops: React.FC<FeaturedWorkshopsProps> = ({ navigate, onWorks
   };
 
   return (
-    <div>
+    <div className="mb-12">
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 gap-3 sm:gap-0">
+        <h2 className="text-xl sm:text-2xl font-bold">{translations.title}</h2>
         <div className="flex items-center gap-2">
           <Button 
             variant="outline" 
             size="sm"
-            className="border-[#3d3d5c] text-gray-600 flex items-center"
+            className="border-[#3d3d5c] text-gray-300 flex items-center"
             onClick={prevPage}
             aria-label={translations.prev}
           >
             <ChevronLeft className="h-4 w-4" />
           </Button>
-          <span className="text-xs sm:text-sm text-gray-600">
+          <span className="text-xs sm:text-sm text-gray-300">
             {translations.page} {currentPage + 1} {translations.of} {pageCount}
           </span>
           <Button 
             variant="outline" 
             size="sm"
-            className="border-[#3d3d5c] text-gray-600 flex items-center"
+            className="border-[#3d3d5c] text-gray-300 flex items-center"
             onClick={nextPage}
             aria-label={translations.next}
           >
             <ChevronRight className="h-4 w-4" />
           </Button>
+          <Button 
+            variant="link" 
+            className="text-[#E5C5A1] px-0 flex items-center ml-2 sm:ml-4"
+            onClick={() => navigate("/workshops", { state: { preventTutorial: true } })}
+          >
+            {translations.viewAll}
+            <ArrowRight className="ml-1 h-4 w-4" />
+          </Button>
         </div>
-        <Button 
-          variant="link" 
-          className="text-blue-500 px-0 flex items-center"
-          onClick={() => navigate("/workshops", { state: { preventTutorial: true } })}
-        >
-          {translations.viewAll}
-          <ArrowRight className="ml-1 h-4 w-4" />
-        </Button>
       </div>
       
-      <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-4 xl:grid-cols-8 gap-4">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
         {displayedWorkshops.map((workshop) => (
-          <Card 
-            key={workshop.id} 
-            className="bg-white border border-gray-200 rounded-lg hover:shadow-md transition-colors overflow-hidden cursor-pointer h-36"
-            onClick={() => handleWorkshopClick(workshop.id, workshop.title)}
-          >
-            <div className="h-full relative">
-              <div className="absolute inset-0">
-                <img 
-                  src={workshop.image} 
-                  alt={workshop.title} 
-                  className="w-full h-full object-cover"
-                />
-              </div>
-              
-              <div className="absolute inset-0 bg-gradient-to-t from-black to-transparent"></div>
-              
-              <div className="relative h-full p-3 flex flex-col justify-end">
-                <h3 className="text-white text-sm font-medium line-clamp-2 drop-shadow-md">
-                  {workshop.title}
-                </h3>
-              </div>
+          <Card key={workshop.id} className="bg-[#252535] border-[#3d3d5c] rounded-lg hover:bg-[#2a2a40] transition-colors overflow-hidden">
+            <div className="aspect-video overflow-hidden relative">
+              <img 
+                src={workshop.image} 
+                alt={workshop.title} 
+                className="w-full h-full object-cover rounded-t-lg"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-[#1a1a20] to-transparent opacity-60"></div>
             </div>
+            <CardHeader className="pb-2">
+              <CardTitle className="text-white text-lg sm:text-xl">{workshop.title}</CardTitle>
+            </CardHeader>
+            <CardFooter>
+              <Button 
+                className="w-full bg-[#B87333] hover:bg-[#a66a2e] text-white"
+                onClick={() => handleWorkshopClick(workshop.id, workshop.title)}
+              >
+                {translations.viewWorkshop}
+              </Button>
+            </CardFooter>
           </Card>
         ))}
       </div>

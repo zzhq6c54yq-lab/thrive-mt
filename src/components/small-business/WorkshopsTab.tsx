@@ -1,4 +1,3 @@
-
 import React from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -66,7 +65,7 @@ const WorkshopsTab: React.FC<WorkshopsTabProps> = ({ onFeatureClick }) => {
             </div>
             <Button 
               className="w-full bg-amber-700 hover:bg-amber-800 text-white"
-              onClick={() => onFeatureClick("/workshop/stress-management")}
+              onClick={() => onFeatureClick("workshops/stress-management")}
             >
               {isSpanish ? "Registrarse Ahora" : "Register Now"}
             </Button>
@@ -105,7 +104,7 @@ const WorkshopsTab: React.FC<WorkshopsTabProps> = ({ onFeatureClick }) => {
             </div>
             <Button 
               className="w-full bg-amber-700 hover:bg-amber-800 text-white"
-              onClick={() => onFeatureClick("/workshop/social-connection")}
+              onClick={() => onFeatureClick("workshops/social-connection")}
             >
               {isSpanish ? "Registrarse Ahora" : "Register Now"}
             </Button>
@@ -130,7 +129,7 @@ const WorkshopsTab: React.FC<WorkshopsTabProps> = ({ onFeatureClick }) => {
           </p>
           <Button 
             className="w-full bg-amber-700 hover:bg-amber-800 text-white"
-            onClick={() => onFeatureClick("/workshops")}
+            onClick={() => onFeatureClick("workshops")}
           >
             {isSpanish ? "Ver Todos los Talleres" : "View All Workshops"}
           </Button>
@@ -151,7 +150,7 @@ const WorkshopsTab: React.FC<WorkshopsTabProps> = ({ onFeatureClick }) => {
                 description={workshop.description}
                 icon={workshop.icon}
                 color={workshop.color}
-                onClick={() => onFeatureClick(`/workshop/${workshop.id}`)}
+                onClick={() => onFeatureClick(`workshops/${workshop.id}`)}
               />
             )
           ))}

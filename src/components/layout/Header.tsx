@@ -1,6 +1,6 @@
 
 import React, { useState, useEffect } from "react";
-import { Link, useLocation } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { 
   User, Settings, LogOut, Calendar, LineChart, HelpCircle, 
   Moon, Sun, Bell, Lock, MessageSquare
@@ -29,10 +29,6 @@ const Header = () => {
   const { toast } = useToast();
   const [isSpanish, setIsSpanish] = useState<boolean>(false);
   const [showWelcomeTutorial, setShowWelcomeTutorial] = useState(false);
-  const location = useLocation();
-  
-  // Check if we're on the main dashboard route
-  const isMainDashboard = location.pathname === '/' || location.pathname === '/home';
   
   // Check language preference and listen for changes
   useEffect(() => {
@@ -67,7 +63,6 @@ const Header = () => {
     });
   };
 
-  // Add the black Thrive MT button to both dashboard and other pages
   return (
     <header className="fixed top-0 right-0 z-50 p-4 flex items-center justify-end gap-2">
       {/* Enhanced Tutorial Button with animations and eye-catching design */}

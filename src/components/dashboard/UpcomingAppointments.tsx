@@ -1,6 +1,6 @@
 
 import React, { useState, useEffect } from "react";
-import { Calendar, Clock, Video, User, ArrowRight, UserPlus } from "lucide-react";
+import { Calendar, Clock, Video } from "lucide-react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { useNavigate } from "react-router-dom";
@@ -52,7 +52,6 @@ const UpcomingAppointments = () => {
       date: "2023-06-15",
       time: isSpanish ? "10:00 AM" : "10:00 AM",
       type: "video",
-      therapistImage: "https://images.unsplash.com/photo-1612349317150-e413f6a5b16d?ixlib=rb-1.2.1&auto=format&fit=crop&w=200&q=80",
     },
     {
       id: 2,
@@ -60,7 +59,6 @@ const UpcomingAppointments = () => {
       date: "2023-06-18",
       time: isSpanish ? "2:00 PM" : "2:00 PM",
       type: "group",
-      therapistImage: null, 
     },
   ];
 
@@ -94,92 +92,44 @@ const UpcomingAppointments = () => {
   };
 
   return (
-    <Card className="bg-white backdrop-blur-md rounded-xl overflow-hidden border border-amber-100 hover:shadow-lg transition-all">
-      <div className="h-1.5 bg-gradient-to-r from-amber-400 to-amber-300"></div>
-      <CardHeader className="pb-2 bg-gradient-to-r from-amber-50 to-yellow-50">
-        <div className="flex items-center justify-between">
-          <div className="flex items-center gap-2">
-            <div className="p-1.5 rounded-full bg-amber-100">
-              <Calendar className="h-5 w-5 text-amber-600" />
-            </div>
-            <CardTitle className="text-lg font-semibold text-gray-800">
-              {translations.title}
-            </CardTitle>
-          </div>
-          
-          <Button 
-            variant="ghost" 
-            size="sm" 
-            className="h-8 px-2 text-xs border border-amber-200 text-amber-700 hover:bg-amber-50"
-            onClick={handleScheduleNow}
-          >
-            <UserPlus className="h-3.5 w-3.5 mr-1" />
-            {translations.scheduleNow}
-          </Button>
-        </div>
-        <CardDescription className="text-amber-700/70 ml-9">
-          {translations.description}
-        </CardDescription>
+    <Card className="border-[#B87333]/20 hover:border-[#B87333]/40 transition-all duration-300 shadow-sm hover:shadow-md">
+      <CardHeader className="pb-2">
+        <CardTitle className="text-lg font-semibold flex items-center gap-2">
+          <Calendar className="h-5 w-5 text-[#B87333]" />
+          {translations.title}
+        </CardTitle>
+        <CardDescription>{translations.description}</CardDescription>
       </CardHeader>
-      
-      <CardContent className="pt-4">
+      <CardContent>
         {appointments.length > 0 ? (
           <div className="space-y-3">
             {appointments.map((appointment) => (
               <div
                 key={appointment.id}
-                className="flex items-center p-3 border border-amber-100 rounded-md bg-white hover:bg-amber-50/50 transition-colors"
+                className="flex items-center p-3 border border-border rounded-md bg-background hover:bg-accent/10 transition-colors"
               >
-                {appointment.therapistImage ? (
-                  <div className="mr-3 relative">
-                    <img 
-                      src={appointment.therapistImage}
-                      alt="Therapist"
-                      className="w-10 h-10 rounded-full object-cover border-2 border-white shadow-sm"
-                    />
-                    <div className="absolute -bottom-1 -right-1 bg-white p-0.5 rounded-full border border-amber-200">
-                      {appointment.type === "video" ? (
-                        <Video className="h-3 w-3 text-emerald-500" />
-                      ) : (
-                        <User className="h-3 w-3 text-blue-500" />
-                      )}
-                    </div>
-                  </div>
-                ) : (
-                  <div className="mr-3 p-2 bg-amber-100/50 rounded-full">
-                    {appointment.type === "video" ? (
-                      <Video className="h-5 w-5 text-amber-700" />
-                    ) : (
-                      <User className="h-5 w-5 text-amber-700" />
-                    )}
-                  </div>
-                )}
-                
-                <div className="flex-1">
-                  <h4 className="text-sm font-medium text-gray-800">{appointment.title}</h4>
-                  <div className="flex items-center gap-3 mt-1">
-                    <div className="flex items-center text-amber-700/70">
-                      <Calendar className="h-3 w-3 mr-1" />
-                      <p className="text-xs">
-                        {new Date(appointment.date).toLocaleDateString(isSpanish ? "es-ES" : "en-US", {
-                          weekday: "short",
-                          month: "short",
-                          day: "numeric",
-                        })}
-                      </p>
-                    </div>
-                    
-                    <div className="flex items-center text-amber-700/70">
-                      <Clock className="h-3 w-3 mr-1" />
-                      <p className="text-xs">{appointment.time}</p>
-                    </div>
-                  </div>
+                <div className="mr-4 p-2 bg-[#B87333]/10 rounded-full">
+                  {appointment.type === "video" ? (
+                    <Video className="h-4 w-4 text-[#B87333]" />
+                  ) : (
+                    <Clock className="h-4 w-4 text-[#B87333]" />
+                  )}
                 </div>
-                
+                <div className="flex-1">
+                  <h4 className="text-sm font-medium">{appointment.title}</h4>
+                  <p className="text-xs text-muted-foreground">
+                    {new Date(appointment.date).toLocaleDateString(isSpanish ? "es-ES" : "en-US", {
+                      weekday: "short",
+                      month: "short",
+                      day: "numeric",
+                    })}{" "}
+                    • {appointment.time}
+                  </p>
+                </div>
                 <Button
                   variant="outline"
                   size="sm"
-                  className="text-xs h-8 border-amber-200 text-amber-800 hover:bg-amber-100/50 hover:text-amber-900"
+                  className="text-xs border-[#B87333]/20 hover:border-[#B87333]/60 hover:bg-[#B87333]/5"
                   onClick={() => handleJoinAppointment(appointment.id)}
                 >
                   {translations.joinSession}
@@ -188,28 +138,25 @@ const UpcomingAppointments = () => {
             ))}
           </div>
         ) : (
-          <div className="text-center py-8 bg-amber-50/50 rounded-lg border border-dashed border-amber-200">
-            <Calendar className="h-8 w-8 mx-auto text-amber-300 mb-2" />
-            <p className="text-amber-800">{translations.noAppointments}</p>
+          <div className="text-center py-6 text-muted-foreground">
+            <p>{translations.noAppointments}</p>
             <Button
               variant="outline"
               size="sm"
-              className="mt-3 border-amber-200 text-amber-700 hover:bg-amber-100/50"
+              className="mt-2 border-[#B87333]/20 hover:border-[#B87333]/60 hover:bg-[#B87333]/5"
               onClick={handleScheduleNow}
             >
               {translations.scheduleNow}
             </Button>
           </div>
         )}
-        
-        <div className="mt-4 flex justify-end">
+        <div className="mt-3 text-center">
           <Button
             variant="link"
-            className="text-sm text-amber-700 hover:text-amber-900 p-0"
+            className="text-sm text-[#B87333] hover:text-[#A56625]"
             onClick={handleViewAllAppointments}
           >
             {translations.viewAll}
-            <ArrowRight className="ml-1 h-3.5 w-3.5" />
           </Button>
         </div>
       </CardContent>

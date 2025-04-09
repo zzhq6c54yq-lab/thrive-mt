@@ -1,315 +1,137 @@
 
-import React, { useState } from "react";
+import React from "react";
 import DailyWellnessChallenges from "@/components/dashboard/DailyWellnessChallenges";
-import SpecializedPrograms, { SpecializedProgramsProps } from "@/components/dashboard/SpecializedPrograms";
+import SpecializedPrograms from "@/components/dashboard/SpecializedPrograms";
 import GratitudeVisualizer from "@/components/dashboard/GratitudeVisualizer";
 import UpcomingAppointments from "@/components/dashboard/UpcomingAppointments";
-import KeyFeatures from "@/components/dashboard/KeyFeatures";
-import FeaturedWorkshops from "@/components/dashboard/FeaturedWorkshops";
-import { NavigateFunction } from "react-router-dom";
+import InsightsSection from "@/components/dashboard/InsightsSection";
 import QuizzesSection from "@/components/dashboard/QuizzesSection";
-import { Brain, Sparkles, Calendar, HeartPulse, ChevronDown, ChevronUp, Star, Workflow, Heart } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import { cn } from "@/lib/utils";
+import FeaturedWorkshops from "@/components/dashboard/FeaturedWorkshops";
+import KeyFeatures from "@/components/dashboard/KeyFeatures";
+import { NavigateFunction } from "react-router-dom";
 import { 
-  Collapsible,
-  CollapsibleContent,
-  CollapsibleTrigger,
-} from "@/components/ui/collapsible";
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "@/components/ui/accordion";
+import { Calendar, HelpCircle } from "lucide-react";
+import { useToast } from "@/hooks/use-toast";
 
 interface DashboardContentProps {
   navigate: NavigateFunction;
   onWorkshopClick: (workshopId: string, workshopTitle: string) => void;
-  navigateToFeature: (path: string) => void;
-  selectedQualities: string[];
-  selectedGoals: string[];
+  navigateToFeature?: (path: string) => void;
+  selectedQualities?: string[];
+  selectedGoals?: string[];
 }
 
-// Redesigned section headers with black to white gradient
-const sectionHeaderClass = "bg-gradient-to-r from-[#E5C5A1] via-[#ffffff] to-[#B87333] bg-clip-text text-transparent font-semibold text-xl";
-const sectionWrapperClass = "mb-8 overflow-hidden transition-all duration-700 transform hover:scale-[1.005] rounded-xl";
-const sectionHeaderWrapperClass = "p-6 flex items-center justify-between cursor-pointer bg-gradient-to-r from-black/90 via-white/5 to-black/90 backdrop-blur-sm rounded-xl border border-white/5";
-
-const DashboardContent: React.FC<DashboardContentProps> = ({
-  navigate,
+const DashboardContent: React.FC<DashboardContentProps> = ({ 
+  navigate, 
   onWorkshopClick,
   navigateToFeature,
-  selectedQualities,
-  selectedGoals
+  selectedQualities = [],
+  selectedGoals = []
 }) => {
-  const [sectionsCollapsed, setSectionsCollapsed] = useState({
-    workshops: false,
-    programs: false,
-    appointments: false,
-    wellness: false,
-    gratitude: false,
-    brainGames: false,
-    keyFeatures: false
-  });
+  // Get preferred language
+  const preferredLanguage = localStorage.getItem('preferredLanguage') || 'English';
+  const isSpanish = preferredLanguage === 'Español';
+  const { toast } = useToast();
+  
+  // Translations
+  const translations = {
+    dailyChallenges: isSpanish ? "Desafíos Diarios" : "Daily Challenges",
+    upcomingAppointments: isSpanish ? "Próximas Citas" : "Upcoming Appointments",
+    mentalHealthQuizzes: isSpanish ? "Cuestionarios de Salud Mental" : "Mental Health Quizzes",
+  };
 
-  const toggleSection = (section: keyof typeof sectionsCollapsed) => {
-    setSectionsCollapsed(prev => ({
-      ...prev,
-      [section]: !prev[section]
-    }));
+  // Create a function that uses navigate if navigateToFeature is not provided
+  const handleFeatureClick = (path: string) => {
+    if (navigateToFeature) {
+      navigateToFeature(path);
+    } else {
+      // Add state to navigation to ensure proper back navigation
+      toast({
+        title: isSpanish ? "Navegando..." : "Navigating...",
+        description: isSpanish ? "Cargando recurso solicitado" : "Loading requested resource",
+        duration: 1500,
+      });
+      
+      navigate(path, { 
+        state: { 
+          fromMainMenu: true,
+          preventTutorial: true 
+        } 
+      });
+    }
   };
 
   return (
-    <div className="container mx-auto px-6 pb-24 max-w-full lg:max-w-[1800px]">
-      <div className="space-y-10">
-        {/* Specialized Programs Section */}
-        <div className={sectionWrapperClass}>
-          <Collapsible 
-            open={!sectionsCollapsed.programs}
-            onOpenChange={() => toggleSection('programs')}
-            className="w-full"
-          >
-            <CollapsibleTrigger asChild>
-              <div className={sectionHeaderWrapperClass}>
-                <div className="flex items-center gap-4">
-                  <div className="p-3 rounded-full bg-gradient-to-br from-[#E5C5A1]/25 to-[#B87333]/15 shadow-inner border border-[#B87333]/30 rotate-12">
-                    <Sparkles className="h-6 w-6 text-[#E5C5A1] -rotate-12" />
-                  </div>
-                  <span className={sectionHeaderClass}>Specialized Programs</span>
+    <div className="container mx-auto max-w-6xl px-4 sm:px-6 py-6 relative z-10">
+      <div className="mb-8">
+        <Accordion type="single" collapsible className="w-full">
+          <AccordionItem value="challenges" className="border-0 mb-4">
+            <AccordionTrigger className="bg-gradient-to-r from-[#8D65C5]/80 to-[#6C85DD]/80 py-3 px-4 rounded-lg text-white hover:no-underline">
+              <div className="flex items-center">
+                <div className="bg-white/20 p-2 rounded-full mr-3">
+                  <Calendar className="h-5 w-5 text-white" />
                 </div>
-                <Button 
-                  variant="ghost"
-                  size="sm"
-                  className="text-white hover:bg-white/5 border border-[#c0c0c0]/40 group transition-all duration-500"
-                >
-                  {sectionsCollapsed.programs ? "Expand" : "Collapse"}
-                  {sectionsCollapsed.programs ? 
-                    <ChevronDown className="ml-2 h-4 w-4 group-hover:translate-y-1 transition-all" /> : 
-                    <ChevronUp className="ml-2 h-4 w-4 group-hover:-translate-y-1 transition-all" />
-                  }
-                </Button>
+                <span className="text-base sm:text-xl font-semibold">{translations.dailyChallenges}</span>
               </div>
-            </CollapsibleTrigger>
-            <CollapsibleContent className="bg-gradient-to-b from-black/90 to-black/70 backdrop-blur-sm p-10 rounded-b-xl border-x border-b border-white/5 animate-in transition-all duration-700 ease-in-out">
-              <SpecializedPrograms navigateToFeature={navigateToFeature} />
-            </CollapsibleContent>
-          </Collapsible>
-        </div>
-        
-        {/* Two column layout for appointments and wellness/gratitude */}
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-10">
-          {/* Column 1: Upcoming Appointments */}
-          <div className="lg:col-span-1">
-            <div className={sectionWrapperClass}>
-              <Collapsible 
-                open={!sectionsCollapsed.appointments}
-                onOpenChange={() => toggleSection('appointments')}
-                className="w-full"
-              >
-                <CollapsibleTrigger asChild>
-                  <div className={sectionHeaderWrapperClass}>
-                    <div className="flex items-center gap-4">
-                      <div className="p-3 rounded-full bg-gradient-to-br from-[#E5C5A1]/25 to-[#B87333]/15 shadow-inner border border-[#B87333]/30 -rotate-6">
-                        <Calendar className="h-6 w-6 text-[#E5C5A1] rotate-6" />
-                      </div>
-                      <span className={sectionHeaderClass}>Schedule Center</span>
-                    </div>
-                    <Button 
-                      variant="ghost"
-                      size="sm"
-                      className="text-white hover:bg-white/5 border border-[#c0c0c0]/40 group transition-all duration-500"
-                    >
-                      {sectionsCollapsed.appointments ? "Expand" : "Collapse"}
-                      {sectionsCollapsed.appointments ? 
-                        <ChevronDown className="ml-2 h-4 w-4 group-hover:translate-y-1 transition-all" /> : 
-                        <ChevronUp className="ml-2 h-4 w-4 group-hover:-translate-y-1 transition-all" />
-                      }
-                    </Button>
-                  </div>
-                </CollapsibleTrigger>
-                <CollapsibleContent className="bg-gradient-to-b from-black/90 to-black/70 backdrop-blur-sm p-10 rounded-b-xl border-x border-b border-white/5 animate-in transition-all duration-700 ease-in-out">
-                  <UpcomingAppointments />
-                </CollapsibleContent>
-              </Collapsible>
-            </div>
-          </div>
-          
-          {/* Column 2-3: Wellness and Gratitude */}
-          <div className="lg:col-span-2">
-            {/* Gratitude Visualizer */}
-            <div className={sectionWrapperClass}>
-              <Collapsible 
-                open={!sectionsCollapsed.gratitude}
-                onOpenChange={() => toggleSection('gratitude')}
-                className="w-full"
-              >
-                <CollapsibleTrigger asChild>
-                  <div className={sectionHeaderWrapperClass}>
-                    <div className="flex items-center gap-4">
-                      <div className="p-3 rounded-full bg-gradient-to-br from-[#E5C5A1]/25 to-[#B87333]/15 shadow-inner border border-[#B87333]/30 rotate-6">
-                        <Heart className="h-6 w-6 text-[#E5C5A1] -rotate-6" />
-                      </div>
-                      <span className={sectionHeaderClass}>Gratitude Visualizer</span>
-                    </div>
-                    <Button 
-                      variant="ghost"
-                      size="sm"
-                      className="text-white hover:bg-white/5 border border-[#c0c0c0]/40 group transition-all duration-500"
-                    >
-                      {sectionsCollapsed.gratitude ? "Expand" : "Collapse"}
-                      {sectionsCollapsed.gratitude ? 
-                        <ChevronDown className="ml-2 h-4 w-4 group-hover:translate-y-1 transition-all" /> : 
-                        <ChevronUp className="ml-2 h-4 w-4 group-hover:-translate-y-1 transition-all" />
-                      }
-                    </Button>
-                  </div>
-                </CollapsibleTrigger>
-                <CollapsibleContent className="bg-gradient-to-b from-black/90 to-black/70 backdrop-blur-sm p-10 rounded-b-xl border-x border-b border-white/5 animate-in transition-all duration-700 ease-in-out">
-                  <GratitudeVisualizer />
-                </CollapsibleContent>
-              </Collapsible>
-            </div>
-            
-            {/* Daily Wellness Challenges */}
-            <div className={`${sectionWrapperClass} mt-10`}>
-              <Collapsible 
-                open={!sectionsCollapsed.wellness}
-                onOpenChange={() => toggleSection('wellness')}
-                className="w-full"
-              >
-                <CollapsibleTrigger asChild>
-                  <div className={sectionHeaderWrapperClass}>
-                    <div className="flex items-center gap-4">
-                      <div className="p-3 rounded-full bg-gradient-to-br from-[#E5C5A1]/25 to-[#B87333]/15 shadow-inner border border-[#B87333]/30 -rotate-12">
-                        <HeartPulse className="h-6 w-6 text-[#E5C5A1] rotate-12" />
-                      </div>
-                      <span className={sectionHeaderClass}>Wellness Center</span>
-                    </div>
-                    <Button 
-                      variant="ghost"
-                      size="sm"
-                      className="text-white hover:bg-white/5 border border-[#c0c0c0]/40 group transition-all duration-500"
-                    >
-                      {sectionsCollapsed.wellness ? "Expand" : "Collapse"}
-                      {sectionsCollapsed.wellness ? 
-                        <ChevronDown className="ml-2 h-4 w-4 group-hover:translate-y-1 transition-all" /> : 
-                        <ChevronUp className="ml-2 h-4 w-4 group-hover:-translate-y-1 transition-all" />
-                      }
-                    </Button>
-                  </div>
-                </CollapsibleTrigger>
-                <CollapsibleContent className="bg-gradient-to-b from-black/90 to-black/70 backdrop-blur-sm p-10 rounded-b-xl border-x border-b border-white/5 animate-in transition-all duration-700 ease-in-out">
-                  <DailyWellnessChallenges />
-                </CollapsibleContent>
-              </Collapsible>
-            </div>
-          </div>
-        </div>
-        
-        {/* Featured Workshops Section */}
-        <div className={sectionWrapperClass}>
-          <Collapsible 
-            open={!sectionsCollapsed.workshops}
-            onOpenChange={() => toggleSection('workshops')}
-            className="w-full"
-          >
-            <CollapsibleTrigger asChild>
-              <div className={sectionHeaderWrapperClass}>
-                <div className="flex items-center gap-4">
-                  <div className="p-3 rounded-full bg-gradient-to-br from-[#E5C5A1]/25 to-[#B87333]/15 shadow-inner border border-[#B87333]/30 rotate-3">
-                    <Star className="h-6 w-6 text-[#E5C5A1] -rotate-3" />
-                  </div>
-                  <span className={sectionHeaderClass}>Monthly Featured Workshops</span>
-                </div>
-                <Button 
-                  variant="ghost"
-                  size="sm"
-                  className="text-white hover:bg-white/5 border border-[#c0c0c0]/40 group transition-all duration-500"
-                >
-                  {sectionsCollapsed.workshops ? "Expand" : "Collapse"}
-                  {sectionsCollapsed.workshops ? 
-                    <ChevronDown className="ml-2 h-4 w-4 group-hover:translate-y-1 transition-all" /> : 
-                    <ChevronUp className="ml-2 h-4 w-4 group-hover:-translate-y-1 transition-all" />
-                  }
-                </Button>
-              </div>
-            </CollapsibleTrigger>
-            <CollapsibleContent className="bg-gradient-to-b from-black/90 to-black/70 backdrop-blur-sm p-10 rounded-b-xl border-x border-b border-white/5 animate-in transition-all duration-700 ease-in-out">
-              <FeaturedWorkshops 
-                navigate={navigate}
-                onWorkshopClick={onWorkshopClick}
-              />
-            </CollapsibleContent>
-          </Collapsible>
-        </div>
-        
-        {/* Brain Games & Quizzes Section */}
-        <div className={sectionWrapperClass}>
-          <Collapsible 
-            open={!sectionsCollapsed.brainGames}
-            onOpenChange={() => toggleSection('brainGames')}
-            className="w-full"
-          >
-            <CollapsibleTrigger asChild>
-              <div className={sectionHeaderWrapperClass}>
-                <div className="flex items-center gap-4">
-                  <div className="p-3 rounded-full bg-gradient-to-br from-[#E5C5A1]/25 to-[#B87333]/15 shadow-inner border border-[#B87333]/30 -rotate-6">
-                    <Brain className="h-6 w-6 text-[#E5C5A1] rotate-6" />
-                  </div>
-                  <span className={sectionHeaderClass}>Brain Games & Assessments</span>
-                </div>
-                <Button 
-                  variant="ghost"
-                  size="sm"
-                  className="text-white hover:bg-white/5 border border-[#c0c0c0]/40 group transition-all duration-500"
-                >
-                  {sectionsCollapsed.brainGames ? "Expand" : "Collapse"}
-                  {sectionsCollapsed.brainGames ? 
-                    <ChevronDown className="ml-2 h-4 w-4 group-hover:translate-y-1 transition-all" /> : 
-                    <ChevronUp className="ml-2 h-4 w-4 group-hover:-translate-y-1 transition-all" />
-                  }
-                </Button>
-              </div>
-            </CollapsibleTrigger>
-            <CollapsibleContent className="bg-gradient-to-b from-black/90 to-black/70 backdrop-blur-sm p-10 rounded-b-xl border-x border-b border-white/5 animate-in transition-all duration-700 ease-in-out">
-              <QuizzesSection />
-            </CollapsibleContent>
-          </Collapsible>
-        </div>
-        
-        {/* Key Features Section */}
-        <div className={sectionWrapperClass}>
-          <Collapsible 
-            open={!sectionsCollapsed.keyFeatures}
-            onOpenChange={() => toggleSection('keyFeatures')}
-            className="w-full"
-          >
-            <CollapsibleTrigger asChild>
-              <div className={sectionHeaderWrapperClass}>
-                <div className="flex items-center gap-4">
-                  <div className="p-3 rounded-full bg-gradient-to-br from-[#E5C5A1]/25 to-[#B87333]/15 shadow-inner border border-[#B87333]/30 rotate-12">
-                    <Workflow className="h-6 w-6 text-[#E5C5A1] -rotate-12" />
-                  </div>
-                  <span className={sectionHeaderClass}>Key Features</span>
-                </div>
-                <Button 
-                  variant="ghost"
-                  size="sm"
-                  className="text-white hover:bg-white/5 border border-[#c0c0c0]/40 group transition-all duration-500"
-                >
-                  {sectionsCollapsed.keyFeatures ? "Expand" : "Collapse"}
-                  {sectionsCollapsed.keyFeatures ? 
-                    <ChevronDown className="ml-2 h-4 w-4 group-hover:translate-y-1 transition-all" /> : 
-                    <ChevronUp className="ml-2 h-4 w-4 group-hover:-translate-y-1 transition-all" />
-                  }
-                </Button>
-              </div>
-            </CollapsibleTrigger>
-            <CollapsibleContent className="bg-gradient-to-b from-black/90 to-black/70 backdrop-blur-sm p-10 rounded-b-xl border-x border-b border-white/5 animate-in transition-all duration-700 ease-in-out">
-              <KeyFeatures 
-                navigateToFeature={navigateToFeature}
-                selectedQualities={selectedQualities}
-                selectedGoals={selectedGoals}
-              />
-            </CollapsibleContent>
-          </Collapsible>
-        </div>
+            </AccordionTrigger>
+            <AccordionContent className="pt-4">
+              <DailyWellnessChallenges />
+            </AccordionContent>
+          </AccordionItem>
+        </Accordion>
       </div>
+      
+      <SpecializedPrograms />
+      
+      <GratitudeVisualizer />
+      
+      <div className="grid grid-cols-1 gap-6 mb-8">
+        <Accordion type="single" collapsible className="w-full">
+          <AccordionItem value="appointments" className="border-0 mb-4">
+            <AccordionTrigger className="bg-gradient-to-r from-[#B87333]/80 to-[#E5C5A1]/80 py-3 px-4 rounded-lg text-white hover:no-underline">
+              <div className="flex items-center">
+                <div className="bg-white/20 p-2 rounded-full mr-3">
+                  <Calendar className="h-5 w-5 text-white" />
+                </div>
+                <span className="text-base sm:text-xl font-semibold">{translations.upcomingAppointments}</span>
+              </div>
+            </AccordionTrigger>
+            <AccordionContent className="pt-4">
+              <UpcomingAppointments />
+            </AccordionContent>
+          </AccordionItem>
+          
+          <AccordionItem value="quizzes" className="border-0">
+            <AccordionTrigger className="bg-gradient-to-r from-[#6C85DD]/80 to-[#8D65C5]/80 py-3 px-4 rounded-lg text-white hover:no-underline">
+              <div className="flex items-center">
+                <div className="bg-white/20 p-2 rounded-full mr-3">
+                  <HelpCircle className="h-5 w-5 text-white" />
+                </div>
+                <span className="text-base sm:text-xl font-semibold">{translations.mentalHealthQuizzes}</span>
+              </div>
+            </AccordionTrigger>
+            <AccordionContent className="pt-4">
+              <QuizzesSection />
+            </AccordionContent>
+          </AccordionItem>
+        </Accordion>
+      </div>
+      
+      <FeaturedWorkshops 
+        navigate={navigate} 
+        onWorkshopClick={onWorkshopClick}
+      />
+
+      <KeyFeatures 
+        navigateToFeature={handleFeatureClick}
+        selectedQualities={selectedQualities}
+        selectedGoals={selectedGoals}
+      />
     </div>
   );
 };

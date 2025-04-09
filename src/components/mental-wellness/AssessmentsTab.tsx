@@ -1,69 +1,13 @@
+
 import React from "react";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Clipboard, BarChart4, Clock, Brain, ArrowRight, Shield } from "lucide-react";
-import { useNavigate, useLocation } from "react-router-dom";
-import { useToast } from "@/hooks/use-toast";
+import { Clipboard, BarChart4, Clock, Brain, ArrowRight } from "lucide-react";
 
 const AssessmentsTab: React.FC = () => {
-  const navigate = useNavigate();
-  const location = useLocation();
-  const { toast } = useToast();
-  
-  const { assessmentType, openAssessment, assessmentTitle, returnToPortal } = location.state || {};
-  
-  const isFromDoD = returnToPortal === "/dod-portal";
-  
-  const handleStartAssessment = (assessmentType: string, title: string) => {
-    toast({
-      title: `Starting ${title}`,
-      description: "Loading assessment questions...",
-      duration: 1500,
-    });
-    
-    if (isFromDoD) {
-      navigate("/military-assessment", {
-        state: {
-          preventTutorial: true,
-          returnToPortal: "/dod-portal",
-          assessmentType,
-          assessmentTitle: title
-        }
-      });
-    } else {
-      navigate(`/mental-wellness/assessments/${assessmentType}`, {
-        state: {
-          preventTutorial: true,
-          assessmentTitle: title
-        }
-      });
-    }
-  };
-  
-  React.useEffect(() => {
-    if (openAssessment && assessmentType && assessmentTitle) {
-      const timer = setTimeout(() => {
-        handleStartAssessment(assessmentType, assessmentTitle);
-      }, 500);
-      
-      return () => clearTimeout(timer);
-    }
-  }, [openAssessment, assessmentType, assessmentTitle]);
-
   return (
     <div className="space-y-6">
-      {isFromDoD && (
-        <div className="bg-gradient-to-r from-blue-900/30 to-blue-800/30 p-4 rounded-lg border border-blue-500/30 mb-6">
-          <div className="flex items-center gap-3">
-            <Shield className="h-5 w-5 text-blue-400" />
-            <p className="text-blue-200">
-              You're viewing military-specific assessments. These are tailored for service members, veterans, and their families.
-            </p>
-          </div>
-        </div>
-      )}
-      
       <div className="bg-white p-6 rounded-lg border border-gray-200 shadow-sm">
         <h2 className="text-xl font-semibold mb-4 flex items-center gap-2">
           <Clipboard className="h-5 w-5 text-[#9b87f5]" />
@@ -92,10 +36,7 @@ const AssessmentsTab: React.FC = () => {
               </p>
             </CardContent>
             <CardFooter>
-              <Button 
-                className="w-full bg-gradient-to-r from-[#9b87f5] to-[#8b77e5] hover:from-[#8b77e5] hover:to-[#7b67d5] group"
-                onClick={() => handleStartAssessment("anxiety", "Anxiety Screening (GAD-7)")}
-              >
+              <Button className="w-full bg-gradient-to-r from-[#9b87f5] to-[#8b77e5] hover:from-[#8b77e5] hover:to-[#7b67d5] group">
                 Start Assessment <ArrowRight className="ml-1 h-4 w-4 group-hover:translate-x-1 transition-transform" />
               </Button>
             </CardFooter>
@@ -118,10 +59,7 @@ const AssessmentsTab: React.FC = () => {
               </p>
             </CardContent>
             <CardFooter>
-              <Button 
-                className="w-full bg-gradient-to-r from-[#9b87f5] to-[#8b77e5] hover:from-[#8b77e5] hover:to-[#7b67d5] group"
-                onClick={() => handleStartAssessment("depression", "Depression Inventory (PHQ-9)")}
-              >
+              <Button className="w-full bg-gradient-to-r from-[#9b87f5] to-[#8b77e5] hover:from-[#8b77e5] hover:to-[#7b67d5] group">
                 Start Assessment <ArrowRight className="ml-1 h-4 w-4 group-hover:translate-x-1 transition-transform" />
               </Button>
             </CardFooter>
@@ -144,10 +82,7 @@ const AssessmentsTab: React.FC = () => {
               </p>
             </CardContent>
             <CardFooter>
-              <Button 
-                className="w-full bg-gradient-to-r from-[#9b87f5] to-[#8b77e5] hover:from-[#8b77e5] hover:to-[#7b67d5] group"
-                onClick={() => handleStartAssessment("stress", "Stress Assessment (PSS)")}
-              >
+              <Button className="w-full bg-gradient-to-r from-[#9b87f5] to-[#8b77e5] hover:from-[#8b77e5] hover:to-[#7b67d5] group">
                 Start Assessment <ArrowRight className="ml-1 h-4 w-4 group-hover:translate-x-1 transition-transform" />
               </Button>
             </CardFooter>
@@ -170,10 +105,7 @@ const AssessmentsTab: React.FC = () => {
               </p>
             </CardContent>
             <CardFooter>
-              <Button 
-                className="w-full bg-gradient-to-r from-[#9b87f5] to-[#8b77e5] hover:from-[#8b77e5] hover:to-[#7b67d5] group"
-                onClick={() => handleStartAssessment("wellbeing", "Well-Being Index")}
-              >
+              <Button className="w-full bg-gradient-to-r from-[#9b87f5] to-[#8b77e5] hover:from-[#8b77e5] hover:to-[#7b67d5] group">
                 Start Assessment <ArrowRight className="ml-1 h-4 w-4 group-hover:translate-x-1 transition-transform" />
               </Button>
             </CardFooter>
@@ -191,19 +123,7 @@ const AssessmentsTab: React.FC = () => {
                 Regular assessments can help you and your healthcare providers monitor changes in your mental health over time.
                 We recommend taking these assessments every 2-4 weeks.
               </p>
-              <Button 
-                variant="outline" 
-                className="border-[#9b87f5] text-[#9b87f5] hover:bg-[#9b87f5]/5"
-                onClick={() => {
-                  navigate("/progress-reports", {
-                    state: {
-                      preventTutorial: true,
-                      returnToPortal: returnToPortal,
-                      focusOnAssessments: true
-                    }
-                  });
-                }}
-              >
+              <Button variant="outline" className="border-[#9b87f5] text-[#9b87f5] hover:bg-[#9b87f5]/5">
                 View Your Assessment History
               </Button>
             </div>

@@ -1,239 +1,261 @@
+
 import React from "react";
-import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { useNavigate } from "react-router-dom";
-import { Brain, Zap, AlertCircle, HeartPulse, Users } from "lucide-react";
-import { useToast } from "@/hooks/use-toast";
+import { Clock, CheckCircle, Shield, AlertTriangle, Clipboard, Brain, Heart, Activity } from "lucide-react";
+import { Progress } from "@/components/ui/progress";
 
 const DoDAssessments = () => {
   const navigate = useNavigate();
-  const { toast } = useToast();
+  
+  const assessments = [
+    {
+      id: "a1",
+      title: "Military Readiness Assessment",
+      description: "Evaluate your mental readiness for deployment and service duties",
+      icon: Shield,
+      time: "10-15 minutes",
+      questions: 42,
+      urgency: "recommended",
+      category: "readiness"
+    },
+    {
+      id: "a2",
+      title: "PTSD Screening (PCL-5)",
+      description: "Standard screening tool for symptoms of post-traumatic stress disorder",
+      icon: Brain,
+      time: "5-7 minutes",
+      questions: 20,
+      urgency: "high",
+      category: "clinical"
+    },
+    {
+      id: "a3",
+      title: "Combat Stress Evaluation",
+      description: "Assessment focused on combat-related stress and adjustment",
+      icon: Activity,
+      time: "8-10 minutes",
+      questions: 25,
+      urgency: "medium",
+      category: "clinical"
+    },
+    {
+      id: "a4",
+      title: "Military Family Wellbeing",
+      description: "Evaluate the wellbeing and resilience of your military family unit",
+      icon: Heart,
+      time: "10-12 minutes",
+      questions: 30,
+      urgency: "recommended",
+      category: "family"
+    },
+    {
+      id: "a5",
+      title: "Transition Readiness Index",
+      description: "Assess your preparedness for transition to civilian life",
+      icon: Clipboard,
+      time: "15 minutes",
+      questions: 45,
+      urgency: "medium",
+      category: "transition"
+    },
+    {
+      id: "a6",
+      title: "Depression Screening (PHQ-9)",
+      description: "Standard screening tool for symptoms of depression",
+      icon: Brain,
+      time: "3-5 minutes",
+      questions: 9,
+      urgency: "high",
+      category: "clinical"
+    }
+  ];
 
-  const handleStartAssessment = (assessmentType: string, title: string) => {
-    toast({
-      title: `Starting ${title}`,
-      description: "Loading assessment questions...",
-      duration: 1500,
-    });
+  const getUrgencyLabel = (urgency) => {
+    switch(urgency) {
+      case 'high': 
+        return (
+          <div className="flex items-center gap-1.5 text-red-400">
+            <AlertTriangle className="h-4 w-4" />
+            <span>High Priority</span>
+          </div>
+        );
+      case 'medium': 
+        return (
+          <div className="flex items-center gap-1.5 text-amber-400">
+            <Clock className="h-4 w-4" />
+            <span>Recommended</span>
+          </div>
+        );
+      case 'recommended':
+      default:
+        return (
+          <div className="flex items-center gap-1.5 text-blue-400">
+            <CheckCircle className="h-4 w-4" />
+            <span>Beneficial</span>
+          </div>
+        );
+    }
+  };
+  
+  const getUserProgress = (assessmentId) => {
+    // In a real app, this would come from user data
+    const completedAssessments = ["a2", "a4"];
+    const partialAssessments = {
+      "a1": 75,
+      "a3": 30,
+    };
     
-    // Navigate to the dedicated military assessment page
-    navigate("/military-assessment", {
-      state: {
-        preventTutorial: true,
-        returnToPortal: "/dod-portal",
-        assessmentType,
-        assessmentTitle: title
-      }
-    });
+    if (completedAssessments.includes(assessmentId)) {
+      return {
+        completed: true,
+        progress: 100
+      };
+    }
+    
+    if (assessmentId in partialAssessments) {
+      return {
+        completed: false,
+        progress: partialAssessments[assessmentId]
+      };
+    }
+    
+    return {
+      completed: false,
+      progress: 0
+    };
   };
 
   return (
-    <div className="space-y-6">
-      {/* Header with American flag-themed styling */}
-      <div className="relative overflow-hidden rounded-lg border border-blue-800/50 bg-gradient-to-r from-blue-950 to-blue-900 p-6">
-        {/* Subtle flag background */}
-        <div className="absolute inset-0 pointer-events-none overflow-hidden opacity-10">
-          <div className="absolute top-0 left-0 w-1/4 h-1/3 bg-blue-700">
-            <div className="grid grid-cols-4 gap-1 p-1">
-              {[...Array(12)].map((_, i) => (
-                <div key={i} className="flex items-center justify-center text-white">
-                  ★
-                </div>
-              ))}
-            </div>
-          </div>
-          <div className="absolute bottom-0 left-0 right-0 h-2/3">
-            {[...Array(7)].map((_, i) => (
-              <div 
-                key={i} 
-                className={`h-[14.28%] w-full ${i % 2 === 0 ? 'bg-red-700' : 'bg-white'}`}
-              />
-            ))}
-          </div>
-        </div>
-        
-        <div className="relative z-10">
-          <h2 className="text-3xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-red-400 via-white to-blue-400 mb-2">
-            Military Mental Health Assessments
-          </h2>
-          <p className="text-blue-200/80 max-w-3xl">
-            These specialized assessments are designed specifically for service members, veterans, and their families. All assessments are confidential and provide immediate results along with tailored recommendations.
-          </p>
-        </div>
+    <div className="space-y-8">
+      {/* Header section */}
+      <div>
+        <h2 className="text-3xl font-bold text-white mb-2">Mental Health Assessments</h2>
+        <p className="text-blue-200/80 mb-6 max-w-3xl">
+          These confidential assessments help identify areas where support may be beneficial. Results are private and used to connect you with appropriate resources.
+        </p>
       </div>
       
-      {/* Primary Assessments */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        <Card className="bg-[#141921] border-blue-900/30 hover:border-blue-700/50 transition-colors">
-          <CardHeader className="pb-2 border-b border-blue-900/30">
-            <CardTitle className="text-transparent bg-clip-text bg-gradient-to-r from-red-400 to-blue-400">PTSD Screening</CardTitle>
-          </CardHeader>
-          <CardContent className="pt-4">
-            <div className="flex items-start gap-4 mb-4">
-              <div className="p-3 bg-blue-900/30 rounded-lg">
-                <Zap className="h-6 w-6 text-blue-400" />
-              </div>
-              <div>
-                <h3 className="font-medium text-white mb-1">PCL-5 Assessment</h3>
-                <p className="text-white/70 text-sm">
-                  The PTSD Checklist (PCL-5) is a 20-item self-report measure that assesses the presence and severity of PTSD symptoms.
-                </p>
-              </div>
-            </div>
-            <div className="flex items-center text-sm text-white/60 mb-2 gap-1">
-              <span className="text-blue-400">•</span> Takes approximately 5-10 minutes
-            </div>
-            <div className="flex items-center text-sm text-white/60 mb-2 gap-1">
-              <span className="text-blue-400">•</span> Confidential results with immediate feedback
-            </div>
-            <div className="flex items-center text-sm text-white/60 mb-2 gap-1">
-              <span className="text-blue-400">•</span> Developed specifically for military experiences
-            </div>
-          </CardContent>
-          <CardFooter className="pt-0">
-            <Button 
-              className="w-full bg-blue-700 hover:bg-blue-800 text-white"
-              onClick={() => handleStartAssessment("ptsd", "PTSD Screening")}
-            >
-              Start Assessment
-            </Button>
-          </CardFooter>
-        </Card>
-        
-        <Card className="bg-[#141921] border-blue-900/30 hover:border-blue-700/50 transition-colors">
-          <CardHeader className="pb-2 border-b border-blue-900/30">
-            <CardTitle className="text-transparent bg-clip-text bg-gradient-to-r from-red-400 to-blue-400">Depression Check</CardTitle>
-          </CardHeader>
-          <CardContent className="pt-4">
-            <div className="flex items-start gap-4 mb-4">
-              <div className="p-3 bg-blue-900/30 rounded-lg">
-                <Brain className="h-6 w-6 text-blue-400" />
-              </div>
-              <div>
-                <h3 className="font-medium text-white mb-1">PHQ-9 Assessment</h3>
-                <p className="text-white/70 text-sm">
-                  The Patient Health Questionnaire (PHQ-9) is a reliable screening tool for measuring depression severity.
-                </p>
-              </div>
-            </div>
-            <div className="flex items-center text-sm text-white/60 mb-2 gap-1">
-              <span className="text-blue-400">•</span> Takes approximately 3-5 minutes
-            </div>
-            <div className="flex items-center text-sm text-white/60 mb-2 gap-1">
-              <span className="text-blue-400">•</span> Provides severity score and suggested next steps
-            </div>
-            <div className="flex items-center text-sm text-white/60 mb-2 gap-1">
-              <span className="text-blue-400">•</span> Validated for military and veteran populations
-            </div>
-          </CardContent>
-          <CardFooter className="pt-0">
-            <Button 
-              className="w-full bg-blue-700 hover:bg-blue-800 text-white"
-              onClick={() => handleStartAssessment("depression", "Depression Check")}
-            >
-              Start Assessment
-            </Button>
-          </CardFooter>
-        </Card>
-      </div>
-      
-      {/* Secondary Assessments */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-        <Card className="bg-[#141921] border-blue-900/30">
-          <CardContent className="p-4">
-            <div className="flex items-start gap-3 mb-3">
-              <div className="p-2 bg-blue-900/30 rounded-lg">
-                <AlertCircle className="h-5 w-5 text-blue-400" />
-              </div>
-              <div>
-                <h3 className="font-medium text-white mb-1">Anxiety Assessment</h3>
-                <p className="text-sm text-white/60 mb-3">
-                  GAD-7 tool for screening and measuring anxiety severity.
-                </p>
-              </div>
-            </div>
-            <Button 
-              size="sm" 
-              className="w-full bg-blue-700 hover:bg-blue-800 text-white"
-              onClick={() => handleStartAssessment("anxiety", "Anxiety Assessment")}
-            >
-              Start Assessment
-            </Button>
-          </CardContent>
-        </Card>
-        
-        <Card className="bg-[#141921] border-blue-900/30">
-          <CardContent className="p-4">
-            <div className="flex items-start gap-3 mb-3">
-              <div className="p-2 bg-blue-900/30 rounded-lg">
-                <HeartPulse className="h-5 w-5 text-blue-400" />
-              </div>
-              <div>
-                <h3 className="font-medium text-white mb-1">Stress Assessment</h3>
-                <p className="text-sm text-white/60 mb-3">
-                  Military-specific stress evaluation with coping strategies.
-                </p>
-              </div>
-            </div>
-            <Button 
-              size="sm" 
-              className="w-full bg-blue-700 hover:bg-blue-800 text-white"
-              onClick={() => handleStartAssessment("stress", "Stress Assessment")}
-            >
-              Start Assessment
-            </Button>
-          </CardContent>
-        </Card>
-        
-        <Card className="bg-[#141921] border-blue-900/30">
-          <CardContent className="p-4">
-            <div className="flex items-start gap-3 mb-3">
-              <div className="p-2 bg-blue-900/30 rounded-lg">
-                <Users className="h-5 w-5 text-blue-400" />
-              </div>
-              <div>
-                <h3 className="font-medium text-white mb-1">Social Readjustment</h3>
-                <p className="text-sm text-white/60 mb-3">
-                  Evaluate adjustment challenges after deployment or service.
-                </p>
-              </div>
-            </div>
-            <Button 
-              size="sm" 
-              className="w-full bg-blue-700 hover:bg-blue-800 text-white"
-              onClick={() => handleStartAssessment("readjustment", "Social Readjustment Assessment")}
-            >
-              Start Assessment
-            </Button>
-          </CardContent>
-        </Card>
-      </div>
-      
-      {/* Assessment Information */}
-      <Card className="bg-[#0F1621] border-blue-700/30">
+      {/* Information Card */}
+      <Card className="bg-gradient-to-r from-blue-900/20 to-blue-800/20 border-blue-700/30">
         <CardContent className="p-6">
-          <div className="flex items-center gap-2 mb-4">
-            <AlertCircle className="h-5 w-5 text-red-400" />
-            <h3 className="text-lg font-medium text-white">Important Information</h3>
+          <div className="flex items-start gap-4">
+            <div className="p-2 rounded-full bg-blue-900/30 mt-1">
+              <Shield className="h-6 w-6 text-blue-400" />
+            </div>
+            <div>
+              <h3 className="text-lg font-semibold text-white mb-2">Confidential & Secure</h3>
+              <p className="text-blue-200/70 mb-3">
+                Your assessment results are completely confidential. Results are not shared with your command 
+                structure unless you choose to share them. These tools are designed to help you understand 
+                your mental health needs and connect with appropriate resources.
+              </p>
+              <Button variant="link" className="text-blue-400 p-0">Learn more about our privacy policy</Button>
+            </div>
           </div>
-          <p className="text-white/80 mb-3 text-sm">
-            These assessments are not meant to replace professional diagnosis or treatment. If you're experiencing a mental health emergency, please seek immediate help.
-          </p>
-          <Button 
-            variant="outline" 
-            className="border-red-500 text-red-300 hover:bg-red-900/20 w-full md:w-auto"
-            onClick={() => navigate("/crisis-support", { 
-              state: { 
-                fromMilitary: true,
-                preventTutorial: true,
-                returnToPortal: "/dod-portal"
-              }
-            })}
-          >
-            Get Immediate Help
-          </Button>
         </CardContent>
       </Card>
+      
+      {/* Assessments Categories */}
+      <div>
+        <h3 className="text-xl font-semibold text-white mb-4">Available Assessments</h3>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {assessments.map((assessment) => {
+            const progress = getUserProgress(assessment.id);
+            
+            return (
+              <Card key={assessment.id} className="bg-[#141921] border-blue-900/30 hover:border-blue-700/50 transition-colors overflow-hidden flex flex-col">
+                <CardHeader>
+                  <div className="flex items-center gap-3 mb-2">
+                    <div className="p-2 rounded-full bg-blue-900/30">
+                      <assessment.icon className="h-5 w-5 text-blue-400" />
+                    </div>
+                    <CardTitle className="text-white">{assessment.title}</CardTitle>
+                  </div>
+                  <CardDescription className="line-clamp-2">{assessment.description}</CardDescription>
+                </CardHeader>
+                
+                <CardContent className="flex-grow">
+                  <div className="space-y-4 text-sm">
+                    <div className="flex items-center justify-between">
+                      <span className="text-white/70">Time to complete:</span>
+                      <span className="text-white">{assessment.time}</span>
+                    </div>
+                    
+                    <div className="flex items-center justify-between">
+                      <span className="text-white/70">Questions:</span>
+                      <span className="text-white">{assessment.questions}</span>
+                    </div>
+                    
+                    <div className="flex items-center justify-between">
+                      <span className="text-white/70">Priority:</span>
+                      {getUrgencyLabel(assessment.urgency)}
+                    </div>
+                    
+                    {/* Progress if started */}
+                    {progress.progress > 0 && (
+                      <div className="pt-2">
+                        <div className="flex items-center justify-between mb-1">
+                          <span className="text-white/70">Your progress:</span>
+                          <span className="text-blue-400">{progress.progress}%</span>
+                        </div>
+                        <Progress value={progress.progress} className="h-2" />
+                      </div>
+                    )}
+                  </div>
+                </CardContent>
+                
+                <CardFooter>
+                  {progress.completed ? (
+                    <Button 
+                      variant="outline" 
+                      className="w-full border-green-500/50 text-green-400 hover:bg-green-900/20"
+                    >
+                      <CheckCircle className="h-4 w-4 mr-2" /> View Results
+                    </Button>
+                  ) : progress.progress > 0 ? (
+                    <Button 
+                      className="w-full bg-blue-700 hover:bg-blue-800 text-white"
+                    >
+                      Continue Assessment
+                    </Button>
+                  ) : (
+                    <Button 
+                      className="w-full bg-blue-700 hover:bg-blue-800 text-white"
+                    >
+                      Start Assessment
+                    </Button>
+                  )}
+                </CardFooter>
+              </Card>
+            );
+          })}
+        </div>
+      </div>
+      
+      {/* Results Section */}
+      <div>
+        <h3 className="text-xl font-semibold text-white mb-4">Your Assessment History</h3>
+        <Card className="bg-[#141921] border-blue-900/30">
+          <CardContent className="p-6">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+              <div>
+                <h3 className="text-lg font-medium text-white mb-1">Completed Assessments</h3>
+                <p className="text-blue-200/70">
+                  View your past assessment results and track changes over time.
+                </p>
+              </div>
+              <Button 
+                className="bg-blue-700 hover:bg-blue-800 text-white sm:self-center"
+                onClick={() => navigate('/progress-analytics')}
+              >
+                View Assessment History
+              </Button>
+            </div>
+          </CardContent>
+        </Card>
+      </div>
     </div>
   );
 };

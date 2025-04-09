@@ -1,425 +1,348 @@
 
 import React, { useState } from "react";
-import { Card, CardContent, CardHeader, CardTitle, CardFooter, CardDescription } from "@/components/ui/card";
+import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Shield, Download, Book, Briefcase, Video, HeartPulse, Users, FileText } from "lucide-react";
+import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { useNavigate } from "react-router-dom";
+import { Book, FileText, Video, Link, Download, Search } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 
 const DoDResources = () => {
   const navigate = useNavigate();
   const { toast } = useToast();
-  const [downloadPercentage, setDownloadPercentage] = useState<number>(0);
-  const [isDownloading, setIsDownloading] = useState<boolean>(false);
-  const [resourceName, setResourceName] = useState<string>("");
+  const [searchQuery, setSearchQuery] = useState("");
   
-  const handleResourceDownload = (name: string) => {
-    setResourceName(name);
-    setIsDownloading(true);
-    setDownloadPercentage(0);
-    
-    // Simulate download progress
-    const interval = setInterval(() => {
-      setDownloadPercentage(prev => {
-        const newValue = prev + Math.floor(Math.random() * 15) + 5;
-        if (newValue >= 100) {
-          clearInterval(interval);
-          
-          setTimeout(() => {
-            toast({
-              title: "Download Complete",
-              description: `"${name}" has been downloaded to your device`,
-              duration: 3000
-            });
-            setIsDownloading(false);
-          }, 500);
-          
-          return 100;
+  // Resource categories with their content
+  const resourceCategories = [
+    {
+      id: "ptsd",
+      name: "PTSD & Trauma",
+      description: "Resources for managing post-traumatic stress and combat-related trauma",
+      resources: [
+        {
+          title: "Combat PTSD Workbook",
+          type: "document",
+          description: "Step-by-step guide for managing combat-related PTSD symptoms",
+          icon: FileText
+        },
+        {
+          title: "Trauma Processing Techniques",
+          type: "video",
+          description: "Expert-led video series on trauma processing techniques",
+          icon: Video
+        },
+        {
+          title: "Deployment Stress Management",
+          type: "guide",
+          description: "Comprehensive guide to managing stress during and after deployment",
+          icon: Book
         }
-        return newValue;
-      });
-    }, 300);
+      ]
+    },
+    {
+      id: "support",
+      name: "Support Groups",
+      description: "Peer support networks and group therapy options",
+      resources: [
+        {
+          title: "Veteran Peer Support Network",
+          type: "link",
+          description: "Connect with other veterans who understand your experience",
+          icon: Link
+        },
+        {
+          title: "Military Family Support Circles",
+          type: "group",
+          description: "Support groups specifically for military families and spouses",
+          icon: Link
+        },
+        {
+          title: "Combat Veterans Group Therapy Guide",
+          type: "document",
+          description: "Information on structured group therapy for combat veterans",
+          icon: FileText
+        }
+      ]
+    },
+    {
+      id: "self-help",
+      name: "Self-Help Tools",
+      description: "Tools and exercises for independently managing mental health",
+      resources: [
+        {
+          title: "Military Mindfulness App",
+          type: "app",
+          description: "Mindfulness and meditation specifically designed for military personnel",
+          icon: Download
+        },
+        {
+          title: "Deployment Readiness Toolkit",
+          type: "toolkit",
+          description: "Mental preparation resources for pre-deployment readiness",
+          icon: Download
+        },
+        {
+          title: "Reintegration Workbook",
+          type: "document",
+          description: "Exercises and strategies for returning to civilian life",
+          icon: FileText
+        }
+      ]
+    },
+    {
+      id: "benefits",
+      name: "Benefits & Services",
+      description: "Information about VA benefits and other available services",
+      resources: [
+        {
+          title: "VA Mental Health Benefits Guide",
+          type: "document",
+          description: "Complete overview of mental health services available through VA",
+          icon: FileText
+        },
+        {
+          title: "Navigating Your Benefits",
+          type: "video",
+          description: "Step-by-step video guide to accessing your mental health benefits",
+          icon: Video
+        },
+        {
+          title: "State-by-State Resources Directory",
+          type: "directory",
+          description: "Comprehensive list of resources available by state",
+          icon: Link
+        }
+      ]
+    }
+  ];
+
+  const getResourceTypeLabel = (type) => {
+    switch(type) {
+      case 'document': return 'PDF Document';
+      case 'video': return 'Video Resource';
+      case 'guide': return 'Guide';
+      case 'link': return 'External Resource';
+      case 'group': return 'Support Group';
+      case 'app': return 'Mobile App';
+      case 'toolkit': return 'Tool Kit';
+      case 'directory': return 'Resource Directory';
+      default: return 'Resource';
+    }
   };
   
-  const handleOpenResource = (resourceId: string, title: string) => {
-    toast({
-      title: "Opening Resource",
-      description: `Loading ${title}...`,
-      duration: 1500,
-    });
+  const getResourceIcon = (Icon) => {
+    return <Icon className="h-5 w-5 text-blue-400" />;
+  };
+
+  // Handle resource access button click with proper implementation
+  const handleResourceAccess = (resource) => {
+    let actionText = "";
     
-    navigate("/resource-library", {
+    switch(resource.type) {
+      case 'document':
+      case 'guide':
+        actionText = "Downloading";
+        break;
+      case 'video':
+        actionText = "Playing";
+        break;
+      case 'link':
+      case 'group':
+      case 'directory':
+        actionText = "Opening";
+        break;
+      case 'app':
+      case 'toolkit':
+        actionText = "Installing";
+        break;
+      default:
+        actionText = "Accessing";
+    }
+    
+    toast({
+      title: `${actionText} ${resource.title}`,
+      description: `Your resource is being prepared. ${resource.type === 'document' ? 'The download will start shortly.' : ''}`,
+      duration: 2000,
+    });
+
+    // For demo purposes, show a follow-up toast
+    setTimeout(() => {
+      if (resource.type === 'document' || resource.type === 'guide' || resource.type === 'toolkit') {
+        toast({
+          title: "Download Complete",
+          description: `${resource.title} has been downloaded successfully.`,
+          duration: 2000,
+        });
+      }
+    }, 2500);
+  };
+
+  // Handle category "View More" button clicks
+  const handleViewMoreCategory = (categoryName) => {
+    toast({
+      title: `More ${categoryName} Resources`,
+      description: "Loading additional resources in this category",
+      duration: 2000
+    });
+  };
+
+  // Handle crisis resources button click
+  const handleCrisisResourcesClick = () => {
+    navigate("/crisis-support", {
       state: {
-        resourceId,
-        resourceTitle: title,
+        fromSpecializedProgram: true,
         preventTutorial: true,
         returnToPortal: "/dod-portal"
       }
     });
   };
 
-  // Play button component for videos
-  const Play = (props) => (
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="2"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      {...props}
-    >
-      <polygon points="5 3 19 12 5 21 5 3" />
-    </svg>
-  );
+  // Handle local support finder button click
+  const handleLocalSupportClick = () => {
+    toast({
+      title: "Local Support Finder",
+      description: "Opening the service locator map for veteran support services",
+      duration: 2000
+    });
+  };
 
   return (
     <div className="space-y-8">
+      {/* Header section */}
+      <div>
+        <h2 className="text-3xl font-bold text-white mb-2">Military Mental Health Resources</h2>
+        <p className="text-blue-200/80 mb-6">
+          Access specialized resources designed for service members, veterans, and military families.
+        </p>
+        
+        {/* Search bar */}
+        <div className="relative max-w-2xl">
+          <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-blue-400/50 h-5 w-5" />
+          <input
+            type="text"
+            placeholder="Search resources..."
+            className="w-full py-2.5 pl-10 pr-4 bg-[#0c1016] border border-blue-900/30 rounded-md text-white placeholder-blue-400/50 focus:outline-none focus:ring-2 focus:ring-blue-500/50"
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+          />
+        </div>
+      </div>
+      
       {/* Resource Categories */}
-      <div>
-        <h2 className="text-3xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-red-400 via-white to-blue-400 mb-6">
-          Military Mental Health Resources
-        </h2>
-        
-        {/* Categories Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          {/* Combat Stress Resources */}
-          <Card className="bg-[#141921] border-blue-900/30 hover:border-blue-700/50 transition-colors">
-            <CardHeader>
-              <div className="p-3 bg-blue-900/20 w-fit rounded-lg mb-3">
-                <Shield className="h-6 w-6 text-blue-400" />
-              </div>
-              <CardTitle className="text-xl text-white">Combat Stress Resources</CardTitle>
-              <CardDescription>
-                Tools and content for managing post-combat stress and PTSD
-              </CardDescription>
-            </CardHeader>
-            <CardContent className="space-y-4">
-              <div className="flex justify-between items-center p-3 bg-[#0F1319] rounded-lg">
-                <div className="flex items-center gap-3">
-                  <FileText className="h-5 w-5 text-blue-400" />
-                  <div>
-                    <p className="text-sm font-medium text-white">PTSD Recovery Guide</p>
-                    <p className="text-xs text-gray-400">PDF - 4.2 MB</p>
-                  </div>
-                </div>
-                <Button 
-                  size="sm" 
-                  variant="outline" 
-                  className="border-blue-500/50 text-blue-300"
-                  onClick={() => handleResourceDownload("PTSD Recovery Guide")}
-                  disabled={isDownloading && resourceName === "PTSD Recovery Guide"}
-                >
-                  {isDownloading && resourceName === "PTSD Recovery Guide" ? (
-                    <span>{downloadPercentage}%</span>
-                  ) : (
-                    <>
-                      <Download className="h-4 w-4 mr-1" />
-                      Download
-                    </>
-                  )}
-                </Button>
-              </div>
-              
-              <div className="flex justify-between items-center p-3 bg-[#0F1319] rounded-lg">
-                <div className="flex items-center gap-3">
-                  <Video className="h-5 w-5 text-blue-400" />
-                  <div>
-                    <p className="text-sm font-medium text-white">Recovery Techniques</p>
-                    <p className="text-xs text-gray-400">Video - 18:35</p>
-                  </div>
-                </div>
-                <Button 
-                  size="sm" 
-                  variant="outline" 
-                  className="border-blue-500/50 text-blue-300"
-                  onClick={() => {
-                    navigate("/resource-library", {
-                      state: { 
-                        videoId: "recovery-techniques",
-                        videoTitle: "Recovery Techniques",
-                        preventTutorial: true,
-                        returnToPortal: "/dod-portal",
-                        autoPlay: true
-                      }
-                    });
-                  }}
-                >
-                  <Play className="h-4 w-4" />
-                </Button>
-              </div>
-            </CardContent>
-            <CardFooter>
-              <Button 
-                className="w-full bg-blue-700 hover:bg-blue-800 text-white"
-                onClick={() => handleOpenResource("combat-stress", "Combat Stress Resources")}
-              >
-                View All Combat Resources
-              </Button>
-            </CardFooter>
-          </Card>
-          
-          {/* Transition Resources */}
-          <Card className="bg-[#141921] border-blue-900/30 hover:border-blue-700/50 transition-colors">
-            <CardHeader>
-              <div className="p-3 bg-blue-900/20 w-fit rounded-lg mb-3">
-                <Briefcase className="h-6 w-6 text-blue-400" />
-              </div>
-              <CardTitle className="text-xl text-white">Transition Resources</CardTitle>
-              <CardDescription>
-                Support for transitioning from military to civilian life
-              </CardDescription>
-            </CardHeader>
-            <CardContent className="space-y-4">
-              <div className="flex justify-between items-center p-3 bg-[#0F1319] rounded-lg">
-                <div className="flex items-center gap-3">
-                  <FileText className="h-5 w-5 text-blue-400" />
-                  <div>
-                    <p className="text-sm font-medium text-white">Career Transition Guide</p>
-                    <p className="text-xs text-gray-400">PDF - 3.8 MB</p>
-                  </div>
-                </div>
-                <Button 
-                  size="sm" 
-                  variant="outline" 
-                  className="border-blue-500/50 text-blue-300"
-                  onClick={() => handleResourceDownload("Career Transition Guide")}
-                  disabled={isDownloading && resourceName === "Career Transition Guide"}
-                >
-                  {isDownloading && resourceName === "Career Transition Guide" ? (
-                    <span>{downloadPercentage}%</span>
-                  ) : (
-                    <>
-                      <Download className="h-4 w-4 mr-1" />
-                      Download
-                    </>
-                  )}
-                </Button>
-              </div>
-              
-              <div className="flex justify-between items-center p-3 bg-[#0F1319] rounded-lg">
-                <div className="flex items-center gap-3">
-                  <Video className="h-5 w-5 text-blue-400" />
-                  <div>
-                    <p className="text-sm font-medium text-white">Transition Success Stories</p>
-                    <p className="text-xs text-gray-400">Video - 12:45</p>
-                  </div>
-                </div>
-                <Button 
-                  size="sm" 
-                  variant="outline" 
-                  className="border-blue-500/50 text-blue-300"
-                  onClick={() => {
-                    navigate("/resource-library", {
-                      state: { 
-                        videoId: "transition-success",
-                        videoTitle: "Transition Success Stories",
-                        preventTutorial: true,
-                        returnToPortal: "/dod-portal",
-                        autoPlay: true
-                      }
-                    });
-                  }}
-                >
-                  <Play className="h-4 w-4" />
-                </Button>
-              </div>
-            </CardContent>
-            <CardFooter>
-              <Button 
-                className="w-full bg-blue-700 hover:bg-blue-800 text-white"
-                onClick={() => handleOpenResource("transition", "Transition Resources")}
-              >
-                View All Transition Resources
-              </Button>
-            </CardFooter>
-          </Card>
-          
-          {/* Family Resources */}
-          <Card className="bg-[#141921] border-blue-900/30 hover:border-blue-700/50 transition-colors">
-            <CardHeader>
-              <div className="p-3 bg-blue-900/20 w-fit rounded-lg mb-3">
-                <HeartPulse className="h-6 w-6 text-blue-400" />
-              </div>
-              <CardTitle className="text-xl text-white">Family Resources</CardTitle>
-              <CardDescription>
-                Support for military families during deployments and beyond
-              </CardDescription>
-            </CardHeader>
-            <CardContent className="space-y-4">
-              <div className="flex justify-between items-center p-3 bg-[#0F1319] rounded-lg">
-                <div className="flex items-center gap-3">
-                  <FileText className="h-5 w-5 text-blue-400" />
-                  <div>
-                    <p className="text-sm font-medium text-white">Family Deployment Guide</p>
-                    <p className="text-xs text-gray-400">PDF - 5.1 MB</p>
-                  </div>
-                </div>
-                <Button 
-                  size="sm" 
-                  variant="outline" 
-                  className="border-blue-500/50 text-blue-300"
-                  onClick={() => handleResourceDownload("Family Deployment Guide")}
-                  disabled={isDownloading && resourceName === "Family Deployment Guide"}
-                >
-                  {isDownloading && resourceName === "Family Deployment Guide" ? (
-                    <span>{downloadPercentage}%</span>
-                  ) : (
-                    <>
-                      <Download className="h-4 w-4 mr-1" />
-                      Download
-                    </>
-                  )}
-                </Button>
-              </div>
-              
-              <div className="flex justify-between items-center p-3 bg-[#0F1319] rounded-lg">
-                <div className="flex items-center gap-3">
-                  <Users className="h-5 w-5 text-blue-400" />
-                  <div>
-                    <p className="text-sm font-medium text-white">Family Support Groups</p>
-                    <p className="text-xs text-gray-400">Directory</p>
-                  </div>
-                </div>
-                <Button 
-                  size="sm" 
-                  variant="outline" 
-                  className="border-blue-500/50 text-blue-300"
-                  onClick={() => {
-                    navigate("/community-support", {
-                      state: { 
-                        groupType: "family",
-                        preventTutorial: true,
-                        returnToPortal: "/dod-portal"
-                      }
-                    });
-                  }}
-                >
-                  View
-                </Button>
-              </div>
-            </CardContent>
-            <CardFooter>
-              <Button 
-                className="w-full bg-blue-700 hover:bg-blue-800 text-white"
-                onClick={() => handleOpenResource("family", "Family Resources")}
-              >
-                View All Family Resources
-              </Button>
-            </CardFooter>
-          </Card>
-        </div>
-      </div>
-      
-      {/* Featured Resources */}
-      <div>
-        <h3 className="text-xl font-bold text-white mb-4 flex items-center gap-2">
-          <Book className="h-5 w-5 text-blue-400" />
-          Featured Resources
-        </h3>
-        
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <Card className="bg-[#141921] border-blue-900/30">
-            <CardContent className="p-4">
-              <div className="flex justify-between items-center">
-                <div className="flex items-start gap-3">
-                  <div className="p-2 bg-blue-900/30 rounded-lg">
-                    <FileText className="h-5 w-5 text-blue-400" />
-                  </div>
-                  <div>
-                    <h4 className="font-medium text-white mb-1">Mental Health Field Guide</h4>
-                    <p className="text-sm text-white/60">Comprehensive resource for service members</p>
-                    <p className="text-xs text-white/40 mt-1">PDF - 8.5 MB</p>
-                  </div>
-                </div>
-                <Button 
-                  size="sm" 
-                  variant="outline" 
-                  className="border-blue-500 text-blue-300 hover:bg-blue-900/50"
-                  onClick={() => handleResourceDownload("Mental Health Field Guide")}
-                  disabled={isDownloading}
-                >
-                  <Download className="h-4 w-4 mr-1" />
-                  Download
-                </Button>
-              </div>
-              {isDownloading && resourceName === "Mental Health Field Guide" && (
-                <div className="w-full bg-blue-900/30 rounded-full h-2 mt-4">
-                  <div 
-                    className="bg-blue-500 h-2 rounded-full transition-all duration-300"
-                    style={{ width: `${downloadPercentage}%` }}
-                  ></div>
-                </div>
-              )}
-            </CardContent>
-          </Card>
-          
-          <Card className="bg-[#141921] border-blue-900/30">
-            <CardContent className="p-4">
-              <div className="flex justify-between items-center">
-                <div className="flex items-start gap-3">
-                  <div className="p-2 bg-blue-900/30 rounded-lg">
-                    <Video className="h-5 w-5 text-blue-400" />
-                  </div>
-                  <div>
-                    <h4 className="font-medium text-white mb-1">Resilience Training Series</h4>
-                    <p className="text-sm text-white/60">Building mental strength for military challenges</p>
-                    <p className="text-xs text-white/40 mt-1">Video Series - 5 videos</p>
-                  </div>
-                </div>
-                <Button 
-                  size="sm" 
-                  variant="outline" 
-                  className="border-blue-500 text-blue-300 hover:bg-blue-900/50"
-                  onClick={() => {
-                    navigate("/resource-library", {
-                      state: { 
-                        seriesId: "resilience-training",
-                        seriesTitle: "Resilience Training Series",
-                        preventTutorial: true,
-                        returnToPortal: "/dod-portal"
-                      }
-                    });
-                  }}
-                >
-                  <Play className="h-4 w-4" />
-                </Button>
-              </div>
-            </CardContent>
-          </Card>
-        </div>
-      </div>
-      
-      {/* Search Resources */}
-      <Card className="bg-[#0F1319] border-blue-900/30">
-        <CardContent className="p-6">
-          <h3 className="text-xl font-bold text-white mb-4">Search All Resources</h3>
-          <div className="flex gap-2">
-            <input
-              type="text"
-              placeholder="Search by keyword..."
-              className="flex-grow py-2 px-4 bg-[#0c1016] border border-blue-900/30 rounded-md text-white placeholder-blue-400/50 focus:outline-none focus:ring-2 focus:ring-blue-500/50"
-            />
-            <Button 
-              className="bg-blue-700 hover:bg-blue-800 text-white"
-              onClick={() => {
-                navigate("/resource-library", {
-                  state: { 
-                    searchQuery: "military",
-                    preventTutorial: true,
-                    returnToPortal: "/dod-portal"
-                  }
-                });
-                toast({
-                  title: "Searching Resources",
-                  description: "Finding relevant military mental health resources",
-                  duration: 2000
-                });
-              }}
+      <Tabs defaultValue="ptsd">
+        <TabsList className="flex overflow-x-auto bg-[#141921] border border-blue-900/30 mb-6">
+          {resourceCategories.map((category) => (
+            <TabsTrigger 
+              key={category.id} 
+              value={category.id}
+              className="data-[state=active]:bg-blue-900/30 data-[state=active]:text-blue-400 data-[state=active]:shadow-[0_0_10px_rgba(59,130,246,0.5)] whitespace-nowrap"
             >
-              Search
-            </Button>
+              {category.name}
+            </TabsTrigger>
+          ))}
+        </TabsList>
+        
+        {resourceCategories.map((category) => (
+          <TabsContent key={category.id} value={category.id}>
+            <div className="mb-4">
+              <h3 className="text-xl font-semibold text-white">{category.name}</h3>
+              <p className="text-blue-200/70">{category.description}</p>
+            </div>
+            
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+              {category.resources.map((resource, index) => (
+                <Card key={index} className="bg-[#141921] border-blue-900/30 hover:border-blue-700/50 transition-colors">
+                  <CardHeader>
+                    <div className="flex items-center justify-between">
+                      <div className="flex items-center gap-2">
+                        {getResourceIcon(resource.icon)}
+                        <CardTitle className="text-white text-lg">{resource.title}</CardTitle>
+                      </div>
+                      <span className="text-xs bg-blue-900/30 py-1 px-2 rounded-md text-blue-400">
+                        {getResourceTypeLabel(resource.type)}
+                      </span>
+                    </div>
+                    <CardDescription>{resource.description}</CardDescription>
+                  </CardHeader>
+                  <CardFooter>
+                    <Button 
+                      className="w-full bg-blue-700 hover:bg-blue-800 text-white"
+                      onClick={() => handleResourceAccess(resource)}
+                    >
+                      {resource.type === 'document' || resource.type === 'guide' ? (
+                        <>
+                          <Download className="h-4 w-4 mr-2" />
+                          Download Resource
+                        </>
+                      ) : resource.type === 'video' ? (
+                        <>
+                          <Video className="h-4 w-4 mr-2" />
+                          Watch Video
+                        </>
+                      ) : resource.type === 'link' || resource.type === 'group' || resource.type === 'directory' ? (
+                        <>
+                          <Link className="h-4 w-4 mr-2" />
+                          Open Resource
+                        </>
+                      ) : resource.type === 'app' || resource.type === 'toolkit' ? (
+                        <>
+                          <Download className="h-4 w-4 mr-2" />
+                          Install {resource.type === 'app' ? 'App' : 'Toolkit'}
+                        </>
+                      ) : (
+                        'Access Resource'
+                      )}
+                    </Button>
+                  </CardFooter>
+                </Card>
+              ))}
+            </div>
+            
+            <div className="mt-6 flex justify-center">
+              <Button 
+                variant="outline" 
+                className="border-blue-500 text-blue-300 hover:bg-blue-900/50"
+                onClick={() => handleViewMoreCategory(category.name)}
+              >
+                View More {category.name} Resources
+              </Button>
+            </div>
+          </TabsContent>
+        ))}
+      </Tabs>
+      
+      {/* Featured Resource */}
+      <Card className="bg-gradient-to-r from-blue-900/30 to-blue-800/30 border-blue-700/30">
+        <CardContent className="p-6">
+          <div className="flex flex-col md:flex-row items-center gap-6">
+            <div className="w-full md:w-2/3">
+              <h3 className="text-2xl font-bold text-white mb-2">Veterans Crisis Resources</h3>
+              <p className="text-blue-200/80 mb-4">
+                Immediate support for veterans in crisis, including the Veterans Crisis Line, which offers confidential support 24/7.
+              </p>
+              <div className="flex flex-wrap gap-3">
+                <Button 
+                  className="bg-red-700 hover:bg-red-800 text-white"
+                  onClick={handleCrisisResourcesClick}
+                >
+                  Crisis Resources
+                </Button>
+                <Button 
+                  variant="outline" 
+                  className="border-blue-500 text-blue-300 hover:bg-blue-900/50"
+                  onClick={handleLocalSupportClick}
+                >
+                  Find Local Support
+                </Button>
+              </div>
+            </div>
+            <div className="w-full md:w-1/3 flex justify-center">
+              <div className="p-4 bg-white/5 rounded-lg border border-white/10 backdrop-blur-sm">
+                <p className="text-xl font-bold text-white mb-1">Veterans Crisis Line</p>
+                <p className="text-blue-400 text-2xl font-bold">988 (Press 1)</p>
+                <p className="text-white/60 text-sm">Available 24/7</p>
+              </div>
+            </div>
           </div>
         </CardContent>
       </Card>

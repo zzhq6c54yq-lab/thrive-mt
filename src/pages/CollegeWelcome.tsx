@@ -1,56 +1,181 @@
 
 import React from "react";
-import { GraduationCap, Book, Brain, Coffee, HeartPulse, Users } from "lucide-react";
-import SpecializedProgramWelcome from "@/components/specialized-programs/SpecializedProgramWelcome";
+import { useNavigate } from "react-router-dom";
+import { Button } from "@/components/ui/button";
+import { GraduationCap, BookOpen, Users, Brain, Heart, ArrowRight, Sparkles } from "lucide-react";
+import { useToast } from "@/hooks/use-toast";
+import HomeButton from "@/components/HomeButton";
 
 const CollegeWelcome: React.FC = () => {
-  const whatToExpect = [
-    "Access to specialized resources for managing academic stress, exam anxiety, and campus life challenges",
-    "Interactive tools to help balance studies, social life, work, and mental health",
-    "Peer support networks connecting you with other students facing similar challenges",
-    "Expert-led workshops on study techniques, time management, and stress reduction",
-    "Assessment tools to identify your specific needs and strengths as a student",
-    "Personalized recommendations for maintaining wellness during high-pressure academic periods"
-  ];
+  const [screenState, setScreenState] = React.useState<'welcome' | 'what-to-expect'>('welcome');
+  const navigate = useNavigate();
+  const { toast } = useToast();
+
+  const handleContinue = () => {
+    if (screenState === 'welcome') {
+      setScreenState('what-to-expect');
+      window.scrollTo(0, 0);
+    } else {
+      toast({
+        title: "Entering College Portal",
+        description: "Taking you to the College Experience portal",
+        duration: 2000,
+      });
+      
+      setTimeout(() => {
+        navigate("/college-portal", { 
+          state: { 
+            fromWelcome: true,
+            preventTutorial: true,
+            returnToMain: true 
+          }
+        });
+      }, 500);
+    }
+  };
 
   return (
     <div className="min-h-screen text-white py-8 px-4 relative">
-      {/* College-themed background */}
-      <div className="fixed inset-0 -z-10 bg-gradient-to-b from-[#2d1b44] via-[#342456] to-[#2b2136]">
-        {/* Subtle patterns */}
-        <div className="absolute inset-0 opacity-5">
-          <div className="absolute top-0 left-0 right-0 h-full">
-            {[...Array(20)].map((_, i) => (
-              <div 
-                key={i} 
-                className="h-4 w-4 absolute rounded-full"
-                style={{
-                  left: `${Math.random() * 100}%`,
-                  top: `${Math.random() * 100}%`,
-                  background: 'radial-gradient(circle, rgba(139,92,246,1) 0%, rgba(139,92,246,0) 70%)',
-                  animation: 'pulse 4s infinite',
-                  animationDelay: `${Math.random() * 5}s`
-                }}
-              />
-            ))}
-          </div>
+      <div className="fixed inset-0 -z-10 bg-gradient-to-b from-[#2d1a45] via-[#3a2154] to-[#1f1a2c]">
+        {/* Abstract shapes representing campus life */}
+        <div className="absolute inset-0 overflow-hidden opacity-5">
+          <div className="absolute top-[10%] left-[5%] w-40 h-40 rounded-full bg-purple-500"></div>
+          <div className="absolute top-[30%] right-[15%] w-60 h-60 rounded-full bg-indigo-600"></div>
+          <div className="absolute bottom-[20%] left-[25%] w-80 h-80 rounded-full bg-violet-700"></div>
+          <div className="absolute bottom-[5%] right-[10%] w-40 h-40 rounded-full bg-fuchsia-600"></div>
         </div>
       </div>
       
-      <SpecializedProgramWelcome
-        title="College Student Wellness"
-        description="Welcome to specialized mental wellness resources designed for college and university students. Navigate the unique challenges of academic life while prioritizing your mental health."
-        whatToExpect={whatToExpect}
-        color="purple-600"
-        gradientFrom="purple-700"
-        gradientTo="indigo-500"
-        borderColor="#8B5CF6"
-        portalPath="/college-portal"
-        icon={<GraduationCap className="h-12 w-12 text-purple-300" />}
-        textColor="text-white"
-        descriptionTextColor="text-white/90"
-        backgroundColor="bg-gradient-to-b from-[#2d1b44] via-[#342456] to-[#2b2136]"
-      />
+      <div className="max-w-5xl mx-auto bg-[#00000040] backdrop-blur-md rounded-2xl p-8 shadow-xl border border-purple-900/30 relative overflow-hidden">
+        <div className="absolute top-4 right-4 z-20">
+          <HomeButton />
+        </div>
+        
+        {/* Decorative campus elements */}
+        <div className="absolute top-0 right-0 w-64 h-64 opacity-10">
+          <div className="relative w-full h-full">
+            <div className="absolute top-10 left-10 w-20 h-20">
+              <GraduationCap className="w-full h-full text-purple-300" />
+            </div>
+            <div className="absolute bottom-10 right-10 w-14 h-14">
+              <BookOpen className="w-full h-full text-indigo-300" />
+            </div>
+          </div>
+        </div>
+        
+        <div className="flex flex-col items-center justify-center min-h-[70vh] text-center px-4 animate-fade-in">
+          {screenState === 'welcome' ? (
+            <>
+              <div className="relative mb-6">
+                <div className="absolute inset-0 bg-purple-500/20 rounded-full blur-xl"></div>
+                <div className="relative p-5 rounded-full bg-gradient-to-br from-purple-700 to-indigo-900 border-2 border-purple-400/30 shadow-lg">
+                  <GraduationCap className="h-12 w-12 text-purple-200" />
+                </div>
+              </div>
+              
+              <h1 className="text-4xl md:text-5xl font-bold mb-6 bg-clip-text text-transparent bg-gradient-to-r from-purple-400 via-violet-400 to-indigo-400 tracking-tight">
+                College Experience Portal
+              </h1>
+              
+              <div className="max-w-2xl mb-8">
+                <p className="text-xl mb-4 text-white font-medium">
+                  Welcome to a space designed specifically for students navigating the exciting and sometimes overwhelming journey through college life.
+                </p>
+                
+                <p className="text-lg text-purple-200/90 mb-6">
+                  College is a time of tremendous growth, discovery, and challenge. You're balancing academics, 
+                  social life, self-discovery, and planning for your future—all while perhaps living independently 
+                  for the first time. This portal is your sanctuary for mental wellbeing during this transformative 
+                  chapter of your life.
+                </p>
+                
+                <div className="flex flex-wrap justify-center gap-3 mb-6">
+                  <div className="flex items-center gap-2 bg-purple-900/30 px-3 py-1 rounded-full">
+                    <Brain className="h-4 w-4 text-purple-300" />
+                    <span className="text-sm text-purple-200">Academic Support</span>
+                  </div>
+                  <div className="flex items-center gap-2 bg-purple-900/30 px-3 py-1 rounded-full">
+                    <Heart className="h-4 w-4 text-purple-300" />
+                    <span className="text-sm text-purple-200">Emotional Balance</span>
+                  </div>
+                  <div className="flex items-center gap-2 bg-purple-900/30 px-3 py-1 rounded-full">
+                    <Users className="h-4 w-4 text-purple-300" />
+                    <span className="text-sm text-purple-200">Social Connection</span>
+                  </div>
+                </div>
+              </div>
+              
+              <Button 
+                onClick={handleContinue}
+                className="bg-purple-600 hover:bg-purple-700 text-white text-lg px-8 py-6 h-auto transition-all duration-300 transform hover:scale-105 shadow-[0_0_15px_rgba(0,0,0,0.3)] flex items-center gap-2"
+              >
+                Continue <ArrowRight className="h-5 w-5" />
+              </Button>
+            </>
+          ) : (
+            <>
+              <h1 className="text-4xl md:text-5xl font-bold mb-8 bg-clip-text text-transparent bg-gradient-to-r from-purple-400 via-violet-400 to-indigo-400 tracking-tight">
+                What You'll Find Here
+              </h1>
+              
+              <div className="max-w-3xl mb-10">
+                <div className="bg-gradient-to-r from-purple-900/40 to-indigo-800/40 backdrop-blur-sm rounded-xl p-6 border border-purple-700/30 mb-8">
+                  <ul className="space-y-5 text-left">
+                    <li className="flex items-start rounded-lg p-3 bg-purple-900/20 backdrop-blur-sm">
+                      <div className="p-1 rounded-full bg-purple-700/30 mr-3 mt-1">
+                        <div className="w-3 h-3 rounded-full bg-purple-500"></div>
+                      </div>
+                      <span className="text-lg text-white">Strategies for managing academic stress, test anxiety, and balancing your course load</span>
+                    </li>
+                    
+                    <li className="flex items-start rounded-lg p-3 bg-purple-900/20 backdrop-blur-sm">
+                      <div className="p-1 rounded-full bg-purple-700/30 mr-3 mt-1">
+                        <div className="w-3 h-3 rounded-full bg-purple-500"></div>
+                      </div>
+                      <span className="text-lg text-white">Tools for balancing studies, social life, part-time work, and self-care without burnout</span>
+                    </li>
+                    
+                    <li className="flex items-start rounded-lg p-3 bg-purple-900/20 backdrop-blur-sm">
+                      <div className="p-1 rounded-full bg-purple-700/30 mr-3 mt-1">
+                        <div className="w-3 h-3 rounded-full bg-purple-500"></div>
+                      </div>
+                      <span className="text-lg text-white">Resources for common mental health challenges faced by college students, including homesickness and imposter syndrome</span>
+                    </li>
+                    
+                    <li className="flex items-start rounded-lg p-3 bg-purple-900/20 backdrop-blur-sm">
+                      <div className="p-1 rounded-full bg-purple-700/30 mr-3 mt-1">
+                        <div className="w-3 h-3 rounded-full bg-purple-500"></div>
+                      </div>
+                      <span className="text-lg text-white">Peer support networks to connect with other students experiencing similar challenges</span>
+                    </li>
+                    
+                    <li className="flex items-start rounded-lg p-3 bg-purple-900/20 backdrop-blur-sm">
+                      <div className="p-1 rounded-full bg-purple-700/30 mr-3 mt-1">
+                        <div className="w-3 h-3 rounded-full bg-purple-500"></div>
+                      </div>
+                      <span className="text-lg text-white">Sleep, nutrition, and exercise guidance specifically tailored for campus life and limited resources</span>
+                    </li>
+                    
+                    <li className="flex items-start rounded-lg p-3 bg-purple-900/20 backdrop-blur-sm">
+                      <div className="p-1 rounded-full bg-purple-700/30 mr-3 mt-1">
+                        <div className="w-3 h-3 rounded-full bg-purple-500"></div>
+                      </div>
+                      <span className="text-lg text-white">Study techniques and time management strategies proven effective for academic success</span>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+              
+              <Button 
+                onClick={handleContinue}
+                className="bg-purple-600 hover:bg-purple-700 text-white text-lg px-8 py-6 h-auto transition-all duration-300 transform hover:scale-105 shadow-[0_0_15px_rgba(0,0,0,0.3)] flex items-center gap-2 group"
+              >
+                Enter Portal <Sparkles className="h-5 w-5 ml-2 group-hover:animate-pulse" />
+              </Button>
+            </>
+          )}
+        </div>
+      </div>
     </div>
   );
 };

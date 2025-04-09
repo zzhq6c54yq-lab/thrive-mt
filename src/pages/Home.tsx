@@ -12,7 +12,7 @@ const Home = () => {
   const { toast } = useToast();
   const { isSpanish } = useTranslation();
   
-  const userName = localStorage.getItem('userName') || "Friend";
+  const userName = localStorage.getItem('userName') || "User";
   const selectedQualities = location.state?.qualities || [];
   const selectedGoals = location.state?.goals || [];
   
@@ -35,7 +35,7 @@ const Home = () => {
     <Page title="Home" showBackButton={false}>
       <MainDashboard 
         userName={userName}
-        showHenry={true} // Changed to true to show Henry by default
+        showHenry={false}
         onHenryToggle={() => {}}
         selectedQualities={selectedQualities}
         selectedGoals={selectedGoals}
