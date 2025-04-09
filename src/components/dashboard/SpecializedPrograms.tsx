@@ -122,7 +122,7 @@ const SpecializedPrograms: React.FC<SpecializedProgramsProps> = ({ navigateToFea
               <div className="absolute bottom-1/4 left-1/3 w-1 h-1 rounded-full bg-[#B87333]/70 animate-pulse" style={{animationDuration: '3.5s'}}></div>
             </div>
             
-            {/* Bottom section with solid color buttons */}
+            {/* Bottom section with solid black backgrounds */}
             <div className={`${program.backgroundColor} border-t-2 ${program.accentColor} px-6 py-6 relative overflow-hidden`}>
               {/* Diagonal silver/gold accents for bottom section */}
               <div className="absolute -inset-full h-20 w-[200%] bg-gradient-to-r from-transparent via-[#ffffff]/15 to-transparent transform -rotate-45 translate-y-[-60%] animate-pulse" style={{animationDuration: '8s'}}></div>
