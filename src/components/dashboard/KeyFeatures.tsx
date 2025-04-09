@@ -1,3 +1,4 @@
+
 import React from "react";
 import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
@@ -265,7 +266,8 @@ const KeyFeatures: React.FC<KeyFeaturesProps> = ({
             >
               <div className="relative overflow-hidden rounded-xl h-28 shadow-lg hover:shadow-xl transition-all duration-300">
                 <div className="absolute inset-0 h-full w-full">
-                  <div className="absolute inset-0 h-3/4 overflow-hidden">
+                  {/* Image covers 55% of card height */}
+                  <div className="absolute inset-0 h-[55%] overflow-hidden">
                     <img 
                       src={feature.image} 
                       alt={feature.title}
@@ -274,7 +276,8 @@ const KeyFeatures: React.FC<KeyFeaturesProps> = ({
                     <div className="absolute inset-0 bg-black/30"></div>
                   </div>
                   
-                  <div className={`absolute bottom-0 left-0 right-0 h-1/4 bg-gradient-to-br ${feature.color}`}>
+                  {/* Color gradient covers 45% of card height */}
+                  <div className={`absolute bottom-0 left-0 right-0 h-[45%] bg-gradient-to-br ${feature.color}`}>
                   </div>
                 </div>
                 
@@ -291,8 +294,8 @@ const KeyFeatures: React.FC<KeyFeaturesProps> = ({
                     )}
                   </div>
                   
-                  <div className="mt-auto">
-                    <h3 className="font-bold text-sm text-white truncate">
+                  <div className="flex items-center justify-center h-[45%]">
+                    <h3 className="font-bold text-sm text-white truncate text-center w-full px-2">
                       {feature.title}
                     </h3>
                   </div>

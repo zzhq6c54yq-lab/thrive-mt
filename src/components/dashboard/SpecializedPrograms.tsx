@@ -102,8 +102,8 @@ const SpecializedPrograms: React.FC = () => {
             onClick={() => handleFeatureClick(program.path)}
             className="relative overflow-hidden rounded-xl cursor-pointer transform transition-all duration-300 hover:scale-105 group h-28"
           >
-            {/* Background image - covers 3/4 of card height */}
-            <div className="absolute inset-0 h-3/4 z-0">
+            {/* Background image - covers about 55% of card height */}
+            <div className="absolute inset-0 h-[55%] z-0">
               <img 
                 src={program.imagePath} 
                 alt={program.title} 
@@ -112,8 +112,8 @@ const SpecializedPrograms: React.FC = () => {
               <div className="absolute inset-0 bg-black/30"></div>
             </div>
             
-            {/* Bottom color section - 1/4 of card height */}
-            <div className={`absolute bottom-0 left-0 right-0 h-1/4 bg-gradient-to-br ${program.gradient}`}></div>
+            {/* Bottom color section - 45% of card height */}
+            <div className={`absolute bottom-0 left-0 right-0 h-[45%] bg-gradient-to-br ${program.gradient}`}></div>
             
             <div className="relative z-10 p-3 flex flex-col h-full">
               <div className="mb-auto">
@@ -122,8 +122,10 @@ const SpecializedPrograms: React.FC = () => {
                 </div>
               </div>
               
-              <div className="mt-auto">
-                <h3 className="text-lg font-semibold text-white truncate">{program.title}</h3>
+              <div className="mt-auto flex items-center justify-center h-[45%]">
+                <h3 className="text-lg font-semibold text-white truncate text-center w-full px-2">
+                  {program.title}
+                </h3>
               </div>
             </div>
             
