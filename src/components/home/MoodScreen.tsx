@@ -178,9 +178,41 @@ const MoodScreen: React.FC<MoodScreenProps> = ({ onMoodSelect }) => {
             transition={{ delay: 0.3, duration: 0.8 }}
             className="inline-block mb-8"
           >
-            <div className="h-20 w-20 mx-auto rounded-full flex items-center justify-center bg-gradient-to-br from-[#B87333]/80 to-[#E5C5A1]/80 p-1">
-              <div className="h-full w-full rounded-full bg-[#221F26]/90 flex items-center justify-center border border-[#B87333]/30">
-                <span className="text-transparent bg-clip-text bg-gradient-to-br from-[#B87333] to-[#E5C5A1] text-4xl font-bold">H</span>
+            {/* Replace the circular H logo with the bronze head outline logo */}
+            <div className="h-20 w-20 mx-auto flex items-center justify-center">
+              <div className="relative h-full w-full">
+                {/* Head outline shape */}
+                <svg viewBox="0 0 100 100" className="h-full w-full">
+                  {/* Bronze gradient for the head outline */}
+                  <defs>
+                    <linearGradient id="bronzeGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                      <stop offset="0%" stopColor="#B87333" />
+                      <stop offset="100%" stopColor="#E5C5A1" />
+                    </linearGradient>
+                  </defs>
+                  
+                  {/* Head outline */}
+                  <path 
+                    d="M50,10 C30,10 20,30 20,50 C20,65 30,80 40,85 C45,87.5 47.5,90 50,95 C52.5,90 55,87.5 60,85 C70,80 80,65 80,50 C80,30 70,10 50,10 Z" 
+                    fill="none" 
+                    stroke="url(#bronzeGradient)" 
+                    strokeWidth="3"
+                  />
+                  
+                  {/* Brain inside the head */}
+                  <path 
+                    d="M50,30 C42,30 35,35 35,45 C35,50 38,55 42,57 C39,59 37,63 37,67 C37,73 42,78 48,78 C50,78 51.5,77.5 53,76.5 C54.5,77.5 56,78 58,78 C64,78 69,73 69,67 C69,63 67,59 64,57 C68,55 71,50 71,45 C71,35 64,30 56,30 C54,30 52,30.5 50,31.5 C48,30.5 46,30 50,30"
+                    fill="none"
+                    stroke="#E5C5A1"
+                    strokeWidth="2"
+                  />
+                  
+                  {/* Heart inside the brain */}
+                  <path 
+                    d="M50,45 C48,42 45,40 42,40 C38,40 35,43 35,47 C35,53 42,58 50,65 C58,58 65,53 65,47 C65,43 62,40 58,40 C55,40 52,42 50,45 Z"
+                    fill="url(#bronzeGradient)"
+                  />
+                </svg>
               </div>
             </div>
           </motion.div>
