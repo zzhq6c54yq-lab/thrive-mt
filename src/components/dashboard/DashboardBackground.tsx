@@ -32,7 +32,7 @@ const DashboardBackground: React.FC<{ children: React.ReactNode }> = ({ children
               if (word.includes("FORGIVE") || 
                   word.includes("LOVE") || 
                   word.includes("HEAL")) {
-                return `<span class="text-[#E5C5A1]/70">${word}</span>`;
+                return `<span class="text-[#E5C5A1]/80">${word}</span>`; // Increased opacity from 70 to 80
               }
               return word;
             }).join(' ');
@@ -41,13 +41,13 @@ const DashboardBackground: React.FC<{ children: React.ReactNode }> = ({ children
             return Array.from({ length: 25 }).map((_, copyIndex) => (
               <div 
                 key={`${index}-${copyIndex}`}
-                className={`absolute text-white/15 whitespace-nowrap ${fontStyles[copyIndex % fontStyles.length]}`}
+                className={`absolute text-white/20 whitespace-nowrap ${fontStyles[copyIndex % fontStyles.length]}`} // Increased opacity from 15 to 20
                 style={{
                   top: `${(Math.random() * 130) - 15}%`,
                   left: `${(Math.random() * 130) - 15}%`,
                   transform: `rotate(${(Math.random() * 360)}deg)`,
                   fontSize: `${Math.max(0.6, Math.random() * 0.9)}rem`,
-                  opacity: Math.max(0.07, Math.random() * 0.18)
+                  opacity: Math.max(0.1, Math.random() * 0.22) // Increased min opacity from 0.07 to 0.1 and max from 0.18 to 0.22
                 }}
                 dangerouslySetInnerHTML={{ __html: highlightedText }}
               />

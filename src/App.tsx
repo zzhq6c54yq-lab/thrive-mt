@@ -52,7 +52,9 @@ function App() {
     <>
       <HelpNavButton />
       <Routes>
-        <Route path="/" element={<Index />} />
+        {/* Changed the root path to redirect to /home */}
+        <Route path="/" element={<Navigate to="/home" replace />} />
+        <Route path="/index" element={<Index />} />
         <Route path="/home" element={<Home />} />
         <Route path="/progress-reports" element={<ProgressReports />} />
         <Route path="/mental-wellness" element={<MentalWellnessTools />} />
