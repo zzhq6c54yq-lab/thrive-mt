@@ -1,4 +1,3 @@
-
 import React, { useState } from "react";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -23,19 +22,22 @@ const DoDResources = () => {
           title: "Combat PTSD Workbook",
           type: "document",
           description: "Step-by-step guide for managing combat-related PTSD symptoms",
-          icon: FileText
+          icon: FileText,
+          path: "/resource-library"
         },
         {
           title: "Trauma Processing Techniques",
           type: "video",
           description: "Expert-led video series on trauma processing techniques",
-          icon: Video
+          icon: Video,
+          path: "/resource-library"
         },
         {
           title: "Deployment Stress Management",
           type: "guide",
           description: "Comprehensive guide to managing stress during and after deployment",
-          icon: Book
+          icon: Book,
+          path: "/resource-library"
         }
       ]
     },
@@ -48,19 +50,22 @@ const DoDResources = () => {
           title: "Veteran Peer Support Network",
           type: "link",
           description: "Connect with other veterans who understand your experience",
-          icon: Link
+          icon: Link,
+          path: "/community-support"
         },
         {
           title: "Military Family Support Circles",
           type: "group",
           description: "Support groups specifically for military families and spouses",
-          icon: Link
+          icon: Link,
+          path: "/community-support"
         },
         {
           title: "Combat Veterans Group Therapy Guide",
           type: "document",
           description: "Information on structured group therapy for combat veterans",
-          icon: FileText
+          icon: FileText,
+          path: "/resource-library"
         }
       ]
     },
@@ -73,19 +78,22 @@ const DoDResources = () => {
           title: "Military Mindfulness App",
           type: "app",
           description: "Mindfulness and meditation specifically designed for military personnel",
-          icon: Download
+          icon: Download,
+          path: "/mindfulness-sleep"
         },
         {
           title: "Deployment Readiness Toolkit",
           type: "toolkit",
           description: "Mental preparation resources for pre-deployment readiness",
-          icon: Download
+          icon: Download,
+          path: "/mental-wellness-tools"
         },
         {
           title: "Reintegration Workbook",
           type: "document",
           description: "Exercises and strategies for returning to civilian life",
-          icon: FileText
+          icon: FileText,
+          path: "/resource-library"
         }
       ]
     },
@@ -98,19 +106,22 @@ const DoDResources = () => {
           title: "VA Mental Health Benefits Guide",
           type: "document",
           description: "Complete overview of mental health services available through VA",
-          icon: FileText
+          icon: FileText,
+          path: "/resource-library"
         },
         {
           title: "Navigating Your Benefits",
           type: "video",
           description: "Step-by-step video guide to accessing your mental health benefits",
-          icon: Video
+          icon: Video,
+          path: "/resource-library"
         },
         {
           title: "State-by-State Resources Directory",
           type: "directory",
           description: "Comprehensive list of resources available by state",
-          icon: Link
+          icon: Link,
+          path: "/resource-library"
         }
       ]
     }
@@ -134,7 +145,6 @@ const DoDResources = () => {
     return <Icon className="h-5 w-5 text-blue-400" />;
   };
 
-  // Handle resource access button click
   const handleResourceAccess = (resource) => {
     let actionText = "";
     
@@ -161,32 +171,40 @@ const DoDResources = () => {
     
     toast({
       title: `${actionText} ${resource.title}`,
-      description: `Your resource is being prepared. ${resource.type === 'document' ? 'The download will start shortly.' : ''}`,
+      description: `Your resource is being prepared.`,
       duration: 2000,
     });
 
-    // For demo purposes, show a follow-up toast
     setTimeout(() => {
-      if (resource.type === 'document' || resource.type === 'guide' || resource.type === 'toolkit') {
-        toast({
-          title: "Download Complete",
-          description: `${resource.title} has been downloaded successfully.`,
-          duration: 2000,
+      if (resource.title.toLowerCase().includes("assessment")) {
+        navigate("/mental-wellness/assessments", { 
+          state: { 
+            fromSpecializedProgram: true,
+            preventTutorial: true,
+            returnToPortal: "/dod-portal"
+          }
+        });
+      } else {
+        navigate(resource.path, { 
+          state: { 
+            fromSpecializedProgram: true,
+            preventTutorial: true,
+            returnToPortal: "/dod-portal",
+            resourceTitle: resource.title
+          }
         });
       }
-    }, 2500);
+    }, 800);
   };
 
   return (
     <div className="space-y-8">
-      {/* Header section */}
       <div>
         <h2 className="text-3xl font-bold text-white mb-2">Military Mental Health Resources</h2>
         <p className="text-blue-200/80 mb-6">
           Access specialized resources designed for service members, veterans, and military families.
         </p>
         
-        {/* Search bar */}
         <div className="relative max-w-2xl">
           <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-blue-400/50 h-5 w-5" />
           <input
@@ -199,7 +217,6 @@ const DoDResources = () => {
         </div>
       </div>
       
-      {/* Resource Categories */}
       <Tabs defaultValue="ptsd">
         <TabsList className="flex overflow-x-auto bg-[#141921] border border-blue-900/30 mb-6">
           {resourceCategories.map((category) => (
@@ -279,6 +296,17 @@ const DoDResources = () => {
                     description: "Loading additional resources in this category",
                     duration: 2000
                   });
+                  
+                  setTimeout(() => {
+                    navigate('/resource-library', {
+                      state: {
+                        fromSpecializedProgram: true,
+                        preventTutorial: true,
+                        returnToPortal: "/dod-portal",
+                        category: category.name
+                      }
+                    });
+                  }, 800);
                 }}
               >
                 View More {category.name} Resources
@@ -288,7 +316,6 @@ const DoDResources = () => {
         ))}
       </Tabs>
       
-      {/* Featured Resource */}
       <Card className="bg-gradient-to-r from-blue-900/30 to-blue-800/30 border-blue-700/30">
         <CardContent className="p-6">
           <div className="flex flex-col md:flex-row items-center gap-6">
@@ -321,6 +348,17 @@ const DoDResources = () => {
                       description: "Opening the service locator map for veteran support services",
                       duration: 2000
                     });
+                    
+                    setTimeout(() => {
+                      navigate("/resource-library", {
+                        state: {
+                          fromSpecializedProgram: true,
+                          preventTutorial: true,
+                          returnToPortal: "/dod-portal",
+                          resourceType: "local-support"
+                        }
+                      });
+                    }, 800);
                   }}
                 >
                   Find Local Support

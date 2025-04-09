@@ -1,11 +1,11 @@
 
-import React from "react";
+import React, { useEffect } from "react";
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { Filter, Brain, Star, ArrowRight, BookOpen } from "lucide-react";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { useToast } from "@/hooks/use-toast";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 
 interface Quiz {
   id: string;
@@ -30,6 +30,19 @@ const QuizzesSection: React.FC<QuizzesSectionProps> = ({
 }) => {
   const { toast } = useToast();
   const navigate = useNavigate();
+  const location = useLocation();
+  const fromDoD = location.state?.fromSpecializedProgram && location.state?.returnToPortal === "/dod-portal";
+  
+  // If coming directly from DoD portal with a specific assessment request, show toast
+  useEffect(() => {
+    if (fromDoD) {
+      toast({
+        title: "Military Mental Health Assessments",
+        description: "Browse our specialized assessments for military personnel and veterans",
+        duration: 3000,
+      });
+    }
+  }, [fromDoD, toast]);
   
   const container = {
     hidden: { opacity: 0 },
@@ -77,9 +90,28 @@ const QuizzesSection: React.FC<QuizzesSectionProps> = ({
     
     setTimeout(() => {
       navigate("/mental-wellness/assessments", { 
-        state: { activeTab: "assessments", preventTutorial: true } 
+        state: { 
+          activeTab: "assessments", 
+          preventTutorial: true,
+          fromSpecializedProgram: location.state?.fromSpecializedProgram,
+          returnToPortal: location.state?.returnToPortal
+        } 
       });
     }, 500);
+  };
+
+  const handleReturnToPortal = () => {
+    if (location.state?.returnToPortal) {
+      toast({
+        title: "Returning to Portal",
+        description: "Taking you back to your specialized portal",
+        duration: 2000,
+      });
+      
+      setTimeout(() => {
+        navigate(location.state.returnToPortal);
+      }, 500);
+    }
   };
 
   return (
@@ -91,6 +123,17 @@ const QuizzesSection: React.FC<QuizzesSectionProps> = ({
           </div>
           <span>Mental Health Assessments</span>
         </h2>
+        
+        {fromDoD && (
+          <Button 
+            variant="outline" 
+            size="sm"
+            className="border-blue-500 text-blue-700 hover:bg-blue-50"
+            onClick={handleReturnToPortal}
+          >
+            Return to Military Portal
+          </Button>
+        )}
       </div>
       
       {quizzes.length === 0 ? (

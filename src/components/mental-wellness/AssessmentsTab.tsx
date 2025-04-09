@@ -4,8 +4,33 @@ import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Clipboard, BarChart4, Clock, Brain, ArrowRight } from "lucide-react";
+import { useToast } from "@/hooks/use-toast";
+import { useLocation } from "react-router-dom";
 
 const AssessmentsTab: React.FC = () => {
+  const { toast } = useToast();
+  const location = useLocation();
+  const fromSpecializedProgram = location.state?.fromSpecializedProgram;
+  const returnToPortal = location.state?.returnToPortal;
+
+  const handleAssessmentStart = (assessmentType: string) => {
+    toast({
+      title: `Starting ${assessmentType} Assessment`,
+      description: "Your assessment is being prepared...",
+      duration: 2000,
+    });
+    
+    // In a real app, this would navigate to the specific assessment
+    // For now, we'll just show a completion toast after a delay
+    setTimeout(() => {
+      toast({
+        title: "Assessment Ready",
+        description: `Begin your ${assessmentType} assessment now`,
+        duration: 3000,
+      });
+    }, 1000);
+  };
+
   return (
     <div className="space-y-6">
       <div className="bg-white p-6 rounded-lg border border-gray-200 shadow-sm">
@@ -36,7 +61,10 @@ const AssessmentsTab: React.FC = () => {
               </p>
             </CardContent>
             <CardFooter>
-              <Button className="w-full bg-gradient-to-r from-[#9b87f5] to-[#8b77e5] hover:from-[#8b77e5] hover:to-[#7b67d5] group">
+              <Button 
+                className="w-full bg-gradient-to-r from-[#9b87f5] to-[#8b77e5] hover:from-[#8b77e5] hover:to-[#7b67d5] group"
+                onClick={() => handleAssessmentStart("Anxiety")}
+              >
                 Start Assessment <ArrowRight className="ml-1 h-4 w-4 group-hover:translate-x-1 transition-transform" />
               </Button>
             </CardFooter>
@@ -59,7 +87,10 @@ const AssessmentsTab: React.FC = () => {
               </p>
             </CardContent>
             <CardFooter>
-              <Button className="w-full bg-gradient-to-r from-[#9b87f5] to-[#8b77e5] hover:from-[#8b77e5] hover:to-[#7b67d5] group">
+              <Button 
+                className="w-full bg-gradient-to-r from-[#9b87f5] to-[#8b77e5] hover:from-[#8b77e5] hover:to-[#7b67d5] group"
+                onClick={() => handleAssessmentStart("Depression")}
+              >
                 Start Assessment <ArrowRight className="ml-1 h-4 w-4 group-hover:translate-x-1 transition-transform" />
               </Button>
             </CardFooter>
@@ -82,7 +113,10 @@ const AssessmentsTab: React.FC = () => {
               </p>
             </CardContent>
             <CardFooter>
-              <Button className="w-full bg-gradient-to-r from-[#9b87f5] to-[#8b77e5] hover:from-[#8b77e5] hover:to-[#7b67d5] group">
+              <Button 
+                className="w-full bg-gradient-to-r from-[#9b87f5] to-[#8b77e5] hover:from-[#8b77e5] hover:to-[#7b67d5] group"
+                onClick={() => handleAssessmentStart("Stress")}
+              >
                 Start Assessment <ArrowRight className="ml-1 h-4 w-4 group-hover:translate-x-1 transition-transform" />
               </Button>
             </CardFooter>
@@ -105,7 +139,10 @@ const AssessmentsTab: React.FC = () => {
               </p>
             </CardContent>
             <CardFooter>
-              <Button className="w-full bg-gradient-to-r from-[#9b87f5] to-[#8b77e5] hover:from-[#8b77e5] hover:to-[#7b67d5] group">
+              <Button 
+                className="w-full bg-gradient-to-r from-[#9b87f5] to-[#8b77e5] hover:from-[#8b77e5] hover:to-[#7b67d5] group"
+                onClick={() => handleAssessmentStart("Well-Being")}
+              >
                 Start Assessment <ArrowRight className="ml-1 h-4 w-4 group-hover:translate-x-1 transition-transform" />
               </Button>
             </CardFooter>
@@ -123,7 +160,17 @@ const AssessmentsTab: React.FC = () => {
                 Regular assessments can help you and your healthcare providers monitor changes in your mental health over time.
                 We recommend taking these assessments every 2-4 weeks.
               </p>
-              <Button variant="outline" className="border-[#9b87f5] text-[#9b87f5] hover:bg-[#9b87f5]/5">
+              <Button 
+                variant="outline" 
+                className="border-[#9b87f5] text-[#9b87f5] hover:bg-[#9b87f5]/5"
+                onClick={() => {
+                  toast({
+                    title: "Assessment History",
+                    description: "Loading your previous assessment results",
+                    duration: 2000,
+                  });
+                }}
+              >
                 View Your Assessment History
               </Button>
             </div>
