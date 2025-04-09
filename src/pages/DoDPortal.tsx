@@ -45,7 +45,7 @@ const DoDPortal: React.FC = () => {
         state: { 
           fromSpecializedProgram: true,
           preventTutorial: true,
-          returnToPortal: "/dod-portal",
+          returnToPortal: "/dod-portal", // Add this to enable returning to portal
           portalState: {
             activeTab,
             returnToMain,
@@ -179,7 +179,7 @@ const DoDPortal: React.FC = () => {
       {/* Upcoming Community Events */}
       <div>
         <h3 className="text-2xl font-bold text-white mb-4">Upcoming Events</h3>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div className="space-y-3">
           <Card className="bg-[#141921] border-blue-900/30">
             <CardContent className="p-4 flex items-center">
               <div className="bg-blue-900/20 text-blue-400 p-3 rounded-lg mr-4 text-center min-w-[60px]">
@@ -241,6 +241,37 @@ const DoDPortal: React.FC = () => {
               </Button>
             </CardContent>
           </Card>
+          
+          <Card className="bg-[#141921] border-blue-900/30">
+            <CardContent className="p-4 flex items-center">
+              <div className="bg-blue-900/20 text-blue-400 p-3 rounded-lg mr-4 text-center min-w-[60px]">
+                <span className="block text-sm">APR</span>
+                <span className="block text-xl font-bold">27</span>
+              </div>
+              <div className="flex-grow">
+                <h3 className="font-medium text-white">PTSD Support Circle</h3>
+                <div className="flex items-center text-sm text-white/70 mb-1">
+                  <Video className="h-3 w-3 mr-1 text-blue-400" />
+                  <span>Online | 7:00 PM ET</span>
+                </div>
+                <p className="text-xs text-white/60">Confidential group discussion led by veteran counselors</p>
+              </div>
+              <Button 
+                variant="outline" 
+                size="sm" 
+                className="border-blue-500 text-blue-300 hover:bg-blue-900/50"
+                onClick={() => {
+                  toast({
+                    title: "Registration Complete",
+                    description: "You've registered for the PTSD Support Circle",
+                    duration: 2000
+                  });
+                }}
+              >
+                Register
+              </Button>
+            </CardContent>
+          </Card>
         </div>
       </div>
       
@@ -285,12 +316,11 @@ const DoDPortal: React.FC = () => {
       title={isSpanish ? "Departamento de Defensa" : "Department of Defense"} 
       returnToMain={returnToMain}
     >
-      {/* Full width container */}
-      <div className="space-y-6 w-full">
+      <div className="space-y-6">
         <div className="bg-gradient-to-r from-[#0c193d] to-[#0d2563] p-6 rounded-xl backdrop-blur-md border border-blue-500/30 shadow-lg relative overflow-hidden">
           {/* Patriotic flag background element */}
           <div className="absolute inset-0 pointer-events-none overflow-hidden">
-            <div className="absolute top-0 right-0 w-full h-full opacity-10">
+            <div className="absolute top-0 right-0 w-full h-full opacity-5">
               {/* Red and white stripes */}
               <div className="absolute bottom-0 left-0 right-0 h-full">
                 {[...Array(7)].map((_, i) => (
@@ -336,8 +366,7 @@ const DoDPortal: React.FC = () => {
           </div>
         </div>
 
-        {/* Full width content container with expanded tab area */}
-        <div className="bg-[#0F1319] border border-blue-900/30 rounded-lg overflow-hidden shadow-lg w-full">
+        <div className="bg-[#0F1319] border border-blue-900/30 rounded-lg overflow-hidden shadow-lg">
           <div className="flex overflow-x-auto scrollbar-hide">
             <button
               className={`px-6 py-4 font-medium text-sm flex-shrink-0 border-b-2 ${
@@ -391,8 +420,7 @@ const DoDPortal: React.FC = () => {
             </button>
           </div>
           
-          {/* Expanded content area with wider padding */}
-          <div className="p-4 md:p-6 w-full">
+          <div className="p-6">
             {activeTab === 'dashboard' && <DoDDashboard />}
             {activeTab === 'resources' && <DoDResources />}
             {activeTab === 'community' && <CommunitySupport />}

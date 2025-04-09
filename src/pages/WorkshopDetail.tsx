@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from "react";
 import { useParams, useNavigate, useLocation } from "react-router-dom";
 import Page from "@/components/Page";
@@ -45,8 +46,9 @@ const WorkshopDetail = () => {
     });
   };
 
-  // Handle back navigation - Using navigate(-1) to go back to previous page
+  // Handle back navigation
   const handleBack = () => {
+    // Try to go back to the previous page
     navigate(-1);
   };
 
@@ -65,25 +67,25 @@ const WorkshopDetail = () => {
     );
   }
 
-  // Updated video mapping with working video URLs for each workshop
+  // Get video URL based on workshop ID - Now properly mapped to each workshop
   const getVideoUrl = (workshopId: string) => {
-    // Updated map with real workshop training videos that actually exist
+    // Map workshop IDs to video URLs with more specific videos for each workshop
     const videoMap: {[key: string]: string} = {
-      'mindful-communication': 'https://www.youtube.com/embed/oCm_lnoAP6k?autoplay=1',
-      'emotional-regulation': 'https://www.youtube.com/embed/vemLEwjIxow?autoplay=1',
-      'stress-management': 'https://www.youtube.com/embed/gnVdXN_iZsQ?autoplay=1',
-      'better-sleep': 'https://www.youtube.com/embed/EiYm20F9WXU?autoplay=1',
-      'cognitive-reframing': 'https://www.youtube.com/embed/TnUJTVHpNDM?autoplay=1',
-      'gratitude-practice': 'https://www.youtube.com/embed/WPPPFqsECz0?autoplay=1',
-      'self-compassion': 'https://www.youtube.com/embed/-kfUE41-JFw?autoplay=1',
-      'social-connection': 'https://www.youtube.com/embed/WFZ0mIlFbAA?autoplay=1',
-      'anxiety-management': 'https://www.youtube.com/embed/WWloIAQpMcQ?autoplay=1',
-      'boundary-setting': 'https://www.youtube.com/embed/KhW4g9eLXC4?autoplay=1',
-      'values-alignment': 'https://www.youtube.com/embed/RTlJEO0WpjU?autoplay=1',
-      'habit-formation': 'https://www.youtube.com/embed/9QiE-M1LrZk?autoplay=1'
+      'mindful-communication': 'https://player.vimeo.com/video/305501304',
+      'emotional-regulation': 'https://player.vimeo.com/video/139195467',
+      'stress-management': 'https://player.vimeo.com/video/456646308',
+      'better-sleep': 'https://player.vimeo.com/video/347119375',
+      'cognitive-reframing': 'https://player.vimeo.com/video/528293631',
+      'gratitude-practice': 'https://player.vimeo.com/video/437194835',
+      'self-compassion': 'https://player.vimeo.com/video/420252733',
+      'social-connection': 'https://player.vimeo.com/video/522948060',
+      'anxiety-management': 'https://player.vimeo.com/video/248736159',
+      'boundary-setting': 'https://player.vimeo.com/video/231354112',
+      'values-alignment': 'https://player.vimeo.com/video/286898202',
+      'habit-formation': 'https://player.vimeo.com/video/418701977'
     };
     
-    return videoMap[workshopId] || 'https://www.youtube.com/embed/gnVdXN_iZsQ?autoplay=1'; // Default to stress management
+    return videoMap[workshopId] || 'https://player.vimeo.com/video/76979871';
   };
 
   // Get workshop image URL based on workshop ID
@@ -356,26 +358,27 @@ const WorkshopDetail = () => {
                 </div>
                 
                 <div className="flex items-center gap-2">
-                  <Award className="h-5 w-5 text-gray-500" />
+                  <BookOpen className="h-5 w-5 text-gray-500" />
                   <div>
-                    <p className="text-sm font-medium">Certification</p>
-                    <p className="text-sm text-gray-500">Certificate of Completion</p>
+                    <p className="text-sm font-medium">Category</p>
+                    <p className="text-sm text-gray-500">Mental Wellness</p>
                   </div>
                 </div>
                 
-                <div className="mt-4">
+                <div className="pt-4 border-t border-gray-200 dark:border-gray-700">
                   <Button 
                     variant="outline" 
                     className="w-full"
                     onClick={() => {
                       toast({
-                        title: "Added to Calendar",
-                        description: "This workshop has been added to your calendar.",
+                        title: "Download Started",
+                        description: "Workshop materials are downloading",
                         duration: 2000,
                       });
                     }}
                   >
-                    Add to Calendar
+                    <Download className="h-4 w-4 mr-2" />
+                    Download Materials
                   </Button>
                 </div>
               </CardContent>
@@ -383,22 +386,16 @@ const WorkshopDetail = () => {
             
             <Card>
               <CardHeader>
-                <CardTitle className="text-lg">Need Assistance?</CardTitle>
+                <CardTitle className="text-lg">Need Help?</CardTitle>
               </CardHeader>
               <CardContent>
-                <p className="text-sm text-gray-500 mb-4">
-                  If you need help or have questions about this workshop, our support team is available.
+                <p className="text-sm mb-4">
+                  If you have any questions or need assistance with this workshop, our support team is here to help.
                 </p>
                 <Button 
                   variant="outline" 
                   className="w-full"
-                  onClick={() => {
-                    toast({
-                      title: "Support Requested",
-                      description: "A support specialist will contact you soon.",
-                      duration: 2000,
-                    });
-                  }}
+                  onClick={() => navigate("/contact")}
                 >
                   Contact Support
                 </Button>

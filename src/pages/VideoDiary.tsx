@@ -133,13 +133,12 @@ const VideoDiary: React.FC = () => {
   }, [id]);
   
   const handleBack = () => {
-    // FIX: Improved back button navigation
-    // If we know where we came from (via location state), go there
+    // Check if we came from a specific route like the dashboard
     if (location.state && location.state.from) {
       navigate(location.state.from);
     } else {
-      // If not explicitly specified, go back to home instead of initial screen
-      navigate("/home");
+      // Default fallback
+      navigate(-1);
     }
   };
   

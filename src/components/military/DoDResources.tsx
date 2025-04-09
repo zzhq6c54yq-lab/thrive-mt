@@ -134,7 +134,7 @@ const DoDResources = () => {
     return <Icon className="h-5 w-5 text-blue-400" />;
   };
 
-  // Handle resource access button click with proper implementation
+  // Handle resource access button click
   const handleResourceAccess = (resource) => {
     let actionText = "";
     
@@ -175,35 +175,6 @@ const DoDResources = () => {
         });
       }
     }, 2500);
-  };
-
-  // Handle category "View More" button clicks
-  const handleViewMoreCategory = (categoryName) => {
-    toast({
-      title: `More ${categoryName} Resources`,
-      description: "Loading additional resources in this category",
-      duration: 2000
-    });
-  };
-
-  // Handle crisis resources button click
-  const handleCrisisResourcesClick = () => {
-    navigate("/crisis-support", {
-      state: {
-        fromSpecializedProgram: true,
-        preventTutorial: true,
-        returnToPortal: "/dod-portal"
-      }
-    });
-  };
-
-  // Handle local support finder button click
-  const handleLocalSupportClick = () => {
-    toast({
-      title: "Local Support Finder",
-      description: "Opening the service locator map for veteran support services",
-      duration: 2000
-    });
   };
 
   return (
@@ -302,7 +273,13 @@ const DoDResources = () => {
               <Button 
                 variant="outline" 
                 className="border-blue-500 text-blue-300 hover:bg-blue-900/50"
-                onClick={() => handleViewMoreCategory(category.name)}
+                onClick={() => {
+                  toast({
+                    title: `More ${category.name} Resources`,
+                    description: "Loading additional resources in this category",
+                    duration: 2000
+                  });
+                }}
               >
                 View More {category.name} Resources
               </Button>
@@ -323,14 +300,28 @@ const DoDResources = () => {
               <div className="flex flex-wrap gap-3">
                 <Button 
                   className="bg-red-700 hover:bg-red-800 text-white"
-                  onClick={handleCrisisResourcesClick}
+                  onClick={() => {
+                    navigate("/crisis-support", {
+                      state: {
+                        fromSpecializedProgram: true,
+                        preventTutorial: true,
+                        returnToPortal: "/dod-portal"
+                      }
+                    });
+                  }}
                 >
                   Crisis Resources
                 </Button>
                 <Button 
                   variant="outline" 
                   className="border-blue-500 text-blue-300 hover:bg-blue-900/50"
-                  onClick={handleLocalSupportClick}
+                  onClick={() => {
+                    toast({
+                      title: "Local Support Finder",
+                      description: "Opening the service locator map for veteran support services",
+                      duration: 2000
+                    });
+                  }}
                 >
                   Find Local Support
                 </Button>

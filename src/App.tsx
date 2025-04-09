@@ -64,25 +64,16 @@ function App() {
         <Route path="/cosmic-games" element={<CosmicGames />} />
         <Route path="/game-play/:gameId" element={<GamePage />} />
         <Route path="/games/:gameId" element={<GamePage />} />
-        
-        {/* Specialized Program Routes */}
         <Route path="/small-business-portal" element={<SmallBusinessPortal />} />
         <Route path="/small-business-welcome" element={<SmallBusinessWelcome />} />
-        <Route path="/department-of-defense" element={<DoDWelcome />} />
-        <Route path="/dod-welcome" element={<DoDWelcome />} />
-        <Route path="/dod-portal" element={<DoDPortal />} />
-        <Route path="/college-welcome" element={<CollegeWelcome />} />
-        <Route path="/college-portal" element={<CollegePortal />} />
-        
-        {/* Employee Routes */}
         <Route path="/employee-welcome" element={<EmployeeWelcome />} />
         <Route path="/employee-readiness" element={<EmployeeReadiness />} />
-        
-        {/* Crisis and Support Routes */}
         <Route path="/crisis-support" element={<CrisisSupport />} />
         <Route path="/learn-more" element={<LearnMoreAboutThrive />} />
         <Route path="/co-pay" element={<CoPay />} />
         <Route path="/virtual-meetings" element={<VirtualMeetings />} />
+        
+        {/* Add missing routes */}
         <Route path="/copay-credits" element={<CoPayCredits />} />
         <Route path="/barter-system" element={<BarterSystem />} />
         <Route path="/subscription-plans" element={<SubscriptionPlansPage />} />
@@ -92,6 +83,13 @@ function App() {
         {/* Alternative Therapies */}
         <Route path="/alternative-therapies" element={<AlternativeTherapies />} />
         <Route path="/guided-practice/:therapyId" element={<GuidedPractice />} />
+        
+        {/* Specialized Programs Routes */}
+        <Route path="/department-of-defense" element={<DoDWelcome />} />
+        <Route path="/dod-welcome" element={<DoDWelcome />} />
+        <Route path="/dod-portal" element={<DoDPortal />} />
+        <Route path="/college-welcome" element={<CollegeWelcome />} />
+        <Route path="/college-portal" element={<CollegePortal />} />
         
         {/* Military Specific Routes */}
         <Route path="/military-support" element={<MilitarySupport />} />
