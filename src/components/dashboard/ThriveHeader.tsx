@@ -119,7 +119,7 @@ const ThriveHeader: React.FC<ThriveHeaderProps> = ({
                 {/* Diagonal gold accent bar */}
                 <div className="absolute w-[200%] h-[40px] bg-gradient-to-r from-[#B87333]/20 via-[#E5C5A1]/40 to-[#B87333]/20 rotate-45 transform translate-y-[-10px] animate-pulse" style={{animationDuration: '5s'}}></div>
                 
-                {/* Replace Henry's avatar with head outline logo in metallic gold gradient */}
+                {/* Head outline logo with metallic gold gradient */}
                 <div className="relative z-10 flex items-center justify-center">
                   <div className="h-24 w-24 relative">
                     {/* Head outline with metallic gold gradient */}
