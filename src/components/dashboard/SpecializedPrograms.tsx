@@ -1,7 +1,7 @@
 
 import React, { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
-import { Shield, GraduationCap, Briefcase, Sparkles } from "lucide-react";
+import { Shield, GraduationCap, Briefcase, Sparkles, ChevronRight } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { useToast } from "@/hooks/use-toast";
 import useTranslation from "@/hooks/useTranslation";
@@ -28,7 +28,8 @@ const SpecializedPrograms: React.FC = () => {
       icon: Shield,
       path: "/dod-welcome",
       gradient: "from-[#0EA5E9]/80 to-[#2563EB]/80",
-      borderColor: "#0EA5E9"
+      borderColor: "#0EA5E9",
+      imagePath: "https://images.unsplash.com/photo-1579912437766-7896df6d3cd3?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=500&q=80"
     },
     {
       title: isSpanish ? "La Experiencia Universitaria" : "The College Experience",
@@ -38,7 +39,8 @@ const SpecializedPrograms: React.FC = () => {
       icon: GraduationCap,
       path: "/college-welcome",
       gradient: "from-[#8B5CF6]/80 to-[#6366F1]/80",
-      borderColor: "#8B5CF6"
+      borderColor: "#8B5CF6",
+      imagePath: "https://images.unsplash.com/photo-1523050854058-8df90110c9f1?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=500&q=80"
     },
     {
       title: isSpanish ? "Pequeñas Empresas" : "Small Business",
@@ -48,7 +50,8 @@ const SpecializedPrograms: React.FC = () => {
       icon: Briefcase,
       path: "/small-business-welcome",
       gradient: "from-[#F97316]/80 to-[#FB923C]/80",
-      borderColor: "#F97316"
+      borderColor: "#F97316",
+      imagePath: "https://images.unsplash.com/photo-1600880292203-757bb62b4baf?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=500&q=80"
     }
   ];
   
@@ -97,13 +100,23 @@ const SpecializedPrograms: React.FC = () => {
           <div 
             key={index}
             onClick={() => handleFeatureClick(program.path)}
-            className="relative overflow-hidden rounded-xl cursor-pointer transform transition-all duration-300 hover:scale-105 group"
+            className="relative overflow-hidden rounded-xl cursor-pointer transform transition-all duration-300 hover:scale-105 group h-64"
           >
-            <div className={`absolute inset-0 bg-gradient-to-br ${program.gradient} opacity-90`}></div>
-            <div className="absolute inset-0 bg-black/30"></div>
-            <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent"></div>
+            {/* Background image */}
+            <div className="absolute inset-0 z-0">
+              <img 
+                src={program.imagePath} 
+                alt={program.title} 
+                className="w-full h-full object-cover"
+              />
+            </div>
             
-            <div className="relative z-10 p-5 flex flex-col h-full min-h-[180px]">
+            {/* Dark overlay */}
+            <div className={`absolute inset-0 bg-gradient-to-br ${program.gradient} opacity-80`}></div>
+            <div className="absolute inset-0 bg-black/30"></div>
+            <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent"></div>
+            
+            <div className="relative z-10 p-5 flex flex-col h-full">
               <div className="flex items-center gap-3 mb-3">
                 <div className="p-2.5 rounded-full bg-white/20 backdrop-blur-sm">
                   <program.icon className="h-6 w-6 text-white" />

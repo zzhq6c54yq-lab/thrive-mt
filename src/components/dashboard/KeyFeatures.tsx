@@ -93,7 +93,8 @@ const KeyFeatures: React.FC<KeyFeaturesProps> = ({
       icon: <BarChart3 />,
       path: "/progress-reports",
       color: "from-purple-600 to-blue-600",
-      description: "Track your mental wellness journey"
+      description: "Track your mental wellness journey",
+      image: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=400&q=80"
     },
     {
       id: "family-resources",
@@ -101,7 +102,8 @@ const KeyFeatures: React.FC<KeyFeaturesProps> = ({
       icon: <HandHeart />,
       path: "/family-resources",
       color: "from-pink-600 to-purple-600",
-      description: "Support for you and your loved ones"
+      description: "Support for you and your loved ones",
+      image: "https://images.unsplash.com/photo-1511895426328-dc8714191300?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=400&q=80"
     },
     {
       id: "mental-wellness",
@@ -109,7 +111,8 @@ const KeyFeatures: React.FC<KeyFeaturesProps> = ({
       icon: <BookOpen />,
       path: "/mental-wellness",
       color: "from-blue-600 to-indigo-600",
-      description: "Tools and assessments for your wellbeing"
+      description: "Tools and assessments for your wellbeing",
+      image: "https://images.unsplash.com/photo-1506126613408-eca07ce68773?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=400&q=80"
     },
     {
       id: "games",
@@ -117,7 +120,8 @@ const KeyFeatures: React.FC<KeyFeaturesProps> = ({
       icon: <Brain />,
       path: "/games-and-quizzes",
       color: "from-orange-600 to-red-600",
-      description: "Fun activities to engage your mind"
+      description: "Fun activities to engage your mind",
+      image: "https://images.unsplash.com/photo-1606167668584-78701c57f13d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=400&q=80"
     },
     {
       id: "video-diary",
@@ -125,7 +129,8 @@ const KeyFeatures: React.FC<KeyFeaturesProps> = ({
       icon: <Video />,
       path: "/video-diary",
       color: "from-amber-500 to-orange-600",
-      description: "Record and reflect on your journey"
+      description: "Record and reflect on your journey",
+      image: "https://images.unsplash.com/photo-1576087503901-b2a3b817f0d1?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=400&q=80"
     },
     {
       id: "wellness-challenges",
@@ -133,7 +138,8 @@ const KeyFeatures: React.FC<KeyFeaturesProps> = ({
       icon: <Activity />,
       path: "/wellness-challenges",
       color: "from-emerald-600 to-green-600",
-      description: "Daily challenges to boost wellbeing"
+      description: "Daily challenges to boost wellbeing",
+      image: "https://images.unsplash.com/photo-1538805060514-97d9cc17730c?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=400&q=80"
     },
     {
       id: "resource-library",
@@ -141,7 +147,8 @@ const KeyFeatures: React.FC<KeyFeaturesProps> = ({
       icon: <BookText />,
       path: "/resource-library",
       color: "from-cyan-600 to-blue-600",
-      description: "Extensive collection of helpful materials"
+      description: "Extensive collection of helpful materials",
+      image: "https://images.unsplash.com/photo-1481627834876-b7833e8f5570?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=400&q=80"
     },
     {
       id: "sponsor-alternative",
@@ -149,7 +156,8 @@ const KeyFeatures: React.FC<KeyFeaturesProps> = ({
       icon: <Users />,
       path: "/my-sponsor",
       color: "from-rose-600 to-pink-600",
-      description: "Support for your recovery journey"
+      description: "Support for your recovery journey",
+      image: "https://images.unsplash.com/photo-1531983412531-1f49a365ffed?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=400&q=80"
     },
     {
       id: "binaural-beats",
@@ -157,7 +165,8 @@ const KeyFeatures: React.FC<KeyFeaturesProps> = ({
       icon: <Headphones />,
       path: "/binaural-beats",
       color: "from-violet-600 to-purple-600",
-      description: "Audio therapy for relaxation"
+      description: "Audio therapy for relaxation",
+      image: "https://images.unsplash.com/photo-1506057527569-d23d4eb7c5a4?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=400&q=80"
     },
     {
       id: "workshops",
@@ -165,7 +174,8 @@ const KeyFeatures: React.FC<KeyFeaturesProps> = ({
       icon: <Calendar />,
       path: "/workshops",
       color: "from-emerald-600 to-teal-600",
-      description: "Interactive sessions with professionals"
+      description: "Interactive sessions with professionals",
+      image: "https://images.unsplash.com/photo-1528605248644-14dd04022da1?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=400&q=80"
     },
     {
       id: "journaling",
@@ -173,7 +183,8 @@ const KeyFeatures: React.FC<KeyFeaturesProps> = ({
       icon: <BookText />,
       path: "/journaling",
       color: "from-blue-600 to-cyan-600",
-      description: "Express thoughts and track emotions"
+      description: "Express thoughts and track emotions",
+      image: "https://images.unsplash.com/photo-1517842645767-c639042777db?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=400&q=80"
     },
     {
       id: "mindfulness",
@@ -181,7 +192,8 @@ const KeyFeatures: React.FC<KeyFeaturesProps> = ({
       icon: <Sparkles />,
       path: "/mindfulness-sleep",
       color: "from-violet-600 to-indigo-600",
-      description: "Practices for better rest and awareness"
+      description: "Practices for better rest and awareness",
+      image: "https://images.unsplash.com/photo-1545205597-3d9d02c29597?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=400&q=80"
     },
     {
       id: "real-time-therapy",
@@ -189,7 +201,8 @@ const KeyFeatures: React.FC<KeyFeaturesProps> = ({
       icon: <MessageCircle />,
       path: "/real-time-therapy",
       color: "from-red-600 to-rose-600",
-      description: "Connect with therapists instantly"
+      description: "Connect with therapists instantly",
+      image: "https://images.unsplash.com/photo-1573497491765-dccce02b29df?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=400&q=80"
     },
     {
       id: "holistic-wellness",
@@ -197,7 +210,8 @@ const KeyFeatures: React.FC<KeyFeaturesProps> = ({
       icon: <Leaf />,
       path: "/holistic-wellness",
       color: "from-green-600 to-lime-600",
-      description: "Whole-person approach to wellbeing"
+      description: "Whole-person approach to wellbeing",
+      image: "https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=400&q=80"
     },
     {
       id: "alternative-therapies",
@@ -205,7 +219,8 @@ const KeyFeatures: React.FC<KeyFeaturesProps> = ({
       icon: <Rocket />,
       path: "/alternative-therapies",
       color: "from-teal-600 to-cyan-600",
-      description: "Explore innovative healing methods"
+      description: "Explore innovative healing methods",
+      image: "https://images.unsplash.com/photo-1615529162924-f8605388461d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=400&q=80"
     },
     {
       id: "community-support",
@@ -213,7 +228,8 @@ const KeyFeatures: React.FC<KeyFeaturesProps> = ({
       icon: <Globe />,
       path: "/community-support",
       color: "from-blue-600 to-indigo-600",
-      description: "Connect with others on similar journeys"
+      description: "Connect with others on similar journeys",
+      image: "https://images.unsplash.com/photo-1529156069898-49953e39b3ac?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=400&q=80"
     },
   ];
 
@@ -247,35 +263,38 @@ const KeyFeatures: React.FC<KeyFeaturesProps> = ({
               className="w-full h-full text-left"
               aria-label={feature.title}
             >
-              <div className={`relative overflow-hidden rounded-xl p-4 h-full bg-gradient-to-br ${feature.color} shadow-lg hover:shadow-xl transition-all duration-300`}>
-                <div className="absolute -right-8 -top-8 w-16 h-16 rounded-full bg-white/10 blur-xl"></div>
-                <div className="absolute -left-4 -bottom-4 w-12 h-12 rounded-full bg-white/10 blur-lg"></div>
-                
-                <div className="flex flex-col h-full z-10 relative">
-                  <div className="p-2.5 rounded-full bg-white/20 w-fit mb-3 backdrop-blur-sm">
-                    {React.cloneElement(feature.icon, { className: "h-5 w-5 text-white drop-shadow-sm" })}
+              <div className="relative overflow-hidden rounded-xl h-28 shadow-lg hover:shadow-xl transition-all duration-300">
+                <div className="absolute inset-0 h-full w-full">
+                  <div className="absolute inset-0 h-3/4 overflow-hidden">
+                    <img 
+                      src={feature.image} 
+                      alt={feature.title}
+                      className="w-full h-full object-cover"
+                    />
+                    <div className="absolute inset-0 bg-black/30"></div>
                   </div>
                   
-                  <h3 className="font-bold text-sm text-white mb-1">
-                    {feature.title}
-                  </h3>
-                  
-                  <p className="text-xs text-white/80 mb-2 line-clamp-2">
-                    {feature.description}
-                  </p>
-                  
-                  {isRecommended(feature.id) && (
-                    <div className="mt-auto">
-                      <span className="text-[10px] px-1.5 py-0.5 rounded-full bg-white/30 text-white font-medium inline-block">
+                  <div className={`absolute bottom-0 left-0 right-0 h-1/4 bg-gradient-to-br ${feature.color}`}>
+                  </div>
+                </div>
+                
+                <div className="absolute inset-0 p-3 flex flex-col justify-between">
+                  <div>
+                    <div className="p-1.5 rounded-full bg-white/20 w-fit backdrop-blur-sm inline-flex">
+                      {React.cloneElement(feature.icon, { className: "h-4 w-4 text-white drop-shadow-sm" })}
+                    </div>
+                    
+                    {isRecommended(feature.id) && (
+                      <span className="text-[10px] px-1.5 py-0.5 rounded-full bg-white/30 text-white font-medium float-right">
                         Recommended
                       </span>
-                    </div>
-                  )}
+                    )}
+                  </div>
                   
-                  <div className="absolute bottom-1.5 right-1.5">
-                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" className="opacity-70">
-                      <path d="M7 17L17 7M17 7H8M17 7V16" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-                    </svg>
+                  <div className="mt-auto">
+                    <h3 className="font-bold text-sm text-white truncate">
+                      {feature.title}
+                    </h3>
                   </div>
                 </div>
               </div>
