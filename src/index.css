@@ -550,3 +550,9 @@
 .animate-float {
   animation: float 6s ease-in-out infinite;
 }
+
+@layer utilities {
+  .h-35 {
+    height: 8.75rem; /* 140px, 25% larger than h-28 (112px) */
+  }
+}
