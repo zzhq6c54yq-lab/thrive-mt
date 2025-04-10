@@ -1,4 +1,3 @@
-
 import {
   Activity, BookOpen, Brain, BarChart3, Video, Calendar, Headphones,
   BookText, Sparkles, MessageCircle, Leaf, Rocket, Globe, Heart, Users, HandHeart
@@ -61,7 +60,7 @@ export const getFeatures = (isSpanish: boolean): Feature[] => {
       path: "/video-diary",
       color: "from-amber-500 to-orange-600",
       description: isSpanish ? "Graba y reflexiona sobre tu proceso" : "Record and reflect on your journey",
-      image: getImageUrl("https://images.unsplash.com/photo-1576087503901-b2a3b817f0d1?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=400&q=80")
+      image: getImageUrl("https://images.unsplash.com/photo-1585292565162-3b0a73cbc8d1?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=400&q=80")
     },
     {
       id: "wellness-challenges",
@@ -97,7 +96,7 @@ export const getFeatures = (isSpanish: boolean): Feature[] => {
       path: "/binaural-beats",
       color: "from-violet-600 to-purple-600",
       description: isSpanish ? "Terapia de audio para relajación" : "Audio therapy for relaxation",
-      image: getImageUrl("https://images.unsplash.com/photo-1506057527569-d23d4eb7c5a4?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=400&q=80")
+      image: getImageUrl("https://images.unsplash.com/photo-1595534005229-688989c4bf82?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=400&q=80")
     },
     {
       id: "workshops",
