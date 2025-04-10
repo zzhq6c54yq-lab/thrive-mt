@@ -91,6 +91,20 @@ const MentalHealthGames = () => {
       });
     }
   };
+
+  // Game images mapping
+  const gameImages = {
+    "color-match": "https://images.unsplash.com/photo-1513542789411-b6a5d4f31634?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80",
+    "memory-match": "https://images.unsplash.com/photo-1606167668584-78701c57f13d?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80",
+    "mental-math": "https://images.unsplash.com/photo-1596495578065-6e0763fa1178?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80",
+    "mini-sudoku": "https://images.unsplash.com/photo-1522202176988-66273c2fd55f?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80",
+    "pattern-finder": "https://images.unsplash.com/photo-1464965911861-746a04b4bca6?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80",
+    "reaction-time": "https://images.unsplash.com/photo-1611264199213-ebe0e4a1cdba?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80",
+    "sequence-recall": "https://images.unsplash.com/photo-1516849841032-87cbac4d88f7?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80",
+    "shape-fit": "https://images.unsplash.com/photo-1618172193763-c511deb635ca?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80",
+    "word-association": "https://images.unsplash.com/photo-1520004434532-668416a08753?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80",
+    "word-unscramble": "https://images.unsplash.com/photo-1518133910546-b6c2fb7d79e3?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80"
+  };
   
   return (
     <Page title="Mental Health Games" showBackButton={true}>
@@ -189,13 +203,20 @@ const MentalHealthGames = () => {
             </div>
           ) : (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {filteredGames.map((game) => (
-                <GameCard
-                  key={game.id}
-                  game={game}
-                  onStartGame={handleStartGame}
-                />
-              ))}
+              {filteredGames.map((game) => {
+                // Get appropriate image for game
+                const gameImage = gameImages[game.id as keyof typeof gameImages] || 
+                  "https://images.unsplash.com/photo-1553481187-be93c21490a9?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80";
+                
+                return (
+                  <GameCard
+                    key={game.id}
+                    game={game}
+                    onStart={handleStartGame}
+                    imageSrc={gameImage}
+                  />
+                );
+              })}
             </div>
           )}
         </div>

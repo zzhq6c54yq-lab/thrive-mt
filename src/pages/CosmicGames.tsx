@@ -33,6 +33,13 @@ const CosmicGames = () => {
     navigate("/games-and-quizzes");
   };
 
+  // Game images mapping
+  const gameImages = {
+    "memory-match": "https://images.unsplash.com/photo-1606167668584-78701c57f13d?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80",
+    "reaction-time": "https://images.unsplash.com/photo-1611264199213-ebe0e4a1cdba?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80",
+    "color-match": "https://images.unsplash.com/photo-1513542789411-b6a5d4f31634?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80"
+  };
+
   return (
     <Page title="Cosmic Games" showBackButton={true}>
       <div className="container mx-auto px-4 py-8">
@@ -87,13 +94,17 @@ const CosmicGames = () => {
           </div>
           
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            {featuredGames.map(game => (
-              <GameCard
-                key={game.id}
-                game={game}
-                onStartGame={handleStartGame}
-              />
-            ))}
+            {featuredGames.map(game => {
+              const imageSrc = gameImages[game.id as keyof typeof gameImages] || "";
+              return (
+                <GameCard
+                  key={game.id}
+                  game={game}
+                  onStart={handleStartGame}
+                  imageSrc={imageSrc}
+                />
+              );
+            })}
           </div>
         </div>
         

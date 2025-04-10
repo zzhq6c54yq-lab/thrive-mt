@@ -1,3 +1,4 @@
+
 import React from "react";
 import { motion } from "framer-motion";
 import { Puzzle, Gamepad2, Brain, Sparkles, ArrowLeft, Trophy, Timer, BarChart4, Heart, Star, ThumbsUp, Clock, PlayCircle } from "lucide-react";
@@ -10,6 +11,20 @@ interface GameCardProps {
   onStart: (game: Game) => void;
   imageSrc: string; // Make this required
 }
+
+// Export this function for use in other components
+export const getDifficultyColor = (difficulty: string): string => {
+  switch (difficulty) {
+    case 'easy':
+      return 'text-green-500';
+    case 'medium':
+      return 'text-yellow-500';
+    case 'hard':
+      return 'text-red-500';
+    default:
+      return 'text-gray-500';
+  }
+};
 
 const GameCard: React.FC<GameCardProps> = ({ game, onStart, imageSrc }) => {
   const navigate = useNavigate();
@@ -63,7 +78,7 @@ const GameCard: React.FC<GameCardProps> = ({ game, onStart, imageSrc }) => {
           <div className="flex items-center gap-3">
             <div className="flex items-center gap-1">
               <Brain className="h-4 w-4 text-purple-500" />
-              <span className="text-xs text-gray-500">{game.cognitive}</span>
+              <span className="text-xs text-gray-500">{game.type}</span>
             </div>
             <div className="flex items-center gap-1">
               <Clock className="h-4 w-4 text-blue-500" />
