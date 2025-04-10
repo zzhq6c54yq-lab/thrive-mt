@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/hooks/use-toast";
-import { Brain, ArrowRight, Clock, CheckCircle } from "lucide-react";
+import { Brain, ArrowRight } from "lucide-react";
 import { motion } from "framer-motion";
 
 interface Quiz {
@@ -112,55 +112,14 @@ const QuizzesSection = () => {
                   className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
-                <div className="absolute bottom-0 left-0 right-0 p-3 flex justify-between items-end">
-                  {quiz.completionRate && quiz.completionRate > 0 ? (
-                    <span className="inline-flex items-center px-1.5 py-0.5 rounded-full text-xs font-medium bg-green-50 text-green-700 border border-green-100">
-                      <CheckCircle className="h-3 w-3 mr-1" />
-                      In progress
-                    </span>
-                  ) : (
-                    <span className="inline-flex items-center px-1.5 py-0.5 rounded-full text-xs font-medium bg-white/20 text-white backdrop-blur-sm">
-                      <Brain className="h-3 w-3 mr-1" />
-                      Assessment
-                    </span>
-                  )}
-                  <span className="inline-flex items-center px-1.5 py-0.5 rounded-full text-xs font-medium bg-white/20 text-white backdrop-blur-sm">
-                    <Clock className="h-3 w-3 mr-1" />
-                    {quiz.timeEstimate}
-                  </span>
-                </div>
               </div>
               
               <CardContent className="p-4">
-                <div className="mb-2">
+                <div className="mb-3">
                   <h3 className="font-semibold text-gray-800 group-hover:text-[#8B5CF6] transition-colors text-lg">
                     {quiz.title}
                   </h3>
-                  <p className="text-sm text-gray-600 line-clamp-2 mb-3">{quiz.description}</p>
                 </div>
-                
-                <div className="flex justify-between items-center text-xs text-gray-500 mb-3">
-                  <span>{quiz.questions} questions</span>
-                  <div className="flex items-center">
-                    <Brain className="h-3.5 w-3.5 mr-1 text-[#8B5CF6]" />
-                    <span>{quiz.category === 'mental-health' ? 'Mental Health' : 'Wellbeing'}</span>
-                  </div>
-                </div>
-                
-                {quiz.completionRate ? (
-                  <div className="mb-3">
-                    <div className="h-1.5 w-full bg-gray-100 rounded-full overflow-hidden">
-                      <div 
-                        className={`h-full bg-gradient-to-r ${quiz.color}`}
-                        style={{ width: `${quiz.completionRate}%` }}
-                      ></div>
-                    </div>
-                    <div className="flex justify-between mt-1 text-xs">
-                      <span className="text-gray-500">In progress</span>
-                      <span className="text-[#8B5CF6] font-medium">{quiz.completionRate}%</span>
-                    </div>
-                  </div>
-                ) : null}
                 
                 <Button
                   size="sm"

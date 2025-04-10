@@ -114,7 +114,7 @@ export const getFeatures = (isSpanish: boolean): Feature[] => {
       path: "/journaling",
       color: "from-blue-600 to-cyan-600",
       description: isSpanish ? "Expresa pensamientos y registra emociones" : "Express thoughts and track emotions",
-      image: getImageUrl("https://images.unsplash.com/photo-1517842645767-c639042777db?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=400&q=80")
+      image: getImageUrl("https://images.unsplash.com/photo-1517842645767-c63904022da1?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=400&q=80")
     },
     {
       id: "mindfulness",
