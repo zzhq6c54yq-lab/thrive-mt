@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import HelpDialog from "@/components/help/HelpDialog";
 import HenryIntroDialog from "@/components/henry/HenryIntroDialog";
 import { useLocation } from "react-router-dom";
-import { useButtonVisibility } from "../help/RouteVisibility";
+import { useButtonVisibility } from "./RouteVisibility";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 
 const HelpNavButton: React.FC = () => {
