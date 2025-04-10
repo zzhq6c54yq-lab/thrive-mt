@@ -10,11 +10,10 @@ import FeaturedWorkshops from "@/components/dashboard/FeaturedWorkshops";
 import KeyFeatures from "@/components/dashboard/KeyFeatures";
 import { NavigateFunction } from "react-router-dom";
 import { 
-  Accordion,
-  AccordionContent,
-  AccordionItem,
-  AccordionTrigger,
-} from "@/components/ui/accordion";
+  Collapsible,
+  CollapsibleContent,
+  CollapsibleTrigger,
+} from "@/components/ui/collapsible";
 import { Calendar, HelpCircle, ChevronUp, ChevronDown, Sparkles, Award, Users, Heart } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { Button } from "@/components/ui/button";
@@ -73,31 +72,30 @@ const DashboardContent: React.FC<DashboardContentProps> = ({
     }
   };
 
-  // Collapsible section component to replace the old SectionHeader
+  // Collapsible section component that properly integrates the header with the content
   const CollapsibleSection = ({ 
     title, 
     gradientClasses,
     icon: Icon,
-    children 
+    children,
+    defaultOpen = true
   }: {
     title: string;
     gradientClasses: string;
     icon: React.ElementType;
     children: React.ReactNode;
+    defaultOpen?: boolean;
   }) => {
-    const [isOpen, setIsOpen] = useState(true);
-    
-    const toggleOpen = () => {
-      setIsOpen(!isOpen);
-    };
+    const [isOpen, setIsOpen] = useState(defaultOpen);
     
     return (
-      <div className="mb-8">
+      <Collapsible
+        open={isOpen}
+        onOpenChange={setIsOpen}
+        className="mb-8"
+      >
         <div className={`${gradientClasses} rounded-lg overflow-hidden`}>
-          <button 
-            onClick={toggleOpen}
-            className="w-full flex justify-between items-center px-4 py-3 focus:outline-none"
-          >
+          <CollapsibleTrigger className="w-full flex justify-between items-center px-4 py-3 focus:outline-none">
             <div className="flex items-center">
               <div className="bg-white/20 p-2 rounded-full mr-3">
                 <Icon className="h-5 w-5 text-white" />
@@ -115,11 +113,13 @@ const DashboardContent: React.FC<DashboardContentProps> = ({
                 <ChevronDown className="h-4 w-4" />
               )}
             </div>
-          </button>
+          </CollapsibleTrigger>
         </div>
         
-        {isOpen && <div className="mt-4">{children}</div>}
-      </div>
+        <CollapsibleContent className="mt-4">
+          {children}
+        </CollapsibleContent>
+      </Collapsible>
     );
   };
 

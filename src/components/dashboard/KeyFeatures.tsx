@@ -259,13 +259,13 @@ const KeyFeatures: React.FC<KeyFeaturesProps> = ({
             transition={{ duration: 0.2 }}
           >
             <button
-              onClick={() => handleNavigate(feature.path)}
+              onClick={() => navigateToFeature(feature.path)}
               className="w-full h-full text-left"
               aria-label={feature.title}
             >
               <div className="relative overflow-hidden rounded-xl h-44 shadow-lg hover:shadow-xl transition-all duration-300">
                 <div className="absolute inset-0 h-full w-full">
-                  <div className="absolute inset-0 h-[80%] overflow-hidden">
+                  <div className="absolute inset-0 h-[70%] overflow-hidden">
                     <img 
                       src={feature.image} 
                       alt={feature.title}
@@ -274,7 +274,7 @@ const KeyFeatures: React.FC<KeyFeaturesProps> = ({
                     <div className="absolute inset-0 bg-black/30"></div>
                   </div>
                   
-                  <div className={`absolute bottom-0 left-0 right-0 h-[20%] bg-gradient-to-br ${feature.color} flex items-center justify-center`}>
+                  <div className={`absolute bottom-0 left-0 right-0 h-[30%] bg-gradient-to-br ${feature.color} flex items-center justify-center`}>
                     <h3 className="font-bold text-sm text-white truncate text-center w-full px-2">
                       {feature.title}
                     </h3>
