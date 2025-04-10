@@ -1,4 +1,3 @@
-
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { 
@@ -54,7 +53,7 @@ const workshops = [
     instructor: "Col. James Wilson, Ret.",
     category: "PTSD & Trauma",
     featured: true,
-    videoUrl: "https://assets.mixkit.co/videos/preview/mixkit-man-working-out-in-an-abandoned-warehouse-32757-large.mp4"
+    videoUrl: "https://assets.mixkit.co/videos/preview/mixkit-man-exercising-in-a-gym-23458-large.mp4"
   },
   {
     id: 2,
@@ -65,7 +64,7 @@ const workshops = [
     instructor: "Dr. Sarah Miller",
     category: "Mindfulness",
     featured: true,
-    videoUrl: "https://assets.mixkit.co/videos/preview/mixkit-young-woman-sitting-on-the-floor-and-meditating-42424-large.mp4"
+    videoUrl: "https://assets.mixkit.co/videos/preview/mixkit-young-woman-meditating-in-nature-4793-large.mp4"
   },
   {
     id: 3,
@@ -76,7 +75,7 @@ const workshops = [
     instructor: "Maj. Robert Johnson, Ret.",
     category: "Transition",
     featured: true,
-    videoUrl: "https://assets.mixkit.co/videos/preview/mixkit-man-holding-a-book-in-a-library-9757-large.mp4"
+    videoUrl: "https://assets.mixkit.co/videos/preview/mixkit-professional-man-working-from-home-on-a-laptop-54-large.mp4"
   },
   {
     id: 4,
@@ -87,7 +86,7 @@ const workshops = [
     instructor: "Capt. Lisa Thompson, Ret.",
     category: "PTSD & Trauma",
     featured: false,
-    videoUrl: "https://assets.mixkit.co/videos/preview/mixkit-woman-doing-yoga-in-a-living-room-143117-large.mp4"
+    videoUrl: "https://assets.mixkit.co/videos/preview/mixkit-woman-stretching-and-exercising-in-a-studio-4823-large.mp4"
   },
   {
     id: 5,
@@ -98,7 +97,7 @@ const workshops = [
     instructor: "Dr. Michael Chen",
     category: "Family Support",
     featured: false,
-    videoUrl: "https://assets.mixkit.co/videos/preview/mixkit-family-walking-together-in-nature-45658-large.mp4"
+    videoUrl: "https://assets.mixkit.co/videos/preview/mixkit-happy-family-doing-a-video-call-at-christmas-dinner-39882-large.mp4"
   },
   {
     id: 6,
@@ -109,7 +108,7 @@ const workshops = [
     instructor: "Sgt. Thomas Brown, Ret.",
     category: "Substance Recovery",
     featured: false,
-    videoUrl: "https://assets.mixkit.co/videos/preview/mixkit-group-of-people-in-a-support-group-session-48922-large.mp4"
+    videoUrl: "https://assets.mixkit.co/videos/preview/mixkit-group-of-young-people-having-coffee-and-working-on-laptops-42906-large.mp4"
   },
   {
     id: 7,
@@ -120,7 +119,7 @@ const workshops = [
     instructor: "Dr. Amanda Rodriguez",
     category: "Depression & Anxiety",
     featured: false,
-    videoUrl: "https://assets.mixkit.co/videos/preview/mixkit-depressed-man-walking-alone-42494-large.mp4"
+    videoUrl: "https://assets.mixkit.co/videos/preview/mixkit-man-meditating-under-a-tree-in-yellowstone-national-park-4877-large.mp4"
   },
   {
     id: 8,
@@ -131,9 +130,68 @@ const workshops = [
     instructor: "Lt. Col. David Park, Ret.",
     category: "Transition",
     featured: false,
-    videoUrl: "https://assets.mixkit.co/videos/preview/mixkit-corporate-meeting-in-an-office-with-a-view-of-the-city-43663-large.mp4"
+    videoUrl: "https://assets.mixkit.co/videos/preview/mixkit-business-meeting-in-an-office-with-four-people-4823-large.mp4"
   }
 ];
+
+const WorkshopCard = ({ 
+  workshop, 
+  featured = false,
+  onRegister,
+  onWatchPreview
+}) => {
+  return (
+    <Card className={`
+      bg-gradient-to-b from-[#1c2e4a] to-[#0A1929] 
+      border ${workshop.featured ? 'border-[#B87333]/30' : 'border-white/10'} 
+      text-white transition-all duration-300 
+      hover:shadow-lg hover:translate-y-[-5px]
+      ${workshop.featured ? 'shadow-[0_0_10px_rgba(184,115,51,0.2)]' : ''}
+    `}>
+      <CardHeader className="pb-2">
+        <div className="bg-[#B87333]/10 text-[#B87333] text-xs font-medium py-1 px-2 rounded-full w-fit mb-2">
+          {workshop.category}
+        </div>
+        <CardTitle className="text-white">{workshop.title}</CardTitle>
+        <CardDescription className="text-gray-300 mt-2">
+          {workshop.description}
+        </CardDescription>
+      </CardHeader>
+      <CardContent className="space-y-4">
+        <div className="space-y-2">
+          <div className="flex items-center text-gray-300 text-sm">
+            <Calendar className="h-4 w-4 mr-2 text-[#B87333]" />
+            <span>{workshop.date}</span>
+          </div>
+          <div className="flex items-center text-gray-300 text-sm">
+            <Clock className="h-4 w-4 mr-2 text-[#B87333]" />
+            <span>{workshop.time}</span>
+          </div>
+          <div className="flex items-center text-gray-300 text-sm">
+            <User className="h-4 w-4 mr-2 text-[#B87333]" />
+            <span>{workshop.instructor}</span>
+          </div>
+        </div>
+      </CardContent>
+      <CardFooter className="flex flex-col gap-2">
+        <Button 
+          variant={workshop.featured ? "gold" : "bronze"} 
+          className="w-full"
+          onClick={onRegister}
+        >
+          Register Now
+        </Button>
+        <Button
+          variant="outline"
+          className="w-full border-white/20 text-white/80 hover:bg-white/10"
+          onClick={onWatchPreview}
+        >
+          Watch Preview
+        </Button>
+      </CardFooter>
+    </Card>
+  );
+};
 
 const MilitaryWorkshops = () => {
   const [searchTerm, setSearchTerm] = useState("");
@@ -177,7 +235,6 @@ const MilitaryWorkshops = () => {
       });
       setShowRegistrationDialog(false);
       
-      // Optional: Download workshop materials
       const workshopIdMap: Record<number, string> = {
         1: "stress-management",
         2: "mindful-communication",
@@ -370,7 +427,6 @@ const MilitaryWorkshops = () => {
         </div>
       </footer>
       
-      {/* Workshop Registration Dialog */}
       <Dialog open={showRegistrationDialog} onOpenChange={setShowRegistrationDialog}>
         <DialogContent className="bg-[#1a1a2e] border-[#3a3a4c] text-white max-w-md">
           <DialogHeader>
@@ -436,7 +492,6 @@ const MilitaryWorkshops = () => {
         </DialogContent>
       </Dialog>
       
-      {/* Video Preview Dialog */}
       <Dialog open={showVideoPreview} onOpenChange={setShowVideoPreview}>
         <DialogContent className="bg-[#1a1a2e] border-[#3a3a4c] text-white max-w-3xl">
           <DialogHeader>
@@ -478,70 +533,6 @@ const MilitaryWorkshops = () => {
         </DialogContent>
       </Dialog>
     </div>
-  );
-};
-
-interface WorkshopCardProps {
-  workshop: (typeof workshops)[0];
-  onRegister: () => void;
-  onWatchPreview: () => void;
-}
-
-const WorkshopCard: React.FC<WorkshopCardProps> = ({ 
-  workshop,
-  onRegister,
-  onWatchPreview
-}) => {
-  return (
-    <Card className={`
-      bg-gradient-to-b from-[#1c2e4a] to-[#0A1929] 
-      border ${workshop.featured ? 'border-[#B87333]/30' : 'border-white/10'} 
-      text-white transition-all duration-300 
-      hover:shadow-lg hover:translate-y-[-5px]
-      ${workshop.featured ? 'shadow-[0_0_10px_rgba(184,115,51,0.2)]' : ''}
-    `}>
-      <CardHeader className="pb-2">
-        <div className="bg-[#B87333]/10 text-[#B87333] text-xs font-medium py-1 px-2 rounded-full w-fit mb-2">
-          {workshop.category}
-        </div>
-        <CardTitle className="text-white">{workshop.title}</CardTitle>
-        <CardDescription className="text-gray-300 mt-2">
-          {workshop.description}
-        </CardDescription>
-      </CardHeader>
-      <CardContent className="space-y-4">
-        <div className="space-y-2">
-          <div className="flex items-center text-gray-300 text-sm">
-            <Calendar className="h-4 w-4 mr-2 text-[#B87333]" />
-            <span>{workshop.date}</span>
-          </div>
-          <div className="flex items-center text-gray-300 text-sm">
-            <Clock className="h-4 w-4 mr-2 text-[#B87333]" />
-            <span>{workshop.time}</span>
-          </div>
-          <div className="flex items-center text-gray-300 text-sm">
-            <User className="h-4 w-4 mr-2 text-[#B87333]" />
-            <span>{workshop.instructor}</span>
-          </div>
-        </div>
-      </CardContent>
-      <CardFooter className="flex flex-col gap-2">
-        <Button 
-          variant={workshop.featured ? "gold" : "bronze"} 
-          className="w-full"
-          onClick={onRegister}
-        >
-          Register Now
-        </Button>
-        <Button
-          variant="outline"
-          className="w-full border-white/20 text-white/80 hover:bg-white/10"
-          onClick={onWatchPreview}
-        >
-          Watch Preview
-        </Button>
-      </CardFooter>
-    </Card>
   );
 };
 

@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from "react";
 import { useParams, useNavigate, useLocation } from "react-router-dom";
 import Page from "@/components/Page";
@@ -66,22 +67,25 @@ const WorkshopDetail = () => {
   }
 
   const getVideoUrl = (workshopId: string) => {
+    // Comprehensive mapping of workshop IDs to relevant video content
     const videoMap: {[key: string]: string} = {
-      'mindful-communication': 'https://player.vimeo.com/video/305501304',
-      'emotional-regulation': 'https://player.vimeo.com/video/139195467',
-      'stress-management': 'https://player.vimeo.com/video/456646308',
-      'better-sleep': 'https://player.vimeo.com/video/347119375',
-      'cognitive-reframing': 'https://player.vimeo.com/video/528293631',
-      'gratitude-practice': 'https://player.vimeo.com/video/437194835',
-      'self-compassion': 'https://player.vimeo.com/video/420252733',
-      'social-connection': 'https://player.vimeo.com/video/522948060',
-      'anxiety-management': 'https://player.vimeo.com/video/248736159',
-      'boundary-setting': 'https://player.vimeo.com/video/231354112',
-      'values-alignment': 'https://player.vimeo.com/video/286898202',
-      'habit-formation': 'https://player.vimeo.com/video/418701977'
+      'mindful-communication': 'https://player.vimeo.com/video/305501304?autoplay=1&title=0&byline=0&portrait=0',
+      'emotional-regulation': 'https://player.vimeo.com/video/139195467?autoplay=1&title=0&byline=0&portrait=0',
+      'stress-management': 'https://player.vimeo.com/video/456646308?autoplay=1&title=0&byline=0&portrait=0',
+      'better-sleep': 'https://player.vimeo.com/video/347119375?autoplay=1&title=0&byline=0&portrait=0',
+      'cognitive-reframing': 'https://player.vimeo.com/video/528293631?autoplay=1&title=0&byline=0&portrait=0',
+      'gratitude-practice': 'https://player.vimeo.com/video/437194835?autoplay=1&title=0&byline=0&portrait=0',
+      'self-compassion': 'https://player.vimeo.com/video/420252733?autoplay=1&title=0&byline=0&portrait=0',
+      'social-connection': 'https://player.vimeo.com/video/522948060?autoplay=1&title=0&byline=0&portrait=0',
+      'anxiety-management': 'https://player.vimeo.com/video/248736159?autoplay=1&title=0&byline=0&portrait=0',
+      'boundary-setting': 'https://player.vimeo.com/video/231354112?autoplay=1&title=0&byline=0&portrait=0',
+      'values-alignment': 'https://player.vimeo.com/video/286898202?autoplay=1&title=0&byline=0&portrait=0',
+      'habit-formation': 'https://player.vimeo.com/video/418701977?autoplay=1&title=0&byline=0&portrait=0'
     };
     
-    return videoMap[workshopId] || 'https://player.vimeo.com/video/76979871';
+    // Return the video URL if it exists, otherwise use a default inspirational video
+    // that aligns with mental wellness themes
+    return videoMap[workshopId] || 'https://player.vimeo.com/video/459715923?autoplay=1&title=0&byline=0&portrait=0';
   };
 
   const getWorkshopImage = (workshopId: string) => {

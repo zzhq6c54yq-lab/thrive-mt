@@ -15,20 +15,24 @@ const FeaturedWorkshops: React.FC<FeaturedWorkshopsProps> = ({ navigate, onWorks
   // Only get the first 4 workshops
   const featuredWorkshops = workshopData.slice(0, 4);
   
-  // Workshop cover images mapped to topics
+  // Workshop cover images mapped to topics with high-quality, relevant images
   const getWorkshopImage = (workshopId: string) => {
     const imageMap: {[key: string]: string} = {
-      'mindful-communication': 'https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80',
-      'emotional-regulation': 'https://images.unsplash.com/photo-1649972904349-6e44c42644a7?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80',
-      'stress-management': 'https://images.unsplash.com/photo-1488590528505-98d2b5aba04b?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80',
-      'better-sleep': 'https://images.unsplash.com/photo-1465146344425-f00d5f5c8f07?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80',
-      'cognitive-reframing': 'https://images.unsplash.com/photo-1506744038136-46273834b3fb?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80',
-      'gratitude-practice': 'https://images.unsplash.com/photo-1509316975850-ff9c5deb0cd9?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80',
-      'self-compassion': 'https://images.unsplash.com/photo-1500673922987-e212871fec22?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80',
-      'social-connection': 'https://images.unsplash.com/photo-1523712999610-f77fbcfc3843?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80',
+      'mindful-communication': 'https://images.unsplash.com/photo-1573497019940-1c28c88b4f3e?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80',
+      'emotional-regulation': 'https://images.unsplash.com/photo-1544027993-37dbfe43562a?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80',
+      'stress-management': 'https://images.unsplash.com/photo-1506126613408-eca07ce68773?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80',
+      'better-sleep': 'https://images.unsplash.com/photo-1541781774459-bb2af2f05b55?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80',
+      'cognitive-reframing': 'https://images.unsplash.com/photo-1454692173233-f4f34c13cfda?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80',
+      'gratitude-practice': 'https://images.unsplash.com/photo-1614644147798-f8c0fc9da7f6?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80',
+      'self-compassion': 'https://images.unsplash.com/photo-1531081144778-a3d0613172a7?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80',
+      'social-connection': 'https://images.unsplash.com/photo-1543269865-cbf427effbad?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80',
+      'anxiety-management': 'https://images.unsplash.com/photo-1559000357-f6b52ddfcbba?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80',
+      'boundary-setting': 'https://images.unsplash.com/photo-1572504050773-a93cbcdee34e?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80',
+      'values-alignment': 'https://images.unsplash.com/photo-1520853504280-249365dd7617?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80',
+      'habit-formation': 'https://images.unsplash.com/photo-1616197439049-799b519adc48?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80'
     };
     
-    return imageMap[workshopId] || 'https://images.unsplash.com/photo-1486312338219-ce68d2c6f44d?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80';
+    return imageMap[workshopId] || 'https://images.unsplash.com/photo-1517048676732-d65bc937f952?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80';
   };
 
   const handleViewAllWorkshops = () => {
