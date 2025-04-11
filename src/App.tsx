@@ -46,6 +46,10 @@ import FinancialAssistance from "@/pages/FinancialAssistance";
 import ContactSupport from "@/pages/ContactSupport";
 import GuidedPractice from "@/pages/GuidedPractice";
 
+// Add new imports for Video Diary and other feature paths
+import VideoRecordPage from "@/pages/VideoRecordPage";
+import VideoLibraryPage from "@/pages/VideoLibraryPage";
+
 function App() {
   return (
     <>
@@ -110,6 +114,9 @@ function App() {
         <Route path="/journaling" element={<Journaling />} />
         <Route path="/mindfulness-sleep" element={<MindfulnessSleep />} />
         <Route path="/video-diary" element={<VideoDiary />} />
+        <Route path="/video-diary/record" element={<VideoRecordPage />} />
+        <Route path="/video-diary/library" element={<VideoLibraryPage />} />
+        <Route path="/video-diary/view/:videoId" element={<VideoLibraryPage />} />
         <Route path="/resource-library" element={<ResourceLibrary />} />
         <Route path="/wellness-challenges" element={<WellnessChallenges />} />
         <Route path="/my-sponsor" element={<MySponsor />} />

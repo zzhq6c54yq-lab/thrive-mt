@@ -11,8 +11,13 @@ export const useScreenHistory = (
   useEffect(() => {
     // Handle incoming state from navigation
     if (location.state) {
+      // If returnToFeature is true, we're coming back from an action in a feature
+      if (location.state.returnToFeature) {
+        // Stay on the current screen state, don't change anything
+        console.log("Returning to feature, maintaining state");
+      }
       // If we're returning from another feature to the main dashboard
-      if (location.state.returnToMain) {
+      else if (location.state.returnToMain) {
         setScreenState('main');
         
         window.history.replaceState(

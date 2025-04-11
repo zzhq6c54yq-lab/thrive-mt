@@ -12,11 +12,12 @@ export const useFeatureNavigation = () => {
       path === "/games-and-quizzes" ||
       path.includes("assessment");
       
-    // Preserve any relevant state from the current location
+    // Get the current screen state for proper return navigation
     const currentState = location.state || {};
-    
-    // Get the current screen state if we're on the index page
     const currentScreenState = currentState.screenState || 'main';
+    
+    // Store the current path to enable proper back navigation
+    const currentPath = location.pathname;
     
     if (isAssessmentRelated) {
       navigate(path, {
@@ -27,7 +28,8 @@ export const useFeatureNavigation = () => {
           activeTab: "assessments",
           startAssessment: true,
           fromMainMenu: true,
-          returnToMain: true
+          returnToMain: true,
+          previousPath: currentPath
         }
       });
     } else {
@@ -38,7 +40,8 @@ export const useFeatureNavigation = () => {
           fromMainMenu: true,
           screenState: currentScreenState,
           preventTutorial: true,
-          returnToMain: true
+          returnToMain: true,
+          previousPath: currentPath
         } 
       });
     }
