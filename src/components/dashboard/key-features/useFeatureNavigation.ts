@@ -12,6 +12,9 @@ export const useFeatureNavigation = () => {
       path === "/games-and-quizzes" ||
       path.includes("assessment");
       
+    // Special handling for small business path
+    const isSmallBusiness = path === "/small-business-portal";
+    
     // Get the current screen state for proper return navigation
     const currentState = location.state || {};
     const currentScreenState = currentState.screenState || 'main';
@@ -27,6 +30,17 @@ export const useFeatureNavigation = () => {
           directToAssessment: true,
           activeTab: "assessments",
           startAssessment: true,
+          fromMainMenu: true,
+          returnToMain: true,
+          previousPath: currentPath
+        }
+      });
+    } else if (isSmallBusiness) {
+      // Navigate to selection screen instead
+      navigate("/small-business-selection", {
+        state: {
+          ...currentState,
+          preventTutorial: true,
           fromMainMenu: true,
           returnToMain: true,
           previousPath: currentPath

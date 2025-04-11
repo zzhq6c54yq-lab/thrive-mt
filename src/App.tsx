@@ -1,4 +1,3 @@
-
 import React from "react";
 import { Routes, Route, Navigate } from "react-router-dom";
 import Index from "@/pages/Index";
@@ -45,10 +44,9 @@ import SubscriptionPlansPage from "@/pages/SubscriptionPlansPage";
 import FinancialAssistance from "@/pages/FinancialAssistance";
 import ContactSupport from "@/pages/ContactSupport";
 import GuidedPractice from "@/pages/GuidedPractice";
-
-// Add new imports for Video Diary and other feature paths
 import VideoRecordPage from "@/pages/VideoRecordPage";
 import VideoLibraryPage from "@/pages/VideoLibraryPage";
+import SmallBusinessSelection from "@/pages/SmallBusinessSelection";
 
 function App() {
   return (
@@ -70,6 +68,7 @@ function App() {
         <Route path="/games/:gameId" element={<GamePage />} />
         <Route path="/small-business-portal" element={<SmallBusinessPortal />} />
         <Route path="/small-business-welcome" element={<SmallBusinessWelcome />} />
+        <Route path="/small-business-selection" element={<SmallBusinessSelection />} />
         <Route path="/employee-welcome" element={<EmployeeWelcome />} />
         <Route path="/employee-readiness" element={<EmployeeReadiness />} />
         <Route path="/crisis-support" element={<CrisisSupport />} />
@@ -77,36 +76,30 @@ function App() {
         <Route path="/co-pay" element={<CoPay />} />
         <Route path="/virtual-meetings" element={<VirtualMeetings />} />
         
-        {/* Add missing routes */}
         <Route path="/copay-credits" element={<CoPayCredits />} />
         <Route path="/barter-system" element={<BarterSystem />} />
         <Route path="/subscription-plans" element={<SubscriptionPlansPage />} />
         <Route path="/financial-assistance" element={<FinancialAssistance />} />
         <Route path="/contact" element={<ContactSupport />} />
         
-        {/* Alternative Therapies */}
         <Route path="/alternative-therapies" element={<AlternativeTherapies />} />
         <Route path="/guided-practice/:therapyId" element={<GuidedPractice />} />
         
-        {/* Specialized Programs Routes */}
         <Route path="/department-of-defense" element={<DoDWelcome />} />
         <Route path="/dod-welcome" element={<DoDWelcome />} />
         <Route path="/dod-portal" element={<DoDPortal />} />
         <Route path="/college-welcome" element={<CollegeWelcome />} />
         <Route path="/college-portal" element={<CollegePortal />} />
         
-        {/* Military Specific Routes */}
         <Route path="/military-support" element={<MilitarySupport />} />
         <Route path="/military-resources" element={<MilitaryResources />} />
         <Route path="/military-resources/combat-stress" element={<MilitaryResources />} />
         <Route path="/military-resources/transition" element={<MilitaryResources />} />
         <Route path="/military-resources/family" element={<MilitaryResources />} />
         
-        {/* Workshop Routes */}
         <Route path="/workshops" element={<Workshops />} />
         <Route path="/workshop/:workshopId" element={<WorkshopDetail />} />
         
-        {/* Mental Wellness Routes */}
         <Route path="/real-time-therapy" element={<RealTimeTherapy />} />
         <Route path="/holistic-wellness" element={<HolisticWellness />} />
         <Route path="/community-support" element={<CommunitySupport />} />

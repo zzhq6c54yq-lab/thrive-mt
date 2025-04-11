@@ -58,7 +58,7 @@ const SpecializedPrograms: React.FC = () => {
         ? "Recursos de salud mental para emprendedores y dueños de pequeñas empresas" 
         : "Mental health resources for entrepreneurs and small business owners",
       icon: Briefcase,
-      path: "/small-business-welcome",
+      path: "/small-business-selection",  // Updated path to selection screen
       gradient: "from-[#F97316]/80 to-[#FB923C]/80",
       borderColor: "#F97316",
       imagePath: getImageUrl("https://images.unsplash.com/photo-1600880292203-757bb62b4baf?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=500&q=80")

@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { ArrowLeft } from "lucide-react";
 import { useFeatureActions } from "@/hooks/useFeatureActions";
 import useTranslation from "@/hooks/useTranslation";
+import { useNavigate, useLocation } from "react-router-dom";
 
 interface BackButtonProps {
   className?: string;
@@ -16,10 +17,14 @@ const BackButton: React.FC<BackButtonProps> = ({
 }) => {
   const { handleBackNavigation } = useFeatureActions();
   const { isSpanish } = useTranslation();
+  const navigate = useNavigate();
+  const location = useLocation();
   
   const handleClick = () => {
     if (onCustomBack) {
       onCustomBack();
+    } else if (location.state?.previousPath) {
+      navigate(location.state.previousPath);
     } else {
       handleBackNavigation();
     }

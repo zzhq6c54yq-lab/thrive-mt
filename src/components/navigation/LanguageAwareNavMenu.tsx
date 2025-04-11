@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useToast } from "@/hooks/use-toast";
@@ -17,20 +16,16 @@ const LanguageAwareNavMenu: React.FC = () => {
   const { toast } = useToast();
   const [isSpanish, setIsSpanish] = useState<boolean>(false);
   
-  // Check language preference and listen for changes
   useEffect(() => {
     const checkLanguage = () => {
       const preferredLanguage = localStorage.getItem('preferredLanguage') || 'English';
       setIsSpanish(preferredLanguage === 'Español');
     };
     
-    // Check initial language
     checkLanguage();
     
-    // Listen for language change events
     window.addEventListener('languageChange', checkLanguage);
     
-    // Cleanup
     return () => {
       window.removeEventListener('languageChange', checkLanguage);
     };
@@ -75,7 +70,7 @@ const LanguageAwareNavMenu: React.FC = () => {
                   </p>
                 </div>
               </li>
-              <li onClick={() => handleNavigate("/small-business-portal")} className="cursor-pointer">
+              <li onClick={() => handleNavigate("/small-business-selection")} className="cursor-pointer">
                 <div className="block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground">
                   <div className="text-sm font-medium leading-none">
                     {isSpanish ? "Pequeñas Empresas" : "Small Business"}
