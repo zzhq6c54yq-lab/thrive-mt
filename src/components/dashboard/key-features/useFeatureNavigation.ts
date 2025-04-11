@@ -12,8 +12,9 @@ export const useFeatureNavigation = () => {
       path === "/games-and-quizzes" ||
       path.includes("assessment");
       
-    // Special handling for small business path
+    // Special handling for small business paths
     const isSmallBusiness = path === "/small-business-portal";
+    const isEmployee = path === "/employee-dashboard" || path === "/employee-welcome";
     
     // Get the current screen state for proper return navigation
     const currentState = location.state || {};
@@ -38,6 +39,17 @@ export const useFeatureNavigation = () => {
     } else if (isSmallBusiness) {
       // Navigate to selection screen instead
       navigate("/small-business-selection", {
+        state: {
+          ...currentState,
+          preventTutorial: true,
+          fromMainMenu: true,
+          returnToMain: true,
+          previousPath: currentPath
+        }
+      });
+    } else if (isEmployee) {
+      // Direct to employee welcome path
+      navigate("/employee-welcome", {
         state: {
           ...currentState,
           preventTutorial: true,

@@ -1,3 +1,4 @@
+
 import React from "react";
 import { Routes, Route, Navigate } from "react-router-dom";
 import Index from "@/pages/Index";
@@ -35,6 +36,7 @@ import DoDWelcome from "@/pages/DoDWelcome";
 import CollegeWelcome from "@/pages/CollegeWelcome";
 import SmallBusinessWelcome from "@/pages/SmallBusinessWelcome";
 import SmallBusinessPortal from "@/pages/SmallBusinessPortal";
+import EmployeeDashboard from "@/pages/EmployeeDashboard";
 import MilitarySupport from "@/pages/MilitarySupport";
 import MilitaryResources from "@/pages/MilitaryResources";
 import VirtualMeetings from "@/pages/VirtualMeetings";
@@ -70,6 +72,7 @@ function App() {
         <Route path="/small-business-welcome" element={<SmallBusinessWelcome />} />
         <Route path="/small-business-selection" element={<SmallBusinessSelection />} />
         <Route path="/employee-welcome" element={<EmployeeWelcome />} />
+        <Route path="/employee-dashboard" element={<EmployeeDashboard />} />
         <Route path="/employee-readiness" element={<EmployeeReadiness />} />
         <Route path="/crisis-support" element={<CrisisSupport />} />
         <Route path="/learn-more" element={<LearnMoreAboutThrive />} />

@@ -1,6 +1,6 @@
 
 import React from "react";
-import { Building, ChartBar, Brain, Users, FileText } from "lucide-react";
+import { Building, ChartBar, Brain, Users, FileText, BookOpen } from "lucide-react";
 import FeatureCard from "./FeatureCard";
 import useTranslation from "@/hooks/useTranslation";
 
@@ -14,7 +14,7 @@ const EmployeeTab: React.FC<EmployeeTabProps> = ({ onFeatureClick }) => {
   return (
     <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-6">
       <FeatureCard 
-        title={isSpanish ? "Bienestar en el Trabajo" : "Workplace Wellness"}
+        title={isSpanish ? "Bienestar Laboral" : "Workplace Wellness"}
         description={isSpanish 
           ? "Recursos para mantener el bienestar mental en un entorno de pequeña empresa" 
           : "Resources for maintaining mental wellbeing in a small business environment"}
@@ -41,7 +41,7 @@ const EmployeeTab: React.FC<EmployeeTabProps> = ({ onFeatureClick }) => {
         onClick={() => onFeatureClick("mental-wellness")}
       />
       <FeatureCard 
-        title={isSpanish ? "Desarrollo de Carrera" : "Career Development"}
+        title={isSpanish ? "Desarrollo Profesional" : "Professional Growth"}
         description={isSpanish 
           ? "Recursos para el crecimiento profesional mientras cuidas tu salud mental" 
           : "Resources for professional growth while caring for your mental health"}
@@ -66,6 +66,15 @@ const EmployeeTab: React.FC<EmployeeTabProps> = ({ onFeatureClick }) => {
         icon={FileText}
         color="bg-amber-600"
         onClick={() => onFeatureClick("mental-wellness/assessments")}
+      />
+      <FeatureCard 
+        title={isSpanish ? "Talleres para Empleados" : "Employee Workshops"}
+        description={isSpanish 
+          ? "Sesiones interactivas sobre bienestar en el trabajo" 
+          : "Interactive sessions on workplace wellbeing"}
+        icon={BookOpen}
+        color="bg-blue-600"
+        onClick={() => onFeatureClick("workshops")}
       />
     </div>
   );

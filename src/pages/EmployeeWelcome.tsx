@@ -19,17 +19,16 @@ const EmployeeWelcome: React.FC = () => {
     } else {
       toast({
         title: "Entering Employee Portal",
-        description: "Taking you to the small business employee resources",
+        description: "Taking you to the employee resources dashboard",
         duration: 2000,
       });
       
       setTimeout(() => {
-        navigate("/small-business-portal", { 
+        navigate("/employee-dashboard", { 
           state: { 
             fromWelcome: true,
             preventTutorial: true,
-            returnToMain: true,
-            tab: 'employee'
+            returnToMain: true
           }
         });
       }, 500);
