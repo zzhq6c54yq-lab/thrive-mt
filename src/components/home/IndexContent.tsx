@@ -66,6 +66,9 @@ const IndexContent: React.FC<IndexContentProps> = ({
 }) => {
   const { toast } = useToast();
 
+  // Only show welcome tutorial when in main screen, not during onboarding
+  const shouldShowTutorial = isFirstVisit && !popupsShown.mainTutorial && screenState === 'main';
+
   const handleSkipTutorial = () => {
     setIsFirstVisit(false);
     markTutorialCompleted();
@@ -111,10 +114,10 @@ const IndexContent: React.FC<IndexContentProps> = ({
         markTutorialCompleted={markTutorialCompleted}
       />
       
-      {/* Only show welcome tutorial for tutorial button clicks, not during onboarding-to-main transitions */}
-      {isFirstVisit && !popupsShown.mainTutorial && 
+      {/* Only show welcome tutorial for tutorial button clicks, not during onboarding */}
+      {shouldShowTutorial && 
         <WelcomeTutorial
-          isOpen={isFirstVisit}
+          isOpen={shouldShowTutorial}
           onClose={handleCloseTutorial}
         />
       }

@@ -44,6 +44,12 @@ const Index = () => {
     markTutorialCompleted
   } = usePopupManagement(screenState);
 
+  // Reset onboarding flow for testing if needed
+  useEffect(() => {
+    // Uncomment this to reset onboarding for testing:
+    // localStorage.removeItem('hasCompletedOnboarding');
+  }, []);
+
   // Use the screen history hook
   useScreenHistory(screenState, setScreenState);
 
@@ -84,6 +90,12 @@ const Index = () => {
         });
       }
     }
+  };
+
+  // Helper function to reset onboarding - can be called from external links or buttons
+  const resetOnboarding = () => {
+    localStorage.removeItem('hasCompletedOnboarding');
+    setScreenState('intro');
   };
 
   return (

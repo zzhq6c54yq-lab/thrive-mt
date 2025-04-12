@@ -9,6 +9,9 @@ export const useScreenHistory = (
   const location = useLocation();
 
   useEffect(() => {
+    // Check for first visit to properly show onboarding
+    const hasCompletedOnboarding = localStorage.getItem('hasCompletedOnboarding');
+    
     // Handle incoming state from navigation
     if (location.state) {
       // If returnToFeature is true, we're coming back from an action in a feature
@@ -44,14 +47,22 @@ export const useScreenHistory = (
         );
       }
     } else {
-      // When returning without state (like browser back button)
-      // Always return to main instead of intro
-      setScreenState('main');
-      
-      window.history.replaceState(
-        { ...window.history.state, screenState: 'main' }, 
-        document.title
-      );
+      // When returning without state (like browser back button or initial load)
+      // Start onboarding process if user hasn't completed it yet
+      if (!hasCompletedOnboarding) {
+        setScreenState('intro');
+        window.history.replaceState(
+          { ...window.history.state, screenState: 'intro' }, 
+          document.title
+        );
+      } else {
+        // Return to main if onboarding is completed
+        setScreenState('main');
+        window.history.replaceState(
+          { ...window.history.state, screenState: 'main' }, 
+          document.title
+        );
+      }
     }
     
     // Only start the intro timer if we're explicitly on the intro screen
@@ -80,6 +91,11 @@ export const useScreenHistory = (
     
     // Store the previous screen state for transition detection
     localStorage.setItem('prevScreenState', screenState);
+    
+    // Mark onboarding as completed when reaching main screen
+    if (screenState === 'main') {
+      localStorage.setItem('hasCompletedOnboarding', 'true');
+    }
   }, [screenState]);
 };
 
