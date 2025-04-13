@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useToast } from "@/hooks/use-toast";
@@ -11,8 +10,69 @@ import {
   Award, Activity, Gift, Smile
 } from "lucide-react";
 
-// Define the age groups with their specific content
-const ageGroups = {
+type AgeGroupMascot = {
+  name: string;
+  greeting: string;
+  image: string;
+};
+
+type AgeGroupResource = {
+  title: string;
+  description: string;
+  icon: React.ReactNode;
+  tag: string;
+  color: string;
+  action: {
+    type: "workshop" | "assessment" | "download" | "practice" | "discussion" | 
+           "hangout" | "join" | "redeem" | "record" | "view" | "other";
+    id?: string;
+    title: string;
+    path: string;
+  };
+  stars?: number;
+};
+
+type AgeGroupGame = {
+  title: string;
+  description: string;
+  image: string;
+  color: string;
+  path: string;
+  stars?: number;
+};
+
+type AgeGroupVideo = {
+  title: string;
+  description: string;
+  thumbnail: string;
+  duration: string;
+  path: string;
+};
+
+type AgeGroupSupport = {
+  title: string;
+  description: string;
+  icon: React.ReactNode;
+  path: string;
+};
+
+type AgeGroup = {
+  title: string;
+  ageRange: string;
+  description: string;
+  gradient: string;
+  mascot?: AgeGroupMascot;
+  resources: AgeGroupResource[];
+  games: AgeGroupGame[];
+  videos: AgeGroupVideo[];
+  support: AgeGroupSupport[];
+};
+
+type AgeGroups = {
+  [key: string]: AgeGroup;
+};
+
+const ageGroups: AgeGroups = {
   "early-childhood": {
     title: "Early Childhood",
     ageRange: "Ages 2-7",
@@ -31,7 +91,7 @@ const ageGroups = {
         tag: "Emotions",
         color: "bg-pink-100 text-pink-700",
         action: {
-          type: "other" as const,
+          type: "other",
           path: "/resource-library",
           title: "See Cards"
         },
@@ -44,7 +104,7 @@ const ageGroups = {
         tag: "Stories",
         color: "bg-purple-100 text-purple-700",
         action: {
-          type: "other" as const,
+          type: "other",
           path: "/resource-library",
           title: "Watch Stories"
         },
@@ -57,7 +117,7 @@ const ageGroups = {
         tag: "Parents",
         color: "bg-blue-100 text-blue-700",
         action: {
-          type: "other" as const,
+          type: "other",
           path: "/resource-library",
           title: "Read Guide"
         },
@@ -126,6 +186,11 @@ const ageGroups = {
     ageRange: "Ages 8-13",
     description: "Interactive tools to help school-age children build resilience and social-emotional skills",
     gradient: "from-purple-400 to-blue-500",
+    mascot: {
+      name: "Wise Owl",
+      greeting: "Hello there! Ready to explore and learn new things?",
+      image: "https://images.unsplash.com/photo-1548407260-da850faa41e3?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=80"
+    },
     resources: [
       {
         title: "Friendship Guide",
@@ -134,7 +199,7 @@ const ageGroups = {
         tag: "Social Skills",
         color: "bg-purple-100 text-purple-700",
         action: {
-          type: "view" as const,
+          type: "view",
           id: "friendship-guide",
           title: "Read Guide",
           path: "/resource-library"
@@ -147,7 +212,7 @@ const ageGroups = {
         tag: "Wellness",
         color: "bg-blue-100 text-blue-700",
         action: {
-          type: "practice" as const,
+          type: "practice",
           id: "kids-mindfulness",
           title: "Try Exercise",
           path: "/mindfulness-sleep"
@@ -160,7 +225,7 @@ const ageGroups = {
         tag: "Education",
         color: "bg-indigo-100 text-indigo-700",
         action: {
-          type: "download" as const,
+          type: "download",
           id: "school-success",
           title: "Get Toolkit",
           path: "/resource-library"
@@ -226,6 +291,11 @@ const ageGroups = {
     ageRange: "Ages 14+",
     description: "Resources to support teenagers with identity, independence, and emotional well-being",
     gradient: "from-blue-400 to-teal-500",
+    mascot: {
+      name: "Nova",
+      greeting: "Hey! I'm here to help you navigate the ups and downs of teen life.",
+      image: "https://images.unsplash.com/photo-1529139574466-a303027c1d8b?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=80"
+    },
     resources: [
       {
         title: "Teen Identity Guide",
@@ -234,7 +304,7 @@ const ageGroups = {
         tag: "Identity",
         color: "bg-blue-100 text-blue-700",
         action: {
-          type: "view" as const,
+          type: "view",
           id: "teen-identity",
           title: "Read Guide",
           path: "/resource-library"
@@ -247,7 +317,7 @@ const ageGroups = {
         tag: "Wellness",
         color: "bg-teal-100 text-teal-700",
         action: {
-          type: "practice" as const,
+          type: "practice",
           id: "teen-stress",
           title: "Try Exercises",
           path: "/mindfulness-sleep"
@@ -260,7 +330,7 @@ const ageGroups = {
         tag: "Planning",
         color: "bg-indigo-100 text-indigo-700",
         action: {
-          type: "download" as const,
+          type: "download",
           id: "future-planning",
           title: "Get Toolkit",
           path: "/resource-library"
@@ -331,7 +401,6 @@ const AdolescentPortal: React.FC = () => {
   const [selectedAgeGroup, setSelectedAgeGroup] = useState<string>("early-childhood");
 
   useEffect(() => {
-    // Check if age group is passed in location state
     if (location.state && location.state.ageGroup) {
       setSelectedAgeGroup(location.state.ageGroup);
     }
@@ -352,7 +421,6 @@ const AdolescentPortal: React.FC = () => {
     navigate(path);
   };
 
-  // Early childhood specific activity
   const handleFunActivity = () => {
     toast({
       title: "Let's Play!",
@@ -373,7 +441,6 @@ const AdolescentPortal: React.FC = () => {
           ? "from-purple-100 via-blue-50 to-purple-50"
           : "from-blue-100 via-teal-50 to-blue-50"
     }`}>
-      {/* Header */}
       <div className={`bg-gradient-to-r ${currentGroup.gradient} p-6 relative`}>
         <div className="absolute top-4 right-4 z-10">
           <HomeButton />
@@ -416,45 +483,41 @@ const AdolescentPortal: React.FC = () => {
         </div>
       </div>
 
-      {/* Age selector tabs */}
       <div className="max-w-6xl mx-auto px-4 pt-4">
-        <div className="flex justify-center mb-6">
-          <div className="bg-white/60 backdrop-blur-sm rounded-full p-1 shadow-md inline-flex">
-            <button
-              className={`px-4 py-2 rounded-full text-sm font-medium transition-all ${
-                selectedAgeGroup === "early-childhood" 
-                  ? "bg-gradient-to-r from-pink-400 to-purple-500 text-white" 
-                  : "text-gray-700 hover:bg-white"
-              }`}
-              onClick={() => handleAgeGroupChange("early-childhood")}
-            >
-              Early Childhood (2-7)
-            </button>
-            <button
-              className={`px-4 py-2 rounded-full text-sm font-medium transition-all ${
-                selectedAgeGroup === "middle-childhood" 
-                  ? "bg-gradient-to-r from-purple-400 to-blue-500 text-white" 
-                  : "text-gray-700 hover:bg-white"
-              }`}
-              onClick={() => handleAgeGroupChange("middle-childhood")}
-            >
-              Middle Childhood (8-13)
-            </button>
-            <button
-              className={`px-4 py-2 rounded-full text-sm font-medium transition-all ${
-                selectedAgeGroup === "adolescence" 
-                  ? "bg-gradient-to-r from-blue-400 to-teal-500 text-white" 
-                  : "text-gray-700 hover:bg-white"
-              }`}
-              onClick={() => handleAgeGroupChange("adolescence")}
-            >
-              Adolescence (14+)
-            </button>
-          </div>
+        <div className="bg-white/60 backdrop-blur-sm rounded-full p-1 shadow-md inline-flex">
+          <button
+            className={`px-4 py-2 rounded-full text-sm font-medium transition-all ${
+              selectedAgeGroup === "early-childhood" 
+                ? "bg-gradient-to-r from-pink-400 to-purple-500 text-white" 
+                : "text-gray-700 hover:bg-white"
+            }`}
+            onClick={() => handleAgeGroupChange("early-childhood")}
+          >
+            Early Childhood (2-7)
+          </button>
+          <button
+            className={`px-4 py-2 rounded-full text-sm font-medium transition-all ${
+              selectedAgeGroup === "middle-childhood" 
+                ? "bg-gradient-to-r from-purple-400 to-blue-500 text-white" 
+                : "text-gray-700 hover:bg-white"
+            }`}
+            onClick={() => handleAgeGroupChange("middle-childhood")}
+          >
+            Middle Childhood (8-13)
+          </button>
+          <button
+            className={`px-4 py-2 rounded-full text-sm font-medium transition-all ${
+              selectedAgeGroup === "adolescence" 
+                ? "bg-gradient-to-r from-blue-400 to-teal-500 text-white" 
+                : "text-gray-700 hover:bg-white"
+            }`}
+            onClick={() => handleAgeGroupChange("adolescence")}
+          >
+            Adolescence (14+)
+          </button>
         </div>
       </div>
 
-      {/* Early Childhood Specific Mascot Section */}
       {selectedAgeGroup === "early-childhood" && currentGroup.mascot && (
         <div className="max-w-6xl mx-auto px-4 mb-8">
           <div className="bg-white rounded-xl p-6 shadow-md border-2 border-pink-200 flex flex-col md:flex-row items-center gap-6 animate-fade-in">
@@ -487,13 +550,59 @@ const AdolescentPortal: React.FC = () => {
         </div>
       )}
 
-      {/* Main Content */}
+      {selectedAgeGroup === "middle-childhood" || selectedAgeGroup === "adolescence" && currentGroup.mascot && (
+        <div className="max-w-6xl mx-auto px-4 mb-8">
+          <div className={`bg-white rounded-xl p-6 shadow-md border-2 ${
+            selectedAgeGroup === "middle-childhood" ? "border-purple-200" : "border-blue-200"
+          } flex flex-col md:flex-row items-center gap-6 animate-fade-in`}>
+            <div className={`w-32 h-32 md:w-40 md:h-40 rounded-full overflow-hidden border-4 ${
+              selectedAgeGroup === "middle-childhood" ? "border-purple-300" : "border-blue-300"
+            } flex-shrink-0`}>
+              <img 
+                src={currentGroup.mascot.image} 
+                alt={currentGroup.mascot.name}
+                className="w-full h-full object-cover" 
+                onError={(e) => {
+                  (e.target as HTMLImageElement).src = selectedAgeGroup === "middle-childhood" 
+                    ? "https://images.unsplash.com/photo-1548407260-da850faa41e3?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=80"
+                    : "https://images.unsplash.com/photo-1529139574466-a303027c1d8b?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=80";
+                }}
+              />
+            </div>
+            <div className="flex-1">
+              <div className={`${
+                selectedAgeGroup === "middle-childhood" ? "bg-purple-100" : "bg-blue-100"
+              } rounded-lg p-4 relative`}>
+                <div className={`absolute -left-4 top-1/2 transform -translate-y-1/2 rotate-45 w-4 h-4 ${
+                  selectedAgeGroup === "middle-childhood" ? "bg-purple-100" : "bg-blue-100"
+                }`}></div>
+                <h3 className={`text-xl font-medium ${
+                  selectedAgeGroup === "middle-childhood" ? "text-purple-600" : "text-blue-600"
+                } mb-2`}>Meet {currentGroup.mascot.name}!</h3>
+                <p className="text-gray-700">{currentGroup.mascot.greeting}</p>
+              </div>
+              <div className="mt-4 flex justify-end">
+                <Button 
+                  onClick={() => navigate("/mental-health-games")}
+                  className={`bg-gradient-to-r ${
+                    selectedAgeGroup === "middle-childhood"
+                      ? "from-purple-400 to-blue-400 hover:from-purple-500 hover:to-blue-500"
+                      : "from-blue-400 to-teal-400 hover:from-blue-500 hover:to-teal-500"
+                  } text-white transform transition-all hover:scale-105`}
+                >
+                  Explore Activities <Gamepad className="ml-2 h-4 w-4" />
+                </Button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
       <div className="max-w-6xl mx-auto px-4 pb-8">
         <div className="bg-white/60 backdrop-blur-sm rounded-xl p-6 shadow-md mb-8">
           <p className="text-gray-800">{currentGroup.description}</p>
         </div>
 
-        {/* Navigation Tabs */}
         <Tabs defaultValue="resources" className="mb-8" onValueChange={setActiveTab}>
           <TabsList className="bg-white/50">
             <TabsTrigger value="resources">
@@ -510,7 +619,6 @@ const AdolescentPortal: React.FC = () => {
             </TabsTrigger>
           </TabsList>
 
-          {/* Resources Tab */}
           <TabsContent value="resources" className="mt-6">
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
               {currentGroup.resources.map((resource, index) => (
@@ -532,7 +640,6 @@ const AdolescentPortal: React.FC = () => {
                     <h3 className="text-lg font-medium text-gray-800 mb-1">{resource.title}</h3>
                     <p className="text-gray-600 text-sm mb-4">{resource.description}</p>
 
-                    {/* Stars Display for Early Childhood */}
                     {selectedAgeGroup === "early-childhood" && 'stars' in resource && (
                       <div className="flex items-center mb-3">
                         {[...Array(5)].map((_, i) => (
@@ -567,7 +674,6 @@ const AdolescentPortal: React.FC = () => {
             </div>
           </TabsContent>
 
-          {/* Games Tab */}
           <TabsContent value="games" className="mt-6">
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
               {currentGroup.games.map((game, index) => (
@@ -593,7 +699,6 @@ const AdolescentPortal: React.FC = () => {
                   <div className="p-5">
                     <p className="text-gray-600 mb-4">{game.description}</p>
                     
-                    {/* Stars Display for Early Childhood */}
                     {selectedAgeGroup === "early-childhood" && 'stars' in game && (
                       <div className="flex items-center mb-3">
                         {[...Array(5)].map((_, i) => (
@@ -661,7 +766,6 @@ const AdolescentPortal: React.FC = () => {
             )}
           </TabsContent>
 
-          {/* Videos Tab */}
           <TabsContent value="videos" className="mt-6">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               {currentGroup.videos.map((video, index) => (
@@ -710,7 +814,6 @@ const AdolescentPortal: React.FC = () => {
             </div>
           </TabsContent>
 
-          {/* Support Tab */}
           <TabsContent value="support" className="mt-6">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               {currentGroup.support.map((item, index) => (
