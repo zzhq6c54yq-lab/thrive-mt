@@ -61,7 +61,7 @@ type AgeGroup = {
   ageRange: string;
   description: string;
   gradient: string;
-  mascot?: AgeGroupMascot;
+  mascot: AgeGroupMascot;
   resources: AgeGroupResource[];
   games: AgeGroupGame[];
   videos: AgeGroupVideo[];
@@ -518,7 +518,7 @@ const AdolescentPortal: React.FC = () => {
         </div>
       </div>
 
-      {selectedAgeGroup === "early-childhood" && currentGroup.mascot && (
+      {selectedAgeGroup === "early-childhood" && (
         <div className="max-w-6xl mx-auto px-4 mb-8">
           <div className="bg-white rounded-xl p-6 shadow-md border-2 border-pink-200 flex flex-col md:flex-row items-center gap-6 animate-fade-in">
             <div className="w-32 h-32 md:w-40 md:h-40 rounded-full overflow-hidden border-4 border-pink-300 flex-shrink-0">
@@ -550,7 +550,7 @@ const AdolescentPortal: React.FC = () => {
         </div>
       )}
 
-      {selectedAgeGroup === "middle-childhood" || selectedAgeGroup === "adolescence" && currentGroup.mascot && (
+      {(selectedAgeGroup === "middle-childhood" || selectedAgeGroup === "adolescence") && (
         <div className="max-w-6xl mx-auto px-4 mb-8">
           <div className={`bg-white rounded-xl p-6 shadow-md border-2 ${
             selectedAgeGroup === "middle-childhood" ? "border-purple-200" : "border-blue-200"
