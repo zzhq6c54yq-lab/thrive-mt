@@ -1,7 +1,7 @@
 
 import React, { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
-import { Shield, GraduationCap, Briefcase, Sparkles, ChevronRight } from "lucide-react";
+import { Shield, GraduationCap, Briefcase, Sparkles, ChevronRight, Users } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { useToast } from "@/hooks/use-toast";
 import useTranslation from "@/hooks/useTranslation";
@@ -62,6 +62,17 @@ const SpecializedPrograms: React.FC = () => {
       gradient: "from-[#F97316]/80 to-[#FB923C]/80",
       borderColor: "#F97316",
       imagePath: getImageUrl("https://images.unsplash.com/photo-1600880292203-757bb62b4baf?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=500&q=80")
+    },
+    {
+      title: isSpanish ? "La Experiencia Adolescente" : "Adolescent Experience",
+      description: isSpanish 
+        ? "Apoyo de salud mental adaptado para niños y adolescentes de diferentes edades" 
+        : "Age-appropriate mental health support for children and teens",
+      icon: Users,
+      path: "/adolescent-selection",
+      gradient: "from-[#D946EF]/80 to-[#EC4899]/80",
+      borderColor: "#D946EF",
+      imagePath: getImageUrl("https://images.unsplash.com/photo-1516627145497-ae6968895b74?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=500&q=80")
     }
   ];
   
@@ -97,7 +108,7 @@ const SpecializedPrograms: React.FC = () => {
 
   return (
     <div className="mb-10">
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+      <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
         {specializedPrograms.map((program, index) => (
           <div 
             key={index}

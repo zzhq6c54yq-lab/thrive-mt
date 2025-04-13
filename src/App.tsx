@@ -49,6 +49,9 @@ import GuidedPractice from "@/pages/GuidedPractice";
 import VideoRecordPage from "@/pages/VideoRecordPage";
 import VideoLibraryPage from "@/pages/VideoLibraryPage";
 import SmallBusinessSelection from "@/pages/SmallBusinessSelection";
+import AdolescentWelcome from "@/pages/AdolescentWelcome";
+import AdolescentPortal from "@/pages/AdolescentPortal";
+import AdolescentSelection from "@/pages/AdolescentSelection";
 
 function App() {
   return (
@@ -93,6 +96,10 @@ function App() {
         <Route path="/dod-portal" element={<DoDPortal />} />
         <Route path="/college-welcome" element={<CollegeWelcome />} />
         <Route path="/college-portal" element={<CollegePortal />} />
+        
+        <Route path="/adolescent-welcome" element={<AdolescentWelcome />} />
+        <Route path="/adolescent-portal" element={<AdolescentPortal />} />
+        <Route path="/adolescent-selection" element={<AdolescentSelection />} />
         
         <Route path="/military-support" element={<MilitarySupport />} />
         <Route path="/military-resources" element={<MilitaryResources />} />

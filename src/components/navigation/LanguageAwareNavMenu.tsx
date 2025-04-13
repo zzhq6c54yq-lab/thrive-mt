@@ -81,6 +81,16 @@ const LanguageAwareNavMenu: React.FC = () => {
                   </p>
                 </div>
               </li>
+              <li onClick={() => handleNavigate("/adolescent-selection")} className="cursor-pointer">
+                <div className="block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground">
+                  <div className="text-sm font-medium leading-none">
+                    {isSpanish ? "La Experiencia Adolescente" : "Adolescent Experience"}
+                  </div>
+                  <p className="line-clamp-2 text-sm leading-snug text-muted-foreground">
+                    {isSpanish ? "Apoyo para niños y adolescentes" : "Support for children and teens"}
+                  </p>
+                </div>
+              </li>
               <li onClick={() => handleNavigate("/employee-welcome")} className="cursor-pointer">
                 <div className="block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground">
                   <div className="text-sm font-medium leading-none">
