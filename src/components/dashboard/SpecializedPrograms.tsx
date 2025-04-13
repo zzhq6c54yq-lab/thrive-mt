@@ -73,6 +73,17 @@ const SpecializedPrograms: React.FC = () => {
       gradient: "from-[#D946EF]/80 to-[#EC4899]/80",
       borderColor: "#D946EF",
       imagePath: getImageUrl("https://images.unsplash.com/photo-1516627145497-ae6968895b74?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=500&q=80")
+    },
+    {
+      title: isSpanish ? "Los Años Dorados" : "The Golden Years",
+      description: isSpanish 
+        ? "Recursos de bienestar mental para adultos mayores y personas de la tercera edad" 
+        : "Mental wellness resources for seniors and elderly adults",
+      icon: Sparkles,
+      path: "/golden-years-welcome",
+      gradient: "from-[#F59E0B]/80 to-[#FBBF24]/80",
+      borderColor: "#F59E0B",
+      imagePath: getImageUrl("https://images.unsplash.com/photo-1447452001602-7090c7ab2db3?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80")
     }
   ];
   
@@ -108,7 +119,7 @@ const SpecializedPrograms: React.FC = () => {
 
   return (
     <div className="mb-10">
-      <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+      <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-5 gap-4">
         {specializedPrograms.map((program, index) => (
           <div 
             key={index}

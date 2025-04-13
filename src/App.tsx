@@ -52,6 +52,9 @@ import SmallBusinessSelection from "@/pages/SmallBusinessSelection";
 import AdolescentWelcome from "@/pages/AdolescentWelcome";
 import AdolescentPortal from "@/pages/AdolescentPortal";
 import AdolescentSelection from "@/pages/AdolescentSelection";
+import GoldenYearsWelcome from "@/pages/GoldenYearsWelcome";
+import GoldenYearsPortal from "@/pages/GoldenYearsPortal";
+import GoldenYearsJournal from "@/pages/GoldenYearsJournal";
 
 function App() {
   return (
@@ -100,6 +103,10 @@ function App() {
         <Route path="/adolescent-welcome" element={<AdolescentWelcome />} />
         <Route path="/adolescent-portal" element={<AdolescentPortal />} />
         <Route path="/adolescent-selection" element={<AdolescentSelection />} />
+        
+        <Route path="/golden-years-welcome" element={<GoldenYearsWelcome />} />
+        <Route path="/golden-years-portal" element={<GoldenYearsPortal />} />
+        <Route path="/golden-years-journal" element={<GoldenYearsJournal />} />
         
         <Route path="/military-support" element={<MilitarySupport />} />
         <Route path="/military-resources" element={<MilitaryResources />} />

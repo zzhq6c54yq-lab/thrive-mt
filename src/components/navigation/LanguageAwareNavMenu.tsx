@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useToast } from "@/hooks/use-toast";
@@ -88,6 +87,16 @@ const LanguageAwareNavMenu: React.FC = () => {
                   </div>
                   <p className="line-clamp-2 text-sm leading-snug text-muted-foreground">
                     {isSpanish ? "Apoyo para niños y adolescentes" : "Support for children and teens"}
+                  </p>
+                </div>
+              </li>
+              <li onClick={() => handleNavigate("/golden-years-welcome")} className="cursor-pointer">
+                <div className="block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground">
+                  <div className="text-sm font-medium leading-none">
+                    {isSpanish ? "Los Años Dorados" : "The Golden Years"}
+                  </div>
+                  <p className="line-clamp-2 text-sm leading-snug text-muted-foreground">
+                    {isSpanish ? "Bienestar para adultos mayores" : "Wellness for seniors"}
                   </p>
                 </div>
               </li>
