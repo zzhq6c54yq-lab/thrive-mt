@@ -44,11 +44,16 @@ const Index = () => {
     markTutorialCompleted
   } = usePopupManagement(screenState);
 
-  // Reset onboarding flow for testing if needed
+  // Reset onboarding flow for testing
   useEffect(() => {
-    // Uncomment this to reset onboarding for testing:
-    // localStorage.removeItem('hasCompletedOnboarding');
-  }, []);
+    // Check if there's a URL parameter to force reset onboarding
+    const searchParams = new URLSearchParams(location.search);
+    if (searchParams.get('resetOnboarding') === 'true') {
+      console.log("Resetting onboarding due to URL parameter");
+      localStorage.removeItem('hasCompletedOnboarding');
+      setScreenState('intro');
+    }
+  }, [location, setScreenState]);
 
   // Use the screen history hook
   useScreenHistory(screenState, setScreenState);
@@ -96,6 +101,7 @@ const Index = () => {
   const resetOnboarding = () => {
     localStorage.removeItem('hasCompletedOnboarding');
     setScreenState('intro');
+    console.log("Onboarding reset manually");
   };
 
   return (

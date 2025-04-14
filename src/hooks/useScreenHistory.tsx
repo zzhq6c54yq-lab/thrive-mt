@@ -51,6 +51,7 @@ export const useScreenHistory = (
       // Start onboarding process if user hasn't completed it yet
       if (!hasCompletedOnboarding) {
         setScreenState('intro');
+        console.log("Starting onboarding from beginning - no completion record found");
         window.history.replaceState(
           { ...window.history.state, screenState: 'intro' }, 
           document.title
@@ -58,6 +59,7 @@ export const useScreenHistory = (
       } else {
         // Return to main if onboarding is completed
         setScreenState('main');
+        console.log("Onboarding already completed, going to main dashboard");
         window.history.replaceState(
           { ...window.history.state, screenState: 'main' }, 
           document.title
@@ -71,6 +73,7 @@ export const useScreenHistory = (
       const timer = setTimeout(() => {
         if (screenState === 'intro') {
           setScreenState('mood');
+          console.log("Auto-advancing from intro to mood screen");
           window.history.replaceState(
             { ...window.history.state, screenState: 'mood' }, 
             document.title
