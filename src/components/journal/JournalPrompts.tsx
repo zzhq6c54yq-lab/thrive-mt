@@ -109,8 +109,9 @@ const JournalPrompts: React.FC<JournalPromptsProps> = ({ category, onSelectPromp
     ],
   };
 
-  // Fixed the type error by correctly checking if the category exists in prompts
-  const currentPrompts = prompts[category as keyof typeof prompts] || prompts.childhood;
+  // Get prompts for the selected category or default to childhood
+  const categoryKey = category as keyof typeof prompts;
+  const currentPrompts = prompts[categoryKey] || prompts.childhood;
 
   return (
     <ScrollArea className="h-[300px] rounded-md border border-teal-500/50 p-4 bg-teal-800/50">
