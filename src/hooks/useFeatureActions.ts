@@ -16,6 +16,36 @@ export const useFeatureActions = () => {
   const location = useLocation();
   const { toast } = useToast();
 
+  // Helper function to detect if we're in a specialized portal
+  const isInSpecializedPortal = () => {
+    const path = location.pathname;
+    return (
+      path.includes("golden-years") || 
+      path.includes("adolescent") ||
+      path.includes("dod-portal") ||
+      path.includes("college-portal") ||
+      path.includes("small-business")
+    );
+  };
+  
+  // Get the base portal path for the current specialized portal
+  const getPortalBasePath = () => {
+    const path = location.pathname;
+    
+    if (path.includes("golden-years")) return "/golden-years-portal";
+    if (path.includes("adolescent")) {
+      // Get the selected age group to maintain it
+      const ageGroup = location.state?.ageGroup || "adolescence";
+      return "/adolescent-portal";
+    }
+    if (path.includes("dod")) return "/dod-portal";
+    if (path.includes("college")) return "/college-portal";
+    if (path.includes("small-business")) return "/small-business-portal";
+    
+    // Default to main app
+    return "/";
+  };
+
   // Generic function to handle action button clicks
   const handleActionClick = (config: ActionButtonConfig) => {
     const { type, id, title, path, action } = config;
@@ -33,31 +63,37 @@ export const useFeatureActions = () => {
       return;
     }
     
+    // Check if we're in a specialized portal
+    const inPortal = isInSpecializedPortal();
+    const portalPath = getPortalBasePath();
+    const stateParams = inPortal ? 
+      { 
+        ...location.state,
+        stayInPortal: true,
+        preventTutorial: true,
+        portalPath
+      } : 
+      {
+        preventTutorial: true,
+        fromFeature: location.pathname,
+        returnToFeature: true
+      };
+    
     // Handle navigation based on action type
     switch (type) {
       case 'workshop':
         // Navigate to specific workshop
-        navigate(`/workshop/${id}`, { 
-          state: { 
-            preventTutorial: true,
-            activeTab: "workshop",
-            workshopTitle: title,
-            fromFeature: location.pathname,
-            returnToFeature: true
-          } 
-        });
+        navigate(`/workshop/${id}`, { state: stateParams });
         break;
         
       case 'assessment':
         // Navigate directly to assessment
         navigate(`/mental-wellness/assessments/${id || ''}`, {
           state: {
-            preventTutorial: true,
+            ...stateParams,
             startAssessment: true,
             directToAssessment: true,
-            assessmentTitle: title,
-            fromFeature: location.pathname,
-            returnToFeature: true
+            assessmentTitle: title
           }
         });
         break;
@@ -77,10 +113,8 @@ export const useFeatureActions = () => {
         // Navigate to guided practice
         navigate(`/guided-practice/${id || ''}`, {
           state: {
-            preventTutorial: true,
-            practiceTitle: title,
-            fromFeature: location.pathname,
-            returnToFeature: true
+            ...stateParams,
+            practiceTitle: title
           }
         });
         break;
@@ -89,11 +123,9 @@ export const useFeatureActions = () => {
         // Navigate to community discussions
         navigate(`/community-support`, {
           state: {
-            preventTutorial: true,
+            ...stateParams,
             activeTab: "discussions",
-            discussionTopic: title,
-            fromFeature: location.pathname,
-            returnToFeature: true
+            discussionTopic: title
           }
         });
         break;
@@ -102,11 +134,9 @@ export const useFeatureActions = () => {
         // Join virtual meeting or group
         navigate(`/virtual-meetings`, {
           state: {
-            preventTutorial: true,
+            ...stateParams,
             meetingTitle: title,
-            autoJoin: true,
-            fromFeature: location.pathname,
-            returnToFeature: true
+            autoJoin: true
           }
         });
         break;
@@ -115,10 +145,8 @@ export const useFeatureActions = () => {
         // Navigate to redemption page
         navigate(`/copay-credits`, {
           state: {
-            preventTutorial: true,
-            redeemAction: title,
-            fromFeature: location.pathname,
-            returnToFeature: true
+            ...stateParams,
+            redeemAction: title
           }
         });
         break;
@@ -127,10 +155,8 @@ export const useFeatureActions = () => {
         // For video diary recording
         navigate(`/video-diary/record`, {
           state: {
-            preventTutorial: true,
-            recordingType: title,
-            fromFeature: location.pathname,
-            returnToFeature: true
+            ...stateParams,
+            recordingType: title
           }
         });
         break;
@@ -138,14 +164,7 @@ export const useFeatureActions = () => {
       default:
         // Default case: navigate to specified path or do nothing
         if (path) {
-          navigate(path, {
-            state: {
-              preventTutorial: true,
-              title,
-              fromFeature: location.pathname,
-              returnToFeature: true
-            }
-          });
+          navigate(path, { state: stateParams });
         } else {
           console.warn("No path or action provided for this button");
         }
@@ -156,8 +175,35 @@ export const useFeatureActions = () => {
   const handleBackNavigation = () => {
     const { state } = location;
     
+    // Check if we're in a specialized portal
+    const inPortal = isInSpecializedPortal();
+    const portalPath = getPortalBasePath();
+    
+    // If we're in a portal and have stayInPortal flag, navigate within the portal
+    if (inPortal && state && state.stayInPortal) {
+      // If we have a specific portal path to return to
+      if (state.portalPath) {
+        navigate(state.portalPath, {
+          state: {
+            ...state,
+            stayInPortal: true,
+            preventTutorial: true
+          }
+        });
+      }
+      // Otherwise go to the default portal path
+      else {
+        navigate(portalPath, {
+          state: {
+            ...state,
+            stayInPortal: true,
+            preventTutorial: true
+          }
+        });
+      }
+    }
     // If we have fromFeature in state, navigate back to that feature
-    if (state && state.fromFeature) {
+    else if (state && state.fromFeature) {
       navigate(state.fromFeature, {
         state: {
           ...state,

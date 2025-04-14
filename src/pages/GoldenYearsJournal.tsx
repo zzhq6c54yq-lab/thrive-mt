@@ -1,21 +1,19 @@
-
 import React, { useState, useEffect } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import { useToast } from "@/hooks/use-toast";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import HomeButton from "@/components/HomeButton";
 import { Textarea } from "@/components/ui/textarea";
-import { Card, CardContent } from "@/components/ui/card";
+import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import HomeButton from "@/components/HomeButton";
 import { 
   BookOpen, PenTool, Share, Clock, Save, MessageSquare, Send, 
   FileCheck, Footprints, Heart, FileText, HeartHandshake, Users,
   Calendar, MapPin, Camera, Archive, Download, Lightbulb
 } from "lucide-react";
 import { FamilyMember, getAllFamilyMembers, shareVideo } from "@/services/familyShareService";
-import { useSearchParams } from "react-router-dom";
 
 // Life chapter prompts for memoir building
 const LifeChapterPrompts = [
@@ -394,9 +392,9 @@ const GoldenYearsJournal: React.FC = () => {
   return (
     <div className="min-h-screen bg-gradient-to-b from-[#FEF3C7] via-[#FEF9E7] to-[#FFFBEB] text-gray-800 pb-10">
       {/* Header */}
-      <div className="bg-gradient-to-r from-amber-500 to-orange-400 p-6 mb-8 relative">
+      <div className="bg-gradient-to-r from-amber-500 to-orange-400 p-6 relative">
         <div className="absolute top-4 right-4 z-10">
-          <HomeButton />
+          <HomeButton portalMode={true} portalPath="/golden-years-portal" />
         </div>
         <div className="max-w-5xl mx-auto">
           <div className="flex items-center gap-4">

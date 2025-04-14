@@ -1,4 +1,3 @@
-
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
@@ -47,7 +46,9 @@ const SpecializedProgramWelcome: React.FC<WelcomeScreenProps> = ({
       setTimeout(() => {
         navigate(portalPath, { 
           state: { 
-            fromWelcome: true 
+            fromWelcome: true,
+            stayInPortal: true,
+            preventTutorial: true
           }
         });
       }, 500);

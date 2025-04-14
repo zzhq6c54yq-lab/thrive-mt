@@ -1,4 +1,3 @@
-
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
@@ -52,7 +51,8 @@ const AdolescentSelection: React.FC = () => {
 
     navigate("/adolescent-portal", { 
       state: { 
-        ageGroup: id, 
+        ageGroup: id,
+        stayInPortal: true,
         preventTutorial: true 
       }
     });

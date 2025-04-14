@@ -81,7 +81,7 @@ const ageGroups: AgeGroups = {
     mascot: {
       name: "Buddy Bear",
       greeting: "Hi friend! Let's play and learn together!",
-      image: "https://images.unsplash.com/photo-1613057389222-5ccb9bc64853?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=80"
+      image: "https://images.unsplash.com/photo-1559454403-b8fb88521675?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=80"
     },
     resources: [
       {
@@ -136,7 +136,7 @@ const ageGroups: AgeGroups = {
       {
         title: "Color My Mood",
         description: "A creative coloring activity about emotions",
-        image: "https://images.unsplash.com/photo-1560421683-6856ea585c78?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=80",
+        image: "https://images.unsplash.com/photo-1560800452-f2d475982b96?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=80",
         color: "bg-gradient-to-br from-blue-400 to-purple-500",
         path: "/game-play/color-mood",
         stars: 5
@@ -396,21 +396,17 @@ const ageGroups: AgeGroups = {
 const AdolescentPortal: React.FC = () => {
   const navigate = useNavigate();
   const { toast } = useToast();
-  const location = useLocation();
   const [activeTab, setActiveTab] = useState("resources");
-  const [selectedAgeGroup, setSelectedAgeGroup] = useState<string>("early-childhood");
-
+  const location = useLocation();
+  const [currentAgeGroup, setCurrentAgeGroup] = useState<string>("adolescence");
+  
   useEffect(() => {
     if (location.state && location.state.ageGroup) {
-      setSelectedAgeGroup(location.state.ageGroup);
+      setCurrentAgeGroup(location.state.ageGroup);
     }
-  }, [location]);
-
-  const currentGroup = ageGroups[selectedAgeGroup as keyof typeof ageGroups];
-
-  const handleAgeGroupChange = (ageGroup: string) => {
-    setSelectedAgeGroup(ageGroup);
-  };
+  }, [location.state]);
+  
+  const ageGroup = ageGroups[currentAgeGroup];
 
   const handleNavigate = (path: string) => {
     toast({
@@ -418,255 +414,117 @@ const AdolescentPortal: React.FC = () => {
       description: `Taking you to ${path}`,
       duration: 1500,
     });
-    navigate(path);
-  };
-
-  const handleFunActivity = () => {
-    toast({
-      title: "Let's Play!",
-      description: "Launching a fun activity for you!",
-      duration: 1500,
-    });
     
-    setTimeout(() => {
-      navigate("/mental-health-games");
-    }, 500);
+    navigate(path, { 
+      state: { 
+        ageGroup: currentAgeGroup,
+        stayInPortal: true,
+        preventTutorial: true 
+      }
+    });
   };
 
   return (
-    <div className={`min-h-screen bg-gradient-to-b ${
-      selectedAgeGroup === "early-childhood" 
-        ? "from-pink-100 via-purple-50 to-pink-50" 
-        : selectedAgeGroup === "middle-childhood"
-          ? "from-purple-100 via-blue-50 to-purple-50"
-          : "from-blue-100 via-teal-50 to-blue-50"
-    }`}>
-      <div className={`bg-gradient-to-r ${currentGroup.gradient} p-6 relative`}>
+    <div className="min-h-screen bg-gradient-to-b from-[#1a1a1f] via-[#242432] to-[#272730] text-white">
+      <div className={`bg-gradient-to-r ${ageGroup.gradient} p-6 relative`}>
         <div className="absolute top-4 right-4 z-10">
-          <HomeButton />
+          <HomeButton portalMode={true} portalPath="/adolescent-selection" />
         </div>
+        
         <div className="max-w-6xl mx-auto">
           <div className="flex flex-col md:flex-row items-center justify-between">
-            <div className="flex flex-col md:flex-row items-center mb-4 md:mb-0">
-              <div className="bg-white/20 p-3 rounded-full mr-4">
-                {selectedAgeGroup === "early-childhood" ? (
-                  <Smile className="h-8 w-8 text-white" />
-                ) : selectedAgeGroup === "middle-childhood" ? (
-                  <Gamepad className="h-8 w-8 text-white" />
-                ) : (
-                  <Users className="h-8 w-8 text-white" />
-                )}
+            <div className="flex items-center mb-4 md:mb-0">
+              <div className="bg-white/20 p-3 rounded-full mr-4 w-16 h-16 flex items-center justify-center">
+                <Sparkles className="h-8 w-8 text-white" />
               </div>
-              <div className="text-center md:text-left">
-                <h1 className="text-3xl md:text-4xl font-light text-white">{currentGroup.title}</h1>
-                <p className="text-white/90">{currentGroup.ageRange}</p>
+              <div>
+                <h1 className="text-3xl md:text-4xl font-light text-white">{ageGroup.title}</h1>
+                <p className="text-white/90">{ageGroup.description}</p>
               </div>
-            </div>
-            
-            <div className="flex gap-3">
-              <Button 
-                onClick={() => handleNavigate("/mental-health-games")}
-                variant="outline"
-                className="border-white/40 text-white bg-white/10 hover:bg-white/20"
-              >
-                Play Games <Gamepad className="ml-2 h-4 w-4" />
-              </Button>
-              <Button 
-                onClick={() => handleNavigate("/family-resources")}
-                variant="outline"
-                className="border-white/40 text-white bg-white/10 hover:bg-white/20"
-              >
-                Family Resources <Users className="ml-2 h-4 w-4" />
-              </Button>
             </div>
           </div>
         </div>
       </div>
 
-      <div className="max-w-6xl mx-auto px-4 pt-4">
-        <div className="bg-white/60 backdrop-blur-sm rounded-full p-1 shadow-md inline-flex">
-          <button
-            className={`px-4 py-2 rounded-full text-sm font-medium transition-all ${
-              selectedAgeGroup === "early-childhood" 
-                ? "bg-gradient-to-r from-pink-400 to-purple-500 text-white" 
-                : "text-gray-700 hover:bg-white"
-            }`}
-            onClick={() => handleAgeGroupChange("early-childhood")}
-          >
-            Early Childhood (2-7)
-          </button>
-          <button
-            className={`px-4 py-2 rounded-full text-sm font-medium transition-all ${
-              selectedAgeGroup === "middle-childhood" 
-                ? "bg-gradient-to-r from-purple-400 to-blue-500 text-white" 
-                : "text-gray-700 hover:bg-white"
-            }`}
-            onClick={() => handleAgeGroupChange("middle-childhood")}
-          >
-            Middle Childhood (8-13)
-          </button>
-          <button
-            className={`px-4 py-2 rounded-full text-sm font-medium transition-all ${
-              selectedAgeGroup === "adolescence" 
-                ? "bg-gradient-to-r from-blue-400 to-teal-500 text-white" 
-                : "text-gray-700 hover:bg-white"
-            }`}
-            onClick={() => handleAgeGroupChange("adolescence")}
-          >
-            Adolescence (14+)
-          </button>
+      <div className="max-w-6xl mx-auto px-4 py-6">
+        <div className="bg-white/10 backdrop-blur-sm rounded-xl p-6 shadow-md mb-8 border border-white/20">
+          <div className="flex flex-col md:flex-row items-center gap-6">
+            <div className="w-24 h-24 rounded-full overflow-hidden bg-gray-200 flex-shrink-0">
+              <img 
+                src={ageGroup.mascot.image} 
+                alt={ageGroup.mascot.name}
+                className="w-full h-full object-cover"
+                onError={(e) => {
+                  (e.target as HTMLImageElement).src = "https://images.unsplash.com/photo-1559454403-b8fb88521675?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=80";
+                }}
+              />
+            </div>
+            <div>
+              <h2 className="text-2xl font-medium text-white mb-2">
+                Hey there! I'm {ageGroup.mascot.name}
+              </h2>
+              <p className="text-white/80">
+                {ageGroup.mascot.greeting}
+              </p>
+            </div>
+          </div>
         </div>
       </div>
 
-      {selectedAgeGroup === "early-childhood" && (
-        <div className="max-w-6xl mx-auto px-4 mb-8">
-          <div className="bg-white rounded-xl p-6 shadow-md border-2 border-pink-200 flex flex-col md:flex-row items-center gap-6 animate-fade-in">
-            <div className="w-32 h-32 md:w-40 md:h-40 rounded-full overflow-hidden border-4 border-pink-300 flex-shrink-0">
-              <img 
-                src={currentGroup.mascot.image} 
-                alt={currentGroup.mascot.name}
-                className="w-full h-full object-cover" 
-                onError={(e) => {
-                  (e.target as HTMLImageElement).src = "https://images.unsplash.com/photo-1613057389222-5ccb9bc64853?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=80";
-                }}
-              />
-            </div>
-            <div className="flex-1">
-              <div className="bg-pink-100 rounded-lg p-4 relative">
-                <div className="absolute -left-4 top-1/2 transform -translate-y-1/2 rotate-45 w-4 h-4 bg-pink-100"></div>
-                <h3 className="text-xl font-medium text-pink-600 mb-2">Hi! I'm {currentGroup.mascot.name}!</h3>
-                <p className="text-gray-700">{currentGroup.mascot.greeting}</p>
-              </div>
-              <div className="mt-4 flex justify-end">
-                <Button 
-                  onClick={handleFunActivity}
-                  className="bg-gradient-to-r from-pink-400 to-purple-400 text-white hover:from-pink-500 hover:to-purple-500 transform transition-all hover:scale-105"
-                >
-                  Let's Play Something Fun! <Sparkles className="ml-2 h-4 w-4" />
-                </Button>
-              </div>
-            </div>
-          </div>
-        </div>
-      )}
-
-      {(selectedAgeGroup === "middle-childhood" || selectedAgeGroup === "adolescence") && (
-        <div className="max-w-6xl mx-auto px-4 mb-8">
-          <div className={`bg-white rounded-xl p-6 shadow-md border-2 ${
-            selectedAgeGroup === "middle-childhood" ? "border-purple-200" : "border-blue-200"
-          } flex flex-col md:flex-row items-center gap-6 animate-fade-in`}>
-            <div className={`w-32 h-32 md:w-40 md:h-40 rounded-full overflow-hidden border-4 ${
-              selectedAgeGroup === "middle-childhood" ? "border-purple-300" : "border-blue-300"
-            } flex-shrink-0`}>
-              <img 
-                src={currentGroup.mascot.image} 
-                alt={currentGroup.mascot.name}
-                className="w-full h-full object-cover" 
-                onError={(e) => {
-                  (e.target as HTMLImageElement).src = selectedAgeGroup === "middle-childhood" 
-                    ? "https://images.unsplash.com/photo-1548407260-da850faa41e3?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=80"
-                    : "https://images.unsplash.com/photo-1529139574466-a303027c1d8b?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=80";
-                }}
-              />
-            </div>
-            <div className="flex-1">
-              <div className={`${
-                selectedAgeGroup === "middle-childhood" ? "bg-purple-100" : "bg-blue-100"
-              } rounded-lg p-4 relative`}>
-                <div className={`absolute -left-4 top-1/2 transform -translate-y-1/2 rotate-45 w-4 h-4 ${
-                  selectedAgeGroup === "middle-childhood" ? "bg-purple-100" : "bg-blue-100"
-                }`}></div>
-                <h3 className={`text-xl font-medium ${
-                  selectedAgeGroup === "middle-childhood" ? "text-purple-600" : "text-blue-600"
-                } mb-2`}>Meet {currentGroup.mascot.name}!</h3>
-                <p className="text-gray-700">{currentGroup.mascot.greeting}</p>
-              </div>
-              <div className="mt-4 flex justify-end">
-                <Button 
-                  onClick={() => navigate("/mental-health-games")}
-                  className={`bg-gradient-to-r ${
-                    selectedAgeGroup === "middle-childhood"
-                      ? "from-purple-400 to-blue-400 hover:from-purple-500 hover:to-blue-500"
-                      : "from-blue-400 to-teal-400 hover:from-blue-500 hover:to-teal-500"
-                  } text-white transform transition-all hover:scale-105`}
-                >
-                  Explore Activities <Gamepad className="ml-2 h-4 w-4" />
-                </Button>
-              </div>
-            </div>
-          </div>
-        </div>
-      )}
-
-      <div className="max-w-6xl mx-auto px-4 pb-8">
-        <div className="bg-white/60 backdrop-blur-sm rounded-xl p-6 shadow-md mb-8">
-          <p className="text-gray-800">{currentGroup.description}</p>
-        </div>
-
+      <div className="max-w-6xl mx-auto px-4 pb-12">
         <Tabs defaultValue="resources" className="mb-8" onValueChange={setActiveTab}>
-          <TabsList className="bg-white/50">
-            <TabsTrigger value="resources">
+          <TabsList className="bg-white/10 border border-white/20">
+            <TabsTrigger value="resources" className="data-[state=active]:bg-white/20">
               <BookMarked className="h-4 w-4 mr-2" /> Resources
             </TabsTrigger>
-            <TabsTrigger value="games">
+            <TabsTrigger value="games" className="data-[state=active]:bg-white/20">
               <Gamepad className="h-4 w-4 mr-2" /> Games
             </TabsTrigger>
-            <TabsTrigger value="videos">
+            <TabsTrigger value="videos" className="data-[state=active]:bg-white/20">
               <Video className="h-4 w-4 mr-2" /> Videos
             </TabsTrigger>
-            <TabsTrigger value="support">
+            <TabsTrigger value="support" className="data-[state=active]:bg-white/20">
               <Heart className="h-4 w-4 mr-2" /> Support
             </TabsTrigger>
           </TabsList>
 
           <TabsContent value="resources" className="mt-6">
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-              {currentGroup.resources.map((resource, index) => (
+              {ageGroup.resources.map((resource, index) => (
                 <div 
                   key={index} 
-                  className={`bg-white rounded-xl shadow-md overflow-hidden border ${
-                    selectedAgeGroup === "early-childhood"
-                      ? "border-pink-100"
-                      : selectedAgeGroup === "middle-childhood"
-                        ? "border-purple-100"
-                        : "border-blue-100"
-                  } hover:shadow-lg transition-all duration-300`}
+                  className="bg-white/10 rounded-xl overflow-hidden border border-white/10 hover:border-white/30 transition-all"
                 >
                   <div className="p-5">
-                    <div className="flex justify-between items-start mb-3">
-                      {resource.icon}
-                      <span className={`text-xs px-2 py-1 rounded-full ${resource.color}`}>{resource.tag}</span>
+                    <div className="flex justify-between items-start mb-4">
+                      <div className="bg-white/10 p-2 rounded-full">
+                        {resource.icon}
+                      </div>
+                      <div className={`text-xs px-2 py-1 rounded-full ${resource.color}`}>
+                        {resource.tag}
+                      </div>
                     </div>
-                    <h3 className="text-lg font-medium text-gray-800 mb-1">{resource.title}</h3>
-                    <p className="text-gray-600 text-sm mb-4">{resource.description}</p>
-
-                    {selectedAgeGroup === "early-childhood" && 'stars' in resource && (
+                    
+                    {resource.stars && (
                       <div className="flex items-center mb-3">
                         {[...Array(5)].map((_, i) => (
                           <Star 
-                            key={i}
-                            className={`h-4 w-4 ${i < (resource.stars as number) ? 'text-yellow-400 fill-yellow-400' : 'text-gray-300'}`} 
+                            key={i} 
+                            className={`h-4 w-4 ${i < (resource.stars || 0) ? 'text-yellow-400 fill-yellow-400' : 'text-gray-400'}`} 
                           />
                         ))}
                       </div>
                     )}
                     
+                    <h3 className="text-lg font-medium text-white mb-2">{resource.title}</h3>
+                    <p className="text-white/70 text-sm mb-4">{resource.description}</p>
+                    
                     <Button 
-                      onClick={() => {
-                        if ('action' in resource && resource.action) {
-                          handleNavigate(resource.action.path);
-                        }
-                      }}
-                      variant={selectedAgeGroup === "early-childhood" ? "default" : "outline"}
-                      className={
-                        selectedAgeGroup === "early-childhood"
-                          ? "bg-gradient-to-r from-pink-400 to-purple-500 text-white hover:from-pink-500 hover:to-purple-600"
-                          : selectedAgeGroup === "middle-childhood"
-                            ? "border-purple-300 text-purple-700 hover:bg-purple-50"
-                            : "border-blue-300 text-blue-700 hover:bg-blue-50"
-                      }
+                      onClick={() => handleNavigate(resource.action.path)}
+                      variant="outline" 
+                      className="w-full bg-white/5 border-white/20 hover:bg-white/10"
                     >
-                      {'action' in resource && resource.action ? resource.action.title : "Learn More"}
+                      {resource.action.title}
                     </Button>
                   </div>
                 </div>
@@ -676,137 +534,85 @@ const AdolescentPortal: React.FC = () => {
 
           <TabsContent value="games" className="mt-6">
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-              {currentGroup.games.map((game, index) => (
+              {ageGroup.games.map((game, index) => (
                 <div 
-                  key={index} 
-                  className="bg-white rounded-xl shadow-md overflow-hidden hover:shadow-lg transition-all duration-300 hover:scale-105"
+                  key={index}
+                  className="rounded-xl overflow-hidden border border-white/10 hover:border-white/30 transition-all"
                 >
-                  <div className="h-40 overflow-hidden relative">
+                  <div className="h-48 overflow-hidden relative">
+                    <div className={`absolute inset-0 ${game.color} opacity-40`}></div>
                     <img 
                       src={game.image} 
-                      alt={game.title} 
-                      className="w-full h-full object-cover"
+                      alt={game.title}
+                      className="w-full h-full object-cover object-center"
                       onError={(e) => {
-                        (e.target as HTMLImageElement).src = "https://images.unsplash.com/photo-1553481187-be93c21490a9?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=80";
+                        (e.target as HTMLImageElement).src = "https://images.unsplash.com/photo-1560421683-6856ea585c78?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=80";
                       }}
                     />
-                    <div className={`absolute inset-0 opacity-70 ${game.color}`}></div>
-                    <div className="absolute inset-0 flex items-center justify-center">
-                      <h3 className="text-xl font-bold text-white">{game.title}</h3>
+                    <div className="absolute top-2 right-2">
+                      {game.stars && (
+                        <div className="bg-black/50 rounded-full px-2 py-1 flex items-center">
+                          {[...Array(5)].map((_, i) => (
+                            <Star 
+                              key={i} 
+                              className={`h-3 w-3 ${i < (game.stars || 0) ? 'text-yellow-400 fill-yellow-400' : 'text-gray-400'}`} 
+                            />
+                          ))}
+                        </div>
+                      )}
                     </div>
                   </div>
                   
-                  <div className="p-5">
-                    <p className="text-gray-600 mb-4">{game.description}</p>
-                    
-                    {selectedAgeGroup === "early-childhood" && 'stars' in game && (
-                      <div className="flex items-center mb-3">
-                        {[...Array(5)].map((_, i) => (
-                          <Star 
-                            key={i}
-                            className={`h-4 w-4 ${i < (game.stars as number) ? 'text-yellow-400 fill-yellow-400' : 'text-gray-300'}`} 
-                          />
-                        ))}
-                      </div>
-                    )}
-                    
+                  <div className="p-4 bg-white/10 backdrop-blur-sm">
+                    <h3 className="text-lg font-medium text-white mb-1">{game.title}</h3>
+                    <p className="text-white/70 text-sm mb-3">{game.description}</p>
                     <Button 
                       onClick={() => handleNavigate(game.path)}
-                      variant={selectedAgeGroup === "early-childhood" ? "default" : "outline"}
-                      className={
-                        selectedAgeGroup === "early-childhood"
-                          ? "w-full bg-gradient-to-r from-pink-400 to-purple-500 text-white hover:from-pink-500 hover:to-purple-600"
-                          : selectedAgeGroup === "middle-childhood"
-                            ? "w-full border-purple-300 text-purple-700 hover:bg-purple-50"
-                            : "w-full border-blue-300 text-blue-700 hover:bg-blue-50"
-                      }
+                      className="w-full bg-white/10 hover:bg-white/20 border-white/10"
                     >
-                      {selectedAgeGroup === "early-childhood" ? (
-                        <>Play Now <Gamepad className="ml-2 h-4 w-4" /></>
-                      ) : (
-                        <>Play Game <Gamepad className="ml-2 h-4 w-4" /></>
-                      )}
+                      Play Game
                     </Button>
                   </div>
                 </div>
               ))}
             </div>
-            
-            {selectedAgeGroup === "early-childhood" && (
-              <div className="mt-8 bg-gradient-to-r from-pink-100 to-purple-100 rounded-xl p-6 border border-pink-200 animate-fade-in">
-                <div className="flex items-center gap-4">
-                  <div className="p-3 bg-white/50 rounded-full">
-                    <Gift className="h-8 w-8 text-pink-500" />
-                  </div>
-                  <div>
-                    <h3 className="text-xl font-medium text-purple-700">Collect Fun Stickers!</h3>
-                    <p className="text-gray-700">Play more games to earn special stickers for your collection!</p>
-                  </div>
-                </div>
-                <div className="flex flex-wrap gap-3 mt-4 justify-center">
-                  {[...Array(3)].map((_, i) => (
-                    <div key={i} className="w-16 h-16 bg-white/70 rounded-full flex items-center justify-center border-2 border-dashed border-pink-300">
-                      <Sparkles className="h-6 w-6 text-pink-300" />
-                    </div>
-                  ))}
-                  {[...Array(2)].map((_, i) => (
-                    <div key={i+3} className="w-16 h-16 bg-white rounded-full flex items-center justify-center border-2 border-pink-400">
-                      <img 
-                        src={`https://images.unsplash.com/photo-${1610270945356 + i}?ixlib=rb-4.0.3&auto=format&fit=crop&w=100&q=80`} 
-                        alt="Sticker" 
-                        className="w-12 h-12 object-cover rounded-full"
-                        onError={(e) => {
-                          (e.target as HTMLImageElement).src = "https://images.unsplash.com/photo-1562157873-818bc0726f68?ixlib=rb-4.0.3&auto=format&fit=crop&w=100&q=80";
-                        }}
-                      />
-                    </div>
-                  ))}
-                </div>
-              </div>
-            )}
           </TabsContent>
 
           <TabsContent value="videos" className="mt-6">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              {currentGroup.videos.map((video, index) => (
+              {ageGroup.videos.map((video, index) => (
                 <div 
-                  key={index} 
-                  className="bg-white rounded-xl shadow-md overflow-hidden hover:shadow-lg transition-all duration-300"
+                  key={index}
+                  className="bg-white/10 rounded-xl overflow-hidden border border-white/10 hover:border-white/30 transition-all"
                 >
-                  <div className="h-48 overflow-hidden relative">
+                  <div className="relative">
                     <img 
                       src={video.thumbnail} 
-                      alt={video.title} 
-                      className="w-full h-full object-cover"
+                      alt={video.title}
+                      className="w-full h-48 object-cover"
                       onError={(e) => {
-                        (e.target as HTMLImageElement).src = "https://images.unsplash.com/photo-1535016120720-40c646be5580?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=80";
+                        (e.target as HTMLImageElement).src = "https://images.unsplash.com/photo-1611162617213-7d7a39e9b1d7?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=80";
                       }}
                     />
                     <div className="absolute inset-0 bg-black/30 flex items-center justify-center">
-                      <div className="bg-white/20 backdrop-blur-sm rounded-full p-4">
+                      <div className="bg-white/20 p-4 rounded-full backdrop-blur-sm">
                         <Video className="h-8 w-8 text-white" />
                       </div>
                     </div>
-                    <div className="absolute bottom-2 right-2 bg-black/70 text-white text-xs px-2 py-1 rounded">
+                    <div className="absolute bottom-2 right-2 bg-black/70 px-2 py-1 rounded-md text-xs text-white">
                       {video.duration}
                     </div>
                   </div>
                   
-                  <div className="p-5">
-                    <h3 className="text-lg font-medium text-gray-800 mb-1">{video.title}</h3>
-                    <p className="text-gray-600 text-sm mb-4">{video.description}</p>
+                  <div className="p-4">
+                    <h3 className="text-lg font-medium text-white mb-1">{video.title}</h3>
+                    <p className="text-white/70 text-sm mb-4">{video.description}</p>
                     <Button 
                       onClick={() => handleNavigate(video.path)}
-                      variant={selectedAgeGroup === "early-childhood" ? "default" : "outline"}
-                      className={
-                        selectedAgeGroup === "early-childhood"
-                          ? "bg-gradient-to-r from-pink-400 to-purple-500 text-white hover:from-pink-500 hover:to-purple-600"
-                          : selectedAgeGroup === "middle-childhood"
-                            ? "border-purple-300 text-purple-700 hover:bg-purple-50"
-                            : "border-blue-300 text-blue-700 hover:bg-blue-50"
-                      }
+                      variant="outline" 
+                      className="w-full bg-white/5 border-white/20 hover:bg-white/10"
                     >
-                      Watch Video <Video className="ml-2 h-4 w-4" />
+                      Watch Video
                     </Button>
                   </div>
                 </div>
@@ -816,79 +622,27 @@ const AdolescentPortal: React.FC = () => {
 
           <TabsContent value="support" className="mt-6">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              {currentGroup.support.map((item, index) => (
+              {ageGroup.support.map((item, index) => (
                 <div 
-                  key={index} 
-                  className={`bg-white rounded-xl p-6 shadow-md overflow-hidden border ${
-                    selectedAgeGroup === "early-childhood"
-                      ? "border-pink-100"
-                      : selectedAgeGroup === "middle-childhood"
-                        ? "border-purple-100"
-                        : "border-blue-100"
-                  } hover:shadow-lg transition-all duration-300`}
+                  key={index}
+                  className="bg-white/10 rounded-xl p-6 border border-white/10 hover:border-white/30 transition-all"
                 >
                   <div className="flex items-center gap-4 mb-4">
-                    <div className={`p-3 rounded-full ${
-                      selectedAgeGroup === "early-childhood"
-                        ? "bg-pink-100"
-                        : selectedAgeGroup === "middle-childhood"
-                          ? "bg-purple-100"
-                          : "bg-blue-100"
-                    }`}>
+                    <div className="p-3 rounded-full bg-white/10">
                       {item.icon}
                     </div>
-                    <h3 className="text-xl font-medium text-gray-800">{item.title}</h3>
+                    <h3 className="text-xl font-medium text-white">{item.title}</h3>
                   </div>
-                  <p className="text-gray-600 mb-6">{item.description}</p>
+                  <p className="text-white/70 mb-6">{item.description}</p>
                   <Button 
                     onClick={() => handleNavigate(item.path)}
-                    variant={selectedAgeGroup === "early-childhood" ? "default" : "outline"}
-                    className={
-                      selectedAgeGroup === "early-childhood"
-                        ? "bg-gradient-to-r from-pink-400 to-purple-500 text-white hover:from-pink-500 hover:to-purple-600"
-                        : selectedAgeGroup === "middle-childhood"
-                          ? "border-purple-300 text-purple-700 hover:bg-purple-50"
-                          : "border-blue-300 text-blue-700 hover:bg-blue-50"
-                    }
+                    className="w-full bg-white/10 hover:bg-white/20 border-white/10"
                   >
-                    {selectedAgeGroup === "early-childhood" ? (
-                      <>Get Help <Heart className="ml-2 h-4 w-4" /></>
-                    ) : (
-                      <>Access Support <Heart className="ml-2 h-4 w-4" /></>
-                    )}
+                    Access Support
                   </Button>
                 </div>
               ))}
             </div>
-
-            {selectedAgeGroup === "early-childhood" && (
-              <div className="mt-8 bg-gradient-to-r from-purple-100 to-pink-100 rounded-xl p-6 border border-purple-200 animate-fade-in">
-                <div className="flex items-center gap-4">
-                  <div className="p-3 bg-white/50 rounded-full">
-                    <Award className="h-8 w-8 text-purple-500" />
-                  </div>
-                  <div>
-                    <h3 className="text-xl font-medium text-pink-700">Parent Helper Badge</h3>
-                    <p className="text-gray-700">Parents! Complete these resources to earn your Helper Badge!</p>
-                  </div>
-                </div>
-                <div className="flex items-center justify-center mt-6">
-                  <div className="w-32 h-32 bg-white rounded-full flex items-center justify-center border-4 border-purple-300 p-2">
-                    <div className="w-full h-full rounded-full bg-gradient-to-r from-pink-400 to-purple-500 flex items-center justify-center">
-                      <Activity className="h-12 w-12 text-white" />
-                    </div>
-                  </div>
-                </div>
-                <div className="text-center mt-4">
-                  <Button
-                    onClick={() => handleNavigate("/family-resources")}
-                    className="bg-white text-pink-700 hover:bg-pink-50"
-                  >
-                    Start Parent Training
-                  </Button>
-                </div>
-              </div>
-            )}
           </TabsContent>
         </Tabs>
       </div>

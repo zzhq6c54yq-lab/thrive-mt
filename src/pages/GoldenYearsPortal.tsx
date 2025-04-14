@@ -23,7 +23,13 @@ const GoldenYearsPortal: React.FC = () => {
       description: `Taking you to ${path}`,
       duration: 1500,
     });
-    navigate(path);
+    
+    navigate(path, { 
+      state: { 
+        stayInPortal: true,
+        preventTutorial: true 
+      }
+    });
   };
 
   const resources = [
@@ -203,7 +209,7 @@ const GoldenYearsPortal: React.FC = () => {
       {/* Header */}
       <div className="bg-gradient-to-r from-amber-500 to-orange-400 p-6 relative">
         <div className="absolute top-4 right-4 z-10">
-          <HomeButton />
+          <HomeButton portalMode={true} portalPath="/golden-years-portal" />
         </div>
         <div className="max-w-6xl mx-auto">
           <div className="flex flex-col md:flex-row items-center justify-between">
