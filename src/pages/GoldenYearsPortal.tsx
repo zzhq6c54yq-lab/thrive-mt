@@ -1,4 +1,3 @@
-
 import React, { useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useToast } from "@/hooks/use-toast";
@@ -8,7 +7,7 @@ import HomeButton from "@/components/HomeButton";
 import { 
   BookOpen, FileText, Users, Heart, Calendar, Video, 
   Sparkles, BookMarked, MessageCircle, Lightbulb, Book, 
-  HeartHandshake, PenTool, Clock
+  HeartHandshake, PenTool, Clock, FileCheck, Footprints
 } from "lucide-react";
 import ActionButton from "@/components/navigation/ActionButton";
 
@@ -29,24 +28,37 @@ const GoldenYearsPortal: React.FC = () => {
 
   const resources = [
     {
-      title: "Aging Well Guide",
-      description: "Comprehensive strategies for maintaining physical and mental health as you age.",
-      icon: <BookOpen className="h-6 w-6 text-amber-500" />,
+      title: "Legacy Journal",
+      description: "Preserve your life story and wisdom for future generations through guided memoir writing.",
+      icon: <Book className="h-6 w-6 text-amber-500" />,
       tag: "Featured",
       color: "bg-amber-100 text-amber-800",
       action: {
-        type: "download" as const,
-        id: "aging-well-guide",
-        title: "Download Guide",
-        path: "/resource-library"
+        type: "join" as const,
+        id: "legacy-journal",
+        title: "Open Journal",
+        path: "/golden-years-journal"
+      }
+    },
+    {
+      title: "End-of-Life Planning",
+      description: "Thoughtfully prepare important decisions and documents for peace of mind.",
+      icon: <FileCheck className="h-6 w-6 text-blue-500" />,
+      tag: "Planning",
+      color: "bg-blue-100 text-blue-800",
+      action: {
+        type: "view" as const,
+        id: "eol-planning",
+        title: "Start Planning",
+        path: "/golden-years-journal?tab=planning"
       }
     },
     {
       title: "Sleep & Seniors",
       description: "Understanding sleep changes and improving your rest quality.",
-      icon: <Clock className="h-6 w-6 text-blue-500" />,
+      icon: <Clock className="h-6 w-6 text-purple-500" />,
       tag: "Health",
-      color: "bg-blue-100 text-blue-800",
+      color: "bg-purple-100 text-purple-800",
       action: {
         type: "view" as const,
         id: "sleep-guide",
@@ -57,27 +69,14 @@ const GoldenYearsPortal: React.FC = () => {
     {
       title: "Memory Exercises",
       description: "Daily activities to keep your mind sharp and memory strong.",
-      icon: <Lightbulb className="h-6 w-6 text-purple-500" />,
+      icon: <Lightbulb className="h-6 w-6 text-green-500" />,
       tag: "Cognitive",
-      color: "bg-purple-100 text-purple-800",
+      color: "bg-green-100 text-green-800",
       action: {
         type: "practice" as const,
         id: "memory-exercises",
         title: "Start Exercises",
         path: "/mental-health-games"
-      }
-    },
-    {
-      title: "Legacy Journal",
-      description: "Prompts to help you record your life stories for future generations.",
-      icon: <Book className="h-6 w-6 text-green-500" />,
-      tag: "Legacy",
-      color: "bg-green-100 text-green-800",
-      action: {
-        type: "join" as const,
-        id: "legacy-journal",
-        title: "Open Journal",
-        path: "/golden-years-journal"
       }
     }
   ];
@@ -219,11 +218,11 @@ const GoldenYearsPortal: React.FC = () => {
             </div>
             <div className="flex gap-3">
               <Button 
-                onClick={() => handleNavigate("/holistic-wellness")}
+                onClick={() => handleNavigate("/golden-years-journal")}
                 variant="outline"
                 className="border-white/40 text-white bg-white/10 hover:bg-white/20"
               >
-                Wellness Tools <Heart className="ml-2 h-4 w-4" />
+                Legacy Journal <Book className="ml-2 h-4 w-4" />
               </Button>
               <Button 
                 onClick={() => handleNavigate("/community-support")}
@@ -250,6 +249,23 @@ const GoldenYearsPortal: React.FC = () => {
           <p className="text-gray-700 italic border-l-4 border-amber-300 pl-4 mt-2">
             "The longer I live, the more beautiful life becomes." — Frank Lloyd Wright
           </p>
+          
+          <div className="mt-6 bg-amber-50 rounded-lg p-4 border border-amber-200">
+            <div className="flex items-center gap-3 mb-2">
+              <Footprints className="h-5 w-5 text-amber-600" />
+              <h3 className="font-medium text-amber-800">Your Legacy Journal</h3>
+            </div>
+            <p className="text-gray-700 mb-3">
+              Begin your memoir journey today. Our guided prompts help you capture your life story, 
+              creating a treasure of wisdom for future generations.
+            </p>
+            <Button 
+              onClick={() => handleNavigate("/golden-years-journal")}
+              className="bg-gradient-to-r from-amber-500 to-orange-400 hover:from-amber-600 hover:to-orange-500 text-white"
+            >
+              Continue Your Story <Book className="ml-2 h-4 w-4" />
+            </Button>
+          </div>
         </div>
 
         {/* Navigation Tabs */}
