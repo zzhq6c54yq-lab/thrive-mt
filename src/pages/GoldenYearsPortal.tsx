@@ -5,28 +5,23 @@ import { Button } from "@/components/ui/button";
 import { useToast } from "@/hooks/use-toast";
 import ThriveButton from "@/components/navigation/ThriveButton";
 import NavigationBar from "@/components/navigation/NavigationBar";
+import useFeatureActions, { ActionButtonConfig } from "@/hooks/useFeatureActions";
 import { BookOpen, Calendar, Users, HeartHandshake, LifeBuoy, Lightbulb, Clock, Globe } from "lucide-react";
 
 const GoldenYearsPortal: React.FC = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const { toast } = useToast();
+  const { handleActionClick } = useFeatureActions();
   
   const handleFeatureClick = (feature: string) => {
-    toast({
-      title: `Accessing ${feature}`,
-      description: `Loading ${feature} for seniors...`,
-      duration: 1500,
-    });
-    
-    navigate(`/golden-years-portal/${feature.toLowerCase().replace(/\s+/g, '-')}`, {
-      state: { 
-        feature: feature,
-        stayInPortal: true,
-        preventTutorial: true,
-        portalPath: '/golden-years-portal'
-      }
-    });
+    const actionConfig: ActionButtonConfig = {
+      type: 'other',
+      title: feature,
+      path: `/golden-years-portal/${feature.toLowerCase().replace(/\s+/g, '-')}`
+    };
+
+    handleActionClick(actionConfig);
   };
 
   return (

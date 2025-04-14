@@ -6,6 +6,7 @@ import { useToast } from "@/hooks/use-toast";
 import { useNavigate } from "react-router-dom";
 import ThriveButton from "@/components/navigation/ThriveButton";
 import PortalBackButton from "@/components/navigation/PortalBackButton";
+import useFeatureActions from "@/hooks/useFeatureActions";
 
 interface NavigationBarProps {
   showBackButton?: boolean;
@@ -26,6 +27,7 @@ const NavigationBar: React.FC<NavigationBarProps> = ({
 }) => {
   const navigate = useNavigate();
   const { toast } = useToast();
+  const { handleBackNavigation } = useFeatureActions();
 
   const handleHome = () => {
     toast({
