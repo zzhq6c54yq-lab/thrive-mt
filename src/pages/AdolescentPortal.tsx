@@ -6,28 +6,24 @@ import { useToast } from "@/hooks/use-toast";
 import ThriveButton from "@/components/navigation/ThriveButton";
 import PortalBackButton from "@/components/navigation/PortalBackButton";
 import NavigationBar from "@/components/navigation/NavigationBar";
+import useFeatureActions, { ActionButtonConfig } from "@/hooks/useFeatureActions";
+import { BookOpen, Calendar, Users, HeartHandshake, LifeBuoy, Lightbulb, Clock, Globe } from "lucide-react";
+import ActionButton from "@/components/navigation/ActionButton";
 
 // Early Childhood Portal (Ages 2-7)
 const EarlyChildhoodPortal: React.FC = () => {
   const navigate = useNavigate();
   const { toast } = useToast();
+  const { handleActionClick } = useFeatureActions();
   
   const handleButtonClick = (activity: string) => {
-    toast({
-      title: `Starting ${activity}`,
-      description: `Loading ${activity} content for early childhood...`,
-      duration: 1500,
-    });
-    
-    navigate(`/adolescent-portal/early-childhood/${activity.toLowerCase().replace(/\s+/g, '-')}`, {
-      state: { 
-        ageGroup: 'early-childhood',
-        activity: activity,
-        stayInPortal: true,
-        preventTutorial: true,
-        portalPath: '/adolescent-portal'
-      }
-    });
+    const actionConfig: ActionButtonConfig = {
+      type: 'other',
+      title: activity,
+      path: `/adolescent-portal/early-childhood/${activity.toLowerCase().replace(/\s+/g, '-')}`
+    };
+
+    handleActionClick(actionConfig);
   };
 
   return (
@@ -193,23 +189,16 @@ const EarlyChildhoodPortal: React.FC = () => {
 const MiddleChildhoodPortal: React.FC = () => {
   const navigate = useNavigate();
   const { toast } = useToast();
+  const { handleActionClick } = useFeatureActions();
   
   const handleButtonClick = (activity: string) => {
-    toast({
-      title: `Starting ${activity}`,
-      description: `Loading ${activity} content for middle childhood...`,
-      duration: 1500,
-    });
-    
-    navigate(`/adolescent-portal/middle-childhood/${activity.toLowerCase().replace(/\s+/g, '-')}`, {
-      state: { 
-        ageGroup: 'middle-childhood',
-        activity: activity,
-        stayInPortal: true,
-        preventTutorial: true,
-        portalPath: '/adolescent-portal'
-      }
-    });
+    const actionConfig: ActionButtonConfig = {
+      type: 'other',
+      title: activity,
+      path: `/adolescent-portal/middle-childhood/${activity.toLowerCase().replace(/\s+/g, '-')}`
+    };
+
+    handleActionClick(actionConfig);
   };
 
   return (
@@ -350,23 +339,16 @@ const MiddleChildhoodPortal: React.FC = () => {
 const TeenPortal: React.FC = () => {
   const navigate = useNavigate();
   const { toast } = useToast();
+  const { handleActionClick } = useFeatureActions();
   
   const handleButtonClick = (activity: string) => {
-    toast({
-      title: `Starting ${activity}`,
-      description: `Loading ${activity} content for teens...`,
-      duration: 1500,
-    });
-    
-    navigate(`/adolescent-portal/teen/${activity.toLowerCase().replace(/\s+/g, '-')}`, {
-      state: { 
-        ageGroup: 'adolescence',
-        activity: activity,
-        stayInPortal: true,
-        preventTutorial: true,
-        portalPath: '/adolescent-portal'
-      }
-    });
+    const actionConfig: ActionButtonConfig = {
+      type: 'other',
+      title: activity,
+      path: `/adolescent-portal/teen/${activity.toLowerCase().replace(/\s+/g, '-')}`
+    };
+
+    handleActionClick(actionConfig);
   };
 
   return (
