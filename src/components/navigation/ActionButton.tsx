@@ -1,4 +1,3 @@
-
 import React from "react";
 import { Button } from "@/components/ui/button";
 import { useFeatureActions } from "@/hooks/useFeatureActions";
@@ -7,6 +6,10 @@ import { useFeatureActions } from "@/hooks/useFeatureActions";
 type ActionType = 'workshop' | 'assessment' | 'download' | 'practice' | 'discussion' | 
                  'hangout' | 'join' | 'redeem' | 'record' | 'view' | 'other';
 
+// Update to match the allowed button variants from button.tsx
+type ButtonVariant = "default" | "destructive" | "outline" | "secondary" | "ghost" | "link" | 
+                    "gold" | "gold-outline" | "henry" | "bronze" | "amber" | "amber-outline";
+
 // Props interface for ActionButton
 interface ActionButtonProps {
   type: ActionType;
@@ -14,7 +17,7 @@ interface ActionButtonProps {
   title: string;
   path?: string;
   className?: string;
-  variant?: "default" | "destructive" | "outline" | "secondary" | "ghost" | "link" | "amber" | "amber-outline" | string;
+  variant?: ButtonVariant | "amber" | "amber-outline"; // Allow our custom variants
   size?: "default" | "sm" | "lg" | "icon";
 }
 
@@ -55,10 +58,20 @@ const ActionButton: React.FC<ActionButtonProps> = ({
     });
   };
 
+  // Fix for TypeScript error by ensuring variant is a valid value
+  const getButtonVariant = (): ButtonVariant => {
+    // If variant is one of our custom types, use 'outline' as the base
+    if (variant === "amber" || variant === "amber-outline") {
+      return "outline";
+    }
+    // Otherwise, return the variant as is since it should be a valid ButtonVariant
+    return variant as ButtonVariant;
+  };
+
   return (
     <Button
       onClick={handleClick}
-      variant={variant !== "amber" && variant !== "amber-outline" ? variant : "outline"}
+      variant={getButtonVariant()}
       size={size}
       className={getButtonClasses()}
     >
