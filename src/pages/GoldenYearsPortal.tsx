@@ -27,13 +27,21 @@ const GoldenYearsPortal: React.FC = () => {
       return;
     }
     
-    // For other features, use the ActionConfig
+    // For other features, use the ActionConfig with proper configuration
     const actionConfig: ActionButtonConfig = {
       type: 'other',
       title: feature,
       path: `/golden-years-portal/${feature.toLowerCase().replace(/\s+/g, '-')}`
     };
 
+    // Show a toast notification about the feature
+    toast({
+      title: `Accessing ${feature}`,
+      description: "This feature is coming soon. Please check back later.",
+      duration: 3000
+    });
+    
+    // Use handleActionClick from useFeatureActions for consistent navigation behavior
     handleActionClick(actionConfig);
   };
 
