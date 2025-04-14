@@ -1,9 +1,9 @@
 
 import React from "react";
-import { useNavigate, useLocation } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import { ArrowLeft, Home } from "lucide-react";
+import { Home } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
+import { useNavigate } from "react-router-dom";
 import ThriveButton from "@/components/navigation/ThriveButton";
 import PortalBackButton from "@/components/navigation/PortalBackButton";
 
@@ -25,7 +25,6 @@ const NavigationBar: React.FC<NavigationBarProps> = ({
   portalPath
 }) => {
   const navigate = useNavigate();
-  const location = useLocation();
   const { toast } = useToast();
 
   const handleHome = () => {
