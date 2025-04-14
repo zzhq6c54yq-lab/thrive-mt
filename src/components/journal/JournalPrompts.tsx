@@ -109,7 +109,7 @@ const JournalPrompts: React.FC<JournalPromptsProps> = ({ category, onSelectPromp
     ],
   };
 
-  // Default to childhood if category doesn't exist
+  // Fixed the type error by correctly checking if the category exists in prompts
   const currentPrompts = prompts[category as keyof typeof prompts] || prompts.childhood;
 
   return (
