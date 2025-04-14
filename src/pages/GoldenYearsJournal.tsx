@@ -12,7 +12,7 @@ import HomeButton from "@/components/HomeButton";
 import { 
   BookOpen, PenTool, Share, Clock, Save, MessageSquare, Send, 
   FileCheck, Footprints, Heart, FileText, HeartHandshake, Users,
-  Calendar, MapPin, Camera, Archive, Download
+  Calendar, MapPin, Camera, Archive, Download, Lightbulb
 } from "lucide-react";
 import { FamilyMember, getAllFamilyMembers, shareVideo } from "@/services/familyShareService";
 import { useSearchParams } from "react-router-dom";
