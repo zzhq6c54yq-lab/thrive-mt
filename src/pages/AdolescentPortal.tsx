@@ -1,653 +1,433 @@
-import React, { useState, useEffect } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
-import { useToast } from "@/hooks/use-toast";
+
+import React, { useEffect, useState } from "react";
+import { useNavigate, useLocation } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import HomeButton from "@/components/HomeButton";
-import { 
-  BookOpen, FileText, Users, Heart, Calendar, Star, 
-  Video, Gamepad, Sparkles, BookMarked, MessageCircle, 
-  Award, Activity, Gift, Smile
-} from "lucide-react";
+import { useToast } from "@/hooks/use-toast";
+import ThriveButton from "@/components/navigation/ThriveButton";
+import PortalBackButton from "@/components/navigation/PortalBackButton";
 
-type AgeGroupMascot = {
-  name: string;
-  greeting: string;
-  image: string;
-};
-
-type AgeGroupResource = {
-  title: string;
-  description: string;
-  icon: React.ReactNode;
-  tag: string;
-  color: string;
-  action: {
-    type: "workshop" | "assessment" | "download" | "practice" | "discussion" | 
-           "hangout" | "join" | "redeem" | "record" | "view" | "other";
-    id?: string;
-    title: string;
-    path: string;
-  };
-  stars?: number;
-};
-
-type AgeGroupGame = {
-  title: string;
-  description: string;
-  image: string;
-  color: string;
-  path: string;
-  stars?: number;
-};
-
-type AgeGroupVideo = {
-  title: string;
-  description: string;
-  thumbnail: string;
-  duration: string;
-  path: string;
-};
-
-type AgeGroupSupport = {
-  title: string;
-  description: string;
-  icon: React.ReactNode;
-  path: string;
-};
-
-type AgeGroup = {
-  title: string;
-  ageRange: string;
-  description: string;
-  gradient: string;
-  mascot: AgeGroupMascot;
-  resources: AgeGroupResource[];
-  games: AgeGroupGame[];
-  videos: AgeGroupVideo[];
-  support: AgeGroupSupport[];
-};
-
-type AgeGroups = {
-  [key: string]: AgeGroup;
-};
-
-const ageGroups: AgeGroups = {
-  "early-childhood": {
-    title: "Early Childhood",
-    ageRange: "Ages 2-7",
-    description: "Fun activities to help young children understand feelings and make friends",
-    gradient: "from-pink-400 to-purple-500",
-    mascot: {
-      name: "Buddy Bear",
-      greeting: "Hi friend! Let's play and learn together!",
-      image: "https://images.unsplash.com/photo-1559454403-b8fb88521675?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=80"
-    },
-    resources: [
-      {
-        title: "Feelings Flashcards",
-        description: "Colorful cards to help identify and talk about emotions",
-        icon: <Smile className="h-6 w-6 text-pink-500" />,
-        tag: "Emotions",
-        color: "bg-pink-100 text-pink-700",
-        action: {
-          type: "other",
-          path: "/resource-library",
-          title: "See Cards"
-        },
-        stars: 5
-      },
-      {
-        title: "Storytime Videos",
-        description: "Animated stories about friendship and feelings",
-        icon: <Video className="h-6 w-6 text-purple-500" />,
-        tag: "Stories",
-        color: "bg-purple-100 text-purple-700",
-        action: {
-          type: "other",
-          path: "/resource-library",
-          title: "Watch Stories"
-        },
-        stars: 4
-      },
-      {
-        title: "Parent Guide",
-        description: "Tips for helping young children develop emotional skills",
-        icon: <BookOpen className="h-6 w-6 text-blue-500" />,
-        tag: "Parents",
-        color: "bg-blue-100 text-blue-700",
-        action: {
-          type: "other",
-          path: "/resource-library",
-          title: "Read Guide"
-        },
-        stars: 5
-      }
-    ],
-    games: [
-      {
-        title: "Feeling Friends",
-        description: "Match the characters with their emotions",
-        image: "https://images.unsplash.com/photo-1618336753974-aae8e04506aa?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=80",
-        color: "bg-gradient-to-br from-pink-400 to-purple-500",
-        path: "/game-play/feeling-friends",
-        stars: 4
-      },
-      {
-        title: "Color My Mood",
-        description: "A creative coloring activity about emotions",
-        image: "https://images.unsplash.com/photo-1560800452-f2d475982b96?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=80",
-        color: "bg-gradient-to-br from-blue-400 to-purple-500",
-        path: "/game-play/color-mood",
-        stars: 5
-      },
-      {
-        title: "Sharing Circle",
-        description: "Learn about taking turns and sharing",
-        image: "https://images.unsplash.com/photo-1602030638412-bb8dcc0bc8b0?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=80",
-        color: "bg-gradient-to-br from-purple-400 to-pink-500",
-        path: "/game-play/sharing-circle",
-        stars: 4
-      }
-    ],
-    videos: [
-      {
-        title: "Meet Your Feelings",
-        description: "Animated introduction to basic emotions for young children",
-        thumbnail: "https://images.unsplash.com/photo-1583795128727-6ec3642408f8?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=80",
-        duration: "3:24",
-        path: "/resource-library"
-      },
-      {
-        title: "Friendship Song",
-        description: "Catchy tune about making and keeping friends",
-        thumbnail: "https://images.unsplash.com/photo-1516627145497-ae6968895b74?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=80",
-        duration: "2:15",
-        path: "/resource-library"
-      }
-    ],
-    support: [
-      {
-        title: "Parent Corner",
-        description: "Resources for parents to support their young child's emotional development",
-        icon: <Users className="h-6 w-6 text-teal-500" />,
-        path: "/family-resources"
-      },
-      {
-        title: "Playdate Tips",
-        description: "Help your child develop social skills through play",
-        icon: <Heart className="h-6 w-6 text-pink-500" />,
-        path: "/family-resources"
-      }
-    ]
-  },
-  "middle-childhood": {
-    title: "Middle Childhood",
-    ageRange: "Ages 8-13",
-    description: "Interactive tools to help school-age children build resilience and social-emotional skills",
-    gradient: "from-purple-400 to-blue-500",
-    mascot: {
-      name: "Wise Owl",
-      greeting: "Hello there! Ready to explore and learn new things?",
-      image: "https://images.unsplash.com/photo-1548407260-da850faa41e3?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=80"
-    },
-    resources: [
-      {
-        title: "Friendship Guide",
-        description: "Tips for making friends and handling conflicts",
-        icon: <Users className="h-6 w-6 text-purple-500" />,
-        tag: "Social Skills",
-        color: "bg-purple-100 text-purple-700",
-        action: {
-          type: "view",
-          id: "friendship-guide",
-          title: "Read Guide",
-          path: "/resource-library"
-        }
-      },
-      {
-        title: "Mindfulness for Kids",
-        description: "Age-appropriate mindfulness practices for stress management",
-        icon: <Heart className="h-6 w-6 text-blue-500" />,
-        tag: "Wellness",
-        color: "bg-blue-100 text-blue-700",
-        action: {
-          type: "practice",
-          id: "kids-mindfulness",
-          title: "Try Exercise",
-          path: "/mindfulness-sleep"
-        }
-      },
-      {
-        title: "School Success",
-        description: "Tools for managing homework and classroom challenges",
-        icon: <BookOpen className="h-6 w-6 text-indigo-500" />,
-        tag: "Education",
-        color: "bg-indigo-100 text-indigo-700",
-        action: {
-          type: "download",
-          id: "school-success",
-          title: "Get Toolkit",
-          path: "/resource-library"
-        }
-      }
-    ],
-    games: [
-      {
-        title: "Mood Quest",
-        description: "Adventure game teaching emotional regulation",
-        image: "https://images.unsplash.com/photo-1553481187-be93c21490a9?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=80",
-        color: "bg-gradient-to-br from-purple-400 to-blue-500",
-        path: "/game-play/mood-quest"
-      },
-      {
-        title: "Friend Finder",
-        description: "Interactive scenarios about social skills",
-        image: "https://images.unsplash.com/photo-1526934799676-3811489998ef?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=80",
-        color: "bg-gradient-to-br from-blue-400 to-indigo-500",
-        path: "/game-play/friend-finder"
-      },
-      {
-        title: "Brain Booster",
-        description: "Fun puzzles to enhance focus and attention",
-        image: "https://images.unsplash.com/photo-1580894732444-8ecded7900cd?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=80",
-        color: "bg-gradient-to-br from-indigo-400 to-purple-500",
-        path: "/game-play/brain-booster"
-      }
-    ],
-    videos: [
-      {
-        title: "Handling Bullies",
-        description: "Strategies for dealing with difficult social situations",
-        thumbnail: "https://images.unsplash.com/photo-1529390079861-591de354faf5?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=80",
-        duration: "5:12",
-        path: "/resource-library"
-      },
-      {
-        title: "Stress Busters",
-        description: "Kid-friendly techniques for managing stress and worry",
-        thumbnail: "https://images.unsplash.com/photo-1535981767287-35259dbf7d0e?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=80",
-        duration: "4:45",
-        path: "/resource-library"
-      }
-    ],
-    support: [
-      {
-        title: "Parent-Child Connection",
-        description: "Activities to strengthen your bond with your school-age child",
-        icon: <Heart className="h-6 w-6 text-purple-500" />,
-        path: "/family-resources"
-      },
-      {
-        title: "School Partnerships",
-        description: "Resources for teachers and counselors to support student mental health",
-        icon: <BookOpen className="h-6 w-6 text-blue-500" />,
-        path: "/resource-library"
-      }
-    ]
-  },
-  "adolescence": {
-    title: "Adolescence",
-    ageRange: "Ages 14+",
-    description: "Resources to support teenagers with identity, independence, and emotional well-being",
-    gradient: "from-blue-400 to-teal-500",
-    mascot: {
-      name: "Nova",
-      greeting: "Hey! I'm here to help you navigate the ups and downs of teen life.",
-      image: "https://images.unsplash.com/photo-1529139574466-a303027c1d8b?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=80"
-    },
-    resources: [
-      {
-        title: "Teen Identity Guide",
-        description: "Understanding yourself during times of change",
-        icon: <Users className="h-6 w-6 text-blue-500" />,
-        tag: "Identity",
-        color: "bg-blue-100 text-blue-700",
-        action: {
-          type: "view",
-          id: "teen-identity",
-          title: "Read Guide",
-          path: "/resource-library"
-        }
-      },
-      {
-        title: "Stress Management",
-        description: "Techniques for managing academic and social pressures",
-        icon: <Heart className="h-6 w-6 text-teal-500" />,
-        tag: "Wellness",
-        color: "bg-teal-100 text-teal-700",
-        action: {
-          type: "practice",
-          id: "teen-stress",
-          title: "Try Exercises",
-          path: "/mindfulness-sleep"
-        }
-      },
-      {
-        title: "Future Planning",
-        description: "Tools for thinking about college, career, and beyond",
-        icon: <Calendar className="h-6 w-6 text-indigo-500" />,
-        tag: "Planning",
-        color: "bg-indigo-100 text-indigo-700",
-        action: {
-          type: "download",
-          id: "future-planning",
-          title: "Get Toolkit",
-          path: "/resource-library"
-        }
-      }
-    ],
-    games: [
-      {
-        title: "Life Choices",
-        description: "Interactive scenarios about real-life decisions",
-        image: "https://images.unsplash.com/photo-1494059980473-813e73ee784b?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=80",
-        color: "bg-gradient-to-br from-blue-400 to-teal-500",
-        path: "/game-play/life-choices"
-      },
-      {
-        title: "Mood Tracker",
-        description: "Game-based approach to understanding emotions",
-        image: "https://images.unsplash.com/photo-1560800452-f2d475982b96?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=80",
-        color: "bg-gradient-to-br from-teal-400 to-blue-500",
-        path: "/game-play/mood-tracker"
-      },
-      {
-        title: "Social Navigator",
-        description: "Build skills for navigating complex social situations",
-        image: "https://images.unsplash.com/photo-1529156069898-49953e39b3ac?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=80",
-        color: "bg-gradient-to-br from-blue-400 to-indigo-500",
-        path: "/game-play/social-navigator"
-      }
-    ],
-    videos: [
-      {
-        title: "Finding Your Voice",
-        description: "Teens discuss discovering their identity and passions",
-        thumbnail: "https://images.unsplash.com/photo-1529139574466-a303027c1d8b?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=80",
-        duration: "8:24",
-        path: "/resource-library"
-      },
-      {
-        title: "Healthy Relationships",
-        description: "Understanding boundaries and communication in relationships",
-        thumbnail: "https://images.unsplash.com/photo-1491438590914-bc09fcaaf77a?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=80",
-        duration: "7:15",
-        path: "/resource-library"
-      }
-    ],
-    support: [
-      {
-        title: "Teen Support Group",
-        description: "Connect with other teens in a safe, moderated environment",
-        icon: <MessageCircle className="h-6 w-6 text-blue-500" />,
-        path: "/community-support"
-      },
-      {
-        title: "Parents of Teens",
-        description: "Resources for parents navigating the teenage years",
-        icon: <Users className="h-6 w-6 text-teal-500" />,
-        path: "/family-resources"
-      }
-    ]
-  }
-};
-
-const AdolescentPortal: React.FC = () => {
-  const navigate = useNavigate();
-  const { toast } = useToast();
-  const [activeTab, setActiveTab] = useState("resources");
-  const location = useLocation();
-  const [currentAgeGroup, setCurrentAgeGroup] = useState<string>("adolescence");
-  
-  useEffect(() => {
-    if (location.state && location.state.ageGroup) {
-      setCurrentAgeGroup(location.state.ageGroup);
-    }
-  }, [location.state]);
-  
-  const ageGroup = ageGroups[currentAgeGroup];
-
-  const handleNavigate = (path: string) => {
-    toast({
-      title: "Navigating",
-      description: `Taking you to ${path}`,
-      duration: 1500,
-    });
-    
-    navigate(path, { 
-      state: { 
-        ageGroup: currentAgeGroup,
-        stayInPortal: true,
-        preventTutorial: true 
-      }
-    });
-  };
-
+// Early Childhood Portal (Ages 2-7)
+const EarlyChildhoodPortal: React.FC = () => {
   return (
-    <div className="min-h-screen bg-gradient-to-b from-[#1a1a1f] via-[#242432] to-[#272730] text-white">
-      <div className={`bg-gradient-to-r ${ageGroup.gradient} p-6 relative`}>
-        <div className="absolute top-4 right-4 z-10">
-          <HomeButton portalMode={true} portalPath="/adolescent-selection" />
+    <div className="min-h-screen bg-gradient-to-b from-[#ff85a2] via-[#ffa9c6] to-[#ffd6e6] py-8 px-4 relative overflow-hidden">
+      {/* Fun background elements */}
+      <div className="absolute inset-0 overflow-hidden pointer-events-none">
+        {/* Clouds */}
+        <div className="absolute top-[10%] left-[5%] w-24 h-12 bg-white rounded-full"></div>
+        <div className="absolute top-[10%] left-[10%] w-36 h-16 bg-white rounded-full"></div>
+        <div className="absolute top-[12%] left-[7%] w-28 h-14 bg-white rounded-full"></div>
+        
+        <div className="absolute top-[15%] right-[15%] w-32 h-14 bg-white rounded-full"></div>
+        <div className="absolute top-[15%] right-[20%] w-20 h-12 bg-white rounded-full"></div>
+        
+        {/* Animated characters */}
+        <div className="absolute bottom-10 left-10 text-6xl animate-bounce">🦄</div>
+        <div className="absolute bottom-20 right-20 text-5xl animate-[bounce_3s_infinite]">🌈</div>
+        <div className="absolute top-[30%] left-[20%] text-4xl animate-[bounce_5s_infinite]">🎈</div>
+        <div className="absolute top-[40%] right-[25%] text-4xl animate-[bounce_4s_infinite]">🎁</div>
+      </div>
+      
+      {/* Navigation buttons */}
+      <div className="absolute top-4 left-4 z-20">
+        <PortalBackButton returnPath="/adolescent-selection" />
+      </div>
+      <div className="absolute top-4 right-4 z-20">
+        <ThriveButton size="sm" />
+      </div>
+      
+      <div className="max-w-6xl mx-auto relative z-10">
+        <div className="flex flex-col items-center text-center mb-8">
+          <div className="text-6xl mb-2">🧸</div>
+          <h1 className="text-3xl md:text-4xl font-bold mb-2 text-purple-800">
+            Feelings & Friends
+          </h1>
+          <p className="text-xl text-purple-700 max-w-lg mx-auto">
+            A special place for young ones to learn about feelings and make new friends!
+          </p>
         </div>
         
-        <div className="max-w-6xl mx-auto">
-          <div className="flex flex-col md:flex-row items-center justify-between">
-            <div className="flex items-center mb-4 md:mb-0">
-              <div className="bg-white/20 p-3 rounded-full mr-4 w-16 h-16 flex items-center justify-center">
-                <Sparkles className="h-8 w-8 text-white" />
-              </div>
-              <div>
-                <h1 className="text-3xl md:text-4xl font-light text-white">{ageGroup.title}</h1>
-                <p className="text-white/90">{ageGroup.description}</p>
-              </div>
+        {/* Main content */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {/* Story time card */}
+          <div className="bg-yellow-100 border-4 border-yellow-400 rounded-3xl p-6 shadow-lg transform transition-transform hover:scale-105">
+            <div className="flex justify-center mb-4">
+              <div className="text-5xl">📚</div>
             </div>
+            <h3 className="text-2xl font-bold text-center text-yellow-800 mb-2">Story Time</h3>
+            <p className="text-yellow-700 mb-4 text-center">
+              Listen to fun stories about feelings and adventures!
+            </p>
+            <Button 
+              className="w-full bg-yellow-500 hover:bg-yellow-600 text-white font-bold rounded-xl border-2 border-yellow-600 text-lg py-6 h-auto"
+            >
+              Read Stories
+            </Button>
+          </div>
+          
+          {/* Feeling games card */}
+          <div className="bg-blue-100 border-4 border-blue-400 rounded-3xl p-6 shadow-lg transform transition-transform hover:scale-105">
+            <div className="flex justify-center mb-4">
+              <div className="text-5xl">🎮</div>
+            </div>
+            <h3 className="text-2xl font-bold text-center text-blue-800 mb-2">Feeling Games</h3>
+            <p className="text-blue-700 mb-4 text-center">
+              Play games to learn about different feelings!
+            </p>
+            <Button 
+              className="w-full bg-blue-500 hover:bg-blue-600 text-white font-bold rounded-xl border-2 border-blue-600 text-lg py-6 h-auto"
+            >
+              Play Now
+            </Button>
+          </div>
+          
+          {/* Coloring fun card */}
+          <div className="bg-green-100 border-4 border-green-400 rounded-3xl p-6 shadow-lg transform transition-transform hover:scale-105">
+            <div className="flex justify-center mb-4">
+              <div className="text-5xl">🎨</div>
+            </div>
+            <h3 className="text-2xl font-bold text-center text-green-800 mb-2">Coloring Fun</h3>
+            <p className="text-green-700 mb-4 text-center">
+              Color pictures to show how you feel today!
+            </p>
+            <Button 
+              className="w-full bg-green-500 hover:bg-green-600 text-white font-bold rounded-xl border-2 border-green-600 text-lg py-6 h-auto"
+            >
+              Start Coloring
+            </Button>
+          </div>
+          
+          {/* Calm corner card */}
+          <div className="bg-purple-100 border-4 border-purple-400 rounded-3xl p-6 shadow-lg transform transition-transform hover:scale-105">
+            <div className="flex justify-center mb-4">
+              <div className="text-5xl">🧘‍♀️</div>
+            </div>
+            <h3 className="text-2xl font-bold text-center text-purple-800 mb-2">Calm Corner</h3>
+            <p className="text-purple-700 mb-4 text-center">
+              Quiet activities to help when you feel big feelings!
+            </p>
+            <Button 
+              className="w-full bg-purple-500 hover:bg-purple-600 text-white font-bold rounded-xl border-2 border-purple-600 text-lg py-6 h-auto"
+            >
+              Feel Calm
+            </Button>
+          </div>
+          
+          {/* Family fun card */}
+          <div className="bg-orange-100 border-4 border-orange-400 rounded-3xl p-6 shadow-lg transform transition-transform hover:scale-105">
+            <div className="flex justify-center mb-4">
+              <div className="text-5xl">👨‍👩‍👧‍👦</div>
+            </div>
+            <h3 className="text-2xl font-bold text-center text-orange-800 mb-2">Family Fun</h3>
+            <p className="text-orange-700 mb-4 text-center">
+              Activities to do with your family!
+            </p>
+            <Button 
+              className="w-full bg-orange-500 hover:bg-orange-600 text-white font-bold rounded-xl border-2 border-orange-600 text-lg py-6 h-auto"
+            >
+              Play Together
+            </Button>
+          </div>
+          
+          {/* Parent zone card */}
+          <div className="bg-teal-100 border-4 border-teal-400 rounded-3xl p-6 shadow-lg transform transition-transform hover:scale-105">
+            <div className="flex justify-center mb-4">
+              <div className="text-5xl">🤗</div>
+            </div>
+            <h3 className="text-2xl font-bold text-center text-teal-800 mb-2">Parent Zone</h3>
+            <p className="text-teal-700 mb-4 text-center">
+              Resources for grown-ups to help little ones!
+            </p>
+            <Button 
+              className="w-full bg-teal-500 hover:bg-teal-600 text-white font-bold rounded-xl border-2 border-teal-600 text-lg py-6 h-auto"
+            >
+              For Parents
+            </Button>
           </div>
         </div>
-      </div>
-
-      <div className="max-w-6xl mx-auto px-4 py-6">
-        <div className="bg-white/10 backdrop-blur-sm rounded-xl p-6 shadow-md mb-8 border border-white/20">
-          <div className="flex flex-col md:flex-row items-center gap-6">
-            <div className="w-24 h-24 rounded-full overflow-hidden bg-gray-200 flex-shrink-0">
-              <img 
-                src={ageGroup.mascot.image} 
-                alt={ageGroup.mascot.name}
-                className="w-full h-full object-cover"
-                onError={(e) => {
-                  (e.target as HTMLImageElement).src = "https://images.unsplash.com/photo-1559454403-b8fb88521675?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=80";
-                }}
-              />
-            </div>
-            <div>
-              <h2 className="text-2xl font-medium text-white mb-2">
-                Hey there! I'm {ageGroup.mascot.name}
-              </h2>
-              <p className="text-white/80">
-                {ageGroup.mascot.greeting}
-              </p>
-            </div>
-          </div>
+        
+        {/* Help button for kids */}
+        <div className="mt-12 flex justify-center">
+          <Button className="bg-red-400 hover:bg-red-500 text-white rounded-full px-8 py-6 h-auto text-xl font-bold border-4 border-red-500 shadow-lg">
+            <div className="text-2xl mr-2">🆘</div> Need Help?
+          </Button>
         </div>
-      </div>
-
-      <div className="max-w-6xl mx-auto px-4 pb-12">
-        <Tabs defaultValue="resources" className="mb-8" onValueChange={setActiveTab}>
-          <TabsList className="bg-white/10 border border-white/20">
-            <TabsTrigger value="resources" className="data-[state=active]:bg-white/20">
-              <BookMarked className="h-4 w-4 mr-2" /> Resources
-            </TabsTrigger>
-            <TabsTrigger value="games" className="data-[state=active]:bg-white/20">
-              <Gamepad className="h-4 w-4 mr-2" /> Games
-            </TabsTrigger>
-            <TabsTrigger value="videos" className="data-[state=active]:bg-white/20">
-              <Video className="h-4 w-4 mr-2" /> Videos
-            </TabsTrigger>
-            <TabsTrigger value="support" className="data-[state=active]:bg-white/20">
-              <Heart className="h-4 w-4 mr-2" /> Support
-            </TabsTrigger>
-          </TabsList>
-
-          <TabsContent value="resources" className="mt-6">
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-              {ageGroup.resources.map((resource, index) => (
-                <div 
-                  key={index} 
-                  className="bg-white/10 rounded-xl overflow-hidden border border-white/10 hover:border-white/30 transition-all"
-                >
-                  <div className="p-5">
-                    <div className="flex justify-between items-start mb-4">
-                      <div className="bg-white/10 p-2 rounded-full">
-                        {resource.icon}
-                      </div>
-                      <div className={`text-xs px-2 py-1 rounded-full ${resource.color}`}>
-                        {resource.tag}
-                      </div>
-                    </div>
-                    
-                    {resource.stars && (
-                      <div className="flex items-center mb-3">
-                        {[...Array(5)].map((_, i) => (
-                          <Star 
-                            key={i} 
-                            className={`h-4 w-4 ${i < (resource.stars || 0) ? 'text-yellow-400 fill-yellow-400' : 'text-gray-400'}`} 
-                          />
-                        ))}
-                      </div>
-                    )}
-                    
-                    <h3 className="text-lg font-medium text-white mb-2">{resource.title}</h3>
-                    <p className="text-white/70 text-sm mb-4">{resource.description}</p>
-                    
-                    <Button 
-                      onClick={() => handleNavigate(resource.action.path)}
-                      variant="outline" 
-                      className="w-full bg-white/5 border-white/20 hover:bg-white/10"
-                    >
-                      {resource.action.title}
-                    </Button>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </TabsContent>
-
-          <TabsContent value="games" className="mt-6">
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-              {ageGroup.games.map((game, index) => (
-                <div 
-                  key={index}
-                  className="rounded-xl overflow-hidden border border-white/10 hover:border-white/30 transition-all"
-                >
-                  <div className="h-48 overflow-hidden relative">
-                    <div className={`absolute inset-0 ${game.color} opacity-40`}></div>
-                    <img 
-                      src={game.image} 
-                      alt={game.title}
-                      className="w-full h-full object-cover object-center"
-                      onError={(e) => {
-                        (e.target as HTMLImageElement).src = "https://images.unsplash.com/photo-1560421683-6856ea585c78?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=80";
-                      }}
-                    />
-                    <div className="absolute top-2 right-2">
-                      {game.stars && (
-                        <div className="bg-black/50 rounded-full px-2 py-1 flex items-center">
-                          {[...Array(5)].map((_, i) => (
-                            <Star 
-                              key={i} 
-                              className={`h-3 w-3 ${i < (game.stars || 0) ? 'text-yellow-400 fill-yellow-400' : 'text-gray-400'}`} 
-                            />
-                          ))}
-                        </div>
-                      )}
-                    </div>
-                  </div>
-                  
-                  <div className="p-4 bg-white/10 backdrop-blur-sm">
-                    <h3 className="text-lg font-medium text-white mb-1">{game.title}</h3>
-                    <p className="text-white/70 text-sm mb-3">{game.description}</p>
-                    <Button 
-                      onClick={() => handleNavigate(game.path)}
-                      className="w-full bg-white/10 hover:bg-white/20 border-white/10"
-                    >
-                      Play Game
-                    </Button>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </TabsContent>
-
-          <TabsContent value="videos" className="mt-6">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              {ageGroup.videos.map((video, index) => (
-                <div 
-                  key={index}
-                  className="bg-white/10 rounded-xl overflow-hidden border border-white/10 hover:border-white/30 transition-all"
-                >
-                  <div className="relative">
-                    <img 
-                      src={video.thumbnail} 
-                      alt={video.title}
-                      className="w-full h-48 object-cover"
-                      onError={(e) => {
-                        (e.target as HTMLImageElement).src = "https://images.unsplash.com/photo-1611162617213-7d7a39e9b1d7?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=80";
-                      }}
-                    />
-                    <div className="absolute inset-0 bg-black/30 flex items-center justify-center">
-                      <div className="bg-white/20 p-4 rounded-full backdrop-blur-sm">
-                        <Video className="h-8 w-8 text-white" />
-                      </div>
-                    </div>
-                    <div className="absolute bottom-2 right-2 bg-black/70 px-2 py-1 rounded-md text-xs text-white">
-                      {video.duration}
-                    </div>
-                  </div>
-                  
-                  <div className="p-4">
-                    <h3 className="text-lg font-medium text-white mb-1">{video.title}</h3>
-                    <p className="text-white/70 text-sm mb-4">{video.description}</p>
-                    <Button 
-                      onClick={() => handleNavigate(video.path)}
-                      variant="outline" 
-                      className="w-full bg-white/5 border-white/20 hover:bg-white/10"
-                    >
-                      Watch Video
-                    </Button>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </TabsContent>
-
-          <TabsContent value="support" className="mt-6">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              {ageGroup.support.map((item, index) => (
-                <div 
-                  key={index}
-                  className="bg-white/10 rounded-xl p-6 border border-white/10 hover:border-white/30 transition-all"
-                >
-                  <div className="flex items-center gap-4 mb-4">
-                    <div className="p-3 rounded-full bg-white/10">
-                      {item.icon}
-                    </div>
-                    <h3 className="text-xl font-medium text-white">{item.title}</h3>
-                  </div>
-                  <p className="text-white/70 mb-6">{item.description}</p>
-                  <Button 
-                    onClick={() => handleNavigate(item.path)}
-                    className="w-full bg-white/10 hover:bg-white/20 border-white/10"
-                  >
-                    Access Support
-                  </Button>
-                </div>
-              ))}
-            </div>
-          </TabsContent>
-        </Tabs>
       </div>
     </div>
   );
+};
+
+// Middle Childhood Portal (Ages 8-13)
+const MiddleChildhoodPortal: React.FC = () => {
+  return (
+    <div className="min-h-screen bg-gradient-to-b from-[#9333ea] via-[#a855f7] to-[#c084fc] text-white py-8 px-4">
+      {/* Navigation buttons */}
+      <div className="absolute top-4 left-4 z-20">
+        <PortalBackButton returnPath="/adolescent-selection" />
+      </div>
+      <div className="absolute top-4 right-4 z-20">
+        <ThriveButton size="sm" />
+      </div>
+      
+      <div className="max-w-6xl mx-auto relative z-10">
+        <div className="flex flex-col md:flex-row items-center justify-between mb-12">
+          <div>
+            <h1 className="text-3xl md:text-4xl font-bold mb-2">
+              Growing Up Strong
+            </h1>
+            <p className="text-lg text-purple-100">
+              Cool resources for school-age explorers!
+            </p>
+          </div>
+          <div className="text-4xl mt-4 md:mt-0">🌟 🚀 🛸</div>
+        </div>
+        
+        {/* Content grid */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {/* Game card */}
+          <div className="bg-indigo-900/40 backdrop-blur-md border border-indigo-300/30 rounded-xl p-6 shadow-lg hover:shadow-xl transition-all">
+            <div className="flex justify-between items-start mb-4">
+              <h3 className="text-xl font-bold">Adventure Games</h3>
+              <span className="text-3xl">🎮</span>
+            </div>
+            <p className="text-purple-100 mb-6">
+              Exciting games that teach important life skills while having fun!
+            </p>
+            <Button className="w-full bg-indigo-500 hover:bg-indigo-600">
+              Play Games
+            </Button>
+          </div>
+          
+          {/* Challenges card */}
+          <div className="bg-indigo-900/40 backdrop-blur-md border border-indigo-300/30 rounded-xl p-6 shadow-lg hover:shadow-xl transition-all">
+            <div className="flex justify-between items-start mb-4">
+              <h3 className="text-xl font-bold">Brain Challenges</h3>
+              <span className="text-3xl">🧠</span>
+            </div>
+            <p className="text-purple-100 mb-6">
+              Test your problem-solving skills with fun puzzles and quests!
+            </p>
+            <Button className="w-full bg-indigo-500 hover:bg-indigo-600">
+              Start Challenge
+            </Button>
+          </div>
+          
+          {/* Friendship card */}
+          <div className="bg-indigo-900/40 backdrop-blur-md border border-indigo-300/30 rounded-xl p-6 shadow-lg hover:shadow-xl transition-all">
+            <div className="flex justify-between items-start mb-4">
+              <h3 className="text-xl font-bold">Friendship Zone</h3>
+              <span className="text-3xl">👥</span>
+            </div>
+            <p className="text-purple-100 mb-6">
+              Learn about making and keeping friends, solving conflicts, and teamwork!
+            </p>
+            <Button className="w-full bg-indigo-500 hover:bg-indigo-600">
+              Explore
+            </Button>
+          </div>
+          
+          {/* Achievement badges card */}
+          <div className="bg-indigo-900/40 backdrop-blur-md border border-indigo-300/30 rounded-xl p-6 shadow-lg hover:shadow-xl transition-all">
+            <div className="flex justify-between items-start mb-4">
+              <h3 className="text-xl font-bold">Achievement Badges</h3>
+              <span className="text-3xl">🏆</span>
+            </div>
+            <p className="text-purple-100 mb-6">
+              Collect badges as you complete activities and learn new skills!
+            </p>
+            <Button className="w-full bg-indigo-500 hover:bg-indigo-600">
+              See Badges
+            </Button>
+          </div>
+          
+          {/* Parent resources card */}
+          <div className="bg-indigo-900/40 backdrop-blur-md border border-indigo-300/30 rounded-xl p-6 shadow-lg hover:shadow-xl transition-all">
+            <div className="flex justify-between items-start mb-4">
+              <h3 className="text-xl font-bold">Parent Resources</h3>
+              <span className="text-3xl">📋</span>
+            </div>
+            <p className="text-purple-100 mb-6">
+              Helpful information for parents to support kids during this important stage!
+            </p>
+            <Button className="w-full bg-indigo-500 hover:bg-indigo-600">
+              For Parents
+            </Button>
+          </div>
+          
+          {/* Help & support card */}
+          <div className="bg-indigo-900/40 backdrop-blur-md border border-indigo-300/30 rounded-xl p-6 shadow-lg hover:shadow-xl transition-all">
+            <div className="flex justify-between items-start mb-4">
+              <h3 className="text-xl font-bold">Help & Support</h3>
+              <span className="text-3xl">🆘</span>
+            </div>
+            <p className="text-purple-100 mb-6">
+              Need someone to talk to? Find resources and support here!
+            </p>
+            <Button className="w-full bg-indigo-500 hover:bg-indigo-600">
+              Get Help
+            </Button>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+// Teen Portal (Ages 14+)
+const TeenPortal: React.FC = () => {
+  return (
+    <div className="min-h-screen bg-gradient-to-b from-[#3b82f6] via-[#6366f1] to-[#8b5cf6] text-white py-8 px-4">
+      {/* Navigation buttons */}
+      <div className="absolute top-4 left-4 z-20">
+        <PortalBackButton returnPath="/adolescent-selection" />
+      </div>
+      <div className="absolute top-4 right-4 z-20">
+        <ThriveButton size="sm" />
+      </div>
+      
+      <div className="max-w-6xl mx-auto relative z-10">
+        <div className="mb-12">
+          <h1 className="text-3xl md:text-4xl font-bold mb-3">
+            Your Space, Your Journey
+          </h1>
+          <p className="text-lg text-blue-100 max-w-2xl">
+            Tools and resources designed specifically for teens navigating the challenges and opportunities of adolescence.
+          </p>
+        </div>
+        
+        {/* Featured content */}
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-12">
+          <div className="lg:col-span-2 bg-blue-900/30 backdrop-blur-md border border-blue-300/30 rounded-xl overflow-hidden">
+            <div className="p-6">
+              <h2 className="text-2xl font-bold mb-4">Identity & Self-Discovery</h2>
+              <p className="mb-4">
+                Explore who you are, what matters to you, and where you want to go in life with our interactive tools and resources.
+              </p>
+              <Button className="bg-blue-600 hover:bg-blue-700">
+                Start Your Journey
+              </Button>
+            </div>
+          </div>
+          
+          <div className="bg-blue-900/30 backdrop-blur-md border border-blue-300/30 rounded-xl p-6">
+            <h3 className="text-xl font-bold flex items-center mb-4">
+              <span className="text-2xl mr-2">🎧</span> Stress Relief
+            </h3>
+            <p className="mb-4">
+              Quick tools and techniques to manage stress, anxiety, and overwhelming emotions.
+            </p>
+            <Button variant="outline" className="w-full border-blue-400 text-blue-100 hover:bg-blue-800/50">
+              Feel Better Now
+            </Button>
+          </div>
+        </div>
+        
+        {/* Main content grid */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {/* Mental fitness card */}
+          <div className="bg-blue-900/30 backdrop-blur-md border border-blue-300/30 rounded-xl p-6">
+            <h3 className="text-xl font-bold mb-4">Mental Fitness</h3>
+            <p className="text-blue-100 mb-6">
+              Exercises and challenges to build resilience, mindfulness, and emotional intelligence.
+            </p>
+            <Button className="w-full bg-blue-600 hover:bg-blue-700">
+              Train Your Mind
+            </Button>
+          </div>
+          
+          {/* Relationships card */}
+          <div className="bg-blue-900/30 backdrop-blur-md border border-blue-300/30 rounded-xl p-6">
+            <h3 className="text-xl font-bold mb-4">Relationships</h3>
+            <p className="text-blue-100 mb-6">
+              Navigate friendships, family dynamics, romance, and setting healthy boundaries.
+            </p>
+            <Button className="w-full bg-blue-600 hover:bg-blue-700">
+              Learn More
+            </Button>
+          </div>
+          
+          {/* Future planning card */}
+          <div className="bg-blue-900/30 backdrop-blur-md border border-blue-300/30 rounded-xl p-6">
+            <h3 className="text-xl font-bold mb-4">Future Planning</h3>
+            <p className="text-blue-100 mb-6">
+              Tools to explore career options, educational paths, and life after high school.
+            </p>
+            <Button className="w-full bg-blue-600 hover:bg-blue-700">
+              Plan Ahead
+            </Button>
+          </div>
+          
+          {/* Safe space card */}
+          <div className="bg-blue-900/30 backdrop-blur-md border border-blue-300/30 rounded-xl p-6">
+            <h3 className="text-xl font-bold mb-4">Safe Space</h3>
+            <p className="text-blue-100 mb-6">
+              A confidential area to express yourself and connect with peers who understand.
+            </p>
+            <Button className="w-full bg-blue-600 hover:bg-blue-700">
+              Enter Safe Space
+            </Button>
+          </div>
+          
+          {/* Resources card */}
+          <div className="bg-blue-900/30 backdrop-blur-md border border-blue-300/30 rounded-xl p-6">
+            <h3 className="text-xl font-bold mb-4">Resources</h3>
+            <p className="text-blue-100 mb-6">
+              Articles, videos, and guides on topics that matter to teens.
+            </p>
+            <Button className="w-full bg-blue-600 hover:bg-blue-700">
+              Browse Resources
+            </Button>
+          </div>
+          
+          {/* Help & support card */}
+          <div className="bg-blue-900/30 backdrop-blur-md border border-blue-300/30 rounded-xl p-6">
+            <h3 className="text-xl font-bold mb-4">Get Support</h3>
+            <p className="text-blue-100 mb-6">
+              Connect with trained counselors and support services when you need help.
+            </p>
+            <Button className="w-full bg-blue-600 hover:bg-blue-700">
+              Find Support
+            </Button>
+          </div>
+        </div>
+        
+        {/* Crisis support */}
+        <div className="mt-12 bg-red-500/20 border border-red-300/40 p-4 rounded-lg flex items-center justify-between">
+          <div>
+            <h3 className="font-bold">Need immediate help?</h3>
+            <p className="text-sm">If you're in crisis, help is available 24/7</p>
+          </div>
+          <Button className="bg-white text-red-600 hover:bg-red-100">
+            Crisis Support
+          </Button>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+// Main component that determines which portal to display based on selected age group
+const AdolescentPortal: React.FC = () => {
+  const navigate = useNavigate();
+  const location = useLocation();
+  const { toast } = useToast();
+  const [ageGroup, setAgeGroup] = useState<string>('adolescence'); // Default to teen portal
+  
+  useEffect(() => {
+    // Set the age group based on location state if available
+    if (location.state?.ageGroup) {
+      setAgeGroup(location.state.ageGroup);
+    }
+  }, [location.state]);
+  
+  // Render appropriate portal based on age group
+  if (ageGroup === 'early-childhood') {
+    return <EarlyChildhoodPortal />;
+  } else if (ageGroup === 'middle-childhood') {
+    return <MiddleChildhoodPortal />;
+  } else {
+    // Default to teen portal
+    return <TeenPortal />;
+  }
 };
 
 export default AdolescentPortal;
