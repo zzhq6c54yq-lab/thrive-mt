@@ -15,6 +15,19 @@ const GoldenYearsPortal: React.FC = () => {
   const { handleActionClick } = useFeatureActions();
   
   const handleFeatureClick = (feature: string) => {
+    // If it's the Legacy Journal, navigate directly to the journal page
+    if (feature === "Legacy Journal") {
+      navigate("/golden-years-journal", {
+        state: { 
+          stayInPortal: true,
+          preventTutorial: true,
+          portalPath: '/golden-years-portal'
+        }
+      });
+      return;
+    }
+    
+    // For other features, use the ActionConfig
     const actionConfig: ActionButtonConfig = {
       type: 'other',
       title: feature,

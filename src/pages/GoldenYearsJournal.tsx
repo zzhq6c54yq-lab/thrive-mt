@@ -1,930 +1,873 @@
+
 import React, { useState, useEffect } from "react";
-import { useNavigate, useSearchParams } from "react-router-dom";
-import { useToast } from "@/hooks/use-toast";
+import { useNavigate, useLocation } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import HomeButton from "@/components/HomeButton";
 import { Textarea } from "@/components/ui/textarea";
-import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { 
-  BookOpen, PenTool, Share, Clock, Save, MessageSquare, Send, 
-  FileCheck, Footprints, Heart, FileText, HeartHandshake, Users,
-  Calendar, MapPin, Camera, Archive, Download, Lightbulb
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { 
+  Card, 
+  CardContent, 
+  CardDescription, 
+  CardFooter, 
+  CardHeader, 
+  CardTitle 
+} from "@/components/ui/card";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
+import { useToast } from "@/hooks/use-toast";
+import NavigationBar from "@/components/navigation/NavigationBar";
+import { 
+  BookOpen, 
+  Save, 
+  FileText, 
+  Share2, 
+  Download, 
+  Printer, 
+  PencilLine, 
+  BookMarked, 
+  Plus,
+  ChevronRight,
+  ChevronLeft,
+  Sparkles
 } from "lucide-react";
-import { FamilyMember, getAllFamilyMembers, shareVideo } from "@/services/familyShareService";
+import FileUploader from "@/components/journal/FileUploader";
+import JournalPrompts from "@/components/journal/JournalPrompts";
 
-// Life chapter prompts for memoir building
-const LifeChapterPrompts = [
-  {
-    title: "Childhood Memories",
-    description: "Your earliest years shape who you become. These formative experiences are treasures to share.",
-    icon: <Footprints className="h-5 w-5" />,
-    prompts: [
-      "What is your earliest childhood memory? Describe it with all the sensory details you can recall.",
-      "Who were your childhood heroes and why did you admire them? How did they influence your life?",
-      "Describe your favorite childhood game or activity. What did it teach you about life?",
-      "What was school like for you growing up? Who was your favorite teacher and why?",
-      "Tell about a family tradition from your childhood that was meaningful to you.",
-      "Describe the neighborhood where you grew up. What made it special or challenging?",
-      "What historical events do you remember from your childhood? How did they affect your family?",
-      "Who were your childhood friends? Do you have a special memory with them?",
-      "What was the most important lesson your parents taught you during childhood?"
-    ]
-  },
-  {
-    title: "Young Adulthood",
-    description: "The years of discovery, independence, and setting the course for your life journey.",
-    icon: <Heart className="h-5 w-5" />,
-    prompts: [
-      "What was your first job? What did you learn from this experience?",
-      "Describe a moment when you felt truly independent for the first time. How did it change you?",
-      "What dreams did you have for your future during your young adult years? Did they come true?",
-      "Tell about an important friendship or relationship from your young adult years.",
-      "What world events had the biggest impact on you during this time?",
-      "Describe a risk or bold decision you made as a young adult. What came of it?",
-      "What was your first home away from your parents like? What do you remember about it?",
-      "Who were your mentors during this phase of life? What wisdom did they impart?",
-      "What do you wish you had known during your young adult years that you know now?"
-    ]
-  },
-  {
-    title: "Family Life",
-    description: "The joys, challenges, and love that defined your experience of building a family.",
-    icon: <Users className="h-5 w-5" />,
-    prompts: [
-      "How did you meet your spouse or significant partner(s)? What attracted you to them?",
-      "What were your early years of marriage or partnership like? What surprises did you face?",
-      "What was the most rewarding aspect of raising children (if applicable)? The most challenging?",
-      "Describe a typical family dinner from when your family was together. What made it special?",
-      "What family traditions did you create or continue? Why were they important?",
-      "Share a story about a family vacation or trip that stands out in your memory.",
-      "How did you balance work and family life? What would you do differently?",
-      "What values were most important for you to pass on to your children or younger relatives?",
-      "Describe a major challenge your family faced together and how you overcame it."
-    ]
-  },
-  {
-    title: "Career & Achievements",
-    description: "Your professional journey, accomplishments, and the impact you made in your field.",
-    icon: <FileText className="h-5 w-5" />,
-    prompts: [
-      "What career path did you follow and why? Was it what you had planned?",
-      "What professional accomplishment are you most proud of? Why does it matter to you?",
-      "Describe a challenge you overcame in your professional life. How did it shape you?",
-      "Who were your mentors and how did they influence your career development?",
-      "What advice would you give to someone starting in your field today?",
-      "How did your career affect other aspects of your life, both positively and negatively?",
-      "Was there a moment when you felt you had 'made it' professionally? Describe that time.",
-      "What technological or industry changes did you witness during your career?",
-      "If you could have chosen a different career path, what might it have been?"
-    ]
-  },
-  {
-    title: "Life Wisdom",
-    description: "The insights, philosophy, and perspective you've gained through a lifetime of experiences.",
-    icon: <Lightbulb className="h-5 w-5" />,
-    prompts: [
-      "What is the most important life lesson you've learned? How did you learn it?",
-      "What do you wish you had known when you were younger? Why?",
-      "What values have guided your life decisions? How have they served you?",
-      "How has your perspective on life changed as you've grown older?",
-      "What would you like future generations to know about living a fulfilling life?",
-      "Describe a mistake or regret that taught you something valuable.",
-      "What has brought you the most joy in life? Has this changed over time?",
-      "What gives you hope for the future? What concerns do you have?",
-      "If you could share just one piece of wisdom with your descendants, what would it be and why?"
-    ]
-  },
-  {
-    title: "Historical Moments",
-    description: "Your personal perspective on significant events that shaped history during your lifetime.",
-    icon: <Calendar className="h-5 w-5" />,
-    prompts: [
-      "What major historical event had the biggest impact on your life? How did it affect you?",
-      "Describe where you were and what you felt during a significant historical moment.",
-      "How did technology change during your lifetime? What innovations most impressed you?",
-      "What social changes have you witnessed that you feel were most significant?",
-      "Did you ever participate in a social movement or cause? What was that experience like?",
-      "How did major economic changes (like recessions or booms) affect your life?",
-      "What wartime experiences (if any) shaped your perspective on national events?",
-      "What local historical events in your community do you think should be remembered?",
-      "How do you feel the world has changed for better or worse during your lifetime?"
-    ]
-  },
-  {
-    title: "Places & Travel",
-    description: "Locations that have been meaningful in your life and journeys that expanded your world.",
-    icon: <MapPin className="h-5 w-5" />,
-    prompts: [
-      "What place has felt most like 'home' to you in your life? What made it special?",
-      "Describe a journey or trip that changed your perspective on life.",
-      "What is the most beautiful place you've ever visited? What made it so striking?",
-      "Is there a place you've always wanted to visit but haven't? What draws you to it?",
-      "How have the places you've lived influenced who you are today?",
-      "Describe a place that no longer exists but lives on in your memory.",
-      "What was your favorite family vacation destination and why?",
-      "If you could return to one place one more time, where would it be and why?",
-      "What place in nature has had special significance for you? Describe your connection to it."
-    ]
-  }
-];
-
-// Today's journal prompts
-const todaysPrompts = [
-  "What brings you the most joy in your daily life now?",
-  "Describe a moment of beauty you noticed today.",
-  "What are you grateful for in this season of your life?",
-  "What wisdom would you share with someone facing a challenge today?",
-  "How has your definition of happiness evolved over your lifetime?",
-  "What is one small thing that made you smile today?",
-  "What makes you feel most alive in this chapter of your life?"
-];
-
-// End-of-life planning categories
-const planningCategories = [
-  {
-    title: "Values & Wishes",
-    description: "Document your core values and wishes to guide healthcare and end-of-life decisions.",
-    icon: <Heart className="h-5 w-5 text-rose-500" />,
-    sections: [
-      "Personal Values Statement", 
-      "Quality of Life Priorities",
-      "Medical Treatment Preferences",
-      "End-of-Life Care Wishes"
-    ]
-  },
-  {
-    title: "Important Documents",
-    description: "Create and organize essential legal and personal documents.",
-    icon: <FileCheck className="h-5 w-5 text-blue-500" />,
-    sections: [
-      "Will & Testament", 
-      "Power of Attorney", 
-      "Advance Directive",
-      "Document Locations"
-    ]
-  },
-  {
-    title: "Legacy Planning",
-    description: "Plan how you want to be remembered and what you want to leave behind.",
-    icon: <Footprints className="h-5 w-5 text-emerald-500" />,
-    sections: [
-      "Personal Obituary", 
-      "Funeral/Memorial Preferences", 
-      "Legacy Letters",
-      "Meaningful Possessions"
-    ]
-  },
-  {
-    title: "Family Communication",
-    description: "Guidance for discussing your wishes with loved ones and healthcare providers.",
-    icon: <HeartHandshake className="h-5 w-5 text-amber-500" />,
-    sections: [
-      "Family Discussion Guide", 
-      "Contact Information", 
-      "Message to Loved Ones",
-      "Digital Account Access"
-    ]
-  }
-];
-
-// Inspirational quotes about legacy and life stories
-const inspirationalQuotes = [
-  {
-    quote: "We all die. The goal isn't to live forever, the goal is to create something that will.",
-    author: "Chuck Palahniuk"
-  },
-  {
-    quote: "The greatest legacy one can pass on to one's children and grandchildren is not money or other material things accumulated in one's life, but rather a legacy of character and faith.",
-    author: "Billy Graham"
-  },
-  {
-    quote: "Carve your name on hearts, not tombstones. A legacy is etched into the minds of others and the stories they share about you.",
-    author: "Shannon L. Alder"
-  },
-  {
-    quote: "The life given us, by nature is short; but the memory of a well-spent life is eternal.",
-    author: "Cicero"
-  },
-  {
-    quote: "Your story is the greatest legacy that you will leave to your friends. It's the longest-lasting legacy you will leave to your heirs.",
-    author: "Steve Saint"
-  },
-  {
-    quote: "Legacy is not what's left tomorrow when you're gone. It's what you give, create, impact and contribute today while you're here that then happens to live on.",
-    author: "Rasheed Ogunlaru"
-  },
-  {
-    quote: "What you leave behind is not what is engraved in stone monuments, but what is woven into the lives of others.",
-    author: "Pericles"
-  }
-];
+// Journal entry interface
+interface JournalEntry {
+  id: string;
+  title: string;
+  content: string;
+  date: string;
+  category: string;
+  images?: string[];
+}
 
 const GoldenYearsJournal: React.FC = () => {
   const navigate = useNavigate();
-  const [searchParams, setSearchParams] = useSearchParams();
+  const location = useLocation();
   const { toast } = useToast();
 
-  // Initialize active tab from URL parameter or default to "memoir"
-  const initialTab = searchParams.get("tab") || "memoir";
-  const [activeTab, setActiveTab] = useState(initialTab);
-
-  useEffect(() => {
-    // Update URL when tab changes
-    setSearchParams({ tab: activeTab });
-  }, [activeTab, setSearchParams]);
-
-  // Journal entries state
-  const [journalEntry, setJournalEntry] = useState("");
-  const [selectedPrompt, setSelectedPrompt] = useState(todaysPrompts[0]);
-  const [selectedChapter, setSelectedChapter] = useState(LifeChapterPrompts[0]);
-  const [selectedChapterPrompt, setSelectedChapterPrompt] = useState(LifeChapterPrompts[0].prompts[0]);
-  const [selectedCategory, setSelectedCategory] = useState(planningCategories[0]);
-  const [selectedSection, setSelectedSection] = useState(planningCategories[0].sections[0]);
-  const [familyMembers, setFamilyMembers] = useState<FamilyMember[]>(getAllFamilyMembers());
-  const [selectedFamily, setSelectedFamily] = useState<string[]>([]);
+  // State for journal entries
+  const [entries, setEntries] = useState<JournalEntry[]>(() => {
+    const saved = localStorage.getItem('legacyJournalEntries');
+    return saved ? JSON.parse(saved) : [];
+  });
   
-  // Random inspirational quote
-  const [quote, setQuote] = useState(inspirationalQuotes[0]);
+  // State for current entry being edited
+  const [currentEntry, setCurrentEntry] = useState<JournalEntry>({
+    id: crypto.randomUUID(),
+    title: '',
+    content: '',
+    date: new Date().toISOString().split('T')[0],
+    category: 'childhood',
+    images: []
+  });
   
+  // State for UI
+  const [activeTab, setActiveTab] = useState('write');
+  const [selectedEntryId, setSelectedEntryId] = useState<string | null>(null);
+  const [promptCategory, setPromptCategory] = useState('childhood');
+  const [showPromptDialog, setShowPromptDialog] = useState(false);
+  
+  // Save entries to localStorage when they change
   useEffect(() => {
-    // Select a random quote on page load
-    const randomIndex = Math.floor(Math.random() * inspirationalQuotes.length);
-    setQuote(inspirationalQuotes[randomIndex]);
-  }, []);
+    localStorage.setItem('legacyJournalEntries', JSON.stringify(entries));
+  }, [entries]);
 
-  // Sample entries (these would come from a database in a real app)
-  const [entries, setEntries] = useState<{id: string, date: string, prompt: string, content: string, type: string}[]>([
-    {
-      id: "entry1",
-      date: "April 10, 2025",
-      prompt: "What brings you the most joy in your daily life now?",
-      content: "My morning walks in the garden bring me incredible peace. The birds are so lively at dawn, and watching the seasons change through my plants keeps me connected to the rhythm of life. I've grown to appreciate these quiet moments more than I ever did when I was younger and always rushing.",
-      type: "daily"
-    },
-    {
-      id: "entry2",
-      date: "April 8, 2025",
-      prompt: "How did you meet your spouse or significant partner(s)?",
-      content: "I met Sarah at a community dance in the summer of 1968. She was wearing a yellow dress that caught my eye from across the room. I worked up the courage to ask her to dance, and despite stepping on her toes twice, she agreed to see me again. That dance changed the course of my entire life.",
-      type: "memoir"
-    }
-  ]);
-
-  // Sample planning documents
-  const [planningDocs, setPlanningDocs] = useState<{id: string, category: string, section: string, content: string, lastUpdated: string}[]>([
-    {
-      id: "plan1",
-      category: "Values & Wishes",
-      section: "Personal Values Statement",
-      content: "I value independence, dignity, and quality of life over longevity. I want medical decisions to prioritize comfort and clarity of mind. I believe in facing end-of-life with honesty and openness, surrounded by loved ones in a peaceful setting if possible.",
-      lastUpdated: "April 5, 2025"
-    }
-  ]);
-
-  const handleSaveEntry = () => {
-    if (!journalEntry.trim()) {
-      toast({
-        title: "Cannot Save Empty Entry",
-        description: "Please write something before saving your journal entry.",
-        variant: "destructive"
-      });
-      return;
-    }
-    
-    const newEntry = {
-      id: `entry${Date.now()}`,
-      date: new Date().toLocaleDateString('en-US', {year: 'numeric', month: 'long', day: 'numeric'}),
-      prompt: activeTab === "daily" ? selectedPrompt : selectedChapterPrompt,
-      content: journalEntry,
-      type: activeTab === "daily" ? "daily" : "memoir"
-    };
-    
-    setEntries([newEntry, ...entries]);
-    setJournalEntry("");
-    
-    toast({
-      title: "Journal Entry Saved",
-      description: "Your thoughts have been recorded in your journal.",
-    });
+  // Handle entry changes
+  const handleEntryChange = (field: keyof JournalEntry, value: string) => {
+    setCurrentEntry(prev => ({ ...prev, [field]: value }));
   };
 
-  const handleSavePlanningDoc = () => {
-    if (!journalEntry.trim()) {
+  // Save the current entry
+  const saveEntry = () => {
+    if (!currentEntry.title.trim() || !currentEntry.content.trim()) {
       toast({
-        title: "Cannot Save Empty Document",
-        description: "Please write something before saving your planning document.",
-        variant: "destructive"
-      });
-      return;
-    }
-    
-    const newDoc = {
-      id: `plan${Date.now()}`,
-      category: selectedCategory.title,
-      section: selectedSection,
-      content: journalEntry,
-      lastUpdated: new Date().toLocaleDateString('en-US', {year: 'numeric', month: 'long', day: 'numeric'})
-    };
-    
-    setPlanningDocs([newDoc, ...planningDocs]);
-    setJournalEntry("");
-    
-    toast({
-      title: "Document Saved",
-      description: "Your planning document has been updated.",
-    });
-  };
-
-  const handleShareWithFamily = () => {
-    if (selectedFamily.length === 0) {
-      toast({
-        title: "No Family Members Selected",
-        description: "Please select at least one family member to share with.",
+        title: "Missing Information",
+        description: "Please provide a title and content for your entry.",
         variant: "destructive"
       });
       return;
     }
 
-    // Using the shareVideo function from familyShareService
-    // In a real app, we would create a specific function for journal entries
-    shareVideo(
-      `journal-${Date.now()}`,
-      "Journal Entry: " + (activeTab === "daily" ? selectedPrompt : selectedChapterPrompt),
-      selectedFamily,
-      "", // No video URL for journal entries
-      "https://images.unsplash.com/photo-1455390582262-044cdead277a?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=80"
-    );
-
-    setSelectedFamily([]);
+    // Check if we're editing an existing entry or creating a new one
+    const entryIndex = entries.findIndex(entry => entry.id === currentEntry.id);
     
-    toast({
-      title: "Entry Shared Successfully",
-      description: "Your journal entry has been shared with your selected family members.",
-    });
-  };
-
-  const handleFamilySelect = (id: string) => {
-    if (selectedFamily.includes(id)) {
-      setSelectedFamily(selectedFamily.filter(memberId => memberId !== id));
+    if (entryIndex >= 0) {
+      // Update existing entry
+      const updatedEntries = [...entries];
+      updatedEntries[entryIndex] = currentEntry;
+      setEntries(updatedEntries);
+      toast({
+        title: "Entry Updated",
+        description: "Your journal entry has been successfully updated.",
+      });
     } else {
-      setSelectedFamily([...selectedFamily, id]);
+      // Add new entry
+      setEntries([...entries, currentEntry]);
+      toast({
+        title: "Entry Saved",
+        description: "Your journal entry has been saved successfully.",
+      });
+    }
+    
+    // Reset current entry for a new one
+    setCurrentEntry({
+      id: crypto.randomUUID(),
+      title: '',
+      content: '',
+      date: new Date().toISOString().split('T')[0],
+      category: 'childhood',
+      images: []
+    });
+  };
+
+  // View a specific entry
+  const viewEntry = (id: string) => {
+    const entry = entries.find(entry => entry.id === id);
+    if (entry) {
+      setCurrentEntry(entry);
+      setSelectedEntryId(id);
+      setActiveTab('write');
     }
   };
 
-  const handleExportMemoir = () => {
-    // This would generate a PDF in a real app
-    toast({
-      title: "Memoir Export Started",
-      description: "Your life story memoir is being compiled into a beautiful document.",
-    });
+  // Delete an entry
+  const deleteEntry = (id: string) => {
+    setEntries(entries.filter(entry => entry.id !== id));
     
-    setTimeout(() => {
-      toast({
-        title: "Memoir Export Complete",
-        description: "Your memoir has been saved to your downloads folder.",
+    // If we're currently viewing this entry, reset the form
+    if (selectedEntryId === id) {
+      setCurrentEntry({
+        id: crypto.randomUUID(),
+        title: '',
+        content: '',
+        date: new Date().toISOString().split('T')[0],
+        category: 'childhood',
+        images: []
       });
-    }, 3000);
+      setSelectedEntryId(null);
+    }
+    
+    toast({
+      title: "Entry Deleted",
+      description: "Your journal entry has been deleted.",
+    });
+  };
+
+  // Create a new entry
+  const createNewEntry = () => {
+    setCurrentEntry({
+      id: crypto.randomUUID(),
+      title: '',
+      content: '',
+      date: new Date().toISOString().split('T')[0],
+      category: 'childhood',
+      images: []
+    });
+    setSelectedEntryId(null);
+    setActiveTab('write');
+  };
+
+  // Apply a writing prompt
+  const applyPrompt = (prompt: string) => {
+    setCurrentEntry(prev => ({
+      ...prev,
+      content: prev.content ? `${prev.content}\n\n${prompt}` : prompt
+    }));
+    setShowPromptDialog(false);
+  };
+
+  // Handle image uploads
+  const handleImageUpload = (imageUrls: string[]) => {
+    setCurrentEntry(prev => ({
+      ...prev,
+      images: [...(prev.images || []), ...imageUrls]
+    }));
+    toast({
+      title: "Images Uploaded",
+      description: "Your images have been added to the journal entry.",
+    });
+  };
+
+  // Download the current entry as a text file
+  const downloadEntry = () => {
+    const element = document.createElement("a");
+    const file = new Blob([
+      `# ${currentEntry.title}\n\nDate: ${currentEntry.date}\nCategory: ${currentEntry.category}\n\n${currentEntry.content}`
+    ], {type: 'text/plain'});
+    element.href = URL.createObjectURL(file);
+    element.download = `${currentEntry.title.replace(/\s+/g, '_')}.txt`;
+    document.body.appendChild(element);
+    element.click();
+    document.body.removeChild(element);
+    
+    toast({
+      title: "Entry Downloaded",
+      description: "Your journal entry has been downloaded as a text file.",
+    });
+  };
+
+  // Print the current entry
+  const printEntry = () => {
+    const printWindow = window.open('', '_blank');
+    if (printWindow) {
+      printWindow.document.write(`
+        <html>
+          <head>
+            <title>${currentEntry.title}</title>
+            <style>
+              body { font-family: Arial, sans-serif; margin: 40px; line-height: 1.6; }
+              h1 { color: #046b62; }
+              .meta { color: #666; margin-bottom: 20px; }
+              .content { white-space: pre-wrap; }
+              img { max-width: 100%; margin: 10px 0; }
+            </style>
+          </head>
+          <body>
+            <h1>${currentEntry.title}</h1>
+            <div class="meta">Date: ${new Date(currentEntry.date).toLocaleDateString()}</div>
+            <div class="meta">Category: ${currentEntry.category}</div>
+            <div class="content">${currentEntry.content}</div>
+            ${currentEntry.images?.map(img => `<img src="${img}" alt="Journal image" />`).join('') || ''}
+          </body>
+        </html>
+      `);
+      printWindow.document.close();
+      printWindow.print();
+    }
+    
+    toast({
+      title: "Printing",
+      description: "Your journal entry is being sent to the printer.",
+    });
+  };
+
+  // Share the current entry (simulated)
+  const shareEntry = () => {
+    toast({
+      title: "Share Options",
+      description: "Sharing options would appear here in a production app.",
+    });
+  };
+
+  // Export all journal entries as a single document
+  const exportJournal = () => {
+    const content = entries.map(entry => (
+      `# ${entry.title}\n\nDate: ${entry.date}\nCategory: ${entry.category}\n\n${entry.content}\n\n---\n\n`
+    )).join('');
+    
+    const element = document.createElement("a");
+    const file = new Blob([content], {type: 'text/plain'});
+    element.href = URL.createObjectURL(file);
+    element.download = "My_Legacy_Journal.txt";
+    document.body.appendChild(element);
+    element.click();
+    document.body.removeChild(element);
+    
+    toast({
+      title: "Journal Exported",
+      description: "Your entire journal has been exported as a text file.",
+    });
+  };
+
+  // Generate a sample entry with AI (simulated)
+  const generateSampleEntry = () => {
+    const sampleEntries = [
+      {
+        title: "My First Day of School",
+        content: "I remember the butterflies in my stomach as my mother straightened my collar. The smell of new books and freshly waxed floors greeted me as I stepped into the classroom. Miss Johnson, with her kind smile, made me feel at home immediately...",
+        category: "childhood"
+      },
+      {
+        title: "Meeting My Spouse",
+        content: "It was a chance encounter at the library. I was reaching for a book on the top shelf, and there they were, offering to help. Our hands touched briefly, and in that moment, something shifted in the universe. We talked for hours that day, forgetting the time...",
+        category: "relationships"
+      },
+      {
+        title: "Career Reflections",
+        content: "Looking back on forty years in the profession, I'm most proud of the people I mentored. The technical achievements matter less now than the lives I touched. I remember especially young Michael, who came to me lacking confidence but eventually surpassed even my abilities...",
+        category: "career"
+      }
+    ];
+    
+    const sample = sampleEntries[Math.floor(Math.random() * sampleEntries.length)];
+    
+    setCurrentEntry(prev => ({
+      ...prev,
+      title: sample.title,
+      content: sample.content,
+      category: sample.category
+    }));
+    
+    toast({
+      title: "Sample Generated",
+      description: "A sample entry has been created. Feel free to edit it!",
+    });
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-[#FEF3C7] via-[#FEF9E7] to-[#FFFBEB] text-gray-800 pb-10">
-      {/* Header */}
-      <div className="bg-gradient-to-r from-amber-500 to-orange-400 p-6 relative">
-        <div className="absolute top-4 right-4 z-10">
-          <HomeButton portalMode={true} portalPath="/golden-years-portal" />
-        </div>
-        <div className="max-w-5xl mx-auto">
-          <div className="flex items-center gap-4">
-            <div className="bg-white/20 p-3 rounded-full">
-              <BookOpen className="h-6 w-6 text-white" />
-            </div>
-            <div>
-              <h1 className="text-3xl font-light text-white">Legacy Journal & Planning</h1>
-              <p className="text-white/90">Preserve your stories, wisdom, and wishes for generations to come</p>
-            </div>
+    <div className="min-h-screen bg-gradient-to-b from-[#034b45] via-[#046b62] to-[#067b6d] text-white">
+      {/* Navigation bar */}
+      <NavigationBar 
+        showBackButton={true} 
+        showHomeButton={false}
+        showThriveButton={true}
+        title="Legacy Journal"
+        portalMode={true}
+        portalPath="/golden-years-portal"
+      />
+      
+      <div className="container mx-auto px-4 py-8 pt-16">
+        <div className="flex flex-col md:flex-row items-start justify-between mb-8">
+          <div>
+            <h1 className="text-3xl md:text-4xl font-bold mb-2 flex items-center">
+              <BookOpen className="mr-3 h-8 w-8" />
+              Your Legacy Journal
+            </h1>
+            <p className="text-lg text-teal-100 max-w-2xl">
+              Preserve your life story, wisdom, and memories for future generations.
+            </p>
+          </div>
+          
+          <div className="mt-4 md:mt-0 flex flex-wrap gap-2">
+            <Button 
+              variant="outline"
+              className="border-teal-400 text-teal-100 hover:bg-teal-700/50"
+              onClick={createNewEntry}
+            >
+              <Plus className="mr-1 h-4 w-4" /> New Entry
+            </Button>
+            <Button 
+              variant="outline"
+              className="border-teal-400 text-teal-100 hover:bg-teal-700/50"
+              onClick={exportJournal}
+            >
+              <Download className="mr-1 h-4 w-4" /> Export All
+            </Button>
           </div>
         </div>
-      </div>
-
-      {/* Inspirational Quote Banner */}
-      <div className="max-w-5xl mx-auto px-4 mb-6">
-        <div className="bg-white/50 backdrop-blur-sm rounded-lg p-4 shadow-sm border border-amber-100">
-          <p className="text-amber-800 italic text-center">
-            "{quote.quote}" <span className="text-amber-600 font-medium block mt-1">— {quote.author}</span>
-          </p>
-        </div>
-      </div>
-
-      {/* Main Content */}
-      <div className="max-w-5xl mx-auto px-4">
-        <Tabs defaultValue={initialTab} className="mb-8" onValueChange={setActiveTab}>
-          <TabsList className="bg-white/50 border border-amber-200 mb-6">
-            <TabsTrigger value="memoir" className="data-[state=active]:bg-amber-100">
-              <BookOpen className="h-4 w-4 mr-2" /> Life Story Memoir
+        
+        <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-4">
+          <TabsList className="bg-teal-800/40">
+            <TabsTrigger value="write" className="data-[state=active]:bg-teal-600">
+              <PencilLine className="mr-2 h-4 w-4" />
+              Write & Edit
             </TabsTrigger>
-            <TabsTrigger value="daily" className="data-[state=active]:bg-amber-100">
-              <Clock className="h-4 w-4 mr-2" /> Daily Reflections
+            <TabsTrigger value="library" className="data-[state=active]:bg-teal-600">
+              <BookMarked className="mr-2 h-4 w-4" />
+              Journal Library
             </TabsTrigger>
-            <TabsTrigger value="planning" className="data-[state=active]:bg-amber-100">
-              <FileCheck className="h-4 w-4 mr-2" /> End-of-Life Planning
-            </TabsTrigger>
-            <TabsTrigger value="entries" className="data-[state=active]:bg-amber-100">
-              <PenTool className="h-4 w-4 mr-2" /> Past Entries
-            </TabsTrigger>
-            <TabsTrigger value="share" className="data-[state=active]:bg-amber-100">
-              <Share className="h-4 w-4 mr-2" /> Share with Family
+            <TabsTrigger value="resources" className="data-[state=active]:bg-teal-600">
+              <FileText className="mr-2 h-4 w-4" />
+              Writing Resources
             </TabsTrigger>
           </TabsList>
-
-          {/* Life Story Memoir Tab */}
-          <TabsContent value="memoir">
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-              <div className="md:col-span-1">
-                <div className="bg-white rounded-xl p-6 shadow-md border border-amber-100 sticky top-6">
-                  <h3 className="text-xl font-medium text-amber-700 mb-4">Life Chapters</h3>
-                  <p className="text-gray-600 mb-4">
-                    Build your memoir one chapter at a time. Select a life period to explore and answer the prompts at your own pace.
-                  </p>
-                  <div className="space-y-3">
-                    {LifeChapterPrompts.map((chapter, index) => (
-                      <div 
-                        key={index} 
-                        onClick={() => {
-                          setSelectedChapter(chapter);
-                          setSelectedChapterPrompt(chapter.prompts[0]);
-                        }}
-                        className={`p-3 rounded-lg cursor-pointer transition-colors ${
-                          selectedChapter.title === chapter.title 
-                            ? "bg-amber-100 border border-amber-300" 
-                            : "bg-amber-50 hover:bg-amber-100 border border-amber-100"
-                        }`}
-                      >
-                        <div className="flex items-center mb-1">
-                          <div className="text-amber-600 mr-2">
-                            {chapter.icon}
-                          </div>
-                          <p className="text-gray-800 font-medium">{chapter.title}</p>
+          
+          {/* Write & Edit Tab */}
+          <TabsContent value="write" className="space-y-4">
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
+              {/* Main editing area */}
+              <div className="lg:col-span-2 space-y-4">
+                <Card className="bg-white/10 backdrop-blur-sm border-teal-200/20">
+                  <CardHeader>
+                    <CardTitle>
+                      <Input 
+                        placeholder="Entry Title" 
+                        value={currentEntry.title}
+                        onChange={(e) => handleEntryChange('title', e.target.value)}
+                        className="bg-white/10 border-teal-300/30 text-white placeholder:text-white/50"
+                      />
+                    </CardTitle>
+                    <CardDescription className="text-teal-100">
+                      <div className="flex flex-wrap gap-4 mt-2">
+                        <div className="flex items-center gap-2">
+                          <label htmlFor="entry-date" className="text-sm">Date:</label>
+                          <Input 
+                            id="entry-date"
+                            type="date" 
+                            value={currentEntry.date}
+                            onChange={(e) => handleEntryChange('date', e.target.value)}
+                            className="w-auto bg-white/10 border-teal-300/30 text-white"
+                          />
                         </div>
-                        <p className="text-gray-600 text-sm">{chapter.description}</p>
-                      </div>
-                    ))}
-                  </div>
-
-                  <div className="mt-6 pt-6 border-t border-amber-100">
-                    <Button
-                      onClick={handleExportMemoir}
-                      variant="outline"
-                      className="w-full flex items-center justify-center border-amber-300 text-amber-700"
-                    >
-                      <Download className="mr-2 h-4 w-4" /> Export Full Memoir
-                    </Button>
-                  </div>
-                </div>
-              </div>
-
-              <div className="md:col-span-2">
-                <div className="bg-white rounded-xl p-6 shadow-md border border-amber-100 mb-6">
-                  <div className="flex items-center gap-3 mb-4">
-                    <div className="text-amber-500">
-                      {selectedChapter.icon}
-                    </div>
-                    <h2 className="text-xl font-medium text-gray-800">{selectedChapter.title}</h2>
-                  </div>
-                  
-                  <div className="bg-amber-50 rounded-lg p-4 mb-6 border border-amber-200 space-y-3">
-                    <p className="text-sm text-amber-700 font-medium mb-2">Select a prompt to answer:</p>
-                    {selectedChapter.prompts.map((prompt, index) => (
-                      <div 
-                        key={index} 
-                        onClick={() => setSelectedChapterPrompt(prompt)}
-                        className={`p-3 rounded-lg cursor-pointer transition-colors ${
-                          selectedChapterPrompt === prompt 
-                            ? "bg-white border border-amber-300" 
-                            : "hover:bg-white/50 border border-transparent"
-                        }`}
-                      >
-                        <p className="text-gray-700">{prompt}</p>
-                      </div>
-                    ))}
-                  </div>
-                  
-                  <div className="bg-white rounded-lg p-4 mb-4 border border-amber-200">
-                    <p className="text-gray-800 italic">"{selectedChapterPrompt}"</p>
-                  </div>
-                  
-                  <Textarea 
-                    value={journalEntry}
-                    onChange={(e) => setJournalEntry(e.target.value)}
-                    placeholder="Start writing your memories here..."
-                    className="min-h-[200px] mb-4 border-amber-200 focus-visible:ring-amber-400"
-                  />
-                  
-                  <div className="flex justify-between space-x-3">
-                    <Button variant="outline" onClick={() => setJournalEntry("")} className="border-amber-300 text-amber-700">
-                      Clear
-                    </Button>
-                    
-                    <div className="flex space-x-3">
-                      <Button 
-                        onClick={() => {
-                          const nextPromptIndex = selectedChapter.prompts.indexOf(selectedChapterPrompt) + 1;
-                          if (nextPromptIndex < selectedChapter.prompts.length) {
-                            setSelectedChapterPrompt(selectedChapter.prompts[nextPromptIndex]);
-                            setJournalEntry("");
-                          } else {
-                            // Move to next chapter if at the end of prompts
-                            const nextChapterIndex = LifeChapterPrompts.indexOf(selectedChapter) + 1;
-                            if (nextChapterIndex < LifeChapterPrompts.length) {
-                              setSelectedChapter(LifeChapterPrompts[nextChapterIndex]);
-                              setSelectedChapterPrompt(LifeChapterPrompts[nextChapterIndex].prompts[0]);
-                              setJournalEntry("");
-                            }
-                          }
-                        }}
-                        variant="outline" 
-                        className="border-amber-300 text-amber-700"
-                      >
-                        Next Prompt
-                      </Button>
-                      
-                      <Button onClick={handleSaveEntry} className="bg-amber-500 hover:bg-amber-600 text-white">
-                        Save Entry <Save className="ml-2 h-4 w-4" />
-                      </Button>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </TabsContent>
-
-          {/* Daily Reflections Tab */}
-          <TabsContent value="daily">
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-              <div className="md:col-span-1">
-                <div className="bg-white rounded-xl p-6 shadow-md border border-amber-100 sticky top-6">
-                  <h3 className="text-xl font-medium text-amber-700 mb-4">Today's Prompts</h3>
-                  <p className="text-gray-600 mb-4">
-                    Reflect on the present moment with these daily journal prompts designed to capture your thoughts and wisdom.
-                  </p>
-                  <div className="space-y-3">
-                    {todaysPrompts.map((prompt, index) => (
-                      <div 
-                        key={index} 
-                        onClick={() => setSelectedPrompt(prompt)}
-                        className={`p-3 rounded-lg cursor-pointer transition-colors ${
-                          selectedPrompt === prompt 
-                            ? "bg-amber-100 border border-amber-300" 
-                            : "bg-amber-50 hover:bg-amber-100 border border-amber-100"
-                        }`}
-                      >
-                        <p className="text-gray-700">{prompt}</p>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              </div>
-
-              <div className="md:col-span-2">
-                <div className="bg-white rounded-xl p-6 shadow-md border border-amber-100 mb-6">
-                  <div className="flex items-center gap-3 mb-4">
-                    <PenTool className="h-5 w-5 text-amber-500" />
-                    <h2 className="text-xl font-medium text-gray-800">Write Your Thoughts</h2>
-                  </div>
-                  
-                  <div className="bg-amber-50 rounded-lg p-4 mb-4 border border-amber-200">
-                    <p className="text-gray-800 italic">"{selectedPrompt}"</p>
-                  </div>
-                  
-                  <Textarea 
-                    value={journalEntry}
-                    onChange={(e) => setJournalEntry(e.target.value)}
-                    placeholder="Start writing your thoughts here..."
-                    className="min-h-[200px] mb-4 border-amber-200 focus-visible:ring-amber-400"
-                  />
-                  
-                  <div className="flex justify-end space-x-3">
-                    <Button variant="outline" onClick={() => setJournalEntry("")} className="border-amber-300 text-amber-700">
-                      Clear
-                    </Button>
-                    <Button onClick={handleSaveEntry} className="bg-amber-500 hover:bg-amber-600 text-white">
-                      Save Entry <Save className="ml-2 h-4 w-4" />
-                    </Button>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </TabsContent>
-
-          {/* End-of-Life Planning Tab */}
-          <TabsContent value="planning">
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-              <div className="md:col-span-1">
-                <div className="bg-white rounded-xl p-6 shadow-md border border-amber-100 sticky top-6">
-                  <h3 className="text-xl font-medium text-amber-700 mb-4">Planning Categories</h3>
-                  <p className="text-gray-600 mb-4">
-                    Document your wishes and plans to ensure peace of mind for yourself and your loved ones.
-                  </p>
-                  <div className="space-y-3">
-                    {planningCategories.map((category, index) => (
-                      <div 
-                        key={index} 
-                        onClick={() => {
-                          setSelectedCategory(category);
-                          setSelectedSection(category.sections[0]);
-                          setJournalEntry("");
-                          
-                          // Find existing content for this category/section
-                          const existingDoc = planningDocs.find(
-                            doc => doc.category === category.title && doc.section === category.sections[0]
-                          );
-                          
-                          if (existingDoc) {
-                            setJournalEntry(existingDoc.content);
-                          }
-                        }}
-                        className={`p-3 rounded-lg cursor-pointer transition-colors ${
-                          selectedCategory.title === category.title 
-                            ? "bg-amber-100 border border-amber-300" 
-                            : "bg-amber-50 hover:bg-amber-100 border border-amber-100"
-                        }`}
-                      >
-                        <div className="flex items-center mb-1">
-                          <div className="mr-2">
-                            {category.icon}
-                          </div>
-                          <p className="text-gray-800 font-medium">{category.title}</p>
+                        <div className="flex items-center gap-2">
+                          <label htmlFor="entry-category" className="text-sm">Category:</label>
+                          <Select
+                            value={currentEntry.category}
+                            onValueChange={(value) => handleEntryChange('category', value)}
+                          >
+                            <SelectTrigger className="w-[180px] bg-white/10 border-teal-300/30 text-white">
+                              <SelectValue placeholder="Select a category" />
+                            </SelectTrigger>
+                            <SelectContent>
+                              <SelectItem value="childhood">Childhood</SelectItem>
+                              <SelectItem value="adolescence">Adolescence</SelectItem>
+                              <SelectItem value="youngadult">Young Adult</SelectItem>
+                              <SelectItem value="career">Career</SelectItem>
+                              <SelectItem value="relationships">Relationships</SelectItem>
+                              <SelectItem value="parenthood">Parenthood</SelectItem>
+                              <SelectItem value="retirement">Retirement</SelectItem>
+                              <SelectItem value="wisdom">Wisdom & Advice</SelectItem>
+                            </SelectContent>
+                          </Select>
                         </div>
-                        <p className="text-gray-600 text-sm">{category.description}</p>
                       </div>
-                    ))}
-                  </div>
-                  
-                  <div className="mt-6 pt-6 border-t border-amber-100">
-                    <Button
-                      onClick={() => {
-                        toast({
-                          title: "Documents Exported",
-                          description: "Your end-of-life planning documents have been prepared as PDF files.",
-                        });
-                      }}
-                      variant="outline"
-                      className="w-full flex items-center justify-center border-amber-300 text-amber-700"
-                    >
-                      <Archive className="mr-2 h-4 w-4" /> Export All Documents
-                    </Button>
-                  </div>
-                </div>
-              </div>
-
-              <div className="md:col-span-2">
-                <div className="bg-white rounded-xl p-6 shadow-md border border-amber-100 mb-6">
-                  <div className="flex items-center justify-between mb-4">
-                    <div className="flex items-center gap-3">
-                      {selectedCategory.icon}
-                      <h2 className="text-xl font-medium text-gray-800">{selectedCategory.title}</h2>
-                    </div>
-                    
-                    <Button 
-                      variant="ghost" 
-                      className="text-amber-700 hover:text-amber-800 hover:bg-amber-100"
-                      onClick={() => {
-                        toast({
-                          title: "Printable Document",
-                          description: "A printer-friendly version has been prepared.",
-                        });
-                      }}
-                    >
-                      <FileText className="h-4 w-4 mr-1" /> Print
-                    </Button>
-                  </div>
-                  
-                  <div className="bg-amber-50 rounded-lg p-4 mb-6 border border-amber-200">
-                    <Label className="text-amber-800 mb-2 block">Select section:</Label>
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
-                      {selectedCategory.sections.map((section, index) => (
-                        <div 
-                          key={index} 
-                          onClick={() => {
-                            setSelectedSection(section);
-                            
-                            // Find existing content for this section
-                            const existingDoc = planningDocs.find(
-                              doc => doc.category === selectedCategory.title && doc.section === section
-                            );
-                            
-                            if (existingDoc) {
-                              setJournalEntry(existingDoc.content);
-                            } else {
-                              setJournalEntry("");
-                            }
-                          }}
-                          className={`p-3 rounded-lg cursor-pointer transition-colors ${
-                            selectedSection === section 
-                              ? "bg-white border border-amber-300" 
-                              : "hover:bg-white/50 border border-transparent"
-                          }`}
-                        >
-                          <p className="text-gray-700">{section}</p>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-                  
-                  <div className="bg-white rounded-lg p-4 mb-4 border border-amber-200">
-                    <Label htmlFor="planning-content" className="text-gray-700 mb-2 block">
-                      {selectedSection}
-                    </Label>
+                    </CardDescription>
+                  </CardHeader>
+                  <CardContent>
                     <Textarea 
-                      id="planning-content"
-                      value={journalEntry}
-                      onChange={(e) => setJournalEntry(e.target.value)}
-                      placeholder={`Document your wishes for ${selectedSection}...`}
-                      className="min-h-[200px] mb-4 border-amber-200 focus-visible:ring-amber-400"
+                      placeholder="Write your story here... share your memories, experiences, and the wisdom you've gained through the years."
+                      value={currentEntry.content}
+                      onChange={(e) => handleEntryChange('content', e.target.value)}
+                      className="min-h-[300px] bg-white/10 border-teal-300/30 text-white placeholder:text-white/50"
                     />
-                  </div>
-                  
-                  <div className="flex justify-end space-x-3">
-                    <Button variant="outline" onClick={() => setJournalEntry("")} className="border-amber-300 text-amber-700">
-                      Clear
-                    </Button>
-                    <Button onClick={handleSavePlanningDoc} className="bg-amber-500 hover:bg-amber-600 text-white">
-                      Save Document <Save className="ml-2 h-4 w-4" />
-                    </Button>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </TabsContent>
-
-          {/* Past Entries Tab */}
-          <TabsContent value="entries">
-            <div className="bg-white rounded-xl p-6 shadow-md border border-amber-100 mb-6">
-              <div className="flex justify-between items-center mb-4">
-                <h3 className="text-xl font-medium text-amber-700">Your Journal Archive</h3>
-                <div className="flex gap-2">
-                  <Button variant="outline" className="border-amber-300 text-amber-700">
-                    <Clock className="h-4 w-4 mr-2" /> Recent
-                  </Button>
-                  <Button variant="outline" className="border-amber-300 text-amber-700">
-                    <BookOpen className="h-4 w-4 mr-2" /> Memoir
-                  </Button>
-                  <Button variant="outline" className="border-amber-300 text-amber-700">
-                    <FileCheck className="h-4 w-4 mr-2" /> Planning
-                  </Button>
-                </div>
-              </div>
-
-              <div className="space-y-6 mt-4">
-                {entries.length === 0 ? (
-                  <div className="bg-amber-50 rounded-xl p-8 text-center">
-                    <BookOpen className="h-12 w-12 text-amber-300 mx-auto mb-3" />
-                    <h3 className="text-xl font-medium text-gray-800 mb-2">No Journal Entries Yet</h3>
-                    <p className="text-gray-600 mb-4">Start writing daily reflections or life chapters to build your legacy journal.</p>
-                    <Button 
-                      onClick={() => setActiveTab("daily")}
-                      className="bg-amber-500 hover:bg-amber-600 text-white"
-                    >
-                      Start Writing <PenTool className="ml-2 h-4 w-4" />
-                    </Button>
-                  </div>
-                ) : (
-                  entries.map((entry) => (
-                    <Card key={entry.id} className="border-amber-100 shadow-md">
-                      <CardContent className="p-6">
-                        <div className="flex justify-between items-start mb-4">
-                          <div>
-                            <h3 className="text-lg font-medium text-gray-800 mb-1">{entry.date}</h3>
-                            <div className="bg-amber-100 text-amber-800 text-xs px-2 py-1 rounded-full inline-block">
-                              {entry.type === "daily" ? "Daily Reflection" : "Memoir Entry"}
-                            </div>
-                          </div>
-                          <div className="flex gap-2">
-                            <Button variant="ghost" size="sm" className="text-amber-700 hover:text-amber-800 hover:bg-amber-100">
-                              <PenTool className="h-4 w-4" />
-                            </Button>
-                            <Button variant="ghost" size="sm" className="text-amber-700 hover:text-amber-800 hover:bg-amber-100">
-                              <Share className="h-4 w-4" />
-                            </Button>
-                          </div>
-                        </div>
-                        <div className="bg-amber-50 rounded-lg p-3 mb-4 border border-amber-200">
-                          <p className="text-gray-700 italic">"{entry.prompt}"</p>
-                        </div>
-                        <p className="text-gray-700 whitespace-pre-line">{entry.content}</p>
-                      </CardContent>
-                    </Card>
-                  ))
-                )}
-              </div>
-            </div>
-          </TabsContent>
-
-          {/* Share with Family Tab */}
-          <TabsContent value="share">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <div className="bg-white rounded-xl p-6 shadow-md border border-amber-100">
-                <h3 className="text-xl font-medium text-amber-700 mb-4">Choose Family Members</h3>
-                <p className="text-gray-600 mb-6">Select who you'd like to share your journal entries with:</p>
-                
-                <div className="space-y-4">
-                  {familyMembers.map((member) => (
-                    <div 
-                      key={member.id}
-                      onClick={() => handleFamilySelect(member.id)}
-                      className={`flex items-center p-4 rounded-lg cursor-pointer transition-colors ${
-                        selectedFamily.includes(member.id)
-                          ? "bg-amber-100 border border-amber-300"
-                          : "hover:bg-amber-50 border border-gray-100"
-                      }`}
-                    >
-                      <div className="h-12 w-12 rounded-full overflow-hidden mr-4 border border-amber-200">
-                        <img 
-                          src={member.avatar || "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=80"} 
-                          alt={member.name}
-                          className="h-full w-full object-cover"
-                        />
-                      </div>
-                      <div>
-                        <h4 className="font-medium text-gray-800">{member.name}</h4>
-                        <p className="text-gray-500 text-sm">{member.relation}</p>
-                      </div>
+                  </CardContent>
+                  <CardFooter className="flex justify-between">
+                    <div>
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        onClick={() => setShowPromptDialog(true)}
+                        className="border-teal-400 text-teal-100 hover:bg-teal-700/50 mr-2"
+                      >
+                        <Sparkles className="mr-1 h-4 w-4" />
+                        Get Prompts
+                      </Button>
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        onClick={generateSampleEntry}
+                        className="border-teal-400 text-teal-100 hover:bg-teal-700/50"
+                      >
+                        <Sparkles className="mr-1 h-4 w-4" />
+                        Sample Entry
+                      </Button>
                     </div>
-                  ))}
-                </div>
+                    <Button onClick={saveEntry} className="bg-teal-500 hover:bg-teal-600">
+                      <Save className="mr-1 h-4 w-4" />
+                      Save Entry
+                    </Button>
+                  </CardFooter>
+                </Card>
                 
-                <Button 
-                  onClick={() => navigate("/family-link-page")}
-                  variant="outline" 
-                  className="mt-6 border-amber-300 text-amber-700"
-                >
-                  Add Family Member
-                </Button>
+                {/* Image upload section */}
+                <Card className="bg-white/10 backdrop-blur-sm border-teal-200/20">
+                  <CardHeader>
+                    <CardTitle className="text-lg">Add Photos</CardTitle>
+                    <CardDescription className="text-teal-100">
+                      Add photos to enhance your journal entry
+                    </CardDescription>
+                  </CardHeader>
+                  <CardContent>
+                    <FileUploader onUpload={handleImageUpload} />
+                    
+                    {/* Display uploaded images */}
+                    {currentEntry.images && currentEntry.images.length > 0 && (
+                      <div className="mt-4 grid grid-cols-2 sm:grid-cols-3 gap-2">
+                        {currentEntry.images.map((img, idx) => (
+                          <div key={idx} className="relative h-24 bg-teal-900/30 rounded overflow-hidden">
+                            <img 
+                              src={img} 
+                              alt={`Journal image ${idx + 1}`}
+                              className="h-full w-full object-cover"
+                            />
+                          </div>
+                        ))}
+                      </div>
+                    )}
+                  </CardContent>
+                </Card>
               </div>
               
-              <div className="bg-white rounded-xl p-6 shadow-md border border-amber-100">
-                <h3 className="text-xl font-medium text-amber-700 mb-4">Share Your Legacy</h3>
+              {/* Tools sidebar */}
+              <div className="space-y-4">
+                <Card className="bg-white/10 backdrop-blur-sm border-teal-200/20">
+                  <CardHeader>
+                    <CardTitle className="text-lg">Entry Actions</CardTitle>
+                  </CardHeader>
+                  <CardContent className="space-y-2">
+                    <Button 
+                      variant="outline" 
+                      className="w-full justify-start border-teal-400 text-teal-100 hover:bg-teal-700/50"
+                      onClick={downloadEntry}
+                    >
+                      <Download className="mr-2 h-4 w-4" />
+                      Download as Text
+                    </Button>
+                    <Button 
+                      variant="outline" 
+                      className="w-full justify-start border-teal-400 text-teal-100 hover:bg-teal-700/50"
+                      onClick={printEntry}
+                    >
+                      <Printer className="mr-2 h-4 w-4" />
+                      Print Entry
+                    </Button>
+                    <Button 
+                      variant="outline" 
+                      className="w-full justify-start border-teal-400 text-teal-100 hover:bg-teal-700/50"
+                      onClick={shareEntry}
+                    >
+                      <Share2 className="mr-2 h-4 w-4" />
+                      Share Entry
+                    </Button>
+                  </CardContent>
+                </Card>
                 
-                <div className="bg-amber-50 rounded-lg p-4 mb-6 border border-amber-200">
-                  <h4 className="font-medium text-gray-800 mb-2">Why Share Your Journal?</h4>
-                  <ul className="space-y-2 text-gray-700">
-                    <li className="flex items-start">
-                      <div className="h-5 w-5 rounded-full bg-amber-200 flex items-center justify-center text-amber-700 mr-2">1</div>
-                      <span>Preserve your memories and insights for future generations</span>
-                    </li>
-                    <li className="flex items-start">
-                      <div className="h-5 w-5 rounded-full bg-amber-200 flex items-center justify-center text-amber-700 mr-2">2</div>
-                      <span>Help family members understand your experiences and values</span>
-                    </li>
-                    <li className="flex items-start">
-                      <div className="h-5 w-5 rounded-full bg-amber-200 flex items-center justify-center text-amber-700 mr-2">3</div>
-                      <span>Create deeper connections across generations</span>
-                    </li>
-                    <li className="flex items-start">
-                      <div className="h-5 w-5 rounded-full bg-amber-200 flex items-center justify-center text-amber-700 mr-2">4</div>
-                      <span>Ensure your wisdom and life lessons live on</span>
-                    </li>
-                  </ul>
-                </div>
-                
-                <div className="space-y-4 mb-6">
-                  <h4 className="font-medium text-gray-800">Include a Personal Message:</h4>
-                  <Textarea 
-                    placeholder="Write a brief message to accompany your shared journal entry..."
-                    className="border-amber-200 focus-visible:ring-amber-400"
-                  />
-                </div>
-                
+                <Card className="bg-white/10 backdrop-blur-sm border-teal-200/20">
+                  <CardHeader>
+                    <CardTitle className="text-lg">Writing Tips</CardTitle>
+                  </CardHeader>
+                  <CardContent className="space-y-2 text-sm text-teal-100">
+                    <p>• Be specific with details that bring your memories to life</p>
+                    <p>• Include sensory details—smells, sounds, tastes</p>
+                    <p>• Don't worry about perfect grammar—focus on your story</p>
+                    <p>• Include both joyful moments and challenges overcome</p>
+                    <p>• Write as if speaking directly to future generations</p>
+                  </CardContent>
+                </Card>
+              </div>
+            </div>
+          </TabsContent>
+          
+          {/* Journal Library Tab */}
+          <TabsContent value="library">
+            {entries.length === 0 ? (
+              <div className="text-center py-12 bg-white/5 rounded-lg">
+                <BookOpen className="mx-auto h-12 w-12 text-teal-300 opacity-50" />
+                <h2 className="mt-4 text-xl font-semibold">Your Journal is Empty</h2>
+                <p className="mt-2 text-teal-100">Start writing your first entry to preserve your memories.</p>
+                <Button 
+                  className="mt-4 bg-teal-500 hover:bg-teal-600"
+                  onClick={createNewEntry}
+                >
+                  <Plus className="mr-1 h-4 w-4" /> Create First Entry
+                </Button>
+              </div>
+            ) : (
+              <div className="space-y-4">
                 <div className="flex justify-between items-center">
-                  <p className="text-sm text-gray-500">
-                    {selectedFamily.length} family member{selectedFamily.length !== 1 ? 's' : ''} selected
-                  </p>
+                  <h2 className="text-xl font-semibold">Your Journal Entries</h2>
                   <Button 
-                    onClick={handleShareWithFamily}
-                    disabled={selectedFamily.length === 0}
-                    className="bg-amber-500 hover:bg-amber-600 text-white disabled:bg-gray-300"
+                    variant="outline"
+                    className="border-teal-400 text-teal-100 hover:bg-teal-700/50"
+                    onClick={exportJournal}
                   >
-                    Share Selected Entries <Send className="ml-2 h-4 w-4" />
+                    <Download className="mr-1 h-4 w-4" /> Export All Entries
                   </Button>
                 </div>
                 
-                <div className="mt-8 p-4 border border-dashed border-amber-300 rounded-lg bg-amber-50">
-                  <div className="flex items-center gap-3 mb-2">
-                    <MessageSquare className="h-5 w-5 text-amber-500" />
-                    <h4 className="font-medium text-gray-800">Family Response</h4>
-                  </div>
-                  <p className="text-gray-600 text-sm">
-                    When you share entries, family members can respond with comments or questions, 
-                    creating meaningful conversations around your stories.
-                  </p>
+                {/* Filter by category */}
+                <div className="bg-white/10 p-4 rounded-lg flex flex-wrap gap-2">
+                  <Button 
+                    variant="outline" 
+                    size="sm" 
+                    className={`border-teal-400 hover:bg-teal-700/50 ${!promptCategory ? 'bg-teal-600' : ''}`}
+                    onClick={() => setPromptCategory('')}
+                  >
+                    All
+                  </Button>
+                  <Button 
+                    variant="outline" 
+                    size="sm" 
+                    className={`border-teal-400 hover:bg-teal-700/50 ${promptCategory === 'childhood' ? 'bg-teal-600' : ''}`}
+                    onClick={() => setPromptCategory('childhood')}
+                  >
+                    Childhood
+                  </Button>
+                  <Button 
+                    variant="outline" 
+                    size="sm" 
+                    className={`border-teal-400 hover:bg-teal-700/50 ${promptCategory === 'youngadult' ? 'bg-teal-600' : ''}`}
+                    onClick={() => setPromptCategory('youngadult')}
+                  >
+                    Young Adult
+                  </Button>
+                  <Button 
+                    variant="outline" 
+                    size="sm" 
+                    className={`border-teal-400 hover:bg-teal-700/50 ${promptCategory === 'career' ? 'bg-teal-600' : ''}`}
+                    onClick={() => setPromptCategory('career')}
+                  >
+                    Career
+                  </Button>
+                  <Button 
+                    variant="outline" 
+                    size="sm" 
+                    className={`border-teal-400 hover:bg-teal-700/50 ${promptCategory === 'relationships' ? 'bg-teal-600' : ''}`}
+                    onClick={() => setPromptCategory('relationships')}
+                  >
+                    Relationships
+                  </Button>
+                  <Button 
+                    variant="outline" 
+                    size="sm" 
+                    className={`border-teal-400 hover:bg-teal-700/50 ${promptCategory === 'wisdom' ? 'bg-teal-600' : ''}`}
+                    onClick={() => setPromptCategory('wisdom')}
+                  >
+                    Wisdom
+                  </Button>
                 </div>
+                
+                {/* Entries list */}
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  {entries
+                    .filter(entry => !promptCategory || entry.category === promptCategory)
+                    .map(entry => (
+                    <Card 
+                      key={entry.id} 
+                      className={`bg-white/10 backdrop-blur-sm border-teal-200/20 hover:bg-white/15 transition cursor-pointer ${
+                        selectedEntryId === entry.id ? 'ring ring-teal-400' : ''
+                      }`}
+                      onClick={() => viewEntry(entry.id)}
+                    >
+                      <CardHeader>
+                        <CardTitle>{entry.title}</CardTitle>
+                        <CardDescription className="text-teal-100">
+                          {new Date(entry.date).toLocaleDateString()} • {entry.category.charAt(0).toUpperCase() + entry.category.slice(1)}
+                        </CardDescription>
+                      </CardHeader>
+                      <CardContent>
+                        <p className="text-teal-50 line-clamp-3">{entry.content}</p>
+                      </CardContent>
+                      <CardFooter className="flex justify-between">
+                        <Button 
+                          variant="ghost" 
+                          size="sm"
+                          className="text-red-300 hover:text-red-100 hover:bg-red-900/30"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            deleteEntry(entry.id);
+                          }}
+                        >
+                          Delete
+                        </Button>
+                        <Button 
+                          variant="outline" 
+                          size="sm"
+                          className="border-teal-400 text-teal-100 hover:bg-teal-700/50"
+                        >
+                          View <ChevronRight className="ml-1 h-4 w-4" />
+                        </Button>
+                      </CardFooter>
+                    </Card>
+                  ))}
+                </div>
+              </div>
+            )}
+          </TabsContent>
+          
+          {/* Writing Resources Tab */}
+          <TabsContent value="resources">
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
+              {/* Main content */}
+              <div className="lg:col-span-2 space-y-4">
+                <Card className="bg-white/10 backdrop-blur-sm border-teal-200/20">
+                  <CardHeader>
+                    <CardTitle>Memory-Jogging Techniques</CardTitle>
+                  </CardHeader>
+                  <CardContent className="space-y-4">
+                    <div>
+                      <h3 className="font-medium mb-2">Photo Reminiscence</h3>
+                      <p className="text-teal-100">Look through old photos to spark memories. Consider describing:
+                      </p>
+                      <ul className="list-disc pl-5 mt-2 text-teal-100">
+                        <li>Who is in the photo and your relationship to them</li>
+                        <li>Where and when it was taken</li>
+                        <li>What was happening just before or after the photo</li>
+                        <li>How you felt at that moment</li>
+                      </ul>
+                    </div>
+                    
+                    <div>
+                      <h3 className="font-medium mb-2">Timeline Method</h3>
+                      <p className="text-teal-100">Create a chronological timeline of your life's major events:
+                      </p>
+                      <ul className="list-disc pl-5 mt-2 text-teal-100">
+                        <li>Start with your birth and earliest memories</li>
+                        <li>Mark major life transitions (school, work, marriage, children)</li>
+                        <li>Note historical events that impacted your life</li>
+                        <li>Identify turning points that changed your life's direction</li>
+                      </ul>
+                    </div>
+                    
+                    <div>
+                      <h3 className="font-medium mb-2">Sensory Recall</h3>
+                      <p className="text-teal-100">Focus on the five senses to bring memories to life:
+                      </p>
+                      <ul className="list-disc pl-5 mt-2 text-teal-100">
+                        <li>Smells: Food cooking, perfumes, seasonal scents</li>
+                        <li>Sounds: Music, voices, nature, city sounds</li>
+                        <li>Tastes: Family recipes, childhood treats, special meals</li>
+                        <li>Touch: Textures of clothing, hugs, weather sensations</li>
+                        <li>Sights: Colors, places, people's faces and expressions</li>
+                      </ul>
+                    </div>
+                  </CardContent>
+                </Card>
+                
+                <Card className="bg-white/10 backdrop-blur-sm border-teal-200/20">
+                  <CardHeader>
+                    <CardTitle>Writing Styles & Approaches</CardTitle>
+                  </CardHeader>
+                  <CardContent className="space-y-4">
+                    <div>
+                      <h3 className="font-medium mb-2">Chronological Narrative</h3>
+                      <p className="text-teal-100">Start from your earliest memories and work forward through your life in order. This approach creates a clear timeline and helps readers follow your journey.</p>
+                    </div>
+                    
+                    <div>
+                      <h3 className="font-medium mb-2">Thematic Organization</h3>
+                      <p className="text-teal-100">Group stories by themes like "Family," "Career," or "Life Lessons" rather than chronologically. This works well for highlighting patterns and values across your life.</p>
+                    </div>
+                    
+                    <div>
+                      <h3 className="font-medium mb-2">Letter Format</h3>
+                      <p className="text-teal-100">Write as if addressing specific loved ones. For example, "Dear Grandchildren" creates an intimate connection with future readers.</p>
+                    </div>
+                    
+                    <div>
+                      <h3 className="font-medium mb-2">Object-Based Memories</h3>
+                      <p className="text-teal-100">Center stories around meaningful objects—a wedding ring, family heirloom, or special gift—and explain their significance in your life.</p>
+                    </div>
+                  </CardContent>
+                </Card>
+              </div>
+              
+              {/* Sidebar */}
+              <div className="space-y-4">
+                <Card className="bg-white/10 backdrop-blur-sm border-teal-200/20">
+                  <CardHeader>
+                    <CardTitle className="text-lg">Legacy Book Format</CardTitle>
+                  </CardHeader>
+                  <CardContent className="space-y-3 text-sm text-teal-100">
+                    <p>Once you've written several entries, consider organizing them into a complete legacy book with:</p>
+                    <ul className="list-disc pl-5">
+                      <li>Title page with your name and birth year</li>
+                      <li>Table of contents organized by life periods</li>
+                      <li>Introduction explaining why you created this memoir</li>
+                      <li>Family tree or genealogy information</li>
+                      <li>Photos with detailed captions</li>
+                      <li>Life lessons or advice section</li>
+                      <li>Historical context for major events</li>
+                    </ul>
+                    <p className="mt-2">Use the Export feature to compile your entries, then format them into a complete book.</p>
+                  </CardContent>
+                </Card>
+                
+                <Card className="bg-white/10 backdrop-blur-sm border-teal-200/20">
+                  <CardHeader>
+                    <CardTitle className="text-lg">Recommended Reading</CardTitle>
+                  </CardHeader>
+                  <CardContent className="space-y-3 text-sm text-teal-100">
+                    <div>
+                      <p className="font-medium">Turning Memories Into Memoirs</p>
+                      <p>by Denis Ledoux</p>
+                    </div>
+                    <div>
+                      <p className="font-medium">The Story of Your Life</p>
+                      <p>by Dan Wakefield</p>
+                    </div>
+                    <div>
+                      <p className="font-medium">Legacy: A Step-by-Step Guide</p>
+                      <p>by Linda Spence</p>
+                    </div>
+                    <div>
+                      <p className="font-medium">How to Write Your Personal or Family History</p>
+                      <p>by Katie Wiebe</p>
+                    </div>
+                  </CardContent>
+                </Card>
               </div>
             </div>
           </TabsContent>
         </Tabs>
       </div>
+      
+      {/* Writing Prompts Dialog */}
+      <Dialog open={showPromptDialog} onOpenChange={setShowPromptDialog}>
+        <DialogContent className="bg-teal-900 text-white border-teal-600 max-w-2xl">
+          <DialogHeader>
+            <DialogTitle className="text-xl">Writing Prompts</DialogTitle>
+            <DialogDescription className="text-teal-100">
+              Select a category and choose a prompt to help inspire your writing
+            </DialogDescription>
+          </DialogHeader>
+          
+          <div className="space-y-4">
+            <div className="flex flex-wrap gap-2">
+              <Button 
+                variant="outline" 
+                size="sm" 
+                className={`border-teal-400 hover:bg-teal-700/50 ${promptCategory === 'childhood' ? 'bg-teal-600' : ''}`}
+                onClick={() => setPromptCategory('childhood')}
+              >
+                Childhood
+              </Button>
+              <Button 
+                variant="outline" 
+                size="sm" 
+                className={`border-teal-400 hover:bg-teal-700/50 ${promptCategory === 'youngadult' ? 'bg-teal-600' : ''}`}
+                onClick={() => setPromptCategory('youngadult')}
+              >
+                Young Adult
+              </Button>
+              <Button 
+                variant="outline" 
+                size="sm" 
+                className={`border-teal-400 hover:bg-teal-700/50 ${promptCategory === 'career' ? 'bg-teal-600' : ''}`}
+                onClick={() => setPromptCategory('career')}
+              >
+                Career
+              </Button>
+              <Button 
+                variant="outline" 
+                size="sm" 
+                className={`border-teal-400 hover:bg-teal-700/50 ${promptCategory === 'relationships' ? 'bg-teal-600' : ''}`}
+                onClick={() => setPromptCategory('relationships')}
+              >
+                Relationships
+              </Button>
+              <Button 
+                variant="outline" 
+                size="sm" 
+                className={`border-teal-400 hover:bg-teal-700/50 ${promptCategory === 'wisdom' ? 'bg-teal-600' : ''}`}
+                onClick={() => setPromptCategory('wisdom')}
+              >
+                Wisdom
+              </Button>
+            </div>
+            
+            <JournalPrompts category={promptCategory} onSelectPrompt={applyPrompt} />
+          </div>
+          
+          <DialogFooter>
+            <Button 
+              variant="outline" 
+              onClick={() => setShowPromptDialog(false)}
+              className="border-teal-400 text-teal-100 hover:bg-teal-700/50"
+            >
+              Cancel
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 };
