@@ -5,7 +5,7 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Textarea } from "@/components/ui/textarea";
-import { ArrowLeft, Calendar, Save, Book, BookOpen } from "lucide-react";
+import { ArrowLeft, Calendar, Save, Book, BookOpen, Sparkles, HelpCircle, Bookmark } from "lucide-react";
 import JournalPrompts from "@/components/journal/JournalPrompts";
 import { getPromptCategories } from "@/data/journalPrompts";
 import NavigationBar from "@/components/navigation/NavigationBar";
@@ -16,6 +16,7 @@ const GoldenYearsJournal: React.FC = () => {
   const [selectedCategory, setSelectedCategory] = useState<string>("wisdom");
   const [saved, setSaved] = useState(false);
   const [entries, setEntries] = useState<{[key: string]: string[]}>({});
+  const [showTips, setShowTips] = useState(false);
   
   const navigate = useNavigate();
   const location = useLocation();
@@ -93,8 +94,23 @@ const GoldenYearsJournal: React.FC = () => {
     });
   };
 
+  // Writing tips for seniors
+  const writingTips = [
+    "Start with small memories that stand out to you",
+    "Don't worry about perfect grammar or spelling",
+    "Write as if you're speaking to a loved one",
+    "Include lessons you've learned throughout life",
+    "Describe people who have influenced you",
+    "Share family traditions and their origins",
+    "Record your proudest achievements"
+  ];
+
   return (
-    <div className="min-h-screen bg-gradient-to-b from-[#034b45] via-[#046b62] to-[#067b6d] text-white">
+    <div className="min-h-screen bg-gradient-to-b from-[#1a1a1a] via-[#242424] to-[#333333] text-white">
+      {/* Decorative elements - subtle metallic accents */}
+      <div className="absolute top-0 left-0 w-full h-12 bg-gradient-to-r from-[#9F9EA1]/10 to-[#D4AF37]/10"></div>
+      <div className="absolute bottom-0 right-0 w-full h-12 bg-gradient-to-l from-[#9F9EA1]/10 to-[#D4AF37]/10"></div>
+      
       {/* Navigation bar */}
       <NavigationBar 
         showBackButton={true} 
@@ -106,13 +122,23 @@ const GoldenYearsJournal: React.FC = () => {
         backButtonAction={handleBack}
       />
       
-      <div className="container mx-auto px-4 py-8 pt-16">
+      <div className="container mx-auto px-4 py-8 pt-16 relative z-10">
+        {/* Journal header with metallic styling */}
+        <div className="mb-6">
+          <h1 className="text-3xl font-serif font-bold mb-2 text-transparent bg-clip-text bg-gradient-to-r from-[#9F9EA1] to-[#D4AF37]">
+            Your Legacy Journal
+          </h1>
+          <p className="text-gray-300 italic">
+            Preserve your stories, wisdom, and memories for generations to come
+          </p>
+        </div>
+        
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-          {/* Left Column - Categories */}
-          <Card className="bg-teal-900/30 backdrop-blur-md border-teal-200/30">
+          {/* Left Column - Categories & Prompts */}
+          <Card className="bg-gradient-to-b from-[#2a2a2a] to-[#1f1f1f] border border-[#9F9EA1]/30 shadow-lg">
             <CardContent className="pt-6">
-              <h3 className="text-xl font-semibold mb-4 text-teal-50 flex items-center">
-                <Book className="mr-2 h-5 w-5 text-teal-300" /> Journal Categories
+              <h3 className="text-xl font-medium mb-4 text-transparent bg-clip-text bg-gradient-to-r from-[#9F9EA1] to-[#D4AF37] flex items-center">
+                <Book className="mr-2 h-5 w-5 text-[#D4AF37]" /> Journal Categories
               </h3>
               
               <ScrollArea className="h-[180px]">
@@ -122,8 +148,8 @@ const GoldenYearsJournal: React.FC = () => {
                       key={category}
                       variant="outline"
                       className={`w-full justify-start ${selectedCategory === category 
-                        ? 'bg-teal-700 hover:bg-teal-800 border-teal-400 text-white' 
-                        : 'bg-transparent hover:bg-teal-800/50 text-teal-100 border-teal-600/50'}`}
+                        ? 'bg-[#D4AF37]/20 hover:bg-[#D4AF37]/30 border-[#D4AF37] text-[#D4AF37]' 
+                        : 'bg-transparent hover:bg-[#9F9EA1]/10 text-gray-300 border-[#9F9EA1]/30'}`}
                       onClick={() => handleCategoryChange(category)}
                     >
                       <span className="capitalize">{category}</span>
@@ -132,28 +158,53 @@ const GoldenYearsJournal: React.FC = () => {
                 </div>
               </ScrollArea>
               
-              <div className="mt-6">
-                <h3 className="text-xl font-semibold mb-4 text-teal-50 flex items-center">
-                  <BookOpen className="mr-2 h-5 w-5 text-teal-300" /> Writing Prompts
+              <div className="mt-6 border-t border-[#9F9EA1]/20 pt-6">
+                <h3 className="text-xl font-medium mb-4 text-transparent bg-clip-text bg-gradient-to-r from-[#9F9EA1] to-[#D4AF37] flex items-center">
+                  <Sparkles className="mr-2 h-5 w-5 text-[#D4AF37]" /> Writing Prompts
                 </h3>
                 <JournalPrompts 
                   category={selectedCategory}
                   onSelectPrompt={handleSelectPrompt}
                 />
               </div>
+              
+              <Button
+                variant="ghost"
+                className="mt-6 w-full border border-[#9F9EA1]/20 text-[#9F9EA1] hover:text-[#D4AF37] hover:bg-[#9F9EA1]/10"
+                onClick={() => setShowTips(!showTips)}
+              >
+                <HelpCircle className="mr-2 h-4 w-4" />
+                {showTips ? "Hide Writing Tips" : "Show Writing Tips"}
+              </Button>
+              
+              {showTips && (
+                <div className="mt-4 p-4 rounded-md bg-[#9F9EA1]/10 border border-[#9F9EA1]/20">
+                  <h4 className="font-medium text-[#D4AF37] mb-2">Writing Tips</h4>
+                  <ul className="space-y-2 text-sm text-gray-300">
+                    {writingTips.map((tip, index) => (
+                      <li key={index} className="flex items-start">
+                        <Bookmark className="h-4 w-4 text-[#D4AF37] mr-2 mt-0.5 flex-shrink-0" />
+                        <span>{tip}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              )}
             </CardContent>
           </Card>
           
           {/* Middle Column - Writing Area */}
-          <Card className="lg:col-span-2 bg-teal-900/30 backdrop-blur-md border-teal-200/30">
+          <Card className="lg:col-span-2 bg-gradient-to-b from-[#2a2a2a] to-[#1f1f1f] border border-[#9F9EA1]/30 shadow-lg">
             <CardContent className="pt-6">
               <div className="flex justify-between items-center mb-4">
-                <h2 className="text-2xl font-semibold text-teal-50">Your Legacy Journal</h2>
+                <h2 className="text-2xl font-medium text-transparent bg-clip-text bg-gradient-to-r from-[#9F9EA1] to-[#D4AF37]">
+                  Write Your Story
+                </h2>
                 <div className="flex items-center space-x-2">
                   <Button
                     variant="outline" 
                     size="sm"
-                    className="bg-teal-700 hover:bg-teal-800 border-teal-600 text-white"
+                    className={`bg-[#D4AF37]/10 hover:bg-[#D4AF37]/20 border-[#D4AF37]/50 text-[#D4AF37] ${saved ? 'opacity-50 cursor-not-allowed' : ''}`}
                     onClick={handleSave}
                     disabled={saved}
                   >
@@ -163,9 +214,9 @@ const GoldenYearsJournal: React.FC = () => {
                 </div>
               </div>
               
-              <div className="bg-teal-700/20 p-4 rounded-md mb-4 flex items-center">
-                <Calendar className="h-5 w-5 text-teal-300 mr-2" />
-                <span className="text-teal-100">
+              <div className="bg-[#9F9EA1]/10 p-3 rounded-md mb-4 flex items-center border border-[#9F9EA1]/30">
+                <Calendar className="h-5 w-5 text-[#D4AF37] mr-2" />
+                <span className="text-gray-300">
                   {new Date().toLocaleDateString('en-US', {
                     weekday: 'long',
                     year: 'numeric',
@@ -181,33 +232,35 @@ const GoldenYearsJournal: React.FC = () => {
                   setJournalEntry(e.target.value);
                   setSaved(false);
                 }}
-                className="min-h-[300px] bg-teal-50 text-teal-900 placeholder-teal-500/50 border-teal-300"
+                className="min-h-[300px] bg-[#333]/50 text-gray-100 placeholder-gray-400 border-[#9F9EA1]/30 focus:border-[#D4AF37]/50 focus:ring-[#D4AF37]/20 resize-none"
                 placeholder="Begin writing your legacy here. Share your wisdom, memories, and life experiences..."
               />
               
               <div className="mt-6 space-y-4">
-                <h3 className="text-xl font-semibold text-teal-50 flex items-center">
-                  <BookOpen className="mr-2 h-5 w-5 text-teal-300" /> Previous Entries
+                <h3 className="text-xl font-medium text-transparent bg-clip-text bg-gradient-to-r from-[#9F9EA1] to-[#D4AF37] flex items-center">
+                  <BookOpen className="mr-2 h-5 w-5 text-[#D4AF37]" /> Previous Entries
                 </h3>
                 
                 {entries[selectedCategory] && entries[selectedCategory].length > 0 ? (
-                  <ScrollArea className="h-[200px] bg-teal-800/30 rounded-md p-4">
+                  <ScrollArea className="h-[200px] bg-[#1a1a1a]/80 rounded-md p-4 border border-[#9F9EA1]/20">
                     <div className="space-y-6">
                       {entries[selectedCategory].map((entry, index) => (
                         <div key={index} className="prose prose-invert max-w-none">
                           <div dangerouslySetInnerHTML={{ 
                             __html: entry
-                              .replace(/^## (.*)/gm, '<h3 class="text-teal-200 font-bold mb-2">$1</h3>')
+                              .replace(/^## (.*)/gm, '<h3 class="text-[#D4AF37] font-serif font-bold mb-2">$1</h3>')
                               .replace(/\n/g, '<br/>') 
                           }} />
+                          <div className="border-b border-[#9F9EA1]/20 mt-4 pb-2"></div>
                         </div>
                       ))}
                     </div>
                   </ScrollArea>
                 ) : (
-                  <div className="bg-teal-800/30 rounded-md p-6 text-center">
-                    <p className="text-teal-200">No saved entries for this category yet.</p>
-                    <p className="text-teal-300 text-sm mt-2">
+                  <div className="bg-[#1a1a1a]/80 rounded-md p-6 text-center border border-[#9F9EA1]/20">
+                    <BookOpen className="mx-auto h-12 w-12 text-[#9F9EA1]/30 mb-2" />
+                    <p className="text-gray-400">No saved entries for this category yet.</p>
+                    <p className="text-gray-500 text-sm mt-2">
                       Choose a prompt or start writing to create your first entry.
                     </p>
                   </div>
