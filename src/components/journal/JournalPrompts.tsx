@@ -1,4 +1,3 @@
-
 import React from "react";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Button } from "@/components/ui/button";
@@ -109,9 +108,15 @@ const JournalPrompts: React.FC<JournalPromptsProps> = ({ category, onSelectPromp
     ],
   };
 
+  // Type guard to check if the category is a valid key of prompts
+  const isValidCategory = (cat: string): cat is keyof typeof prompts => {
+    return cat in prompts;
+  };
+
   // Get prompts for the selected category or default to childhood
-  const categoryKey = category as keyof typeof prompts;
-  const currentPrompts = prompts[categoryKey] || prompts.childhood;
+  const currentPrompts = isValidCategory(category) 
+    ? prompts[category] 
+    : prompts.childhood;
 
   return (
     <ScrollArea className="h-[300px] rounded-md border border-teal-500/50 p-4 bg-teal-800/50">
