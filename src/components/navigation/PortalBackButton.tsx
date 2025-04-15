@@ -1,4 +1,3 @@
-
 import React from "react";
 import { Button } from "@/components/ui/button";
 import { ArrowLeft } from "lucide-react";
@@ -9,11 +8,13 @@ import useTranslation from "@/hooks/useTranslation";
 interface PortalBackButtonProps {
   className?: string;
   returnPath?: string;
+  onClick?: () => void;
 }
 
 const PortalBackButton: React.FC<PortalBackButtonProps> = ({ 
   className = "", 
-  returnPath 
+  returnPath,
+  onClick
 }) => {
   const navigate = useNavigate();
   const location = useLocation();
@@ -26,6 +27,11 @@ const PortalBackButton: React.FC<PortalBackButtonProps> = ({
       description: isSpanish ? "Volviendo a la página anterior" : "Returning to previous page",
       duration: 1500,
     });
+    
+    if (onClick) {
+      onClick();
+      return;
+    }
     
     if (returnPath) {
       navigate(returnPath, { 
