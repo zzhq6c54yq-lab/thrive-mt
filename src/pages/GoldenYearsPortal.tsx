@@ -7,7 +7,7 @@ import ThriveButton from "@/components/navigation/ThriveButton";
 import NavigationBar from "@/components/navigation/NavigationBar";
 import useFeatureActions, { ActionButtonConfig } from "@/hooks/useFeatureActions";
 import PortalNavButton from "@/components/specialized-programs/PortalNavButton";
-import { BookOpen, Calendar, Users, HeartHandshake, LifeBuoy, Lightbulb, Clock, Globe } from "lucide-react";
+import { BookOpen, Calendar, Users, HeartHandshake, LifeBuoy, Lightbulb, Clock, Globe, Award, Trophy } from "lucide-react";
 
 const GoldenYearsPortal: React.FC = () => {
   const navigate = useNavigate();
@@ -69,7 +69,7 @@ const GoldenYearsPortal: React.FC = () => {
         {/* Featured Content */}
         <div className="bg-amber-900/30 backdrop-blur-md border border-amber-200/30 rounded-xl p-6 mb-10">
           <h2 className="text-2xl font-medium mb-4 flex items-center">
-            <Lightbulb className="mr-2 h-6 w-6 text-amber-300" />
+            <Trophy className="mr-2 h-6 w-6 text-amber-300" />
             Featured: Legacy Journal
           </h2>
           <p className="mb-6 text-amber-50">
@@ -239,18 +239,18 @@ const GoldenYearsPortal: React.FC = () => {
         </div>
         
         {/* Support Resources */}
-        <div className="bg-red-900/20 border border-red-300/30 p-4 rounded-lg flex flex-col md:flex-row md:items-center md:justify-between">
+        <div className="bg-amber-900/20 border border-amber-300/30 p-4 rounded-lg flex flex-col md:flex-row md:items-center md:justify-between">
           <div className="mb-4 md:mb-0">
             <div className="flex items-center">
-              <LifeBuoy className="h-5 w-5 text-red-300 mr-2" />
+              <LifeBuoy className="h-5 w-5 text-amber-300 mr-2" />
               <h3 className="font-medium text-lg">Need Assistance?</h3>
             </div>
-            <p className="text-sm text-red-100">Resources for emergency help, caregiver support, or technical assistance.</p>
+            <p className="text-sm text-amber-100">Resources for emergency help, caregiver support, or technical assistance.</p>
           </div>
           <div className="flex flex-wrap gap-2">
             <Button 
               size="sm" 
-              className="bg-red-700 hover:bg-red-800 text-white"
+              className="bg-amber-700 hover:bg-amber-800 text-white"
               onClick={() => handleFeatureClick("Emergency Resources")}
             >
               Emergency Resources
@@ -258,7 +258,7 @@ const GoldenYearsPortal: React.FC = () => {
             <Button 
               size="sm" 
               variant="outline" 
-              className="border-red-400 text-red-100 hover:bg-red-900/50"
+              className="border-amber-400 text-amber-100 hover:bg-amber-900/50"
               onClick={() => handleFeatureClick("Technical Support")}
             >
               Technical Support
