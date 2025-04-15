@@ -46,7 +46,10 @@ const NewFeatures: React.FC = () => {
             <div className="p-2 rounded-full bg-[#B87333]/20 group-hover:bg-[#B87333]/30 transition-colors">
               <Handshake className="h-5 w-5 text-[#E5C5A1] group-hover:text-white transition-colors" />
             </div>
-            <span className="font-medium">{getTranslatedText('barterSystem')}</span>
+            <div className="flex flex-col items-start">
+              <span className="font-medium">{getTranslatedText('barterSystem')}</span>
+              <span className="text-xs opacity-80">Meet Henry</span>
+            </div>
           </Button>
           
           <Button 
@@ -67,7 +70,7 @@ const NewFeatures: React.FC = () => {
             </div>
             <div className="z-10 flex flex-col items-start">
               <span className="font-bold text-black text-sm">{getTranslatedText('upgradePlan')}</span>
-              <span className="text-xs text-black/80">{getTranslatedText('premiumTools')}</span>
+              <span className="text-xs text-black/80">System Upgrade Plan</span>
             </div>
             
             <Zap className="h-5 w-5 ml-1 text-black group-hover:translate-x-1 transition-transform z-10" />
@@ -81,7 +84,10 @@ const NewFeatures: React.FC = () => {
             <div className="p-2 rounded-full bg-[#B87333]/20 group-hover:bg-[#B87333]/30 transition-colors">
               <WalletCards className="h-5 w-5 text-[#E5C5A1] group-hover:text-white transition-colors" />
             </div>
-            <span className="font-medium">{getTranslatedText('coPayCredits')}</span>
+            <div className="flex flex-col items-start">
+              <span className="font-medium">{getTranslatedText('coPayCredits')}</span>
+              <span className="text-xs opacity-80">Co-Pay Credits</span>
+            </div>
           </Button>
         </div>
       </div>

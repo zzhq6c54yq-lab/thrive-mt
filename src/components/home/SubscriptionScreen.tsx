@@ -1,5 +1,5 @@
 
-import React from "react";
+import React, { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { ArrowLeft, ArrowRight, Package, Trophy, Gem, Check } from "lucide-react";
 import useTranslation from "@/hooks/useTranslation";
@@ -9,6 +9,7 @@ interface SubscriptionPlan {
   price: string;
   description: string;
   features: string[];
+  addOnPrice: string;
   icon: React.ElementType;
   color: string;
   recommended: boolean;
@@ -30,6 +31,7 @@ const SubscriptionScreen: React.FC<SubscriptionScreenProps> = ({
   onSkip,
 }) => {
   const { isSpanish, getTranslatedText } = useTranslation();
+  const [billingCycle, setBillingCycle] = useState<'monthly' | 'yearly'>('monthly');
   
   // Translations
   const translations = {
@@ -43,13 +45,16 @@ const SubscriptionScreen: React.FC<SubscriptionScreenProps> = ({
         "Acceso a herramientas esenciales de bienestar mental",
         "Únete a reuniones y clases virtuales",
         "Acceso a patrocinador digital",
-        "Acceso limitado a talleres"
+        "Acceso limitado a talleres",
+        "Complementos a $3/mes cada uno"
       ] : [
         "Access to essential mental wellness tools",
         "Join virtual meetings and classes",
         "Digital sponsor access",
-        "Limited workshop access"
-      ]
+        "Limited workshop access",
+        "Add-ons at $3/month each"
+      ],
+      addOnPrice: isSpanish ? "$3/cada uno" : "$3/each"
     },
     gold: {
       title: isSpanish ? "Oro" : "Gold",
@@ -60,14 +65,17 @@ const SubscriptionScreen: React.FC<SubscriptionScreenProps> = ({
         "Acceso a todas las herramientas de bienestar mental",
         "Biblioteca de talleres ampliada",
         "Acceso prioritario a reuniones virtuales",
-        "Plan de bienestar personalizado"
+        "Plan de bienestar personalizado",
+        "Complementos a $2/mes cada uno"
       ] : [
         "5% bonus on all co-pay credits",
         "Access to all mental wellness tools",
         "Extended workshop library",
         "Priority access to virtual meetings",
-        "Personalized wellness plan"
-      ]
+        "Personalized wellness plan",
+        "Add-ons at $2/month each"
+      ],
+      addOnPrice: isSpanish ? "$2/cada uno" : "$2/each"
     },
     platinum: {
       title: isSpanish ? "Platino" : "Platinum",
@@ -79,48 +87,65 @@ const SubscriptionScreen: React.FC<SubscriptionScreenProps> = ({
         "Contenido premium de talleres",
         "Acceso anticipado a nuevas funciones",
         "Análisis e información avanzados",
-        "Hoja de ruta de bienestar personalizada"
+        "Hoja de ruta de bienestar personalizada",
+        "Complementos a $1/mes cada uno"
       ] : [
         "10% bonus on all co-pay credits",
         "Unlimited access to all platform features",
         "Premium workshop content",
         "Early access to new features",
         "Advanced analytics and insights",
-        "Personalized wellness roadmap"
-      ]
+        "Personalized wellness roadmap",
+        "Add-ons at $1/month each"
+      ],
+      addOnPrice: isSpanish ? "$1/cada uno" : "$1/each"
     },
     recommend: isSpanish ? "Recomendado" : "Recommended",
     select: isSpanish ? "Seleccionar Plan" : "Select Plan",
     selected: isSpanish ? "Seleccionado" : "Selected",
     previous: isSpanish ? "Anterior" : "Previous",
     continue: isSpanish ? "Continuar" : "Continue",
-    skip: isSpanish ? "Omitir por Ahora" : "Skip for Now"
+    skip: isSpanish ? "Omitir por Ahora" : "Skip for Now",
+    monthly: isSpanish ? "Mensual" : "Monthly",
+    yearly: isSpanish ? "Anual" : "Yearly",
+    yearlyDiscount: isSpanish ? "¡Ahorra 20%!" : "Save 20%!"
+  };
+  
+  // Calculate yearly prices with 20% discount
+  const getYearlyPrice = (monthlyPrice: string) => {
+    if (monthlyPrice === "Free" || monthlyPrice === "Gratis") return monthlyPrice;
+    const numericPrice = parseInt(monthlyPrice.replace(/\D/g, ''));
+    const yearlyPrice = numericPrice * 12 * 0.8;
+    return `$${yearlyPrice}/year`;
   };
   
   const subscriptionPlans: SubscriptionPlan[] = [
     {
       title: translations.basic.title,
-      price: translations.basic.price,
+      price: billingCycle === 'monthly' ? translations.basic.price : translations.basic.price,
       description: translations.basic.description,
       features: translations.basic.features,
+      addOnPrice: translations.basic.addOnPrice,
       icon: Package,
       color: "bg-gray-100 text-gray-800 border-gray-200",
       recommended: false
     },
     {
       title: translations.gold.title,
-      price: translations.gold.price,
+      price: billingCycle === 'monthly' ? translations.gold.price : getYearlyPrice(translations.gold.price),
       description: translations.gold.description,
       features: translations.gold.features,
+      addOnPrice: translations.gold.addOnPrice,
       icon: Trophy,
       color: "bg-[#FEF7CD] text-[#B87333] border-[#B87333]/30",
       recommended: false
     },
     {
       title: translations.platinum.title,
-      price: translations.platinum.price,
+      price: billingCycle === 'monthly' ? translations.platinum.price : getYearlyPrice(translations.platinum.price),
       description: translations.platinum.description,
       features: translations.platinum.features,
+      addOnPrice: translations.platinum.addOnPrice,
       icon: Gem,
       color: "bg-[#E5DEFF] text-[#7E69AB] border-[#7E69AB]/30",
       recommended: true
@@ -140,6 +165,35 @@ const SubscriptionScreen: React.FC<SubscriptionScreenProps> = ({
         <div className="text-center mb-10">
           <h2 className="text-3xl md:text-4xl font-bold mb-3 text-transparent bg-clip-text bg-gradient-to-r from-[#B87333] to-[#E5C5A1]">{translations.title}</h2>
           <p className="text-xl text-gray-300">{translations.subtitle}</p>
+          
+          {/* Billing cycle toggle */}
+          <div className="flex items-center justify-center mt-6">
+            <div className="flex p-1 bg-gray-800/50 rounded-lg border border-gray-700/50">
+              <button
+                className={`px-4 py-2 rounded-md text-sm transition-all ${
+                  billingCycle === 'monthly' 
+                    ? 'bg-[#B87333] text-white shadow-lg' 
+                    : 'text-gray-300 hover:text-white'
+                }`}
+                onClick={() => setBillingCycle('monthly')}
+              >
+                {translations.monthly}
+              </button>
+              <button
+                className={`px-4 py-2 rounded-md text-sm transition-all flex items-center gap-2 ${
+                  billingCycle === 'yearly' 
+                    ? 'bg-[#B87333] text-white shadow-lg' 
+                    : 'text-gray-300 hover:text-white'
+                }`}
+                onClick={() => setBillingCycle('yearly')}
+              >
+                {translations.yearly}
+                <span className="text-xs bg-green-500/20 text-green-300 px-2 py-0.5 rounded-full">
+                  {translations.yearlyDiscount}
+                </span>
+              </button>
+            </div>
+          </div>
         </div>
         
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">

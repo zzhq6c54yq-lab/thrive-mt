@@ -1,4 +1,3 @@
-
 import React, { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Shield, GraduationCap, Briefcase, Sparkles, ArrowLeft, ArrowRight, Users, Check } from "lucide-react";
@@ -41,7 +40,6 @@ const SubscriptionAddOns: React.FC<SubscriptionAddOnsProps> = ({
   const { getTranslatedText, preferredLanguage } = useTranslation();
   const [billingCycle, setBillingCycle] = useState<'monthly' | 'yearly'>('monthly');
 
-  // Get image URL with fallback
   const getImageUrl = (imagePath: string) => {
     if (imagePath.startsWith('https://')) {
       return imagePath;
@@ -49,7 +47,6 @@ const SubscriptionAddOns: React.FC<SubscriptionAddOnsProps> = ({
     return "https://images.unsplash.com/photo-1506726446959-adfa26e7aea0?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80";
   };
 
-  // Display pricing based on selected plan and billing cycle
   const getPriceDisplay = (addOn: AddOn) => {
     let basePrice = 0;
     
@@ -76,7 +73,6 @@ const SubscriptionAddOns: React.FC<SubscriptionAddOnsProps> = ({
     return `$${basePrice}/month`;
   };
 
-  // Get the price based on plan for display in summary
   const getAddOnPrice = (id: string) => {
     const addOn = addOns.find(a => a.id === id);
     if (!addOn) return "$0";
@@ -99,7 +95,6 @@ const SubscriptionAddOns: React.FC<SubscriptionAddOnsProps> = ({
     return `$${basePrice}/month`;
   };
 
-  // Calculate total price for all selected add-ons
   const calculateTotalPrice = () => {
     if (selectedAddOns.length === 0) return 0;
     
@@ -122,7 +117,6 @@ const SubscriptionAddOns: React.FC<SubscriptionAddOnsProps> = ({
     return monthlyTotal;
   };
 
-  // Get translated payment period text
   const getPaymentPeriodText = (isYearly: boolean) => {
     if (preferredLanguage === 'Español') {
       return isYearly ? 'Anual' : 'Mensual';
@@ -132,7 +126,6 @@ const SubscriptionAddOns: React.FC<SubscriptionAddOnsProps> = ({
     return isYearly ? 'Yearly' : 'Monthly';
   };
 
-  // Calculate savings percentage
   const savingsText = () => {
     if (preferredLanguage === 'Español') {
       return '¡Ahorra 20%!';
@@ -140,6 +133,51 @@ const SubscriptionAddOns: React.FC<SubscriptionAddOnsProps> = ({
       return 'Economize 20%!';
     }
     return 'Save 20%!';
+  };
+
+  const getHeaderText = () => {
+    if (preferredLanguage === 'Español') {
+      return "Profundiza en tu viaje de salud mental";
+    } else if (preferredLanguage === 'Português') {
+      return "Aprofunde sua jornada de saúde mental";
+    }
+    return "Deepen your mental health journey";
+  };
+
+  const getSubheaderText = () => {
+    if (preferredLanguage === 'Español') {
+      return "Agregando uno de nuestros programas especializados";
+    } else if (preferredLanguage === 'Português') {
+      return "Adicionando um de nossos programas especializados";
+    }
+    return "By adding one of our specialized programs";
+  };
+
+  const getPricingExplanation = () => {
+    if (!selectedPlan) return "";
+    
+    if (preferredLanguage === 'Español') {
+      if (selectedPlan.toLowerCase() === 'gold') {
+        return "Los suscriptores de Gold ahorran $1/mes en cada complemento";
+      } else if (selectedPlan.toLowerCase() === 'platinum') {
+        return "Los suscriptores de Platinum ahorran $2/mes en cada complemento";
+      }
+      return "Precio estándar para suscriptores Basic";
+    } else if (preferredLanguage === 'Português') {
+      if (selectedPlan.toLowerCase() === 'gold') {
+        return "Assinantes Gold economizam $1/mês em cada adicional";
+      } else if (selectedPlan.toLowerCase() === 'platinum') {
+        return "Assinantes Platinum economizam $2/mês em cada adicional";
+      }
+      return "Preço padrão para assinantes Basic";
+    } else {
+      if (selectedPlan.toLowerCase() === 'gold') {
+        return "Gold subscribers save $1/month on each add-on";
+      } else if (selectedPlan.toLowerCase() === 'platinum') {
+        return "Platinum subscribers save $2/month on each add-on";
+      }
+      return "Standard pricing for Basic subscribers";
+    }
   };
 
   const addOns: AddOn[] = [
@@ -235,65 +273,14 @@ const SubscriptionAddOns: React.FC<SubscriptionAddOnsProps> = ({
     }
   };
 
-  // Get appropriate header text based on language
-  const getHeaderText = () => {
-    if (preferredLanguage === 'Español') {
-      return "Profundiza en tu viaje de salud mental";
-    } else if (preferredLanguage === 'Português') {
-      return "Aprofunde sua jornada de saúde mental";
-    }
-    return "Deepen your mental health journey";
-  };
-
-  // Get appropriate subheader text based on language
-  const getSubheaderText = () => {
-    if (preferredLanguage === 'Español') {
-      return "Agregando uno de nuestros programas especializados";
-    } else if (preferredLanguage === 'Português') {
-      return "Adicionando um de nossos programas especializados";
-    }
-    return "By adding one of our specialized programs";
-  };
-
-  // Get pricing explanation based on selected plan and language
-  const getPricingExplanation = () => {
-    if (!selectedPlan) return "";
-    
-    if (preferredLanguage === 'Español') {
-      if (selectedPlan.toLowerCase() === 'gold') {
-        return "Los suscriptores de Gold ahorran $1/mes en cada complemento";
-      } else if (selectedPlan.toLowerCase() === 'platinum') {
-        return "Los suscriptores de Platinum ahorran $2/mes en cada complemento";
-      }
-      return "Precio estándar para suscriptores Basic";
-    } else if (preferredLanguage === 'Português') {
-      if (selectedPlan.toLowerCase() === 'gold') {
-        return "Assinantes Gold economizam $1/mês em cada adicional";
-      } else if (selectedPlan.toLowerCase() === 'platinum') {
-        return "Assinantes Platinum economizam $2/mês em cada adicional";
-      }
-      return "Preço padrão para assinantes Basic";
-    } else {
-      if (selectedPlan.toLowerCase() === 'gold') {
-        return "Gold subscribers save $1/month on each add-on";
-      } else if (selectedPlan.toLowerCase() === 'platinum') {
-        return "Platinum subscribers save $2/month on each add-on";
-      }
-      return "Standard pricing for Basic subscribers";
-    }
-  };
-
   return (
     <div className="min-h-screen flex flex-col items-center justify-center bg-gradient-to-b from-[#1a1a1f] via-[#242432] to-[#272730] text-white animate-fade-in py-10 relative">
-      {/* Background pattern overlay */}
       <div className="absolute inset-0 bg-[url('data:image/svg+xml;utf8,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%2220%22 height=%2220%22 viewBox=%220 0 20 20%22><circle cx=%222%22 cy=%222%22 r=%221%22 fill=%22%23B87333%22 fill-opacity=%220.05%22/></svg>')] opacity-20"></div>
       
-      {/* Decorative elements */}
       <div className="absolute top-0 right-0 w-80 h-80 bg-gradient-to-br from-[#B87333]/20 to-transparent rounded-full blur-3xl -z-10"></div>
       <div className="absolute bottom-0 left-0 w-80 h-80 bg-gradient-to-tr from-[#D946EF]/20 to-transparent rounded-full blur-3xl -z-10"></div>
       
       <div className="max-w-6xl w-full mx-auto px-4 z-10">
-        {/* Enhanced header */}
         <div className="text-center mb-10">
           <h2 className="text-3xl md:text-4xl font-bold mb-2 text-transparent bg-clip-text bg-gradient-to-r from-[#B87333] to-[#E5C5A1]">
             {getHeaderText()}
@@ -311,7 +298,6 @@ const SubscriptionAddOns: React.FC<SubscriptionAddOnsProps> = ({
             </div>
           )}
 
-          {/* Billing cycle toggle */}
           <div className="flex items-center justify-center mt-6">
             <div className="flex p-1 bg-gray-800/50 rounded-lg border border-gray-700/50">
               <button
@@ -356,7 +342,6 @@ const SubscriptionAddOns: React.FC<SubscriptionAddOnsProps> = ({
               onClick={() => onAddOnToggle(addOn.id)}
               variants={cardVariants}
             >
-              {/* Background image */}
               <div className="absolute inset-0 h-[60%] z-0">
                 <img 
                   src={addOn.imagePath} 
@@ -369,7 +354,6 @@ const SubscriptionAddOns: React.FC<SubscriptionAddOnsProps> = ({
                 <div className="absolute inset-0 bg-black/30"></div>
               </div>
               
-              {/* Content */}
               <div className="relative z-10 h-full flex flex-col">
                 <div className="p-4 flex-1">
                   <div className="flex justify-between items-start mb-4">
@@ -385,7 +369,6 @@ const SubscriptionAddOns: React.FC<SubscriptionAddOnsProps> = ({
                   </div>
                 </div>
               
-                {/* Bottom info section */}
                 <div className={`p-4 bg-gradient-to-br ${addOn.gradient} mt-auto`}>
                   <h3 className="font-semibold text-lg mb-1">
                     {addOn.title}
@@ -409,7 +392,6 @@ const SubscriptionAddOns: React.FC<SubscriptionAddOnsProps> = ({
                 </div>
               </div>
               
-              {/* Border highlight on selection */}
               {selectedAddOns.includes(addOn.id) && (
                 <div 
                   className="absolute inset-0 border-2 opacity-100 transition-opacity"
@@ -420,7 +402,6 @@ const SubscriptionAddOns: React.FC<SubscriptionAddOnsProps> = ({
           ))}
         </motion.div>
         
-        {/* Enhanced summary section */}
         {selectedAddOns.length > 0 && (
           <div className="bg-white/10 backdrop-blur-sm border border-white/20 rounded-xl p-6 mb-8">
             <h3 className="text-xl font-semibold mb-4 border-b border-white/10 pb-2">

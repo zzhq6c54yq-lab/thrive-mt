@@ -12,73 +12,90 @@ interface SubscriptionPlan {
   price: string;
   description: string;
   features: string[];
+  addOnPrice: string;
   icon: React.ElementType;
   color: string;
   bgGradient: string;
   recommended: boolean;
 }
 
-const subscriptionPlans: SubscriptionPlan[] = [
-  {
-    id: "basic",
-    title: "Basic",
-    price: "Free",
-    description: "Start your mental health journey with essential features",
-    features: [
-      "Access to essential mental wellness tools",
-      "Join virtual meetings and classes",
-      "Digital sponsor access",
-      "Limited workshop access"
-    ],
-    icon: Package,
-    color: "text-gray-800",
-    bgGradient: "from-gray-100 to-gray-200",
-    recommended: false
-  },
-  {
-    id: "gold",
-    title: "Gold",
-    price: "$5/month",
-    description: "Enhanced features for a more personalized experience",
-    features: [
-      "5% bonus on all co-pay credits",
-      "Access to all mental wellness tools",
-      "Extended workshop library",
-      "Priority access to virtual meetings",
-      "Personalized wellness plan",
-      "Exclusive mindfulness exercises"
-    ],
-    icon: Trophy,
-    color: "text-[#B87333]",
-    bgGradient: "from-[#FEF7CD] to-[#F8E4B8]",
-    recommended: false
-  },
-  {
-    id: "platinum",
-    title: "Platinum",
-    price: "$10/month",
-    description: "Our most comprehensive mental health package",
-    features: [
-      "10% bonus on all co-pay credits",
-      "Unlimited access to all platform features",
-      "Premium workshop content",
-      "Early access to new features",
-      "Advanced analytics and insights",
-      "Personalized wellness roadmap",
-      "Priority support access",
-      "Family account options"
-    ],
-    icon: Gem,
-    color: "text-[#7E69AB]",
-    bgGradient: "from-[#E5DEFF] to-[#D5C8F8]",
-    recommended: true
-  }
-];
-
 const SubscriptionPlansPage: React.FC = () => {
   const [selectedPlan, setSelectedPlan] = useState<string | null>(null);
+  const [billingCycle, setBillingCycle] = useState<'monthly' | 'yearly'>('monthly');
   const navigate = useNavigate();
   const { toast } = useToast();
+
+  const getPrice = (basePrice: number) => {
+    if (billingCycle === 'yearly') {
+      const yearlyPrice = basePrice * 12;
+      const discountedPrice = Math.round(yearlyPrice * 0.8);
+      return `$${discountedPrice}/year`;
+    }
+    return `$${basePrice}/month`;
+  };
+
+  const subscriptionPlans: SubscriptionPlan[] = [
+    {
+      id: "basic",
+      title: "Basic",
+      price: "Free",
+      description: "Start your mental health journey with essential features",
+      features: [
+        "Access to essential mental wellness tools",
+        "Join virtual meetings and classes",
+        "Digital sponsor access",
+        "Limited workshop access",
+        "Add-ons at $3/month each"
+      ],
+      addOnPrice: "$3/each",
+      icon: Package,
+      color: "text-gray-800",
+      bgGradient: "from-gray-100 to-gray-200",
+      recommended: false
+    },
+    {
+      id: "gold",
+      title: "Gold",
+      price: billingCycle === 'monthly' ? "$5/month" : getPrice(5),
+      description: "Enhanced features for a more personalized experience",
+      features: [
+        "5% bonus on all co-pay credits",
+        "Access to all mental wellness tools",
+        "Extended workshop library",
+        "Priority access to virtual meetings",
+        "Personalized wellness plan",
+        "Exclusive mindfulness exercises",
+        "Add-ons at $2/month each"
+      ],
+      addOnPrice: "$2/each",
+      icon: Trophy,
+      color: "text-[#B87333]",
+      bgGradient: "from-[#FEF7CD] to-[#F8E4B8]",
+      recommended: false
+    },
+    {
+      id: "platinum",
+      title: "Platinum",
+      price: billingCycle === 'monthly' ? "$10/month" : getPrice(10),
+      description: "Our most comprehensive mental health package",
+      features: [
+        "10% bonus on all co-pay credits",
+        "Unlimited access to all platform features",
+        "Premium workshop content",
+        "Early access to new features",
+        "Advanced analytics and insights",
+        "Personalized wellness roadmap",
+        "Priority support access",
+        "Family account options",
+        "Add-ons at $1/month each"
+      ],
+      addOnPrice: "$1/each",
+      icon: Gem,
+      color: "text-[#7E69AB]",
+      bgGradient: "from-[#E5DEFF] to-[#D5C8F8]",
+      recommended: true
+    }
+  ];
 
   const handlePlanSelect = (planId: string) => {
     setSelectedPlan(planId);
@@ -131,6 +148,35 @@ const SubscriptionPlansPage: React.FC = () => {
               Invest in yourself with our premium plans designed to strengthen your mental health journey.
               Access exclusive resources, personalized support, and advanced tools for comprehensive wellbeing.
             </p>
+            
+            {/* Billing Cycle Toggle */}
+            <div className="flex items-center justify-center mt-8">
+              <div className="flex p-1 bg-white/10 backdrop-blur-sm rounded-lg border border-white/20">
+                <button
+                  className={`px-4 py-2 rounded-md text-sm transition-all ${
+                    billingCycle === 'monthly' 
+                      ? 'bg-[#B87333] text-white shadow-lg' 
+                      : 'text-gray-300 hover:text-white'
+                  }`}
+                  onClick={() => setBillingCycle('monthly')}
+                >
+                  Monthly
+                </button>
+                <button
+                  className={`px-4 py-2 rounded-md text-sm transition-all flex items-center gap-2 ${
+                    billingCycle === 'yearly' 
+                      ? 'bg-[#B87333] text-white shadow-lg' 
+                      : 'text-gray-300 hover:text-white'
+                  }`}
+                  onClick={() => setBillingCycle('yearly')}
+                >
+                  Yearly
+                  <span className="text-xs bg-green-500/20 text-green-300 px-2 py-0.5 rounded-full">
+                    Save 20%!
+                  </span>
+                </button>
+              </div>
+            </div>
           </div>
           
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-12">
