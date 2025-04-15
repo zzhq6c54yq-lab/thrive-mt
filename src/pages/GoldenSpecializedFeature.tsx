@@ -1,11 +1,10 @@
-
 import React, { useEffect } from "react";
 import { useNavigate, useParams, useLocation } from "react-router-dom";
 import { useToast } from "@/hooks/use-toast";
 import NavigationBar from "@/components/navigation/NavigationBar";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Brain, Heart, Users, FileText, ArrowUpRight, ArrowLeft, BookOpen, Lightbulb, Clock, Globe } from "lucide-react";
+import { Brain, Heart, Users, FileText, ArrowUpRight, ArrowLeft, BookOpen, Lightbulb, Clock, Globe, LucideIcon } from "lucide-react";
 import useTranslation from "@/hooks/useTranslation";
 
 const GoldenSpecializedFeature: React.FC = () => {
@@ -18,7 +17,8 @@ const GoldenSpecializedFeature: React.FC = () => {
   // Extract the feature name from the URL parameter
   const featureName = feature?.charAt(0).toUpperCase() + feature?.slice(1).replace(/-/g, ' ');
   
-  const getFeatureIcon = (feature?: string) => {
+  // Fix: Use LucideIcon type directly instead of ComponentType
+  const getFeatureIcon = (feature?: string): LucideIcon => {
     if (!feature) return Heart;
     
     if (feature.includes('memory') || feature.includes('cognitive')) return Brain;
@@ -35,7 +35,7 @@ const GoldenSpecializedFeature: React.FC = () => {
     if (!feature) return null;
     
     // Map of feature content
-    const featureContents: Record<string, { title: string; description: string; icon: React.ComponentType }> = {
+    const featureContents: Record<string, { title: string; description: string; icon: LucideIcon }> = {
       "years-memory": {
         title: "Memory & Cognitive Health",
         description: "Resources and exercises to help maintain and improve cognitive function, memory skills, and brain health as you age.",
