@@ -7,7 +7,7 @@ const TranslationContext = createContext({
   setPreferredLanguage: (language: 'English' | 'Español' | 'Português') => {},
   isSpanish: false,
   isPortuguese: false,
-  getTranslatedText: (key: string) => ''
+  getTranslatedText: (key: string) => '' as string // Fixed the return type here
 });
 
 // Define the type for our translations
