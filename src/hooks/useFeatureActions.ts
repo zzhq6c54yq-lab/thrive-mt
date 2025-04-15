@@ -66,12 +66,16 @@ export const useFeatureActions = () => {
     // Check if we're in a specialized portal
     const inPortal = isInSpecializedPortal();
     const portalPath = getPortalBasePath();
+    
+    // Important fix: Always maintain portal context
     const stateParams = inPortal ? 
       { 
         ...location.state,
         stayInPortal: true,
         preventTutorial: true,
-        portalPath
+        portalPath,
+        fromPortal: true, // Add flag to indicate we're coming from a portal
+        portalType: portalPath.replace('/', '').replace('-portal', '') // Store portal type (e.g. "golden-years")
       } : 
       {
         preventTutorial: true,
@@ -79,16 +83,31 @@ export const useFeatureActions = () => {
         returnToFeature: true
       };
     
+    // If we're in a portal and the path doesn't specify a full path (doesn't start with '/')
+    // Prepend the portal prefix to the path to keep navigation within the portal context
+    let navigationPath = path;
+    if (inPortal && path && !path.startsWith('/')) {
+      // Extract the portal prefix (e.g., "golden-years" from "/golden-years-portal")
+      const portalPrefix = portalPath.replace('/','').replace('-portal','');
+      navigationPath = `/${portalPrefix}-${path}`;
+    }
+    // If it's a full path but we want to stay in portal, keep as is
+    else if (inPortal && path) {
+      navigationPath = path;
+    }
+    
     // Handle navigation based on action type
     switch (type) {
       case 'workshop':
-        // Navigate to specific workshop
-        navigate(`/workshop/${id}`, { state: stateParams });
+        // Navigate to specific workshop - keep in portal context if needed
+        const workshopPath = inPortal ? `/${portalPath.split('/')[1]}-workshops/${id || ''}` : `/workshop/${id}`;
+        navigate(workshopPath, { state: stateParams });
         break;
         
       case 'assessment':
-        // Navigate directly to assessment
-        navigate(`/mental-wellness/assessments/${id || ''}`, {
+        // Navigate directly to assessment - keep in portal context if needed
+        const assessmentPath = inPortal ? `/${portalPath.split('/')[1]}-assessments/${id || ''}` : `/mental-wellness/assessments/${id || ''}`;
+        navigate(assessmentPath, {
           state: {
             ...stateParams,
             startAssessment: true,
@@ -111,7 +130,8 @@ export const useFeatureActions = () => {
         
       case 'practice':
         // Navigate to guided practice
-        navigate(`/guided-practice/${id || ''}`, {
+        const practicePath = inPortal ? `/${portalPath.split('/')[1]}-practice/${id || ''}` : `/guided-practice/${id || ''}`;
+        navigate(practicePath, {
           state: {
             ...stateParams,
             practiceTitle: title
@@ -120,8 +140,9 @@ export const useFeatureActions = () => {
         break;
         
       case 'discussion':
-        // Navigate to community discussions
-        navigate(`/community-support`, {
+        // Navigate to community discussions - keep in portal context if needed
+        const discussionPath = inPortal ? `/${portalPath.split('/')[1]}-community` : `/community-support`;
+        navigate(discussionPath, {
           state: {
             ...stateParams,
             activeTab: "discussions",
@@ -131,8 +152,9 @@ export const useFeatureActions = () => {
         break;
         
       case 'join':
-        // Join virtual meeting or group
-        navigate(`/virtual-meetings`, {
+        // Join virtual meeting or group - keep in portal context if needed
+        const meetingPath = inPortal ? `/${portalPath.split('/')[1]}-meetings` : `/virtual-meetings`;
+        navigate(meetingPath, {
           state: {
             ...stateParams,
             meetingTitle: title,
@@ -163,8 +185,8 @@ export const useFeatureActions = () => {
         
       default:
         // Default case: navigate to specified path or do nothing
-        if (path) {
-          navigate(path, { state: stateParams });
+        if (navigationPath) {
+          navigate(navigationPath, { state: stateParams });
         } else {
           console.warn("No path or action provided for this button");
         }
@@ -216,7 +238,8 @@ export const useFeatureActions = () => {
       navigate(state.returnToPortal, {
         state: {
           ...state,
-          preventTutorial: true
+          preventTutorial: true,
+          stayInPortal: true
         }
       });
     } else if (state && state.returnToMain) {

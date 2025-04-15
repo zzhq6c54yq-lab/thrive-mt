@@ -55,6 +55,7 @@ import AdolescentSelection from "@/pages/AdolescentSelection";
 import GoldenYearsWelcome from "@/pages/GoldenYearsWelcome";
 import GoldenYearsPortal from "@/pages/GoldenYearsPortal";
 import GoldenYearsJournal from "@/pages/GoldenYearsJournal";
+import GoldenSpecializedFeature from "@/pages/GoldenSpecializedFeature";
 
 function App() {
   return (
@@ -107,6 +108,9 @@ function App() {
         <Route path="/golden-years-welcome" element={<GoldenYearsWelcome />} />
         <Route path="/golden-years-portal" element={<GoldenYearsPortal />} />
         <Route path="/golden-years-journal" element={<GoldenYearsJournal />} />
+        
+        {/* New specialized routes for Golden Years features */}
+        <Route path="/golden-:feature" element={<GoldenSpecializedFeature />} />
         
         <Route path="/military-support" element={<MilitarySupport />} />
         <Route path="/military-resources" element={<MilitaryResources />} />

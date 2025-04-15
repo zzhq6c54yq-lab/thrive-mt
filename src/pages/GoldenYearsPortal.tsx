@@ -6,6 +6,7 @@ import { useToast } from "@/hooks/use-toast";
 import ThriveButton from "@/components/navigation/ThriveButton";
 import NavigationBar from "@/components/navigation/NavigationBar";
 import useFeatureActions, { ActionButtonConfig } from "@/hooks/useFeatureActions";
+import PortalNavButton from "@/components/specialized-programs/PortalNavButton";
 import { BookOpen, Calendar, Users, HeartHandshake, LifeBuoy, Lightbulb, Clock, Globe } from "lucide-react";
 
 const GoldenYearsPortal: React.FC = () => {
@@ -31,14 +32,14 @@ const GoldenYearsPortal: React.FC = () => {
     const actionConfig: ActionButtonConfig = {
       type: 'other',
       title: feature,
-      path: `/golden-years-portal/${feature.toLowerCase().replace(/\s+/g, '-')}`
+      path: `golden-${feature.toLowerCase().replace(/\s+/g, '-')}` // This creates paths like "golden-wellness-resources"
     };
 
     // Show a toast notification about the feature
     toast({
       title: `Accessing ${feature}`,
-      description: "This feature is coming soon. Please check back later.",
-      duration: 3000
+      description: "Loading your specialized content...",
+      duration: 2000
     });
     
     // Use handleActionClick from useFeatureActions for consistent navigation behavior
