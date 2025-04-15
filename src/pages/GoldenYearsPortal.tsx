@@ -3,7 +3,6 @@ import React from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { useToast } from "@/hooks/use-toast";
 import NavigationBar from "@/components/navigation/NavigationBar";
-import useFeatureActions, { ActionButtonConfig } from "@/hooks/useFeatureActions";
 import PortalHeader from "@/components/golden-years/PortalHeader";
 import FeaturedContent from "@/components/golden-years/FeaturedContent";
 import ResourcesSection from "@/components/golden-years/ResourcesSection";
@@ -15,7 +14,6 @@ const GoldenYearsPortal: React.FC = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const { toast } = useToast();
-  const { handleActionClick } = useFeatureActions();
   const { getTranslatedText } = useTranslation();
   
   const handleFeatureClick = (feature: string) => {
@@ -32,9 +30,6 @@ const GoldenYearsPortal: React.FC = () => {
       "Calendar": "/golden-years-calendar"
     };
 
-    // Default path if not found in the map
-    const path = featurePaths[feature] || `/golden-years-${feature.toLowerCase().replace(/\s+/g, '-')}`;
-    
     // Show a toast notification about the feature
     toast({
       title: `${getTranslatedText('accessing')} ${feature}`,
@@ -43,7 +38,7 @@ const GoldenYearsPortal: React.FC = () => {
     });
 
     // Navigate to the appropriate path with correct state
-    navigate(path, {
+    navigate(featurePaths[feature] || `/golden-years-${feature.toLowerCase().replace(/\s+/g, '-')}`, {
       state: { 
         stayInPortal: true,
         preventTutorial: true,

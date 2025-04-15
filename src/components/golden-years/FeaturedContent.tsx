@@ -30,11 +30,11 @@ const FeaturedContent: React.FC<FeaturedContentProps> = ({ onFeatureClick }) => 
         <div className="md:col-span-3">
           <h2 className="text-3xl font-bold mb-4 flex items-center text-[#D4AF37]">
             <Trophy className="mr-3 h-7 w-7 text-[#D4AF37]" />
-            {getTranslatedText('legacyJournal')}
+            Legacy Journal
           </h2>
           
           <p className="mb-6 text-white text-lg leading-relaxed">
-            {getTranslatedText('legacyJournalDesc')}
+            Preserve your life story, wisdom, and memories in our beautifully designed Legacy Journal. Create a meaningful keepsake that can be shared with your loved ones and future generations. Document your journey, experiences, and the lessons you've learned throughout your life.
           </p>
           
           <div className="flex flex-wrap gap-4">
@@ -43,14 +43,14 @@ const FeaturedContent: React.FC<FeaturedContentProps> = ({ onFeatureClick }) => 
               onClick={() => onFeatureClick("Legacy Journal")}
             >
               <BookOpen className="mr-2" />
-              {getTranslatedText('startJournal')}
+              Start Your Journal
             </Button>
             <Button 
               variant="outline" 
               className="border-[#D4AF37]/40 text-[#D4AF37] hover:bg-[#D4AF37]/10 px-6 py-5 text-lg transform transition-all duration-300 hover:-translate-y-1"
               onClick={() => onFeatureClick("Legacy Journal Guide")}
             >
-              {getTranslatedText('learnMore')}
+              Learn More
               <ArrowRight className="ml-2 h-4 w-4" />
             </Button>
           </div>
