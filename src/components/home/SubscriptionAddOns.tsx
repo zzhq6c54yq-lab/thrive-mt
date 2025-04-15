@@ -39,6 +39,7 @@ const SubscriptionAddOns: React.FC<SubscriptionAddOnsProps> = ({
   onSkip,
 }) => {
   const { getTranslatedText, preferredLanguage } = useTranslation();
+  const [billingCycle, setBillingCycle] = useState<'monthly' | 'yearly'>('monthly');
 
   // Get image URL with fallback
   const getImageUrl = (imagePath: string) => {
@@ -48,18 +49,97 @@ const SubscriptionAddOns: React.FC<SubscriptionAddOnsProps> = ({
     return "https://images.unsplash.com/photo-1506726446959-adfa26e7aea0?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80";
   };
 
-  // Display pricing based on selected plan
+  // Display pricing based on selected plan and billing cycle
   const getPriceDisplay = (addOn: AddOn) => {
-    if (!selectedPlan) return addOn.price.basic;
+    let basePrice = 0;
     
-    switch (selectedPlan.toLowerCase()) {
-      case 'gold':
-        return addOn.price.gold;
-      case 'platinum':
-        return addOn.price.platinum;
-      default:
-        return addOn.price.basic;
+    if (!selectedPlan || selectedPlan.toLowerCase() === 'basic') {
+      basePrice = 3;
+    } else if (selectedPlan.toLowerCase() === 'gold') {
+      basePrice = 2;
+    } else if (selectedPlan.toLowerCase() === 'platinum') {
+      basePrice = 1;
     }
+
+    if (billingCycle === 'yearly') {
+      const yearlyPrice = basePrice * 12;
+      const discountedPrice = Math.round(yearlyPrice * 0.8);
+      
+      return (
+        <div className="flex flex-col items-end">
+          <span className="text-xs text-white/70 line-through">${yearlyPrice}/year</span>
+          <span className="text-lg font-bold">${discountedPrice}/year</span>
+        </div>
+      );
+    }
+
+    return `$${basePrice}/month`;
+  };
+
+  // Get the price based on plan for display in summary
+  const getAddOnPrice = (id: string) => {
+    const addOn = addOns.find(a => a.id === id);
+    if (!addOn) return "$0";
+    
+    let basePrice = 0;
+    if (!selectedPlan || selectedPlan.toLowerCase() === 'basic') {
+      basePrice = 3;
+    } else if (selectedPlan.toLowerCase() === 'gold') {
+      basePrice = 2;
+    } else if (selectedPlan.toLowerCase() === 'platinum') {
+      basePrice = 1;
+    }
+
+    if (billingCycle === 'yearly') {
+      const yearlyPrice = basePrice * 12;
+      const discountedPrice = Math.round(yearlyPrice * 0.8);
+      return `$${discountedPrice}/year`;
+    }
+    
+    return `$${basePrice}/month`;
+  };
+
+  // Calculate total price for all selected add-ons
+  const calculateTotalPrice = () => {
+    if (selectedAddOns.length === 0) return 0;
+    
+    let basePrice = 0;
+    if (!selectedPlan || selectedPlan.toLowerCase() === 'basic') {
+      basePrice = 3;
+    } else if (selectedPlan.toLowerCase() === 'gold') {
+      basePrice = 2;
+    } else if (selectedPlan.toLowerCase() === 'platinum') {
+      basePrice = 1;
+    }
+    
+    const monthlyTotal = basePrice * selectedAddOns.length;
+    
+    if (billingCycle === 'yearly') {
+      const yearlyPrice = monthlyTotal * 12;
+      return Math.round(yearlyPrice * 0.8);
+    }
+    
+    return monthlyTotal;
+  };
+
+  // Get translated payment period text
+  const getPaymentPeriodText = (isYearly: boolean) => {
+    if (preferredLanguage === 'Español') {
+      return isYearly ? 'Anual' : 'Mensual';
+    } else if (preferredLanguage === 'Português') {
+      return isYearly ? 'Anual' : 'Mensal';
+    }
+    return isYearly ? 'Yearly' : 'Monthly';
+  };
+
+  // Calculate savings percentage
+  const savingsText = () => {
+    if (preferredLanguage === 'Español') {
+      return '¡Ahorra 20%!';
+    } else if (preferredLanguage === 'Português') {
+      return 'Economize 20%!';
+    }
+    return 'Save 20%!';
   };
 
   const addOns: AddOn[] = [
@@ -155,6 +235,54 @@ const SubscriptionAddOns: React.FC<SubscriptionAddOnsProps> = ({
     }
   };
 
+  // Get appropriate header text based on language
+  const getHeaderText = () => {
+    if (preferredLanguage === 'Español') {
+      return "Profundiza en tu viaje de salud mental";
+    } else if (preferredLanguage === 'Português') {
+      return "Aprofunde sua jornada de saúde mental";
+    }
+    return "Deepen your mental health journey";
+  };
+
+  // Get appropriate subheader text based on language
+  const getSubheaderText = () => {
+    if (preferredLanguage === 'Español') {
+      return "Agregando uno de nuestros programas especializados";
+    } else if (preferredLanguage === 'Português') {
+      return "Adicionando um de nossos programas especializados";
+    }
+    return "By adding one of our specialized programs";
+  };
+
+  // Get pricing explanation based on selected plan and language
+  const getPricingExplanation = () => {
+    if (!selectedPlan) return "";
+    
+    if (preferredLanguage === 'Español') {
+      if (selectedPlan.toLowerCase() === 'gold') {
+        return "Los suscriptores de Gold ahorran $1/mes en cada complemento";
+      } else if (selectedPlan.toLowerCase() === 'platinum') {
+        return "Los suscriptores de Platinum ahorran $2/mes en cada complemento";
+      }
+      return "Precio estándar para suscriptores Basic";
+    } else if (preferredLanguage === 'Português') {
+      if (selectedPlan.toLowerCase() === 'gold') {
+        return "Assinantes Gold economizam $1/mês em cada adicional";
+      } else if (selectedPlan.toLowerCase() === 'platinum') {
+        return "Assinantes Platinum economizam $2/mês em cada adicional";
+      }
+      return "Preço padrão para assinantes Basic";
+    } else {
+      if (selectedPlan.toLowerCase() === 'gold') {
+        return "Gold subscribers save $1/month on each add-on";
+      } else if (selectedPlan.toLowerCase() === 'platinum') {
+        return "Platinum subscribers save $2/month on each add-on";
+      }
+      return "Standard pricing for Basic subscribers";
+    }
+  };
+
   return (
     <div className="min-h-screen flex flex-col items-center justify-center bg-gradient-to-b from-[#1a1a1f] via-[#242432] to-[#272730] text-white animate-fade-in py-10 relative">
       {/* Background pattern overlay */}
@@ -165,16 +293,52 @@ const SubscriptionAddOns: React.FC<SubscriptionAddOnsProps> = ({
       <div className="absolute bottom-0 left-0 w-80 h-80 bg-gradient-to-tr from-[#D946EF]/20 to-transparent rounded-full blur-3xl -z-10"></div>
       
       <div className="max-w-6xl w-full mx-auto px-4 z-10">
+        {/* Enhanced header */}
         <div className="text-center mb-10">
-          <h2 className="text-3xl md:text-4xl font-bold mb-3 text-transparent bg-clip-text bg-gradient-to-r from-[#B87333] to-[#E5C5A1]">
-            {getTranslatedText('addOnsTitle')}
+          <h2 className="text-3xl md:text-4xl font-bold mb-2 text-transparent bg-clip-text bg-gradient-to-r from-[#B87333] to-[#E5C5A1]">
+            {getHeaderText()}
           </h2>
           <p className="text-xl text-gray-300 max-w-3xl mx-auto">
-            {getTranslatedText('addOnsSubtitle')} 
-            {selectedPlan && (
-              <span className="font-medium text-amber-300"> ({getTranslatedText('planSelected')}: {selectedPlan})</span>
-            )}
+            {getSubheaderText()}
           </p>
+          
+          {selectedPlan && (
+            <div className="mt-4 mb-2">
+              <span className="font-medium text-amber-300 inline-block py-1 px-3 rounded-full bg-amber-900/30 border border-amber-500/20">
+                {selectedPlan} {getTranslatedText('planSelected')}
+              </span>
+              <p className="text-sm text-amber-200/70 mt-2">{getPricingExplanation()}</p>
+            </div>
+          )}
+
+          {/* Billing cycle toggle */}
+          <div className="flex items-center justify-center mt-6">
+            <div className="flex p-1 bg-gray-800/50 rounded-lg border border-gray-700/50">
+              <button
+                className={`px-4 py-2 rounded-md text-sm transition-all ${
+                  billingCycle === 'monthly' 
+                    ? 'bg-[#B87333] text-white shadow-lg' 
+                    : 'text-gray-300 hover:text-white'
+                }`}
+                onClick={() => setBillingCycle('monthly')}
+              >
+                {getPaymentPeriodText(false)}
+              </button>
+              <button
+                className={`px-4 py-2 rounded-md text-sm transition-all flex items-center gap-2 ${
+                  billingCycle === 'yearly' 
+                    ? 'bg-[#B87333] text-white shadow-lg' 
+                    : 'text-gray-300 hover:text-white'
+                }`}
+                onClick={() => setBillingCycle('yearly')}
+              >
+                {getPaymentPeriodText(true)}
+                <span className="text-xs bg-green-500/20 text-green-300 px-2 py-0.5 rounded-full">
+                  {savingsText()}
+                </span>
+              </button>
+            </div>
+          </div>
         </div>
         
         <motion.div 
@@ -256,29 +420,35 @@ const SubscriptionAddOns: React.FC<SubscriptionAddOnsProps> = ({
           ))}
         </motion.div>
         
-        {/* Summary section */}
+        {/* Enhanced summary section */}
         {selectedAddOns.length > 0 && (
-          <div className="bg-white/10 backdrop-blur-sm border border-white/20 rounded-xl p-4 mb-8">
-            <h3 className="text-lg font-semibold mb-2">{getTranslatedText('selectedAddOns')}</h3>
-            <div className="space-y-2">
+          <div className="bg-white/10 backdrop-blur-sm border border-white/20 rounded-xl p-6 mb-8">
+            <h3 className="text-xl font-semibold mb-4 border-b border-white/10 pb-2">
+              {getTranslatedText('selectedAddOns')}
+            </h3>
+            <div className="space-y-3">
               {selectedAddOns.map(id => {
                 const addOn = addOns.find(a => a.id === id);
                 if (!addOn) return null;
                 return (
-                  <div key={id} className="flex justify-between items-center">
+                  <div key={id} className="flex justify-between items-center py-1">
                     <div className="flex items-center">
-                      <addOn.icon className="h-4 w-4 mr-2 text-[#B87333]" />
-                      <span>{addOn.title}</span>
+                      <addOn.icon className="h-5 w-5 mr-3 text-[#B87333]" />
+                      <span className="font-medium">{addOn.title}</span>
                     </div>
-                    <span className="font-medium">{getPriceDisplay(addOn)}</span>
+                    <span className="font-medium">{getAddOnPrice(id)}</span>
                   </div>
                 );
               })}
+              <div className="flex justify-between items-center pt-3 border-t border-white/10 mt-2 font-bold">
+                <span>{billingCycle === 'yearly' ? 'Yearly Total:' : 'Monthly Total:'}</span>
+                <span className="text-xl text-[#E5C5A1]">${calculateTotalPrice()}{billingCycle === 'yearly' ? '/year' : '/month'}</span>
+              </div>
             </div>
           </div>
         )}
         
-        <div className="flex justify-center space-x-4 mt-8">
+        <div className="flex flex-wrap justify-center space-x-4 gap-3 mt-8">
           <Button 
             variant="outline"
             className="border-[#B87333]/50 text-[#B87333] hover:bg-[#B87333]/10 flex items-center gap-2"

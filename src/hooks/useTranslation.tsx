@@ -1,4 +1,3 @@
-
 import { useState, useEffect, createContext, useContext } from 'react';
 
 // Define Translation Context
@@ -180,7 +179,7 @@ const translations: TranslationDictionary = {
   henryTitle: {
     English: "I'm Henry, Your Digital Mental Health Assistant",
     Español: "Soy Henry, Tu Asistente Digital de Salud Mental",
-    Português: "Eu sou Henry, Seu Assistante Digital de Saúde Mental"
+    Português: "Eu sou Henry, Seu Assistente Digital de Saúde Mental"
   },
   henryIntro: {
     English: "Hello! I'm here to assist you with your mental wellness journey. I can answer questions, suggest resources, and help you navigate the platform.",
@@ -387,6 +386,61 @@ const translations: TranslationDictionary = {
     English: "Continue",
     Español: "Continuar",
     Português: "Continuar"
+  },
+  skipForNow: {
+    English: "Skip for Now",
+    Español: "Omitir por Ahora",
+    Português: "Pular por Enquanto"
+  },
+  monthly: {
+    English: "Monthly",
+    Español: "Mensual",
+    Português: "Mensal"
+  },
+  yearly: {
+    English: "Yearly",
+    Español: "Anual",
+    Português: "Anual"
+  },
+  save20: {
+    English: "Save 20%!",
+    Español: "¡Ahorra 20%!",
+    Português: "Economize 20%!"
+  },
+  deepenJourney: {
+    English: "Deepen your mental health journey",
+    Español: "Profundiza en tu viaje de salud mental",
+    Português: "Aprofunde sua jornada de saúde mental"
+  },
+  byAddingProgram: {
+    English: "By adding one of our specialized programs",
+    Español: "Agregando uno de nuestros programas especializados",
+    Português: "Adicionando um de nossos programas especializados"
+  },
+  goldSavings: {
+    English: "Gold subscribers save $1/month on each add-on",
+    Español: "Los suscriptores de Gold ahorran $1/mes en cada complemento",
+    Português: "Assinantes Gold economizam $1/mês em cada adicional"
+  },
+  platinumSavings: {
+    English: "Platinum subscribers save $2/month on each add-on",
+    Español: "Los suscriptores de Platinum ahorran $2/mes en cada complemento",
+    Português: "Assinantes Platinum economizam $2/mês em cada adicional"
+  },
+  basicPrice: {
+    English: "Standard pricing for Basic subscribers",
+    Español: "Precio estándar para suscriptores Basic",
+    Português: "Preço padrão para assinantes Basic"
+  },
+  monthlyTotal: {
+    English: "Monthly Total:",
+    Español: "Total Mensual:",
+    Português: "Total Mensal:"
+  },
+  yearlyTotal: {
+    English: "Yearly Total:",
+    Español: "Total Anual:",
+    Português: "Total Anual:"
   }
 };
 
