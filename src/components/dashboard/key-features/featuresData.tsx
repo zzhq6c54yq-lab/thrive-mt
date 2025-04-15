@@ -1,7 +1,6 @@
-
 import {
   Activity, BookOpen, Brain, BarChart3, Video, Calendar, Headphones,
-  BookText, Sparkles, MessageCircle, Leaf, Rocket, Globe, Heart, Users, HandHeart
+  BookText, Sparkles, MessageCircle, Leaf, Rocket, Globe, Heart, Users, HandHeart, UserPlus
 } from "lucide-react";
 import React from "react";
 import { getImageUrl } from "./featureUtils";
@@ -18,6 +17,15 @@ export interface Feature {
 
 export const getFeatures = (isSpanish: boolean): Feature[] => {
   return [
+    {
+      id: "user-lead",
+      title: isSpanish ? "Usuario Líder" : "User Lead",
+      icon: <UserPlus className="h-4 w-4 text-white drop-shadow-sm" />,
+      path: "/user-lead",
+      color: "from-[#9b87f5] to-[#6E59A5]",
+      description: isSpanish ? "Crea y comparte tus propias actividades" : "Create and share your own activities",
+      image: getImageUrl("https://images.unsplash.com/photo-1577563908411-5077b6dc7624?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80")
+    },
     {
       id: "progress-reports",
       title: isSpanish ? "Informes de Progreso" : "Progress Reports",

@@ -58,6 +58,7 @@ import GoldenYearsJournal from "@/pages/GoldenYearsJournal";
 import GoldenSpecializedFeature from "@/pages/GoldenSpecializedFeature";
 import GoldenEndOfLifePlanning from "@/pages/GoldenEndOfLifePlanning";
 import GoldenMemoryCognitive from "@/pages/GoldenMemoryCognitive";
+import UserLead from "@/pages/UserLead";
 
 function App() {
   return (
@@ -144,6 +145,9 @@ function App() {
         <Route path="/resource-library" element={<ResourceLibrary />} />
         <Route path="/wellness-challenges" element={<WellnessChallenges />} />
         <Route path="/my-sponsor" element={<MySponsor />} />
+        
+        {/* User Lead Route */}
+        <Route path="/user-lead" element={<UserLead />} />
         
         <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
