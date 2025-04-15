@@ -37,6 +37,7 @@ const journalPrompts = {
     "Describe the moment when you felt like a "real adult" for the first time.",
     "What advice would you give young adults today based on your experiences?"
   ],
+  // Ensure all categories have a trailing comma to prevent syntax errors
   career: [
     "Describe your first job and what you learned from it.",
     "What led you to your chosen career? Was it planned or did you discover it by accident?",
