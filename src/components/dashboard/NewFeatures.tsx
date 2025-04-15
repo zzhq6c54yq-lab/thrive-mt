@@ -1,5 +1,5 @@
 
-import React, { useState, useEffect } from "react";
+import React from "react";
 import { Button } from "@/components/ui/button";
 import { Handshake, Award, WalletCards, Sparkles, Crown, Zap } from "lucide-react";
 import { useNavigate } from "react-router-dom";
@@ -41,21 +41,21 @@ const NewFeatures: React.FC = () => {
           <Button 
             variant="bronze"
             className="flex items-center gap-2 px-6 py-6 rounded-lg transform transition-all duration-300 hover:scale-105 shadow-[0_4px_12px_rgba(0,0,0,0.25)] group"
-            onClick={() => handleNavigation("/barter-system", getTranslatedText('barterSystem'))}
+            onClick={() => handleNavigation("/barter-system", "Barter System")}
           >
             <div className="p-2 rounded-full bg-[#B87333]/20 group-hover:bg-[#B87333]/30 transition-colors">
               <Handshake className="h-5 w-5 text-[#E5C5A1] group-hover:text-white transition-colors" />
             </div>
             <div className="flex flex-col items-start">
-              <span className="font-medium">{getTranslatedText('barterSystem')}</span>
-              <span className="text-xs opacity-80">Meet Henry</span>
+              <span className="font-medium">Meet Henry</span>
+              <span className="text-xs opacity-80">Co-Pay Credit System</span>
             </div>
           </Button>
           
           <Button 
             variant="gold"
             className="flex items-center gap-2 px-5 py-5 rounded-lg transform transition-all duration-300 hover:scale-105 shadow-[0_4px_12px_rgba(0,0,0,0.25)] group relative overflow-hidden"
-            onClick={() => handleNavigation("/subscription-plans", getTranslatedText('upgradePlan'))}
+            onClick={() => handleNavigation("/subscription-plans", "System Upgrade Plan")}
           >
             <div className="absolute inset-0 bg-gradient-to-r from-[#B87333] via-[#E5C5A1] to-[#B87333] opacity-100 background-animate" style={{backgroundSize: '200% auto'}}></div>
             
@@ -69,8 +69,8 @@ const NewFeatures: React.FC = () => {
               <Crown className="h-5 w-5 text-white group-hover:text-white transition-colors" />
             </div>
             <div className="z-10 flex flex-col items-start">
-              <span className="font-bold text-black text-sm">{getTranslatedText('upgradePlan')}</span>
-              <span className="text-xs text-black/80">System Upgrade Plan</span>
+              <span className="font-bold text-black text-sm">System Upgrade Plan</span>
+              <span className="text-xs text-black/80">Premium Features</span>
             </div>
             
             <Zap className="h-5 w-5 ml-1 text-black group-hover:translate-x-1 transition-transform z-10" />
@@ -79,14 +79,14 @@ const NewFeatures: React.FC = () => {
           <Button 
             variant="bronze"
             className="flex items-center gap-2 px-6 py-6 rounded-lg transform transition-all duration-300 hover:scale-105 shadow-[0_4px_12px_rgba(0,0,0,0.25)] group"
-            onClick={() => handleNavigation("/copay-credits", getTranslatedText('coPayCredits'))}
+            onClick={() => handleNavigation("/copay-credits", "Co-Pay Credits")}
           >
             <div className="p-2 rounded-full bg-[#B87333]/20 group-hover:bg-[#B87333]/30 transition-colors">
               <WalletCards className="h-5 w-5 text-[#E5C5A1] group-hover:text-white transition-colors" />
             </div>
             <div className="flex flex-col items-start">
-              <span className="font-medium">{getTranslatedText('coPayCredits')}</span>
-              <span className="text-xs opacity-80">Co-Pay Credits</span>
+              <span className="font-medium">Co-Pay Credits</span>
+              <span className="text-xs opacity-80">Manage Your Credits</span>
             </div>
           </Button>
         </div>

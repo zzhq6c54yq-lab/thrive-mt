@@ -10,6 +10,7 @@ import JournalPrompts from "@/components/journal/JournalPrompts";
 import { getPromptCategories } from "@/data/journalPrompts";
 import NavigationBar from "@/components/navigation/NavigationBar";
 import { useToast } from "@/hooks/use-toast";
+import BookConverter from "@/components/journal/BookConverter";
 
 const GoldenYearsJournal: React.FC = () => {
   const [journalEntry, setJournalEntry] = useState("");
@@ -201,6 +202,8 @@ const GoldenYearsJournal: React.FC = () => {
                   Write Your Story
                 </h2>
                 <div className="flex items-center space-x-2">
+                  <BookConverter entries={entries} userName="Your Name" />
+                  
                   <Button
                     variant="outline" 
                     size="sm"

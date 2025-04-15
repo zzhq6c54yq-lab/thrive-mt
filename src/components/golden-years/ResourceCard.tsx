@@ -8,7 +8,7 @@ interface ResourceCardProps {
   title: string;
   description: string;
   icon: React.ReactNode;
-  onResourceClick: (title: string) => void;
+  onResourceClick: () => void;
   buttonText?: string;
 }
 
@@ -42,7 +42,7 @@ const ResourceCard: React.FC<ResourceCardProps> = ({
       </p>
       <Button 
         className="w-full bg-[#4A3F36] hover:bg-[#5D4C3B] text-white flex items-center justify-center border border-[#D4AF37]/20"
-        onClick={() => onResourceClick(title)}
+        onClick={onResourceClick}
       >
         {finalButtonText}
         <ArrowRight className="ml-2 h-4 w-4" />
