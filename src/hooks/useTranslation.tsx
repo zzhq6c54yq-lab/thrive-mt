@@ -1,3 +1,4 @@
+
 import { useState, useEffect, createContext, useContext } from 'react';
 
 // Define Translation Context
@@ -387,11 +388,6 @@ const translations: TranslationDictionary = {
     Español: "Continuar",
     Português: "Continuar"
   },
-  skipForNow: {
-    English: "Skip for Now",
-    Español: "Omitir por Ahora",
-    Português: "Pular por Enquanto"
-  },
   monthly: {
     English: "Monthly",
     Español: "Mensual",
@@ -441,6 +437,11 @@ const translations: TranslationDictionary = {
     English: "Yearly Total:",
     Español: "Total Anual:",
     Português: "Total Anual:"
+  },
+  tutorialButtonHelp: {
+    English: "You can access this tutorial at any time by clicking on the Thrive MT button in the top right corner.",
+    Español: "Puedes acceder a este tutorial en cualquier momento haciendo clic en el botón Thrive MT en la esquina superior derecha.",
+    Português: "Você pode acessar este tutorial a qualquer momento clicando no botão Thrive MT no canto superior direito."
   }
 };
 
@@ -507,3 +508,4 @@ export const TranslationProvider = ({ children }: { children: React.ReactNode })
 const useTranslation = () => useContext(TranslationContext);
 
 export default useTranslation;
+
