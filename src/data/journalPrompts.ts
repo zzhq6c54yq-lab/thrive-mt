@@ -11,7 +11,7 @@ const journalPrompts = {
     "What was a typical holiday celebration like in your childhood home?",
     "Describe the neighborhood where you grew up and how it changed over time.",
     "What historical events do you remember from your childhood? How did they affect your family?",
-    "Who were the important adults in your childhood besides your parents? What impact did they have on you?",
+    "Who were the important adults in your childhood besides your parents? What impact did they have on you?"
   ],
   adolescence: [
     "Describe your teenage years. What challenges did you face and overcome?",
@@ -23,7 +23,7 @@ const journalPrompts = {
     "What were your dreams and ambitions as a teenager? How did they evolve as you grew older?",
     "Describe a teacher or mentor who influenced you during your teenage years.",
     "What challenges did teenagers face in your generation that are different from today?",
-    "What was your relationship with your parents like during your teenage years? How did it change over time?",
+    "What was your relationship with your parents like during your teenage years? How did it change over time?"
   ],
   youngadult: [
     "Describe your journey to independence. Where did you live? What jobs did you have?",
@@ -35,7 +35,7 @@ const journalPrompts = {
     "How did you establish your own home and family traditions distinct from your parents?",
     "What social and cultural events of your young adult years had the biggest impact on you?",
     "Describe the moment when you felt like a "real adult" for the first time.",
-    "What advice would you give young adults today based on your experiences?",
+    "What advice would you give young adults today based on your experiences?"
   ],
   career: [
     "Describe your first job and what you learned from it.",
@@ -47,7 +47,7 @@ const journalPrompts = {
     "How did your industry change during your working years?",
     "Describe a typical day at work during the height of your career.",
     "What skills were you most proud of developing in your professional life?",
-    "What advice about work and career would you give to your grandchildren?",
+    "What advice about work and career would you give to your grandchildren?"
   ],
   relationships: [
     "Tell the complete story of how you met your spouse/partner. What attracted you to them?",
@@ -59,7 +59,7 @@ const journalPrompts = {
     "What traditions or activities have been most important in keeping your family close?",
     "Describe each of your children – their personalities, strengths, and your relationship with them.",
     "How have your friendships changed and evolved throughout your life?",
-    "Who has been your most enduring friend, and what has made that friendship special?",
+    "Who has been your most enduring friend, and what has made that friendship special?"
   ],
   parenthood: [
     "Describe the moment you found out you were going to become a parent. How did you feel?",
@@ -71,7 +71,7 @@ const journalPrompts = {
     "What activities did you enjoy doing with your children?",
     "How did your approach to parenting change from your first child to your last (if applicable)?",
     "What do you consider your greatest success as a parent?",
-    "What advice about parenting would you give to your children as they raise their own families?",
+    "What advice about parenting would you give to your children as they raise their own families?"
   ],
   retirement: [
     "How did you prepare for retirement? What advice would you give others?",
@@ -83,7 +83,7 @@ const journalPrompts = {
     "What has been challenging about retirement, and how have you addressed those challenges?",
     "How has your perspective on time changed since retiring?",
     "What relationships have become more important to you in retirement?",
-    "What goals or dreams are you still pursuing in this chapter of your life?",
+    "What goals or dreams are you still pursuing in this chapter of your life?"
   ],
   wisdom: [
     "What do you know now that you wish you had known when you were younger?",
@@ -95,8 +95,8 @@ const journalPrompts = {
     "What advice would you give about finding happiness and fulfillment?",
     "How have your spiritual or philosophical beliefs evolved throughout your life?",
     "What has been your approach to handling life's uncertainties and challenges?",
-    "If you could leave one message for future generations of your family, what would it be?",
-  ],
+    "If you could leave one message for future generations of your family, what would it be?"
+  ]
 };
 
 // Get all available prompt categories
@@ -118,3 +118,4 @@ export const isValidCategory = (category: string): category is keyof typeof jour
 };
 
 export default journalPrompts;
+
