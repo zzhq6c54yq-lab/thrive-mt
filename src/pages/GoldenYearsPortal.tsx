@@ -9,12 +9,14 @@ import ResourcesSection from "@/components/golden-years/ResourcesSection";
 import CalendarSection from "@/components/golden-years/CalendarSection";
 import SupportResources from "@/components/golden-years/SupportResources";
 import useTranslation from "@/hooks/useTranslation";
+import useFeatureActions from "@/hooks/useFeatureActions";
 
 const GoldenYearsPortal: React.FC = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const { toast } = useToast();
   const { getTranslatedText } = useTranslation();
+  const { handleActionClick } = useFeatureActions();
   
   const handleFeatureClick = (feature: string) => {
     // Map of features to their respective paths

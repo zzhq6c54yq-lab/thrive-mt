@@ -16,7 +16,7 @@ const ResourcesSection: React.FC<ResourcesSectionProps> = ({ onResourceClick }) 
       buttonText: "Explore Resources"
     },
     {
-      title: "End-of-Life Planning",
+      title: "End of Life Planning",
       description: "Thoughtful resources to help with advance care planning, will preparation, and ensuring your wishes are documented.",
       icon: <BookOpen className="h-5 w-5 text-amber-200" />,
       buttonText: "Access Planning Tools"
