@@ -1,3 +1,4 @@
+
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import { useToast } from "@/hooks/use-toast";
@@ -135,6 +136,77 @@ const LanguageAwareNavMenu: React.FC = () => {
                     {isSpanish ? "Bienestar y recursos para empleados" :
                      isPortuguese ? "Bem-estar e recursos para funcionários" :
                      "Wellness and resources for employees"}
+                  </p>
+                </div>
+              </li>
+              {/* New specialized programs */}
+              <li onClick={() => handleNavigate("/social-welcome")} className="cursor-pointer">
+                <div className="block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground">
+                  <div className="text-sm font-medium leading-none">
+                    {isSpanish ? "Socialización y Conexión" :
+                     isPortuguese ? "Socialização e Conexão" :
+                     "Social Connection"}
+                  </div>
+                  <p className="line-clamp-2 text-sm leading-snug text-muted-foreground">
+                    {isSpanish ? "Mejora de habilidades sociales" :
+                     isPortuguese ? "Melhoria de habilidades sociais" :
+                     "Enhancing social skills"}
+                  </p>
+                </div>
+              </li>
+              <li onClick={() => handleNavigate("/mental-health-welcome")} className="cursor-pointer">
+                <div className="block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground">
+                  <div className="text-sm font-medium leading-none">
+                    {isSpanish ? "Ansiedad y Depresión" :
+                     isPortuguese ? "Ansiedade e Depressão" :
+                     "Anxiety & Depression"}
+                  </div>
+                  <p className="line-clamp-2 text-sm leading-snug text-muted-foreground">
+                    {isSpanish ? "Apoyo para trastornos de ánimo" :
+                     isPortuguese ? "Suporte para transtornos de humor" :
+                     "Support for mood disorders"}
+                  </p>
+                </div>
+              </li>
+              <li onClick={() => handleNavigate("/healthcare-welcome")} className="cursor-pointer">
+                <div className="block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground">
+                  <div className="text-sm font-medium leading-none">
+                    {isSpanish ? "Trabajadores de Salud" :
+                     isPortuguese ? "Profissionais de Saúde" :
+                     "Healthcare Workers"}
+                  </div>
+                  <p className="line-clamp-2 text-sm leading-snug text-muted-foreground">
+                    {isSpanish ? "Apoyo para profesionales sanitarios" :
+                     isPortuguese ? "Apoio para profissionais de saúde" :
+                     "Support for healthcare professionals"}
+                  </p>
+                </div>
+              </li>
+              <li onClick={() => handleNavigate("/first-responder-welcome")} className="cursor-pointer">
+                <div className="block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground">
+                  <div className="text-sm font-medium leading-none">
+                    {isSpanish ? "Primeros Respondedores" :
+                     isPortuguese ? "Socorristas" :
+                     "First Responders"}
+                  </div>
+                  <p className="line-clamp-2 text-sm leading-snug text-muted-foreground">
+                    {isSpanish ? "Para bomberos y personal de emergencias" :
+                     isPortuguese ? "Para bombeiros e pessoal de emergência" :
+                     "For firefighters and emergency personnel"}
+                  </p>
+                </div>
+              </li>
+              <li onClick={() => handleNavigate("/police-welcome")} className="cursor-pointer">
+                <div className="block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground">
+                  <div className="text-sm font-medium leading-none">
+                    {isSpanish ? "Fuerzas de Seguridad" :
+                     isPortuguese ? "Forças de Segurança" :
+                     "Law Enforcement"}
+                  </div>
+                  <p className="line-clamp-2 text-sm leading-snug text-muted-foreground">
+                    {isSpanish ? "Para policías y personal de seguridad" :
+                     isPortuguese ? "Para policiais e pessoal de segurança" :
+                     "For police and security personnel"}
                   </p>
                 </div>
               </li>

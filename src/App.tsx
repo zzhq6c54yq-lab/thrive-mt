@@ -60,6 +60,18 @@ import GoldenEndOfLifePlanning from "@/pages/GoldenEndOfLifePlanning";
 import GoldenMemoryCognitive from "@/pages/GoldenMemoryCognitive";
 import UserLead from "@/pages/UserLead";
 
+// Import placeholder pages for our new specialized programs
+import SocialWelcome from "@/pages/SocialWelcome";
+import SocialPortal from "@/pages/SocialPortal";
+import MentalHealthWelcome from "@/pages/MentalHealthWelcome";
+import MentalHealthPortal from "@/pages/MentalHealthPortal";
+import HealthcareWelcome from "@/pages/HealthcareWelcome";
+import HealthcarePortal from "@/pages/HealthcarePortal";
+import FirstResponderWelcome from "@/pages/FirstResponderWelcome";
+import FirstResponderPortal from "@/pages/FirstResponderPortal";
+import PoliceWelcome from "@/pages/PoliceWelcome";
+import PolicePortal from "@/pages/PolicePortal";
+
 function App() {
   return (
     <>
@@ -122,6 +134,27 @@ function App() {
         <Route path="/golden-years-family" element={<GoldenSpecializedFeature />} />
         <Route path="/golden-years-wellness" element={<GoldenSpecializedFeature />} />
         <Route path="/golden-years-calendar" element={<GoldenSpecializedFeature />} />
+        
+        {/* New Specialized Programs Routes */}
+        {/* Social Connection */}
+        <Route path="/social-welcome" element={<SocialWelcome />} />
+        <Route path="/social-portal" element={<SocialPortal />} />
+        
+        {/* Mental Health (Anxiety & Depression) */}
+        <Route path="/mental-health-welcome" element={<MentalHealthWelcome />} />
+        <Route path="/mental-health-portal" element={<MentalHealthPortal />} />
+        
+        {/* Healthcare Workers */}
+        <Route path="/healthcare-welcome" element={<HealthcareWelcome />} />
+        <Route path="/healthcare-portal" element={<HealthcarePortal />} />
+        
+        {/* First Responders */}
+        <Route path="/first-responder-welcome" element={<FirstResponderWelcome />} />
+        <Route path="/first-responder-portal" element={<FirstResponderPortal />} />
+        
+        {/* Law Enforcement */}
+        <Route path="/police-welcome" element={<PoliceWelcome />} />
+        <Route path="/police-portal" element={<PolicePortal />} />
         
         <Route path="/military-support" element={<MilitarySupport />} />
         <Route path="/military-resources" element={<MilitaryResources />} />
