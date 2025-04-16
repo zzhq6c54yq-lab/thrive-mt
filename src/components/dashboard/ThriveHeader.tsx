@@ -1,3 +1,4 @@
+
 import React, { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Footprints, Coins } from "lucide-react";
@@ -31,6 +32,12 @@ const ThriveHeader: React.FC<ThriveHeaderProps> = ({
         preventTutorial: true
       }
     });
+  };
+  
+  // Add the missing handleIntroContinue function
+  const handleIntroContinue = () => {
+    setShowIntroDialog(false);
+    setShowChatDialog(true);
   };
 
   return (
