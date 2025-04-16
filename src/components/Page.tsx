@@ -15,6 +15,7 @@ interface PageProps {
   fullWidth?: boolean;
   returnToMain?: boolean;
   featureId?: string;
+  className?: string; // Added className prop
 }
 
 const Page: React.FC<PageProps> = ({ 
@@ -24,7 +25,8 @@ const Page: React.FC<PageProps> = ({
   onBackClick,
   fullWidth = false,
   returnToMain = false,
-  featureId
+  featureId,
+  className = "" // Default to empty string
 }) => {
   const navigate = useNavigate();
   const location = useLocation();
@@ -96,7 +98,7 @@ const Page: React.FC<PageProps> = ({
   const shouldShowThriveButton = !isExcludedPage;
   
   return (
-    <div className="min-h-screen bg-gradient-to-b from-[#1a1a1f] via-[#242432] to-[#272730] text-white py-1 px-1 relative overflow-x-hidden">
+    <div className={`min-h-screen bg-gradient-to-b from-[#1a1a1f] via-[#242432] to-[#272730] text-white py-1 px-1 relative overflow-x-hidden ${className}`}>
       <div className="absolute inset-0 bg-[url('data:image/svg+xml;utf8,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%2220%22 height=%2220%22 viewBox=%220 0 20 20%22><circle cx=%222%22 cy=%222%22 r=%221%22 fill=%22%23B87333%22 fill-opacity=%220.05%22/></svg>')] opacity-20"></div>
       
       <div className={`${fullWidth ? 'w-full max-w-none' : 'max-w-5xl mx-auto'} bg-white/5 backdrop-blur-md rounded-xl p-2 shadow-md relative overflow-hidden`}>
