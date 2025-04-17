@@ -15,7 +15,7 @@ interface PageProps {
   fullWidth?: boolean;
   returnToMain?: boolean;
   featureId?: string;
-  className?: string; // Added className prop
+  className?: string;
 }
 
 const Page: React.FC<PageProps> = ({ 
@@ -26,11 +26,11 @@ const Page: React.FC<PageProps> = ({
   fullWidth = false,
   returnToMain = false,
   featureId,
-  className = "" // Default to empty string
+  className = ""
 }) => {
   const navigate = useNavigate();
   const location = useLocation();
-  const { isSpanish, getTranslatedText } = useTranslation();
+  const { isSpanish, isPortuguese, isArabic, preferredLanguage, getTranslatedText } = useTranslation();
   
   useEffect(() => {
     // Scroll to top when the component mounts
@@ -75,27 +75,18 @@ const Page: React.FC<PageProps> = ({
   const isMainDashboard = location.pathname === "/" && 
     location.state && location.state.screenState === 'main';
 
-  // Translation function for back button
-  const getTranslation = (key: string) => {
-    const translations: Record<string, Record<string, string>> = {
-      'back': {
-        'English': 'Back',
-        'Español': 'Atrás'
-      },
-      'comingSoon': {
-        'English': 'Coming soon! This feature is under development.',
-        'Español': '¡Próximamente! Esta función está en desarrollo.'
-      }
-    };
-    
-    return isSpanish ? translations[key]['Español'] : translations[key]['English'];
-  };
+  // Get translation for back button
+  const backButtonText = getTranslatedText('back');
+  const comingSoonText = getTranslatedText('comingSoon');
 
   // Determine the feature ID based on the current path if not provided
   const currentFeatureId = featureId || location.pathname.split('/')[1] || 'dashboard';
   
   // Determine whether to show the THRIVE button
   const shouldShowThriveButton = !isExcludedPage;
+  
+  // Determine if we need to apply RTL styling
+  const isRtl = preferredLanguage === 'العربية';
   
   return (
     <div className={`min-h-screen bg-gradient-to-b from-[#1a1a1f] via-[#242432] to-[#272730] text-white py-1 px-1 relative overflow-x-hidden ${className}`}>
@@ -108,15 +99,15 @@ const Page: React.FC<PageProps> = ({
         
         {/* Title in Header with navigation controls */}
         <div className="flex flex-col md:flex-row items-center justify-between mb-2 gap-1">
-          <div className="flex items-center gap-1">
+          <div className={`flex items-center gap-1 ${isRtl ? 'flex-row-reverse' : ''}`}>
             {/* Standard back button in top left */}
             {showBackButton && (
               <Button
                 variant="outline"
                 size="sm"
-                className="mr-2 bg-white/5 hover:bg-white/15 border-white/10 text-white/90 text-xs h-7 p-1"
+                className={`${isRtl ? 'ml-2' : 'mr-2'} bg-white/5 hover:bg-white/15 border-white/10 text-white/90 text-xs h-7 p-1 ${isRtl ? 'rotate-180' : ''}`}
                 onClick={handleBackClick}
-                title={getTranslation('back')}
+                title={backButtonText}
               >
                 <ArrowLeft className="h-4 w-4" />
               </Button>
@@ -127,7 +118,7 @@ const Page: React.FC<PageProps> = ({
             </h1>
           </div>
           
-          <div className="flex items-center gap-2">
+          <div className={`flex items-center gap-2 ${isRtl ? 'flex-row-reverse' : ''}`}>
             {/* Add THRIVE button if appropriate */}
             {shouldShowThriveButton && <ThriveButton />}
             
@@ -142,7 +133,7 @@ const Page: React.FC<PageProps> = ({
           {children || (
             <div className="p-3 rounded-lg bg-white/5 text-center backdrop-blur-sm">
               <p className="text-sm text-gray-300">
-                {getTranslation('comingSoon')}
+                {comingSoonText}
               </p>
             </div>
           )}

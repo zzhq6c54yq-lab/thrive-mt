@@ -1,0 +1,17 @@
+
+/* Add to your global CSS */
+html[dir="rtl"] body {
+  direction: rtl;
+  text-align: right;
+}
+
+html[dir="rtl"] .ltr-only {
+  direction: ltr;
+  text-align: left;
+}
+
+html[dir="rtl"] .flip-in-rtl {
+  transform: scaleX(-1);
+}
+
+/* Keep any existing global CSS */

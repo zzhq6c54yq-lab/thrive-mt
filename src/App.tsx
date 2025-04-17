@@ -1,6 +1,5 @@
-
 import React from "react";
-import { Routes, Route, Navigate } from "react-router-dom";
+import { Routes, Route } from "react-router-dom";
 import Index from "@/pages/Index";
 import Home from "@/pages/Home";
 import ProgressReports from "@/pages/ProgressReports";
@@ -72,10 +71,12 @@ import FirstResponderPortal from "@/pages/FirstResponderPortal";
 import PoliceWelcome from "@/pages/PoliceWelcome";
 import PolicePortal from "@/pages/PolicePortal";
 
+import LanguageDirection from "@/components/LanguageDirection";
+
 function App() {
   return (
     <>
-      <HelpNavButton />
+      <LanguageDirection />
       <Routes>
         <Route path="/" element={<Index />} />
         <Route path="/home" element={<Home />} />

@@ -10,12 +10,12 @@ import { useToast } from "@/hooks/use-toast";
 const MentalHealthWelcome: React.FC = () => {
   const navigate = useNavigate();
   const { toast } = useToast();
-  const { isSpanish } = useTranslation();
+  const { preferredLanguage, getTranslatedText } = useTranslation();
 
   const handleContinue = () => {
     toast({
-      title: isSpanish ? "Entrando al portal" : "Entering portal",
-      description: isSpanish ? "Cargando recursos de salud mental" : "Loading mental health resources",
+      title: getTranslatedText('enteringPortal'),
+      description: getTranslatedText('loadingMentalHealthResources'),
       duration: 1500,
     });
     
@@ -28,19 +28,17 @@ const MentalHealthWelcome: React.FC = () => {
   };
   
   return (
-    <Page title={isSpanish ? "Ansiedad y Depresión" : "Anxiety & Depression"} className="bg-gradient-to-br from-[#9b87f5]/10 to-[#6E59A5]/5">
+    <Page title={getTranslatedText('mentalHealth')} className="bg-gradient-to-br from-[#9b87f5]/10 to-[#6E59A5]/5">
       <div className="max-w-4xl mx-auto py-8 px-4">
         <div className="text-center mb-8">
           <div className="inline-flex p-4 rounded-full bg-[#9b87f5]/20 mb-4">
             <Brain size={40} className="text-[#9b87f5]" />
           </div>
           <h1 className="text-3xl md:text-4xl font-bold mb-4 tracking-tight">
-            {isSpanish ? "Bienvenido a Ansiedad y Depresión" : "Welcome to Anxiety & Depression"}
+            {getTranslatedText('welcomeToMentalHealth')}
           </h1>
           <p className="text-lg text-gray-600 dark:text-gray-300 mb-6">
-            {isSpanish 
-              ? "Un espacio dedicado para comprender, abordar y encontrar apoyo para los trastornos de ansiedad y depresión."
-              : "A dedicated space to understand, address, and find support for anxiety and depression disorders."}
+            {getTranslatedText('mentalHealthDescription')}
           </p>
         </div>
         
@@ -51,11 +49,9 @@ const MentalHealthWelcome: React.FC = () => {
                 <PieChart className="h-6 w-6 text-[#9b87f5]" />
               </div>
               <div>
-                <h3 className="font-semibold text-lg mb-2">{isSpanish ? "Estadísticas" : "Statistics"}</h3>
+                <h3 className="font-semibold text-lg mb-2">{getTranslatedText('statistics')}</h3>
                 <p className="text-gray-600 dark:text-gray-300 text-sm">
-                  {isSpanish 
-                    ? "Datos sobre la prevalencia de los trastornos de ansiedad y depresión y su impacto en el bienestar."
-                    : "Data on the prevalence of anxiety and depression disorders and their impact on wellbeing."}
+                  {getTranslatedText('mentalHealthStats')}
                 </p>
               </div>
             </div>
@@ -67,11 +63,9 @@ const MentalHealthWelcome: React.FC = () => {
                 <Book className="h-6 w-6 text-[#9b87f5]" />
               </div>
               <div>
-                <h3 className="font-semibold text-lg mb-2">{isSpanish ? "Recursos" : "Resources"}</h3>
+                <h3 className="font-semibold text-lg mb-2">{getTranslatedText('resources')}</h3>
                 <p className="text-gray-600 dark:text-gray-300 text-sm">
-                  {isSpanish 
-                    ? "Guías, artículos y herramientas para entender y manejar los síntomas de ansiedad y depresión."
-                    : "Guides, articles, and tools to understand and manage anxiety and depression symptoms."}
+                  {getTranslatedText('mentalHealthResources')}
                 </p>
               </div>
             </div>
@@ -83,11 +77,9 @@ const MentalHealthWelcome: React.FC = () => {
                 <CalendarCheck className="h-6 w-6 text-[#9b87f5]" />
               </div>
               <div>
-                <h3 className="font-semibold text-lg mb-2">{isSpanish ? "Talleres" : "Workshops"}</h3>
+                <h3 className="font-semibold text-lg mb-2">{getTranslatedText('workshops')}</h3>
                 <p className="text-gray-600 dark:text-gray-300 text-sm">
-                  {isSpanish 
-                    ? "Sesiones interactivas sobre técnicas de afrontamiento, manejo del estrés y recuperación."
-                    : "Interactive sessions on coping techniques, stress management, and recovery."}
+                  {getTranslatedText('mentalHealthWorkshops')}
                 </p>
               </div>
             </div>
@@ -99,11 +91,9 @@ const MentalHealthWelcome: React.FC = () => {
                 <ClipboardCheck className="h-6 w-6 text-[#9b87f5]" />
               </div>
               <div>
-                <h3 className="font-semibold text-lg mb-2">{isSpanish ? "Evaluaciones" : "Assessments"}</h3>
+                <h3 className="font-semibold text-lg mb-2">{getTranslatedText('assessments')}</h3>
                 <p className="text-gray-600 dark:text-gray-300 text-sm">
-                  {isSpanish 
-                    ? "Herramientas de evaluación para la ansiedad, depresión y trastornos relacionados."
-                    : "Assessment tools for anxiety, depression, and related disorders."}
+                  {getTranslatedText('mentalHealthAssessments')}
                 </p>
               </div>
             </div>
@@ -115,7 +105,7 @@ const MentalHealthWelcome: React.FC = () => {
             onClick={handleContinue}
             className="bg-[#9b87f5] hover:bg-[#6E59A5] text-white py-2 px-8 rounded-lg text-lg"
           >
-            {isSpanish ? "Continuar al Portal" : "Continue to Portal"}
+            {getTranslatedText('continueToPortal')}
           </Button>
         </div>
       </div>
