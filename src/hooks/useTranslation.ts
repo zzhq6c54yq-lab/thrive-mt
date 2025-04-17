@@ -4,8 +4,7 @@ import translations from '../data/translations';
 
 type Language = 'English' | 'Español' | 'Português' | 'Русский' | 'Deutsch' | 'हिन्दी' | 'Français' | 'Filipino' | '中文' | 'العربية';
 
-// Create a context for the translation state
-const TranslationContext = createContext<{
+interface TranslationContextType {
   preferredLanguage: Language;
   changeLanguage: (language: Language) => void;
   isSpanish: boolean;
@@ -18,7 +17,9 @@ const TranslationContext = createContext<{
   isChinese: boolean;
   isArabic: boolean;
   getTranslatedText: (key: string) => string;
-}>({
+}
+
+const TranslationContext = createContext<TranslationContextType>({
   preferredLanguage: 'English',
   changeLanguage: () => {},
   isSpanish: false,
@@ -33,30 +34,23 @@ const TranslationContext = createContext<{
   getTranslatedText: () => '',
 });
 
-// Create the TranslationProvider component
 export const TranslationProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [preferredLanguage, setPreferredLanguage] = useState<Language>('English');
   
   useEffect(() => {
-    // Load the saved language preference if available
     const savedLanguage = localStorage.getItem('preferredLanguage') as Language | null;
     if (savedLanguage) {
       setPreferredLanguage(savedLanguage);
     }
   }, []);
 
-  // Function to change language
   const changeLanguage = (language: Language) => {
     localStorage.setItem('preferredLanguage', language);
     setPreferredLanguage(language);
-    
-    // Dispatch a custom event to notify other components of language change
     window.dispatchEvent(new Event('languageChange'));
-    
     console.log(`Language changed to: ${language}`);
   };
   
-  // Helper functions to check current language
   const isSpanish = preferredLanguage === 'Español';
   const isPortuguese = preferredLanguage === 'Português';
   const isRussian = preferredLanguage === 'Русский';
@@ -67,11 +61,10 @@ export const TranslationProvider: React.FC<{ children: React.ReactNode }> = ({ c
   const isChinese = preferredLanguage === '中文';
   const isArabic = preferredLanguage === 'العربية';
   
-  // Function to get translated text based on key
   const getTranslatedText = (key: string) => {
     if (!translations[key]) {
       console.warn(`Translation key not found: ${key}`);
-      return key; // Return the key itself as fallback
+      return key;
     }
     
     if (translations[key][preferredLanguage]) {
@@ -82,8 +75,7 @@ export const TranslationProvider: React.FC<{ children: React.ReactNode }> = ({ c
     }
   };
 
-  // Provide the translation context value
-  const contextValue = {
+  const contextValue: TranslationContextType = {
     preferredLanguage,
     changeLanguage,
     isSpanish,
@@ -105,7 +97,6 @@ export const TranslationProvider: React.FC<{ children: React.ReactNode }> = ({ c
   );
 };
 
-// Custom hook to use the translation context
 const useTranslation = () => useContext(TranslationContext);
 
 export default useTranslation;

@@ -1,61 +1,60 @@
-
 import React from "react";
 import { Button } from "@/components/ui/button";
 import { ArrowRight, Languages } from "lucide-react";
 import useTranslation from "@/hooks/useTranslation";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 
 interface IntroScreenProps {
   onContinue: () => void;
 }
 
-// Define all supported languages
 type SupportedLanguage = 'English' | 'Español' | 'Português' | 'Русский' | 'Deutsch' | 'हिन्दी' | 'Français' | 'Filipino' | '中文' | 'العربية';
 
 const IntroScreen: React.FC<IntroScreenProps> = ({ onContinue }) => {
   const { preferredLanguage, changeLanguage, getTranslatedText } = useTranslation();
   
-  // Helper function to render language buttons
-  const renderLanguageButton = (language: SupportedLanguage) => {
-    return (
-      <Button
-        key={language}
-        size="sm"
-        variant={preferredLanguage === language ? "gold" : "ghost"}
-        className={`text-xs py-1 px-3 h-8 rounded-full transition-all duration-300 ${
-          preferredLanguage === language 
-            ? "bg-[#B87333] text-white shadow-[0_0_10px_rgba(184,115,51,0.5)]" 
-            : "text-white/70 hover:text-white hover:bg-[#B87333]/20 border border-[#B87333]/30"
-        }`}
-        onClick={() => changeLanguage(language)}
-      >
-        <Languages className="h-4 w-4 mr-1.5" />
-        {language}
-      </Button>
-    );
-  };
-  
+  const languages: SupportedLanguage[] = [
+    'English',
+    'Español',
+    'Português',
+    'Русский',
+    'Deutsch',
+    'हिन्दी',
+    'Français',
+    'Filipino',
+    '中文',
+    'العربية'
+  ];
+
   return (
     <div className="min-h-screen flex flex-col items-center justify-center bg-[#1a1a1f] overflow-hidden relative">
       <div className="floating-bg"></div>
       
-      {/* Language selection options - grouped into rows for better layout */}
+      {/* Language selection dropdown */}
       <div className="absolute top-6 right-6 z-20">
-        <div className="flex flex-wrap gap-2 justify-end mb-2">
-          {/* First row of languages */}
-          {renderLanguageButton('English')}
-          {renderLanguageButton('Español')}
-          {renderLanguageButton('Português')}
-          {renderLanguageButton('Français')}
-          {renderLanguageButton('Deutsch')}
-        </div>
-        <div className="flex flex-wrap gap-2 justify-end">
-          {/* Second row of languages */}
-          {renderLanguageButton('Русский')}
-          {renderLanguageButton('हिन्दी')}
-          {renderLanguageButton('Filipino')}
-          {renderLanguageButton('中文')}
-          {renderLanguageButton('العربية')}
-        </div>
+        <Select value={preferredLanguage} onValueChange={(value: SupportedLanguage) => changeLanguage(value)}>
+          <SelectTrigger className="w-[180px] bg-[#B87333]/10 border-[#B87333]/30 text-white hover:bg-[#B87333]/20 hover:border-[#B87333]/50">
+            <Languages className="h-4 w-4 mr-2" />
+            <SelectValue placeholder="Select Language" />
+          </SelectTrigger>
+          <SelectContent className="bg-[#1a1a1f] border-[#B87333]/30">
+            {languages.map((lang) => (
+              <SelectItem
+                key={lang}
+                value={lang}
+                className="text-white hover:bg-[#B87333]/20 focus:bg-[#B87333]/20 focus:text-white"
+              >
+                {lang}
+              </SelectItem>
+            ))}
+          </SelectContent>
+        </Select>
       </div>
       
       <div className="text-center max-w-2xl mx-auto px-4 z-10">
