@@ -386,8 +386,159 @@ const translations: Record<string, Record<string, string>> = {
     'العربية': 'أدوات تقييم للقلق والاكتئاب والاضطرابات ذات الصلة.'
   },
   
-  // Add hundreds more translations here for all text in the app
-  // This is just a sample implementation
-};
-
-export default translations;
+  // Law enforcement specific translations
+  'lawEnforcement': {
+    'English': 'Law Enforcement',
+    'Español': 'Fuerzas de Seguridad',
+    'Português': 'Aplicação da Lei',
+    'Русский': 'Правоохранительные Органы',
+    'Deutsch': 'Strafverfolgung',
+    'हिन्दी': 'कानून प्रवर्तन',
+    'Français': 'Application de la Loi',
+    'Filipino': 'Pagpapatupad ng Batas',
+    '中文': '执法人员',
+    'العربية': 'تطبيق القانون'
+  },
+  'lawEnforcementDescription': {
+    'English': 'A dedicated space for the mental wellbeing of police officers, security personnel, and law enforcement staff.',
+    'Español': 'Un espacio dedicado al bienestar mental de oficiales de policía, agentes de seguridad y personal de fuerzas del orden.',
+    'Português': 'Um espaço dedicado ao bem-estar mental de policiais, agentes de segurança e pessoal de aplicação da lei.',
+    'Русский': 'Пространство, посвященное психическому благополучию полицейских, сотрудников службы безопасности и правоохранительных органов.',
+    'Deutsch': 'Ein spezieller Bereich für das psychische Wohlbefinden von Polizeibeamten, Sicherheitspersonal und Strafverfolgungspersonal.',
+    'हिन्दी': 'पुलिस अधिकारियों, सुरक्षा कर्मियों और कानून प्रवर्तन कर्मचारियों के मानसिक कल्याण के लिए एक समर्पित स्थान।',
+    'Français': 'Un espace dédié au bien-être mental des policiers, du personnel de sécurité et du personnel chargé de l\'application de la loi.',
+    'Filipino': 'Isang nakalaang espasyo para sa mental na kagalingan ng mga pulis, kawani ng seguridad, at kawani ng pagpapatupad ng batas.',
+    '中文': '为警察、安保人员和执法人员精神健康提供的专属空间。',
+    'العربية': 'مساحة مخصصة للرفاهية النفسية لضباط الشرطة وأفراد الأمن وموظفي إنفاذ القانون.'
+  },
+  'lawEnforcementStats': {
+    'English': 'Data on occupational stress, trauma, and mental health challenges in law enforcement.',
+    'Español': 'Datos sobre el estrés ocupacional, trauma y desafíos de salud mental en las fuerzas del orden.',
+    'Português': 'Dados sobre estresse ocupacional, trauma e desafios de saúde mental na aplicação da lei.',
+    'Русский': 'Данные о профессиональном стрессе, травмах и проблемах психического здоровья в правоохранительных органах.',
+    'Deutsch': 'Daten zu beruflichem Stress, Trauma und psychischen Herausforderungen im Strafverfolgungsbereich.',
+    'हिन्दी': 'कानून प्रवर्तन में व्यावसायिक तनाव, आघात और मानसिक स्वास्थ्य चुनौतियों पर आंकड़े।',
+    'Français': 'Données sur le stress professionnel, les traumatismes et les défis de santé mentale dans l\'application de la loi.',
+    'Filipino': 'Data sa occupational stress, trauma, at mga hamon sa kalusugang pangkaisipan sa pagpapatupad ng batas.',
+    '中文': '关于执法中职业压力、创伤和心理健康挑战的数据。',
+    'العربية': 'بيانات عن الإجهاد المهني والصدمات وتحديات الصحة النفسية في إنفاذ القانون.'
+  },
+  'lawEnforcementResources': {
+    'English': 'Confidential resources for stress management, trauma, and resilience tailored for law enforcement personnel.',
+    'Español': 'Recursos confidenciales para el manejo del estrés, trauma y resiliencia adaptados para personal de seguridad.',
+    'Português': 'Recursos confidenciais para gestão de estresse, trauma e resiliência adaptados para pessoal de aplicação da lei.',
+    'Русский': 'Конфиденциальные ресурсы для управления стрессом, травмой и устойчивостью, адаптированные для сотрудников правоохранительных органов.',
+    'Deutsch': 'Vertrauliche Ressourcen für Stressbewältigung, Trauma und Resilienz, zugeschnitten auf Strafverfolgungspersonal.',
+    'हिन्दी': 'कानून प्रवर्तन कर्मियों के लिए अनुकूलित तनाव प्रबंधन, आघात और लचीलेपन के लिए गोपनीय संसाधन।',
+    'Français': 'Ressources confidentielles pour la gestion du stress, des traumatismes et de la résilience adaptées au personnel chargé de l\'application de la loi.',
+    'Filipino': 'Mga kumpidensyal na mapagkukunan para sa pamamahala ng stress, trauma, at katatagan na angkop para sa mga tauhan ng pagpapatupad ng batas.',
+    '中文': '为执法人员量身定制的压力管理、创伤和恢复力的机密资源。',
+    'العربية': 'موارد سرية لإدارة التوتر والصدمات والمرونة مصممة خصيصًا لموظفي إنفاذ القانون.'
+  },
+  'lawEnforcementWorkshops': {
+    'English': 'Sessions on operational stress management, police traumatology, and coping skills.',
+    'Español': 'Sesiones sobre manejo del estrés operativo, traumatología policial y habilidades de afrontamiento.',
+    'Português': 'Sessões sobre gerenciamento de estresse operacional, traumatologia policial e habilidades de enfrentamento.',
+    'Русский': 'Сессии по управлению оперативным стрессом, полицейской травматологии и навыкам выживания.',
+    'Deutsch': 'Sitzungen zu operativem Stressmanagement, Polizeitraumatologie und Bewältigungsfähigkeiten.',
+    'हिन्दी': 'परिचालन तनाव प्रबंधन, पुलिस आघात विज्ञान और सामना करने के कौशल पर सत्र।',
+    'Français': 'Sessions sur la gestion du stress opérationnel, la traumatologie policière et les compétences d\'adaptation.',
+    'Filipino': 'Mga sesyon sa pamamahala ng operational stress, police traumatology, at mga kasanayan sa pagkaya.',
+    '中文': '关于操作压力管理、警察创伤学和应对技能的课程。',
+    'العربية': 'جلسات حول إدارة الإجهاد التشغيلي، وعلم الصدمات الشرطي، ومهارات التكيف.'
+  },
+  'lawEnforcementAssessments': {
+    'English': 'Safe, confidential self-assessment tools for operational stress and mental health.',
+    'Español': 'Herramientas de autoevaluación seguras y confidenciales para el estrés operacional y la salud mental.',
+    'Português': 'Ferramentas de autoavaliação seguras e confidenciais para estresse operacional e saúde mental.',
+    'Русский': 'Безопасные, конфиденциальные инструменты самооценки для оперативного стресса и психического здоровья.',
+    'Deutsch': 'Sichere, vertrauliche Selbstbewertungstools für operativen Stress und psychische Gesundheit.',
+    'हिन्दी': 'परिचालन तनाव और मानसिक स्वास्थ्य के लिए सुरक्षित, गोपनीय स्व-मूल्यांकन उपकरण।',
+    'Français': 'Outils d\'auto-évaluation sûrs et confidentiels pour le stress opérationnel et la santé mentale.',
+    'Filipino': 'Ligtas, kumpidensyal na mga tool sa sariling pagsusuri para sa operational stress at kalusugang pangkaisipan.',
+    '中文': '针对操作压力和心理健康的安全、保密的自我评估工具。',
+    'العربية': 'أدوات تقييم ذاتي آمنة وسرية للإجهاد التشغيلي والصحة النفسية.'
+  },
+  'loadingLawEnforcementResources': {
+    'English': 'Loading law enforcement resources',
+    'Español': 'Cargando recursos para fuerzas de seguridad',
+    'Português': 'Carregando recursos de aplicação da lei',
+    'Русский': 'Загрузка ресурсов для правоохранительных органов',
+    'Deutsch': 'Lade Ressourcen für Strafverfolgung',
+    'हिन्दी': 'कानून प्रवर्तन संसाधन लोड हो रहे हैं',
+    'Français': 'Chargement des ressources pour l\'application de la loi',
+    'Filipino': 'Naglo-load ng mga mapagkukunan para sa pagpapatupad ng batas',
+    '中文': '加载执法资源',
+    'العربية': 'تحميل موارد إنفاذ القانون'
+  },
+  
+  // Henry Dialog translations
+  'meetHenry': {
+    'English': 'Meet Henry',
+    'Español': 'Conoce a Henry',
+    'Português': 'Conheça Henry',
+    'Русский': 'Знакомьтесь, Генри',
+    'Deutsch': 'Treffen Sie Henry',
+    'हिन्दी': 'हेनरी से मिलें',
+    'Français': 'Rencontrez Henry',
+    'Filipino': 'Makilala si Henry',
+    '中文': '认识亨利',
+    'العربية': 'تعرف على هنري'
+  },
+  'henryIntroSubtitle': {
+    'English': 'Your friendly guide on your mental wellbeing journey',
+    'Español': 'Tu guía amigable en tu viaje de bienestar mental',
+    'Português': 'Seu guia amigável em sua jornada de bem-estar mental',
+    'Русский': 'Ваш дружелюбный проводник в путешествии к психическому благополучию',
+    'Deutsch': 'Ihr freundlicher Begleiter auf Ihrer Reise zum psychischen Wohlbefinden',
+    'हिन्दी': 'आपकी मानसिक कल्याण यात्रा पर आपका मित्रवत मार्गदर्शक',
+    'Français': 'Votre guide amical dans votre voyage de bien-être mental',
+    'Filipino': 'Ang iyong kaibigan na gabay sa iyong paglalakbay sa mental wellbeing',
+    '中文': '您心理健康之旅的友好向导',
+    'العربية': 'دليلك الصديق في رحلة العافية النفسية'
+  },
+  'henryGreeting': {
+    'English': 'Hey there! I\'m Henry, your personal companion on this journey to better mental health. Think of me as that supportive friend who\'s always here when you need someone to talk to.',
+    'Español': '¡Hola! Soy Henry, tu compañero personal en este viaje hacia una mejor salud mental. Piensa en mí como ese amigo de apoyo que siempre está aquí cuando necesitas hablar con alguien.',
+    'Português': 'Olá! Eu sou Henry, seu companheiro pessoal nesta jornada para uma melhor saúde mental. Pense em mim como aquele amigo que sempre está aqui quando você precisa conversar com alguém.',
+    'Русский': 'Привет! Я Генри, ваш личный спутник в этом путешествии к лучшему психическому здоровью. Думайте обо мне как о поддерживающем друге, который всегда рядом, когда вам нужно с кем-то поговорить.',
+    'Deutsch': 'Hallo! Ich bin Henry, Ihr persönlicher Begleiter auf dieser Reise zu besserer psychischer Gesundheit. Denken Sie an mich als diesen unterstützenden Freund, der immer da ist, wenn Sie jemanden zum Reden brauchen.',
+    'हिन्दी': 'नमस्ते! मैं हेनरी हूँ, बेहतर मानसिक स्वास्थ्य की इस यात्रा पर आपका व्यक्तिगत साथी। मुझे उस सहायक मित्र के रूप में सोचें जो हमेशा यहां है जब आपको किसी से बात करने की आवश्यकता होती है।',
+    'Français': 'Salut! Je suis Henry, votre compagnon personnel dans ce voyage vers une meilleure santé mentale. Pensez à moi comme cet ami de soutien qui est toujours là quand vous avez besoin de parler à quelqu\'un.',
+    'Filipino': 'Kumusta! Ako si Henry, ang iyong personal na kasama sa paglalakbay na ito tungo sa mas mahusay na kalusugang pangkaisipan. Isipin mo ako bilang kaibigan na palaging nandito kapag kailangan mo ng makakausap.',
+    '中文': '你好！我是亨利，在这段通往更好心理健康的旅程中，我是你的私人伙伴。把我看作是那个在你需要倾诉时一直在你身边的支持性朋友。',
+    'العربية': 'مرحبًا! أنا هنري، رفيقك الشخصي في هذه الرحلة نحو صحة نفسية أفضل. فكر في أنني ذلك الصديق الداعم الذي يتواجد دائمًا عندما تحتاج إلى التحدث مع شخص ما.'
+  },
+  'aboutHenry': {
+    'English': 'A little about me',
+    'Español': 'Un poco sobre mí',
+    'Português': 'Um pouco sobre mim',
+    'Русский': 'Немного обо мне',
+    'Deutsch': 'Ein wenig über mich',
+    'हिन्दी': 'मेरे बारे में थोड़ा',
+    'Français': 'Un peu à propos de moi',
+    'Filipino': 'Kaunti tungkol sa akin',
+    '中文': '关于我的一点介绍',
+    'العربية': 'قليلًا عني'
+  },
+  'close': {
+    'English': 'Close',
+    'Español': 'Cerrar',
+    'Português': 'Fechar',
+    'Русский': 'Закрыть',
+    'Deutsch': 'Schließen',
+    'हिन्दी': 'बंद करें',
+    'Français': 'Fermer',
+    'Filipino': 'Isara',
+    '中文': '关闭',
+    'العربية': 'إغلاق'
+  },
+  'henryH': {
+    'English': 'opeful Horizons: Embrace a future filled with possibilities and the belief that change is achievable.',
+    'Español': 'orizontes Esperanzadores: Abraza un futuro lleno de posibilidades y la creencia de que el cambio es alcanzable.',
+    'Português': 'orizontes Esperançosos: Abrace um futuro cheio de possibilidades e a crença de que a mudança é alcançável.',
+    'Русский': 'оризонты Надежды: Обнимите будущее, полное возможностей, и веру в то, что изменения достижимы.',
+    'Deutsch': 'offnungsvolle Horizonte: Umfassen Sie eine Zukunft voller Möglichkeiten und den Glauben, dass Veränderung möglich ist.',
+    'हिन्दी': 'ोपफुल होराइजन्स: संभावनाओं से भरे भविष्य और इस विश्वास को अपनाएं कि परिवर्तन संभव है।',
+    'Français': 'orizons Pleins d\'Espoir : Embrassez un avenir rempli de possibilités et la conviction que le changement est réalisable.',
+    'Filipino': 'opeful na Horizons: Yakapin ang isang hinaharap na puno ng mga posibilidad at ang

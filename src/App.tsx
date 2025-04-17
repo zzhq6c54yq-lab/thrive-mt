@@ -1,3 +1,4 @@
+
 import React from "react";
 import { Routes, Route, Navigate } from "react-router-dom";
 import Index from "@/pages/Index";
@@ -71,10 +72,11 @@ import PoliceWelcome from "@/pages/PoliceWelcome";
 import PolicePortal from "@/pages/PolicePortal";
 
 import LanguageDirection from "@/components/LanguageDirection";
+import { TranslationProvider } from "@/hooks/useTranslation";
 
 function App() {
   return (
-    <>
+    <TranslationProvider>
       <LanguageDirection />
       <Routes>
         <Route path="/" element={<Index />} />
@@ -175,7 +177,7 @@ function App() {
         
         <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
-    </>
+    </TranslationProvider>
   );
 }
 

@@ -1,10 +1,40 @@
 
-import { useEffect, useState } from 'react';
+import { useState, useEffect, createContext, useContext } from 'react';
 import translations from '../data/translations';
 
 type Language = 'English' | 'Español' | 'Português' | 'Русский' | 'Deutsch' | 'हिन्दी' | 'Français' | 'Filipino' | '中文' | 'العربية';
 
-const useTranslation = () => {
+// Create a context for the translation state
+const TranslationContext = createContext<{
+  preferredLanguage: Language;
+  changeLanguage: (language: Language) => void;
+  isSpanish: boolean;
+  isPortuguese: boolean;
+  isRussian: boolean;
+  isGerman: boolean;
+  isHindi: boolean;
+  isFrench: boolean;
+  isFilipino: boolean;
+  isChinese: boolean;
+  isArabic: boolean;
+  getTranslatedText: (key: string) => string;
+}>({
+  preferredLanguage: 'English',
+  changeLanguage: () => {},
+  isSpanish: false,
+  isPortuguese: false,
+  isRussian: false,
+  isGerman: false,
+  isHindi: false,
+  isFrench: false,
+  isFilipino: false,
+  isChinese: false,
+  isArabic: false,
+  getTranslatedText: () => '',
+});
+
+// Create the TranslationProvider component
+export const TranslationProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [preferredLanguage, setPreferredLanguage] = useState<Language>('English');
   
   useEffect(() => {
@@ -51,8 +81,9 @@ const useTranslation = () => {
       return translations[key]['English'] || key;
     }
   };
-  
-  return {
+
+  // Provide the translation context value
+  const contextValue = {
     preferredLanguage,
     changeLanguage,
     isSpanish,
@@ -60,12 +91,21 @@ const useTranslation = () => {
     isRussian,
     isGerman,
     isHindi,
-    isFrench, 
+    isFrench,
     isFilipino,
     isChinese,
     isArabic,
     getTranslatedText
   };
+
+  return (
+    <TranslationContext.Provider value={contextValue}>
+      {children}
+    </TranslationContext.Provider>
+  );
 };
+
+// Custom hook to use the translation context
+const useTranslation = () => useContext(TranslationContext);
 
 export default useTranslation;
