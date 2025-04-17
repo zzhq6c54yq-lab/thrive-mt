@@ -61,7 +61,7 @@ export const TranslationProvider: React.FC<{ children: React.ReactNode }> = ({ c
   const isChinese = preferredLanguage === '中文';
   const isArabic = preferredLanguage === 'العربية';
   
-  const getTranslatedText = (key: string) => {
+  const getTranslatedText = (key: string): string => {
     if (!translations[key]) {
       console.warn(`Translation key not found: ${key}`);
       return key;
