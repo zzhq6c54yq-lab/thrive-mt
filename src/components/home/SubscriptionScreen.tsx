@@ -1,3 +1,4 @@
+
 import React, { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { ArrowLeft, ArrowRight, Package, Trophy, Gem, Check } from "lucide-react";
@@ -28,7 +29,7 @@ const SubscriptionScreen: React.FC<SubscriptionScreenProps> = ({
   onPrevious,
   onSkip,
 }) => {
-  const [billingCycle, setBillingCycle<'monthly' | 'yearly'>('monthly');
+  const [billingCycle, setBillingCycle] = useState<'monthly' | 'yearly'>('monthly');
   const { getTranslatedText } = useTranslation();
   
   const getDiscountedPrice = (price: number) => {
