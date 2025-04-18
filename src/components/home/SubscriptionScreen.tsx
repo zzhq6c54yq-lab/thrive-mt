@@ -1,5 +1,4 @@
-
-import React from "react";
+import React, { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { ArrowLeft, ArrowRight, Package, Trophy, Gem, Check } from "lucide-react";
 import useTranslation from "@/hooks/useTranslation";
@@ -29,39 +28,31 @@ const SubscriptionScreen: React.FC<SubscriptionScreenProps> = ({
   onPrevious,
   onSkip,
 }) => {
-  const { isSpanish, getTranslatedText } = useTranslation();
+  const [billingCycle, setBillingCycle<'monthly' | 'yearly'>('monthly');
+  const { getTranslatedText } = useTranslation();
   
-  // Translations
-  const translations = {
-    title: isSpanish ? "Elige Tu Plan" : "Choose Your Plan",
-    subtitle: isSpanish ? "Selecciona la suscripción que mejor se adapte a tus necesidades de bienestar mental" : "Select the subscription that best fits your mental wellness needs",
-    basic: {
-      title: isSpanish ? "Básico" : "Basic",
-      price: isSpanish ? "Gratis" : "Free",
-      description: isSpanish ? "Comienza tu viaje de salud mental con funciones esenciales" : "Start your mental health journey with essential features",
-      features: isSpanish ? [
-        "Acceso a herramientas esenciales de bienestar mental",
-        "Únete a reuniones y clases virtuales",
-        "Acceso a patrocinador digital",
-        "Acceso limitado a talleres"
-      ] : [
+  const getDiscountedPrice = (price: number) => {
+    if (billingCycle === 'yearly') {
+      return (price * 0.8 * 12).toFixed(2); // 20% discount for yearly
+    }
+    return price;
+  };
+
+  const plans = [
+    {
+      name: 'Basic',
+      monthlyPrice: 0,
+      features: [
         "Access to essential mental wellness tools",
         "Join virtual meetings and classes",
         "Digital sponsor access",
         "Limited workshop access"
       ]
     },
-    gold: {
-      title: isSpanish ? "Oro" : "Gold",
-      price: isSpanish ? "$5/mes" : "$5/month",
-      description: isSpanish ? "Funciones mejoradas para una experiencia más personalizada" : "Enhanced features for a more personalized experience",
-      features: isSpanish ? [
-        "5% de bonificación en todos los créditos de copago",
-        "Acceso a todas las herramientas de bienestar mental",
-        "Biblioteca de talleres ampliada",
-        "Acceso prioritario a reuniones virtuales",
-        "Plan de bienestar personalizado"
-      ] : [
+    {
+      name: 'Gold',
+      monthlyPrice: 5,
+      features: [
         "5% bonus on all co-pay credits",
         "Access to all mental wellness tools",
         "Extended workshop library",
@@ -69,18 +60,10 @@ const SubscriptionScreen: React.FC<SubscriptionScreenProps> = ({
         "Personalized wellness plan"
       ]
     },
-    platinum: {
-      title: isSpanish ? "Platino" : "Platinum",
-      price: isSpanish ? "$10/mes" : "$10/month",
-      description: isSpanish ? "Nuestro paquete de salud mental más completo" : "Our most comprehensive mental health package",
-      features: isSpanish ? [
-        "10% de bonificación en todos los créditos de copago",
-        "Acceso ilimitado a todas las funciones de la plataforma",
-        "Contenido premium de talleres",
-        "Acceso anticipado a nuevas funciones",
-        "Análisis e información avanzados",
-        "Hoja de ruta de bienestar personalizada"
-      ] : [
+    {
+      name: 'Platinum',
+      monthlyPrice: 10,
+      features: [
         "10% bonus on all co-pay credits",
         "Unlimited access to all platform features",
         "Premium workshop content",
@@ -88,124 +71,97 @@ const SubscriptionScreen: React.FC<SubscriptionScreenProps> = ({
         "Advanced analytics and insights",
         "Personalized wellness roadmap"
       ]
-    },
-    recommend: isSpanish ? "Recomendado" : "Recommended",
-    select: isSpanish ? "Seleccionar Plan" : "Select Plan",
-    selected: isSpanish ? "Seleccionado" : "Selected",
-    previous: isSpanish ? "Anterior" : "Previous",
-    continue: isSpanish ? "Continuar" : "Continue",
-    skip: isSpanish ? "Omitir por Ahora" : "Skip for Now"
-  };
-  
-  const subscriptionPlans: SubscriptionPlan[] = [
-    {
-      title: translations.basic.title,
-      price: translations.basic.price,
-      description: translations.basic.description,
-      features: translations.basic.features,
-      icon: Package,
-      color: "bg-gray-100 text-gray-800 border-gray-200",
-      recommended: false
-    },
-    {
-      title: translations.gold.title,
-      price: translations.gold.price,
-      description: translations.gold.description,
-      features: translations.gold.features,
-      icon: Trophy,
-      color: "bg-[#FEF7CD] text-[#B87333] border-[#B87333]/30",
-      recommended: false
-    },
-    {
-      title: translations.platinum.title,
-      price: translations.platinum.price,
-      description: translations.platinum.description,
-      features: translations.platinum.features,
-      icon: Gem,
-      color: "bg-[#E5DEFF] text-[#7E69AB] border-[#7E69AB]/30",
-      recommended: true
     }
   ];
 
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center bg-gradient-to-b from-[#1a1a1f] via-[#242432] to-[#272730] text-white animate-fade-in py-10 relative">
-      {/* Background pattern overlay */}
-      <div className="absolute inset-0 bg-[url('data:image/svg+xml;utf8,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%2220%22 height=%2220%22 viewBox=%220 0 20 20%22><circle cx=%222%22 cy=%222%22 r=%221%22 fill=%22%23B87333%22 fill-opacity=%220.05%22/></svg>')] opacity-20"></div>
-      
-      {/* Decorative elements */}
-      <div className="absolute top-0 right-0 w-80 h-80 bg-gradient-to-br from-[#B87333]/20 to-transparent rounded-full blur-3xl -z-10"></div>
-      <div className="absolute bottom-0 left-0 w-80 h-80 bg-gradient-to-tr from-[#D946EF]/20 to-transparent rounded-full blur-3xl -z-10"></div>
-      
-      <div className="max-w-5xl w-full mx-auto px-4 z-10">
-        <div className="text-center mb-10">
-          <h2 className="text-3xl md:text-4xl font-bold mb-3 text-transparent bg-clip-text bg-gradient-to-r from-[#B87333] to-[#E5C5A1]">{translations.title}</h2>
-          <p className="text-xl text-gray-300">{translations.subtitle}</p>
-        </div>
-        
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
-          {subscriptionPlans.map((plan) => (
-            <div 
-              key={plan.title}
-              className={`${plan.color} rounded-xl overflow-hidden transition-all duration-300 transform ${selectedPlan === plan.title ? 'scale-105 ring-2 ring-[#B87333]' : 'hover:scale-102'} relative`}
-              onClick={() => onPlanSelect(plan.title)}
+    <div className="min-h-screen flex flex-col items-center justify-center bg-gradient-to-b from-[#1a1a1f] via-[#242432] to-[#272730] text-white animate-fade-in py-10">
+      <div className="max-w-6xl w-full mx-auto px-4">
+        <div className="text-center mb-8">
+          <h2 className="text-3xl font-bold mb-4">{getTranslatedText('choosePlan')}</h2>
+          <div className="flex justify-center gap-4 mb-8">
+            <Button
+              variant={billingCycle === 'monthly' ? "default" : "outline"}
+              onClick={() => setBillingCycle('monthly')}
+              className={billingCycle === 'monthly' ? 'bg-[#B87333]' : ''}
             >
-              <div className="p-6">
-                <div className="flex justify-between items-start mb-4">
-                  <div>
-                    <h3 className="text-2xl font-bold">{plan.title}</h3>
-                    <p className="text-xl font-semibold">{plan.price}</p>
+              {getTranslatedText('monthly')}
+            </Button>
+            <Button
+              variant={billingCycle === 'yearly' ? "default" : "outline"}
+              onClick={() => setBillingCycle('yearly')}
+              className={billingCycle === 'yearly' ? 'bg-[#B87333]' : ''}
+            >
+              {getTranslatedText('yearly')} - 20% {getTranslatedText('off')}
+            </Button>
+          </div>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
+          {plans.map((plan) => (
+            <div
+              key={plan.name}
+              className={`bg-white/10 rounded-xl p-6 backdrop-blur-sm border-2 transition-all duration-300 ${
+                selectedPlan === plan.name
+                  ? 'border-[#B87333] transform scale-105'
+                  : 'border-transparent hover:border-[#B87333]/50'
+              }`}
+            >
+              <div className="mb-4">
+                <h3 className="text-2xl font-bold">{plan.name}</h3>
+                <div className="mt-2">
+                  {billingCycle === 'monthly' ? (
+                    <p className="text-3xl font-bold">
+                      ${getDiscountedPrice(plan.monthlyPrice)}/mo
+                    </p>
+                  ) : (
+                    <>
+                      <p className="text-3xl font-bold">
+                        ${getDiscountedPrice(plan.monthlyPrice)}/year
+                      </p>
+                      <p className="text-sm text-[#B87333]">
+                        {getTranslatedText('save20')}
+                      </p>
+                    </>
+                  )}
+                </div>
+              </div>
+              
+              <div className="space-y-3 mb-6">
+                {plan.features.map((feature, index) => (
+                  <div key={index} className="flex items-start">
+                    <Check className="h-5 w-5 text-[#B87333] mr-2 flex-shrink-0" />
+                    <span className="text-sm">{feature}</span>
                   </div>
-                  <plan.icon className="h-8 w-8" />
-                </div>
-                <p className="mb-4 text-sm">{plan.description}</p>
-                <ul className="space-y-2">
-                  {plan.features.map((feature, index) => (
-                    <li key={index} className="flex items-start">
-                      <Check className="h-5 w-5 mr-2 flex-shrink-0 mt-0.5" />
-                      <span className="text-sm">{feature}</span>
-                    </li>
-                  ))}
-                </ul>
+                ))}
               </div>
-              <div className={`p-4 border-t ${plan.recommended ? 'bg-[#B87333]/20 border-[#B87333]/30' : 'bg-black/5 border-gray-700/20'}`}>
-                <Button 
-                  className={`w-full ${selectedPlan === plan.title ? 'bg-[#B87333] hover:bg-[#B87333]/90' : 'bg-black/30 hover:bg-black/40'}`}
-                  onClick={() => onPlanSelect(plan.title)}
-                >
-                  {selectedPlan === plan.title ? translations.selected : translations.select}
-                </Button>
-              </div>
-              {plan.recommended && (
-                <div className="absolute top-0 right-0 bg-[#B87333] text-white text-xs font-bold px-3 py-1 rounded-bl-lg">
-                  {translations.recommend}
-                </div>
-              )}
+
+              <Button
+                className={`w-full ${
+                  selectedPlan === plan.name
+                    ? 'bg-[#B87333] hover:bg-[#B87333]/90'
+                    : 'bg-white/20 hover:bg-white/30'
+                }`}
+                onClick={() => onPlanSelect(plan.name)}
+              >
+                {selectedPlan === plan.name ? getTranslatedText('selected') : getTranslatedText('select')}
+              </Button>
             </div>
           ))}
         </div>
-        
-        <div className="flex justify-center space-x-4 mt-8">
-          <Button 
-            variant="outline"
-            className="border-[#B87333]/50 text-[#B87333] hover:bg-[#B87333]/10 flex items-center gap-2"
-            onClick={onPrevious}
-          >
-            <ArrowLeft className="h-4 w-4" />
-            {translations.previous}
+
+        <div className="flex justify-center space-x-4">
+          <Button variant="outline" onClick={onPrevious}>
+            {getTranslatedText('previous')}
           </Button>
           <Button 
-            className="bg-gradient-to-r from-[#B87333] to-[#E5C5A1] hover:from-[#A56625] hover:to-[#D4B48F] text-white flex items-center gap-2"
+            className="bg-[#B87333] hover:bg-[#B87333]/90"
             onClick={onContinue}
           >
-            {translations.continue}
-            <ArrowRight className="h-4 w-4" />
+            {getTranslatedText('continue')}
           </Button>
-          <Button 
-            variant="ghost"
-            className="text-white/80 hover:text-white hover:bg-white/10"
-            onClick={onSkip}
-          >
-            {translations.skip}
+          <Button variant="ghost" onClick={onSkip}>
+            {getTranslatedText('skipForNow')}
           </Button>
         </div>
       </div>

@@ -1,4 +1,3 @@
-
 import React, { useState } from "react";
 import DailyWellnessChallenges from "@/components/dashboard/DailyWellnessChallenges";
 import SpecializedPrograms from "@/components/dashboard/SpecializedPrograms";
@@ -18,6 +17,7 @@ import {
 import { Calendar, HelpCircle, ChevronUp, ChevronDown, Sparkles, Award, Users, Heart } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { Button } from "@/components/ui/button";
+import useTranslation from "@/hooks/useTranslation";
 
 interface DashboardContentProps {
   navigate: NavigateFunction;
@@ -38,6 +38,7 @@ const DashboardContent: React.FC<DashboardContentProps> = ({
   const preferredLanguage = localStorage.getItem('preferredLanguage') || 'English';
   const isSpanish = preferredLanguage === 'Español';
   const { toast } = useToast();
+  const { getTranslatedText } = useTranslation();
   
   // Translations
   const translations = {
@@ -74,6 +75,30 @@ const DashboardContent: React.FC<DashboardContentProps> = ({
 
   return (
     <div className="container mx-auto max-w-6xl px-4 sm:px-6 py-6 relative z-10">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+        <Button
+          variant="outline"
+          className="bg-white/10 hover:bg-white/20 border-amber-200/20"
+          onClick={() => handleFeatureClick('/barter-system')}
+        >
+          {getTranslatedText('barterSystem')}
+        </Button>
+        <Button
+          variant="outline"
+          className="bg-white/10 hover:bg-white/20 border-amber-200/20"
+          onClick={() => handleFeatureClick('/upgrade-plan')}
+        >
+          {getTranslatedText('upgradePlan')}
+        </Button>
+        <Button
+          variant="outline"
+          className="bg-white/10 hover:bg-white/20 border-amber-200/20"
+          onClick={() => handleFeatureClick('/credit-system')}
+        >
+          {getTranslatedText('creditSystem')}
+        </Button>
+      </div>
+      
       <Accordion type="multiple" defaultValue={["dailyChallenges", "specializedPrograms", "appointments", "quizzes", "workshops", "keyFeatures", "gratitudeVisualizer"]} className="space-y-6">
         {/* Daily Wellness Challenges */}
         <AccordionItem value="dailyChallenges" className="border-none">
