@@ -1,4 +1,3 @@
-
 // Main translations system for the entire application
 const translations: Record<string, Record<string, string>> = {
   // Common UI elements
@@ -6,49 +5,15 @@ const translations: Record<string, Record<string, string>> = {
     'English': 'Back',
     'Español': 'Atrás',
     'Português': 'Voltar',
-    'Русский': 'Назад',
-    'Deutsch': 'Zurück',
-    'हिन्दी': 'वापस',
     'Français': 'Retour',
-    'Filipino': 'Bumalik',
-    '中文': '返回',
-    'العربية': 'رجوع'
+    'Filipino': 'Bumalik'
   },
   'continue': {
     'English': 'Continue',
     'Español': 'Continuar',
     'Português': 'Continuar',
-    'Русский': 'Продолжить',
-    'Deutsch': 'Fortfahren',
-    'हिन्दी': 'जारी रखें',
     'Français': 'Continuer',
-    'Filipino': 'Magpatuloy',
-    '中文': '继续',
-    'العربية': 'استمر'
-  },
-  'comingSoon': {
-    'English': 'Coming soon! This feature is under development.',
-    'Español': '¡Próximamente! Esta función está en desarrollo.',
-    'Português': 'Em breve! Este recurso está em desenvolvimento.',
-    'Русский': 'Скоро! Эта функция находится в разработке.',
-    'Deutsch': 'Kommt bald! Diese Funktion wird entwickelt.',
-    'हिन्दी': 'जल्द आ रहा है! यह सुविधा विकास के अधीन है।',
-    'Français': 'Bientôt disponible ! Cette fonctionnalité est en cours de développement.',
-    'Filipino': 'Malapit na! Ang feature na ito ay nasa development pa.',
-    '中文': '即将推出！此功能正在开发中。',
-    'العربية': 'قريبًا! هذه الميزة قيد التطوير.'
-  },
-  'loading': {
-    'English': 'Loading...',
-    'Español': 'Cargando...',
-    'Português': 'Carregando...',
-    'Русский': 'Загрузка...',
-    'Deutsch': 'Wird geladen...',
-    'हिन्दी': 'लोड हो रहा है...',
-    'Français': 'Chargement...',
-    'Filipino': 'Naglo-load...',
-    '中文': '加载中...',
-    'العربية': 'جار التحميل...'
+    'Filipino': 'Magpatuloy'
   },
   
   // IntroScreen
@@ -56,25 +21,15 @@ const translations: Record<string, Record<string, string>> = {
     'English': 'because life should be more than just surviving',
     'Español': 'porque la vida debe ser más que solo sobrevivir',
     'Português': 'porque a vida deve ser mais do que apenas sobreviver',
-    'Русский': 'потому что жизнь должна быть больше, чем просто выживание',
-    'Deutsch': 'weil das Leben mehr sein sollte als nur zu überleben',
-    'हिन्दी': 'क्योंकि जीवन सिर्फ जीवित रहने से अधिक होना चाहिए',
     'Français': 'parce que la vie devrait être plus que juste survivre',
-    'Filipino': 'dahil ang buhay ay dapat na higit pa sa pagiging nakaligtas lamang',
-    '中文': '因为生活应该不仅仅是生存',
-    'العربية': 'لأن الحياة يجب أن تكون أكثر من مجرد البقاء على قيد الحياة'
+    'Filipino': 'dahil ang buhay ay dapat na higit pa sa pagiging nakaligtas lamang'
   },
   'beginJourney': {
     'English': 'Begin Your Journey',
     'Español': 'Comienza Tu Viaje',
     'Português': 'Comece Sua Jornada',
-    'Русский': 'Начни Свой Путь',
-    'Deutsch': 'Beginne Deine Reise',
-    'हिन्दी': 'अपनी यात्रा शुरू करें',
     'Français': 'Commencez Votre Voyage',
-    'Filipino': 'Simulan Ang Iyong Paglalakbay',
-    '中文': '开始您的旅程',
-    'العربية': 'ابدأ رحلتك'
+    'Filipino': 'Simulan Ang Iyong Paglalakbay'
   },
   
   // Page titles
@@ -82,61 +37,36 @@ const translations: Record<string, Record<string, string>> = {
     'English': 'Anxiety & Depression',
     'Español': 'Ansiedad y Depresión',
     'Português': 'Ansiedade e Depressão',
-    'Русский': 'Тревога и Депрессия',
-    'Deutsch': 'Angst & Depression',
-    'हिन्दी': 'चिंता और अवसाद',
     'Français': 'Anxiété et Dépression',
-    'Filipino': 'Pagkabalisa at Depresyon',
-    '中文': '焦虑与抑郁',
-    'العربية': 'القلق والاكتئاب'
+    'Filipino': 'Pagkabalisa at Depresyon'
   },
   'socialConnection': {
     'English': 'Social Connection',
     'Español': 'Socialización y Conexión',
     'Português': 'Conexão Social',
-    'Русский': 'Социальная Связь',
-    'Deutsch': 'Soziale Verbindung',
-    'हिन्दी': 'सामाजिक संबंध',
     'Français': 'Connexion Sociale',
-    'Filipino': 'Sosyal na Koneksyon',
-    '中文': '社交联系',
-    'العربية': 'التواصل الاجتماعي'
+    'Filipino': 'Sosyal na Koneksyon'
   },
   'lawEnforcement': {
     'English': 'Law Enforcement',
     'Español': 'Fuerzas de Seguridad',
     'Português': 'Aplicação da Lei',
-    'Русский': 'Правоохранительные Органы',
-    'Deutsch': 'Strafverfolgung',
-    'हिन्दी': 'कानून प्रवर्तन',
     'Français': 'Application de la Loi',
-    'Filipino': 'Pagpapatupad ng Batas',
-    '中文': '执法人员',
-    'العربية': 'تطبيق القانون'
+    'Filipino': 'Pagpapatupad ng Batas'
   },
   'healthcare': {
     'English': 'Healthcare Workers',
     'Español': 'Trabajadores de la Salud',
     'Português': 'Profissionais de Saúde',
-    'Русский': 'Медицинские Работники',
-    'Deutsch': 'Gesundheitspersonal',
-    'हिन्दी': 'स्वास्थ्य कर्मचारी',
     'Français': 'Professionnels de Santé',
-    'Filipino': 'Mga Manggagawa sa Pangangalagang Pangkalusugan',
-    '中文': '医护人员',
-    'العربية': 'العاملون في مجال الرعاية الصحية'
+    'Filipino': 'Mga Manggagawa sa Pangangalagang Pangkalusugan'
   },
   'firstResponders': {
     'English': 'First Responders',
     'Español': 'Equipos de Emergencia',
     'Português': 'Socorristas',
-    'Русский': 'Службы Экстренного Реагирования',
-    'Deutsch': 'Ersthelfer',
-    'हिन्दी': 'प्रथम प्रतिक्रियादाता',
     'Français': 'Premiers Intervenants',
-    'Filipino': 'Mga Unang Tumutugon',
-    '中文': '急救人员',
-    'العربية': 'المستجيبون الأوائل'
+    'Filipino': 'Mga Unang Tumutugon'
   },
   
   // Welcome page common elements
@@ -144,73 +74,43 @@ const translations: Record<string, Record<string, string>> = {
     'English': 'Welcome to',
     'Español': 'Bienvenido a',
     'Português': 'Bem-vindo ao',
-    'Русский': 'Добро пожаловать в',
-    'Deutsch': 'Willkommen bei',
-    'हिन्दी': 'में आपका स्वागत है',
     'Français': 'Bienvenue à',
-    'Filipino': 'Maligayang pagdating sa',
-    '中文': '欢迎来到',
-    'العربية': 'مرحبا بك في'
+    'Filipino': 'Maligayang pagdating sa'
   },
   'statistics': {
     'English': 'Statistics',
     'Español': 'Estadísticas',
     'Português': 'Estatísticas',
-    'Русский': 'Статистика',
-    'Deutsch': 'Statistiken',
-    'हिन्दी': 'आंकड़े',
     'Français': 'Statistiques',
-    'Filipino': 'Mga Istatistika',
-    '中文': '统计数据',
-    'العربية': 'إحصائيات'
+    'Filipino': 'Mga Istatistika'
   },
   'resources': {
     'English': 'Resources',
     'Español': 'Recursos',
     'Português': 'Recursos',
-    'Русский': 'Ресурсы',
-    'Deutsch': 'Ressourcen',
-    'हिन्दी': 'संसाधन',
     'Français': 'Ressources',
-    'Filipino': 'Mga Mapagkukunan',
-    '中文': '资源',
-    'العربية': 'موارد'
+    'Filipino': 'Mga Mapagkukunan'
   },
   'workshops': {
     'English': 'Workshops',
     'Español': 'Talleres',
     'Português': 'Oficinas',
-    'Русский': 'Семинары',
-    'Deutsch': 'Workshops',
-    'हिन्दी': 'कार्यशालाएँ',
     'Français': 'Ateliers',
-    'Filipino': 'Mga Workshop',
-    '中文': '工作坊',
-    'العربية': 'ورش عمل'
+    'Filipino': 'Mga Workshop'
   },
   'assessments': {
     'English': 'Assessments',
     'Español': 'Evaluaciones',
     'Português': 'Avaliações',
-    'Русский': 'Оценки',
-    'Deutsch': 'Bewertungen',
-    'हिन्दी': 'मूल्यांकन',
     'Français': 'Évaluations',
-    'Filipino': 'Mga Pagsusuri',
-    '中文': '评估',
-    'العربية': 'تقييمات'
+    'Filipino': 'Mga Pagsusuri'
   },
   'continueToPortal': {
     'English': 'Continue to Portal',
     'Español': 'Continuar al Portal',
     'Português': 'Continuar para o Portal',
-    'Русский': 'Перейти в Портал',
-    'Deutsch': 'Zum Portal fortfahren',
-    'हिन्दी': 'पोर्टल पर जारी रखें',
     'Français': 'Continuer vers le Portail',
-    'Filipino': 'Magpatuloy sa Portal',
-    '中文': '继续前往门户',
-    'العربية': 'الاستمرار إلى البوابة'
+    'Filipino': 'Magpatuloy sa Portal'
   },
   
   // Assessment Tab
@@ -218,25 +118,15 @@ const translations: Record<string, Record<string, string>> = {
     'English': 'Self-Assessment',
     'Español': 'Autoevaluación',
     'Português': 'Autoavaliação',
-    'Русский': 'Самооценка',
-    'Deutsch': 'Selbsteinschätzung',
-    'हिन्दी': 'स्व-मूल्यांकन',
     'Français': 'Auto-évaluation',
-    'Filipino': 'Sariling Pagsusuri',
-    '中文': '自我评估',
-    'العربية': 'التقييم الذاتي'
+    'Filipino': 'Sariling Pagsusuri'
   },
   'startAssessment': {
     'English': 'Start Assessment',
     'Español': 'Iniciar Evaluación',
     'Português': 'Iniciar Avaliação',
-    'Русский': 'Начать Оценку',
-    'Deutsch': 'Bewertung starten',
-    'हिन्दी': 'मूल्यांकन शुरू करें',
     'Français': 'Commencer l\'évaluation',
-    'Filipino': 'Simulan ang Pagsusuri',
-    '中文': '开始评估',
-    'العربية': 'بدء التقييم'
+    'Filipino': 'Simulan ang Pagsusuri'
   },
 
   // User Menu
@@ -244,49 +134,29 @@ const translations: Record<string, Record<string, string>> = {
     'English': 'Profile',
     'Español': 'Perfil',
     'Português': 'Perfil',
-    'Русский': 'Профиль',
-    'Deutsch': 'Profil',
-    'हिन्दी': 'प्रोफाइल',
     'Français': 'Profil',
-    'Filipino': 'Profile',
-    '中文': '个人资料',
-    'العربية': 'الملف الشخصي'
+    'Filipino': 'Profile'
   },
   'settings': {
     'English': 'Settings',
     'Español': 'Configuración',
     'Português': 'Configurações',
-    'Русский': 'Настройки',
-    'Deutsch': 'Einstellungen',
-    'हिन्दी': 'सेटिंग्स',
     'Français': 'Paramètres',
-    'Filipino': 'Mga Setting',
-    '中文': '设置',
-    'العربية': 'الإعدادات'
+    'Filipino': 'Mga Setting'
   },
   'darkMode': {
     'English': 'Dark Mode',
     'Español': 'Modo Oscuro',
     'Português': 'Modo Escuro',
-    'Русский': 'Темный режим',
-    'Deutsch': 'Dunkelmodus',
-    'हिन्दी': 'डार्क मोड',
     'Français': 'Mode Sombre',
-    'Filipino': 'Dark Mode',
-    '中文': '深色模式',
-    'العربية': 'الوضع الداكن'
+    'Filipino': 'Dark Mode'
   },
   'logout': {
     'English': 'Log out',
     'Español': 'Cerrar sesión',
     'Português': 'Sair',
-    'Русский': 'Выйти',
-    'Deutsch': 'Abmelden',
-    'हिन्दी': 'लॉग आउट',
     'Français': 'Se déconnecter',
-    'Filipino': 'Mag-log out',
-    '中文': '登出',
-    'العربية': 'تسجيل الخروج'
+    'Filipino': 'Mag-log out'
   },
   
   // Mental Health Welcome Page
@@ -294,97 +164,57 @@ const translations: Record<string, Record<string, string>> = {
     'English': 'Entering portal',
     'Español': 'Entrando al portal',
     'Português': 'Entrando no portal',
-    'Русский': 'Вход в портал',
-    'Deutsch': 'Portal betreten',
-    'हिन्दी': 'पोर्टल में प्रवेश हो रहा है',
     'Français': 'Entrée dans le portail',
-    'Filipino': 'Pumapasok sa portal',
-    '中文': '正在进入门户',
-    'العربية': 'الدخول إلى البوابة'
+    'Filipino': 'Pumapasok sa portal'
   },
   'loadingMentalHealthResources': {
     'English': 'Loading mental health resources',
     'Español': 'Cargando recursos de salud mental',
     'Português': 'Carregando recursos de saúde mental',
-    'Русский': 'Загрузка ресурсов психического здоровья',
-    'Deutsch': 'Lade Ressourcen zur psychischen Gesundheit',
-    'हिन्दी': 'मानसिक स्वास्थ्य संसाधन लोड हो रहे हैं',
     'Français': 'Chargement des ressources de santé mentale',
-    'Filipino': 'Naglo-load ng mga mapagkukunang pangkalusugang pangkaisipan',
-    '中文': '加载心理健康资源',
-    'العربية': 'تحميل موارد الصحة النفسية'
+    'Filipino': 'Naglo-load ng mga mapagkukunang pangkalusugang pangkaisipan'
   },
   'welcomeToMentalHealth': {
     'English': 'Welcome to Anxiety & Depression',
     'Español': 'Bienvenido a Ansiedad y Depresión',
     'Português': 'Bem-vindo à Ansiedade e Depressão',
-    'Русский': 'Добро пожаловать в Тревога и Депрессия',
-    'Deutsch': 'Willkommen bei Angst & Depression',
-    'हिन्दी': 'चिंता और अवसाद में आपका स्वागत है',
     'Français': 'Bienvenue à Anxiété et Dépression',
-    'Filipino': 'Maligayang pagdating sa Pagkabalisa at Depresyon',
-    '中文': '欢迎来到焦虑与抑郁',
-    'العربية': 'مرحبًا بك في القلق والاكتئاب'
+    'Filipino': 'Maligayang pagdating sa Pagkabalisa at Depresyon'
   },
   'mentalHealthDescription': {
     'English': 'A dedicated space to understand, address, and find support for anxiety and depression disorders.',
     'Español': 'Un espacio dedicado para comprender, abordar y encontrar apoyo para los trastornos de ansiedad y depresión.',
     'Português': 'Um espaço dedicado para entender, abordar e encontrar apoio para transtornos de ansiedade e depressão.',
-    'Русский': 'Пространство, посвященное пониманию, решению проблем и поиску поддержки при тревожных расстройствах и депрессии.',
-    'Deutsch': 'Ein Raum zum Verstehen, Angehen und Finden von Unterstützung bei Angststörungen und Depressionen.',
-    'हिन्दी': 'चिंता और अवसाद विकारों को समझने, संबोधित करने और सहायता प्राप्त करने के लिए एक समर्पित स्थान।',
     'Français': 'Un espace dédié pour comprendre, aborder et trouver du soutien pour les troubles anxieux et dépressifs.',
-    'Filipino': 'Isang nakatalagang espasyo para maunawaan, matugunan, at makahanap ng suporta para sa mga karamdaman sa pagkabalisa at depresyon.',
-    '中文': '一个理解、解决和寻找焦虑和抑郁症支持的专门空间。',
-    'العربية': 'مساحة مخصصة لفهم ومعالجة وإيجاد الدعم لاضطرابات القلق والاكتئاب.'
+    'Filipino': 'Isang nakatalagang espasyo para maunawaan, matugunan, at makahanap ng suporta para sa mga karamdaman sa pagkabalisa at depresyon.'
   },
   'mentalHealthStats': {
     'English': 'Data on the prevalence of anxiety and depression disorders and their impact on wellbeing.',
     'Español': 'Datos sobre la prevalencia de los trastornos de ansiedad y depresión y su impacto en el bienestar.',
     'Português': 'Dados sobre a prevalência de transtornos de ansiedade e depressão e seu impacto no bem-estar.',
-    'Русский': 'Данные о распространенности тревожных расстройств и депрессии и их влиянии на благополучие.',
-    'Deutsch': 'Daten zur Prävalenz von Angststörungen und Depressionen und ihren Auswirkungen auf das Wohlbefinden.',
-    'हिन्दी': 'चिंता और अवसाद विकारों की व्यापकता और कल्याण पर उनके प्रभाव पर आंकड़े।',
     'Français': 'Données sur la prévalence des troubles anxieux et dépressifs et leur impact sur le bien-être.',
-    'Filipino': 'Datos tungkol sa pagkalat ng mga karamdaman sa pagkabalisa at depresyon at ang epekto nito sa kagalingan.',
-    '中文': '关于焦虑和抑郁症的患病率及其对幸福感影响的数据。',
-    'العربية': 'بيانات عن انتشار اضطرابات القلق والاكتئاب وتأثيرها على الرفاهية.'
+    'Filipino': 'Data tungkol sa pagkalat ng mga karamdaman sa pagkabalisa at depresyon at ang epekto nito sa kagalingan.'
   },
   'mentalHealthResources': {
     'English': 'Guides, articles, and tools to understand and manage anxiety and depression symptoms.',
     'Español': 'Guías, artículos y herramientas para entender y manejar los síntomas de ansiedad y depresión.',
     'Português': 'Guias, artigos e ferramentas para entender e gerenciar os sintomas de ansiedade e depressão.',
-    'Русский': 'Руководства, статьи и инструменты для понимания и управления симптомами тревоги и депрессии.',
-    'Deutsch': 'Leitfäden, Artikel und Werkzeuge zum Verstehen und Bewältigen von Angst- und Depressionssymptomen.',
-    'हिन्दी': 'चिंता और अवसाद के लक्षणों को समझने और प्रबंधित करने के लिए मार्गदर्शिकाएँ, लेख और उपकरण।',
     'Français': 'Guides, articles et outils pour comprendre et gérer les symptômes d\'anxiété et de dépression.',
-    'Filipino': 'Mga gabay, artikulo, at mga tool upang maunawaan at mapamahalaan ang mga sintomas ng pagkabalisa at depresyon.',
-    '中文': '用于理解和管理焦虑和抑郁症状的指南、文章和工具。',
-    'العربية': 'أدلة ومقالات وأدوات لفهم وإدارة أعراض القلق والاكتئاب.'
+    'Filipino': 'Mga gabay, artikulo, at mga tool upang maunawaan at mapamahalaan ang mga sintomas ng pagkabalisa at depresyon.'
   },
   'mentalHealthWorkshops': {
     'English': 'Interactive sessions on coping techniques, stress management, and recovery.',
     'Español': 'Sesiones interactivas sobre técnicas de afrontamiento, manejo del estrés y recuperación.',
     'Português': 'Sessões interativas sobre técnicas de enfrentamento, gerenciamento de estresse e recuperação.',
-    'Русский': 'Интерактивные занятия по методам преодоления трудностей, управлению стрессом и восстановлению.',
-    'Deutsch': 'Interaktive Sitzungen zu Bewältigungstechniken, Stressmanagement und Erholung.',
-    'हिन्दी': 'सामना करने की तकनीकों, तनाव प्रबंधन और स्वस्थ होने पर इंटरैक्टिव सत्र।',
     'Français': 'Sessions interactives sur les techniques d\'adaptation, la gestion du stress et la récupération.',
-    'Filipino': 'Mga interactive na sesyon sa mga pamamaraan ng pagkaya, pamamahala ng stress, at paggaling.',
-    '中文': '关于应对技巧、压力管理和恢复的互动课程。',
-    'العربية': 'جلسات تفاعلية حول تقنيات التكيف وإدارة التوتر والتعافي.'
+    'Filipino': 'Mga interactive na sesyon sa mga pamamaraan ng pagkaya, pamamahala ng stress, at paggaling.'
   },
   'mentalHealthAssessments': {
     'English': 'Assessment tools for anxiety, depression, and related disorders.',
     'Español': 'Herramientas de evaluación para la ansiedad, depresión y trastornos relacionados.',
     'Português': 'Ferramentas de avaliação para ansiedade, depressão e transtornos relacionados.',
-    'Русский': 'Инструменты оценки тревожности, депрессии и связанных с ними расстройств.',
-    'Deutsch': 'Bewertungsinstrumente für Angst, Depression und verwandte Störungen.',
-    'हिन्दी': 'चिंता, अवसाद और संबंधित विकारों के लिए मूल्यांकन उपकरण।',
     'Français': 'Outils d\'évaluation pour l\'anxiété, la dépression et les troubles connexes.',
-    'Filipino': 'Mga tool sa pagsusuri para sa pagkabalisa, depresyon, at mga kaugnay na karamdaman.',
-    '中文': '焦虑、抑郁和相关障碍的评估工具。',
-    'العربية': 'أدوات تقييم للقلق والاكتئاب والاضطرابات ذات الصلة.'
+    'Filipino': 'Mga tool sa pagsusuri para sa pagkabalisa, depresyon, at mga kaugnay na karamdaman.'
   },
   
   // Law enforcement specific translations
@@ -392,85 +222,50 @@ const translations: Record<string, Record<string, string>> = {
     'English': 'Law Enforcement',
     'Español': 'Fuerzas de Seguridad',
     'Português': 'Aplicação da Lei',
-    'Русский': 'Правоохранительные Органы',
-    'Deutsch': 'Strafverfolgung',
-    'हिन्दी': 'कानून प्रवर्तन',
     'Français': 'Application de la Loi',
-    'Filipino': 'Pagpapatupad ng Batas',
-    '中文': '执法人员',
-    'العربية': 'تطبيق القانون'
+    'Filipino': 'Pagpapatupad ng Batas'
   },
   'lawEnforcementDescription': {
     'English': 'A dedicated space for the mental wellbeing of police officers, security personnel, and law enforcement staff.',
     'Español': 'Un espacio dedicado al bienestar mental de oficiales de policía, agentes de seguridad y personal de fuerzas del orden.',
     'Português': 'Um espaço dedicado ao bem-estar mental de policiais, agentes de segurança e pessoal de aplicação da lei.',
-    'Русский': 'Пространство, посвященное психическому благополучию полицейских, сотрудников службы безопасности и правоохранительных органов.',
-    'Deutsch': 'Ein spezieller Bereich für das psychische Wohlbefinden von Polizeibeamten, Sicherheitspersonal und Strafverfolgungspersonal.',
-    'हिन्दी': 'पुलिस अधिकारियों, सुरक्षा कर्मियों और कानून प्रवर्तन कर्मचारियों के मानसिक कल्याण के लिए एक समर्पित स्थान।',
     'Français': 'Un espace dédié au bien-être mental des policiers, du personnel de sécurité et du personnel chargé de l\'application de la loi.',
-    'Filipino': 'Isang nakalaang espasyo para sa mental na kagalingan ng mga pulis, kawani ng seguridad, at kawani ng pagpapatupad ng batas.',
-    '中文': '为警察、安保人员和执法人员精神健康提供的专属空间。',
-    'العربية': 'مساحة مخصصة للرفاهية النفسية لضباط الشرطة وأفراد الأمن وموظفي إنفاذ القانون.'
+    'Filipino': 'Isang nakalaang espasyo para sa mental na kagalingan ng mga pulis, kawani ng seguridad, at kawani ng pagpapatupad ng batas.'
   },
   'lawEnforcementStats': {
     'English': 'Data on occupational stress, trauma, and mental health challenges in law enforcement.',
     'Español': 'Datos sobre el estrés ocupacional, trauma y desafíos de salud mental en las fuerzas del orden.',
     'Português': 'Dados sobre estresse ocupacional, trauma e desafios de saúde mental na aplicação da lei.',
-    'Русский': 'Данные о профессиональном стрессе, травмах и проблемах психического здоровья в правоохранительных органах.',
-    'Deutsch': 'Daten zu beruflichem Stress, Trauma und psychischen Herausforderungen im Strafverfolgungsbereich.',
-    'हिन्दी': 'कानून प्रवर्तन में व्यावसायिक तनाव, आघात और मानसिक स्वास्थ्य चुनौतियों पर आंकड़े।',
     'Français': 'Données sur le stress professionnel, les traumatismes et les défis de santé mentale dans l\'application de la loi.',
-    'Filipino': 'Data sa occupational stress, trauma, at mga hamon sa kalusugang pangkaisipan sa pagpapatupad ng batas.',
-    '中文': '关于执法中职业压力、创伤和心理健康挑战的数据。',
-    'العربية': 'بيانات عن الإجهاد المهني والصدمات وتحديات الصحة النفسية في إنفاذ القانون.'
+    'Filipino': 'Data sa occupational stress, trauma, at mga hamon sa kalusugang pangkaisipan sa pagpapatupad ng batas.'
   },
   'lawEnforcementResources': {
     'English': 'Confidential resources for stress management, trauma, and resilience tailored for law enforcement personnel.',
     'Español': 'Recursos confidenciales para el manejo del estrés, trauma y resiliencia adaptados para personal de seguridad.',
     'Português': 'Recursos confidenciais para gestão de estresse, trauma e resiliência adaptados para pessoal de aplicação da lei.',
-    'Русский': 'Конфиденциальные ресурсы для управления стрессом, травмой и устойчивостью, адаптированные для сотрудников правоохранительных органов.',
-    'Deutsch': 'Vertrauliche Ressourcen für Stressbewältigung, Trauma und Resilienz, zugeschnitten auf Strafverfolgungspersonal.',
-    'हिन्दी': 'कानून प्रवर्तन कर्मियों के लिए अनुकूलित तनाव प्रबंधन, आघात और लचीलेपन के लिए गोपनीय संसाधन।',
     'Français': 'Ressources confidentielles pour la gestion du stress, des traumatismes et de la résilience adaptées au personnel chargé de l\'application de la loi.',
-    'Filipino': 'Mga kumpidensyal na mapagkukunan para sa pamamahala ng stress, trauma, at katatagan na angkop para sa mga tauhan ng pagpapatupad ng batas.',
-    '中文': '为执法人员量身定制的压力管理、创伤和恢复力的机密资源。',
-    'العربية': 'موارد سرية لإدارة التوتر والصدمات والمرونة مصممة خصيصًا لموظفي إنفاذ القانون.'
+    'Filipino': 'Mga kumpidensyal na mapagkukunan para sa pamamahala ng stress, trauma, at katatagan na angkop para sa mga tauhan ng pagpapatupad ng batas.'
   },
   'lawEnforcementWorkshops': {
     'English': 'Sessions on operational stress management, police traumatology, and coping skills.',
     'Español': 'Sesiones sobre manejo del estrés operativo, traumatología policial y habilidades de afrontamiento.',
     'Português': 'Sessões sobre gerenciamento de estresse operacional, traumatologia policial e habilidades de enfrentamento.',
-    'Русский': 'Сессии по управлению оперативным стрессом, полицейской травматологии и навыкам выживания.',
-    'Deutsch': 'Sitzungen zu operativem Stressmanagement, Polizeitraumatologie und Bewältigungsfähigkeiten.',
-    'हिन्दी': 'परिचालन तनाव प्रबंधन, पुलिस आघात विज्ञान और सामना करने के कौशल पर सत्र।',
     'Français': 'Sessions sur la gestion du stress opérationnel, la traumatologie policière et les compétences d\'adaptation.',
-    'Filipino': 'Mga sesyon sa pamamahala ng operational stress, police traumatology, at mga kasanayan sa pagkaya.',
-    '中文': '关于操作压力管理、警察创伤学和应对技能的课程。',
-    'العربية': 'جلسات حول إدارة الإجهاد التشغيلي، وعلم الصدمات الشرطي، ومهارات التكيف.'
+    'Filipino': 'Mga sesyon sa pamamahala ng operational stress, police traumatology, at mga kasanayan sa pagkaya.'
   },
   'lawEnforcementAssessments': {
     'English': 'Safe, confidential self-assessment tools for operational stress and mental health.',
     'Español': 'Herramientas de autoevaluación seguras y confidenciales para el estrés operacional y la salud mental.',
     'Português': 'Ferramentas de autoavaliação seguras e confidenciais para estresse operacional e saúde mental.',
-    'Русский': 'Безопасные, конфиденциальные инструменты самооценки для оперативного стресса и психического здоровья.',
-    'Deutsch': 'Sichere, vertrauliche Selbstbewertungstools für operativen Stress und psychische Gesundheit.',
-    'हिन्दी': 'परिचालन तनाव और मानसिक स्वास्थ्य के लिए सुरक्षित, गोपनीय स्व-मूल्यांकन उपकरण।',
     'Français': 'Outils d\'auto-évaluation sûrs et confidentiels pour le stress opérationnel et la santé mentale.',
-    'Filipino': 'Ligtas, kumpidensyal na mga tool sa sariling pagsusuri para sa operational stress at kalusugang pangkaisipan.',
-    '中文': '针对操作压力和心理健康的安全、保密的自我评估工具。',
-    'العربية': 'أدوات تقييم ذاتي آمنة وسرية للإجهاد التشغيلي والصحة النفسية.'
+    'Filipino': 'Mga tool sa sariling pagsusuri para sa operational stress at kalusugang pangkaisipan.'
   },
   'loadingLawEnforcementResources': {
     'English': 'Loading law enforcement resources',
     'Español': 'Cargando recursos para fuerzas de seguridad',
     'Português': 'Carregando recursos de aplicação da lei',
-    'Русский': 'Загрузка ресурсов для правоохранительных органов',
-    'Deutsch': 'Lade Ressourcen für Strafverfolgung',
-    'हिन्दी': 'कानून प्रवर्तन संसाधन लोड हो रहे हैं',
     'Français': 'Chargement des ressources pour l\'application de la loi',
-    'Filipino': 'Naglo-load ng mga mapagkukunan para sa pagpapatupad ng batas',
-    '中文': '加载执法资源',
-    'العربية': 'تحميل موارد إنفاذ القانون'
+    'Filipino': 'Naglo-load ng mga mapagkukunan para sa pagpapatupad ng batas'
   },
   
   // Henry Dialog translations
@@ -478,73 +273,43 @@ const translations: Record<string, Record<string, string>> = {
     'English': 'Meet Henry',
     'Español': 'Conoce a Henry',
     'Português': 'Conheça Henry',
-    'Русский': 'Знакомьтесь, Генри',
-    'Deutsch': 'Treffen Sie Henry',
-    'हिन्दी': 'हेनरी से मिलें',
     'Français': 'Rencontrez Henry',
-    'Filipino': 'Makilala si Henry',
-    '中文': '认识亨利',
-    'العربية': 'تعرف على هنري'
+    'Filipino': 'Makilala si Henry'
   },
   'henryIntroSubtitle': {
     'English': 'Your friendly guide on your mental wellbeing journey',
     'Español': 'Tu guía amigable en tu viaje de bienestar mental',
     'Português': 'Seu guia amigável em sua jornada de bem-estar mental',
-    'Русский': 'Ваш дружелюбный проводник в путешествии к психическому благополучию',
-    'Deutsch': 'Ihr freundlicher Begleiter auf Ihrer Reise zum psychischen Wohlbefinden',
-    'हिन्दी': 'आपकी मानसिक कल्याण यात्रा पर आपका मित्रवत मार्गदर्शक',
     'Français': 'Votre guide amical dans votre voyage de bien-être mental',
-    'Filipino': 'Ang iyong kaibigan na gabay sa iyong paglalakbay sa mental wellbeing',
-    '中文': '您心理健康之旅的友好向导',
-    'العربية': 'دليلك الصديق في رحلة العافية النفسية'
+    'Filipino': 'Ang iyong kaibigan na gabay sa iyong paglalakbay sa mental wellbeing'
   },
   'henryGreeting': {
     'English': 'Hey there! I\'m Henry, your personal companion on this journey to better mental health. Think of me as that supportive friend who\'s always here when you need someone to talk to.',
     'Español': '¡Hola! Soy Henry, tu compañero personal en este viaje hacia una mejor salud mental. Piensa en mí como ese amigo de apoyo que siempre está aquí cuando necesitas hablar con alguien.',
     'Português': 'Olá! Eu sou Henry, seu companheiro pessoal nesta jornada para uma melhor saúde mental. Pense em mim como aquele amigo que sempre está aqui quando você precisa conversar com alguém.',
-    'Русский': 'Привет! Я Генри, ваш личный спутник в этом путешествии к лучшему психическому здоровью. Думайте обо мне как о поддерживающем друге, который всегда рядом, когда вам нужно с кем-то поговорить.',
-    'Deutsch': 'Hallo! Ich bin Henry, Ihr persönlicher Begleiter auf dieser Reise zu besserer psychischer Gesundheit. Denken Sie an mich als diesen unterstützenden Freund, der immer da ist, wenn Sie jemanden zum Reden brauchen.',
-    'हिन्दी': 'नमस्ते! मैं हेनरी हूँ, बेहतर मानसिक स्वास्थ्य की इस यात्रा पर आपका व्यक्तिगत साथी। मुझे उस सहायक मित्र के रूप में सोचें जो हमेशा यहां है जब आपको किसी से बात करने की आवश्यकता होती है।',
     'Français': 'Salut! Je suis Henry, votre compagnon personnel dans ce voyage vers une meilleure santé mentale. Pensez à moi comme cet ami de soutien qui est toujours là quand vous avez besoin de parler à quelqu\'un.',
-    'Filipino': 'Kumusta! Ako si Henry, ang iyong personal na kasama sa paglalakbay na ito tungo sa mas mahusay na kalusugang pangkaisipan. Isipin mo ako bilang kaibigan na palaging nandito kapag kailangan mo ng makakausap.',
-    '中文': '你好！我是亨利，在这段通往更好心理健康的旅程中，我是你的私人伙伴。把我看作是那个在你需要倾诉时一直在你身边的支持性朋友。',
-    'العربية': 'مرحبًا! أنا هنري، رفيقك الشخصي في هذه الرحلة نحو صحة نفسية أفضل. فكر في أنني ذلك الصديق الداعم الذي يتواجد دائمًا عندما تحتاج إلى التحدث مع شخص ما.'
+    'Filipino': 'Kumusta! Ako si Henry, ang iyong personal na kasama sa paglalakbay na ito tungo sa mas mahusay na kalusugang pangkaisipan. Isipin mo ako bilang kaibigan na palaging nandito kapag kailangan mo ng makakausap.'
   },
   'aboutHenry': {
     'English': 'A little about me',
     'Español': 'Un poco sobre mí',
     'Português': 'Um pouco sobre mim',
-    'Русский': 'Немного обо мне',
-    'Deutsch': 'Ein wenig über mich',
-    'हिन्दी': 'मेरे बारे में थोड़ा',
     'Français': 'Un peu à propos de moi',
-    'Filipino': 'Kaunti tungkol sa akin',
-    '中文': '关于我的一点介绍',
-    'العربية': 'قليلًا عني'
+    'Filipino': 'Kaunti tungkol sa akin'
   },
   'close': {
     'English': 'Close',
     'Español': 'Cerrar',
     'Português': 'Fechar',
-    'Русский': 'Закрыть',
-    'Deutsch': 'Schließen',
-    'हिन्दी': 'बंद करें',
     'Français': 'Fermer',
-    'Filipino': 'Isara',
-    '中文': '关闭',
-    'العربية': 'إغلاق'
+    'Filipino': 'Isara'
   },
   'henryH': {
     'English': 'opeful Horizons: Embrace a future filled with possibilities and the belief that change is achievable.',
     'Español': 'orizontes Esperanzadores: Abraza un futuro lleno de posibilidades y la creencia de que el cambio es alcanzable.',
     'Português': 'orizontes Esperançosos: Abrace um futuro cheio de possibilidades e a crença de que a mudança é alcançável.',
-    'Русский': 'оризонты Надежды: Обнимите будущее, полное возможностей, и веру в то, что изменения достижимы.',
-    'Deutsch': 'offnungsvolle Horizonte: Umfassen Sie eine Zukunft voller Möglichkeiten und den Glauben, dass Veränderung möglich ist.',
-    'हिन्दी': 'ोपफुल होराइजन्स: संभावनाओं से भरे भविष्य और इस विश्वास को अपनाएं कि परिवर्तन संभव है।',
     'Français': 'orizons Pleins d\'Espoir : Embrassez un avenir rempli de possibilités et la conviction que le changement est réalisable.',
-    'Filipino': 'opeful na Horizons: Yakapin ang isang hinaharap na puno ng mga posibilidad at ang paniniwala na ang pagbabago ay maaaring makamit.',
-    '中文': '希望的地平线：拥抱充满可能性的未来，相信变化是可以实现的。',
-    'العربية': 'آفاق مليئة بالأمل: احتضن مستقبلاً مليئًا بالإمكانيات والإيمان بأن التغيير ممكن.'
+    'Filipino': 'opeful na Horizons: Yakapin ang isang hinaharap na puno ng mga posibilidad at ang paniniwala na ang pagbabago ay maaaring makamit.'
   }
 };
 

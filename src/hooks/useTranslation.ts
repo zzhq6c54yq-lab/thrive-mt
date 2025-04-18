@@ -3,14 +3,13 @@ import { useState, useEffect, createContext, useContext } from 'react';
 import translations from '../data/translations';
 
 // Define supported languages
-export type Language = 'en' | 'es' | 'pt' | 'de' | 'fr' | 'fil';
+export type Language = 'en' | 'es' | 'pt' | 'fr' | 'fil';
 
 // Language display names mapping
 const languageDisplayNames: Record<Language, string> = {
   en: 'English',
   es: 'Español',
   pt: 'Português',
-  de: 'Deutsch',
   fr: 'Français',
   fil: 'Filipino'
 };
@@ -21,7 +20,6 @@ interface TranslationContextType {
   getLanguageDisplay: (code: Language) => string;
   isSpanish: boolean;
   isPortuguese: boolean;
-  isGerman: boolean;
   isFrench: boolean;
   isFilipino: boolean;
   getTranslatedText: (key: string) => string;
@@ -33,7 +31,6 @@ const TranslationContext = createContext<TranslationContextType>({
   getLanguageDisplay: () => '',
   isSpanish: false,
   isPortuguese: false,
-  isGerman: false,
   isFrench: false,
   isFilipino: false,
   getTranslatedText: () => ''
@@ -61,7 +58,6 @@ export const TranslationProvider: React.FC<{ children: React.ReactNode }> = ({ c
 
   const isSpanish = preferredLanguage === 'es';
   const isPortuguese = preferredLanguage === 'pt';
-  const isGerman = preferredLanguage === 'de';
   const isFrench = preferredLanguage === 'fr';
   const isFilipino = preferredLanguage === 'fil';
 
@@ -89,7 +85,6 @@ export const TranslationProvider: React.FC<{ children: React.ReactNode }> = ({ c
         getLanguageDisplay,
         isSpanish,
         isPortuguese,
-        isGerman,
         isFrench,
         isFilipino,
         getTranslatedText
