@@ -106,9 +106,10 @@ const ThriveHeader: React.FC<ThriveHeaderProps> = ({
                     <AvatarImage src="/lovable-uploads/f3c84972-8f58-42d7-b86f-82ff2d823b30.png" alt="Henry" />
                     <AvatarFallback className="bg-gradient-to-br from-[#B87333] to-[#E5C5A1] text-white text-xs">H</AvatarFallback>
                   </Avatar>
-                  <span className="relative z-10 text-white">
-                    {getTranslatedText('meetHenry')}
-                  </span>
+                  <div className="flex flex-col items-start">
+                    <span className="text-sm font-medium text-white">Meet H.E.N.R.Y.</span>
+                    <span className="text-xs text-white/70">Hopeful Horizons • Empowerment • Nurtured Connections • Resilience • Your Journey</span>
+                  </div>
                 </div>
                 <div className="absolute inset-0 bg-gradient-to-r from-[#B87333]/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
               </Button>

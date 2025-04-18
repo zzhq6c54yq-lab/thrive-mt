@@ -1,4 +1,3 @@
-
 import React from "react";
 import { Button } from "@/components/ui/button";
 import { Handshake, Award, WalletCards, Sparkles, Crown, Zap } from "lucide-react";

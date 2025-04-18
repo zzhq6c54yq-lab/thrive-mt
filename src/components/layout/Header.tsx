@@ -167,8 +167,8 @@ const Header = () => {
               <div className="absolute inset-0 bg-gradient-to-r from-[#B87333]/20 via-transparent to-[#B87333]/20 opacity-0 group-hover:opacity-100 transition-opacity animate-pulse" style={{animationDuration: '4s'}}></div>
               
               <div className="relative z-10 text-[#B87333] font-bold text-lg leading-none tracking-tighter flex flex-col items-center group-hover:scale-110 transition-transform duration-300">
-                <span className="text-[7px] opacity-80 mb-0.5 bg-clip-text text-transparent bg-gradient-to-r from-[#E5C5A1] to-[#B87333] group-hover:from-[#B87333] group-hover:to-[#E5C5A1]">MEET</span>
-                <span className="bg-clip-text text-transparent bg-gradient-to-r from-[#B87333] to-[#E5C5A1] group-hover:from-[#E5C5A1] group-hover:to-[#B87333]">HENRY</span>
+                <span className="text-[7px] opacity-80 mb-0.5 bg-clip-text text-transparent bg-gradient-to-r from-[#E5C5A1] to-[#B87333] group-hover:from-[#B87333] group-hover:to-[#E5C5A1]">THRIVE</span>
+                <span className="bg-clip-text text-transparent bg-gradient-to-r from-[#B87333] to-[#E5C5A1] group-hover:from-[#E5C5A1] group-hover:to-[#B87333]">MT</span>
               </div>
               
               <div className="absolute top-1 right-1 w-1 h-1 bg-white rounded-full opacity-0 group-hover:opacity-100 group-hover:animate-ping" style={{animationDuration: '1.5s'}}></div>
