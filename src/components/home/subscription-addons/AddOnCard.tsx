@@ -1,4 +1,3 @@
-
 import React from "react";
 import { motion } from "framer-motion";
 import { Check } from "lucide-react";
@@ -9,7 +8,7 @@ interface AddOnCardProps {
   addOn: AddOn;
   isSelected: boolean;
   expandedAddon: string | null;
-  priceDisplay: string;
+  priceDisplay: React.ReactNode;
   onToggleExpand: (id: string) => void;
   onToggle: (id: string) => void;
 }

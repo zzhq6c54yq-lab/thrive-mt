@@ -1,4 +1,3 @@
-
 import React, { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { ArrowLeft, ArrowRight } from "lucide-react";
@@ -26,7 +25,25 @@ const SubscriptionAddOns: React.FC<SubscriptionAddOnsProps> = ({
     setExpandedAddon(expandedAddon === id ? null : id);
   };
 
-  const getPriceDisplay = (addOn: AddOn): React.ReactNode => {
+  const getPriceDisplay = (addOn: AddOn): string => {
+    let basePrice = 0;
+    if (!selectedPlan || selectedPlan.toLowerCase() === 'basic') {
+      basePrice = 3;
+    } else if (selectedPlan.toLowerCase() === 'gold') {
+      basePrice = 2;
+    } else if (selectedPlan.toLowerCase() === 'platinum') {
+      basePrice = 1;
+    }
+
+    if (billingCycle === 'yearly') {
+      const yearlyPrice = basePrice * 12;
+      const discountedPrice = Math.round(yearlyPrice * 0.8);
+      return `$${discountedPrice}/year`;
+    }
+    return `$${basePrice}/month`;
+  };
+
+  const getPriceDisplayWithStrikethrough = (addOn: AddOn): React.ReactNode => {
     let basePrice = 0;
     if (!selectedPlan || selectedPlan.toLowerCase() === 'basic') {
       basePrice = 3;
@@ -187,7 +204,7 @@ const SubscriptionAddOns: React.FC<SubscriptionAddOnsProps> = ({
                 addOn={addOn}
                 isSelected={selectedAddOns.includes(addOn.id)}
                 expandedAddon={expandedAddon}
-                priceDisplay={getPriceDisplay(addOn)}
+                priceDisplay={billingCycle === 'yearly' ? getPriceDisplayWithStrikethrough(addOn) : getPriceDisplay(addOn)}
                 onToggleExpand={toggleExpandAddon}
                 onToggle={onAddOnToggle}
               />
