@@ -24,6 +24,7 @@ const FirstRespondersWelcome = () => {
       borderColor="#DC2626"
       portalPath="/first-responders-portal"
       icon={<Siren className="h-12 w-12 text-white" />}
+      coverImage="/lovable-uploads/54e4d3e9-8aa5-46b2-a8e6-42fb0ba8128b.png"
     />
   );
 };

@@ -39,54 +39,26 @@ const NewFeatures: React.FC = () => {
         <div className="grid grid-cols-3 gap-4">
           <Button 
             variant="bronze"
-            className="flex items-center gap-2 px-5 py-4 rounded-lg transform transition-all duration-300 hover:scale-105 shadow-[0_4px_12px_rgba(0,0,0,0.25)] group"
+            className="flex items-center gap-2 px-4 py-2 rounded-lg transform transition-all duration-300 hover:scale-105 shadow-[0_4px_12px_rgba(0,0,0,0.25)] group"
             onClick={() => handleNavigation("/barter-system", "Barter System")}
           >
-            <div className="p-2 rounded-full bg-[#B87333]/20 group-hover:bg-[#B87333]/30 transition-colors">
-              <Handshake className="h-5 w-5 text-[#E5C5A1] group-hover:text-white transition-colors" />
-            </div>
-            <div className="flex flex-col items-start">
-              <span className="font-medium">Barter System</span>
-              <span className="text-xs opacity-80">Exchange Services</span>
-            </div>
+            <span className="text-xs font-medium">Barter System</span>
           </Button>
           
           <Button 
             variant="gold"
-            className="flex items-center gap-2 px-4 py-3 rounded-lg transform transition-all duration-300 hover:scale-105 shadow-[0_4px_12px_rgba(0,0,0,0.25)] group relative overflow-hidden mt-6"
+            className="flex items-center gap-2 px-4 py-2 rounded-lg transform transition-all duration-300 hover:scale-105 shadow-[0_4px_12px_rgba(0,0,0,0.25)] group relative overflow-hidden"
             onClick={() => handleNavigation("/subscription-plans", "System Upgrade Plan")}
           >
-            <div className="absolute inset-0 bg-gradient-to-r from-[#B87333] via-[#E5C5A1] to-[#B87333] opacity-100 background-animate" style={{backgroundSize: '200% auto'}}></div>
-            
-            <div className="absolute top-0 left-0 w-full h-full">
-              <div className="absolute top-1/4 left-1/4 w-1 h-1 rounded-full bg-white/80 animate-ping" style={{animationDuration: '3s'}}></div>
-              <div className="absolute top-3/4 right-1/4 w-1 h-1 rounded-full bg-white/80 animate-ping" style={{animationDuration: '2s'}}></div>
-              <div className="absolute top-2/4 left-3/4 w-1 h-1 rounded-full bg-white/80 animate-ping" style={{animationDuration: '4s'}}></div>
-            </div>
-            
-            <div className="p-1.5 rounded-full bg-black/30 backdrop-blur-sm z-10 group-hover:bg-black/40 transition-colors">
-              <Crown className="h-4 w-4 text-white group-hover:text-white transition-colors" />
-            </div>
-            <div className="z-10 flex flex-col items-start">
-              <span className="font-bold text-black text-xs">System Upgrade</span>
-              <span className="text-[10px] text-black/80">Premium Features</span>
-            </div>
-            
-            <Zap className="h-4 w-4 ml-1 text-black group-hover:translate-x-1 transition-transform z-10" />
+            <span className="text-xs font-bold text-black">System Upgrade Plan</span>
           </Button>
           
           <Button 
             variant="bronze"
-            className="flex items-center gap-2 px-5 py-4 rounded-lg transform transition-all duration-300 hover:scale-105 shadow-[0_4px_12px_rgba(0,0,0,0.25)] group"
+            className="flex items-center gap-2 px-4 py-2 rounded-lg transform transition-all duration-300 hover:scale-105 shadow-[0_4px_12px_rgba(0,0,0,0.25)] group"
             onClick={() => handleNavigation("/copay-credits", "Co-Pay Credits")}
           >
-            <div className="p-2 rounded-full bg-[#B87333]/20 group-hover:bg-[#B87333]/30 transition-colors">
-              <WalletCards className="h-5 w-5 text-[#E5C5A1] group-hover:text-white transition-colors" />
-            </div>
-            <div className="flex flex-col items-start">
-              <span className="font-medium">Co-Pay Credits</span>
-              <span className="text-xs opacity-80">Manage Your Credits</span>
-            </div>
+            <span className="text-xs font-medium">Co-Pay Credits</span>
           </Button>
         </div>
       </div>
