@@ -7,26 +7,18 @@ type Language =
   | 'en'    // English
   | 'es'    // Spanish
   | 'pt'    // Portuguese
-  | 'ru'    // Russian
   | 'de'    // German
-  | 'hi'    // Hindi
   | 'fr'    // French
-  | 'fil'   // Filipino
-  | 'zh'    // Chinese
-  | 'ar';   // Arabic
+  | 'fil';  // Filipino
 
 // Mapping for display names
 const languageDisplayNames: Record<Language, string> = {
   'en': 'English',
   'es': 'Español',
   'pt': 'Português',
-  'ru': 'Русский',
   'de': 'Deutsch',
-  'hi': 'हिन्दी',
   'fr': 'Français',
-  'fil': 'Filipino',
-  'zh': '中文',
-  'ar': 'العربية'
+  'fil': 'Filipino'
 };
 
 interface TranslationContextType {
@@ -35,13 +27,9 @@ interface TranslationContextType {
   getLanguageDisplay: (code: Language) => string;
   isSpanish: boolean;
   isPortuguese: boolean;
-  isRussian: boolean;
   isGerman: boolean;
-  isHindi: boolean;
   isFrench: boolean;
   isFilipino: boolean;
-  isChinese: boolean;
-  isArabic: boolean;
   getTranslatedText: (key: string) => string;
 }
 
@@ -51,13 +39,9 @@ const TranslationContext = createContext<TranslationContextType>({
   getLanguageDisplay: () => '',
   isSpanish: false,
   isPortuguese: false,
-  isRussian: false,
   isGerman: false,
-  isHindi: false,
   isFrench: false,
   isFilipino: false,
-  isChinese: false,
-  isArabic: false,
   getTranslatedText: () => '',
 });
 
@@ -85,13 +69,9 @@ export const TranslationProvider: React.FC<{ children: React.ReactNode }> = ({ c
   // Language check flags using strict equality
   const isSpanish = preferredLanguage === 'es';
   const isPortuguese = preferredLanguage === 'pt';
-  const isRussian = preferredLanguage === 'ru';
   const isGerman = preferredLanguage === 'de';
-  const isHindi = preferredLanguage === 'hi';
   const isFrench = preferredLanguage === 'fr';
   const isFilipino = preferredLanguage === 'fil';
-  const isChinese = preferredLanguage === 'zh';
-  const isArabic = preferredLanguage === 'ar';
 
   const getTranslatedText = (key: string): string => {
     if (!translations[key]) {
@@ -116,13 +96,9 @@ export const TranslationProvider: React.FC<{ children: React.ReactNode }> = ({ c
     getLanguageDisplay,
     isSpanish,
     isPortuguese,
-    isRussian,
     isGerman,
-    isHindi,
     isFrench,
     isFilipino,
-    isChinese,
-    isArabic,
     getTranslatedText
   };
 
