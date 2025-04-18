@@ -100,3 +100,4 @@ export const TranslationProvider: React.FC<{ children: React.ReactNode }> = ({ c
 const useTranslation = () => useContext(TranslationContext);
 
 export default useTranslation;
+
