@@ -53,7 +53,7 @@ const NewFeatures: React.FC = () => {
           
           <Button 
             variant="gold"
-            className="flex items-center gap-2 px-5 py-4 rounded-lg transform transition-all duration-300 hover:scale-105 shadow-[0_4px_12px_rgba(0,0,0,0.25)] group relative overflow-hidden mt-6"
+            className="flex items-center gap-2 px-4 py-3 rounded-lg transform transition-all duration-300 hover:scale-105 shadow-[0_4px_12px_rgba(0,0,0,0.25)] group relative overflow-hidden mt-6"
             onClick={() => handleNavigation("/subscription-plans", "System Upgrade Plan")}
           >
             <div className="absolute inset-0 bg-gradient-to-r from-[#B87333] via-[#E5C5A1] to-[#B87333] opacity-100 background-animate" style={{backgroundSize: '200% auto'}}></div>
@@ -64,15 +64,15 @@ const NewFeatures: React.FC = () => {
               <div className="absolute top-2/4 left-3/4 w-1 h-1 rounded-full bg-white/80 animate-ping" style={{animationDuration: '4s'}}></div>
             </div>
             
-            <div className="p-2 rounded-full bg-black/30 backdrop-blur-sm z-10 group-hover:bg-black/40 transition-colors">
-              <Crown className="h-5 w-5 text-white group-hover:text-white transition-colors" />
+            <div className="p-1.5 rounded-full bg-black/30 backdrop-blur-sm z-10 group-hover:bg-black/40 transition-colors">
+              <Crown className="h-4 w-4 text-white group-hover:text-white transition-colors" />
             </div>
             <div className="z-10 flex flex-col items-start">
-              <span className="font-bold text-black text-sm">System Upgrade Plan</span>
-              <span className="text-xs text-black/80">Premium Features</span>
+              <span className="font-bold text-black text-xs">System Upgrade</span>
+              <span className="text-[10px] text-black/80">Premium Features</span>
             </div>
             
-            <Zap className="h-5 w-5 ml-1 text-black group-hover:translate-x-1 transition-transform z-10" />
+            <Zap className="h-4 w-4 ml-1 text-black group-hover:translate-x-1 transition-transform z-10" />
           </Button>
           
           <Button 
