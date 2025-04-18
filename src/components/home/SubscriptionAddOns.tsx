@@ -8,7 +8,7 @@ import AddOnCard from "./subscription-addons/AddOnCard";
 import BillingToggle from "./subscription-addons/BillingToggle";
 import SelectedAddOns from "./subscription-addons/SelectedAddOns";
 import { addOns } from "./subscription-addons/data";
-import type { SubscriptionAddOnsProps } from "./subscription-addons/types";
+import type { SubscriptionAddOnsProps, AddOn } from "./subscription-addons/types";
 
 const SubscriptionAddOns: React.FC<SubscriptionAddOnsProps> = ({
   selectedPlan,
@@ -109,6 +109,20 @@ const SubscriptionAddOns: React.FC<SubscriptionAddOnsProps> = ({
       return 'Economize 20%!';
     }
     return 'Save 20%!';
+  };
+
+  const getPricingExplanation = () => {
+    if (!selectedPlan) return '';
+    
+    if (selectedPlan.toLowerCase() === 'basic') {
+      return getTranslatedText('basicPlanAddonsExplanation') || 'Basic plan members pay standard add-on pricing';
+    } else if (selectedPlan.toLowerCase() === 'gold') {
+      return getTranslatedText('goldPlanAddonsExplanation') || 'Gold plan members receive a discount on add-ons';
+    } else if (selectedPlan.toLowerCase() === 'platinum') {
+      return getTranslatedText('platinumPlanAddonsExplanation') || 'Platinum plan members receive maximum discounts on add-ons';
+    }
+    
+    return '';
   };
 
   const cardVariants = {
