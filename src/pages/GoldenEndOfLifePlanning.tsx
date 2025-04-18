@@ -1,10 +1,12 @@
-
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import NavigationBar from "@/components/navigation/NavigationBar";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { FileText, CheckSquare, FileCheck, BookText, PenSquare, Download, ArrowRight } from "lucide-react";
+import { 
+  FileText, CheckSquare, FileCheck, BookText, PenSquare, Download, ArrowRight,
+  Wallet, Building, Calendar, FileKey, Receipt, CreditCard
+} from "lucide-react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 const GoldenEndOfLifePlanning: React.FC = () => {
@@ -57,6 +59,65 @@ const GoldenEndOfLifePlanning: React.FC = () => {
                   <h3 className="text-xl font-medium mb-4 text-[#F5DEB3]">Essential Legal Documents</h3>
                   
                   <div className="space-y-4">
+                    <div className="bg-[#2A2420]/70 p-4 rounded-lg border border-[#D4AF37]/10">
+                      <div className="flex items-center mb-2">
+                        <FileKey className="h-5 w-5 mr-2 text-[#D4AF37]" />
+                        <h4 className="text-lg font-medium text-[#F5DEB3]">Financial Documents</h4>
+                      </div>
+                      <div className="space-y-3">
+                        <div className="bg-[#1A1811]/30 p-3 rounded border border-[#D4AF37]/10">
+                          <h5 className="text-sm font-medium text-[#F5DEB3] mb-2">Insurance Policies</h5>
+                          <div className="grid grid-cols-2 gap-2 text-xs text-gray-300">
+                            <div className="flex items-center gap-2">
+                              <Receipt className="h-4 w-4 text-[#D4AF37]" />
+                              <span>Life Insurance Policy Numbers</span>
+                            </div>
+                            <div className="flex items-center gap-2">
+                              <CreditCard className="h-4 w-4 text-[#D4AF37]" />
+                              <span>Insurance Contact Information</span>
+                            </div>
+                          </div>
+                        </div>
+                        
+                        <div className="bg-[#1A1811]/30 p-3 rounded border border-[#D4AF37]/10">
+                          <h5 className="text-sm font-medium text-[#F5DEB3] mb-2">Banking & Investments</h5>
+                          <div className="grid grid-cols-2 gap-2 text-xs text-gray-300">
+                            <div className="flex items-center gap-2">
+                              <Building className="h-4 w-4 text-[#D4AF37]" />
+                              <span>Bank Account Details</span>
+                            </div>
+                            <div className="flex items-center gap-2">
+                              <Wallet className="h-4 w-4 text-[#D4AF37]" />
+                              <span>401(k) & Investment Accounts</span>
+                            </div>
+                          </div>
+                        </div>
+                        
+                        <div className="bg-[#1A1811]/30 p-3 rounded border border-[#D4AF37]/10">
+                          <h5 className="text-sm font-medium text-[#F5DEB3] mb-2">Regular Bills & Payments</h5>
+                          <div className="grid grid-cols-2 gap-2 text-xs text-gray-300">
+                            <div className="flex items-center gap-2">
+                              <Calendar className="h-4 w-4 text-[#D4AF37]" />
+                              <span>Payment Due Dates</span>
+                            </div>
+                            <div className="flex items-center gap-2">
+                              <Receipt className="h-4 w-4 text-[#D4AF37]" />
+                              <span>Monthly Payment Amounts</span>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div className="mt-4 flex justify-end">
+                        <Button 
+                          variant="outline" 
+                          size="sm" 
+                          className="border-[#D4AF37]/40 text-[#D4AF37] hover:bg-[#D4AF37]/10"
+                        >
+                          Download Financial Document Templates <Download className="ml-2 h-4 w-4" />
+                        </Button>
+                      </div>
+                    </div>
+                    
                     <div className="bg-[#2A2420]/70 p-4 rounded-lg border border-[#D4AF37]/10">
                       <div className="flex items-center mb-2">
                         <FileCheck className="h-5 w-5 mr-2 text-[#D4AF37]" />
