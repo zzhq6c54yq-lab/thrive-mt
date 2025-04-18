@@ -2,6 +2,7 @@
 import { useState, useEffect, createContext, useContext } from 'react';
 import translations from '../data/translations';
 
+// Define supported languages as a union type of string literals
 type Language = 'English' | 'Español' | 'Português' | 'Русский' | 'Deutsch' | 'हिन्दी' | 'Français' | 'Filipino' | '中文' | 'العربية';
 
 interface TranslationContextType {
@@ -37,6 +38,7 @@ const TranslationContext = createContext<TranslationContextType>({
 export const TranslationProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [preferredLanguage, setPreferredLanguage] = useState<Language>('English');
   
+  // Load saved language preference on mount
   useEffect(() => {
     const savedLanguage = localStorage.getItem('preferredLanguage') as Language | null;
     if (savedLanguage) {
@@ -51,6 +53,7 @@ export const TranslationProvider: React.FC<{ children: React.ReactNode }> = ({ c
     console.log(`Language changed to: ${language}`);
   };
 
+  // Language check flags using strict equality
   const isSpanish = preferredLanguage === 'Español';
   const isPortuguese = preferredLanguage === 'Português';
   const isRussian = preferredLanguage === 'Русский';
@@ -61,19 +64,23 @@ export const TranslationProvider: React.FC<{ children: React.ReactNode }> = ({ c
   const isChinese = preferredLanguage === '中文';
   const isArabic = preferredLanguage === 'العربية';
 
+  // Get translated text with proper error handling
   const getTranslatedText = (key: string): string => {
+    // Check if key exists in translations
     if (!translations[key]) {
       console.warn(`Translation key not found: ${key}`);
       return key;
     }
 
+    // Get translation for current language
     const translation = translations[key][preferredLanguage];
     if (translation) {
       return translation;
-    } else {
-      console.warn(`Translation not available for key '${key}' in ${preferredLanguage}`);
-      return translations[key]['English'] || key;
     }
+
+    // Fallback to English or key if translation not available
+    console.warn(`Translation not available for key '${key}' in ${preferredLanguage}`);
+    return translations[key]['English'] || key;
   };
 
   const contextValue: TranslationContextType = {
