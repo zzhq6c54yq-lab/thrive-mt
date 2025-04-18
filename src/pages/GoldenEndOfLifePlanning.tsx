@@ -1,13 +1,14 @@
+
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import NavigationBar from "@/components/navigation/NavigationBar";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { 
-  FileText, CheckSquare, FileCheck, BookText, PenSquare, Download, ArrowRight,
-  Wallet, Building, Calendar, FileKey, Receipt, CreditCard
-} from "lucide-react";
+import { FileText } from "lucide-react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import DocumentsTabContent from "@/components/golden-years/documents/DocumentsTabContent";
+import DecisionsTabContent from "@/components/golden-years/decisions/DecisionsTabContent";
+import ResourcesTabContent from "@/components/golden-years/resources/ResourcesTabContent";
 
 const GoldenEndOfLifePlanning: React.FC = () => {
   const navigate = useNavigate();
@@ -56,211 +57,15 @@ const GoldenEndOfLifePlanning: React.FC = () => {
                 </TabsList>
                 
                 <TabsContent value="documents" className="border border-[#D4AF37]/20 rounded-lg p-6 bg-[#1A1811]/50">
-                  <h3 className="text-xl font-medium mb-4 text-[#F5DEB3]">Essential Legal Documents</h3>
-                  
-                  <div className="space-y-4">
-                    <div className="bg-[#2A2420]/70 p-4 rounded-lg border border-[#D4AF37]/10">
-                      <div className="flex items-center mb-2">
-                        <FileKey className="h-5 w-5 mr-2 text-[#D4AF37]" />
-                        <h4 className="text-lg font-medium text-[#F5DEB3]">Financial Documents</h4>
-                      </div>
-                      <div className="space-y-3">
-                        <div className="bg-[#1A1811]/30 p-3 rounded border border-[#D4AF37]/10">
-                          <h5 className="text-sm font-medium text-[#F5DEB3] mb-2">Insurance Policies</h5>
-                          <div className="grid grid-cols-2 gap-2 text-xs text-gray-300">
-                            <div className="flex items-center gap-2">
-                              <Receipt className="h-4 w-4 text-[#D4AF37]" />
-                              <span>Life Insurance Policy Numbers</span>
-                            </div>
-                            <div className="flex items-center gap-2">
-                              <CreditCard className="h-4 w-4 text-[#D4AF37]" />
-                              <span>Insurance Contact Information</span>
-                            </div>
-                          </div>
-                        </div>
-                        
-                        <div className="bg-[#1A1811]/30 p-3 rounded border border-[#D4AF37]/10">
-                          <h5 className="text-sm font-medium text-[#F5DEB3] mb-2">Banking & Investments</h5>
-                          <div className="grid grid-cols-2 gap-2 text-xs text-gray-300">
-                            <div className="flex items-center gap-2">
-                              <Building className="h-4 w-4 text-[#D4AF37]" />
-                              <span>Bank Account Details</span>
-                            </div>
-                            <div className="flex items-center gap-2">
-                              <Wallet className="h-4 w-4 text-[#D4AF37]" />
-                              <span>401(k) & Investment Accounts</span>
-                            </div>
-                          </div>
-                        </div>
-                        
-                        <div className="bg-[#1A1811]/30 p-3 rounded border border-[#D4AF37]/10">
-                          <h5 className="text-sm font-medium text-[#F5DEB3] mb-2">Regular Bills & Payments</h5>
-                          <div className="grid grid-cols-2 gap-2 text-xs text-gray-300">
-                            <div className="flex items-center gap-2">
-                              <Calendar className="h-4 w-4 text-[#D4AF37]" />
-                              <span>Payment Due Dates</span>
-                            </div>
-                            <div className="flex items-center gap-2">
-                              <Receipt className="h-4 w-4 text-[#D4AF37]" />
-                              <span>Monthly Payment Amounts</span>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                      <div className="mt-4 flex justify-end">
-                        <Button 
-                          variant="outline" 
-                          size="sm" 
-                          className="border-[#D4AF37]/40 text-[#D4AF37] hover:bg-[#D4AF37]/10"
-                        >
-                          Download Financial Document Templates <Download className="ml-2 h-4 w-4" />
-                        </Button>
-                      </div>
-                    </div>
-                    
-                    <div className="bg-[#2A2420]/70 p-4 rounded-lg border border-[#D4AF37]/10">
-                      <div className="flex items-center mb-2">
-                        <FileCheck className="h-5 w-5 mr-2 text-[#D4AF37]" />
-                        <h4 className="text-lg font-medium text-[#F5DEB3]">Last Will and Testament</h4>
-                      </div>
-                      <p className="text-gray-200 text-sm mb-3">
-                        Ensure your assets are distributed according to your wishes and provide for your loved ones.
-                      </p>
-                      <Button 
-                        variant="outline" 
-                        size="sm" 
-                        className="border-[#D4AF37]/40 text-[#D4AF37] hover:bg-[#D4AF37]/10"
-                      >
-                        Will Template <Download className="ml-2 h-4 w-4" />
-                      </Button>
-                    </div>
-                    
-                    <div className="bg-[#2A2420]/70 p-4 rounded-lg border border-[#D4AF37]/10">
-                      <div className="flex items-center mb-2">
-                        <FileCheck className="h-5 w-5 mr-2 text-[#D4AF37]" />
-                        <h4 className="text-lg font-medium text-[#F5DEB3]">Advance Healthcare Directive</h4>
-                      </div>
-                      <p className="text-gray-200 text-sm mb-3">
-                        Document your preferences for medical care if you become unable to make decisions.
-                      </p>
-                      <Button 
-                        variant="outline" 
-                        size="sm" 
-                        className="border-[#D4AF37]/40 text-[#D4AF37] hover:bg-[#D4AF37]/10"
-                      >
-                        Healthcare Directive Guide <Download className="ml-2 h-4 w-4" />
-                      </Button>
-                    </div>
-                    
-                    <div className="bg-[#2A2420]/70 p-4 rounded-lg border border-[#D4AF37]/10">
-                      <div className="flex items-center mb-2">
-                        <FileCheck className="h-5 w-5 mr-2 text-[#D4AF37]" />
-                        <h4 className="text-lg font-medium text-[#F5DEB3]">Power of Attorney</h4>
-                      </div>
-                      <p className="text-gray-200 text-sm mb-3">
-                        Appoint someone you trust to make financial and legal decisions on your behalf if needed.
-                      </p>
-                      <Button 
-                        variant="outline" 
-                        size="sm" 
-                        className="border-[#D4AF37]/40 text-[#D4AF37] hover:bg-[#D4AF37]/10"
-                      >
-                        Power of Attorney Forms <Download className="ml-2 h-4 w-4" />
-                      </Button>
-                    </div>
-                  </div>
+                  <DocumentsTabContent />
                 </TabsContent>
                 
                 <TabsContent value="decisions" className="border border-[#D4AF37]/20 rounded-lg p-6 bg-[#1A1811]/50">
-                  <h3 className="text-xl font-medium mb-4 text-[#F5DEB3]">Important Decisions to Consider</h3>
-                  
-                  <div className="space-y-4">
-                    <div className="bg-[#2A2420]/70 p-4 rounded-lg border border-[#D4AF37]/10">
-                      <div className="flex items-center mb-2">
-                        <CheckSquare className="h-5 w-5 mr-2 text-[#D4AF37]" />
-                        <h4 className="text-lg font-medium text-[#F5DEB3]">Medical Preferences</h4>
-                      </div>
-                      <p className="text-gray-200 mb-1">
-                        Consider and document your preferences regarding:
-                      </p>
-                      <ul className="list-disc list-inside text-gray-200 text-sm ml-4">
-                        <li>Life-sustaining treatments</li>
-                        <li>Palliative and hospice care</li>
-                        <li>Organ donation wishes</li>
-                        <li>Pain management approaches</li>
-                      </ul>
-                    </div>
-                    
-                    <div className="bg-[#2A2420]/70 p-4 rounded-lg border border-[#D4AF37]/10">
-                      <div className="flex items-center mb-2">
-                        <CheckSquare className="h-5 w-5 mr-2 text-[#D4AF37]" />
-                        <h4 className="text-lg font-medium text-[#F5DEB3]">Final Arrangements</h4>
-                      </div>
-                      <p className="text-gray-200 mb-1">
-                        Consider your preferences regarding:
-                      </p>
-                      <ul className="list-disc list-inside text-gray-200 text-sm ml-4">
-                        <li>Burial or cremation</li>
-                        <li>Memorial service details</li>
-                        <li>Legacy donations or charitable gifts</li>
-                        <li>Personal mementos for loved ones</li>
-                      </ul>
-                    </div>
-                  </div>
+                  <DecisionsTabContent />
                 </TabsContent>
                 
                 <TabsContent value="resources" className="border border-[#D4AF37]/20 rounded-lg p-6 bg-[#1A1811]/50">
-                  <h3 className="text-xl font-medium mb-4 text-[#F5DEB3]">Helpful Resources</h3>
-                  
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <div className="bg-[#2A2420]/70 p-4 rounded-lg border border-[#D4AF37]/10">
-                      <div className="flex items-center mb-2">
-                        <BookText className="h-5 w-5 mr-2 text-[#D4AF37]" />
-                        <h4 className="text-lg font-medium text-[#F5DEB3]">Estate Planning Guide</h4>
-                      </div>
-                      <p className="text-gray-200 text-sm mb-3">
-                        Comprehensive guide to organizing your estate and ensuring your wishes are honored.
-                      </p>
-                      <Button 
-                        size="sm" 
-                        className="bg-[#D4AF37] hover:bg-[#B8860B] text-white w-full"
-                      >
-                        Read Guide
-                      </Button>
-                    </div>
-                    
-                    <div className="bg-[#2A2420]/70 p-4 rounded-lg border border-[#D4AF37]/10">
-                      <div className="flex items-center mb-2">
-                        <PenSquare className="h-5 w-5 mr-2 text-[#D4AF37]" />
-                        <h4 className="text-lg font-medium text-[#F5DEB3]">Legacy Letter Template</h4>
-                      </div>
-                      <p className="text-gray-200 text-sm mb-3">
-                        Express your values, life lessons, and messages to loved ones.
-                      </p>
-                      <Button 
-                        size="sm" 
-                        className="bg-[#D4AF37] hover:bg-[#B8860B] text-white w-full"
-                      >
-                        View Template
-                      </Button>
-                    </div>
-                  </div>
-                  
-                  <div className="mt-6">
-                    <Button 
-                      className="w-full bg-[#4A3F36] hover:bg-[#5D4C3B] text-white border border-[#D4AF37]/20"
-                      onClick={() => navigate('/golden-years-journal', { 
-                        state: { 
-                          stayInPortal: true,
-                          preventTutorial: true,
-                          portalPath: '/golden-years-portal'
-                        }
-                      })}
-                    >
-                      Start Your Legacy Journal
-                      <ArrowRight className="ml-2 h-4 w-4" />
-                    </Button>
-                  </div>
+                  <ResourcesTabContent />
                 </TabsContent>
               </Tabs>
             </CardContent>
