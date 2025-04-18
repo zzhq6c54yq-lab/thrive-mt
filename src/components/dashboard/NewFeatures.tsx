@@ -47,7 +47,7 @@ const NewFeatures: React.FC = () => {
             </div>
             <div className="flex flex-col items-start">
               <span className="font-medium">Barter System</span>
-              <span className="text-xs opacity-80">Co-Pay Credit System</span>
+              <span className="text-xs opacity-80">Exchange Services</span>
             </div>
           </Button>
           

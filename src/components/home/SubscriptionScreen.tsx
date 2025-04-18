@@ -1,7 +1,6 @@
-
 import React, { useState } from "react";
 import { Button } from "@/components/ui/button";
-import { ArrowLeft, ArrowRight, Package, Trophy, Gem, Check } from "lucide-react";
+import { ArrowLeft, ArrowRight, Package, Trophy, Gem, Check, Shield, Siren, GraduationCap } from "lucide-react";
 import useTranslation from "@/hooks/useTranslation";
 
 interface SubscriptionPlan {
@@ -150,6 +149,27 @@ const SubscriptionScreen: React.FC<SubscriptionScreenProps> = ({
       color: "bg-[#E5DEFF] text-[#7E69AB] border-[#7E69AB]/30",
       recommended: true
     }
+  ];
+
+  const addOns = [
+    {
+      id: "dod",
+      title: isSpanish ? "Departamento de Defensa" : "Department of Defense",
+      description: isSpanish ? "Apoyo especializado para personal militar" : "Specialized support for military personnel",
+      icon: Shield
+    },
+    {
+      id: "first-responders",
+      title: isSpanish ? "Servicios de Emergencia" : "First Responders",
+      description: isSpanish ? "Apoyo dedicado para personal de emergencias" : "Dedicated support for emergency service personnel",
+      icon: Siren
+    },
+    {
+      id: "college",
+      title: isSpanish ? "La Experiencia Universitaria" : "The College Experience",
+      description: isSpanish ? "Recursos para estudiantes universitarios" : "Resources for college students",
+      icon: GraduationCap
+    },
   ];
 
   return (
