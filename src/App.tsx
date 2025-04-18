@@ -1,3 +1,4 @@
+
 import React from "react";
 import { Routes, Route, Navigate } from "react-router-dom";
 import Index from "@/pages/Index";
@@ -60,6 +61,10 @@ import GoldenMemoryCognitive from "@/pages/GoldenMemoryCognitive";
 import UserLead from "@/pages/UserLead";
 import FirstRespondersWelcome from "@/pages/FirstRespondersWelcome";
 import FirstRespondersPortal from "@/pages/FirstRespondersPortal";
+import FirstRespondersResources from "@/pages/FirstRespondersResources";
+import FirstRespondersPeerSupport from "@/pages/FirstRespondersPeerSupport";
+import FirstRespondersCriticalSupport from "@/pages/FirstRespondersCriticalSupport";
+import FirstRespondersStressManagement from "@/pages/FirstRespondersStressManagement";
 
 function App() {
   return (
@@ -130,6 +135,14 @@ function App() {
         <Route path="/military-resources/transition" element={<MilitaryResources />} />
         <Route path="/military-resources/family" element={<MilitaryResources />} />
         
+        {/* First Responders Routes */}
+        <Route path="/first-responders-welcome" element={<FirstRespondersWelcome />} />
+        <Route path="/first-responders-portal" element={<FirstRespondersPortal />} />
+        <Route path="/first-responders-resources" element={<FirstRespondersResources />} />
+        <Route path="/first-responders/peer-support" element={<FirstRespondersPeerSupport />} />
+        <Route path="/first-responders/critical-support" element={<FirstRespondersCriticalSupport />} />
+        <Route path="/first-responders/stress-management" element={<FirstRespondersStressManagement />} />
+        
         <Route path="/workshops" element={<Workshops />} />
         <Route path="/workshop/:workshopId" element={<WorkshopDetail />} />
         
@@ -149,10 +162,6 @@ function App() {
         
         {/* User Lead Route */}
         <Route path="/user-lead" element={<UserLead />} />
-        
-        {/* First Responders Routes */}
-        <Route path="/first-responders-welcome" element={<FirstRespondersWelcome />} />
-        <Route path="/first-responders-portal" element={<FirstRespondersPortal />} />
         
         <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
