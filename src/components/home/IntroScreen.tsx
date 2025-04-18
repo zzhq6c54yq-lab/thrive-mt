@@ -1,8 +1,7 @@
-
 import React from "react";
 import { Button } from "@/components/ui/button";
 import { ArrowRight, Languages } from "lucide-react";
-import useTranslation from "@/hooks/useTranslation";
+import useTranslation, { Language } from "@/hooks/useTranslation";
 import {
   Select,
   SelectContent,
@@ -15,23 +14,10 @@ interface IntroScreenProps {
   onContinue: () => void;
 }
 
-type SupportedLanguage = 'English' | 'Español' | 'Português' | 'Русский' | 'Deutsch' | 'हिन्दी' | 'Français' | 'Filipino' | '中文' | 'العربية';
-
 const IntroScreen: React.FC<IntroScreenProps> = ({ onContinue }) => {
-  const { preferredLanguage, changeLanguage, getTranslatedText } = useTranslation();
+  const { preferredLanguage, changeLanguage, getLanguageDisplay, getTranslatedText } = useTranslation();
   
-  const languages: SupportedLanguage[] = [
-    'English',
-    'Español',
-    'Português',
-    'Русский',
-    'Deutsch',
-    'हिन्दी',
-    'Français',
-    'Filipino',
-    '中文',
-    'العربية'
-  ];
+  const languages: Language[] = ['en', 'es', 'pt', 'fr', 'fil'];
 
   return (
     <div className="min-h-screen flex flex-col items-center justify-center bg-[#1a1a1f] overflow-hidden relative">
@@ -39,7 +25,7 @@ const IntroScreen: React.FC<IntroScreenProps> = ({ onContinue }) => {
       
       {/* Language selection dropdown */}
       <div className="absolute top-6 right-6 z-20">
-        <Select value={preferredLanguage} onValueChange={(value: SupportedLanguage) => changeLanguage(value)}>
+        <Select value={preferredLanguage} onValueChange={(value: Language) => changeLanguage(value)}>
           <SelectTrigger className="w-[180px] bg-[#B87333]/10 border-[#B87333]/30 text-white hover:bg-[#B87333]/20 hover:border-[#B87333]/50">
             <Languages className="h-4 w-4 mr-2" />
             <SelectValue placeholder="Select Language" />
@@ -51,7 +37,7 @@ const IntroScreen: React.FC<IntroScreenProps> = ({ onContinue }) => {
                 value={lang}
                 className="text-white hover:bg-[#B87333]/20 focus:bg-[#B87333]/20 focus:text-white"
               >
-                {lang}
+                {getLanguageDisplay(lang)}
               </SelectItem>
             ))}
           </SelectContent>

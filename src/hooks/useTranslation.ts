@@ -2,7 +2,7 @@
 import { useState, useEffect, createContext, useContext } from 'react';
 import translations from '../data/translations';
 
-// Define supported languages
+// Define supported languages using ISO codes
 export type Language = 'en' | 'es' | 'pt' | 'fr' | 'fil';
 
 // Language display names mapping
@@ -67,13 +67,14 @@ export const TranslationProvider: React.FC<{ children: React.ReactNode }> = ({ c
       return key;
     }
 
-    const translation = translations[key][languageDisplayNames[preferredLanguage]];
+    const displayName = languageDisplayNames[preferredLanguage];
+    const translation = translations[key][displayName];
     
     if (translation) {
       return translation;
     }
 
-    console.warn(`Translation not available for key '${key}' in ${languageDisplayNames[preferredLanguage]}`);
+    console.warn(`Translation not available for key '${key}' in ${displayName}`);
     return translations[key]['English'] || key;
   };
 
