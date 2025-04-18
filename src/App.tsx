@@ -56,28 +56,11 @@ import GoldenYearsWelcome from "@/pages/GoldenYearsWelcome";
 import GoldenYearsPortal from "@/pages/GoldenYearsPortal";
 import GoldenYearsJournal from "@/pages/GoldenYearsJournal";
 import GoldenSpecializedFeature from "@/pages/GoldenSpecializedFeature";
-import GoldenEndOfLifePlanning from "@/pages/GoldenEndOfLifePlanning";
-import GoldenMemoryCognitive from "@/pages/GoldenMemoryCognitive";
-import UserLead from "@/pages/UserLead";
-
-import SocialWelcome from "@/pages/SocialWelcome";
-import SocialPortal from "@/pages/SocialPortal";
-import MentalHealthWelcome from "@/pages/MentalHealthWelcome";
-import MentalHealthPortal from "@/pages/MentalHealthPortal";
-import HealthcareWelcome from "@/pages/HealthcareWelcome";
-import HealthcarePortal from "@/pages/HealthcarePortal";
-import FirstResponderWelcome from "@/pages/FirstResponderWelcome";
-import FirstResponderPortal from "@/pages/FirstResponderPortal";
-import PoliceWelcome from "@/pages/PoliceWelcome";
-import PolicePortal from "@/pages/PolicePortal";
-
-import LanguageDirection from "@/components/LanguageDirection";
-import { TranslationProvider } from "@/hooks/useTranslation";
 
 function App() {
   return (
-    <TranslationProvider>
-      <LanguageDirection />
+    <>
+      <HelpNavButton />
       <Routes>
         <Route path="/" element={<Index />} />
         <Route path="/home" element={<Home />} />
@@ -125,30 +108,9 @@ function App() {
         <Route path="/golden-years-welcome" element={<GoldenYearsWelcome />} />
         <Route path="/golden-years-portal" element={<GoldenYearsPortal />} />
         <Route path="/golden-years-journal" element={<GoldenYearsJournal />} />
-        <Route path="/golden-years-planning" element={<GoldenEndOfLifePlanning />} />
-        <Route path="/golden-years-memory" element={<GoldenMemoryCognitive />} />
         
-        <Route path="/golden-years-guide" element={<GoldenSpecializedFeature />} />
-        <Route path="/golden-years-transitions" element={<GoldenSpecializedFeature />} />
-        <Route path="/golden-years-community" element={<GoldenSpecializedFeature />} />
-        <Route path="/golden-years-family" element={<GoldenSpecializedFeature />} />
-        <Route path="/golden-years-wellness" element={<GoldenSpecializedFeature />} />
-        <Route path="/golden-years-calendar" element={<GoldenSpecializedFeature />} />
-        
-        <Route path="/social-welcome" element={<SocialWelcome />} />
-        <Route path="/social-portal" element={<SocialPortal />} />
-        
-        <Route path="/mental-health-welcome" element={<MentalHealthWelcome />} />
-        <Route path="/mental-health-portal" element={<MentalHealthPortal />} />
-        
-        <Route path="/healthcare-welcome" element={<HealthcareWelcome />} />
-        <Route path="/healthcare-portal" element={<HealthcarePortal />} />
-        
-        <Route path="/first-responder-welcome" element={<FirstResponderWelcome />} />
-        <Route path="/first-responder-portal" element={<FirstResponderPortal />} />
-        
-        <Route path="/police-welcome" element={<PoliceWelcome />} />
-        <Route path="/police-portal" element={<PolicePortal />} />
+        {/* New specialized routes for Golden Years features */}
+        <Route path="/golden-:feature" element={<GoldenSpecializedFeature />} />
         
         <Route path="/military-support" element={<MilitarySupport />} />
         <Route path="/military-resources" element={<MilitaryResources />} />
@@ -173,11 +135,9 @@ function App() {
         <Route path="/wellness-challenges" element={<WellnessChallenges />} />
         <Route path="/my-sponsor" element={<MySponsor />} />
         
-        <Route path="/user-lead" element={<UserLead />} />
-        
         <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
-    </TranslationProvider>
+    </>
   );
 }
 

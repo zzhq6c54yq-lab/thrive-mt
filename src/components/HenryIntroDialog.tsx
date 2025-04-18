@@ -5,7 +5,6 @@ import { Button } from "@/components/ui/button";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import { Heart, Brain, Smile, Sparkles, ArrowRight } from "lucide-react";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import useTranslation from "@/hooks/useTranslation";
 
 interface HenryIntroDialogProps {
   open: boolean;
@@ -13,7 +12,8 @@ interface HenryIntroDialogProps {
 }
 
 const HenryIntroDialog: React.FC<HenryIntroDialogProps> = ({ open, onOpenChange }) => {
-  const { isSpanish, getTranslatedText } = useTranslation();
+  const preferredLanguage = localStorage.getItem('preferredLanguage') || 'English';
+  const isSpanish = preferredLanguage === 'Español';
   
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
@@ -28,17 +28,21 @@ const HenryIntroDialog: React.FC<HenryIntroDialogProps> = ({ open, onOpenChange 
             </Avatar>
           </div>
           <DialogTitle className="text-2xl gradient-heading">
-            {getTranslatedText('meetHenry')}
+            {isSpanish ? "Conoce a Henry" : "Meet Henry"}
           </DialogTitle>
           <DialogDescription className="text-base text-white">
-            {getTranslatedText('henryIntroSubtitle')}
+            {isSpanish 
+              ? "Tu especialista en salud mental personalizado" 
+              : "Your personalized mental health specialist"}
           </DialogDescription>
         </DialogHeader>
         
         <ScrollArea className="max-h-[60vh] overflow-auto pr-4">
           <div className="space-y-4 text-white">
             <p className="leading-relaxed">
-              {getTranslatedText('henryGreeting')}
+              {isSpanish 
+                ? "¡Hola, soy Henry! Estoy aquí para ayudarte a navegar tu viaje de salud mental y brindarte apoyo personalizado mientras exploras Thrive MT."
+                : "Hi, I'm Henry! I'm here to help you navigate your mental health journey and provide personalized support as you explore Thrive MT."}
             </p>
             
             <div className="bg-white/10 p-4 rounded-lg">

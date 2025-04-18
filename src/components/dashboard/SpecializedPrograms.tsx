@@ -1,10 +1,7 @@
 
 import React, { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
-import { 
-  Shield, GraduationCap, Briefcase, Sparkles, ChevronRight, Users,
-  Heart, HeartPulse, Stethoscope, Siren, Badge, UsersRound, Brain
-} from "lucide-react";
+import { Shield, GraduationCap, Briefcase, Sparkles, ChevronRight, Users } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { useToast } from "@/hooks/use-toast";
 import useTranslation from "@/hooks/useTranslation";
@@ -84,64 +81,9 @@ const SpecializedPrograms: React.FC = () => {
         : "Mental wellness resources for seniors and elderly adults",
       icon: Sparkles,
       path: "/golden-years-welcome",
-      gradient: "from-[#242424]/90 to-[#2A2420]/90",
-      borderColor: "#D4AF37",
-      imagePath: getImageUrl("https://images.unsplash.com/photo-1573497019940-1c28c88b4f3e?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=500&q=80")
-    },
-    {
-      title: isSpanish ? "Socialización y Conexión" : "Social Connection",
-      description: isSpanish 
-        ? "Programas para mejorar habilidades sociales y construir relaciones" 
-        : "Programs to enhance social skills and build relationships",
-      icon: UsersRound,
-      path: "/social-welcome",
-      gradient: "from-[#06B6D4]/80 to-[#0891B2]/80",
-      borderColor: "#06B6D4",
-      imagePath: getImageUrl("https://images.unsplash.com/photo-1529156069898-49953e39b3ac?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80")
-    },
-    {
-      title: isSpanish ? "Ansiedad y Depresión" : "Anxiety & Depression",
-      description: isSpanish 
-        ? "Apoyo específico para trastornos de ansiedad y depresión" 
-        : "Specialized support for anxiety and depression disorders",
-      icon: Brain,
-      path: "/mental-health-welcome",
-      gradient: "from-[#9b87f5]/80 to-[#6E59A5]/80",
-      borderColor: "#9b87f5",
-      imagePath: getImageUrl("https://images.unsplash.com/photo-1493836512299-2241a9f6726d?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80")
-    },
-    {
-      title: isSpanish ? "Trabajadores de Salud" : "Healthcare Workers",
-      description: isSpanish 
-        ? "Recursos para profesionales de la salud enfrentando estrés y trauma" 
-        : "Resources for healthcare professionals facing stress and trauma",
-      icon: Stethoscope,
-      path: "/healthcare-welcome",
-      gradient: "from-[#16A34A]/80 to-[#15803D]/80",
-      borderColor: "#16A34A",
-      imagePath: getImageUrl("https://images.unsplash.com/photo-1576091160550-2173dba999ef?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80")
-    },
-    {
-      title: isSpanish ? "Primeros Respondedores" : "First Responders",
-      description: isSpanish 
-        ? "Apoyo para bomberos, paramédicos y personal de emergencias" 
-        : "Support for firefighters, paramedics, and emergency personnel",
-      icon: Siren,
-      path: "/first-responder-welcome",
-      gradient: "from-[#DC2626]/80 to-[#B91C1C]/80",
-      borderColor: "#DC2626",
-      imagePath: getImageUrl("https://images.unsplash.com/photo-1610480341553-8c31e2cb90bc?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80")
-    },
-    {
-      title: isSpanish ? "Fuerzas de Seguridad" : "Law Enforcement",
-      description: isSpanish 
-        ? "Recursos de salud mental para policías y personal de seguridad" 
-        : "Mental health resources for police and security personnel",
-      icon: Badge,
-      path: "/police-welcome",
-      gradient: "from-[#1E3A8A]/80 to-[#1E40AF]/80",
-      borderColor: "#1E3A8A",
-      imagePath: getImageUrl("https://images.unsplash.com/photo-1579487785973-74d2ca7abdd5?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80")
+      gradient: "from-[#D4AF37]/80 to-[#B8860B]/80",
+      borderColor: "#FFC000",
+      imagePath: getImageUrl("https://images.unsplash.com/photo-1540778324650-529f9f961133?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80") // Updated to show socially active senior citizens
     }
   ];
   
@@ -201,7 +143,7 @@ const SpecializedPrograms: React.FC = () => {
             {/* Bottom color section - 30% of card height */}
             <div className={`absolute bottom-0 left-0 right-0 h-[30%] ${
               program.title === "The Golden Years" || program.title === "Los Años Dorados"
-                ? "bg-gradient-to-br from-[#242424]/90 to-[#2A2420]/90 shadow-inner"
+                ? "bg-gradient-to-br from-amber-500/90 via-amber-600/90 to-amber-700/90 shadow-inner"
                 : `bg-gradient-to-br ${program.gradient}`
             } flex items-center justify-center`}>
               <h3 className="text-xl font-semibold text-white truncate text-center w-full px-4">
@@ -213,7 +155,7 @@ const SpecializedPrograms: React.FC = () => {
               <div className="mb-auto">
                 <div className={`p-3 rounded-full ${
                   program.title === "The Golden Years" || program.title === "Los Años Dorados"
-                    ? "bg-[#D4AF37]/30 backdrop-blur-sm"
+                    ? "bg-amber-400/30 backdrop-blur-sm"
                     : "bg-white/20 backdrop-blur-sm"
                 } inline-flex`}>
                   <program.icon className="h-8 w-8 text-white" />
@@ -224,9 +166,9 @@ const SpecializedPrograms: React.FC = () => {
             {/* Enhanced metallic gold effect for Golden Years */}
             {(program.title === "The Golden Years" || program.title === "Los Años Dorados") && (
               <>
-                <div className="absolute inset-0 bg-gradient-to-b from-[#D4AF37]/15 via-transparent to-transparent pointer-events-none"></div>
-                <div className="absolute top-0 right-0 w-24 h-24 bg-gradient-to-br from-[#D4AF37]/20 to-transparent rounded-full blur-lg"></div>
-                <div className="absolute bottom-0 left-0 w-16 h-16 bg-gradient-to-tl from-[#D4AF37]/20 to-transparent rounded-full blur-lg"></div>
+                <div className="absolute inset-0 bg-gradient-to-b from-amber-200/15 via-yellow-100/10 to-transparent pointer-events-none"></div>
+                <div className="absolute top-0 right-0 w-24 h-24 bg-gradient-to-br from-yellow-200/20 to-amber-500/10 rounded-full blur-lg"></div>
+                <div className="absolute bottom-0 left-0 w-16 h-16 bg-gradient-to-tl from-yellow-200/20 to-amber-500/10 rounded-full blur-lg"></div>
               </>
             )}
             
@@ -235,7 +177,7 @@ const SpecializedPrograms: React.FC = () => {
               className="absolute inset-0 border-2 opacity-0 group-hover:opacity-100 transition-opacity"
               style={{ 
                 borderColor: (program.title === "The Golden Years" || program.title === "Los Años Dorados") 
-                  ? "#D4AF37" 
+                  ? "#FFC000" 
                   : program.borderColor 
               }}  
             ></div>

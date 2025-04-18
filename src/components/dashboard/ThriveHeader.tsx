@@ -1,12 +1,11 @@
 
 import React, { useState } from "react";
 import { Button } from "@/components/ui/button";
-import { Footprints, Coins } from "lucide-react";
+import { Footprints } from "lucide-react";
 import HenryIntroDialog from "../henry/HenryIntroDialog";
 import HelpDialog from "../help/HelpDialog";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import useTranslation from "@/hooks/useTranslation";
-import { useNavigate } from "react-router-dom";
 
 interface ThriveHeaderProps {
   userName: string;
@@ -23,23 +22,22 @@ const ThriveHeader: React.FC<ThriveHeaderProps> = ({
   const [showChatDialog, setShowChatDialog] = useState(false);
   const { isSpanish, getTranslatedText } = useTranslation();
   const displayName = userName || "Friend";
-  const navigate = useNavigate();
   
-  const handleBarterSystemClick = () => {
-    navigate("/barter-system", {
-      state: { 
-        fromMainMenu: true,
-        preventTutorial: true
-      }
-    });
-  };
-  
-  // Add the missing handleIntroContinue function
-  const handleIntroContinue = () => {
-    setShowIntroDialog(false);
-    setShowChatDialog(true);
+  const handleHenryButtonClick = () => {
+    // Always show the intro dialog when the button is clicked
+    setShowIntroDialog(true);
   };
 
+  const handleIntroContinue = () => {
+    // Close the intro dialog and open the chat dialog
+    setShowIntroDialog(false);
+    setShowChatDialog(true);
+    // Only toggle Henry on if he's not already visible
+    if (!showHenry) {
+      onHenryToggle();
+    }
+  };
+  
   return (
     <div className="w-full relative overflow-hidden py-0 z-10">
       <div className="absolute inset-0 bg-gradient-to-r from-[#181820] via-[#221F26] to-[#181820]"></div>
@@ -54,24 +52,29 @@ const ThriveHeader: React.FC<ThriveHeaderProps> = ({
           <div className="flex flex-col md:flex-row items-center justify-between w-full">
             <div className="flex items-center gap-8 mb-6 md:mb-0">
               <div className="relative group">
+                {/* Enhanced logo animations with stronger effects and larger size */}
                 <div className="absolute inset-[-45px] rounded-full bg-gradient-to-r from-[#B87333]/80 to-[#E5C5A1]/80 blur-xl animate-pulse" style={{animationDuration: '3s'}}></div>
                 <div className="absolute inset-[-60px] rounded-full border-2 border-[#B87333]/60 animate-spin" style={{animationDuration: '15s'}}></div>
                 <div className="absolute inset-[-35px] rounded-full border border-[#E5C5A1]/70 animate-spin" style={{animationDuration: '10s', animationDirection: 'reverse'}}></div>
                 <div className="absolute inset-[-20px] rounded-full bg-gradient-to-br from-[#B87333]/90 to-[#E5C5A1]/60 blur-sm animate-pulse" style={{animationDuration: '4s'}}></div>
                 
+                {/* Enhanced sparkling effect */}
                 <div className="absolute top-[-20px] left-[35px] w-4 h-4 bg-white rounded-full animate-ping" style={{animationDuration: '1.8s', animationDelay: '0.5s'}}></div>
                 <div className="absolute bottom-[-12px] right-[45px] w-3.5 h-3.5 bg-white rounded-full animate-ping" style={{animationDuration: '1.5s', animationDelay: '1s'}}></div>
                 <div className="absolute top-[45px] right-[-25px] w-4 h-4 bg-white rounded-full animate-ping" style={{animationDuration: '2.1s'}}></div>
                 <div className="absolute bottom-[40px] left-[-15px] w-3 h-3 bg-white rounded-full animate-ping" style={{animationDuration: '2.4s', animationDelay: '0.7s'}}></div>
                 
+                {/* Larger logo with deeper colors and stronger glow - DOUBLED SIZE */}
                 <img 
                   src="/lovable-uploads/f2c6ac08-6331-4884-950d-7f94d68ff15f.png" 
                   alt="Thrive MT Logo" 
                   className="relative h-[112px] w-[112px] object-contain filter drop-shadow-[0_0_35px_rgba(184,115,51,1)] transition-all duration-500 group-hover:scale-110 group-hover:drop-shadow-[0_0_45px_rgba(184,115,51,1)]"
                 />
                 
+                {/* Additional glow effects */}
                 <div className="absolute inset-0 rounded-full bg-gradient-to-r from-[#B87333]/40 via-transparent to-[#B87333]/40 animate-pulse" style={{animationDuration: '5s'}}></div>
                 
+                {/* Enhanced rotating halo effect */}
                 <div className="absolute inset-[-10px] border-4 border-[#B87333]/30 rounded-full animate-ping" style={{animationDuration: '3.5s'}}></div>
                 <div className="absolute inset-[-25px] border-2 border-[#E5C5A1]/30 rounded-full animate-ping" style={{animationDuration: '4.5s', animationDelay: '0.5s'}}></div>
               </div>
@@ -91,7 +94,7 @@ const ThriveHeader: React.FC<ThriveHeaderProps> = ({
             </div>
             <div>
               <Button 
-                onClick={handleBarterSystemClick}
+                onClick={handleHenryButtonClick}
                 variant="outline"
                 className="relative px-10 py-3 bg-gradient-to-b from-[#222] to-[#111] border-[#B87333]/50 hover:border-[#B87333] group overflow-hidden"
               >
@@ -100,9 +103,12 @@ const ThriveHeader: React.FC<ThriveHeaderProps> = ({
                 <div className="absolute top-1 right-1 w-2 h-2 rounded-full border border-[#B87333]/40"></div>
                 <div className="absolute -left-1 top-1/2 transform -translate-y-1/2 w-2 h-8 bg-[#B87333]/20 rounded-r-full"></div>
                 <div className="flex items-center gap-2">
-                  <Coins className="h-6 w-6 text-[#B87333]" />
+                  <Avatar className="h-6 w-6 border border-[#B87333]/30">
+                    <AvatarImage src="/lovable-uploads/f3c84972-8f58-42d7-b86f-82ff2d823b30.png" alt="Henry" />
+                    <AvatarFallback className="bg-gradient-to-br from-[#B87333] to-[#E5C5A1] text-white text-xs">H</AvatarFallback>
+                  </Avatar>
                   <span className="relative z-10 text-white">
-                    {isSpanish ? "Sistema de Trueque" : "Barter System"}
+                    {getTranslatedText('meetHenry')}
                   </span>
                 </div>
                 <div className="absolute inset-0 bg-gradient-to-r from-[#B87333]/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
@@ -112,12 +118,14 @@ const ThriveHeader: React.FC<ThriveHeaderProps> = ({
         </div>
       </div>
       
+      {/* Henry Introduction Dialog */}
       <HenryIntroDialog 
         open={showIntroDialog} 
         onOpenChange={setShowIntroDialog} 
         onContinue={handleIntroContinue}
       />
       
+      {/* Henry Chat Dialog */}
       <HelpDialog 
         isOpen={showChatDialog} 
         onOpenChange={setShowChatDialog} 
