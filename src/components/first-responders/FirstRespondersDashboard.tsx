@@ -1,3 +1,4 @@
+
 import React from "react";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -33,7 +34,7 @@ const FirstRespondersDashboard = () => {
     <div className="space-y-8">
       {/* Add ThriveButton at the top */}
       <div className="flex justify-end mb-4">
-        <ThriveButton variant="gold" className="shadow-lg" />
+        <ThriveButton className="shadow-lg" />
       </div>
 
       {/* Welcome Banner */}
