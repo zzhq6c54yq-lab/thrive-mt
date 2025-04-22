@@ -1,3 +1,4 @@
+
 import React from "react";
 import { Routes, Route, Navigate } from "react-router-dom";
 import Index from "@/pages/Index";
@@ -13,6 +14,7 @@ import FamilyResources from "@/pages/FamilyResources";
 import RealTimeTherapy from "@/pages/RealTimeTherapy";
 import HolisticWellness from "@/pages/HolisticWellness";
 import AlternativeTherapies from "@/pages/AlternativeTherapies";
+import AlternativeTherapyDetail from "@/pages/AlternativeTherapyDetail";
 import CommunitySupport from "@/pages/CommunitySupport";
 import BinauralBeats from "@/pages/BinauralBeats";
 import Journaling from "@/pages/Journaling";
@@ -66,6 +68,7 @@ import FirstRespondersCriticalSupport from "@/pages/FirstRespondersCriticalSuppo
 import FirstRespondersStressManagement from "@/pages/FirstRespondersStressManagement";
 import PoliceOfficersWelcome from "@/pages/PoliceOfficersWelcome";
 import PoliceOfficersPortal from "@/pages/PoliceOfficersPortal";
+import NotFound from "@/pages/NotFound";
 
 function App() {
   return (
@@ -103,6 +106,7 @@ function App() {
         <Route path="/contact" element={<ContactSupport />} />
         
         <Route path="/alternative-therapies" element={<AlternativeTherapies />} />
+        <Route path="/alternative-therapies/detail/:therapyId" element={<AlternativeTherapyDetail />} />
         <Route path="/guided-practice/:therapyId" element={<GuidedPractice />} />
         
         <Route path="/department-of-defense" element={<DoDWelcome />} />
@@ -167,7 +171,9 @@ function App() {
         <Route path="/police-officers-welcome" element={<PoliceOfficersWelcome />} />
         <Route path="/police-officers-portal" element={<PoliceOfficersPortal />} />
         
-        <Route path="*" element={<Navigate to="/" replace />} />
+        {/* Catch-all 404 route */}
+        <Route path="/not-found" element={<NotFound />} />
+        <Route path="*" element={<Navigate to="/not-found" replace />} />
       </Routes>
     </>
   );

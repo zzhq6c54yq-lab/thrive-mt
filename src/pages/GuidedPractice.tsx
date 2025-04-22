@@ -1,5 +1,6 @@
+
 import React, { useState, useEffect } from "react";
-import { useParams, Link, useLocation } from "react-router-dom";
+import { useParams, Link, useLocation, useNavigate } from "react-router-dom";
 import { ArrowLeft, Play, Pause, RotateCw, CheckCircle2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
@@ -22,6 +23,7 @@ interface LocationState {
 const GuidedPractice = () => {
   const { therapyId } = useParams();
   const location = useLocation();
+  const navigate = useNavigate();
   const { toast } = useToast();
   
   const locationState = location.state as LocationState;
@@ -40,118 +42,7 @@ const GuidedPractice = () => {
     backgroundClass: string;
     steps: PracticeStep[];
   }> = {
-    "art-therapy": {
-      title: "Emotional Landscape Drawing",
-      description: "Express your emotions through color, shape, and texture in this guided art practice.",
-      backgroundClass: "from-purple-600 to-indigo-600",
-      steps: [
-        { 
-          id: 1, 
-          title: "Preparation", 
-          instruction: "Find a quiet space where you won't be disturbed. Gather paper and colored pencils, markers, or any art supplies you have available. Take three deep breaths to center yourself.", 
-          duration: 30 
-        },
-        { 
-          id: 2, 
-          title: "Emotional Awareness", 
-          instruction: "Close your eyes and notice what emotions are present for you right now. Don't judge them, simply observe what's there. Where do you feel these emotions in your body?", 
-          duration: 60 
-        },
-        { 
-          id: 3, 
-          title: "Color Selection", 
-          instruction: "Open your eyes and select colors that represent your emotions. There are no wrong choices - trust your intuition about which colors resonate with how you feel.", 
-          duration: 45 
-        },
-        { 
-          id: 4, 
-          title: "Begin Drawing", 
-          instruction: "Without overthinking, begin to make marks on your paper. Let the shapes, lines, and colors flow naturally as expressions of your emotional state. This is not about creating a perfect image.", 
-          duration: 180 
-        },
-        { 
-          id: 5, 
-          title: "Reflection", 
-          instruction: "Look at your drawing. What do you notice? What surprises you? Write down any insights or thoughts that arise when looking at your emotional landscape.", 
-          duration: 90 
-        }
-      ]
-    },
-    "music-therapy": {
-      title: "Rhythmic Resonance Meditation",
-      description: "Experience the healing power of rhythm and sound in this guided music practice.",
-      backgroundClass: "from-indigo-600 to-blue-600",
-      steps: [
-        { 
-          id: 1, 
-          title: "Find Comfort", 
-          instruction: "Sit or lie down in a comfortable position. Close your eyes or soften your gaze. Take three deep breaths, allowing your body to relax with each exhale.", 
-          duration: 30 
-        },
-        { 
-          id: 2, 
-          title: "Body Awareness", 
-          instruction: "Bring attention to the natural rhythm of your breathing. Notice your heartbeat. These are your body's natural rhythms that are always with you.", 
-          duration: 45 
-        },
-        { 
-          id: 3, 
-          title: "Create Rhythm", 
-          instruction: "Begin tapping a gentle rhythm on your leg or chest. Start slow and steady, matching your breath. Feel free to increase or decrease the tempo as feels right.", 
-          duration: 60 
-        },
-        { 
-          id: 4, 
-          title: "Add Sound", 
-          instruction: "If comfortable, add humming or simple sounds to your rhythm. This doesn't need to be a song - just sounds that feel good to make. Notice the vibration in your body.", 
-          duration: 90 
-        },
-        { 
-          id: 5, 
-          title: "Complete Integration", 
-          instruction: "Gradually bring your sounds and rhythms to a close. Sit in silence for a moment, noticing how your body feels. What sensations or emotions are present now?", 
-          duration: 60 
-        }
-      ]
-    },
-    "yoga-movement": {
-      title: "Gentle Yoga Flow for Anxiety",
-      description: "A sequence of gentle poses and breathing techniques to calm your nervous system.",
-      backgroundClass: "from-blue-600 to-teal-600",
-      steps: [
-        { 
-          id: 1, 
-          title: "Grounding Breath", 
-          instruction: "Sit comfortably with your spine straight. Place your hands on your knees. Breathe deeply through your nose, filling your belly, then chest. Exhale slowly through your mouth.", 
-          duration: 60 
-        },
-        { 
-          id: 2, 
-          title: "Gentle Neck Rolls", 
-          instruction: "Drop your right ear toward your right shoulder. Slowly roll your chin down to chest, then bring your left ear toward your left shoulder. Continue these gentle half circles 5 times.", 
-          duration: 45 
-        },
-        { 
-          id: 3, 
-          title: "Seated Twist", 
-          instruction: "Inhale and lengthen your spine. Exhale and gently twist to the right, placing your left hand on your right knee. Hold for 3 breaths, then repeat on the other side.", 
-          duration: 90 
-        },
-        { 
-          id: 4, 
-          title: "Child's Pose", 
-          instruction: "Come to hands and knees, then sit back on your heels with arms extended forward or alongside your body. Rest your forehead on the floor or a cushion. Breathe deeply.", 
-          duration: 120 
-        },
-        { 
-          id: 5, 
-          title: "Corpse Pose", 
-          instruction: "Lie on your back with arms slightly away from your body, palms facing up. Allow your feet to fall outward. Close your eyes and focus on your breath, letting your body become heavy.", 
-          duration: 180 
-        }
-      ]
-    },
-    "mindfulness-meditation": {
+    "mindfulness": {
       title: "Body Scan Meditation",
       description: "A guided practice to develop awareness of sensations throughout your body.",
       backgroundClass: "from-teal-600 to-green-600",
@@ -194,77 +85,410 @@ const GuidedPractice = () => {
         }
       ]
     },
-    "nature-therapy": {
-      title: "Indoor Nature Connection",
-      description: "Connect with the healing power of nature even while indoors.",
-      backgroundClass: "from-green-600 to-emerald-600",
+    "aromatherapy": {
+      title: "Essential Oil Experience",
+      description: "A guided practice to explore the therapeutic benefits of aromatherapy.",
+      backgroundClass: "from-green-600 to-teal-600",
       steps: [
         { 
           id: 1, 
           title: "Preparation", 
-          instruction: "Find a comfortable seated position. If possible, position yourself near a window with a view of nature, or have a plant or natural object nearby. Take three deep breaths.", 
+          instruction: "Find a quiet space where you won't be disturbed. If you have essential oils, prepare them now. Otherwise, you can still participate through visualization. Take three deep breaths to center yourself.", 
           duration: 30 
         },
         { 
           id: 2, 
-          title: "Nature Visualization", 
-          instruction: "Close your eyes and imagine yourself in a natural setting that feels safe and peaceful to you - perhaps a forest, beach, or mountain. Build this image with all your senses.", 
-          duration: 90 
-        },
-        { 
-          id: 3, 
-          title: "Sensory Exploration", 
-          instruction: "In your mind, explore this natural place. What do you see? What sounds do you hear? What can you smell? Can you feel the air, earth, or water on your skin?", 
-          duration: 90 
-        },
-        { 
-          id: 4, 
-          title: "Natural Connection", 
-          instruction: "Imagine yourself as part of this natural setting - not separate from it, but belonging to it. Feel the same life force that flows through nature flowing through you.", 
-          duration: 60 
-        },
-        { 
-          id: 5, 
-          title: "Grounding Return", 
-          instruction: "Begin to bring awareness back to your physical surroundings while maintaining the feeling of connection with nature. Slowly open your eyes when ready.", 
-          duration: 60 
-        }
-      ]
-    },
-    "virtual-reality-therapy": {
-      title: "Mindful VR Breathing",
-      description: "A visualization-based breathing practice inspired by VR therapy techniques.",
-      backgroundClass: "from-violet-600 to-purple-600",
-      steps: [
-        { 
-          id: 1, 
-          title: "Preparation", 
-          instruction: "Sit comfortably with your spine straight but not rigid. Rest your hands on your legs. Close your eyes or maintain a soft gaze.", 
-          duration: 30 
-        },
-        { 
-          id: 2, 
-          title: "Visual Setup", 
-          instruction: "Imagine you're wearing a VR headset that places you in a vast, calm space. This could be floating in space among stars, or in a peaceful blue void - whatever feels expansive.", 
+          title: "Sensory Awareness", 
+          instruction: "If you have an essential oil, place a drop in your palm or on a tissue. Bring it close to your nose and take a gentle inhale. Notice the immediate sensations and thoughts that arise.", 
           duration: 45 
         },
         { 
           id: 3, 
-          title: "Breath Visualization", 
-          instruction: "As you breathe in, imagine a soft blue light entering your body, bringing calm energy. As you breathe out, see a gray mist leaving, carrying tension away. Watch this process.", 
-          duration: 120 
+          title: "Breathwork", 
+          instruction: "Continue breathing slowly with the aroma. Inhale for a count of 4, hold for 2, exhale for 6. Notice how the scent might change or how your perception of it evolves.", 
+          duration: 60 
         },
         { 
           id: 4, 
-          title: "Expanded Awareness", 
-          instruction: "Now imagine you can see your entire body glowing with this blue light. With each breath, the light grows stronger and more vibrant, expanding around you like a protective field.", 
+          title: "Body Scan", 
+          instruction: "As you continue breathing with the aroma, notice any changes in your body. Perhaps tension releasing, a shift in mood, or changes in your breathing pattern.", 
+          duration: 60 
+        },
+        { 
+          id: 5, 
+          title: "Integration", 
+          instruction: "Begin to bring awareness back to your surroundings. Notice how you feel compared to when you started. Carry this awareness with you as you continue your day.", 
+          duration: 45 
+        }
+      ]
+    },
+    "yoga": {
+      title: "Gentle Yoga Flow for Anxiety",
+      description: "A sequence of gentle poses and breathing techniques to calm your nervous system.",
+      backgroundClass: "from-blue-600 to-teal-600",
+      steps: [
+        { 
+          id: 1, 
+          title: "Grounding Breath", 
+          instruction: "Sit comfortably with your spine straight. Place your hands on your knees. Breathe deeply through your nose, filling your belly, then chest. Exhale slowly through your mouth.", 
+          duration: 60 
+        },
+        { 
+          id: 2, 
+          title: "Gentle Neck Rolls", 
+          instruction: "Drop your right ear toward your right shoulder. Slowly roll your chin down to chest, then bring your left ear toward your left shoulder. Continue these gentle half circles 5 times.", 
+          duration: 45 
+        },
+        { 
+          id: 3, 
+          title: "Seated Twist", 
+          instruction: "Inhale and lengthen your spine. Exhale and gently twist to the right, placing your left hand on your right knee. Hold for 3 breaths, then repeat on the other side.", 
+          duration: 90 
+        },
+        { 
+          id: 4, 
+          title: "Child's Pose", 
+          instruction: "Come to hands and knees, then sit back on your heels with arms extended forward or alongside your body. Rest your forehead on the floor or a cushion. Breathe deeply.", 
+          duration: 120 
+        },
+        { 
+          id: 5, 
+          title: "Corpse Pose", 
+          instruction: "Lie on your back with arms slightly away from your body, palms facing up. Allow your feet to fall outward. Close your eyes and focus on your breath, letting your body become heavy.", 
+          duration: 180 
+        }
+      ]
+    },
+    "music-therapy": {
+      title: "Rhythmic Resonance Meditation",
+      description: "Experience the healing power of rhythm and sound in this guided music practice.",
+      backgroundClass: "from-indigo-600 to-blue-600",
+      steps: [
+        { 
+          id: 1, 
+          title: "Find Comfort", 
+          instruction: "Sit or lie down in a comfortable position. Close your eyes or soften your gaze. Take three deep breaths, allowing your body to relax with each exhale.", 
+          duration: 30 
+        },
+        { 
+          id: 2, 
+          title: "Body Awareness", 
+          instruction: "Bring attention to the natural rhythm of your breathing. Notice your heartbeat. These are your body's natural rhythms that are always with you.", 
+          duration: 45 
+        },
+        { 
+          id: 3, 
+          title: "Create Rhythm", 
+          instruction: "Begin tapping a gentle rhythm on your leg or chest. Start slow and steady, matching your breath. Feel free to increase or decrease the tempo as feels right.", 
+          duration: 60 
+        },
+        { 
+          id: 4, 
+          title: "Add Sound", 
+          instruction: "If comfortable, add humming or simple sounds to your rhythm. This doesn't need to be a song - just sounds that feel good to make. Notice the vibration in your body.", 
+          duration: 90 
+        },
+        { 
+          id: 5, 
+          title: "Complete Integration", 
+          instruction: "Gradually bring your sounds and rhythms to a close. Sit in silence for a moment, noticing how your body feels. What sensations or emotions are present now?", 
+          duration: 60 
+        }
+      ]
+    },
+    "art-therapy": {
+      title: "Emotional Landscape Drawing",
+      description: "Express your emotions through color, shape, and texture in this guided art practice.",
+      backgroundClass: "from-purple-600 to-indigo-600",
+      steps: [
+        { 
+          id: 1, 
+          title: "Preparation", 
+          instruction: "Find a quiet space where you won't be disturbed. Gather paper and colored pencils, markers, or any art supplies you have available. Take three deep breaths to center yourself.", 
+          duration: 30 
+        },
+        { 
+          id: 2, 
+          title: "Emotional Awareness", 
+          instruction: "Close your eyes and notice what emotions are present for you right now. Don't judge them, simply observe what's there. Where do you feel these emotions in your body?", 
+          duration: 60 
+        },
+        { 
+          id: 3, 
+          title: "Color Selection", 
+          instruction: "Open your eyes and select colors that represent your emotions. There are no wrong choices - trust your intuition about which colors resonate with how you feel.", 
+          duration: 45 
+        },
+        { 
+          id: 4, 
+          title: "Begin Drawing", 
+          instruction: "Without overthinking, begin to make marks on your paper. Let the shapes, lines, and colors flow naturally as expressions of your emotional state. This is not about creating a perfect image.", 
+          duration: 180 
+        },
+        { 
+          id: 5, 
+          title: "Reflection", 
+          instruction: "Look at your drawing. What do you notice? What surprises you? Write down any insights or thoughts that arise when looking at your emotional landscape.", 
+          duration: 90 
+        }
+      ]
+    },
+    "hydrotherapy": {
+      title: "Water Relaxation Technique",
+      description: "Experience the healing properties of water for relaxation and stress relief.",
+      backgroundClass: "from-blue-500 to-cyan-500",
+      steps: [
+        { 
+          id: 1, 
+          title: "Preparation", 
+          instruction: "Find a comfortable place where you can access water - this could be a bath, shower, sink, or even a glass of water. Take three deep breaths to center yourself.", 
+          duration: 30 
+        },
+        { 
+          id: 2, 
+          title: "Water Contact", 
+          instruction: "Place your hands in water or on a wet cloth. Notice the temperature, the sensation on your skin, and any immediate feelings that arise. How does this simple contact feel?", 
+          duration: 45 
+        },
+        { 
+          id: 3, 
+          title: "Mindful Observation", 
+          instruction: "Focus on the water itself. If possible, watch it move or ripple. Listen to any sounds it makes. Consider its properties - flowing, cleansing, life-giving.", 
+          duration: 60 
+        },
+        { 
+          id: 4, 
+          title: "Temperature Therapy", 
+          instruction: "If possible, adjust the temperature of the water. Notice how different temperatures affect your body and mind. Warm water tends to relax muscles, while cool water can invigorate.", 
+          duration: 90 
+        },
+        { 
+          id: 5, 
+          title: "Final Integration", 
+          instruction: "As you complete this practice, imagine the water has absorbed any tension or stress. As you release the water, visualize releasing whatever no longer serves you.", 
+          duration: 60 
+        }
+      ]
+    },
+    "tai-chi": {
+      title: "Tai Chi Flowing Movement",
+      description: "Experience the gentle flowing movements of Tai Chi for balance and relaxation.",
+      backgroundClass: "from-green-500 to-emerald-500",
+      steps: [
+        { 
+          id: 1, 
+          title: "Grounding", 
+          instruction: "Stand with feet shoulder-width apart, knees slightly bent. Feel your feet connecting with the ground. Take three deep breaths, allowing your body to become centered.", 
+          duration: 45 
+        },
+        { 
+          id: 2, 
+          title: "Cloud Hands", 
+          instruction: "Raise your hands to chest height, palms facing down. Slowly begin moving your hands in gentle circular motions, as if you're moving clouds. Keep your movements slow and fluid.", 
+          duration: 75 
+        },
+        { 
+          id: 3, 
+          title: "Gentle Shifting", 
+          instruction: "Begin to shift your weight gently from one foot to the other, maintaining your cloud hands movement. Breathe naturally, coordinating breath with movement.", 
+          duration: 90 
+        },
+        { 
+          id: 4, 
+          title: "Flow Like Water", 
+          instruction: "Allow your arms to flow like water, moving in soft curves and circles. There is no right or wrong way - focus on the feeling of gentle, continuous movement.", 
+          duration: 120 
+        },
+        { 
+          id: 5, 
+          title: "Gathering Energy", 
+          instruction: "Slowly bring your hands together in front of your lower abdomen, as if holding a ball of energy. Feel the warmth between your palms. Take three deep breaths to complete the practice.", 
+          duration: 60 
+        }
+      ]
+    },
+    "qigong": {
+      title: "Qigong Energy Cultivation",
+      description: "Ancient practice to cultivate and balance vital energy through gentle movements and breathing.",
+      backgroundClass: "from-amber-500 to-yellow-500",
+      steps: [
+        { 
+          id: 1, 
+          title: "Centering", 
+          instruction: "Stand with feet shoulder-width apart, knees slightly bent. Place your hands at your sides. Close your eyes and take three deep breaths, visualizing roots extending from your feet into the earth.", 
+          duration: 45 
+        },
+        { 
+          id: 2, 
+          title: "Gathering Qi", 
+          instruction: "Slowly raise your hands in front of you, palms facing up, as if lifting something. As your hands reach chest height, turn your palms to face your body. Feel the energy between your hands and your body.", 
+          duration: 60 
+        },
+        { 
+          id: 3, 
+          title: "Circulating Energy", 
+          instruction: "Begin to move your hands in circles in front of your body, as if tracing the outline of a ball. Coordinate your breathing with the movement - inhale as hands rise, exhale as they fall.", 
+          duration: 90 
+        },
+        { 
+          id: 4, 
+          title: "Pushing Mountains", 
+          instruction: "Extend your arms forward at shoulder height, palms facing away from you. Slowly push forward, as if gently pushing a mountain. Pull back and repeat, coordinating with your breath.", 
+          duration: 120 
+        },
+        { 
+          id: 5, 
+          title: "Storing Energy", 
+          instruction: "Lower your hands to your lower abdomen (dan tian), right hand over left for women, left over right for men. Feel the warmth and energy collecting in your center. Take three deep breaths to complete.", 
+          duration: 60 
+        }
+      ]
+    },
+    "reiki": {
+      title: "Self-Reiki Energy Practice",
+      description: "A guided self-healing practice using Reiki hand positions and energy awareness.",
+      backgroundClass: "from-purple-500 to-violet-500",
+      steps: [
+        { 
+          id: 1, 
+          title: "Setting Intention", 
+          instruction: "Sit or lie comfortably. Rub your palms together to activate energy. Set an intention for healing, such as 'I am open to receiving healing energy' or 'I allow balance to restore in my body.'", 
+          duration: 45 
+        },
+        { 
+          id: 2, 
+          title: "Crown Position", 
+          instruction: "Place your hands lightly on or hovering above the top of your head. Visualize white or purple light flowing from your hands into your head, clearing your thoughts and bringing peace.", 
+          duration: 90 
+        },
+        { 
+          id: 3, 
+          title: "Heart Center", 
+          instruction: "Move your hands to your heart center. Feel the warmth between your hands and your chest. Imagine green light flowing into your heart, bringing healing, compassion, and balance.", 
+          duration: 90 
+        },
+        { 
+          id: 4, 
+          title: "Solar Plexus", 
+          instruction: "Place your hands on your upper abdomen, just below your ribcage. Visualize yellow light flowing into this area, bringing confidence, personal power, and digestive harmony.", 
           duration: 90 
         },
         { 
           id: 5, 
           title: "Integration", 
-          instruction: "Begin to let the visualization fade, but maintain awareness of your breathing. Slowly open your eyes, carrying the calm feeling with you.", 
+          instruction: "Place one hand on your lower abdomen and one on your heart. Feel the connection between these energy centers. Take three deep breaths, visualizing your entire body filled with healing light.", 
+          duration: 60 
+        }
+      ]
+    },
+    "acupressure": {
+      title: "Self-Acupressure Relief Points",
+      description: "Learn to stimulate key acupressure points for stress relief and energy balance.",
+      backgroundClass: "from-orange-500 to-amber-500",
+      steps: [
+        { 
+          id: 1, 
+          title: "Preparation", 
+          instruction: "Find a comfortable seated position. Take three deep breaths to center yourself. We'll work with gentle but firm pressure on specific points. If any point feels too sensitive, reduce pressure.", 
+          duration: 30 
+        },
+        { 
+          id: 2, 
+          title: "LI4 - Hand Point", 
+          instruction: "Locate the web between your thumb and index finger. Using the thumb of your opposite hand, apply gentle pressure to this point. This point helps relieve headaches and tension. Hold for 1-2 minutes.", 
+          duration: 90 
+        },
+        { 
+          id: 3, 
+          title: "Yintang - Third Eye", 
+          instruction: "Place your finger between your eyebrows, at the indent where the bridge of your nose meets your forehead. Apply gentle pressure in a circular motion. This point helps calm the mind and relieve anxiety.", 
+          duration: 60 
+        },
+        { 
+          id: 4, 
+          title: "GB20 - Gates of Consciousness", 
+          instruction: "Place your thumbs at the base of your skull in the hollows on both sides of your neck. Apply gentle upward pressure. This point helps relieve headaches and neck tension.", 
+          duration: 90 
+        },
+        { 
+          id: 5, 
+          title: "ST36 - Three Miles Point", 
+          instruction: "Locate the point four finger widths below your kneecap, on the outside of your shinbone. Apply gentle pressure in circular motions. This point helps boost energy and strengthen immunity.", 
+          duration: 90 
+        }
+      ]
+    },
+    "breath-work": {
+      title: "Transformative Breath Patterns",
+      description: "Learn powerful breathing techniques to alter your state and enhance wellbeing.",
+      backgroundClass: "from-sky-500 to-blue-500",
+      steps: [
+        { 
+          id: 1, 
+          title: "Awareness", 
+          instruction: "Sit comfortably with your spine straight. Place one hand on your chest and one on your abdomen. Simply notice your natural breathing pattern without trying to change it. Where do you feel movement?", 
           duration: 45 
+        },
+        { 
+          id: 2, 
+          title: "Diaphragmatic Breathing", 
+          instruction: "Focus on breathing into your lower abdomen. Feel your belly expand on the inhale and contract on the exhale. Breathe slowly and deeply, keeping your chest relatively still.", 
+          duration: 90 
+        },
+        { 
+          id: 3, 
+          title: "4-7-8 Breath", 
+          instruction: "Inhale quietly through your nose for a count of 4. Hold your breath for a count of 7. Exhale completely through your mouth with a whoosh sound for a count of 8. Repeat this cycle 4 times.", 
+          duration: 120 
+        },
+        { 
+          id: 4, 
+          title: "Alternate Nostril Breathing", 
+          instruction: "Using your right thumb, close your right nostril. Inhale through your left nostril, then close it with your ring finger. Release your thumb and exhale through your right nostril. Reverse and repeat.", 
+          duration: 120 
+        },
+        { 
+          id: 5, 
+          title: "Integration", 
+          instruction: "Return to natural breathing. Notice how your body and mind feel compared to when you started. Observe any changes in your state, temperature, or energy level.", 
+          duration: 60 
+        }
+      ]
+    },
+    "sound-therapy": {
+      title: "Resonant Sound Healing",
+      description: "Experience the therapeutic vibrations of sound for deep relaxation and healing.",
+      backgroundClass: "from-indigo-500 to-blue-500",
+      steps: [
+        { 
+          id: 1, 
+          title: "Preparation", 
+          instruction: "Find a comfortable position where you can fully relax. Close your eyes and take three deep breaths. Begin to shift your attention to the sounds around you.", 
+          duration: 30 
+        },
+        { 
+          id: 2, 
+          title: "Vocal Toning", 
+          instruction: "Take a deep breath and on the exhale, make an 'Ahhh' sound. Feel the vibration in your chest and throat. Allow the sound to be continuous until your breath naturally ends.", 
+          duration: 60 
+        },
+        { 
+          id: 3, 
+          title: "Body Scanning", 
+          instruction: "Focus on different parts of your body, starting from your feet and moving upward. For each area, imagine sound waves or vibrations moving through that part, releasing any tension.", 
+          duration: 120 
+        },
+        { 
+          id: 4, 
+          title: "Om Chanting", 
+          instruction: "Inhale deeply, and on the exhale chant 'Om' (pronounced AUM), letting the sound resonate through your body. Feel the vibration moving from your abdomen up through your head.", 
+          duration: 90 
+        },
+        { 
+          id: 5, 
+          title: "Silent Integration", 
+          instruction: "Sit in complete silence for a few moments. Notice the powerful effect of silence after sound. Feel the residual vibrations in your body and the clarity in your mind.", 
+          duration: 60 
         }
       ]
     }

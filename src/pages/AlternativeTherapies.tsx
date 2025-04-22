@@ -22,7 +22,8 @@ import {
   Waves,
   Play,
   Info,
-  ArrowRight
+  ArrowRight,
+  BookOpen
 } from "lucide-react";
 
 type Therapy = {
@@ -63,6 +64,12 @@ const AlternativeTherapies = () => {
         therapyName,
         returnPath: location.pathname
       }
+    });
+  };
+  
+  const handleViewDetails = (therapyId: string) => {
+    navigate(`/alternative-therapies/detail/${therapyId}`, {
+      state: { returnPath: location.pathname }
     });
   };
   
@@ -259,11 +266,10 @@ const AlternativeTherapies = () => {
             {filteredTherapies.map(therapy => (
               <motion.div
                 key={therapy.id}
-                className="relative rounded-xl overflow-hidden shadow-md transition-all duration-300 hover:shadow-xl transform hover:scale-[1.01] group cursor-pointer"
+                className="relative rounded-xl overflow-hidden shadow-md transition-all duration-300 hover:shadow-xl transform hover:scale-[1.01] group"
                 style={{ backgroundColor: therapy.bgColor }}
                 whileHover={{ y: -5 }}
                 transition={{ duration: 0.2 }}
-                onClick={() => handleGuidedPractice(therapy.id, therapy.name)}
               >
                 <div className="aspect-video overflow-hidden">
                   <img 
@@ -282,7 +288,7 @@ const AlternativeTherapies = () => {
                     >
                       {therapy.icon}
                     </div>
-                    <Info className="h-5 w-5 text-white/80" />
+                    <Info className="h-5 w-5 text-white/80 cursor-pointer" onClick={() => handleViewDetails(therapy.id)} />
                   </div>
                   
                   <h3 className="text-xl font-semibold mb-2 text-white group-hover:text-[#E5C5A1] transition-colors">
@@ -293,20 +299,28 @@ const AlternativeTherapies = () => {
                     {therapy.shortDescription}
                   </p>
                   
-                  <Button 
-                    className="w-full flex items-center justify-center gap-2 hover:shadow-md"
-                    style={{ 
-                      backgroundColor: therapy.accentColor,
-                      color: '#fff'
-                    }}
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      handleGuidedPractice(therapy.id, therapy.name);
-                    }}
-                  >
-                    Start Practice
-                    <Play className="h-4 w-4 ml-1" />
-                  </Button>
+                  <div className="flex flex-col sm:flex-row gap-2">
+                    <Button 
+                      className="flex-1 flex items-center justify-center gap-2 hover:shadow-md"
+                      style={{ 
+                        backgroundColor: therapy.accentColor,
+                        color: '#fff'
+                      }}
+                      onClick={() => handleGuidedPractice(therapy.id, therapy.name)}
+                    >
+                      <Play className="h-4 w-4" />
+                      Start Practice
+                    </Button>
+                    
+                    <Button 
+                      variant="outline"
+                      className="flex-1 flex items-center justify-center gap-2 border-white/50 text-white hover:bg-white/10"
+                      onClick={() => handleViewDetails(therapy.id)}
+                    >
+                      <BookOpen className="h-4 w-4" />
+                      Learn More
+                    </Button>
+                  </div>
                 </div>
               </motion.div>
             ))}
