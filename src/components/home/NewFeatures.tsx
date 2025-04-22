@@ -42,8 +42,8 @@ const NewFeatures: React.FC = () => {
             className="flex flex-col items-center justify-center p-6 rounded-2xl transform transition-all duration-300 hover:scale-105 bg-gradient-to-br from-zinc-900 to-zinc-800 border-2 border-[#B87333]/30 hover:border-[#B87333] shadow-[0_8px_32px_rgba(184,115,51,0.2)] group backdrop-blur-sm"
             onClick={() => handleNavigation("/barter-system", "Barter System")}
           >
-            <span className="text-lg font-semibold mb-1 bg-gradient-to-r from-white to-gray-300 bg-clip-text text-transparent">Barter</span>
-            <span className="text-lg font-semibold bg-gradient-to-r from-white to-gray-300 bg-clip-text text-transparent">System</span>
+            <span className="text-base font-semibold mb-1 bg-gradient-to-r from-white to-gray-300 bg-clip-text text-transparent">Barter</span>
+            <span className="text-base font-semibold bg-gradient-to-r from-white to-gray-300 bg-clip-text text-transparent">System</span>
           </Button>
           
           <Button 
@@ -52,8 +52,8 @@ const NewFeatures: React.FC = () => {
             onClick={() => handleNavigation("/subscription-plans", "System Upgrade Plan")}
           >
             <div className="absolute inset-0 bg-[url('data:image/svg+xml;utf8,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%2220%22 height=%2220%22 viewBox=%220 0 20 20%22><path d=%22M0 10 L20 10%22 stroke=%22%23000%22 stroke-opacity=%220.1%22/></svg>')] opacity-20"></div>
-            <span className="text-lg font-bold text-black mb-1">Plan</span>
-            <span className="text-lg font-bold text-black">Upgrade</span>
+            <span className="text-base font-bold text-black mb-1">Plan</span>
+            <span className="text-base font-bold text-black">Upgrade</span>
           </Button>
           
           <Button 
@@ -61,8 +61,8 @@ const NewFeatures: React.FC = () => {
             className="flex flex-col items-center justify-center p-6 rounded-2xl transform transition-all duration-300 hover:scale-105 bg-gradient-to-br from-slate-900 to-slate-800 border-2 border-[#B87333]/30 hover:border-[#B87333] shadow-[0_8px_32px_rgba(184,115,51,0.2)] group backdrop-blur-sm"
             onClick={() => handleNavigation("/copay-credits", "Co-Pay Credits")}
           >
-            <span className="text-lg font-semibold mb-1 bg-gradient-to-r from-white to-gray-300 bg-clip-text text-transparent">Co-Pay</span>
-            <span className="text-lg font-semibold bg-gradient-to-r from-white to-gray-300 bg-clip-text text-transparent">Credits</span>
+            <span className="text-base font-semibold mb-1 bg-gradient-to-r from-white to-gray-300 bg-clip-text text-transparent">Co-Pay</span>
+            <span className="text-base font-semibold bg-gradient-to-r from-white to-gray-300 bg-clip-text text-transparent">Credits</span>
           </Button>
         </div>
       </div>

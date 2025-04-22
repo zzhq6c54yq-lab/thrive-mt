@@ -98,7 +98,7 @@ const SpecializedPrograms: React.FC = () => {
     },
     // Law Enforcement Add-On
     {
-      title: isSpanish ? "Programa de Cumplimiento de la Ley" : "Law Enforcement Program",
+      title: isSpanish ? "Cumplimiento de la Ley" : "Law Enforcement",
       description: isSpanish 
         ? "Apoyo de salud mental para profesionales de la ley" 
         : "Mental health support for law enforcement professionals",

@@ -45,8 +45,8 @@ const NewFeatures: React.FC = () => {
             onClick={() => handleNavigation("/barter-system", "Barter System")}
           >
             <Handshake className="h-8 w-8 mb-3 text-[#B87333] group-hover:text-[#E5C5A1] transition-colors" />
-            <span className="text-xl font-semibold mb-1 bg-gradient-to-r from-white to-gray-300 bg-clip-text text-transparent">Barter</span>
-            <span className="text-xl font-semibold bg-gradient-to-r from-white to-gray-300 bg-clip-text text-transparent">System</span>
+            <span className="text-base font-semibold mb-1 bg-gradient-to-r from-white to-gray-300 bg-clip-text text-transparent">Barter</span>
+            <span className="text-base font-semibold bg-gradient-to-r from-white to-gray-300 bg-clip-text text-transparent">System</span>
           </Button>
           
           {/* Plan Upgrade - Premium gold design */}
@@ -56,8 +56,8 @@ const NewFeatures: React.FC = () => {
             onClick={() => handleNavigation("/subscription-plans", "System Upgrade Plan")}
           >
             <Award className="h-8 w-8 mb-3 text-black group-hover:scale-110 transition-transform" />
-            <span className="text-xl font-bold text-black mb-1">Plan</span>
-            <span className="text-xl font-bold text-black">Upgrade</span>
+            <span className="text-base font-bold text-black mb-1">Plan</span>
+            <span className="text-base font-bold text-black">Upgrade</span>
           </Button>
           
           {/* Co-Pay Credits - Dark theme with bronze accents */}
@@ -67,8 +67,8 @@ const NewFeatures: React.FC = () => {
             onClick={() => handleNavigation("/copay-credits", "Co-Pay Credits")}
           >
             <WalletCards className="h-8 w-8 mb-3 text-[#B87333] group-hover:text-[#E5C5A1] transition-colors" />
-            <span className="text-xl font-semibold mb-1 bg-gradient-to-r from-white to-gray-300 bg-clip-text text-transparent">Co-Pay</span>
-            <span className="text-xl font-semibold bg-gradient-to-r from-white to-gray-300 bg-clip-text text-transparent">Credits</span>
+            <span className="text-base font-semibold mb-1 bg-gradient-to-r from-white to-gray-300 bg-clip-text text-transparent">Co-Pay</span>
+            <span className="text-base font-semibold bg-gradient-to-r from-white to-gray-300 bg-clip-text text-transparent">Credits</span>
           </Button>
         </div>
       </div>
