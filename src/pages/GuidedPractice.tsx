@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from "react";
 import { useParams, Link, useLocation, useNavigate } from "react-router-dom";
 import { ArrowLeft, Play, Pause, RotateCw, CheckCircle2 } from "lucide-react";
@@ -123,39 +122,45 @@ const GuidedPractice = () => {
       ]
     },
     "yoga": {
-      title: "Gentle Yoga Flow for Anxiety",
-      description: "A sequence of gentle poses and breathing techniques to calm your nervous system.",
+      title: "Basic Yoga Flow for Beginners",
+      description: "A gentle 15-minute yoga sequence perfect for beginners, focusing on fundamental poses and proper breathing techniques.",
       backgroundClass: "from-blue-600 to-teal-600",
       steps: [
         { 
           id: 1, 
-          title: "Grounding Breath", 
-          instruction: "Sit comfortably with your spine straight. Place your hands on your knees. Breathe deeply through your nose, filling your belly, then chest. Exhale slowly through your mouth.", 
-          duration: 60 
-        },
-        { 
-          id: 2, 
-          title: "Gentle Neck Rolls", 
-          instruction: "Drop your right ear toward your right shoulder. Slowly roll your chin down to chest, then bring your left ear toward your left shoulder. Continue these gentle half circles 5 times.", 
-          duration: 45 
-        },
-        { 
-          id: 3, 
-          title: "Seated Twist", 
-          instruction: "Inhale and lengthen your spine. Exhale and gently twist to the right, placing your left hand on your right knee. Hold for 3 breaths, then repeat on the other side.", 
-          duration: 90 
-        },
-        { 
-          id: 4, 
-          title: "Child's Pose", 
-          instruction: "Come to hands and knees, then sit back on your heels with arms extended forward or alongside your body. Rest your forehead on the floor or a cushion. Breathe deeply.", 
+          title: "Introduction & Centering", 
+          instruction: "Find a comfortable seated position. Take deep breaths and bring awareness to your body. We'll begin with simple stretches to warm up.", 
           duration: 120 
         },
         { 
-          id: 5, 
-          title: "Corpse Pose", 
-          instruction: "Lie on your back with arms slightly away from your body, palms facing up. Allow your feet to fall outward. Close your eyes and focus on your breath, letting your body become heavy.", 
+          id: 2, 
+          title: "Sun Salutation A", 
+          instruction: "Start in mountain pose. On inhale, raise arms overhead. On exhale, fold forward. Inhale halfway lift, exhale fold. Step back to plank, lower to chaturanga, upward dog, and downward dog. Hold for 5 breaths.", 
           duration: 180 
+        },
+        { 
+          id: 3, 
+          title: "Standing Poses", 
+          instruction: "From downward dog, step forward to warrior I. Hold for 3 breaths. Transition to warrior II, then extended side angle pose. Repeat on other side.", 
+          duration: 240 
+        },
+        { 
+          id: 4, 
+          title: "Balance Practice", 
+          instruction: "Return to mountain pose. Shift weight to right foot for tree pose. Find a focal point and hold for 5 breaths. Repeat on left side.", 
+          duration: 180 
+        },
+        { 
+          id: 5, 
+          title: "Seated Poses", 
+          instruction: "Come to seated position. Forward fold over extended legs, then butterfly pose. Focus on breathing into any tension.", 
+          duration: 120 
+        },
+        { 
+          id: 6, 
+          title: "Final Relaxation", 
+          instruction: "Lie down in savasana (corpse pose). Let your body completely relax. Focus on your breath and the sensations in your body.", 
+          duration: 60 
         }
       ]
     },

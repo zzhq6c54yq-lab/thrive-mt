@@ -1,4 +1,3 @@
-
 import React, { useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { motion } from "framer-motion";
@@ -101,11 +100,11 @@ const AlternativeTherapies = () => {
       name: "Yoga",
       icon: <GanttChart />,
       shortDescription: "Practice physical postures, breathing techniques, and meditation.",
-      description: "Yoga combines physical postures, breathing techniques, and meditation to promote physical and mental health. It can improve flexibility, strength, and balance, as well as reduce stress and anxiety.",
+      description: "Yoga combines physical postures, breathing techniques, and meditation to promote physical and mental health. It can improve flexibility, strength, and balance, as well as reduce stress and anxiety. Start with our 15-minute basic yoga routine for beginners.",
       benefits: ["Improved flexibility", "Stress reduction", "Increased strength"],
       coverImage: "https://images.unsplash.com/photo-1599447421416-3414500d18a5?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80",
       bgColor: "#FFF3E0",
-      accentColor: "#E3B85C",
+      accentColor: "#E3B85C"
     },
     {
       id: "music-therapy",
