@@ -10,6 +10,7 @@ const SpecializedPrograms: React.FC = () => {
   const navigate = useNavigate();
   const { isSpanish } = useTranslation();
 
+  // Translations
   const translations = {
     title: isSpanish ? "Programas Especializados" : "Specialized Programs",
     navigating: isSpanish ? "Navegando..." : "Navigating...",
@@ -17,10 +18,13 @@ const SpecializedPrograms: React.FC = () => {
     exploreProgram: isSpanish ? "Explorar Programa" : "Explore Program"
   };
 
+  // Working image URLs with fallbacks
   const getImageUrl = (imagePath: string) => {
+    // If the image URL starts with https, use it directly
     if (imagePath.startsWith('https://')) {
       return imagePath;
     }
+    // Otherwise, use a placeholder
     return "https://images.unsplash.com/photo-1506726446959-adfa26e7aea0?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80";
   };
 
@@ -53,7 +57,7 @@ const SpecializedPrograms: React.FC = () => {
         ? "Recursos de salud mental para emprendedores y dueños de pequeñas empresas" 
         : "Mental health resources for entrepreneurs and small business owners",
       icon: Briefcase,
-      path: "/small-business-selection",
+      path: "/small-business-selection",  // Updated path to selection screen
       gradient: "from-[#F97316]/80 to-[#FB923C]/80",
       borderColor: "#F97316",
       imagePath: getImageUrl("https://images.unsplash.com/photo-1600880292203-757bb62b4baf?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=500&q=80")
@@ -76,9 +80,10 @@ const SpecializedPrograms: React.FC = () => {
         : "Mental wellness resources for seniors and elderly adults",
       icon: Sparkles,
       path: "/golden-years-welcome",
-      gradient: "from-[#3A302A]/90 to-[#5D4C3B]/90",
+      gradient: "from-[#242424]/90 to-[#2A2420]/90",
       borderColor: "#D4AF37",
-      imagePath: getImageUrl("https://images.unsplash.com/photo-1569677673307-0e56f3b3c58a?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=500&q=80")
+      // Updated with a more appropriate senior citizens image showing positive interaction
+      imagePath: getImageUrl("https://images.unsplash.com/photo-1573497019940-1c28c88b4f3e?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=500&q=80")
     },
     {
       title: isSpanish ? "Servicios de Emergencia" : "First Responders",
@@ -91,21 +96,24 @@ const SpecializedPrograms: React.FC = () => {
       borderColor: "#DC2626",
       imagePath: getImageUrl("https://images.unsplash.com/photo-1576091160550-2173dba999ef?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80"),
     },
+    // Law Enforcement Add-On
     {
-      title: isSpanish ? "Programa para Oficiales de Policía" : "Police Officers Program",
+      title: isSpanish ? "Programa de Cumplimiento de la Ley" : "Law Enforcement Program",
       description: isSpanish 
-        ? "Apoyo de salud mental para oficiales de policía y profesionales de la ley" 
-        : "Mental health support for police officers and law enforcement professionals",
+        ? "Apoyo de salud mental para profesionales de la ley" 
+        : "Mental health support for law enforcement professionals",
       icon: Shield,
-      path: "/police-officers-welcome",
+      path: "/law-enforcement-welcome",
       gradient: "from-[#1E40AF]/80 to-[#1E3A8A]/80",
       borderColor: "#1E40AF",
       imagePath: "/lovable-uploads/f3c84972-8f58-42d7-b86f-82ff2d823b30.png"
     }
   ];
-
+  
+  // Listen for language changes
   useEffect(() => {
     const handleLanguageChange = () => {
+      // Force component to re-render when language changes
       console.log("Language changed, updating specialized programs");
     };
     
@@ -114,7 +122,7 @@ const SpecializedPrograms: React.FC = () => {
       window.removeEventListener('languageChange', handleLanguageChange);
     };
   }, []);
-
+  
   const handleFeatureClick = (path: string) => {
     toast({
       title: translations.navigating,
@@ -122,6 +130,7 @@ const SpecializedPrograms: React.FC = () => {
       duration: 1500,
     });
     
+    // Updated to include directToAssessment flag to indicate we want to go directly to assessment
     navigate(path, { 
       state: { 
         fromMainMenu: true,
@@ -140,21 +149,24 @@ const SpecializedPrograms: React.FC = () => {
             onClick={() => handleFeatureClick(program.path)}
             className="relative overflow-hidden rounded-xl cursor-pointer transform transition-all duration-300 hover:scale-105 group h-80"
           >
+            {/* Background image - covers about 70% of card height */}
             <div className="absolute inset-0 h-[70%] z-0">
               <img 
                 src={program.imagePath} 
                 alt={program.title}
                 className="w-full h-full object-cover"
                 onError={(e) => {
+                  // If image fails to load, replace with fallback
                   (e.target as HTMLImageElement).src = "https://images.unsplash.com/photo-1506726446959-adfa26e7aea0?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80";
                 }}
               />
               <div className="absolute inset-0 bg-black/30"></div>
             </div>
             
+            {/* Bottom color section - 30% of card height */}
             <div className={`absolute bottom-0 left-0 right-0 h-[30%] ${
               program.title === "The Golden Years" || program.title === "Los Años Dorados"
-                ? "bg-gradient-to-br from-[#3A302A]/90 to-[#5D4C3B]/90 shadow-inner"
+                ? "bg-gradient-to-br from-[#242424]/90 to-[#2A2420]/90 shadow-inner"
                 : `bg-gradient-to-br ${program.gradient}`
             } flex items-center justify-center`}>
               <h3 className="text-xl font-semibold text-white truncate text-center w-full px-4">
@@ -174,6 +186,7 @@ const SpecializedPrograms: React.FC = () => {
               </div>
             </div>
             
+            {/* Enhanced metallic gold effect for Golden Years */}
             {(program.title === "The Golden Years" || program.title === "Los Años Dorados") && (
               <>
                 <div className="absolute inset-0 bg-gradient-to-b from-[#D4AF37]/15 via-transparent to-transparent pointer-events-none"></div>
@@ -182,6 +195,7 @@ const SpecializedPrograms: React.FC = () => {
               </>
             )}
             
+            {/* Subtle highlight effect on hover */}
             <div 
               className="absolute inset-0 border-2 opacity-0 group-hover:opacity-100 transition-opacity"
               style={{ 
