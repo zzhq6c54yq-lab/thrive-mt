@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Shield, GraduationCap, Briefcase, Sparkles, ChevronRight, Users, Siren } from "lucide-react";
@@ -95,6 +96,18 @@ const SpecializedPrograms: React.FC = () => {
       gradient: "from-[#DC2626]/80 to-[#EF4444]/80",
       borderColor: "#DC2626",
       imagePath: getImageUrl("https://images.unsplash.com/photo-1576091160550-2173dba999ef?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80"),
+    },
+    // Law Enforcement Add-On (Police Officers Program)
+    {
+      title: isSpanish ? "Programa para Oficiales de Policía" : "Police Officers Program",
+      description: isSpanish 
+        ? "Apoyo de salud mental para oficiales de policía y profesionales de la ley" 
+        : "Mental health support for police officers and law enforcement professionals",
+      icon: Shield,
+      path: "/police-officers-welcome",
+      gradient: "from-[#1E40AF]/80 to-[#1E3A8A]/80",
+      borderColor: "#1E40AF",
+      imagePath: "/lovable-uploads/f3c84972-8f58-42d7-b86f-82ff2d823b30.png"
     }
   ];
   
@@ -200,3 +213,4 @@ const SpecializedPrograms: React.FC = () => {
 };
 
 export default SpecializedPrograms;
+
