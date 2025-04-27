@@ -1,3 +1,4 @@
+
 import { useNavigate, useLocation } from "react-router-dom";
 import { useToast } from "@/hooks/use-toast";
 
@@ -24,7 +25,9 @@ export const useFeatureActions = () => {
       path.includes("adolescent") ||
       path.includes("dod-portal") ||
       path.includes("college-portal") ||
-      path.includes("small-business")
+      path.includes("small-business") ||
+      path.includes("law-enforcement") ||
+      path.includes("first-responders")
     );
   };
   
@@ -41,6 +44,8 @@ export const useFeatureActions = () => {
     if (path.includes("dod")) return "/dod-portal";
     if (path.includes("college")) return "/college-portal";
     if (path.includes("small-business")) return "/small-business-portal";
+    if (path.includes("law-enforcement")) return "/law-enforcement-portal";
+    if (path.includes("first-responders")) return "/first-responders-portal";
     
     // Default to main app
     return "/";

@@ -7,6 +7,10 @@ import { Shield, FileText, BookOpen, HeartPulse, Calendar, Users, AlertCircle, V
 import { useNavigate, useLocation } from "react-router-dom";
 import { useToast } from "@/hooks/use-toast";
 import useTranslation from "@/hooks/useTranslation";
+import LawEnforcementResources from "@/components/law-enforcement/LawEnforcementResources";
+import LawEnforcementCommunity from "@/components/law-enforcement/LawEnforcementCommunity";
+import LawEnforcementAssessments from "@/components/law-enforcement/LawEnforcementAssessments";
+import LawEnforcementWorkshops from "@/components/law-enforcement/LawEnforcementWorkshops";
 
 const LawEnforcementPortal: React.FC = () => {
   const navigate = useNavigate();
@@ -187,11 +191,10 @@ const LawEnforcementPortal: React.FC = () => {
               </div>
             )}
             
-            {/* Implement other tabs similar to DOD portal */}
-            {activeTab === 'resources' && <div>Resources content</div>}
-            {activeTab === 'community' && <div>Community content</div>}
-            {activeTab === 'assessments' && <div>Assessments content</div>}
-            {activeTab === 'workshops' && <div>Workshops content</div>}
+            {activeTab === 'resources' && <LawEnforcementResources />}
+            {activeTab === 'community' && <LawEnforcementCommunity />}
+            {activeTab === 'assessments' && <LawEnforcementAssessments />}
+            {activeTab === 'workshops' && <LawEnforcementWorkshops />}
           </div>
         </div>
       </div>
