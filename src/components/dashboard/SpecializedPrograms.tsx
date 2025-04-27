@@ -76,7 +76,7 @@ const SpecializedPrograms: React.FC = () => {
         : "Mental wellness resources for seniors and elderly adults",
       icon: Sparkles,
       path: "/golden-years-welcome",
-      gradient: "from-[#242424]/90 to-[#2A2420]/90",
+      gradient: "from-[#D4AF37]/90 to-[#B8860B]/90",
       borderColor: "#D4AF37",
       imagePath: getImageUrl("https://images.unsplash.com/photo-1573497019940-1c28c88b4f3e?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=500&q=80")
     },
@@ -154,7 +154,7 @@ const SpecializedPrograms: React.FC = () => {
             
             <div className={`absolute bottom-0 left-0 right-0 h-[30%] ${
               program.title === "The Golden Years" || program.title === "Los Años Dorados"
-                ? "bg-gradient-to-br from-[#242424]/90 to-[#2A2420]/90 shadow-inner"
+                ? "bg-gradient-to-br from-[#D4AF37]/90 to-[#B8860B]/90 shadow-inner"
                 : `bg-gradient-to-br ${program.gradient}`
             } flex items-center justify-center`}>
               <h3 className="text-xl font-semibold text-white truncate text-center w-full px-4">
@@ -176,9 +176,9 @@ const SpecializedPrograms: React.FC = () => {
             
             {(program.title === "The Golden Years" || program.title === "Los Años Dorados") && (
               <>
-                <div className="absolute inset-0 bg-gradient-to-b from-[#D4AF37]/15 via-transparent to-transparent pointer-events-none"></div>
-                <div className="absolute top-0 right-0 w-24 h-24 bg-gradient-to-br from-[#D4AF37]/20 to-transparent rounded-full blur-lg"></div>
-                <div className="absolute bottom-0 left-0 w-16 h-16 bg-gradient-to-tl from-[#D4AF37]/20 to-transparent rounded-full blur-lg"></div>
+                <div className="absolute inset-0 bg-gradient-to-b from-[#D4AF37]/20 via-transparent to-[#B8860B]/20 pointer-events-none"></div>
+                <div className="absolute top-0 right-0 w-24 h-24 bg-gradient-to-br from-[#D4AF37]/30 to-[#B8860B]/30 rounded-full blur-lg"></div>
+                <div className="absolute bottom-0 left-0 w-16 h-16 bg-gradient-to-tl from-[#D4AF37]/30 to-[#B8860B]/30 rounded-full blur-lg"></div>
               </>
             )}
             

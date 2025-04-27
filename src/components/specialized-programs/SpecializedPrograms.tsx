@@ -166,7 +166,7 @@ const SpecializedPrograms: React.FC = () => {
             {/* Bottom color section - 30% of card height */}
             <div className={`absolute bottom-0 left-0 right-0 h-[30%] ${
               program.title === "The Golden Years" || program.title === "Los Años Dorados"
-                ? "bg-gradient-to-br from-[#242424]/90 to-[#2A2420]/90 shadow-inner"
+                ? "bg-gradient-to-br from-[#D4AF37]/90 to-[#B8860B]/90 shadow-inner"
                 : `bg-gradient-to-br ${program.gradient}`
             } flex items-center justify-center`}>
               <h3 className="text-xl font-semibold text-white truncate text-center w-full px-4">
@@ -189,9 +189,9 @@ const SpecializedPrograms: React.FC = () => {
             {/* Enhanced metallic gold effect for Golden Years */}
             {(program.title === "The Golden Years" || program.title === "Los Años Dorados") && (
               <>
-                <div className="absolute inset-0 bg-gradient-to-b from-[#D4AF37]/15 via-transparent to-transparent pointer-events-none"></div>
-                <div className="absolute top-0 right-0 w-24 h-24 bg-gradient-to-br from-[#D4AF37]/20 to-transparent rounded-full blur-lg"></div>
-                <div className="absolute bottom-0 left-0 w-16 h-16 bg-gradient-to-tl from-[#D4AF37]/20 to-transparent rounded-full blur-lg"></div>
+                <div className="absolute inset-0 bg-gradient-to-b from-[#D4AF37]/20 via-transparent to-[#B8860B]/20 pointer-events-none"></div>
+                <div className="absolute top-0 right-0 w-24 h-24 bg-gradient-to-br from-[#D4AF37]/30 to-[#B8860B]/30 rounded-full blur-lg"></div>
+                <div className="absolute bottom-0 left-0 w-16 h-16 bg-gradient-to-tl from-[#D4AF37]/30 to-[#B8860B]/30 rounded-full blur-lg"></div>
               </>
             )}
             
