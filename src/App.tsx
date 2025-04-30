@@ -149,6 +149,11 @@ function App() {
         <Route path="/first-responders/critical-support" element={<FirstRespondersCriticalSupport />} />
         <Route path="/first-responders/stress-management" element={<FirstRespondersStressManagement />} />
         
+        {/* Add these new routes for First Responders practice paths */}
+        <Route path="/first-responders-practice/:practiceId" element={<GuidedPractice />} />
+        <Route path="/first-responders-workshops/:workshopId" element={<WorkshopDetail />} />
+        <Route path="/first-responders-assessments/:assessmentId" element={<MentalWellnessTools />} />
+        
         <Route path="/workshops" element={<Workshops />} />
         <Route path="/workshop/:workshopId" element={<WorkshopDetail />} />
         

@@ -1,4 +1,3 @@
-
 import { useNavigate, useLocation } from "react-router-dom";
 import { useToast } from "@/hooks/use-toast";
 
@@ -71,6 +70,7 @@ export const useFeatureActions = () => {
     // Check if we're in a specialized portal
     const inPortal = isInSpecializedPortal();
     const portalPath = getPortalBasePath();
+    const portalPrefix = portalPath.replace('/', '').replace('-portal', '');
     
     // Important fix: Always maintain portal context
     const stateParams = inPortal ? 
@@ -88,113 +88,81 @@ export const useFeatureActions = () => {
         returnToFeature: true
       };
     
-    // If we're in a portal and the path doesn't specify a full path (doesn't start with '/')
-    // Prepend the portal prefix to the path to keep navigation within the portal context
+    // If path is provided directly, use it instead of constructing from type
     let navigationPath = path;
-    if (inPortal && path && !path.startsWith('/')) {
-      // Extract the portal prefix (e.g., "golden-years" from "/golden-years-portal")
-      const portalPrefix = portalPath.replace('/','').replace('-portal','');
-      navigationPath = `/${portalPrefix}-${path}`;
-    }
-    // If it's a full path but we want to stay in portal, keep as is
-    else if (inPortal && path) {
-      navigationPath = path;
+
+    // Handle navigation based on action type if no specific path provided
+    if (!navigationPath) {
+      switch (type) {
+        case 'workshop':
+          // Navigate to specific workshop - keep in portal context if needed
+          navigationPath = inPortal ? `/${portalPrefix}-workshops/${id || ''}` : `/workshop/${id}`;
+          break;
+          
+        case 'assessment':
+          // Navigate directly to assessment - keep in portal context if needed
+          navigationPath = inPortal ? `/${portalPrefix}-assessments/${id || ''}` : `/mental-wellness/assessments/${id || ''}`;
+          break;
+          
+        case 'practice':
+          // Navigate to guided practice
+          navigationPath = inPortal ? `/${portalPrefix}-practice/${id || ''}` : `/guided-practice/${id || ''}`;
+          break;
+          
+        case 'discussion':
+          // Navigate to community discussions - keep in portal context if needed
+          navigationPath = inPortal ? `/${portalPrefix}-community` : `/community-support`;
+          break;
+          
+        case 'join':
+          // Join virtual meeting or group - keep in portal context if needed
+          navigationPath = inPortal ? `/${portalPrefix}-meetings` : `/virtual-meetings`;
+          break;
+          
+        case 'redeem':
+          // Navigate to redemption page
+          navigationPath = `/copay-credits`;
+          break;
+          
+        case 'record':
+          // For video diary recording
+          navigationPath = `/video-diary/record`;
+          break;
+      }
     }
     
-    // Handle navigation based on action type
-    switch (type) {
-      case 'workshop':
-        // Navigate to specific workshop - keep in portal context if needed
-        const workshopPath = inPortal ? `/${portalPath.split('/')[1]}-workshops/${id || ''}` : `/workshop/${id}`;
-        navigate(workshopPath, { state: stateParams });
-        break;
-        
-      case 'assessment':
-        // Navigate directly to assessment - keep in portal context if needed
-        const assessmentPath = inPortal ? `/${portalPath.split('/')[1]}-assessments/${id || ''}` : `/mental-wellness/assessments/${id || ''}`;
-        navigate(assessmentPath, {
-          state: {
-            ...stateParams,
-            startAssessment: true,
-            directToAssessment: true,
-            assessmentTitle: title
-          }
-        });
-        break;
-        
-      case 'download':
-        // Simulate download (in a real app, this would trigger actual download)
-        setTimeout(() => {
-          toast({
-            title: "Download Complete",
-            description: `${title} has been downloaded successfully.`,
-            duration: 3000,
-          });
-        }, 1500);
-        break;
-        
-      case 'practice':
-        // Navigate to guided practice
-        const practicePath = inPortal ? `/${portalPath.split('/')[1]}-practice/${id || ''}` : `/guided-practice/${id || ''}`;
-        navigate(practicePath, {
-          state: {
-            ...stateParams,
-            practiceTitle: title
-          }
-        });
-        break;
-        
-      case 'discussion':
-        // Navigate to community discussions - keep in portal context if needed
-        const discussionPath = inPortal ? `/${portalPath.split('/')[1]}-community` : `/community-support`;
-        navigate(discussionPath, {
-          state: {
-            ...stateParams,
-            activeTab: "discussions",
-            discussionTopic: title
-          }
-        });
-        break;
-        
-      case 'join':
-        // Join virtual meeting or group - keep in portal context if needed
-        const meetingPath = inPortal ? `/${portalPath.split('/')[1]}-meetings` : `/virtual-meetings`;
-        navigate(meetingPath, {
-          state: {
-            ...stateParams,
-            meetingTitle: title,
-            autoJoin: true
-          }
-        });
-        break;
-        
-      case 'redeem':
-        // Navigate to redemption page
-        navigate(`/copay-credits`, {
-          state: {
-            ...stateParams,
-            redeemAction: title
-          }
-        });
-        break;
-        
-      case 'record':
-        // For video diary recording
-        navigate(`/video-diary/record`, {
-          state: {
-            ...stateParams,
-            recordingType: title
-          }
-        });
-        break;
-        
-      default:
-        // Default case: navigate to specified path or do nothing
-        if (navigationPath) {
-          navigate(navigationPath, { state: stateParams });
-        } else {
-          console.warn("No path or action provided for this button");
-        }
+    // Special state parameters for assessments
+    if (type === 'assessment') {
+      stateParams.startAssessment = true;
+      stateParams.directToAssessment = true;
+      stateParams.assessmentTitle = title;
+    }
+    
+    // Special state parameters for practice
+    if (type === 'practice') {
+      stateParams.practiceTitle = title;
+    }
+    
+    // If we have a path to navigate to, go there
+    if (navigationPath) {
+      navigate(navigationPath, { state: stateParams });
+    } else {
+      // Handle other action types that don't require navigation
+      switch (type) {
+        case 'download':
+          // Simulate download (in a real app, this would trigger actual download)
+          setTimeout(() => {
+            toast({
+              title: "Download Complete",
+              description: `${title} has been downloaded successfully.`,
+              duration: 3000,
+            });
+          }, 1500);
+          break;
+          
+        default:
+          console.warn("No path or action provided for this button type:", type);
+      }
     }
   };
   

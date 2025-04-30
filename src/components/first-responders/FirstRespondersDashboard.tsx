@@ -195,7 +195,7 @@ const FirstRespondersDashboard = () => {
             <CardContent className="p-4 flex items-center">
               <div className="bg-red-900/20 text-red-400 p-3 rounded-lg mr-4 text-center min-w-[60px]">
                 <span className="block text-sm">APR</span>
-                <span className="block text-xl font-bold">20</span>
+                <span className="block text-xl font-bold">30</span>
               </div>
               <div className="flex-grow">
                 <h3 className="font-medium text-white">First Responder Mental Health Workshop</h3>
@@ -221,8 +221,8 @@ const FirstRespondersDashboard = () => {
           <Card className="bg-[#141921] border-red-900/30">
             <CardContent className="p-4 flex items-center">
               <div className="bg-red-900/20 text-red-400 p-3 rounded-lg mr-4 text-center min-w-[60px]">
-                <span className="block text-sm">APR</span>
-                <span className="block text-xl font-bold">27</span>
+                <span className="block text-sm">MAY</span>
+                <span className="block text-xl font-bold">04</span>
               </div>
               <div className="flex-grow">
                 <h3 className="font-medium text-white">Peer Support Network Meeting</h3>

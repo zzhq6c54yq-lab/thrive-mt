@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button";
 import { AlertCircle, Check, HeartPulse, Brain, Shield, Activity, Download } from "lucide-react";
 import PortalBackButton from "@/components/navigation/PortalBackButton";
 import ActionButton from "@/components/navigation/ActionButton";
-import { useToast } from "@/components/ui/use-toast";
+import { useToast } from "@/hooks/use-toast";
 import { saveAs } from "file-saver";
 
 const FirstRespondersCriticalSupport = () => {
@@ -123,6 +123,7 @@ const FirstRespondersCriticalSupport = () => {
               type="workshop"
               id="psych-first-aid"
               title="Start Workshop"
+              path="/first-responders-workshops/psych-first-aid"
               variant="default"
               className="w-full bg-red-700 hover:bg-red-800 text-white"
             />
@@ -154,6 +155,7 @@ const FirstRespondersCriticalSupport = () => {
             <ActionButton
               type="assessment"
               id="trauma-response"
+              path="/first-responders-assessments/trauma-response"
               title="Take Assessment"
               variant="default"
               className="w-full bg-red-700 hover:bg-red-800 text-white"
@@ -186,6 +188,7 @@ const FirstRespondersCriticalSupport = () => {
             <ActionButton
               type="practice"
               id="resilience"
+              path="/first-responders-practice/resilience"
               title="Start Practice"
               variant="default"
               className="w-full bg-red-700 hover:bg-red-800 text-white"
