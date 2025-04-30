@@ -1,6 +1,7 @@
+
 import React, { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
-import { Shield, GraduationCap, Briefcase, Sparkles, ChevronRight, Users, Siren } from "lucide-react";
+import { Shield, GraduationCap, Briefcase, Sparkles, ChevronRight, Users, Siren, BookUser } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { useToast } from "@/hooks/use-toast";
 import useTranslation from "@/hooks/useTranslation";
@@ -101,6 +102,17 @@ const SpecializedPrograms: React.FC = () => {
       gradient: "from-[#1E40AF]/80 to-[#1E3A8A]/80",
       borderColor: "#1E40AF",
       imagePath: "/lovable-uploads/f3c84972-8f58-42d7-b86f-82ff2d823b30.png"
+    },
+    {
+      title: isSpanish ? "Educadores Estimados" : "Esteemed Educators",
+      description: isSpanish 
+        ? "Apoyo de salud mental para profesores, maestros y personal educativo" 
+        : "Mental health support for teachers, educators, and education staff",
+      icon: BookUser,
+      path: "/educators-welcome",
+      gradient: "from-[#8B5CF6]/80 to-[#6366F1]/80",
+      borderColor: "#8B5CF6",
+      imagePath: getImageUrl("https://images.unsplash.com/photo-1581090464777-f3220bbe1b8b?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=500&q=80")
     }
   ];
 

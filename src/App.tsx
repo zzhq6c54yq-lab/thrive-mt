@@ -68,6 +68,8 @@ import FirstRespondersCriticalSupport from "@/pages/FirstRespondersCriticalSuppo
 import FirstRespondersStressManagement from "@/pages/FirstRespondersStressManagement";
 import LawEnforcementWelcome from "@/pages/LawEnforcementWelcome";
 import LawEnforcementPortal from "@/pages/LawEnforcementPortal";
+import EducatorsWelcome from "@/pages/EducatorsWelcome";
+import EducatorsPortal from "@/pages/EducatorsPortal";
 import NotFound from "@/pages/NotFound";
 import GenerativeVideo from "@/pages/GenerativeVideo";
 
@@ -149,10 +151,18 @@ function App() {
         <Route path="/first-responders/critical-support" element={<FirstRespondersCriticalSupport />} />
         <Route path="/first-responders/stress-management" element={<FirstRespondersStressManagement />} />
         
-        {/* Add these new routes for First Responders practice paths */}
+        {/* Routes for First Responders practice paths */}
         <Route path="/first-responders-practice/:practiceId" element={<GuidedPractice />} />
         <Route path="/first-responders-workshops/:workshopId" element={<WorkshopDetail />} />
         <Route path="/first-responders-assessments/:assessmentId" element={<MentalWellnessTools />} />
+        
+        {/* Esteemed Educators Routes */}
+        <Route path="/educators-welcome" element={<EducatorsWelcome />} />
+        <Route path="/educators-portal" element={<EducatorsPortal />} />
+        <Route path="/educators-workshops/:workshopId" element={<WorkshopDetail />} />
+        <Route path="/educators-assessments/:assessmentId" element={<MentalWellnessTools />} />
+        <Route path="/educators-practice/:practiceId" element={<GuidedPractice />} />
+        <Route path="/educators-events" element={<VirtualMeetings />} />
         
         <Route path="/workshops" element={<Workshops />} />
         <Route path="/workshop/:workshopId" element={<WorkshopDetail />} />

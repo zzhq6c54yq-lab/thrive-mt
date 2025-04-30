@@ -1,6 +1,7 @@
+
 import React, { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
-import { Shield, GraduationCap, Briefcase, Sparkles, ChevronRight, Users, Siren } from "lucide-react";
+import { Shield, GraduationCap, Briefcase, Sparkles, ChevronRight, Users, Siren, BookUser } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { useToast } from "@/hooks/use-toast";
 import useTranslation from "@/hooks/useTranslation";
@@ -80,9 +81,8 @@ const SpecializedPrograms: React.FC = () => {
         : "Mental wellness resources for seniors and elderly adults",
       icon: Sparkles,
       path: "/golden-years-welcome",
-      gradient: "from-[#242424]/90 to-[#2A2420]/90",
+      gradient: "from-[#D4AF37]/90 to-[#B8860B]/90",
       borderColor: "#D4AF37",
-      // Updated with a more appropriate senior citizens image showing positive interaction
       imagePath: getImageUrl("https://images.unsplash.com/photo-1573497019940-1c28c88b4f3e?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=500&q=80")
     },
     {
@@ -107,6 +107,18 @@ const SpecializedPrograms: React.FC = () => {
       gradient: "from-[#1E40AF]/80 to-[#1E3A8A]/80",
       borderColor: "#1E40AF",
       imagePath: "/lovable-uploads/f3c84972-8f58-42d7-b86f-82ff2d823b30.png"
+    },
+    // Esteemed Educators Add-On
+    {
+      title: isSpanish ? "Educadores Estimados" : "Esteemed Educators",
+      description: isSpanish 
+        ? "Apoyo de salud mental para profesores, maestros y personal educativo" 
+        : "Mental health support for teachers, educators, and education staff",
+      icon: BookUser,
+      path: "/educators-welcome",
+      gradient: "from-[#9b87f5]/80 to-[#7E69AB]/80",
+      borderColor: "#9b87f5",
+      imagePath: getImageUrl("https://images.unsplash.com/photo-1605810230434-7631ac76ec81?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=500&q=80")
     }
   ];
   
