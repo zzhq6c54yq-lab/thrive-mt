@@ -1,4 +1,3 @@
-
 import React from "react";
 import { Routes, Route, Navigate } from "react-router-dom";
 import Index from "@/pages/Index";
@@ -163,6 +162,7 @@ function App() {
         <Route path="/educators-assessments/:assessmentId" element={<MentalWellnessTools />} />
         <Route path="/educators-practice/:practiceId" element={<GuidedPractice />} />
         <Route path="/educators-events" element={<VirtualMeetings />} />
+        <Route path="/educators-community" element={<CommunitySupport />} />
         
         <Route path="/workshops" element={<Workshops />} />
         <Route path="/workshop/:workshopId" element={<WorkshopDetail />} />

@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Shield, GraduationCap, Briefcase, Sparkles, ChevronRight, Users, Siren, BookUser } from "lucide-react";
@@ -118,7 +117,7 @@ const SpecializedPrograms: React.FC = () => {
       path: "/educators-welcome",
       gradient: "from-[#9b87f5]/80 to-[#7E69AB]/80",
       borderColor: "#9b87f5",
-      imagePath: getImageUrl("https://images.unsplash.com/photo-1605810230434-7631ac76ec81?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=500&q=80")
+      imagePath: getImageUrl("https://images.unsplash.com/photo-1580582932707-520aed937b7b?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=500&q=80")
     }
   ];
   

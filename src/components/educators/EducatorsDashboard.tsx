@@ -31,7 +31,7 @@ const EducatorsDashboard: React.FC = () => {
               id="educator-burnout"
               path="/educators-assessments/educator-burnout"
               title="Take Assessment"
-              variant="default" /* Changed from "purple" to "default" */
+              variant="default"
               className="bg-purple-600 hover:bg-purple-700 text-white w-full"
             />
           </CardContent>
@@ -78,7 +78,7 @@ const EducatorsDashboard: React.FC = () => {
             </p>
             <ActionButton
               type="discussion"
-              path="/educators-portal"
+              path="/educators-community"
               title="Join Discussions"
               variant="outline"
               state={{ tab: "community" }}
