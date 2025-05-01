@@ -25,7 +25,7 @@ const EducatorsWelcome: React.FC = () => {
       portalPath="/educators-portal"
       icon={<BookUser className="h-10 w-10 text-white" />}
       coverImage="https://images.unsplash.com/photo-1580582932707-520aed937b7b?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=500&q=80"
-      motivationalMessage="Your dedication shapes the future every single day. As you nurture minds and hearts, we're here to nurture yours. Take a moment for yourself – because the greatest educators know that self-care isn't selfish, it's essential. You're making a difference that lasts a lifetime."
+      motivationalMessage="Your dedication shapes futures that extend far beyond your classroom walls. While you pour your heart into nurturing young minds, remember that tending to your own wellbeing isn't selfish—it's essential. The light you kindle in others can only shine when your own flame is tended. In the beautiful chaos of lesson plans, grading, and countless student needs, pause to breathe. Your passion for teaching deserves to be sustained by moments of peace and self-compassion. We're here to help you find that balance, because the greatest gift you can give your students is a teacher who thrives, not just survives."
     />
   );
 };

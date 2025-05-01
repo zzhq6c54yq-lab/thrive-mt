@@ -4,8 +4,13 @@ import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }
 import { Badge } from "@/components/ui/badge";
 import { Brain, BookOpen, ClipboardList, Users, Heart } from "lucide-react";
 import ActionButton from "@/components/navigation/ActionButton";
+import { useNavigate } from "react-router-dom";
+import { useToast } from "@/hooks/use-toast";
 
 const EducatorsAssessments: React.FC = () => {
+  const navigate = useNavigate();
+  const { toast } = useToast();
+  
   const assessments = [
     {
       id: "educator-burnout",
@@ -15,6 +20,7 @@ const EducatorsAssessments: React.FC = () => {
       icon: Brain,
       category: "Professional Well-being",
       recommended: true,
+      path: "/educators-assessments/educator-burnout"
     },
     {
       id: "classroom-stress",
@@ -24,6 +30,7 @@ const EducatorsAssessments: React.FC = () => {
       icon: BookOpen,
       category: "Classroom Management",
       recommended: false,
+      path: "/educators-assessments/classroom-stress"
     },
     {
       id: "work-life-balance",
@@ -33,6 +40,7 @@ const EducatorsAssessments: React.FC = () => {
       icon: ClipboardList,
       category: "Life Balance",
       recommended: false,
+      path: "/educators-assessments/work-life-balance"
     },
     {
       id: "collegial-relationships",
@@ -53,6 +61,23 @@ const EducatorsAssessments: React.FC = () => {
       recommended: false,
     }
   ];
+
+  const handleStartAssessment = (assessment: any) => {
+    if (assessment.path) {
+      navigate(assessment.path, { 
+        state: { 
+          stayInPortal: true,
+          preventTutorial: true
+        }
+      });
+    } else {
+      toast({
+        title: "Coming Soon",
+        description: "This assessment will be available in the next update",
+        duration: 3000,
+      });
+    }
+  };
 
   return (
     <div className="space-y-6">
@@ -87,14 +112,12 @@ const EducatorsAssessments: React.FC = () => {
               <p className="text-sm text-gray-400">Estimated time: {assessment.estimatedTime}</p>
             </CardContent>
             <CardFooter className="border-t border-purple-500/20 pt-4">
-              <ActionButton
-                type="assessment"
-                id={assessment.id}
-                path={`/educators-assessments/${assessment.id}`}
-                title="Start Assessment"
-                variant="default"
-                className="bg-purple-700 hover:bg-purple-800 text-white w-full"
-              />
+              <button
+                onClick={() => handleStartAssessment(assessment)}
+                className="w-full bg-purple-700 hover:bg-purple-800 text-white py-2 px-4 rounded transition-colors"
+              >
+                Start Assessment
+              </button>
             </CardFooter>
           </Card>
         ))}

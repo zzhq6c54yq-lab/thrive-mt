@@ -71,6 +71,8 @@ import LawEnforcementPortal from "@/pages/LawEnforcementPortal";
 import EducatorsWelcome from "@/pages/EducatorsWelcome";
 import EducatorsPortal from "@/pages/EducatorsPortal";
 import EducatorsBurnoutAssessment from "@/pages/EducatorsBurnoutAssessment";
+import EducatorsClassroomStressAssessment from "@/pages/EducatorsClassroomStressAssessment";
+import EducatorsWorkLifeBalanceAssessment from "@/pages/EducatorsWorkLifeBalanceAssessment";
 import NotFound from "@/pages/NotFound";
 import GenerativeVideo from "@/pages/GenerativeVideo";
 
@@ -162,6 +164,8 @@ function App() {
         <Route path="/educators-portal" element={<EducatorsPortal />} />
         <Route path="/educators-workshops/:workshopId" element={<WorkshopDetail />} />
         <Route path="/educators-assessments/educator-burnout" element={<EducatorsBurnoutAssessment />} />
+        <Route path="/educators-assessments/classroom-stress" element={<EducatorsClassroomStressAssessment />} />
+        <Route path="/educators-assessments/work-life-balance" element={<EducatorsWorkLifeBalanceAssessment />} />
         <Route path="/educators-assessments/:assessmentId" element={<MentalWellnessTools />} />
         <Route path="/educators-practice/:practiceId" element={<GuidedPractice />} />
         <Route path="/educators-events" element={<VirtualMeetings />} />
