@@ -7,6 +7,7 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter }
 import { ClipboardList, ArrowRight, CheckCircle2, Download } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { Progress } from "@/components/ui/progress";
+import PortalBackButton from "@/components/navigation/PortalBackButton";
 
 type Question = {
   id: number;
@@ -281,7 +282,11 @@ const EducatorsWorkLifeBalanceAssessment: React.FC = () => {
   };
 
   return (
-    <Page title="Work-Life Balance Audit" returnPath="/educators-portal">
+    <Page title="Work-Life Balance Audit">
+      <div className="flex justify-start mb-4">
+        <PortalBackButton returnPath="/educators-portal" />
+      </div>
+      
       <div className="max-w-4xl mx-auto">
         {!showResults ? (
           <Card className="bg-[#1e1e2f]/90 border-purple-500/30 shadow-xl">
