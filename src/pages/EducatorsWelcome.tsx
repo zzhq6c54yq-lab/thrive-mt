@@ -1,6 +1,6 @@
 
 import React from "react";
-import { BookUser } from "lucide-react";
+import { BookUser, Heart } from "lucide-react";
 import SpecializedProgramWelcome from "@/components/specialized-programs/SpecializedProgramWelcome";
 
 const EducatorsWelcome: React.FC = () => {
@@ -24,7 +24,8 @@ const EducatorsWelcome: React.FC = () => {
       borderColor="#9b87f5"
       portalPath="/educators-portal"
       icon={<BookUser className="h-10 w-10 text-white" />}
-      coverImage="https://images.unsplash.com/photo-1605810230434-7631ac76ec81?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=500&q=80"
+      coverImage="https://images.unsplash.com/photo-1580582932707-520aed937b7b?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=500&q=80"
+      motivationalMessage="Your dedication shapes the future every single day. As you nurture minds and hearts, we're here to nurture yours. Take a moment for yourself – because the greatest educators know that self-care isn't selfish, it's essential. You're making a difference that lasts a lifetime."
     />
   );
 };

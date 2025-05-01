@@ -3,7 +3,7 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/hooks/use-toast";
-import { ArrowRight } from "lucide-react";
+import { ArrowRight, Heart } from "lucide-react";
 import HomeButton from "@/components/HomeButton";
 
 interface WelcomeScreenProps {
@@ -16,7 +16,8 @@ interface WelcomeScreenProps {
   borderColor: string;
   portalPath: string;
   icon: React.ReactNode;
-  coverImage?: string; // Added coverImage as optional property
+  coverImage?: string;
+  motivationalMessage?: string; // Added motivational message prop
 }
 
 const SpecializedProgramWelcome: React.FC<WelcomeScreenProps> = ({
@@ -29,7 +30,8 @@ const SpecializedProgramWelcome: React.FC<WelcomeScreenProps> = ({
   borderColor,
   portalPath,
   icon,
-  coverImage // Include coverImage in the component props
+  coverImage,
+  motivationalMessage
 }) => {
   const [screenState, setScreenState] = useState<'welcome' | 'what-to-expect'>('welcome');
   const navigate = useNavigate();
@@ -87,6 +89,18 @@ const SpecializedProgramWelcome: React.FC<WelcomeScreenProps> = ({
               <h1 className={`text-4xl md:text-5xl font-semibold mb-8 text-white`}>
                 {title}
               </h1>
+
+              {/* Motivational message with warm styling */}
+              {motivationalMessage && (
+                <div className="max-w-3xl mx-auto mb-10 bg-gradient-to-r from-purple-800/40 to-pink-800/40 p-6 rounded-lg border-l-4 border-purple-500 shadow-lg backdrop-blur-sm">
+                  <div className="flex items-start">
+                    <Heart className="text-pink-400 mr-3 min-w-[24px] mt-1" />
+                    <p className="text-xl italic text-white leading-relaxed font-light">
+                      "{motivationalMessage}"
+                    </p>
+                  </div>
+                </div>
+              )}
               
               <div className="max-w-2xl mb-10">
                 <p className="text-xl mb-6 text-white font-medium">
