@@ -1,4 +1,3 @@
-
 import React from "react";
 import { Routes, Route, Navigate } from "react-router-dom";
 import Index from "@/pages/Index";
@@ -75,6 +74,11 @@ import EducatorsClassroomStressAssessment from "@/pages/EducatorsClassroomStress
 import EducatorsWorkLifeBalanceAssessment from "@/pages/EducatorsWorkLifeBalanceAssessment";
 import NotFound from "@/pages/NotFound";
 import GenerativeVideo from "@/pages/GenerativeVideo";
+import HospitalityWelcome from "@/pages/HospitalityWelcome";
+import HospitalityPortal from "@/pages/HospitalityPortal";
+import HospitalityStressAssessment from "@/pages/HospitalityStressAssessment";
+import HospitalityBurnoutAssessment from "@/pages/HospitalityBurnoutAssessment";
+import HospitalityWorkLifeBalanceAssessment from "@/pages/HospitalityWorkLifeBalanceAssessment";
 
 function App() {
   return (
@@ -194,6 +198,16 @@ function App() {
         {/* Law Enforcement Routes */}
         <Route path="/law-enforcement-welcome" element={<LawEnforcementWelcome />} />
         <Route path="/law-enforcement-portal" element={<LawEnforcementPortal />} />
+        
+        {/* Hospitality Industry Routes */}
+        <Route path="/hospitality-welcome" element={<HospitalityWelcome />} />
+        <Route path="/hospitality-portal" element={<HospitalityPortal />} />
+        <Route path="/hospitality-assessments/stress" element={<HospitalityStressAssessment />} />
+        <Route path="/hospitality-assessments/burnout" element={<HospitalityBurnoutAssessment />} />
+        <Route path="/hospitality-assessments/work-life-balance" element={<HospitalityWorkLifeBalanceAssessment />} />
+        <Route path="/hospitality-workshops/:workshopId" element={<WorkshopDetail />} />
+        <Route path="/hospitality-practice/:practiceId" element={<GuidedPractice />} />
+        <Route path="/hospitality-community" element={<CommunitySupport />} />
         
         <Route path="/generative-video" element={<GenerativeVideo />} />
         

@@ -1,6 +1,7 @@
+
 import React, { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
-import { Shield, GraduationCap, Briefcase, Sparkles, ChevronRight, Users, Siren, BookUser } from "lucide-react";
+import { Shield, GraduationCap, Briefcase, Sparkles, ChevronRight, Users, Siren, BookUser, UtensilsCrossed } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { useToast } from "@/hooks/use-toast";
 import useTranslation from "@/hooks/useTranslation";
@@ -118,6 +119,18 @@ const SpecializedPrograms: React.FC = () => {
       gradient: "from-[#9b87f5]/80 to-[#7E69AB]/80",
       borderColor: "#9b87f5",
       imagePath: getImageUrl("https://images.unsplash.com/photo-1580582932707-520aed937b7b?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=500&q=80")
+    },
+    // Hospitality Industry Add-On
+    {
+      title: isSpanish ? "Industria Hotelera" : "Hospitality Industry",
+      description: isSpanish 
+        ? "Recursos de bienestar mental para trabajadores de restaurantes y hostelería" 
+        : "Mental wellness resources for restaurant and hospitality workers",
+      icon: UtensilsCrossed,
+      path: "/hospitality-welcome",
+      gradient: "from-[#9b87f5]/80 to-[#7E69AB]/80",
+      borderColor: "#9b87f5",
+      imagePath: getImageUrl("https://images.unsplash.com/photo-1466721591366-2d5fba72006d?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80")
     }
   ];
   

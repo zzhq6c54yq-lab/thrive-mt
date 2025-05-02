@@ -1,60 +1,34 @@
+
 import React from "react";
 import { Button } from "@/components/ui/button";
 import { ArrowLeft } from "lucide-react";
-import { useNavigate, useLocation } from "react-router-dom";
-import { useToast } from "@/hooks/use-toast";
-import useTranslation from "@/hooks/useTranslation";
+import { useNavigate } from "react-router-dom";
 
 interface PortalBackButtonProps {
-  className?: string;
-  returnPath?: string;
-  onClick?: () => void;
+  returnPath: string;
 }
 
-const PortalBackButton: React.FC<PortalBackButtonProps> = ({ 
-  className = "", 
-  returnPath,
-  onClick
-}) => {
+const PortalBackButton: React.FC<PortalBackButtonProps> = ({ returnPath }) => {
   const navigate = useNavigate();
-  const location = useLocation();
-  const { toast } = useToast();
-  const { isSpanish } = useTranslation();
   
-  const handleBack = () => {
-    toast({
-      title: isSpanish ? "Regresando" : "Going Back",
-      description: isSpanish ? "Volviendo a la página anterior" : "Returning to previous page",
-      duration: 1500,
+  const handleBackNavigation = () => {
+    navigate(returnPath, { 
+      state: { 
+        stayInPortal: true,
+        preventTutorial: true
+      } 
     });
-    
-    if (onClick) {
-      onClick();
-      return;
-    }
-    
-    if (returnPath) {
-      navigate(returnPath, { 
-        state: { 
-          ...location.state,
-          preventTutorial: true
-        } 
-      });
-    } else {
-      navigate(-1);
-    }
   };
   
   return (
     <Button
-      onClick={handleBack}
-      variant="outline"
-      size="sm"
-      className={`border border-white/30 bg-white/10 hover:bg-white/20 text-white ${className}`}
-      title={isSpanish ? "Atrás" : "Back"}
-      aria-label={isSpanish ? "Atrás" : "Back"}
+      variant="ghost" 
+      size="sm" 
+      className="gap-1 text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-300"
+      onClick={handleBackNavigation}
     >
       <ArrowLeft className="h-4 w-4" />
+      <span>Back</span>
     </Button>
   );
 };
