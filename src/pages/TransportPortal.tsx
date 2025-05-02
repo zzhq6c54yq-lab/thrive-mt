@@ -1,0 +1,92 @@
+
+import React, { useState } from "react";
+import { useLocation } from "react-router-dom";
+import Page from "@/components/Page";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Truck, BarChart4, ClipboardList, BookOpen, Users, CalendarDays } from "lucide-react";
+import TransportDashboard from "@/components/transport/TransportDashboard";
+import TransportAssessments from "@/components/transport/TransportAssessments";
+import TransportResources from "@/components/transport/TransportResources";
+import TransportCommunity from "@/components/transport/TransportCommunity";
+import TransportWorkshops from "@/components/transport/TransportWorkshops";
+import HomeButton from "@/components/HomeButton";
+
+const TransportPortal: React.FC = () => {
+  const location = useLocation();
+  const [activeTab, setActiveTab] = useState(() => {
+    // Set the active tab based on location state, if available
+    if (location.state?.tab) {
+      return location.state.tab;
+    }
+    return "dashboard";
+  });
+
+  return (
+    <Page title="Transport Industry Portal" showBackButton={false}>
+      <div className="absolute top-4 right-4 z-10">
+        <HomeButton />
+      </div>
+      
+      <div className="flex items-center mb-8">
+        <div className="bg-blue-100 dark:bg-blue-900/30 p-3 rounded-full mr-4">
+          <Truck className="h-8 w-8 text-blue-600 dark:text-blue-300" />
+        </div>
+        <div>
+          <h1 className="text-3xl font-bold text-gray-900 dark:text-white">
+            Transport Wellness Portal
+          </h1>
+          <p className="text-gray-500 dark:text-gray-400">
+            Mental health resources tailored for truck drivers and transportation workers
+          </p>
+        </div>
+      </div>
+      
+      <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
+        <TabsList className="grid grid-cols-5 mb-8">
+          <TabsTrigger value="dashboard" className="flex items-center gap-2">
+            <BarChart4 className="h-4 w-4" />
+            <span className="hidden sm:inline">Dashboard</span>
+          </TabsTrigger>
+          <TabsTrigger value="assessments" className="flex items-center gap-2">
+            <ClipboardList className="h-4 w-4" />
+            <span className="hidden sm:inline">Assessments</span>
+          </TabsTrigger>
+          <TabsTrigger value="resources" className="flex items-center gap-2">
+            <BookOpen className="h-4 w-4" />
+            <span className="hidden sm:inline">Resources</span>
+          </TabsTrigger>
+          <TabsTrigger value="community" className="flex items-center gap-2">
+            <Users className="h-4 w-4" />
+            <span className="hidden sm:inline">Community</span>
+          </TabsTrigger>
+          <TabsTrigger value="workshops" className="flex items-center gap-2">
+            <CalendarDays className="h-4 w-4" />
+            <span className="hidden sm:inline">Workshops</span>
+          </TabsTrigger>
+        </TabsList>
+        
+        <TabsContent value="dashboard">
+          <TransportDashboard />
+        </TabsContent>
+        
+        <TabsContent value="assessments">
+          <TransportAssessments />
+        </TabsContent>
+        
+        <TabsContent value="resources">
+          <TransportResources />
+        </TabsContent>
+        
+        <TabsContent value="community">
+          <TransportCommunity />
+        </TabsContent>
+        
+        <TabsContent value="workshops">
+          <TransportWorkshops />
+        </TabsContent>
+      </Tabs>
+    </Page>
+  );
+};
+
+export default TransportPortal;
