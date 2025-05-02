@@ -1,3 +1,4 @@
+
 import React from "react";
 import { Shield, GraduationCap, Briefcase, Sparkles, Users, Siren, BookUser, UtensilsCrossed, Truck } from "lucide-react";
 import { useNavigate } from "react-router-dom";
@@ -126,7 +127,7 @@ export const useSpecializedPrograms = () => {
       path: "/hospitality-welcome",
       gradient: "from-[#9b87f5]/80 to-[#7E69AB]/80",
       borderColor: "#9b87f5",
-      imagePath: getImageUrl("https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80")
+      imagePath: getImageUrl("https://images.unsplash.com/photo-1414235077428-338989a2e8c0?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80")
     },
     {
       title: isSpanish ? "Industria del Transporte" : "Transport Industry",
@@ -137,7 +138,7 @@ export const useSpecializedPrograms = () => {
       path: "/transport-welcome",
       gradient: "from-[#3B82F6]/80 to-[#1E40AF]/80",
       borderColor: "#3B82F6",
-      imagePath: getImageUrl("https://images.unsplash.com/photo-1469041797191-50ace28483c3?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80")
+      imagePath: getImageUrl("https://images.unsplash.com/photo-1591768793355-74d04bb6608f?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80")
     }
   ];
   

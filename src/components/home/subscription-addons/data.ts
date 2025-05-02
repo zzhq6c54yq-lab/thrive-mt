@@ -1,4 +1,5 @@
-import { Shield, GraduationCap, Briefcase, Users, Sparkles, Siren } from "lucide-react";
+
+import { Shield, GraduationCap, Briefcase, Users, Sparkles, Siren, BookUser, UtensilsCrossed, Truck } from "lucide-react";
 import { AddOn } from "./types";
 
 export const addOns: AddOn[] = [
@@ -157,6 +158,75 @@ export const addOns: AddOn[] = [
     gradient: "from-[#1E40AF]/80 to-[#1E3A8A]/80",
     borderColor: "#1E40AF",
     imagePath: "/lovable-uploads/f3c84972-8f58-42d7-b86f-82ff2d823b30.png",
+    price: {
+      basic: "$3/month",
+      gold: "$2/month",
+      platinum: "$1/month"
+    }
+  },
+  {
+    id: "educators",
+    title: "Esteemed Educators Program",
+    description: "Mental health support for teachers and education professionals",
+    targetAudience: "Teachers, professors, administrators, and education support staff",
+    features: [
+      "Classroom stress management techniques",
+      "Work-life balance for educators",
+      "Dealing with difficult classroom situations",
+      "Educator burnout prevention resources",
+      "Teacher-specific wellness practices"
+    ],
+    icon: BookUser,
+    path: "/educators-welcome",
+    gradient: "from-[#8B5CF6]/80 to-[#6366F1]/80",
+    borderColor: "#8B5CF6",
+    imagePath: "https://images.unsplash.com/photo-1580582932707-520aed937b7b",
+    price: {
+      basic: "$3/month",
+      gold: "$2/month",
+      platinum: "$1/month"
+    }
+  },
+  {
+    id: "hospitality",
+    title: "Hospitality Industry Program",
+    description: "Mental wellness support for restaurant and hospitality workers",
+    targetAudience: "Restaurant staff, hotel employees, and service industry professionals",
+    features: [
+      "Service industry stress management",
+      "Work-life balance for irregular schedules",
+      "Managing customer service pressure",
+      "Restaurant-specific mental health resources",
+      "Peer support for service professionals"
+    ],
+    icon: UtensilsCrossed,
+    path: "/hospitality-welcome",
+    gradient: "from-[#9b87f5]/80 to-[#7E69AB]/80",
+    borderColor: "#9b87f5",
+    imagePath: "https://images.unsplash.com/photo-1414235077428-338989a2e8c0",
+    price: {
+      basic: "$3/month",
+      gold: "$2/month",
+      platinum: "$1/month"
+    }
+  },
+  {
+    id: "transport",
+    title: "Transport Industry Program",
+    description: "Mental wellness resources for truck drivers and transportation workers",
+    targetAudience: "Truck drivers, delivery personnel, and transportation professionals",
+    features: [
+      "Road stress management techniques",
+      "Long-haul driver wellness tools",
+      "Sleep hygiene for irregular schedules",
+      "Isolation and loneliness coping strategies",
+      "Work-life balance for drivers"
+    ],
+    icon: Truck,
+    path: "/transport-welcome",
+    gradient: "from-[#3B82F6]/80 to-[#1E40AF]/80",
+    borderColor: "#3B82F6",
+    imagePath: "https://images.unsplash.com/photo-1591768793355-74d04bb6608f",
     price: {
       basic: "$3/month",
       gold: "$2/month",
