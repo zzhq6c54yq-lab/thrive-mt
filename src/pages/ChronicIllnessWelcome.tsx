@@ -74,12 +74,23 @@ const ChronicIllnessWelcome: React.FC = () => {
       <div className="container mx-auto px-4 pt-24 pb-20">
         <SpecializedProgramWelcome 
           title="Chronic Illness Support"
-          subtitle="Manage Your Mental Health While Living with Chronic Health Conditions"
           description="Our specialized chronic illness support provides tools, resources, and community to help you maintain emotional well-being while managing long-term health conditions."
-          imagePath="https://images.unsplash.com/photo-1584308666744-24d5c474f2ae?auto=format&fit=crop&w=1280&q=80"
-          altText="Person meditating, representing chronic illness mental health support"
+          whatToExpect={[
+            "Specialized mental health resources tailored for those with chronic conditions",
+            "Tools for managing the emotional aspects of chronic illness",
+            "Community support from others with similar experiences",
+            "Access to professionals who understand chronic illness",
+            "Mindfulness and relaxation techniques adapted for chronic pain and fatigue",
+            "Resources for caregivers and family members"
+          ]}
+          color="purple-600"
+          gradientFrom="purple-600"
+          gradientTo="purple-400"
+          borderColor="#8B5CF6"
           portalPath="/chronic-illness-portal"
-          gradient="from-purple-600 to-purple-400"
+          icon={<Stethoscope className="h-12 w-12 text-white" />}
+          coverImage="https://images.unsplash.com/photo-1584308666744-24d5c474f2ae?auto=format&fit=crop&w=1280&q=80"
+          motivationalMessage="Your chronic condition may be part of your life's journey, but it doesn't define who you are. With the right support and tools, you can thrive despite the challenges."
         />
         
         <motion.div 
