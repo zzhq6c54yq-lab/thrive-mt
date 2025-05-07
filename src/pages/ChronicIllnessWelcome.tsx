@@ -28,7 +28,7 @@ const ChronicIllnessWelcome: React.FC = () => {
       borderColor="purple"
       portalPath="/chronic-illness-portal"
       icon={<Stethoscope className="w-8 h-8 text-white" />}
-      coverImage="https://images.unsplash.com/photo-1631549916768-8c5befe19a2c"
+      coverImage="https://images.unsplash.com/photo-1584308666744-24d5c474f2ae?auto=format&fit=crop&w=1280&q=80"
       motivationalMessage="Living with chronic illness can be challenging, but you don't have to face it alone. This program offers tools, support, and community to help you thrive despite your health challenges."
     />
   );

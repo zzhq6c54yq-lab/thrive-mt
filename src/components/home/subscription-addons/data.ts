@@ -1,3 +1,4 @@
+
 import { Shield, GraduationCap, Briefcase, Users, Sparkles, Siren, BookUser, UtensilsCrossed, Truck, Stethoscope } from "lucide-react";
 import { AddOn } from "./types";
 
@@ -248,7 +249,7 @@ export const addOns: AddOn[] = [
     path: "/chronic-illness-welcome",
     gradient: "from-[#8B5CF6]/80 to-[#7E69AB]/80",
     borderColor: "#8B5CF6",
-    imagePath: "https://images.unsplash.com/photo-1631549916768-8c5befe19a2c",
+    imagePath: "https://images.unsplash.com/photo-1584308666744-24d5c474f2ae?auto=format&fit=crop&w=1280&q=80",
     price: {
       basic: "$3/month",
       gold: "$2/month",
