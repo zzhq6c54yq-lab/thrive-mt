@@ -26,14 +26,6 @@ const SpecializedProgramsGrid: React.FC<SpecializedProgramsGridProps> = ({ onPro
     show: { y: 0, opacity: 1, transition: { duration: 0.5 } }
   };
   
-  // Ensure image error handling
-  const [imageErrors, setImageErrors] = React.useState<Record<string, boolean>>({});
-  
-  const handleImageError = (id: string) => {
-    console.log(`Image error for addon ${id}`);
-    setImageErrors(prev => ({...prev, [id]: true}));
-  };
-
   return (
     <div className="py-6">
       <motion.div
@@ -44,8 +36,6 @@ const SpecializedProgramsGrid: React.FC<SpecializedProgramsGridProps> = ({ onPro
       >
         {addOns.map((addon) => {
           const Icon = addon.icon;
-          const hasImageError = imageErrors[addon.id] || false;
-          const fallbackImage = "https://images.unsplash.com/photo-1584308666744-24d5c474f2ae?auto=format&fit=crop&w=1280&q=80";
           
           return (
             <motion.div
@@ -60,10 +50,13 @@ const SpecializedProgramsGrid: React.FC<SpecializedProgramsGridProps> = ({ onPro
                 {/* Image Section (3/4 of height) */}
                 <div className="absolute inset-0 h-[75%] overflow-hidden">
                   <img
-                    src={hasImageError ? fallbackImage : addon.imagePath}
+                    src={addon.imagePath}
                     alt={addon.title}
                     className="w-full h-full object-cover"
-                    onError={() => handleImageError(addon.id)}
+                    onError={(e) => {
+                      console.error(`Failed to load image for ${addon.id}`, e);
+                      (e.target as HTMLImageElement).src = "https://images.unsplash.com/photo-1584308666744-24d5c474f2ae?auto=format&fit=crop&q=80&w=1000";
+                    }}
                     loading="eager"
                   />
                   <div className="absolute inset-0 bg-black/30"></div>

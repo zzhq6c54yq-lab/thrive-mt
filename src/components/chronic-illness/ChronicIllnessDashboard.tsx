@@ -1,4 +1,3 @@
-
 import React from "react";
 import { BookOpen, Heart, Activity, Users, Headphones, Stethoscope, Dumbbell, Target, User, BarChart2, MessageSquare } from "lucide-react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";

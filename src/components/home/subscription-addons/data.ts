@@ -1,5 +1,5 @@
 
-import { Activity, BookOpen, Briefcase, Bus, Dumbbell, GraduationCap, Heart, Hotel, PersonStanding, Shield, Stethoscope, UserRound } from "lucide-react";
+import { Activity, BookOpen, Briefcase, Bus, GraduationCap, Heart, Hotel, PersonStanding, Shield, Stethoscope, UserRound } from "lucide-react";
 
 export const addOns = [
   {
@@ -180,22 +180,6 @@ export const addOns = [
     icon: Stethoscope,
     path: "/chronic-illness-welcome",
     recommended: true
-  },
-  {
-    id: "fitness",
-    title: "Fitness Professionals",
-    description: "Mental wellness for personal trainers and fitness instructors.",
-    targetAudience: "Personal trainers and fitness instructors",
-    features: ["Client relationship management", "Business stress reduction", "Body image resources"],
-    price: {
-      monthly: 4.99,
-      yearly: 49.99
-    },
-    imagePath: "https://images.unsplash.com/photo-1601422407692-ec4eeec1d9b3?auto=format&fit=crop&q=80&w=1000",
-    gradient: "bg-gradient-to-r from-green-600 to-green-400",
-    borderColor: "#16A34A",
-    icon: Dumbbell,
-    path: "/fitness-welcome"
   }
 ];
 
@@ -214,8 +198,7 @@ export const categorizedAddOns = {
     "law-enforcement",
     "educators",
     "hospitality",
-    "transportation",
-    "fitness"
+    "transportation"
   ],
   demographic: [
     "colleges",
