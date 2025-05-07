@@ -1,11 +1,13 @@
 
 import React, { useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion } from "framer-motion";
 import { Brain, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import MentalWellnessMenu from "@/components/mental-wellness/MentalWellnessMenu";
 import useTranslation from "@/hooks/useTranslation";
+import { handleImageError } from "@/utils/imageUtils";
+import BaseCard from "@/components/shared/BaseCard";
 
 interface MentalWellnessFeatureProps {
   id: string;
@@ -32,68 +34,29 @@ const MentalWellnessFeature: React.FC<MentalWellnessFeatureProps> = ({
 }) => {
   const { isSpanish: translationIsSpanish } = useTranslation();
   const [dialogOpen, setDialogOpen] = useState(false);
-  const [imageError, setImageError] = React.useState(false);
 
-  const handleImageError = () => {
-    console.log(`Image error for ${id}:`, image);
-    setImageError(true);
-  };
+  const badge = isRecommended ? (
+    <span className="text-[10px] px-1.5 py-0.5 rounded-full bg-white/30 text-white font-medium">
+      {isSpanish ? "Recomendado" : "Recommended"}
+    </span>
+  ) : null;
 
-  // Animation variants
-  const item = {
-    hidden: { y: 20, opacity: 0 },
-    show: { y: 0, opacity: 1, transition: { duration: 0.5 } }
+  const handleCardClick = () => {
+    setDialogOpen(true);
   };
 
   return (
     <>
-      <motion.div
-        variants={item}
-        className="relative"
-        whileHover={{ y: -5, scale: 1.03 }}
-        transition={{ duration: 0.2 }}
-      >
-        <button
-          onClick={() => setDialogOpen(true)}
-          className="w-full h-full text-left"
-          aria-label={title}
-        >
-          <div className="relative overflow-hidden rounded-xl h-44 shadow-lg hover:shadow-xl transition-all duration-300">
-            <div className="absolute inset-0 h-full w-full">
-              <div className="absolute inset-0 h-[70%] overflow-hidden">
-                <img 
-                  src={imageError ? "https://images.unsplash.com/photo-1506057527569-d23d4eb7c5a4?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80" : image} 
-                  alt={title}
-                  className="w-full h-full object-cover"
-                  onError={handleImageError}
-                  loading="eager"
-                />
-                <div className="absolute inset-0 bg-black/30"></div>
-              </div>
-              
-              <div className={`absolute bottom-0 left-0 right-0 h-[30%] bg-gradient-to-br ${color} flex items-center justify-center`}>
-                <h3 className="font-bold text-sm text-white truncate text-center w-full px-2">
-                  {title}
-                </h3>
-              </div>
-            </div>
-            
-            <div className="absolute inset-0 p-3 flex flex-col justify-between">
-              <div>
-                <div className="p-1.5 rounded-full bg-white/20 w-fit backdrop-blur-sm inline-flex">
-                  <Brain />
-                </div>
-                
-                {isRecommended && (
-                  <span className="text-[10px] px-1.5 py-0.5 rounded-full bg-white/30 text-white font-medium float-right">
-                    {isSpanish ? "Recomendado" : "Recommended"}
-                  </span>
-                )}
-              </div>
-            </div>
-          </div>
-        </button>
-      </motion.div>
+      <BaseCard
+        id={id}
+        title={title}
+        imagePath={image}
+        path={path}
+        gradient={color}
+        icon={<Brain className="h-4 w-4 text-white" />}
+        onClick={() => handleCardClick()}
+        badge={badge}
+      />
 
       <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
         <DialogContent className="max-w-3xl">

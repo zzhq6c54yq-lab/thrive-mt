@@ -1,12 +1,7 @@
+import { getImageUrl as getImageUrlUtil } from "@/utils/imageUtils";
+
 export const getImageUrl = (imagePath: string) => {
-  // Only use fallback if the path is truly invalid
-  if (!imagePath || imagePath.includes('undefined') || imagePath.includes('null')) {
-    console.log("Invalid image path detected, using fallback image:", imagePath);
-    return "https://images.unsplash.com/photo-1506057527569-d23d4eb7c5a4?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80";
-  }
-  
-  // Return the original image path without modification
-  return imagePath;
+  return getImageUrlUtil(imagePath, 'feature-utils');
 };
 
 export const isFeatureRecommended = (feature: string, selectedQualities: string[], selectedGoals: string[]) => {

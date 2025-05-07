@@ -14,6 +14,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { ChevronDown, ChevronUp, Play, Clock } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
+import { handleImageError } from "@/utils/imageUtils";
 
 const Workshops = () => {
   const [isExpanded, setIsExpanded] = useState(true); // Default to expanded
@@ -35,24 +36,25 @@ const Workshops = () => {
     navigate(`/workshop/${workshopId}`, { state: { activeTab: "workshop", workshopTitle } });
   };
 
-  // Workshop cover images mapped to topics - now with more variety and topic relevance
+  // Workshop cover images mapped to topics with direct links
   const getWorkshopImage = (workshopId: string) => {
     const imageMap: {[key: string]: string} = {
-      'mindful-communication': '1581091226825-a6a2a5aee158',
-      'emotional-regulation': '1649972904349-6e44c42644a7',
-      'stress-management': '1488590528505-98d2b5aba04b',
-      'better-sleep': '1465146344425-f00d5f5c8f07',
-      'cognitive-reframing': '1506744038136-46273834b3fb',
-      'gratitude-practice': '1509316975850-ff9c5deb0cd9',
-      'self-compassion': '1500673922987-e212871fec22',
-      'social-connection': '1523712999610-f77fbcfc3843',
-      'anxiety-management': '1501854140801-50d01698950b',
-      'boundary-setting': '1615729947596-a598e5de0ab3',
-      'values-alignment': '1543618903355-efbc3e8e9284',
-      'habit-formation': '1517048676732-d65bc937f952'
+      'mindful-communication': 'https://images.unsplash.com/photo-1581091226825-a6a2a5aee158',
+      'emotional-regulation': 'https://images.unsplash.com/photo-1649972904349-6e44c42644a7',
+      'stress-management': 'https://images.unsplash.com/photo-1488590528505-98d2b5aba04b',
+      'better-sleep': 'https://images.unsplash.com/photo-1465146344425-f00d5f5c8f07',
+      'cognitive-reframing': 'https://images.unsplash.com/photo-1506744038136-46273834b3fb',
+      'gratitude-practice': 'https://images.unsplash.com/photo-1509316975850-ff9c5deb0cd9',
+      'self-compassion': 'https://images.unsplash.com/photo-1500673922987-e212871fec22',
+      'social-connection': 'https://images.unsplash.com/photo-1523712999610-f77fbcfc3843',
+      'anxiety-management': 'https://images.unsplash.com/photo-1501854140801-50d01698950b',
+      'boundary-setting': 'https://images.unsplash.com/photo-1615729947596-a598e5de0ab3',
+      'values-alignment': 'https://images.unsplash.com/photo-1543618903355-efbc3e8e9284',
+      'habit-formation': 'https://images.unsplash.com/photo-1517048676732-d65bc937f952'
     };
     
-    return imageMap[workshopId] || '1486312338219-ce68d2c6f44d';
+    // Return the full URL directly without modification
+    return imageMap[workshopId] || 'https://images.unsplash.com/photo-1486312338219-ce68d2c6f44d';
   };
 
   return (
@@ -82,6 +84,9 @@ const Workshops = () => {
                   const accentColor = colorClass.includes('bg-[#') 
                     ? colorClass.replace('bg-[', '').replace(']/10', '') 
                     : '#9b87f5';
+                  
+                  // Get the workshop image directly
+                  const workshopImage = getWorkshopImage(workshop.id);
                     
                   return (
                     <div 
@@ -95,9 +100,13 @@ const Workshops = () => {
                     >
                       <div className="aspect-video overflow-hidden">
                         <img 
-                          src={`https://images.unsplash.com/photo-${getWorkshopImage(workshop.id)}`} 
+                          src={workshopImage}
                           alt={workshop.title} 
                           className="w-full h-full object-cover opacity-50 group-hover:opacity-60 transition-opacity"
+                          onError={(e) => {
+                            const target = e.target as HTMLImageElement;
+                            target.src = handleImageError(e, `workshop-${workshop.id}`, 'https://images.unsplash.com/photo-1486312338219-ce68d2c6f44d');
+                          }}
                         />
                         <div className="absolute inset-0 bg-gradient-to-t from-[#1e1e2a] to-transparent"></div>
                       </div>

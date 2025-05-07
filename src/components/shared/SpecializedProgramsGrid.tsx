@@ -3,6 +3,7 @@ import React from "react";
 import { motion } from "framer-motion";
 import { addOns } from "@/components/home/subscription-addons/data";
 import useTranslation from "@/hooks/useTranslation";
+import BaseCard from "./BaseCard";
 
 interface SpecializedProgramsGridProps {
   onProgramClick: (path: string) => void;
@@ -21,13 +22,6 @@ const SpecializedProgramsGrid: React.FC<SpecializedProgramsGridProps> = ({ onPro
     }
   };
   
-  const item = {
-    hidden: { y: 20, opacity: 0 },
-    show: { y: 0, opacity: 1, transition: { duration: 0.5 } }
-  };
-  
-  const fallbackImage = "https://images.unsplash.com/photo-1584308666744-24d5c474f2ae?auto=format&fit=crop&q=80&w=1000";
-  
   return (
     <div className="py-6">
       <motion.div
@@ -39,46 +33,25 @@ const SpecializedProgramsGrid: React.FC<SpecializedProgramsGridProps> = ({ onPro
         {addOns.map((addon) => {
           const Icon = addon.icon;
           
+          // Create badge for recommended programs
+          const badge = addon.recommended ? (
+            <span className="text-[10px] px-1.5 py-0.5 rounded-full bg-white/30 text-white font-medium">
+              {isSpanish ? "Recomendado" : "Recommended"}
+            </span>
+          ) : null;
+          
           return (
-            <motion.div
+            <BaseCard
               key={addon.id}
-              variants={item}
-              className="relative rounded-xl overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300"
-              whileHover={{ y: -5, scale: 1.02 }}
-              transition={{ duration: 0.2 }}
-              onClick={() => onProgramClick(addon.path)}
-            >
-              <div className="h-48 relative">
-                {/* Image Section (3/4 of height) */}
-                <div className="absolute inset-0 h-[75%] overflow-hidden">
-                  <img
-                    src={addon.imagePath}
-                    alt={addon.title}
-                    className="w-full h-full object-cover"
-                    onError={(e) => {
-                      console.error(`Failed to load image for ${addon.id}`, e);
-                      (e.target as HTMLImageElement).src = fallbackImage;
-                    }}
-                    loading="eager"
-                  />
-                  <div className="absolute inset-0 bg-black/30"></div>
-                </div>
-                
-                {/* Color Section (1/4 of height) */}
-                <div className={`absolute bottom-0 left-0 right-0 h-[25%] ${addon.gradient} flex items-center justify-center`}>
-                  <h3 className="text-lg font-semibold text-white text-center px-2 truncate w-full">
-                    {addon.title}
-                  </h3>
-                </div>
-                
-                {/* Icon overlay in top corner */}
-                <div className="absolute top-2 left-2 z-10">
-                  <div className="p-2 rounded-full bg-white/20 backdrop-blur-sm">
-                    <Icon className="h-5 w-5 text-white" />
-                  </div>
-                </div>
-              </div>
-            </motion.div>
+              id={addon.id}
+              title={addon.title}
+              imagePath={addon.imagePath}
+              path={addon.path}
+              gradient={addon.gradient}
+              icon={<Icon className="h-4 w-4 text-white" />}
+              onClick={onProgramClick}
+              badge={badge}
+            />
           );
         })}
       </motion.div>

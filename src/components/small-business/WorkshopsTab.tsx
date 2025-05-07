@@ -1,4 +1,3 @@
-
 import React from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -7,6 +6,7 @@ import useTranslation from "@/hooks/useTranslation";
 import FeatureCard from "./FeatureCard";
 import { workshopData } from "@/data/workshopData";
 import { Badge } from "@/components/ui/badge";
+import { handleImageError } from "@/utils/imageUtils";
 
 interface WorkshopsTabProps {
   onFeatureClick: (path: string) => void;
@@ -21,14 +21,13 @@ const WorkshopsTab: React.FC<WorkshopsTabProps> = ({ onFeatureClick }) => {
     workshopData.find(w => w.id === "mindful-communication"),
   ].filter(Boolean);
   
-  // Workshop cover images
+  // Workshop cover images with direct URLs
   const getWorkshopImage = (workshopId: string) => {
     const imageMap: {[key: string]: string} = {
       'entrepreneurial-resilience': 'https://images.unsplash.com/photo-1517245386807-bb43f82c33c4',
       'wellness-focused-team': 'https://images.unsplash.com/photo-1517048676732-d65bc937f952',
       'stress-management': 'https://images.unsplash.com/photo-1506126613408-eca07ce68773',
       'mindful-communication': 'https://images.unsplash.com/photo-1522071820081-009f0129c71c',
-      // Additional mappings for all workshop ids
       'emotional-regulation': 'https://images.unsplash.com/photo-1544027993-37dbfe43562a',
       'better-sleep': 'https://images.unsplash.com/photo-1541781774459-bb2af2f05b55',
       'cognitive-reframing': 'https://images.unsplash.com/photo-1454692173233-f4f34c13cfda',
@@ -55,6 +54,10 @@ const WorkshopsTab: React.FC<WorkshopsTabProps> = ({ onFeatureClick }) => {
               src={getWorkshopImage('entrepreneurial-resilience')} 
               alt="Entrepreneurial Resilience"
               className="w-full h-full object-cover opacity-50"
+              onError={(e) => {
+                const target = e.target as HTMLImageElement;
+                target.src = handleImageError(e, 'workshops-tab', 'https://images.unsplash.com/photo-1552581234-26160f608093');
+              }}
             />
           </div>
           <div className="p-6">
@@ -115,6 +118,10 @@ const WorkshopsTab: React.FC<WorkshopsTabProps> = ({ onFeatureClick }) => {
               src={getWorkshopImage('wellness-focused-team')} 
               alt="Building a Wellness-Focused Team"
               className="w-full h-full object-cover opacity-50"
+              onError={(e) => {
+                const target = e.target as HTMLImageElement;
+                target.src = handleImageError(e, 'workshops-tab', 'https://images.unsplash.com/photo-1552581234-26160f608093');
+              }}
             />
           </div>
           <div className="p-6">
@@ -211,6 +218,10 @@ const WorkshopsTab: React.FC<WorkshopsTabProps> = ({ onFeatureClick }) => {
                     src={getWorkshopImage(workshop.id)} 
                     alt={workshop.title}
                     className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                    onError={(e) => {
+                      const target = e.target as HTMLImageElement;
+                      target.src = handleImageError(e, `featured-workshop-${workshop.id}`, 'https://images.unsplash.com/photo-1552581234-26160f608093');
+                    }}
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent"></div>
                   <div className="absolute bottom-2 left-3">
