@@ -36,10 +36,16 @@ const FeatureCard: React.FC<FeatureCardProps> = ({
   
   // Track image loading state
   const [imageError, setImageError] = React.useState(false);
+  const [imageLoaded, setImageLoaded] = React.useState(false);
 
   const handleImageError = () => {
     console.log(`Image error for ${id}:`, image);
     setImageError(true);
+  };
+  
+  const handleImageLoaded = () => {
+    console.log(`Image loaded for ${id}:`, image);
+    setImageLoaded(true);
   };
 
   return (
@@ -58,11 +64,15 @@ const FeatureCard: React.FC<FeatureCardProps> = ({
         <div className="relative overflow-hidden rounded-xl h-44 shadow-lg hover:shadow-xl transition-all duration-300">
           <div className="absolute inset-0 h-full w-full">
             <div className="absolute inset-0 h-[70%] overflow-hidden">
+              {!imageLoaded && !imageError && (
+                <div className="w-full h-full bg-gray-200 animate-pulse"></div>
+              )}
               <img 
                 src={imageError ? "https://images.unsplash.com/photo-1506057527569-d23d4eb7c5a4?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80" : image} 
                 alt={title}
-                className="w-full h-full object-cover"
+                className={`w-full h-full object-cover ${imageLoaded ? 'opacity-100' : 'opacity-0'}`}
                 onError={handleImageError}
+                onLoad={handleImageLoaded}
                 loading="eager"
               />
               <div className="absolute inset-0 bg-black/30"></div>

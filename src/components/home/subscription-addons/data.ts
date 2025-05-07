@@ -1,4 +1,3 @@
-
 import { Shield, GraduationCap, Briefcase, Users, Sparkles, Siren, BookUser, UtensilsCrossed, Truck, Stethoscope } from "lucide-react";
 import { AddOn } from "./types";
 

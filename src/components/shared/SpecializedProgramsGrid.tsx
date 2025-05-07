@@ -1,238 +1,89 @@
+
 import React from "react";
-import { Shield, GraduationCap, Briefcase, Sparkles, Users, Siren, BookUser, UtensilsCrossed, Truck, Stethoscope } from "lucide-react";
-import { useNavigate } from "react-router-dom";
-import { useToast } from "@/hooks/use-toast";
+import { motion } from "framer-motion";
+import { addOns } from "@/components/home/subscription-addons/data";
 import useTranslation from "@/hooks/useTranslation";
-import { LucideIcon } from "lucide-react";
-
-export interface SpecializedProgram {
-  title: string;
-  description: string;
-  icon: LucideIcon;
-  path: string;
-  gradient: string;
-  borderColor: string;
-  imagePath: string;
-}
-
-export const useSpecializedPrograms = () => {
-  const { isSpanish } = useTranslation();
-  
-  // Working image URLs with fallbacks
-  const getImageUrl = (imagePath: string) => {
-    // If the image URL starts with https, use it directly
-    if (imagePath.startsWith('https://')) {
-      return imagePath;
-    }
-    // Otherwise, use a placeholder
-    return "https://images.unsplash.com/photo-1506726446959-adfa26e7aea0?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80";
-  };
-
-  const specializedPrograms: SpecializedProgram[] = [
-    {
-      title: isSpanish ? "Departamento de Defensa" : "Department of Defense",
-      description: isSpanish 
-        ? "Recursos y apoyo para personal militar y veteranos" 
-        : "Resources and support for military personnel and veterans",
-      icon: Shield,
-      path: "/dod-welcome",
-      gradient: "from-[#0EA5E9]/80 to-[#2563EB]/80",
-      borderColor: "#0EA5E9",
-      imagePath: getImageUrl("https://images.unsplash.com/photo-1579912437766-7896df6d3cd3?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=500&q=80")
-    },
-    {
-      title: isSpanish ? "La Experiencia Universitaria" : "The College Experience",
-      description: isSpanish 
-        ? "Apoyo de salud mental para estudiantes en la vida universitaria" 
-        : "Mental health support for students navigating campus life",
-      icon: GraduationCap,
-      path: "/college-welcome",
-      gradient: "from-[#8B5CF6]/80 to-[#6366F1]/80",
-      borderColor: "#8B5CF6",
-      imagePath: getImageUrl("https://images.unsplash.com/photo-1523050854058-8df90110c9f1?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=500&q=80")
-    },
-    {
-      title: isSpanish ? "Pequeñas Empresas" : "Small Business",
-      description: isSpanish 
-        ? "Recursos de salud mental para emprendedores y dueños de pequeñas empresas" 
-        : "Mental health resources for entrepreneurs and small business owners",
-      icon: Briefcase,
-      path: "/small-business-selection",
-      gradient: "from-[#F97316]/80 to-[#FB923C]/80",
-      borderColor: "#F97316",
-      imagePath: getImageUrl("https://images.unsplash.com/photo-1600880292203-757bb62b4baf?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=500&q=80")
-    },
-    {
-      title: isSpanish ? "La Experiencia Adolescente" : "Adolescent Experience",
-      description: isSpanish 
-        ? "Apoyo de salud mental adaptado para niños y adolescentes de diferentes edades" 
-        : "Age-appropriate mental health support for children and teens",
-      icon: Users,
-      path: "/adolescent-selection",
-      gradient: "from-[#D946EF]/80 to-[#EC4899]/80",
-      borderColor: "#D946EF",
-      imagePath: getImageUrl("https://images.unsplash.com/photo-1516627145497-ae6968895b74?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=500&q=80")
-    },
-    {
-      title: isSpanish ? "Los Años Dorados" : "The Golden Years",
-      description: isSpanish 
-        ? "Recursos de bienestar mental para adultos mayores y personas de la tercera edad" 
-        : "Mental wellness resources for seniors and elderly adults",
-      icon: Sparkles,
-      path: "/golden-years-welcome",
-      gradient: "from-[#D4AF37]/90 to-[#B8860B]/90",
-      borderColor: "#D4AF37",
-      imagePath: getImageUrl("https://images.unsplash.com/photo-1573497019940-1c28c88b4f3e?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=500&q=80")
-    },
-    {
-      title: isSpanish ? "Servicios de Emergencia" : "First Responders",
-      description: isSpanish 
-        ? "Apoyo de salud mental para paramédicos, EMTs y personal de emergencia" 
-        : "Mental health support for paramedics, EMTs, and emergency personnel",
-      icon: Siren,
-      path: "/first-responders-welcome",
-      gradient: "from-[#DC2626]/80 to-[#EF4444]/80",
-      borderColor: "#DC2626",
-      imagePath: getImageUrl("https://images.unsplash.com/photo-1576091160550-2173dba999ef?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80"),
-    },
-    {
-      title: isSpanish ? "Cumplimiento de la Ley" : "Law Enforcement",
-      description: isSpanish 
-        ? "Apoyo de salud mental para profesionales de la ley" 
-        : "Mental health support for law enforcement professionals",
-      icon: Shield,
-      path: "/law-enforcement-welcome",
-      gradient: "from-[#1E40AF]/80 to-[#1E3A8A]/80",
-      borderColor: "#1E40AF",
-      imagePath: "/lovable-uploads/f3c84972-8f58-42d7-b86f-82ff2d823b30.png"
-    },
-    {
-      title: isSpanish ? "Educadores Estimados" : "Esteemed Educators",
-      description: isSpanish 
-        ? "Apoyo de salud mental para profesores, maestros y personal educativo" 
-        : "Mental health support for teachers, educators, and education staff",
-      icon: BookUser,
-      path: "/educators-welcome",
-      gradient: "from-[#8B5CF6]/80 to-[#6366F1]/80",
-      borderColor: "#8B5CF6",
-      imagePath: getImageUrl("https://images.unsplash.com/photo-1580582932707-520aed937b7b?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=500&q=80")
-    },
-    {
-      title: isSpanish ? "Industria Hotelera" : "Hospitality Industry",
-      description: isSpanish 
-        ? "Recursos de bienestar mental para trabajadores de restaurantes y hostelería" 
-        : "Mental wellness resources for restaurant and hospitality workers",
-      icon: UtensilsCrossed,
-      path: "/hospitality-welcome",
-      gradient: "from-[#9b87f5]/80 to-[#7E69AB]/80",
-      borderColor: "#9b87f5",
-      imagePath: getImageUrl("https://images.unsplash.com/photo-1414235077428-338989a2e8c0?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80")
-    },
-    {
-      title: isSpanish ? "Industria del Transporte" : "Transport Industry",
-      description: isSpanish 
-        ? "Recursos de bienestar mental para conductores de camiones y trabajadores del transporte" 
-        : "Mental wellness resources for truck drivers and transportation workers",
-      icon: Truck,
-      path: "/transport-welcome",
-      gradient: "from-[#3B82F6]/80 to-[#1E40AF]/80",
-      borderColor: "#3B82F6",
-      imagePath: getImageUrl("https://images.unsplash.com/photo-1591768793355-74d04bb6608f?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80")
-    },
-    {
-      title: isSpanish ? "Enfermedades Crónicas" : "Chronic Illness",
-      description: isSpanish 
-        ? "Apoyo de salud mental para personas con enfermedades crónicas" 
-        : "Mental health support for those managing chronic conditions",
-      icon: Stethoscope,
-      path: "/chronic-illness-welcome",
-      gradient: "from-[#10B981]/80 to-[#059669]/80",
-      borderColor: "#10B981",
-      imagePath: getImageUrl("https://images.unsplash.com/photo-1587854080572-cfd5e3f5d60c?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80")
-    }
-  ];
-  
-  return { specializedPrograms, getImageUrl };
-};
 
 interface SpecializedProgramsGridProps {
   onProgramClick: (path: string) => void;
-  columnCount?: number;
 }
 
-const SpecializedProgramsGrid: React.FC<SpecializedProgramsGridProps> = ({ 
-  onProgramClick,
-  columnCount = 5 
-}) => {
-  const { specializedPrograms } = useSpecializedPrograms();
+const SpecializedProgramsGrid: React.FC<SpecializedProgramsGridProps> = ({ onProgramClick }) => {
+  const { isSpanish } = useTranslation();
+  
+  const container = {
+    hidden: { opacity: 0 },
+    show: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.1
+      }
+    }
+  };
+  
+  const item = {
+    hidden: { y: 20, opacity: 0 },
+    show: { y: 0, opacity: 1, transition: { duration: 0.5 } }
+  };
+  
+  // Ensure image error handling
+  const [imageErrors, setImageErrors] = React.useState<Record<string, boolean>>({});
+  
+  const handleImageError = (id: string) => {
+    console.log(`Image error for addon ${id}`);
+    setImageErrors(prev => ({...prev, [id]: true}));
+  };
 
   return (
-    <div className="mb-10">
-      <div className={`grid grid-cols-1 md:grid-cols-3 lg:grid-cols-${columnCount} gap-4`}>
-        {specializedPrograms.map((program, index) => (
-          <div 
-            key={index}
-            onClick={() => onProgramClick(program.path)}
-            className="relative overflow-hidden rounded-xl cursor-pointer transform transition-all duration-300 hover:scale-105 group h-80"
-          >
-            {/* Background image - covers about 70% of card height */}
-            <div className="absolute inset-0 h-[70%] z-0">
-              <img 
-                src={program.imagePath} 
-                alt={program.title}
-                className="w-full h-full object-cover"
-                onError={(e) => {
-                  // If image fails to load, replace with fallback
-                  (e.target as HTMLImageElement).src = "https://images.unsplash.com/photo-1506726446959-adfa26e7aea0?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80";
-                }}
-              />
-              <div className="absolute inset-0 bg-black/30"></div>
-            </div>
-            
-            {/* Bottom color section - 30% of card height */}
-            <div className={`absolute bottom-0 left-0 right-0 h-[30%] ${
-              program.title === "The Golden Years" || program.title === "Los Años Dorados"
-                ? "bg-gradient-to-br from-[#D4AF37]/90 to-[#B8860B]/90 shadow-inner"
-                : `bg-gradient-to-br ${program.gradient}`
-            } flex items-center justify-center`}>
-              <h3 className="text-xl font-semibold text-white truncate text-center w-full px-4">
-                {program.title}
-              </h3>
-            </div>
-            
-            <div className="relative z-10 p-4 flex flex-col h-full">
-              <div className="mb-auto">
-                <div className={`p-3 rounded-full ${
-                  program.title === "The Golden Years" || program.title === "Los Años Dorados"
-                    ? "bg-[#D4AF37]/30 backdrop-blur-sm"
-                    : "bg-white/20 backdrop-blur-sm"
-                } inline-flex`}>
-                  <program.icon className="h-8 w-8 text-white" />
+    <div className="py-6">
+      <motion.div
+        initial="hidden"
+        animate="show"
+        variants={container}
+        className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4"
+      >
+        {addOns.map((addon) => {
+          const Icon = addon.icon;
+          const hasImageError = imageErrors[addon.id] || false;
+          
+          return (
+            <motion.div
+              key={addon.id}
+              variants={item}
+              className="relative rounded-xl overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300"
+              whileHover={{ y: -5, scale: 1.02 }}
+              transition={{ duration: 0.2 }}
+              onClick={() => onProgramClick(addon.path)}
+            >
+              <div className="h-48 relative">
+                <div className="absolute inset-0">
+                  <img
+                    src={hasImageError ? "https://images.unsplash.com/photo-1506057527569-d23d4eb7c5a4?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80" : addon.imagePath}
+                    alt={addon.title}
+                    className="w-full h-full object-cover"
+                    onError={() => handleImageError(addon.id)}
+                    loading="eager"
+                  />
+                  <div className={`absolute inset-0 bg-gradient-to-b ${addon.gradient}`}></div>
+                </div>
+                
+                <div className="relative z-10 h-full flex flex-col justify-between p-4">
+                  <div className="flex justify-between items-start">
+                    <div className="p-2 rounded-full bg-white/20 backdrop-blur-sm">
+                      <Icon className="h-6 w-6 text-white" />
+                    </div>
+                  </div>
+                  
+                  <div>
+                    <h3 className="text-lg font-semibold text-white mb-1">{addon.title}</h3>
+                    <p className="text-sm text-white/80 line-clamp-2">{addon.description}</p>
+                  </div>
                 </div>
               </div>
-            </div>
-            
-            {/* Enhanced metallic gold effect for Golden Years */}
-            {(program.title === "The Golden Years" || program.title === "Los Años Dorados") && (
-              <>
-                <div className="absolute inset-0 bg-gradient-to-b from-[#D4AF37]/20 via-transparent to-[#B8860B]/20 pointer-events-none"></div>
-                <div className="absolute top-0 right-0 w-24 h-24 bg-gradient-to-br from-[#D4AF37]/30 to-[#B8860B]/30 rounded-full blur-lg"></div>
-                <div className="absolute bottom-0 left-0 w-16 h-16 bg-gradient-to-tl from-[#D4AF37]/30 to-[#B8860B]/30 rounded-full blur-lg"></div>
-              </>
-            )}
-            
-            {/* Subtle highlight effect on hover */}
-            <div 
-              className="absolute inset-0 border-2 opacity-0 group-hover:opacity-100 transition-opacity"
-              style={{ 
-                borderColor: (program.title === "The Golden Years" || program.title === "Los Años Dorados") 
-                  ? "#D4AF37" 
-                  : program.borderColor 
-              }}  
-            ></div>
-          </div>
-        ))}
-      </div>
+            </motion.div>
+          );
+        })}
+      </motion.div>
     </div>
   );
 };
