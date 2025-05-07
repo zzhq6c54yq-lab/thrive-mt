@@ -1,5 +1,5 @@
 
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { addOns } from "@/components/home/subscription-addons/data";
 import useTranslation from "@/hooks/useTranslation";
@@ -11,6 +11,19 @@ interface SpecializedProgramsGridProps {
 
 const SpecializedProgramsGrid: React.FC<SpecializedProgramsGridProps> = ({ onProgramClick }) => {
   const { isSpanish } = useTranslation();
+  const [refreshKey, setRefreshKey] = useState(Date.now());
+  
+  useEffect(() => {
+    console.log("SpecializedProgramsGrid mounted/updated, refreshKey:", refreshKey);
+    
+    // Force refresh after a short delay to ensure images are properly loaded
+    const refreshTimer = setTimeout(() => {
+      setRefreshKey(Date.now());
+      console.log("Forcing refresh of SpecializedProgramsGrid");
+    }, 500);
+    
+    return () => clearTimeout(refreshTimer);
+  }, []);
   
   const container = {
     hidden: { opacity: 0 },
@@ -23,7 +36,7 @@ const SpecializedProgramsGrid: React.FC<SpecializedProgramsGridProps> = ({ onPro
   };
   
   return (
-    <div className="py-6">
+    <div className="py-6" key={`specialized-programs-${refreshKey}`}>
       <motion.div
         initial="hidden"
         animate="show"
@@ -40,12 +53,16 @@ const SpecializedProgramsGrid: React.FC<SpecializedProgramsGridProps> = ({ onPro
             </span>
           ) : null;
           
+          // Add timestamp to imagePath to prevent caching
+          const imageWithCacheBust = `${addon.imagePath}${addon.imagePath.includes('?') ? '&' : '?'}bust=${refreshKey}`;
+          console.log(`[SpecializedProgramsGrid] Rendering ${addon.id} with image: ${imageWithCacheBust}`);
+          
           return (
             <BaseCard
-              key={addon.id}
+              key={`${addon.id}-${refreshKey}`}
               id={addon.id}
               title={addon.title}
-              imagePath={addon.imagePath}
+              imagePath={imageWithCacheBust}
               path={addon.path}
               gradient={addon.gradient}
               icon={<Icon className="h-4 w-4 text-white" />}

@@ -6,6 +6,9 @@
 // Track failed images to avoid repeated console logs
 const failedImageUrls = new Set<string>();
 
+// Create an in-memory cache of processed image URLs
+const processedImageCache = new Map<string, string>();
+
 /**
  * Helper function to get the correct image URL, with proper fallback handling
  * @param imagePath The original image path
@@ -27,8 +30,30 @@ export const getImageUrl = (
     return fallbackImage;
   }
   
-  // Return the original image path without modification
-  return imagePath;
+  // Check if we already processed this URL
+  if (processedImageCache.has(imagePath)) {
+    return processedImageCache.get(imagePath)!;
+  }
+  
+  // Add cache-busting parameter if needed
+  let processedUrl = imagePath;
+  if (!imagePath.includes('bust=')) {
+    const separator = imagePath.includes('?') ? '&' : '?';
+    processedUrl = `${imagePath}${separator}bust=${Date.now()}`;
+  }
+  
+  // Store in cache and return
+  processedImageCache.set(imagePath, processedUrl);
+  return processedUrl;
+};
+
+/**
+ * Clear the image cache to force fresh loading of images
+ */
+export const clearImageCache = () => {
+  console.log("Clearing image cache");
+  processedImageCache.clear();
+  failedImageUrls.clear();
 };
 
 /**
@@ -51,5 +76,18 @@ export const handleImageError = (
     failedImageUrls.add(originalSrc);
   }
   
+  // Try to generate a new cache-busting URL for the original source
+  const originalUrlWithoutParams = originalSrc.split('?')[0];
+  
+  if (!failedImageUrls.has(originalUrlWithoutParams)) {
+    // This is the first failure for this base URL, try again with a new timestamp
+    failedImageUrls.add(originalUrlWithoutParams);
+    const newBustedUrl = `${originalUrlWithoutParams}?bust=${Date.now()}`;
+    
+    console.log(`[${componentId}] Attempting to reload with new URL:`, newBustedUrl);
+    return newBustedUrl;
+  }
+  
+  // If we've already tried reloading, use the fallback
   return fallbackImage;
 };

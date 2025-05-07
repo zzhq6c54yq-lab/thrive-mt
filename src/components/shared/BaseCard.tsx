@@ -1,5 +1,5 @@
 
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { handleImageError } from "@/utils/imageUtils";
 
@@ -24,10 +24,34 @@ const BaseCard: React.FC<BaseCardProps> = ({
   onClick,
   badge
 }) => {
+  const [imageLoaded, setImageLoaded] = useState(false);
+  const [imageError, setImageError] = useState(false);
+  const [currentSrc, setCurrentSrc] = useState(imagePath);
+  
+  // Add effect to reset state when imagePath changes
+  useEffect(() => {
+    setImageLoaded(false);
+    setImageError(false);
+    setCurrentSrc(imagePath);
+    console.log(`[BaseCard-${id}] Setting image: ${imagePath}`);
+  }, [imagePath, id]);
+
   const handleClick = () => {
     if (onClick) {
       onClick(path);
     }
+  };
+
+  const handleImageLoad = () => {
+    console.log(`[BaseCard-${id}] Image loaded successfully: ${currentSrc}`);
+    setImageLoaded(true);
+  };
+
+  const handleImageErrorEvent = (e: React.SyntheticEvent<HTMLImageElement, Event>) => {
+    console.error(`[BaseCard-${id}] Image failed to load: ${currentSrc}`);
+    const fallbackImage = "https://images.unsplash.com/photo-1506126613408-eca07ce68773?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80";
+    setImageError(true);
+    setCurrentSrc(handleImageError(e, `base-card-${id}`, fallbackImage));
   };
 
   // Animation variants
@@ -56,15 +80,21 @@ const BaseCard: React.FC<BaseCardProps> = ({
           {/* Image Section (3/4 of height) */}
           <div className="absolute inset-0 h-[75%] overflow-hidden">
             <img 
-              src={imagePath} 
+              src={currentSrc}
               alt={title}
-              className="w-full h-full object-cover"
-              onError={(e) => {
-                const target = e.target as HTMLImageElement;
-                target.src = handleImageError(e, `base-card-${id}`, fallbackImage);
-              }}
+              className={`w-full h-full object-cover transition-opacity duration-300 ${imageLoaded ? 'opacity-100' : 'opacity-0'}`}
+              onError={handleImageErrorEvent}
+              onLoad={handleImageLoad}
               loading="eager"
+              data-card-id={id}
+              key={currentSrc} // Force re-render when src changes
             />
+            
+            {/* Show a loading state while image loads */}
+            {!imageLoaded && !imageError && (
+              <div className="absolute inset-0 bg-gray-800 animate-pulse"></div>
+            )}
+            
             <div className="absolute inset-0 bg-black/30"></div>
             
             {/* Icon overlay */}
