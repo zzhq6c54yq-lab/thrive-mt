@@ -1,3 +1,4 @@
+
 import {
   Activity, BookOpen, Brain, BarChart3, Video, Calendar, Headphones,
   BookText, Sparkles, MessageCircle, Leaf, Rocket, Globe, Heart, Users, HandHeart, UserPlus
