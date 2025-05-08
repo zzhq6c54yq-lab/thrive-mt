@@ -10,8 +10,6 @@ import AddOnGrid from "./subscription-addons/AddOnGrid";
 import SelectedAddOns from "./subscription-addons/SelectedAddOns";
 import NavigationButtons from "./subscription-addons/NavigationButtons";
 import { 
-  getPriceDisplay, 
-  getPriceDisplayWithStrikethrough,
   getAddOnPrice,
   calculateTotalPrice,
   getPricingExplanation
@@ -36,9 +34,6 @@ const SubscriptionAddOns: React.FC<SubscriptionAddOnsProps> = ({
   // Create wrapper functions that use our utility functions but pass the current state
   const getAddOnPriceFormatted = (id: string) => getAddOnPrice(id, selectedPlan, billingCycle);
   const calculateTotalPriceFormatted = () => calculateTotalPrice(selectedAddOns, selectedPlan, billingCycle);
-  const getPriceDisplayWrapped = (addOn: any) => getPriceDisplay(selectedPlan, billingCycle);
-  const getPriceDisplayWithStrikethroughWrapped = (addOn: any) => 
-    getPriceDisplayWithStrikethrough(selectedPlan, billingCycle);
   
   const pricingExplanation = getPricingExplanation(selectedPlan, getTranslatedText);
 
@@ -63,8 +58,7 @@ const SubscriptionAddOns: React.FC<SubscriptionAddOnsProps> = ({
           billingCycle={billingCycle}
           onToggleExpand={toggleExpandAddon}
           onToggle={onAddOnToggle}
-          getPriceDisplayWithStrikethrough={getPriceDisplayWithStrikethroughWrapped}
-          getPriceDisplay={getPriceDisplayWrapped}
+          selectedPlan={selectedPlan}
         />
         
         <SelectedAddOns

@@ -4,6 +4,8 @@ import { motion } from 'framer-motion';
 import { containerVariants, cardVariants } from './AnimationVariants';
 import AddOnCard from './AddOnCard';
 import { AddOn } from './types';
+import { PriceDisplayWithStrikethrough } from './PriceDisplay';
+import { getPriceDisplay } from './PriceCalculator';
 
 interface AddOnGridProps {
   addOns: AddOn[];
@@ -12,8 +14,7 @@ interface AddOnGridProps {
   billingCycle: 'monthly' | 'yearly';
   onToggleExpand: (id: string) => void;
   onToggle: (id: string) => void;
-  getPriceDisplayWithStrikethrough: (addOn: AddOn) => React.ReactNode;
-  getPriceDisplay: (addOn: AddOn) => string;
+  selectedPlan: string | null;
 }
 
 const AddOnGrid: React.FC<AddOnGridProps> = ({
@@ -23,8 +24,7 @@ const AddOnGrid: React.FC<AddOnGridProps> = ({
   billingCycle,
   onToggleExpand,
   onToggle,
-  getPriceDisplayWithStrikethrough,
-  getPriceDisplay
+  selectedPlan
 }) => {
   return (
     <motion.div 
@@ -39,7 +39,9 @@ const AddOnGrid: React.FC<AddOnGridProps> = ({
             addOn={addOn}
             isSelected={selectedAddOns.includes(addOn.id)}
             expandedAddon={expandedAddon}
-            priceDisplay={billingCycle === 'yearly' ? getPriceDisplayWithStrikethrough(addOn) : getPriceDisplay(addOn)}
+            priceDisplay={billingCycle === 'yearly' 
+              ? <PriceDisplayWithStrikethrough plan={selectedPlan} billingCycle={billingCycle} />
+              : getPriceDisplay(selectedPlan, billingCycle)}
             onToggleExpand={onToggleExpand}
             onToggle={onToggle}
           />

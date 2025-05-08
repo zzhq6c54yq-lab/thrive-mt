@@ -1,5 +1,6 @@
 
 // Utility functions for price calculations in the subscription add-ons section
+import React from 'react';
 
 /**
  * Calculate the display price for an add-on based on plan and billing cycle
@@ -22,26 +23,21 @@ export const getPriceDisplay = (
 };
 
 /**
- * Calculate the display price with strikethrough for yearly discounts
+ * Create the JSX for price display with strikethrough for yearly discounts
  * @param plan The selected subscription plan
  * @param billingCycle Monthly or yearly billing cycle
- * @returns React node with formatted price and strikethrough if applicable
+ * @returns Price display information for JSX rendering
  */
 export const getPriceDisplayWithStrikethrough = (
   plan: string | null,
   billingCycle: 'monthly' | 'yearly'
-): React.ReactNode => {
+): { discountedPrice: number; yearlyPrice: number; } | string => {
   let basePrice = getBasePriceForPlan(plan);
   
   if (billingCycle === 'yearly') {
     const yearlyPrice = basePrice * 12;
     const discountedPrice = Math.round(yearlyPrice * 0.8);
-    return (
-      <div className="flex flex-col items-end">
-        <span className="text-xs text-white/70 line-through">${yearlyPrice}/year</span>
-        <span className="text-lg font-bold">${discountedPrice}/year</span>
-      </div>
-    );
+    return { discountedPrice, yearlyPrice };
   }
   return `$${basePrice}/month`;
 };
