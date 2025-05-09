@@ -1,6 +1,6 @@
 
 import { GraduationCap, Shield, UserRound, PersonStanding } from "lucide-react";
-import { AddOn } from "./types";
+import type { AddOn } from "./types";
 
 // Demographic-based add-ons
 export const demographicAddOns: AddOn[] = [

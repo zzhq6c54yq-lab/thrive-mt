@@ -12,7 +12,8 @@ export const addOns: AddOn[] = [
 ];
 
 // Re-export types and helpers
-export { addonTypes, categorizedAddOns, AddOn };
+export { addonTypes, categorizedAddOns };
+export type { AddOn };
 
 // Helper function to get add-ons by category
 export const getAddOnsByCategory = (categoryId: string) => {

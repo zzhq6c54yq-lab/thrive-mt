@@ -1,6 +1,6 @@
 
 import { Briefcase, Shield, BookOpen, Hotel, Bus } from "lucide-react";
-import { AddOn } from "./types";
+import type { AddOn } from "./types";
 
 // Profession-based add-ons
 export const professionAddOns: AddOn[] = [

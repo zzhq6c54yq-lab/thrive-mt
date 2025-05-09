@@ -1,6 +1,6 @@
 
 import { Activity, Stethoscope } from "lucide-react";
-import { AddOn } from "./types";
+import type { AddOn } from "./types";
 
 // Condition-based add-ons
 export const conditionAddOns: AddOn[] = [
