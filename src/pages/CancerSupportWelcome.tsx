@@ -52,22 +52,33 @@ const CancerSupportWelcome: React.FC = () => {
     }
   ];
 
+  // Define what users can expect from this program
+  const whatToExpect = [
+    "Access to a community of fellow cancer patients, survivors, and caregivers",
+    "Resources and information about different cancer types and treatment options",
+    "Tools to help manage symptoms, side effects, and treatment schedules",
+    "Emotional support resources for the entire cancer journey",
+    "Special sections for children affected by cancer - either as patients or family members",
+    "Remembrance resources for those who have lost loved ones to cancer",
+    "Expert articles and videos about the latest research and treatments"
+  ];
+
+  // Add a motivational message for users
+  const motivationalMessage = "You are not alone on this journey. Whether you're facing cancer yourself or supporting someone who is, this community stands with you with compassion, resources, and hope.";
+
   return (
     <SpecializedProgramWelcome
       title="Cancer Support Community"
       description="Welcome to a compassionate space designed specifically for cancer patients, survivors, caregivers, and families. Here, you'll find resources, support communities, and tools to help navigate the challenges of cancer - whether you're facing a diagnosis, supporting a loved one, or honoring someone's memory."
-      imagePath="/lovable-uploads/54e4d3e9-8aa5-46b2-a8e6-42fb0ba8128b.png"
-      imageAlt="People supporting each other in a cancer support group setting"
-      gradientColors="from-rose-500/20 to-amber-500/20"
-      features={features}
-      actionButton={
-        <Button 
-          onClick={handleContinue}
-          className="w-full bg-gradient-to-r from-rose-500 to-amber-500 hover:from-rose-600 hover:to-amber-600 text-white"
-        >
-          Enter Cancer Support Portal
-        </Button>
-      }
+      whatToExpect={whatToExpect}
+      color="rose-500"
+      gradientFrom="rose-500"
+      gradientTo="amber-500"
+      borderColor="#e11d48"
+      portalPath="/cancer-support-portal"
+      icon={<Heart className="h-8 w-8 text-rose-500" />}
+      coverImage="/lovable-uploads/54e4d3e9-8aa5-46b2-a8e6-42fb0ba8128b.png"
+      motivationalMessage={motivationalMessage}
     />
   );
 };
