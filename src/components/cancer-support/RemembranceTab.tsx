@@ -1,8 +1,10 @@
 
 import React from "react";
+import { useNavigate } from "react-router-dom";
 import { Flower, BookOpen, HeartHandshake, MessageSquare, Star, Leaf, ArrowRight } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
+import { useToast } from "@/hooks/use-toast";
 import useTranslation from "@/hooks/useTranslation";
 
 interface RemembranceTabProps {
@@ -11,6 +13,18 @@ interface RemembranceTabProps {
 
 const RemembranceTab: React.FC<RemembranceTabProps> = ({ onFeatureClick }) => {
   const { isSpanish } = useTranslation();
+  const navigate = useNavigate();
+  const { toast } = useToast();
+  
+  // Direct navigation to independent pages
+  const handleNavigate = (path: string) => {
+    toast({
+      title: isSpanish ? "Navegando" : "Navigating",
+      description: isSpanish ? "Accediendo a la página" : "Accessing page",
+      duration: 2000
+    });
+    navigate(path);
+  };
   
   const remembranceResources = [
     {
@@ -20,7 +34,7 @@ const RemembranceTab: React.FC<RemembranceTabProps> = ({ onFeatureClick }) => {
       description: isSpanish 
         ? "Un espacio virtual para honrar a los seres queridos que hemos perdido"
         : "A virtual space to honor loved ones we have lost",
-      path: "cancer-support/memorial-garden"
+      path: "/cancer-support/memorial-garden"
     },
     {
       id: "grief-resources",
@@ -29,7 +43,7 @@ const RemembranceTab: React.FC<RemembranceTabProps> = ({ onFeatureClick }) => {
       description: isSpanish 
         ? "Información y apoyo para navegar el proceso de duelo"
         : "Information and support for navigating the grief process",
-      path: "cancer-support/grief-resources"
+      path: "/cancer-support/grief-resources"
     },
     {
       id: "legacy-projects",
@@ -38,7 +52,7 @@ const RemembranceTab: React.FC<RemembranceTabProps> = ({ onFeatureClick }) => {
       description: isSpanish 
         ? "Ideas para crear legados significativos para honrar a los seres queridos"
         : "Ideas for creating meaningful legacies to honor loved ones",
-      path: "cancer-support/legacy-projects"
+      path: "/cancer-support/legacy-projects"
     },
     {
       id: "bereavement-community",
@@ -47,7 +61,7 @@ const RemembranceTab: React.FC<RemembranceTabProps> = ({ onFeatureClick }) => {
       description: isSpanish 
         ? "Conéctate con otros que han experimentado pérdidas similares"
         : "Connect with others who have experienced similar losses",
-      path: "cancer-support/bereavement-community"
+      path: "/cancer-support/bereavement-community"
     },
     {
       id: "memorial-wall",
@@ -56,7 +70,7 @@ const RemembranceTab: React.FC<RemembranceTabProps> = ({ onFeatureClick }) => {
       description: isSpanish 
         ? "Comparte recuerdos y reflexiones sobre tus seres queridos"
         : "Share memories and reflections about your loved ones",
-      path: "cancer-support/memorial-wall"
+      path: "/cancer-support/memorial-wall"
     },
     {
       id: "grief-groups",
@@ -65,7 +79,7 @@ const RemembranceTab: React.FC<RemembranceTabProps> = ({ onFeatureClick }) => {
       description: isSpanish 
         ? "Grupos de apoyo facilitados por profesionales especializados en duelo"
         : "Support groups facilitated by grief specialists",
-      path: "cancer-support/grief-groups"
+      path: "/cancer-support/grief-groups"
     }
   ];
   
@@ -103,7 +117,7 @@ const RemembranceTab: React.FC<RemembranceTabProps> = ({ onFeatureClick }) => {
                     variant="ghost" 
                     size="sm" 
                     className="text-indigo-600 hover:text-indigo-700 dark:text-indigo-400 dark:hover:text-indigo-300 p-0 h-auto hover:bg-transparent"
-                    onClick={() => onFeatureClick(resource.path)}
+                    onClick={() => handleNavigate(resource.path)}
                   >
                     {isSpanish ? "Visitar" : "Visit"}
                     <ArrowRight className="ml-1 h-3 w-3" />
@@ -126,7 +140,7 @@ const RemembranceTab: React.FC<RemembranceTabProps> = ({ onFeatureClick }) => {
         </p>
         <Button 
           className="bg-indigo-500 hover:bg-indigo-600 text-white"
-          onClick={() => onFeatureClick("cancer-support/honoring-action")}
+          onClick={() => handleNavigate("/cancer-support/honoring-action")}
         >
           {isSpanish ? "Explorar Formas de Honrar su Memoria" : "Explore Ways to Honor Their Memory"}
         </Button>

@@ -1,3 +1,4 @@
+
 import React from "react";
 import { Routes, Route, Navigate } from "react-router-dom";
 import Index from "@/pages/Index";
@@ -88,6 +89,10 @@ import ChronicIllnessWelcome from "@/pages/ChronicIllnessWelcome";
 import ChronicIllnessPortal from "@/pages/ChronicIllnessPortal";
 import CancerSupportWelcome from "@/pages/CancerSupportWelcome";
 import CancerSupportPortal from "@/pages/CancerSupportPortal";
+import MemorialWall from "@/pages/MemorialWall";
+import MemorialTributeDetail from "@/pages/MemorialTributeDetail";
+import GriefResources from "@/pages/GriefResources";
+import LegacyProjects from "@/pages/LegacyProjects";
 
 // Import additional routes for specific chronic illness pages if needed
 // These can be added as the specific content pages are built
@@ -324,12 +329,13 @@ function App() {
         <Route path="/cancer-support/survivorship-community" element={<CommunitySupport />} />
         <Route path="/cancer-support/create-group" element={<CommunitySupport />} />
         
-        {/* Remembrance Routes */}
+        {/* Remembrance Routes - Using new dedicated pages */}
         <Route path="/cancer-support/memorial-garden" element={<ResourceLibrary />} />
-        <Route path="/cancer-support/grief-resources" element={<ResourceLibrary />} />
-        <Route path="/cancer-support/legacy-projects" element={<ResourceLibrary />} />
+        <Route path="/cancer-support/grief-resources" element={<GriefResources />} />
+        <Route path="/cancer-support/legacy-projects" element={<LegacyProjects />} />
         <Route path="/cancer-support/bereavement-community" element={<CommunitySupport />} />
-        <Route path="/cancer-support/memorial-wall" element={<ResourceLibrary />} />
+        <Route path="/cancer-support/memorial-wall" element={<MemorialWall />} />
+        <Route path="/cancer-support/memorial-wall/:tributeId" element={<MemorialTributeDetail />} />
         <Route path="/cancer-support/grief-groups" element={<CommunitySupport />} />
         <Route path="/cancer-support/honoring-action" element={<ResourceLibrary />} />
         
