@@ -1,8 +1,8 @@
 
-import React, { useEffect } from "react";
+import React from "react";
 import { useToast } from "@/hooks/use-toast";
 import useTranslation from "@/hooks/useTranslation";
-import { ScreenNavigation } from "./screen-manager/ScreenNavigation";
+import { useScreenNavigation } from "./screen-manager/ScreenNavigation";
 import EscapeHatchManager from "./screen-manager/EscapeHatchManager";
 import useScreenDebugger from "./screen-manager/useScreenDebugger";
 import ScreenRenderer from "./screen-manager/ScreenRenderer";
@@ -66,12 +66,12 @@ const IndexScreenManager: React.FC<IndexScreenManagerProps> = ({
   // Use the screen debugger hook for logging
   useScreenDebugger(screenState);
   
-  // Get navigation handlers from the ScreenNavigation hook
+  // Use our custom navigation hook instead of a component
   const { 
     handleContinueToMood, 
     handlePrevious, 
     handleSkip 
-  } = ScreenNavigation({ screenState, setScreenState });
+  } = useScreenNavigation({ screenState, setScreenState });
   
   return (
     <>

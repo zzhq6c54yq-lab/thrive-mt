@@ -1,5 +1,4 @@
 
-import React from "react";
 import { toast } from "@/hooks/use-toast";
 
 interface ScreenNavigationProps {
@@ -7,7 +6,8 @@ interface ScreenNavigationProps {
   setScreenState: (state: 'intro' | 'mood' | 'moodResponse' | 'register' | 'subscription' | 'subscriptionAddOns' | 'visionBoard' | 'main') => void;
 }
 
-export const ScreenNavigation: React.FC<ScreenNavigationProps> = ({ screenState, setScreenState }) => {
+// Changed from React.FC to a custom hook that returns navigation handlers
+export const useScreenNavigation = ({ screenState, setScreenState }: ScreenNavigationProps) => {
   
   const handleContinueToMood = () => {
     console.log("[ScreenNavigation] Continuing from intro to mood");
