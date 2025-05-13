@@ -16,6 +16,13 @@ export const useIndexState = () => {
   const { isFirstVisit, setIsFirstVisit } = useFirstVisitState(screenState);
 
   // Wrapper functions to handle screen state transitions
+  const handleMoodSelectWrapper = (mood: 'happy' | 'ok' | 'neutral' | 'down' | 'sad' | 'overwhelmed') => {
+    console.log(`[useIndexState] Selecting mood: ${mood} and transitioning to moodResponse screen`);
+    handleMoodSelect(mood);
+    // Transition to the next screen after mood selection
+    setScreenState('moodResponse');
+  };
+
   const handleRegisterWrapper = (e: React.FormEvent) => {
     handleRegister(e, () => setScreenState('subscription'));
   };
@@ -55,7 +62,7 @@ export const useIndexState = () => {
     handleSubscriptionContinue: handleSubscriptionContinueWrapper,
     handleAddOnsContinue: handleAddOnsContinueWrapper,
     handleVisionBoardContinue: handleVisionBoardContinueWrapper,
-    handleMoodSelect
+    handleMoodSelect: handleMoodSelectWrapper
   };
 };
 

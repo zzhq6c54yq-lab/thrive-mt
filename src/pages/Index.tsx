@@ -124,7 +124,8 @@ const Index = () => {
   useEffect(() => {
     console.log("[Index] Rendered with screenState:", screenState);
     console.log("[Index] Onboarding completed status:", localStorage.getItem('hasCompletedOnboarding'));
-  }, [screenState]);
+    console.log("[Index] Selected mood:", selectedMood);
+  }, [screenState, selectedMood]);
 
   return (
     <IndexContent
