@@ -1,9 +1,8 @@
-
 import { useState, useEffect } from "react";
 import { useToast } from "@/hooks/use-toast";
 
 export const useIndexState = () => {
-  // Initialize to 'intro' by default to ensure onboarding flow starts properly
+  // Initialize screenState as null to force proper initialization
   const [screenState, setScreenState] = useState<'intro' | 'mood' | 'moodResponse' | 'register' | 'subscription' | 'subscriptionAddOns' | 'visionBoard' | 'main'>('intro');
   const [selectedMood, setSelectedMood] = useState<'happy' | 'ok' | 'neutral' | 'down' | 'sad' | 'overwhelmed' | null>(null);
   const [selectedQualities, setSelectedQualities] = useState<string[]>([]);
@@ -18,17 +17,24 @@ export const useIndexState = () => {
   const [isFirstVisit, setIsFirstVisit] = useState(false);
   const { toast } = useToast();
   
-  // Check onboarding status on mount
+  // Initialize state based on onboarding completion
   useEffect(() => {
     const hasCompletedOnboarding = localStorage.getItem('hasCompletedOnboarding') === 'true';
     
+    console.log("[useIndexState] Initial render, hasCompletedOnboarding:", hasCompletedOnboarding);
+    
     if (hasCompletedOnboarding) {
-      console.log("useIndexState: Onboarding already completed, initializing to main dashboard");
+      console.log("[useIndexState] Onboarding already completed, initializing to main dashboard");
       setScreenState('main');
     } else {
-      console.log("useIndexState: No onboarding record, starting from intro screen");
-      // This ensures we start from the beginning of onboarding
+      console.log("[useIndexState] No onboarding record, starting from intro screen");
       setScreenState('intro');
+      
+      // Clear the localStorage items that might conflict
+      localStorage.removeItem('prevScreenState');
+      
+      // Log that we're properly starting the onboarding
+      console.log("[useIndexState] Initializing new onboarding flow");
     }
   }, []);
   
@@ -314,6 +320,7 @@ export const useIndexState = () => {
   };
 
   const handleMoodSelect = (mood: 'happy' | 'ok' | 'neutral' | 'down' | 'sad' | 'overwhelmed') => {
+    console.log("[useIndexState] Selected mood:", mood);
     setSelectedMood(mood);
     setScreenState('moodResponse');
   };

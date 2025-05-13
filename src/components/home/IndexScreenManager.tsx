@@ -1,5 +1,5 @@
 
-import React from "react";
+import React, { useEffect } from "react";
 import IntroScreen from "@/components/home/IntroScreen";
 import MoodScreen from "@/components/home/MoodScreen";
 import MoodResponse from "@/components/home/MoodResponse";
@@ -9,6 +9,7 @@ import SubscriptionAddOns from "@/components/home/SubscriptionAddOns";
 import VisionBoard from "@/components/home/VisionBoard";
 import MainDashboard from "@/components/home/MainDashboard";
 import useTranslation from "@/hooks/useTranslation";
+import { useToast } from "@/hooks/use-toast";
 
 interface IndexScreenManagerProps {
   screenState: 'intro' | 'mood' | 'moodResponse' | 'register' | 'subscription' | 'subscriptionAddOns' | 'visionBoard' | 'main';
@@ -64,51 +65,70 @@ const IndexScreenManager: React.FC<IndexScreenManagerProps> = ({
   markTutorialCompleted
 }) => {
   const { isSpanish } = useTranslation();
+  const { toast } = useToast();
   
-  React.useEffect(() => {
-    const prevState = localStorage.getItem('prevScreenState');
-    console.log("IndexScreenManager: Screen changing from", prevState, "to", screenState);
-    localStorage.setItem('prevScreenState', screenState);
+  useEffect(() => {
+    console.log("[IndexScreenManager] Current screen state:", screenState);
   }, [screenState]);
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (screenState === 'intro') {
-      console.log("Starting new session from intro screen");
-      
-      // Reset onboarding flag to ensure complete onboarding flow
-      localStorage.removeItem('hasCompletedOnboarding');
+      console.log("[IndexScreenManager] Starting new session from intro screen");
     }
   }, [screenState]);
+
+  const handleContinueToMood = () => {
+    console.log("[IndexScreenManager] Continuing from intro to mood");
+    setScreenState('mood');
+    toast({
+      title: "Welcome to Thrive MT",
+      description: "Let's start by checking in with your mood today",
+    });
+  };
 
   const handlePrevious = () => {
-    let newScreenState: 'intro' | 'mood' | 'moodResponse' | 'register' | 'subscription' | 'subscriptionAddOns' | 'visionBoard' | 'main' = 'intro';
+    console.log("[IndexScreenManager] Moving to previous screen from", screenState);
     
-    if (screenState === 'mood') {
-      newScreenState = 'intro';
-    } else if (screenState === 'moodResponse') {
-      newScreenState = 'mood';
-    } else if (screenState === 'register') {
-      newScreenState = 'moodResponse';
-    } else if (screenState === 'subscription') {
-      newScreenState = 'register';
-    } else if (screenState === 'subscriptionAddOns') {
-      newScreenState = 'subscription';
-    } else if (screenState === 'visionBoard') {
-      newScreenState = 'subscriptionAddOns';
-    } else if (screenState === 'main') {
-      newScreenState = 'visionBoard';
+    switch (screenState) {
+      case 'mood':
+        setScreenState('intro');
+        break;
+      case 'moodResponse':
+        setScreenState('mood');
+        break;
+      case 'register':
+        setScreenState('moodResponse');
+        break;
+      case 'subscription':
+        setScreenState('register');
+        break;
+      case 'subscriptionAddOns':
+        setScreenState('subscription');
+        break;
+      case 'visionBoard':
+        setScreenState('subscriptionAddOns');
+        break;
+      case 'main':
+        setScreenState('visionBoard');
+        break;
+      default:
+        setScreenState('intro');
     }
-    
-    setScreenState(newScreenState);
   };
 
   const handleSkip = () => {
+    console.log("[IndexScreenManager] Skipping to main screen from", screenState);
     setScreenState('main');
+    // Mark onboarding as completed when skipping to main
+    localStorage.setItem('hasCompletedOnboarding', 'true');
   };
 
+  // Debug render
+  console.log("[IndexScreenManager] Rendering screen:", screenState);
+  
   switch (screenState) {
     case 'intro':
-      return <IntroScreen onContinue={() => setScreenState('mood')} />;
+      return <IntroScreen onContinue={handleContinueToMood} />;
     case 'mood':
       return (
         <MoodScreen
@@ -120,7 +140,7 @@ const IndexScreenManager: React.FC<IndexScreenManagerProps> = ({
         <MoodResponse
           selectedMood={selectedMood}
           onContinue={() => setScreenState('register')}
-          onPrevious={() => setScreenState('mood')}
+          onPrevious={handlePrevious}
         />
       );
     case 'register':
@@ -129,7 +149,7 @@ const IndexScreenManager: React.FC<IndexScreenManagerProps> = ({
           userInfo={userInfo}
           onUserInfoChange={onUserInfoChange}
           onSubmit={handleRegister}
-          onPrevious={() => setScreenState('moodResponse')}
+          onPrevious={handlePrevious}
           onSkip={() => setScreenState('subscription')}
         />
       );
@@ -139,7 +159,7 @@ const IndexScreenManager: React.FC<IndexScreenManagerProps> = ({
           selectedPlan={selectedPlan}
           onPlanSelect={onPlanSelect}
           onContinue={handleSubscriptionContinue}
-          onPrevious={() => setScreenState('register')}
+          onPrevious={handlePrevious}
           onSkip={() => setScreenState('subscriptionAddOns')}
         />
       );
@@ -150,7 +170,7 @@ const IndexScreenManager: React.FC<IndexScreenManagerProps> = ({
           selectedAddOns={selectedAddOns}
           onAddOnToggle={onAddOnToggle}
           onContinue={handleAddOnsContinue}
-          onPrevious={() => setScreenState('subscription')}
+          onPrevious={handlePrevious}
           onSkip={() => setScreenState('visionBoard')}
         />
       );
@@ -162,8 +182,8 @@ const IndexScreenManager: React.FC<IndexScreenManagerProps> = ({
           onQualityToggle={onQualityToggle}
           onGoalToggle={onGoalToggle}
           onContinue={handleVisionBoardContinue}
-          onPrevious={() => setScreenState('subscriptionAddOns')}
-          onSkip={() => setScreenState('main')}
+          onPrevious={handlePrevious}
+          onSkip={handleSkip}
         />
       );
     case 'main':
@@ -179,7 +199,23 @@ const IndexScreenManager: React.FC<IndexScreenManagerProps> = ({
         />
       );
     default:
-      return null;
+      console.error("[IndexScreenManager] Unknown screen state:", screenState);
+      return (
+        <div className="min-h-screen flex flex-col items-center justify-center bg-[#1a1a1f] text-white">
+          <h2 className="text-2xl mb-4">Something went wrong</h2>
+          <p className="mb-6">We couldn't load the correct screen.</p>
+          <button 
+            className="bg-[#B87333] hover:bg-[#B87333]/80 px-6 py-3 rounded-md"
+            onClick={() => {
+              localStorage.removeItem('hasCompletedOnboarding');
+              localStorage.removeItem('prevScreenState');
+              setScreenState('intro');
+            }}
+          >
+            Restart
+          </button>
+        </div>
+      );
   }
 };
 

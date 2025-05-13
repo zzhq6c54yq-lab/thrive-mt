@@ -41,6 +41,13 @@ const IntroScreen: React.FC<IntroScreenProps> = ({ onContinue }) => {
     console.log(`Language changed to: ${language}`);
   };
   
+  const handleBeginJourney = () => {
+    console.log("[IntroScreen] Begin journey button clicked");
+    // Reset any potentially problematic localStorage items
+    localStorage.removeItem('prevScreenState');
+    onContinue();
+  };
+  
   return (
     <div className="min-h-screen flex flex-col items-center justify-center bg-[#1a1a1f] overflow-hidden relative">
       <div className="floating-bg"></div>
@@ -121,7 +128,7 @@ const IntroScreen: React.FC<IntroScreenProps> = ({ onContinue }) => {
         <div className="mt-10 flex justify-center gap-4">
           <Button 
             className="group bg-[#B87333] hover:bg-[#B87333]/80 hero-button shadow-[0_0_15px_rgba(184,115,51,0.4)]"
-            onClick={onContinue}
+            onClick={handleBeginJourney}
           >
             {selectedLanguage === 'Español' 
               ? "Comienza Tu Viaje" 
