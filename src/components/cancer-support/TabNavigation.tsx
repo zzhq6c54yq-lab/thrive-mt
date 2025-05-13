@@ -1,7 +1,7 @@
 
 import React from "react";
 import { useNavigate } from "react-router-dom";
-import { User, Users, BookOpen, HeartHandshake, Star, Child, Flower } from "lucide-react";
+import { User, Users, BookOpen, HeartHandshake, Star, Baby, Flower } from "lucide-react";
 import useTranslation from "@/hooks/useTranslation";
 
 interface TabNavigationProps {
@@ -16,7 +16,7 @@ const TabNavigation: React.FC<TabNavigationProps> = ({ activeTab, onTabChange })
   const tabs = [
     { id: 'patients', label: isSpanish ? "Pacientes" : "Patients", icon: <User className="w-4 h-4" /> },
     { id: 'caregivers', label: isSpanish ? "Cuidadores" : "Caregivers", icon: <HeartHandshake className="w-4 h-4" /> },
-    { id: 'children', label: isSpanish ? "Niños y Padres" : "Children & Parents", icon: <Child className="w-4 h-4" /> },
+    { id: 'children', label: isSpanish ? "Niños y Padres" : "Children & Parents", icon: <Baby className="w-4 h-4" /> },
     { id: 'resources', label: isSpanish ? "Recursos" : "Resources", icon: <BookOpen className="w-4 h-4" /> },
     { id: 'communities', label: isSpanish ? "Comunidades" : "Communities", icon: <Users className="w-4 h-4" /> },
     { id: 'remembrance', label: isSpanish ? "Conmemoración" : "Remembrance", icon: <Flower className="w-4 h-4" /> },

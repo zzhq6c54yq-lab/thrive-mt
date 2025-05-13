@@ -308,7 +308,87 @@ const worksheetContentMap: Record<string, WorksheetContent> = {
       "The practical assessments and implementation strategies will help you develop personalized approaches to sleep optimization.",
     ],
     exercises: [
-      // ... keep existing code with similar detailed exercises
+      {
+        title: "Sleep Assessment & Goal Setting",
+        instructions: "Evaluate your current sleep patterns and set specific, achievable goals for improvement.",
+        practicalSteps: [
+          "1. Sleep Diary: Track your sleep patterns for one week, noting bedtime, wake time, sleep quality, and daytime alertness.",
+          "2. Sleep Quality Assessment: Rate your sleep quality on a scale of 1-10 and identify factors affecting your sleep.",
+          "3. Goal Setting: Set specific, measurable, achievable, relevant, and time-bound (SMART) goals for improving your sleep.",
+          "4. Action Planning: Develop a detailed action plan for achieving your sleep goals, including specific strategies and timelines.",
+          "5. Progress Tracking: Create a system for tracking your progress toward your sleep goals and making adjustments as needed."
+        ],
+        reflection: [
+          "What patterns did you notice in your sleep diary?",
+          "What factors seem to be affecting your sleep quality?",
+          "What are your biggest challenges to achieving your sleep goals?",
+          "What resources or support do you need to succeed?"
+        ],
+        assessmentTools: [
+          {
+            name: "Sleep Diary Template",
+            description: "A template for tracking your sleep patterns, including bedtime, wake time, sleep quality, and daytime alertness."
+          },
+          {
+            name: "Sleep Quality Assessment Scale",
+            description: "A scale for rating your sleep quality on a scale of 1-10 and identifying factors affecting your sleep."
+          }
+        ]
+      },
+      {
+        title: "Sleep Environment Optimization",
+        instructions: "Create a sleep-friendly environment that promotes relaxation and restful sleep.",
+        practicalSteps: [
+          "1. Room Assessment: Evaluate your bedroom for factors that may be disrupting your sleep, such as noise, light, temperature, and clutter.",
+          "2. Noise Reduction: Implement strategies for reducing noise in your bedroom, such as earplugs, white noise machines, or soundproofing.",
+          "3. Light Management: Optimize the lighting in your bedroom by using blackout curtains, dimming lights, and avoiding screens before bed.",
+          "4. Temperature Control: Adjust the temperature in your bedroom to a comfortable level for sleep, typically between 60-67°F (15-19°C).",
+          "5. Clutter Reduction: Declutter your bedroom to create a more relaxing and peaceful environment."
+        ],
+        reflection: [
+          "What factors in your bedroom are disrupting your sleep?",
+          "What strategies can you implement to reduce noise and light in your bedroom?",
+          "What is the ideal temperature for sleep in your bedroom?",
+          "How can you declutter your bedroom to create a more relaxing environment?"
+        ],
+        assessmentTools: [
+          {
+            name: "Sleep Environment Checklist",
+            description: "A checklist for evaluating your bedroom for factors that may be disrupting your sleep."
+          },
+          {
+            name: "Noise and Light Level Meter",
+            description: "A tool for measuring the noise and light levels in your bedroom."
+          }
+        ]
+      },
+      {
+        title: "Relaxation Techniques for Sleep",
+        instructions: "Practice relaxation techniques to calm your mind and body before bed.",
+        practicalSteps: [
+          "1. Progressive Muscle Relaxation: Practice progressive muscle relaxation to release tension in your body.",
+          "2. Deep Breathing Exercises: Practice deep breathing exercises to calm your mind and body.",
+          "3. Guided Meditation: Listen to a guided meditation to relax your mind and prepare for sleep.",
+          "4. Visualization Techniques: Use visualization techniques to create a peaceful and relaxing mental state.",
+          "5. Mindfulness Meditation: Practice mindfulness meditation to focus on the present moment and reduce stress."
+        ],
+        reflection: [
+          "Which relaxation techniques work best for you?",
+          "How do you feel after practicing relaxation techniques?",
+          "How can you incorporate relaxation techniques into your bedtime routine?",
+          "What are the benefits of practicing relaxation techniques for sleep?"
+        ],
+        assessmentTools: [
+          {
+            name: "Relaxation Technique Log",
+            description: "A log for tracking your practice of relaxation techniques and noting their effectiveness."
+          },
+          {
+            name: "Stress Level Assessment Scale",
+            description: "A scale for assessing your stress level before and after practicing relaxation techniques."
+          }
+        ]
+      }
     ]
   },
   "social-connection": {
@@ -318,7 +398,90 @@ const worksheetContentMap: Record<string, WorksheetContent> = {
       "The practical activities will help you assess, develop, and enhance your social support network.",
     ],
     exercises: [
-      // ... keep existing code with similar detailed exercises
+      {
+        title: "Social Network Assessment",
+        instructions: "Evaluate your current social network and identify areas for improvement.",
+        practicalSteps: [
+          "1. Social Circle Mapping: Create a map of your social circle, including family, friends, colleagues, and acquaintances.",
+          "2. Relationship Quality Assessment: Assess the quality of your relationships with each person in your social circle.",
+          "3. Social Support Needs Identification: Identify your social support needs and determine whether they are being met.",
+          "4. Social Network Gap Analysis: Identify gaps in your social network and areas where you need to build new connections.",
+          "5. Social Connection Goals Setting: Set specific, measurable, achievable, relevant, and time-bound (SMART) goals for improving your social connections."
+        ],
+        reflection: [
+          "Who are the most important people in your social circle?",
+          "What are the strengths and weaknesses of your current social network?",
+          "What social support needs are not being met?",
+          "What new connections do you need to build?",
+          "What are your biggest challenges to improving your social connections?"
+        ],
+        assessmentTools: [
+          {
+            name: "Social Circle Mapping Template",
+            description: "A template for mapping your social circle and identifying key relationships."
+          },
+          {
+            name: "Relationship Quality Assessment Scale",
+            description: "A scale for assessing the quality of your relationships with each person in your social circle."
+          }
+        ]
+      },
+      {
+        title: "Initiating and Maintaining Social Connections",
+        instructions: "Develop strategies for initiating and maintaining social connections.",
+        practicalSteps: [
+          "1. Identifying Social Opportunities: Identify opportunities for meeting new people and building social connections.",
+          "2. Initiating Conversations: Practice initiating conversations with new people.",
+          "3. Active Listening: Practice active listening skills to build rapport and deepen connections.",
+          "4. Sharing Personal Information: Share personal information to build trust and intimacy.",
+          "5. Maintaining Contact: Develop strategies for maintaining contact with people you want to build relationships with."
+        ],
+        reflection: [
+          "What are your favorite ways to meet new people?",
+          "What are your biggest challenges to initiating conversations?",
+          "How can you improve your active listening skills?",
+          "What personal information are you comfortable sharing with new people?",
+          "How can you maintain contact with people you want to build relationships with?"
+        ],
+        assessmentTools: [
+          {
+            name: "Conversation Starter Template",
+            description: "A template for developing conversation starters for meeting new people."
+          },
+          {
+            name: "Active Listening Skills Checklist",
+            description: "A checklist for evaluating your active listening skills."
+          }
+        ]
+      },
+      {
+        title: "Strengthening Existing Relationships",
+        instructions: "Develop strategies for strengthening your existing relationships.",
+        practicalSteps: [
+          "1. Expressing Appreciation: Express appreciation for the people in your life.",
+          "2. Spending Quality Time: Spend quality time with the people you care about.",
+          "3. Providing Support: Provide support to the people in your life.",
+          "4. Resolving Conflicts: Develop strategies for resolving conflicts in your relationships.",
+          "5. Forgiving Others: Practice forgiving others for their mistakes."
+        ],
+        reflection: [
+          "Who are the people in your life that you appreciate the most?",
+          "How can you spend more quality time with the people you care about?",
+          "What kind of support can you provide to the people in your life?",
+          "How can you resolve conflicts in your relationships?",
+          "How can you practice forgiving others for their mistakes?"
+        ],
+        assessmentTools: [
+          {
+            name: "Appreciation Expression Template",
+            description: "A template for expressing appreciation to the people in your life."
+          },
+          {
+            name: "Conflict Resolution Skills Checklist",
+            description: "A checklist for evaluating your conflict resolution skills."
+          }
+        ]
+      }
     ]
   },
   // Default worksheet for any other workshops
@@ -573,73 +736,4 @@ export const generateWorksheetPDF = (workshopId: string): void => {
     yPosition += promptText.length * 6;
     
     doc.setDrawColor(200);
-    doc.line(20, yPosition, 190, yPosition);
-    yPosition += 5;
-    doc.line(20, yPosition, 190, yPosition);
-    yPosition += 5;
-    doc.line(20, yPosition, 190, yPosition);
-    yPosition += 15;
-  });
-  
-  // Save the PDF with a descriptive name including workshop ID
-  doc.save(`${workshopId}-intensive-practice-worksheet.pdf`);
-};
-
-// Function to handle worksheet download with toast notification
-export const downloadWorksheet = (workshopId: string, toastHelper?: ToastFunction | ToastHelper | ToastObject) => {
-  try {
-    generateWorksheetPDF(workshopId);
-    
-    if (toastHelper) {
-      // Handle the different possible types of toast helpers
-      if (typeof toastHelper === 'function') {
-        // Direct toast function
-        toastHelper({
-          title: "Intensive Practice Worksheet Downloaded",
-          description: "Your comprehensive worksheet is ready to use",
-          duration: 2000,
-        });
-      } else if ('toast' in toastHelper) {
-        // Object with toast method
-        toastHelper.toast({
-          title: "Intensive Practice Worksheet Downloaded",
-          description: "Your comprehensive worksheet is ready to use",
-          duration: 2000,
-        });
-      }
-    }
-    
-    return true;
-  } catch (error) {
-    if (toastHelper) {
-      // Handle the different possible types of toast helpers for error case
-      if (typeof toastHelper === 'function') {
-        // Direct toast function
-        toastHelper({
-          title: "Download Failed",
-          description: "There was an issue downloading your worksheet",
-          variant: "destructive",
-          duration: 2000,
-        });
-      } else if ('toast' in toastHelper) {
-        // Object with toast method
-        toastHelper.toast({
-          title: "Download Failed",
-          description: "There was an issue downloading your worksheet",
-          variant: "destructive",
-          duration: 2000,
-        });
-      }
-    }
-    console.error("Worksheet download error:", error);
-    return false;
-  }
-};
-
-// Define the possible types that can be passed as toast helpers
-type ToastFunction = (props: ToastProps) => { id: string; dismiss: () => void; update: (props: any) => void };
-type ToastHelper = { toast: ToastFunction };
-type ToastObject = ReturnType<typeof useToast>;
-
-// Export types and functions
-export type { ToastFunction, ToastHelper, ToastObject };
+    doc.line(20, yPosition,

@@ -1,6 +1,6 @@
 
 import React from "react";
-import { Child, MessageSquare, HeartHandshake, School, Users, Puzzle, ArrowRight } from "lucide-react";
+import { Baby, MessageSquare, HeartHandshake, School, Users, Puzzle, ArrowRight } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import useTranslation from "@/hooks/useTranslation";
@@ -34,7 +34,7 @@ const ChildrenTab: React.FC<ChildrenTabProps> = ({ onFeatureClick }) => {
     {
       id: "parenting-through-treatment",
       title: isSpanish ? "Crianza Durante el Tratamiento" : "Parenting Through Treatment",
-      icon: <Child className="h-5 w-5 text-amber-500" />,
+      icon: <Baby className="h-5 w-5 text-amber-500" />,
       description: isSpanish 
         ? "Consejos para padres que están recibiendo tratamiento para el cáncer"
         : "Advice for parents who are undergoing cancer treatment",
@@ -52,7 +52,7 @@ const ChildrenTab: React.FC<ChildrenTabProps> = ({ onFeatureClick }) => {
     {
       id: "pediatric-cancer",
       title: isSpanish ? "Cáncer Pediátrico" : "Pediatric Cancer",
-      icon: <Child className="h-5 w-5 text-amber-500" />,
+      icon: <Baby className="h-5 w-5 text-amber-500" />,
       description: isSpanish 
         ? "Recursos específicos para familias con niños diagnosticados con cáncer"
         : "Specific resources for families with children diagnosed with cancer",

@@ -36,8 +36,8 @@ const EscapeHatchManager: React.FC<EscapeHatchManagerProps> = ({
           duration: 10000,
           action: (
             <ToastAction 
-              onClick={() => setScreenState('main')}
               altText="Skip to main dashboard"
+              onClick={() => setScreenState('main')}
             >
               Skip to Dashboard
             </ToastAction>
