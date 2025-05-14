@@ -16,11 +16,6 @@ const EscapeHatchManager: React.FC<EscapeHatchManagerProps> = ({
 }) => {
   const [showEscapeHatch, setShowEscapeHatch] = useState(false);
   
-  // We don't need an escape hatch for the main dashboard
-  if (screenState === 'main') {
-    return null;
-  }
-  
   // Monitor for potential stuck states
   useEffect(() => {
     let escapeHatchTimeout: ReturnType<typeof setTimeout>;

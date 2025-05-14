@@ -1,20 +1,14 @@
 
 import { saveAs } from 'file-saver';
 import { jsPDF } from 'jspdf';
-
-// Define the toast parameter type to avoid the error
-type ToastParam = {
-  toast: {
-    (props: any): { id: string; dismiss: () => void; update: (props: any) => void };
-  };
-};
+import { toast as toastFunction } from "@/hooks/use-toast";
 
 /**
  * Downloads a worksheet PDF for the specified workshop ID
  * @param workshopId - The ID of the workshop
- * @param toastParam - Object containing the toast function
+ * @param toastParam - The toast function or object containing toast function
  */
-export const downloadWorksheet = (workshopId: string, toastParam?: ToastParam | any) => {
+export const downloadWorksheet = (workshopId: string, toastParam?: any) => {
   // Create a new PDF document
   const doc = new jsPDF();
   
@@ -125,14 +119,25 @@ export const downloadWorksheet = (workshopId: string, toastParam?: ToastParam | 
   
   // Show success toast - correctly handle the toast function
   if (toastParam) {
-    if (typeof toastParam.toast === 'function') {
+    // Direct toast function
+    if (typeof toastParam === 'function') {
+      toastParam({
+        title: "Worksheet Downloaded",
+        description: "Your worksheet has been downloaded successfully.",
+        duration: 5000,
+      });
+    } 
+    // Object with toast method
+    else if (typeof toastParam.toast === 'function') {
       toastParam.toast({
         title: "Worksheet Downloaded",
         description: "Your worksheet has been downloaded successfully.",
         duration: 5000,
       });
-    } else if (typeof toastParam === 'function') {
-      toastParam({
+    }
+    // Default to global toast if available
+    else {
+      toastFunction({
         title: "Worksheet Downloaded",
         description: "Your worksheet has been downloaded successfully.",
         duration: 5000,

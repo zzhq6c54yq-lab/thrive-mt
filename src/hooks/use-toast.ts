@@ -1,13 +1,10 @@
 
 import * as React from "react";
+
 import {
   Toast,
-  ToastClose,
-  ToastDescription,
-  ToastProvider,
-  ToastTitle,
-  ToastViewport,
-  ToastAction,
+  ToastActionElement,
+  ToastProps as ToastPrimitiveProps,
 } from "@/components/ui/toast";
 
 export type ToasterToast = React.ComponentPropsWithoutRef<typeof Toast> & {
@@ -30,8 +27,6 @@ export type ToastProps = Pick<
 
 const TOAST_LIMIT = 5;
 const TOAST_REMOVE_DELAY = 1000000;
-
-type ToasterActionElement = React.ReactElement<typeof ToastAction>;
 
 const actionTypes = {
   ADD_TOAST: "ADD_TOAST",
