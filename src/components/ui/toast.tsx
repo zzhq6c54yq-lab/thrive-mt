@@ -54,12 +54,14 @@ const Toast = React.forwardRef<
 })
 Toast.displayName = ToastPrimitives.Root.displayName
 
-// Using a different approach for the ToastAction component to avoid circular types
+// Explicitly define the type for ToastAction props to include altText
+type ToastActionProps = React.ComponentPropsWithoutRef<typeof ToastPrimitives.Action> & {
+  altText?: string;
+}
+
 const ToastAction = React.forwardRef<
   React.ElementRef<typeof ToastPrimitives.Action>,
-  React.ComponentPropsWithoutRef<typeof ToastPrimitives.Action> & {
-    altText?: string;
-  }
+  ToastActionProps
 >(({ className, altText = "Action", ...props }, ref) => (
   <ToastPrimitives.Action
     ref={ref}
@@ -121,6 +123,7 @@ type ToastActionElement = React.ReactElement<typeof ToastAction>
 export {
   type ToastProps,
   type ToastActionElement,
+  type ToastActionProps,
   ToastProvider,
   ToastViewport,
   Toast,

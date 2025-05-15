@@ -5,6 +5,7 @@ import {
   Toast,
   ToastActionElement,
   ToastProps as ToastPrimitiveProps,
+  ToastActionProps,
 } from "@/components/ui/toast";
 
 export type ToasterToast = React.ComponentPropsWithoutRef<typeof Toast> & {
@@ -14,7 +15,7 @@ export type ToasterToast = React.ComponentPropsWithoutRef<typeof Toast> & {
   action?: {
     label: string;
     onClick: () => void;
-    altText?: string; // Keep altText optional
+    altText?: string;
   };
 };
 
