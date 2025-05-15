@@ -7,16 +7,6 @@ export type ToastRootProps = React.ComponentPropsWithoutRef<typeof ToastPrimitiv
 export type ToastActionPrimitiveProps = React.ComponentPropsWithoutRef<typeof ToastPrimitives.Action>;
 
 // Custom action props
-export interface ToastActionProps extends ToastActionPrimitiveProps {
-  altText?: string;
-}
-
-// Our toast component props
-export type ToastProps = React.ComponentPropsWithoutRef<typeof ToastPrimitives.Root> & {
-  variant?: "default" | "destructive";
-};
-
-// Element types for toast actions
 export interface ToastActionElementType {
   altText?: string;
 }
@@ -24,8 +14,18 @@ export interface ToastActionElementType {
 // React element for toast actions
 export type ToastActionElement = React.ReactElement<ToastActionElementType>;
 
+// Our toast component props
+export type ToastProps = ToastRootProps & {
+  variant?: "default" | "destructive";
+};
+
+// Action component props
+export interface ToastActionProps extends ToastActionPrimitiveProps {
+  altText?: string;
+}
+
 // Toaster toast props
-export interface ToasterToast extends ToastProps {
+export interface ToasterToast {
   id: string;
   title?: React.ReactNode;
   description?: React.ReactNode;
@@ -34,12 +34,8 @@ export interface ToasterToast extends ToastProps {
     onClick: () => void;
     altText?: string;
   };
-}
-
-// Props for the useToast hook
-export type ToastActionProps = Pick<
-  ToasterToast,
-  "id" | "title" | "description" | "action"
-> & {
+  variant?: "default" | "destructive";
+  open?: boolean;
   onOpenChange?: (open: boolean) => void;
-};
+  className?: string;
+}

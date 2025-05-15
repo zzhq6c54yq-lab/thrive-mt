@@ -1,9 +1,6 @@
+
 import * as React from "react";
-import { Toast } from "@/components/ui/toast";
-import { 
-  type ToasterToast,
-  type ToastActionProps
-} from "@/types/toast";
+import { type ToasterToast } from "@/types/toast";
 
 const TOAST_LIMIT = 5;
 const TOAST_REMOVE_DELAY = 1000000;
@@ -182,4 +179,4 @@ function toast(props: Toast) {
   };
 }
 
-export { useToast, toast, type ToasterToast, type ToastActionProps };
+export { useToast, toast };
