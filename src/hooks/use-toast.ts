@@ -153,6 +153,11 @@ function useToast() {
 function toast(props: Toast) {
   const id = props.id || genId();
 
+  // Ensure altText is always set for action
+  if (props.action && !props.action.altText) {
+    props.action.altText = props.action.label || "Action";
+  }
+
   const update = (props: ToasterToast) =>
     dispatch({
       type: "UPDATE_TOAST",

@@ -2,29 +2,29 @@
 import * as React from "react";
 import * as ToastPrimitives from "@radix-ui/react-toast";
 
-// Toast primitive props
-export type ToastRootProps = React.ComponentPropsWithoutRef<typeof ToastPrimitives.Root>;
+// Basic primitive type references (direct from Radix UI)
+export type ToastPrimitiveProps = React.ComponentPropsWithoutRef<typeof ToastPrimitives.Root>;
 export type ToastActionPrimitiveProps = React.ComponentPropsWithoutRef<typeof ToastPrimitives.Action>;
 
-// Custom action props
-export interface ToastActionElementType {
-  altText?: string;
+// Our enhanced toast props that extend Radix primitives
+export interface ToastProps extends ToastPrimitiveProps {
+  variant?: "default" | "destructive";
 }
 
-// React element for toast actions
+// Simple type for the action element
+export interface ToastActionElementType {
+  altText: string;
+}
+
+// Action component props with required altText
+export interface ToastActionProps extends ToastActionPrimitiveProps {
+  altText: string;
+}
+
+// The toast element type
 export type ToastActionElement = React.ReactElement<ToastActionElementType>;
 
-// Our toast component props
-export type ToastProps = ToastRootProps & {
-  variant?: "default" | "destructive";
-};
-
-// Action component props
-export interface ToastActionProps extends ToastActionPrimitiveProps {
-  altText?: string;
-}
-
-// Toaster toast props
+// Complete toast object for the toaster state
 export interface ToasterToast {
   id: string;
   title?: React.ReactNode;
@@ -32,7 +32,7 @@ export interface ToasterToast {
   action?: {
     label: string;
     onClick: () => void;
-    altText?: string;
+    altText: string;
   };
   variant?: "default" | "destructive";
   open?: boolean;

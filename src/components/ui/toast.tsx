@@ -9,7 +9,6 @@ import {
   type ToastProps, 
   type ToastActionElement,
   type ToastActionProps,
-  type ToastActionElementType
 } from "@/types/toast"
 
 const ToastProvider = ToastPrimitives.Provider
@@ -59,10 +58,11 @@ const Toast = React.forwardRef<
 })
 Toast.displayName = ToastPrimitives.Root.displayName
 
+// Modified to ensure altText is always available
 const ToastAction = React.forwardRef<
   React.ElementRef<typeof ToastPrimitives.Action>,
-  ToastActionProps
->(({ className, altText = "Action", ...props }, ref) => (
+  Omit<ToastActionProps, 'altText'> & { altText: string }
+>(({ className, altText, ...props }, ref) => (
   <ToastPrimitives.Action
     ref={ref}
     className={cn(

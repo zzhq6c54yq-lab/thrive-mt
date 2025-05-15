@@ -9,7 +9,6 @@ import {
   ToastViewport,
   ToastAction,
 } from "@/components/ui/toast"
-import { ToasterToast } from "@/types/toast"
 
 export function Toaster() {
   const { toasts } = useToast()
@@ -27,7 +26,7 @@ export function Toaster() {
             </div>
             {action && (
               <ToastAction
-                altText={action.altText || "Action"}
+                altText={action.altText}
                 onClick={action.onClick}
               >
                 {action.label}
