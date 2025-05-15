@@ -1,29 +1,9 @@
 import * as React from "react";
-
-import {
-  Toast,
-  ToastActionElement,
-  ToastProps as ToastPrimitiveProps,
-  ToastActionProps,
-} from "@/components/ui/toast";
-
-export type ToasterToast = React.ComponentPropsWithoutRef<typeof Toast> & {
-  id: string;
-  title?: React.ReactNode;
-  description?: React.ReactNode;
-  action?: {
-    label: string;
-    onClick: () => void;
-    altText?: string;
-  };
-};
-
-export type ToastProps = Pick<
-  ToasterToast,
-  "id" | "title" | "description" | "action"
-> & {
-  onOpenChange?: (open: boolean) => void;
-};
+import { Toast } from "@/components/ui/toast";
+import { 
+  type ToasterToast,
+  type ToastActionProps
+} from "@/types/toast";
 
 const TOAST_LIMIT = 5;
 const TOAST_REMOVE_DELAY = 1000000;
@@ -202,4 +182,4 @@ function toast(props: Toast) {
   };
 }
 
-export { useToast, toast };
+export { useToast, toast, type ToasterToast, type ToastActionProps };

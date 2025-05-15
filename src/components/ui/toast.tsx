@@ -1,10 +1,15 @@
-
 import * as React from "react"
 import * as ToastPrimitives from "@radix-ui/react-toast"
 import { cva, type VariantProps } from "class-variance-authority"
 import { X } from "lucide-react"
 
 import { cn } from "@/lib/utils"
+import { 
+  type ToastProps, 
+  type ToastActionElement, 
+  type ToastActionProps as ToastActionComponentProps,
+  type ToastActionElementType
+} from "@/types/toast"
 
 const ToastProvider = ToastPrimitives.Provider
 
@@ -41,8 +46,7 @@ const toastVariants = cva(
 
 const Toast = React.forwardRef<
   React.ElementRef<typeof ToastPrimitives.Root>,
-  React.ComponentPropsWithoutRef<typeof ToastPrimitives.Root> &
-    VariantProps<typeof toastVariants>
+  ToastProps & VariantProps<typeof toastVariants>
 >(({ className, variant, ...props }, ref) => {
   return (
     <ToastPrimitives.Root
@@ -54,19 +58,9 @@ const Toast = React.forwardRef<
 })
 Toast.displayName = ToastPrimitives.Root.displayName
 
-// Define a simple interface for ToastAction elements without circular reference
-interface ToastActionElementType {
-  altText?: string;
-}
-
-// Define ToastActionProps directly without extending itself
-type ToastActionProps = React.ComponentPropsWithoutRef<typeof ToastPrimitives.Action> & {
-  altText?: string;
-}
-
 const ToastAction = React.forwardRef<
   React.ElementRef<typeof ToastPrimitives.Action>,
-  ToastActionProps
+  ToastActionComponentProps
 >(({ className, altText = "Action", ...props }, ref) => (
   <ToastPrimitives.Action
     ref={ref}
@@ -129,7 +123,7 @@ type ToastActionElement = React.ReactElement<ToastActionElementType>
 export {
   type ToastProps,
   type ToastActionElement,
-  type ToastActionProps,
+  type ToastActionComponentProps,
   ToastProvider,
   ToastViewport,
   Toast,
