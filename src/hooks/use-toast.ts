@@ -14,7 +14,7 @@ export type ToasterToast = React.ComponentPropsWithoutRef<typeof Toast> & {
   action?: {
     label: string;
     onClick: () => void;
-    altText: string;
+    altText?: string; // Make altText optional here as well
   };
 };
 
