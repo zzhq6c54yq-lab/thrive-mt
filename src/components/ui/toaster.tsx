@@ -26,7 +26,7 @@ export function Toaster() {
             </div>
             {action && (
               <ToastAction
-                altText={action.altText || "Action"} 
+                altText={action.altText || "Action"}
                 onClick={action.onClick}
               >
                 {action.label}

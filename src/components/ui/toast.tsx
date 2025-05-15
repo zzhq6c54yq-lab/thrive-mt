@@ -54,14 +54,12 @@ const Toast = React.forwardRef<
 })
 Toast.displayName = ToastPrimitives.Root.displayName
 
-// Update the ToastAction interface to make altText optional with a default value
-interface ToastActionProps extends React.ComponentPropsWithoutRef<typeof ToastPrimitives.Action> {
-  altText?: string;
-}
-
+// Using a different approach for the ToastAction component to avoid circular types
 const ToastAction = React.forwardRef<
   React.ElementRef<typeof ToastPrimitives.Action>,
-  ToastActionProps
+  React.ComponentPropsWithoutRef<typeof ToastPrimitives.Action> & {
+    altText?: string;
+  }
 >(({ className, altText = "Action", ...props }, ref) => (
   <ToastPrimitives.Action
     ref={ref}
