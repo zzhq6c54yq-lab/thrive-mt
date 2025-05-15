@@ -58,10 +58,10 @@ const Toast = React.forwardRef<
 })
 Toast.displayName = ToastPrimitives.Root.displayName
 
-// Modified to ensure altText is always available
+// Fix: Use the full ToastActionProps type rather than using Omit and adding altText back
 const ToastAction = React.forwardRef<
   React.ElementRef<typeof ToastPrimitives.Action>,
-  Omit<ToastActionProps, 'altText'> & { altText: string }
+  ToastActionProps
 >(({ className, altText, ...props }, ref) => (
   <ToastPrimitives.Action
     ref={ref}
