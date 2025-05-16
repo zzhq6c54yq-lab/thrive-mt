@@ -61,9 +61,7 @@ Toast.displayName = ToastPrimitives.Root.displayName
 // Fixed ToastAction component that correctly handles the altText prop
 const ToastAction = React.forwardRef<HTMLButtonElement, ToastActionProps>(
   ({ className, altText, children, ...props }, ref) => {
-    // Create a new object without the altText prop for ToastPrimitives.Action
-    const actionProps = { ...props };
-    
+    // Pass the altText to aria-label but don't include it in props spread
     return (
       <ToastPrimitives.Action
         ref={ref}
@@ -72,7 +70,7 @@ const ToastAction = React.forwardRef<HTMLButtonElement, ToastActionProps>(
           className
         )}
         aria-label={altText}
-        {...actionProps}
+        {...props}
       >
         {children}
       </ToastPrimitives.Action>

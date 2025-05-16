@@ -33,7 +33,7 @@ export interface ToasterToast {
   action?: {
     label: string;
     onClick: () => void;
-    altText: string;
+    altText?: string;
   };
   variant?: "default" | "destructive";
   open?: boolean;
