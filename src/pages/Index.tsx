@@ -76,15 +76,6 @@ const Index = () => {
     }
   }, [location.state, setShowHenry]);
 
-  // Handle first visit
-  useEffect(() => {
-    const hasVisited = localStorage.getItem('hasVisitedThriveMT');
-    if (!hasVisited && screenState === 'main') {
-      setIsFirstVisit(true);
-      localStorage.setItem('hasVisitedThriveMT', 'true');
-    }
-  }, [screenState, setIsFirstVisit]);
-
   const toggleHenry = () => {
     setShowHenry(prev => !prev);
   };
