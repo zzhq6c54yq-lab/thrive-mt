@@ -77,7 +77,7 @@ const Index = () => {
   }, [location.state, setShowHenry]);
 
   const toggleHenry = () => {
-    setShowHenry(prev => !prev);
+    setShowHenry(!showHenry);
   };
 
   const navigateToFeature = (path: string) => {
