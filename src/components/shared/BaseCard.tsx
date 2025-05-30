@@ -1,7 +1,7 @@
 
-import React, { useState, useEffect } from "react";
+import React from "react";
 import { motion } from "framer-motion";
-import { handleImageError, getImageUrl, getProgramFallbackImage } from "@/utils/imageUtils";
+import RobustImage from "@/components/ui/robust-image";
 
 export interface BaseCardProps {
   id: string;
@@ -24,69 +24,43 @@ const BaseCard: React.FC<BaseCardProps> = ({
   onClick,
   badge
 }) => {
-  const [imageLoaded, setImageLoaded] = useState(false);
-  const [imageError, setImageError] = useState(false);
-  const [currentSrc, setCurrentSrc] = useState("");
-  const [imageAttempts, setImageAttempts] = useState(0);
-  
-  // Initialize and reset image source when component mounts or props change
-  useEffect(() => {
-    // Process the image URL with our utility to ensure cache busting
-    const processedUrl = getImageUrl(imagePath, `base-card-${id}`, getProgramFallbackImage(id));
-    setImageLoaded(false);
-    setImageError(false);
-    setCurrentSrc(processedUrl);
-    console.log(`[BaseCard-${id}] Setting image: ${processedUrl}`);
-  }, [imagePath, id]);
-
   const handleClick = () => {
     if (onClick) {
       onClick(path);
     }
   };
 
-  const handleImageLoad = () => {
-    console.log(`[BaseCard-${id}] Image loaded successfully: ${currentSrc}`);
-    setImageLoaded(true);
-    setImageError(false);
-  };
-
-  const handleImageErrorEvent = (e: React.SyntheticEvent<HTMLImageElement, Event>) => {
-    console.error(`[BaseCard-${id}] Image failed to load: ${currentSrc}`);
-    setImageError(true);
-    
-    // Limit retry attempts to prevent infinite loops
-    if (imageAttempts < 2) {
-      // Use the enhanced error handling function to get a program-specific fallback
-      const newSrc = handleImageError(e, `base-card-${id}`);
-      
-      if (newSrc !== currentSrc) {
-        console.log(`[BaseCard-${id}] Trying new image source: ${newSrc}`);
-        setCurrentSrc(newSrc);
-        setImageAttempts(prev => prev + 1);
-      } else {
-        console.warn(`[BaseCard-${id}] Fallback matches current source, using program fallback.`);
-        setCurrentSrc(getProgramFallbackImage(id));
-      }
-    } else {
-      // After multiple failures, use a guaranteed working fallback
-      const emergencyFallback = `https://images.unsplash.com/photo-1506057527569-d23d4eb7c5a4?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80&t=${Date.now()}`;
-      console.warn(`[BaseCard-${id}] Multiple failures, using emergency fallback.`);
-      setCurrentSrc(emergencyFallback);
+  // Get stable fallback image based on program ID
+  const getFallbackImage = (id: string): string => {
+    if (id.includes("military") || id.includes("dod")) {
+      return "/lovable-uploads/d2ecdcd2-9a78-40ea-8a8a-ef13092b5ea1.png";
+    } else if (id.includes("golden") || id.includes("senior")) {
+      return "/lovable-uploads/bce2b3d1-dbc0-4e7c-a7d1-98811182fe0a.png";
+    } else if (id.includes("adolescent") || id.includes("teen")) {
+      return "/lovable-uploads/11170587-bb45-4563-93d6-add9916cea87.png";
+    } else if (id.includes("responder") || id.includes("emergency")) {
+      return "/lovable-uploads/776b4638-0382-4cd8-bb25-0a7e36accaf1.png";
+    } else if (id.includes("law") || id.includes("enforcement")) {
+      return "/lovable-uploads/10d9c6f1-9335-46e4-8942-4d4c198d3f5b.png";
+    } else if (id.includes("small-business")) {
+      return "/lovable-uploads/f2c6ac08-6331-4884-950d-7f94d68ff15f.png";
+    } else if (id.includes("cancer")) {
+      return "/lovable-uploads/f3c84972-8f58-42d7-b86f-82ff2d823b30.png";
     }
+    return "/placeholder.svg";
   };
 
-  // Animation variants
+  // Animation variants - simplified to prevent conflicts
   const item = {
     hidden: { y: 20, opacity: 0 },
-    show: { y: 0, opacity: 1, transition: { duration: 0.5 } }
+    show: { y: 0, opacity: 1, transition: { duration: 0.3 } }
   };
 
   return (
     <motion.div
       variants={item}
       className="relative"
-      whileHover={{ y: -5, scale: 1.02 }}
+      whileHover={{ y: -2 }}
       transition={{ duration: 0.2 }}
     >
       <button
@@ -94,20 +68,14 @@ const BaseCard: React.FC<BaseCardProps> = ({
         className="w-full h-full text-left"
         aria-label={title}
       >
-        <div className="relative rounded-xl overflow-hidden h-44 shadow-lg hover:shadow-xl transition-all duration-300">
+        <div className="relative rounded-xl overflow-hidden h-44 shadow-lg hover:shadow-xl transition-shadow duration-300">
           {/* Image Section (3/4 of height) */}
           <div className="absolute inset-0 h-[75%] overflow-hidden">
-            {/* Loading placeholder shown until image loads */}
-            <div className={`absolute inset-0 bg-gray-800 animate-pulse transition-opacity duration-300 ${imageLoaded ? 'opacity-0' : 'opacity-100'}`}></div>
-            
-            <img 
-              src={currentSrc || getProgramFallbackImage(id)}
+            <RobustImage 
+              src={imagePath}
               alt={title}
-              className={`w-full h-full object-cover transition-opacity duration-300 ${imageLoaded ? 'opacity-100' : 'opacity-0'}`}
-              onError={handleImageErrorEvent}
-              onLoad={handleImageLoad}
-              loading="eager"
-              data-card-id={id}
+              className="w-full h-full object-cover"
+              fallbackSrc={getFallbackImage(id)}
             />
             
             <div className="absolute inset-0 bg-black/30"></div>
