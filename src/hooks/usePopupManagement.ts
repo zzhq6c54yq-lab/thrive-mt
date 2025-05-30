@@ -2,18 +2,39 @@
 import { useState, useEffect } from 'react';
 
 interface PopupState {
+  coPayCredit: boolean;
+  henryIntro: boolean;
+  mainTutorial: boolean;
+  transitionTutorial: boolean;
+}
+
+interface PopupManagementReturn {
   showCoPayCredit: boolean;
   setShowCoPayCredit: (show: boolean) => void;
   showHenry: boolean;
   setShowHenry: (show: boolean) => void;
-  popupsShown: string[];
+  popupsShown: PopupState;
   markTutorialCompleted: () => void;
 }
 
-const usePopupManagement = (screenState: string): PopupState => {
+const usePopupManagement = (screenState: string): PopupManagementReturn => {
   const [showCoPayCredit, setShowCoPayCredit] = useState(false);
   const [showHenry, setShowHenry] = useState(false);
-  const [popupsShown, setPopupsShown] = useState<string[]>([]);
+  const [popupsShown, setPopupsShown] = useState<PopupState>(() => {
+    // Try to get popup state from localStorage to persist between sessions
+    const savedState = localStorage.getItem('popupsShown');
+    return savedState ? JSON.parse(savedState) : {
+      coPayCredit: false,
+      henryIntro: false,
+      mainTutorial: false,
+      transitionTutorial: false
+    };
+  });
+
+  // Save popup state to localStorage whenever it changes
+  useEffect(() => {
+    localStorage.setItem('popupsShown', JSON.stringify(popupsShown));
+  }, [popupsShown]);
 
   const markTutorialCompleted = () => {
     // Reduced logging - only log once when tutorial is actually completed
@@ -21,15 +42,21 @@ const usePopupManagement = (screenState: string): PopupState => {
       console.log("Tutorial completed for the first time");
       localStorage.setItem('tutorialCompleted', 'true');
     }
+    
+    setPopupsShown(prev => ({
+      ...prev,
+      mainTutorial: true,
+      transitionTutorial: true
+    }));
   };
 
-  // Remove excessive logging for screen state changes
+  // Handle screen state changes for popup management
   useEffect(() => {
     // Only log significant state changes, not every render
-    if (screenState === 'main' && !popupsShown.includes('main-loaded')) {
-      setPopupsShown(prev => [...prev, 'main-loaded']);
+    if (screenState === 'main' && !popupsShown.mainTutorial) {
+      setPopupsShown(prev => ({ ...prev, mainTutorial: true }));
     }
-  }, [screenState, popupsShown]);
+  }, [screenState, popupsShown.mainTutorial]);
 
   return {
     showCoPayCredit,
