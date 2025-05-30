@@ -3,6 +3,7 @@ import { Routes, Route, Navigate } from "react-router-dom";
 import Index from "@/pages/Index";
 import Home from "@/pages/Home";
 import ScrollToTop from "@/components/ScrollToTop";
+import { Toaster } from "@/components/ui/toaster";
 import ProgressReports from "@/pages/ProgressReports";
 import MentalWellnessTools from "@/pages/MentalWellnessTools";
 import GamesAndQuizzes from "@/pages/GamesAndQuizzes";
@@ -102,6 +103,7 @@ function App() {
     <>
       <ScrollToTop />
       <HelpNavButton />
+      <Toaster />
       <Routes>
         <Route path="/" element={<Index />} />
         <Route path="/home" element={<Home />} />
