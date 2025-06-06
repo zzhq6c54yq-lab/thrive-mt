@@ -64,7 +64,12 @@ const SpinningLogo: React.FC = () => {
             className="absolute w-3 h-3 rounded-full"
             style={{
               background: "linear-gradient(45deg, #E5C5A1, #B87333)",
-              boxShadow: "0 0 10px rgba(184, 115, 51, 0.8)"
+              boxShadow: "0 0 10px rgba(184, 115, 51, 0.8)",
+              transformOrigin: `${40 + i * 15}px center`,
+              left: "50%",
+              top: "50%",
+              marginLeft: "-6px",
+              marginTop: "-6px"
             }}
             animate={{
               rotate: 360,
@@ -73,13 +78,6 @@ const SpinningLogo: React.FC = () => {
               duration: 8 + i * 2,
               repeat: Infinity,
               ease: "linear",
-            }}
-            style={{
-              transformOrigin: `${40 + i * 15}px center`,
-              left: "50%",
-              top: "50%",
-              marginLeft: "-6px",
-              marginTop: "-6px"
             }}
           />
         ))}
