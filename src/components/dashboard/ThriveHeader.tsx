@@ -5,7 +5,6 @@ import HelpDialog from "../help/HelpDialog";
 import SpinningLogo from "./header/SpinningLogo";
 import WelcomeText from "./header/WelcomeText";
 import MeetHenryButton from "./header/MeetHenryButton";
-import ActionButtonGroup from "../navigation/ActionButtonGroup";
 
 interface ThriveHeaderProps {
   userName: string;
@@ -32,22 +31,6 @@ const ThriveHeader: React.FC<ThriveHeaderProps> = ({
       onHenryToggle();
     }
   };
-
-  // Button handlers for the action buttons
-  const handleBarterClick = () => {
-    console.log("Barter clicked");
-    // Add barter functionality here
-  };
-
-  const handlePlanClick = () => {
-    console.log("Plan clicked");
-    // Add plan functionality here
-  };
-
-  const handleCoPayClick = () => {
-    console.log("Co-Pay clicked");
-    // Add co-pay functionality here
-  };
   
   return (
     <div className="w-full relative overflow-hidden py-0 z-10">
@@ -60,20 +43,11 @@ const ThriveHeader: React.FC<ThriveHeaderProps> = ({
       </div>
       
       <div className="container mx-auto max-w-6xl relative z-10">
-        <div className="flex flex-col items-center pt-8 pb-12 px-4">
-          <div className="flex flex-col items-center w-full gap-6">
+        <div className="flex flex-col items-center pt-12 pb-16 px-6">
+          <div className="flex flex-col items-center w-full gap-8">
             <SpinningLogo />
             <WelcomeText userName={userName} />
             <MeetHenryButton onClick={handleHenryButtonClick} />
-            
-            {/* Enhanced Action Button Group */}
-            <div className="w-full max-w-lg mt-4">
-              <ActionButtonGroup
-                onBarterClick={handleBarterClick}
-                onPlanClick={handlePlanClick}
-                onCoPayClick={handleCoPayClick}
-              />
-            </div>
           </div>
         </div>
       </div>
