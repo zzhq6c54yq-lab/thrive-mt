@@ -35,21 +35,18 @@ const ThriveHeader: React.FC<ThriveHeaderProps> = ({
 
   // Button handlers for the action buttons
   const handleBarterClick = () => {
-    console.log("Barter System clicked");
-    // Navigate to barter system page
-    window.location.href = "/barter-system";
+    console.log("Barter clicked");
+    // Add barter functionality here
   };
 
   const handlePlanClick = () => {
-    console.log("Upgrade Plan clicked");
-    // Navigate to subscription plans page
-    window.location.href = "/subscription-plans";
+    console.log("Plan clicked");
+    // Add plan functionality here
   };
 
   const handleCoPayClick = () => {
-    console.log("Co-Pay Credits clicked");
-    // Navigate to co-pay credits page
-    window.location.href = "/copay-credits";
+    console.log("Co-Pay clicked");
+    // Add co-pay functionality here
   };
   
   return (
@@ -69,7 +66,7 @@ const ThriveHeader: React.FC<ThriveHeaderProps> = ({
             <WelcomeText userName={userName} />
             <MeetHenryButton onClick={handleHenryButtonClick} />
             
-            {/* Main Action Button Group - larger buttons only */}
+            {/* Enhanced Action Button Group */}
             <div className="w-full max-w-lg mt-4">
               <ActionButtonGroup
                 onBarterClick={handleBarterClick}

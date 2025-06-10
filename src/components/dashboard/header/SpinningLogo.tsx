@@ -1,6 +1,7 @@
 
 import React from "react";
 import { motion } from "framer-motion";
+import { Heart } from "lucide-react";
 
 const SpinningLogo: React.FC = () => {
   return (
@@ -27,9 +28,13 @@ const SpinningLogo: React.FC = () => {
           }}
         />
         
-        {/* Bronze head outline with heart - just the outline, no background */}
+        {/* Bronze head with heart for brain in center */}
         <motion.div
-          className="relative z-10 flex items-center justify-center"
+          className="relative z-10 w-16 h-16 sm:w-20 sm:h-20 md:w-24 md:h-24 rounded-full flex items-center justify-center"
+          style={{
+            background: "linear-gradient(135deg, #CD7F32 0%, #B87333 50%, #A0522D 100%)",
+            boxShadow: "0 4px 15px rgba(184, 115, 51, 0.5), inset 0 2px 8px rgba(255, 255, 255, 0.3)"
+          }}
           animate={{ rotate: -360 }}
           transition={{
             duration: 20,
@@ -37,50 +42,19 @@ const SpinningLogo: React.FC = () => {
             ease: "linear"
           }}
         >
-          {/* Head outline with heart using the uploaded image concept */}
-          <div className="relative w-16 h-16 sm:w-20 sm:h-20 md:w-24 md:h-24 flex items-center justify-center">
-            {/* Head outline */}
-            <svg 
-              className="w-full h-full" 
-              viewBox="0 0 100 100" 
-              fill="none" 
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              {/* Head outline path */}
-              <path
-                d="M20 75 Q20 20 50 20 Q80 20 80 75 Q80 85 70 85 L30 85 Q20 85 20 75 Z"
-                stroke="#B87333"
-                strokeWidth="3"
-                fill="none"
-                className="drop-shadow-lg"
-              />
-              {/* Circular refresh arrows around the heart */}
-              <path
-                d="M35 45 Q35 35 50 35 Q65 35 65 45"
-                stroke="#E5C5A1"
-                strokeWidth="2"
-                fill="none"
-                className="opacity-80"
-              />
-              <path
-                d="M65 55 Q65 65 50 65 Q35 65 35 55"
-                stroke="#E5C5A1"
-                strokeWidth="2"
-                fill="none"
-                className="opacity-80"
-              />
-              {/* Arrow indicators */}
-              <polygon points="63,47 67,45 63,43" fill="#E5C5A1" className="opacity-80" />
-              <polygon points="37,53 33,55 37,57" fill="#E5C5A1" className="opacity-80" />
-              
-              {/* Heart in center */}
-              <path
-                d="M50 42 C46 38, 38 38, 38 46 C38 54, 50 62, 50 62 C50 62, 62 54, 62 46 C62 38, 54 38, 50 42 Z"
-                fill="#B87333"
-                className="drop-shadow-md"
-              />
-            </svg>
-          </div>
+          {/* Heart icon representing brain */}
+          <Heart 
+            className="w-8 h-8 sm:w-10 sm:h-10 md:w-12 md:h-12 text-white drop-shadow-lg" 
+            fill="currentColor"
+          />
+          
+          {/* Additional inner glow for the head */}
+          <div 
+            className="absolute inset-1 rounded-full"
+            style={{
+              background: "radial-gradient(circle at 30% 30%, rgba(255, 255, 255, 0.4), transparent 60%)"
+            }}
+          />
         </motion.div>
         
         {/* Orbital elements */}

@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 export type ScreenStateType = 'intro' | 'mood' | 'moodResponse' | 'register' | 'subscription' | 'subscriptionAddOns' | 'visionBoard' | 'main';
 
 export const useScreenState = () => {
-  // Always start with intro for proper onboarding flow
+  // Initialize screenState as 'intro' initially
   const [screenState, setScreenState] = useState<ScreenStateType>('intro');
   
   // Initialize state based on onboarding completion
@@ -13,19 +13,18 @@ export const useScreenState = () => {
     
     console.log("[useScreenState] Initial render, hasCompletedOnboarding:", hasCompletedOnboarding);
     
-    // Only set to main if onboarding is definitely completed
     if (hasCompletedOnboarding) {
-      console.log("[useScreenState] Onboarding completed, setting to main dashboard");
+      console.log("[useScreenState] Onboarding already completed, initializing to main dashboard");
       setScreenState('main');
     } else {
-      console.log("[useScreenState] Starting fresh onboarding from intro");
-      // Clear any conflicting localStorage items
-      localStorage.removeItem('prevScreenState');
-      localStorage.removeItem('introLoaded');
-      localStorage.removeItem('stuckDetected');
-      
-      // Ensure we start from intro
+      console.log("[useScreenState] No onboarding record, starting from intro screen");
       setScreenState('intro');
+      
+      // Clear the localStorage items that might conflict
+      localStorage.removeItem('prevScreenState');
+      
+      // Log that we're properly starting the onboarding
+      console.log("[useScreenState] Initializing new onboarding flow");
     }
   }, []);
 

@@ -1,7 +1,7 @@
 
 import React from "react";
 import { motion } from "framer-motion";
-import { LucideIcon, Shield, CreditCard, TrendingUp } from "lucide-react";
+import { LucideIcon } from "lucide-react";
 
 interface ActionButtonProps {
   title: string;
@@ -31,7 +31,7 @@ const ActionButton: React.FC<ActionButtonProps> = ({ title, icon: Icon, onClick,
         return {
           background: "linear-gradient(135deg, #B87333 0%, #E5C5A1 50%, #F5E6D3 100%)",
           borderColor: "#B87333",
-          textColor: "text-black",
+          textColor: "text-white",
           iconBg: "bg-white/20"
         };
     }
@@ -42,7 +42,7 @@ const ActionButton: React.FC<ActionButtonProps> = ({ title, icon: Icon, onClick,
   return (
     <motion.button
       onClick={onClick}
-      className={`relative px-6 py-6 rounded-xl border-2 ${styles.textColor} font-semibold text-base transition-all duration-300 min-h-[100px] flex flex-col items-center justify-center gap-3 shadow-lg hover:shadow-xl`}
+      className={`relative px-6 py-4 rounded-xl border-2 ${styles.textColor} font-semibold text-sm transition-all duration-300 min-h-[80px] flex flex-col items-center justify-center gap-2 shadow-lg hover:shadow-xl`}
       style={{
         background: styles.background,
         borderColor: styles.borderColor,
@@ -55,12 +55,12 @@ const ActionButton: React.FC<ActionButtonProps> = ({ title, icon: Icon, onClick,
       whileTap={{ scale: 0.98 }}
     >
       {/* Icon container with better prominence */}
-      <div className={`${styles.iconBg} p-3 rounded-lg backdrop-blur-sm border border-white/10`}>
-        <Icon className="h-8 w-8" />
+      <div className={`${styles.iconBg} p-2 rounded-lg backdrop-blur-sm border border-white/10`}>
+        <Icon className="h-6 w-6" />
       </div>
       
       {/* Button text */}
-      <span className="text-center leading-tight font-bold">{title}</span>
+      <span className="text-center leading-tight">{title}</span>
       
       {/* Inner glow effect */}
       <div 
@@ -84,23 +84,42 @@ const ActionButtonGroup: React.FC<ActionButtonGroupProps> = ({
   onPlanClick,
   onCoPayClick
 }) => {
+  // Using placeholder icons since we can't import the exact ones
+  const BarterIcon = () => (
+    <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
+      <path d="M12 2L2 7v10c0 5.55 3.84 9.739 9 11 5.16-1.261 9-5.45 9-11V7l-10-5z"/>
+    </svg>
+  );
+  
+  const PlanIcon = () => (
+    <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
+      <path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+    </svg>
+  );
+  
+  const CoPayIcon = () => (
+    <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
+      <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
+    </svg>
+  );
+
   return (
     <div className="grid grid-cols-3 gap-4 w-full max-w-md mx-auto">
       <ActionButton
-        title="Barter System"
-        icon={Shield}
+        title="Barter"
+        icon={BarterIcon as any}
         onClick={onBarterClick}
         variant="barter"
       />
       <ActionButton
-        title="Upgrade Plan"
-        icon={TrendingUp}
+        title="Plan"
+        icon={PlanIcon as any}
         onClick={onPlanClick}
         variant="plan"
       />
       <ActionButton
-        title="Co-Pay Credits"
-        icon={CreditCard}
+        title="Co-Pay"
+        icon={CoPayIcon as any}
         onClick={onCoPayClick}
         variant="copay"
       />

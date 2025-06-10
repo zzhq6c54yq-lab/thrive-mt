@@ -14,13 +14,16 @@ if (urlParams.get('forceReset') === 'true' || urlParams.get('resetOnboarding') =
   localStorage.removeItem('stuckDetected');
 }
 
-// Clear potentially problematic localStorage items on fresh load for new sessions
-const hasCompletedOnboarding = localStorage.getItem('hasCompletedOnboarding');
-if (!hasCompletedOnboarding) {
-  console.log("[main] Fresh session detected, clearing onboarding-related state");
-  localStorage.removeItem('prevScreenState');
-  localStorage.removeItem('introLoaded');
-  localStorage.removeItem('stuckDetected');
+// Clear any potentially problematic localStorage items on fresh load
+if (!localStorage.getItem('appInitialized') || window.location.pathname === '/' && urlParams.has('fresh')) {
+  console.log("[main] Fresh initialization, clearing potential state conflicts");
+  localStorage.setItem('appInitialized', 'true');
+  // Only clear these if we're not in the middle of onboarding
+  if (!localStorage.getItem('prevScreenState') || localStorage.getItem('prevScreenState') === 'intro') {
+    localStorage.removeItem('prevScreenState');
+    localStorage.removeItem('introLoaded');
+    localStorage.removeItem('stuckDetected');
+  }
 }
 
 // Debug any URL parameters that might be affecting onboarding
