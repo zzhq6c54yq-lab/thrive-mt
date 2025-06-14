@@ -17,6 +17,7 @@ import {
 import { Calendar, HelpCircle, ChevronUp, ChevronDown, Sparkles, Award, Users, Heart } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { Button } from "@/components/ui/button";
+import PlaceholderMiniGame from "@/components/dashboard/PlaceholderMiniGame";
 
 interface DashboardContentProps {
   navigate: NavigateFunction;
@@ -64,7 +65,13 @@ const DashboardContent: React.FC<DashboardContentProps> = ({
     } else {
       toast({
         title: isSpanish ? "Navegando..." : "Navigating...",
-        description: isSpanish ? "Cargando recurso solicitado" : "Loading requested resource",
+        description: isSpecializedPortal
+          ? (isSpanish
+            ? "Accediendo al portal especializado seleccionado..."
+            : "Accessing selected specialized portal...")
+          : (isSpanish
+            ? "Cargando recurso solicitado"
+            : "Loading requested resource"),
         duration: 1500,
       });
       
@@ -212,6 +219,12 @@ const DashboardContent: React.FC<DashboardContentProps> = ({
           </AccordionContent>
         </AccordionItem>
       </Accordion>
+      
+      <div className="mt-8 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        <PlaceholderMiniGame title="Sleep Tracker" />
+        <PlaceholderMiniGame title="Career Coaching" />
+        <PlaceholderMiniGame title="Meditation Studio" />
+      </div>
     </div>
   );
 };

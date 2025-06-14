@@ -55,6 +55,7 @@ export const useScreenHistory = (
       if (hasCompletedOnboarding && screenState !== 'main') {
         setScreenState('main');
       } else if (!hasCompletedOnboarding && (screenState === 'main' || !screenState)) {
+        // Always lock to intro if onboarding isn't done
         setScreenState('intro');
       }
     }

@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from "react";
 
 export type ScreenStateType = 'intro' | 'mood' | 'moodResponse' | 'register' | 'subscription' | 'subscriptionAddOns' | 'visionBoard' | 'main';
@@ -10,15 +9,20 @@ export const useScreenState = () => {
   // Initialize state based on onboarding completion
   useEffect(() => {
     const hasCompletedOnboarding = localStorage.getItem('hasCompletedOnboarding') === 'true';
-    
+    const prevScreenState = localStorage.getItem('prevScreenState');
+
     console.log("[useScreenState] Initial render, hasCompletedOnboarding:", hasCompletedOnboarding);
     
     if (hasCompletedOnboarding) {
       console.log("[useScreenState] Onboarding already completed, initializing to main dashboard");
       setScreenState('main');
     } else {
-      console.log("[useScreenState] No onboarding record, starting from intro screen");
-      setScreenState('intro');
+      if (prevScreenState && prevScreenState !== 'main') {
+        setScreenState(prevScreenState as ScreenStateType);
+      } else {
+        console.log("[useScreenState] No onboarding record, starting from intro screen");
+        setScreenState('intro');
+      }
       
       // Clear the localStorage items that might conflict
       localStorage.removeItem('prevScreenState');
