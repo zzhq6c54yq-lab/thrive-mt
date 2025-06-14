@@ -1,12 +1,12 @@
 
 import React from "react";
 import { Button } from "@/components/ui/button";
-import { Meditation } from "lucide-react";
+import { Lotus } from "lucide-react";
 
 const GameMeditationStudio: React.FC = () => {
   return (
     <div className="flex flex-col items-center py-10">
-      <Meditation className="w-12 h-12 mb-4 text-purple-500" />
+      <Lotus className="w-12 h-12 mb-4 text-purple-500" />
       <h2 className="text-lg font-bold mb-3 text-purple-900">Meditation Studio</h2>
       <p className="text-center text-zinc-600 mb-5 max-w-xs">
         Take a break and meditate! Guided audio, breathing exercises, and relaxing sounds coming soon.
@@ -19,3 +19,4 @@ const GameMeditationStudio: React.FC = () => {
 };
 
 export default GameMeditationStudio;
+
