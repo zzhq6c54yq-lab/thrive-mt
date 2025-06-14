@@ -1,4 +1,3 @@
-
 import React, { useState } from "react";
 import DailyWellnessChallenges from "@/components/dashboard/DailyWellnessChallenges";
 import SpecializedPrograms from "@/components/dashboard/SpecializedPrograms";
@@ -27,8 +26,8 @@ interface DashboardContentProps {
   selectedGoals?: string[];
 }
 
-const DashboardContent: React.FC<DashboardContentProps> = ({ 
-  navigate, 
+const DashboardContent: React.FC<DashboardContentProps> = ({
+  navigate,
   onWorkshopClick,
   navigateToFeature,
   selectedQualities = [],
@@ -50,12 +49,19 @@ const DashboardContent: React.FC<DashboardContentProps> = ({
     gratitudeVisualizer: isSpanish ? "Visualizador de Gratitud" : "Gratitude Visualizer",
   };
 
-  // Create a function that uses navigate if navigateToFeature is not provided
+  // always send selected qualities and goals for specialized portals
   const handleFeatureClick = (path: string) => {
+    const isSpecializedPortal = [
+      "/cancer-support-portal",
+      "/law-enforcement-portal",
+      "/golden-years-portal",
+      "/small-business-portal",
+      "/military-dod-portal"
+    ].some(p => path.toLowerCase().includes(p.replace("/", "")));
+  
     if (navigateToFeature) {
       navigateToFeature(path);
     } else {
-      // Add state to navigation to ensure proper back navigation
       toast({
         title: isSpanish ? "Navegando..." : "Navigating...",
         description: isSpanish ? "Cargando recurso solicitado" : "Loading requested resource",
@@ -66,7 +72,9 @@ const DashboardContent: React.FC<DashboardContentProps> = ({
         state: { 
           fromMainMenu: true,
           preventTutorial: true,
-          directToAssessment: path.includes('/mental-wellness') || path.includes('/games-and-quizzes')
+          directToAssessment: path.includes('/mental-wellness') || path.includes('/games-and-quizzes'),
+          qualities: isSpecializedPortal ? selectedQualities : undefined,
+          goals: isSpecializedPortal ? selectedGoals : undefined
         } 
       });
     }

@@ -1,4 +1,3 @@
-
 import React from "react";
 import Page from "@/components/Page";
 import MainDashboard from "@/components/home/MainDashboard";
@@ -15,7 +14,7 @@ const Home = () => {
   const userName = localStorage.getItem('userName') || "User";
   const selectedQualities = location.state?.qualities || [];
   const selectedGoals = location.state?.goals || [];
-  
+
   const navigateToFeature = (path: string) => {
     toast({
       title: isSpanish ? "Navegando..." : "Navigating...",
@@ -36,6 +35,7 @@ const Home = () => {
     });
   };
 
+  // MainDashboard prop fix and doc
   return (
     <Page title="Home" showBackButton={false}>
       <MainDashboard 

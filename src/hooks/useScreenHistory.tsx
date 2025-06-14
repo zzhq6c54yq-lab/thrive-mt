@@ -1,4 +1,3 @@
-
 import { useEffect } from "react";
 import { useLocation } from "react-router-dom";
 
@@ -54,10 +53,8 @@ export const useScreenHistory = (
 
     if (location.pathname === '/') {
       if (hasCompletedOnboarding && screenState !== 'main') {
-        console.log("[useScreenHistory] Onboarding completed, navigating to main");
         setScreenState('main');
-      } else if (!hasCompletedOnboarding && screenState === 'main') {
-        console.log("[useScreenHistory] Onboarding not completed, resetting to intro");
+      } else if (!hasCompletedOnboarding && (screenState === 'main' || !screenState)) {
         setScreenState('intro');
       }
     }
