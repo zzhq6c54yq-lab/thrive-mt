@@ -1,3 +1,4 @@
+
 import React from "react";
 import { Game } from "@/data/gamesData";
 import GameMemoryMatch from "@/components/games/GameMemoryMatch";
@@ -26,7 +27,7 @@ const GameComponentSelector: React.FC<GameComponentSelectorProps> = ({
       return <GameMemoryMatch onComplete={onComplete} />;
       
     case "word-scramble":
-      return <GameWordUnscramble game={activeGame} onComplete={onComplete} />;
+      return <GameWordUnscramble onComplete={onComplete} />;
       
     case "reaction-time":
       return <GameReactionTime game={activeGame} onComplete={onComplete} />;
