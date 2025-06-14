@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import Header from "@/components/layout/Header";
 import ThriveHeader from "@/components/dashboard/ThriveHeader";
