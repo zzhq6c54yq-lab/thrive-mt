@@ -1,62 +1,87 @@
 
 import React, { useState } from "react";
 import { Button } from "@/components/ui/button";
-import { Game } from "@/data/gamesData";
-import { useToast } from "@/hooks/use-toast";
+
+const WORDS = ["thrive", "mental", "growth", "courage", "calm", "happy"];
+
+const shuffle = (word: string) =>
+  word
+    .split("")
+    .sort(() => Math.random() - 0.5)
+    .join("");
 
 interface GameWordUnscrambleProps {
-  game: Game;
-  onComplete: (score: number) => void;
+  onComplete?: (score: number) => void;
+  // future: optionally accept difficulty, etc.
 }
 
-const GameWordUnscramble: React.FC<GameWordUnscrambleProps> = ({ game, onComplete }) => {
-  const { toast } = useToast();
+const GameWordUnscramble: React.FC<GameWordUnscrambleProps> = ({ onComplete }) => {
+  const [wordIdx, setWordIdx] = useState(0);
+  const [input, setInput] = useState("");
+  const [message, setMessage] = useState("");
   const [score, setScore] = useState(0);
-  const [gameStarted, setGameStarted] = useState(false);
-  
-  const startGame = () => {
-    setGameStarted(true);
-    toast({
-      title: "Game Started",
-      description: "Unscramble the letters to form words!",
-    });
+  const [finished, setFinished] = useState(false);
+
+  const currentWord = WORDS[wordIdx];
+  const scrambled = shuffle(currentWord);
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (input.trim().toLowerCase() === currentWord) {
+      setScore(s => s + 10);
+      setMessage("✅ Correct!");
+      if (wordIdx + 1 < WORDS.length) {
+        setTimeout(() => {
+          setWordIdx(idx => idx + 1);
+          setInput("");
+          setMessage("");
+        }, 900);
+      } else {
+        setFinished(true);
+        if (onComplete) onComplete(score + 10);
+      }
+    } else {
+      setMessage("❌ Try again!");
+    }
   };
 
-  const completeGame = () => {
-    onComplete(score);
+  const handleRestart = () => {
+    setWordIdx(0);
+    setInput("");
+    setMessage("");
+    setScore(0);
+    setFinished(false);
   };
 
   return (
-    <div className="w-full text-center">
-      {!gameStarted ? (
-        <div className="space-y-4">
-          <p className="text-lg font-medium">Ready to unscramble some words?</p>
-          <Button 
-            onClick={startGame}
-            style={{ backgroundColor: game.color, color: "#fff" }}
-          >
-            Start Game
-          </Button>
-        </div>
+    <div className="flex flex-col items-center">
+      <h2 className="text-lg font-semibold mb-4">Word Unscramble</h2>
+      {!finished ? (
+        <>
+          <div className="mb-3 text-xl font-mono bg-zinc-100 px-4 py-2 rounded">{scrambled}</div>
+          <form onSubmit={handleSubmit} className="mb-2 flex flex-col items-center">
+            <input
+              className="border rounded p-2 w-40 text-center text-lg"
+              placeholder="Unscramble..."
+              value={input}
+              onChange={e => setInput(e.target.value)}
+              autoFocus
+              aria-label="Unscramble the word"
+            />
+            <Button type="submit" className="mt-2 bg-gradient-to-r from-[#B87333] to-[#E5C5A1] text-white">
+              Submit
+            </Button>
+          </form>
+          <div className="min-h-[28px] text-base font-semibold">{message}</div>
+          <div className="mt-2 text-sm">Score: <span className="font-bold">{score}</span></div>
+        </>
       ) : (
-        <div className="space-y-6">
-          <div className="p-4 bg-gray-50 rounded-lg">
-            <p className="text-sm text-gray-600 mb-2">This is a placeholder for the Word Unscramble game.</p>
-            <p className="text-sm text-gray-600">In a full implementation, scrambled letters would appear here for you to rearrange.</p>
-          </div>
-          
-          <div>
-            <p className="text-sm text-gray-500">Score</p>
-            <p className="text-lg font-bold">{score}</p>
-          </div>
-          
-          <Button 
-            onClick={completeGame}
-            style={{ backgroundColor: game.color, color: "#fff" }}
-          >
-            Complete Game (Demo)
+        <>
+          <div className="mb-4 text-green-600 font-bold">You win! 🎉 Final score: {score}</div>
+          <Button onClick={handleRestart} className="bg-gradient-to-r from-[#B87333] to-[#E5C5A1] text-white">
+            Play Again
           </Button>
-        </div>
+        </>
       )}
     </div>
   );
