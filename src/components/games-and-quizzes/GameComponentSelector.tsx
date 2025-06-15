@@ -1,4 +1,3 @@
-
 import React from "react";
 import { Game } from "@/data/gamesData";
 import GameMemoryMatch from "@/components/games/GameMemoryMatch";
@@ -24,10 +23,11 @@ const GameComponentSelector: React.FC<GameComponentSelectorProps> = ({
   // Choose the correct game component based on the game ID
   switch (activeGame.id) {
     case "memory-match":
-      return <GameMemoryMatch onComplete={onComplete} />;
+      return <GameMemoryMatch />; // Cover card, no onComplete
       
     case "word-scramble":
-      return <GameWordUnscramble onComplete={onComplete} />;
+    case "word-unscramble":
+      return <GameWordUnscramble />; // Cover card, no onComplete
       
     case "reaction-time":
       return <GameReactionTime game={activeGame} onComplete={onComplete} />;
