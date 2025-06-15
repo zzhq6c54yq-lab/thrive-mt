@@ -82,9 +82,8 @@ const MainDashboard: React.FC<MainDashboardProps> = ({
       {/* New Features section - shared component for both dashboard and home */}
       <NewFeatures />
 
-      {/* "Coming Soon" Mini Games grid - shared component */}
-      <DashboardMiniGamesGrid />
-
+      {/* Mini Games grid REMOVED from main dashboard. It will be in Key Features / features area now. */}
+      
       <DashboardContent 
         navigate={navigate}
         onWorkshopClick={handleWorkshopClick}
