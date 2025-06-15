@@ -1,4 +1,3 @@
-
 import {
   BarChart4,
   Brain,
@@ -11,7 +10,10 @@ import {
   Settings,
   SlidersHorizontal,
   UserCog,
-  Users2
+  Users2,
+  MoonStar,
+  Sparkles,
+  Award
 } from "lucide-react";
 import React from "react";
 
@@ -170,6 +172,45 @@ export function getFeatures(isSpanish: boolean): FeatureItem[] {
       path: "/games-and-quizzes",
       image: "/lovable-uploads/776b4638-0382-4cd8-bb25-0a7e36accaf1.png",
       popular: true,
+      comingSoon: false,
+    },
+    {
+      id: "sleep-tracker",
+      icon: <MoonStar className="h-5 w-5 text-sky-600" />,
+      color: "cyan",
+      title: isSpanish ? "Sleep Tracker" : "Sleep Tracker",
+      description: isSpanish
+        ? "Registra tus horas de sueño cada noche y mejora tus hábitos de descanso."
+        : "Log your nightly sleep and improve your rest habits.",
+      path: "/games/sleep-tracker",
+      image: "https://images.unsplash.com/photo-1465146344425-f00d5f5c8f07?auto=format&fit=crop&w=500&q=80",
+      popular: false,
+      comingSoon: false,
+    },
+    {
+      id: "meditation-studio",
+      icon: <Sparkles className="h-5 w-5 text-purple-500" />,
+      color: "purple",
+      title: isSpanish ? "Meditation Studio" : "Meditation Studio",
+      description: isSpanish
+        ? "Relájate y medita con sesiones guiadas y ejercicios de respiración."
+        : "Relax and meditate with guided sessions and breathing exercises.",
+      path: "/games/meditation-studio",
+      image: "https://images.unsplash.com/photo-1509316975850-ff9c5deb0cd9?auto=format&fit=crop&w=500&q=80",
+      popular: false,
+      comingSoon: false,
+    },
+    {
+      id: "career-coaching",
+      icon: <Award className="h-5 w-5 text-amber-500" />,
+      color: "amber",
+      title: isSpanish ? "Career Coaching" : "Career Coaching",
+      description: isSpanish
+        ? "Mejora tu carrera con consejos, pruebas rápidas y orientación personalizada."
+        : "Boost your career with advice, quizzes, and coaching.",
+      path: "/games/career-coaching",
+      image: "https://images.unsplash.com/photo-1517048676732-d65bc937f952?auto=format&fit=crop&w=500&q=80",
+      popular: false,
       comingSoon: false,
     },
   ];

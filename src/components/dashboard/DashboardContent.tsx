@@ -91,8 +91,8 @@ const DashboardContent: React.FC<DashboardContentProps> = ({
 
   return (
     <div className="container mx-auto max-w-6xl px-4 sm:px-6 py-6 relative z-10">
-      <FeatureOfTheQuarter /> {/* Inject under the header, above main Dashboard accordion */}
-
+      <FeatureOfTheQuarter />
+      {/* Below: Main dashboard Accordion remains unchanged */}
       <Accordion type="multiple" defaultValue={["dailyChallenges", "specializedPrograms", "appointments", "quizzes", "workshops", "keyFeatures", "gratitudeVisualizer"]} className="space-y-6">
         {/* Daily Wellness Challenges */}
         <AccordionItem value="dailyChallenges" className="border-none">
@@ -223,8 +223,6 @@ const DashboardContent: React.FC<DashboardContentProps> = ({
           </AccordionContent>
         </AccordionItem>
       </Accordion>
-      
-      
     </div>
   );
 };
