@@ -19,6 +19,7 @@ import { useToast } from "@/hooks/use-toast";
 import { Button } from "@/components/ui/button";
 import PlaceholderMiniGame from "@/components/dashboard/PlaceholderMiniGame";
 import DashboardMiniGamesGrid from "@/components/dashboard/DashboardMiniGamesGrid";
+import FeatureOfTheQuarter from "@/components/dashboard/FeatureOfTheQuarter";
 
 interface DashboardContentProps {
   navigate: NavigateFunction;
@@ -90,6 +91,8 @@ const DashboardContent: React.FC<DashboardContentProps> = ({
 
   return (
     <div className="container mx-auto max-w-6xl px-4 sm:px-6 py-6 relative z-10">
+      <FeatureOfTheQuarter /> {/* Inject under the header, above main Dashboard accordion */}
+
       <Accordion type="multiple" defaultValue={["dailyChallenges", "specializedPrograms", "appointments", "quizzes", "workshops", "keyFeatures", "gratitudeVisualizer"]} className="space-y-6">
         {/* Daily Wellness Challenges */}
         <AccordionItem value="dailyChallenges" className="border-none">
@@ -221,7 +224,7 @@ const DashboardContent: React.FC<DashboardContentProps> = ({
         </AccordionItem>
       </Accordion>
       
-      <DashboardMiniGamesGrid />
+      
     </div>
   );
 };

@@ -31,7 +31,8 @@ const DashboardMiniGamesGrid: React.FC = () => {
           <h3 className="text-xl font-bold text-zinc-700 mb-3">{feature.title}</h3>
           <Button 
             onClick={() => feature.route && navigate(feature.route)}
-            className="bg-gradient-to-r from-[#B87333] to-[#E5C5A1] text-white font-semibold shadow-md hover:scale-105 transition duration-150"
+            className="bg-gradient-to-r from-[#B87333] to-[#E5C5A1] text-white font-semibold shadow-md hover:scale-105 transition duration-150 w-40 h-14 text-lg rounded-xl"
+            style={{ minWidth: "10rem", minHeight: "3.5rem", fontSize: "1.2rem" }}
           >
             {labels.play}
           </Button>

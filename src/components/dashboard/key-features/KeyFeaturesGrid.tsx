@@ -1,13 +1,12 @@
-
 import React from "react";
 import { motion } from "framer-motion";
 import FeatureCard from "./FeatureCard";
 import MentalWellnessFeature from "./MentalWellnessFeature";
-import { Feature } from "./featuresData";
+import { FeatureItem } from "./featuresData";
 import { isFeatureRecommended } from "./featureUtils";
 
 interface KeyFeaturesGridProps {
-  features: Feature[];
+  features: FeatureItem[];
   selectedQualities: string[];
   selectedGoals: string[];
   isSpanish: boolean;
