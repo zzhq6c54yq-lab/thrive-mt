@@ -1,4 +1,3 @@
-
 import React from "react";
 import PlaceholderMiniGame from "@/components/dashboard/PlaceholderMiniGame";
 import { useNavigate } from "react-router-dom";
@@ -10,11 +9,11 @@ import { Button } from "@/components/ui/button";
  */
 const MINI_GAME_FEATURES = [
   { title: "Mini Sudoku", playable: true, route: "/games/mini-sudoku" },
-  { title: "Memory Match", playable: false, route: "/games/memory-match" },
-  { title: "Word Unscramble", playable: false, route: "/games/word-scramble" },
-  { title: "Sleep Tracker", playable: false, route: "/games/sleep-tracker" },
-  { title: "Career Coaching", playable: false, route: "/games/career-coaching" },
-  { title: "Meditation Studio", playable: false, route: "/games/meditation-studio" }
+  { title: "Memory Match", playable: true, route: "/games/memory-match" },
+  { title: "Word Unscramble", playable: true, route: "/games/word-unscramble" },
+  { title: "Sleep Tracker", playable: true, route: "/games/sleep-tracker" },
+  { title: "Career Coaching", playable: true, route: "/games/career-coaching" },
+  { title: "Meditation Studio", playable: true, route: "/games/meditation-studio" }
 ];
 
 const DashboardMiniGamesGrid: React.FC = () => {
@@ -27,21 +26,17 @@ const DashboardMiniGamesGrid: React.FC = () => {
 
   return (
     <div className="mt-8 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-      {MINI_GAME_FEATURES.map((feature) =>
-        feature.playable ? (
-          <div key={feature.title} className="flex flex-col items-center justify-center min-h-[200px] p-8 bg-zinc-100 rounded shadow">
-            <h3 className="text-xl font-bold text-zinc-700 mb-3">{feature.title}</h3>
-            <Button 
-              onClick={() => feature.route && navigate(feature.route)}
-              className="bg-gradient-to-r from-[#B87333] to-[#E5C5A1] text-white hover:scale-105 transition"
-            >
-              {labels.play}
-            </Button>
-          </div>
-        ) : (
-          <PlaceholderMiniGame key={feature.title} title={feature.title} comingSoon={labels.comingSoon} />
-        )
-      )}
+      {MINI_GAME_FEATURES.map((feature) => (
+        <div key={feature.title} className="flex flex-col items-center justify-center min-h-[200px] p-8 bg-zinc-100 rounded shadow hover-scale cursor-pointer">
+          <h3 className="text-xl font-bold text-zinc-700 mb-3">{feature.title}</h3>
+          <Button 
+            onClick={() => feature.route && navigate(feature.route)}
+            className="bg-gradient-to-r from-[#B87333] to-[#E5C5A1] text-white font-semibold shadow-md hover:scale-105 transition duration-150"
+          >
+            {labels.play}
+          </Button>
+        </div>
+      ))}
     </div>
   );
 };

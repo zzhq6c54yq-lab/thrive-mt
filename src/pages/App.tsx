@@ -94,6 +94,11 @@ import AllWorkshopsPage from "@/pages/AllWorkshops";
 // These can be added as the specific content pages are built
 
 import GameMiniSudoku from "@/components/games/GameMiniSudoku";
+import GameMemoryMatch from "@/components/games/GameMemoryMatch";
+import GameWordUnscramble from "@/components/games/GameWordUnscramble";
+import GameSleepTracker from "@/components/games/GameSleepTracker";
+import GameCareerCoaching from "@/components/games/GameCareerCoaching";
+import GameMeditationStudio from "@/components/games/GameMeditationStudio";
 import GameUnavailable from "@/components/games/GameUnavailable";
 
 import Auth from "@/pages/Auth";
@@ -120,11 +125,11 @@ function App() {
         <Route path="/game-play/:gameId" element={<GamePage />} />
         <Route path="/games/:gameId" element={<GamePage />} />
         <Route path="/games/mini-sudoku" element={<GameMiniSudoku />} />
-        <Route path="/games/memory-match" element={<GameUnavailable />} />
-        <Route path="/games/word-scramble" element={<GameUnavailable />} />
-        <Route path="/games/sleep-tracker" element={<GameUnavailable />} />
-        <Route path="/games/career-coaching" element={<GameUnavailable />} />
-        <Route path="/games/meditation-studio" element={<GameUnavailable />} />
+        <Route path="/games/memory-match" element={<GameMemoryMatch />} />
+        <Route path="/games/word-unscramble" element={<GameWordUnscramble />} />
+        <Route path="/games/sleep-tracker" element={<GameSleepTracker />} />
+        <Route path="/games/career-coaching" element={<GameCareerCoaching />} />
+        <Route path="/games/meditation-studio" element={<GameMeditationStudio />} />
         <Route path="/small-business-portal" element={<SmallBusinessPortal />} />
         <Route path="/small-business-welcome" element={<SmallBusinessWelcome />} />
         <Route path="/small-business-selection" element={<SmallBusinessSelection />} />
