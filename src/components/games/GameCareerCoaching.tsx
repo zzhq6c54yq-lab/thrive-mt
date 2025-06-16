@@ -3,45 +3,32 @@ import React, { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Award } from "lucide-react";
 
-const QUESTIONS = [
-  {
-    q: "Which area interests you most?",
-    options: ["Technology", "Healthcare", "Education", "Creative Arts"]
-  },
-  {
-    q: "Which do you value most in a career?",
-    options: ["Stability", "Innovation", "Helping Others", "Flexibility"]
-  }
+const CAREER_TIPS = [
+  "Set clear, measurable career goals and review them quarterly.",
+  "Network authentically by helping others before asking for help.",
+  "Develop both hard skills and emotional intelligence.",
+  "Seek feedback regularly and act on constructive criticism.",
+  "Build a personal brand that reflects your values and expertise.",
+  "Stay curious and embrace lifelong learning.",
+  "Find mentors and become a mentor to others.",
+  "Take calculated risks to accelerate your growth."
 ];
-
-const SUGGESTIONS = [
-  "Tech Field: Look into coding bootcamps or IT certifications.",
-  "Healthcare: Consider medical, nursing, or therapy paths.",
-  "Education: Teaching or youth development could suit your values.",
-  "Creative Arts: Explore design, writing, or performing arts careers."
-];
-
-const getSuggestion = (answers: string[]) => {
-  if (answers[0] === "Technology") return SUGGESTIONS[0];
-  if (answers[0] === "Healthcare") return SUGGESTIONS[1];
-  if (answers[0] === "Education") return SUGGESTIONS[2];
-  if (answers[0] === "Creative Arts") return SUGGESTIONS[3];
-  return "Keep exploring your interests and strengths!";
-};
 
 const GameCareerCoaching: React.FC = () => {
-  const [step, setStep] = useState(0);
-  const [answers, setAnswers] = useState<string[]>([]);
-  const [showSuggestion, setShowSuggestion] = useState(false);
+  const [currentTip, setCurrentTip] = useState(0);
+  const [showQuiz, setShowQuiz] = useState(false);
+  const [quizComplete, setQuizComplete] = useState(false);
 
-  const handleNext = (answer: string) => {
-    const updatedAnswers = [...answers, answer];
-    setAnswers(updatedAnswers);
-    if (step < QUESTIONS.length - 1) {
-      setStep(step + 1);
+  const handleNextTip = () => {
+    if (currentTip < CAREER_TIPS.length - 1) {
+      setCurrentTip(currentTip + 1);
     } else {
-      setShowSuggestion(true);
+      setShowQuiz(true);
     }
+  };
+
+  const handleQuizComplete = () => {
+    setQuizComplete(true);
   };
 
   return (
@@ -49,34 +36,52 @@ const GameCareerCoaching: React.FC = () => {
       <Award className="w-14 h-14 text-amber-500 mb-4" />
       <h2 className="text-2xl font-bold mb-2 text-amber-900">Career Coaching</h2>
       <p className="text-lg text-amber-700 text-center mb-6 max-w-md">
-        Boost your career with a quick quiz and personalized tips!
+        Boost your career with actionable tips and quick assessments.
       </p>
       <img 
         src="https://images.unsplash.com/photo-1517048676732-d65bc937f952?auto=format&fit=crop&w=500&q=80"
         alt="Career Coaching illustration"
         className="rounded-xl shadow mb-6 max-w-full object-cover w-72 h-36"
       />
-      {!showSuggestion ? (
-        <>
-          <div className="mb-4">
-            <h3 className="text-base font-semibold mb-2 text-amber-800">{QUESTIONS[step].q}</h3>
-            <div className="flex flex-wrap gap-2">
-              {QUESTIONS[step].options.map(option => (
-                <Button
-                  key={option}
-                  onClick={() => handleNext(option)}
-                  className="bg-gradient-to-r from-amber-400 to-yellow-300 text-amber-900 font-bold flex-1"
+      
+      {!showQuiz && !quizComplete && (
+        <div className="text-center max-w-sm">
+          <div className="bg-white p-6 rounded-lg shadow-md mb-4">
+            <h3 className="font-bold text-amber-800 mb-3">Career Tip #{currentTip + 1}</h3>
+            <p className="text-amber-700">{CAREER_TIPS[currentTip]}</p>
+          </div>
+          <Button onClick={handleNextTip} className="bg-gradient-to-r from-amber-500 to-orange-400 text-amber-900 font-bold">
+            {currentTip < CAREER_TIPS.length - 1 ? "Next Tip" : "Take Quick Quiz"}
+          </Button>
+        </div>
+      )}
+      
+      {showQuiz && !quizComplete && (
+        <div className="text-center max-w-sm">
+          <div className="bg-white p-6 rounded-lg shadow-md mb-4">
+            <h3 className="font-bold text-amber-800 mb-3">Quick Self-Assessment</h3>
+            <p className="text-amber-700 mb-4">On a scale of 1-10, how satisfied are you with your current career progress?</p>
+            <div className="grid grid-cols-5 gap-2 mb-4">
+              {[1,2,3,4,5,6,7,8,9,10].map(num => (
+                <button
+                  key={num}
+                  onClick={handleQuizComplete}
+                  className="px-2 py-1 bg-amber-200 hover:bg-amber-300 rounded text-amber-800 font-semibold"
                 >
-                  {option}
-                </Button>
+                  {num}
+                </button>
               ))}
             </div>
           </div>
-        </>
-      ) : (
-        <div className="bg-white/70 rounded p-4 mt-4 text-center shadow">
-          <div className="text-lg font-bold text-amber-700 mb-2">Suggestion:</div>
-          <div className="text-amber-900">{getSuggestion(answers)}</div>
+        </div>
+      )}
+      
+      {quizComplete && (
+        <div className="text-center">
+          <div className="text-lg font-bold text-green-700 mb-4">Assessment complete! 🏆</div>
+          <div className="bg-white p-4 rounded-lg shadow-md">
+            <p className="text-amber-700">Keep focusing on your goals and remember: career growth is a marathon, not a sprint!</p>
+          </div>
         </div>
       )}
     </div>

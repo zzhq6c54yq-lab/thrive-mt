@@ -1,10 +1,13 @@
 
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import HenryIntroDialog from "../henry/HenryIntroDialog";
 import HelpDialog from "../help/HelpDialog";
 import SpinningLogo from "./header/SpinningLogo";
 import WelcomeText from "./header/WelcomeText";
 import MeetHenryButton from "./header/MeetHenryButton";
+import { Button } from "@/components/ui/button";
+import useTranslation from "@/hooks/useTranslation";
 
 interface ThriveHeaderProps {
   userName: string;
@@ -17,6 +20,8 @@ const ThriveHeader: React.FC<ThriveHeaderProps> = ({
   showHenry,
   onHenryToggle
 }) => {
+  const navigate = useNavigate();
+  const { isSpanish } = useTranslation();
   const [showIntroDialog, setShowIntroDialog] = useState(false);
   const [showChatDialog, setShowChatDialog] = useState(false);
   
@@ -30,6 +35,10 @@ const ThriveHeader: React.FC<ThriveHeaderProps> = ({
     if (!showHenry) {
       onHenryToggle();
     }
+  };
+
+  const handleWorkshopsClick = () => {
+    navigate("/workshops");
   };
   
   return (
@@ -47,7 +56,15 @@ const ThriveHeader: React.FC<ThriveHeaderProps> = ({
           <div className="flex flex-col items-center w-full gap-8">
             <SpinningLogo />
             <WelcomeText userName={userName} />
-            <MeetHenryButton onClick={handleHenryButtonClick} />
+            <div className="flex flex-col sm:flex-row gap-4 items-center">
+              <MeetHenryButton onClick={handleHenryButtonClick} />
+              <Button 
+                onClick={handleWorkshopsClick}
+                className="bg-gradient-to-r from-blue-700 to-indigo-400 text-white rounded-lg shadow-lg hover:from-blue-800 hover:to-indigo-500 transition-all duration-200 px-6 py-3 text-lg font-semibold"
+              >
+                {isSpanish ? "Ver Todos los Talleres" : "View All Workshops"}
+              </Button>
+            </div>
           </div>
         </div>
       </div>

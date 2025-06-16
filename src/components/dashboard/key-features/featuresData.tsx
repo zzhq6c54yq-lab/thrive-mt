@@ -1,3 +1,4 @@
+
 import {
   BarChart4,
   Brain,
@@ -5,7 +6,6 @@ import {
   Gamepad2,
   HeartHandshake,
   ListChecks,
-  LucideIcon,
   MessageSquare,
   Settings,
   SlidersHorizontal,
@@ -19,7 +19,7 @@ import React from "react";
 
 export interface FeatureItem {
   id: string;
-  icon: React.ReactNode;   // ReactNode, not LucideIcon | string
+  icon: React.ReactNode;
   color: string;
   title: string;
   description: string;
@@ -110,58 +110,6 @@ export function getFeatures(isSpanish: boolean): FeatureItem[] {
       comingSoon: false,
     },
     {
-      id: "settings",
-      icon: <Settings className="h-5 w-5 text-zinc-400" />,
-      color: "zinc",
-      title: isSpanish ? "Ajustes" : "Settings",
-      description: isSpanish
-        ? "Configura tu perfil y preferencias para personalizar tu experiencia."
-        : "Configure your profile and preferences to personalize your experience.",
-      path: "/settings",
-      image: "/lovable-uploads/d2ecdcd2-9a78-40ea-8a8a-ef13092b5ea1.png",
-      popular: false,
-      comingSoon: true,
-    },
-    {
-      id: "admin-tools",
-      icon: <UserCog className="h-5 w-5 text-stone-400" />,
-      color: "stone",
-      title: isSpanish ? "Herramientas de administrador" : "Admin Tools",
-      description: isSpanish
-        ? "Gestiona usuarios, contenido y configuraciones del sistema."
-        : "Manage users, content, and system configurations.",
-      path: "/admin-tools",
-      image: "/lovable-uploads/10d9c6f1-9335-46e4-8942-4d4c198d3f5b.png",
-      popular: false,
-      comingSoon: true,
-    },
-    {
-      id: "integrations",
-      icon: <SlidersHorizontal className="h-5 w-5 text-orange-400" />,
-      color: "orange",
-      title: isSpanish ? "Integraciones" : "Integrations",
-      description: isSpanish
-        ? "Conecta Thrive con otras herramientas y plataformas que utilizas."
-        : "Connect Thrive with other tools and platforms you use.",
-      path: "/integrations",
-      image: "/lovable-uploads/11170587-bb45-4563-93d6-add9916cea87.png",
-      popular: false,
-      comingSoon: true,
-    },
-    {
-      id: "feedback",
-      icon: <MessageSquare className="h-5 w-5 text-lime-400" />,
-      color: "lime",
-      title: isSpanish ? "Comentarios" : "Feedback",
-      description: isSpanish
-        ? "Envíanos tus comentarios y sugerencias para mejorar Thrive."
-        : "Send us your feedback and suggestions to improve Thrive.",
-      path: "/feedback",
-      image: "/lovable-uploads/f2c6ac08-6331-4884-950d-7f94d68ff15f.png",
-      popular: false,
-      comingSoon: true,
-    },
-    {
       id: "mini-games",
       icon: <Gamepad2 className="h-5 w-5 text-indigo-400" />,
       color: "indigo",
@@ -212,6 +160,58 @@ export function getFeatures(isSpanish: boolean): FeatureItem[] {
       image: "https://images.unsplash.com/photo-1517048676732-d65bc937f952?auto=format&fit=crop&w=500&q=80",
       popular: false,
       comingSoon: false,
+    },
+    {
+      id: "settings",
+      icon: <Settings className="h-5 w-5 text-zinc-400" />,
+      color: "zinc",
+      title: isSpanish ? "Ajustes" : "Settings",
+      description: isSpanish
+        ? "Configura tu perfil y preferencias para personalizar tu experiencia."
+        : "Configure your profile and preferences to personalize your experience.",
+      path: "/settings",
+      image: "/lovable-uploads/d2ecdcd2-9a78-40ea-8a8a-ef13092b5ea1.png",
+      popular: false,
+      comingSoon: true,
+    },
+    {
+      id: "admin-tools",
+      icon: <UserCog className="h-5 w-5 text-stone-400" />,
+      color: "stone",
+      title: isSpanish ? "Herramientas de administrador" : "Admin Tools",
+      description: isSpanish
+        ? "Gestiona usuarios, contenido y configuraciones del sistema."
+        : "Manage users, content, and system configurations.",
+      path: "/admin-tools",
+      image: "/lovable-uploads/10d9c6f1-9335-46e4-8942-4d4c198d3f5b.png",
+      popular: false,
+      comingSoon: true,
+    },
+    {
+      id: "integrations",
+      icon: <SlidersHorizontal className="h-5 w-5 text-orange-400" />,
+      color: "orange",
+      title: isSpanish ? "Integraciones" : "Integrations",
+      description: isSpanish
+        ? "Conecta Thrive con otras herramientas y plataformas que utilizas."
+        : "Connect Thrive with other tools and platforms you use.",
+      path: "/integrations",
+      image: "/lovable-uploads/11170587-bb45-4563-93d6-add9916cea87.png",
+      popular: false,
+      comingSoon: true,
+    },
+    {
+      id: "feedback",
+      icon: <MessageSquare className="h-5 w-5 text-lime-400" />,
+      color: "lime",
+      title: isSpanish ? "Comentarios" : "Feedback",
+      description: isSpanish
+        ? "Envíanos tus comentarios y sugerencias para mejorar Thrive."
+        : "Send us your feedback and suggestions to improve Thrive.",
+      path: "/feedback",
+      image: "/lovable-uploads/f2c6ac08-6331-4884-950d-7f94d68ff15f.png",
+      popular: false,
+      comingSoon: true,
     },
   ];
 }
