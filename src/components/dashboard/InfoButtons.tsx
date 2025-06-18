@@ -26,18 +26,18 @@ const InfoButtons: React.FC = () => {
   return (
     <div className="flex justify-center gap-4 mt-4 mb-6">
       <Button
-        onClick={handleUpgradePlan}
-        className="text-xs px-3 py-1 bg-gradient-to-r from-[#B87333] to-[#E5C5A1] text-black font-semibold border border-[#B87333] rounded-md transition-all duration-200 hover:shadow-lg"
-        size="sm"
-      >
-        {isSpanish ? "Actualizar Plan" : "Upgrade Plan"}
-      </Button>
-      <Button
         onClick={handleBarterSystem}
         className="text-xs px-3 py-1 bg-black/80 hover:bg-black/90 text-white border border-gray-600 rounded-md transition-colors"
         size="sm"
       >
         {isSpanish ? "Sistema de Trueque" : "Barter System"}
+      </Button>
+      <Button
+        onClick={handleUpgradePlan}
+        className="text-xs px-3 py-1 bg-gradient-to-r from-[#B87333] to-[#E5C5A1] text-black font-semibold border border-[#B87333] rounded-md transition-all duration-200 hover:shadow-lg"
+        size="sm"
+      >
+        {isSpanish ? "Actualizar Plan" : "Upgrade Plan"}
       </Button>
       <Button
         onClick={handleOmniCredits}

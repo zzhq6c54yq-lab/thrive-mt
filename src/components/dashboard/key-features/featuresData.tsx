@@ -1,3 +1,4 @@
+
 import React from "react";
 import { 
   BarChart3, 
@@ -179,7 +180,7 @@ export const getFeatures = (isSpanish: boolean): FeatureItem[] => [
     title: isSpanish ? "Juegos y Cuestionarios" : "Brain Games & Quizzes",
     description: isSpanish ? "Juegos cognitivos y cuestionarios para el bienestar mental." : "Cognitive games and quizzes for mental wellness.",
     icon: <Brain className="w-6 h-6" />,
-    image: "https://images.unsplash.com/photo-1606092195730-5d7b9af1efc5?auto=format&fit=crop&w=500&q=80",
+    image: "https://images.unsplash.com/photo-1606092195730-5d7b9af20df552?auto=format&fit=crop&w=500&q=80",
     path: "/games-and-quizzes",
     color: "rose"
   }

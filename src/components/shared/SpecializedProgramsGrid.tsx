@@ -156,17 +156,14 @@ const SpecializedProgramsGrid: React.FC<SpecializedProgramsGridProps> = ({ onPro
                   target.src = "https://images.unsplash.com/photo-1486312338219-ce68d2c6f44d?auto=format&fit=crop&w=500&q=80";
                 }}
               />
-              <div className={`absolute inset-0 bg-gradient-to-t ${program.gradient} opacity-70`}></div>
             </div>
-            <div className={`h-16 bg-gradient-to-r ${program.gradient} flex items-end p-4`}>
-              <h3 className="text-white text-lg font-bold leading-tight">{program.title}</h3>
-            </div>
-            <div className="p-4">
-              <p className="text-gray-600 text-sm mb-4 line-clamp-3">
+            <div className={`bg-gradient-to-r ${program.gradient} p-4`}>
+              <h3 className="text-white text-lg font-bold leading-tight mb-3">{program.title}</h3>
+              <p className="text-white/90 text-sm mb-4 line-clamp-3">
                 {program.description}
               </p>
               <Button 
-                className="w-full bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white font-semibold"
+                className="w-full bg-white/10 hover:bg-white/20 text-white font-semibold border border-white/30 hover:border-white/50"
               >
                 {isSpanish ? "Explorar Portal" : "Explore Portal"}
               </Button>
