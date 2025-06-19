@@ -6,13 +6,6 @@ import useIndexState from "@/hooks/useIndexState";
 import useScreenHistory from "@/hooks/useScreenHistory";
 import IndexContent from "@/components/home/IndexContent";
 
-interface PopupState {
-  coPayCredit: boolean;
-  henryIntro: boolean;
-  mainTutorial: boolean;
-  transitionTutorial: boolean;
-}
-
 export default function Index() {
   const { toast } = useToast();
   const { isSpanish } = useTranslation();
@@ -42,15 +35,8 @@ export default function Index() {
 
   useScreenHistory(screenState, setScreenState);
 
-  // Disable all popups to prevent white popup issues
-  const [showCoPayCredit, setShowCoPayCredit] = React.useState(false);
+  // Completely disable all popups to prevent white popup issues
   const [showHenry, setShowHenry] = React.useState(false);
-  const [popupsShown, setPopupsShown] = React.useState<PopupState>({
-    coPayCredit: true, // Always mark as shown to prevent popup
-    henryIntro: true, // Always mark as shown to prevent popup
-    mainTutorial: true, // Always mark as shown to prevent popup
-    transitionTutorial: true, // Always mark as shown to prevent popup
-  });
 
   React.useEffect(() => {
     console.log("[Index] Current screen state:", screenState);
@@ -68,11 +54,6 @@ export default function Index() {
 
   const markTutorialCompleted = () => {
     console.log("[Index] Tutorial marked as completed");
-    setPopupsShown(prev => ({
-      ...prev,
-      mainTutorial: true,
-      transitionTutorial: true
-    }));
   };
 
   const navigateToFeature = (path: string) => {
@@ -118,9 +99,14 @@ export default function Index() {
       showHenry={showHenry}
       isFirstVisit={isFirstVisit}
       setIsFirstVisit={setIsFirstVisit}
-      showCoPayCredit={false} // Force disable
-      setShowCoPayCredit={() => {}} // Disable function
-      popupsShown={popupsShown}
+      showCoPayCredit={false}
+      setShowCoPayCredit={() => {}}
+      popupsShown={{
+        coPayCredit: true,
+        henryIntro: true,
+        mainTutorial: true,
+        transitionTutorial: true,
+      }}
       getTranslatedText={getTranslatedText}
       onMoodSelect={handleMoodSelect}
       onUserInfoChange={handleUserInfoChange}

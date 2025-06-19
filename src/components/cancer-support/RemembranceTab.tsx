@@ -16,14 +16,22 @@ const RemembranceTab: React.FC<RemembranceTabProps> = ({ onFeatureClick }) => {
   const navigate = useNavigate();
   const { toast } = useToast();
   
-  // Direct navigation to independent pages
-  const handleNavigate = (path: string) => {
+  const handleResourceClick = (path: string, title: string) => {
+    console.log("[RemembranceTab] Navigating to:", path);
     toast({
       title: isSpanish ? "Navegando" : "Navigating",
-      description: isSpanish ? "Accediendo a la página" : "Accessing page",
-      duration: 2000
+      description: title,
+      duration: 1500
     });
-    navigate(path);
+    
+    // Use consistent navigation pattern
+    if (path.startsWith('/cancer-support/')) {
+      // For cancer support specific pages, use onFeatureClick
+      onFeatureClick(path);
+    } else {
+      // For general pages, use direct navigation
+      navigate(path);
+    }
   };
   
   const remembranceResources = [
@@ -34,7 +42,7 @@ const RemembranceTab: React.FC<RemembranceTabProps> = ({ onFeatureClick }) => {
       description: isSpanish 
         ? "Un espacio virtual para honrar a los seres queridos que hemos perdido"
         : "A virtual space to honor loved ones we have lost",
-      path: "/cancer-support/memorial-garden"
+      path: "/memorial-garden"
     },
     {
       id: "grief-resources",
@@ -43,7 +51,7 @@ const RemembranceTab: React.FC<RemembranceTabProps> = ({ onFeatureClick }) => {
       description: isSpanish 
         ? "Información y apoyo para navegar el proceso de duelo"
         : "Information and support for navigating the grief process",
-      path: "/cancer-support/grief-resources"
+      path: "/grief-resources"
     },
     {
       id: "legacy-projects",
@@ -52,7 +60,7 @@ const RemembranceTab: React.FC<RemembranceTabProps> = ({ onFeatureClick }) => {
       description: isSpanish 
         ? "Ideas para crear legados significativos para honrar a los seres queridos"
         : "Ideas for creating meaningful legacies to honor loved ones",
-      path: "/cancer-support/legacy-projects"
+      path: "/legacy-projects"
     },
     {
       id: "bereavement-community",
@@ -61,7 +69,7 @@ const RemembranceTab: React.FC<RemembranceTabProps> = ({ onFeatureClick }) => {
       description: isSpanish 
         ? "Conéctate con otros que han experimentado pérdidas similares"
         : "Connect with others who have experienced similar losses",
-      path: "/cancer-support/bereavement-community"
+      path: "/community-support"
     },
     {
       id: "memorial-wall",
@@ -70,7 +78,7 @@ const RemembranceTab: React.FC<RemembranceTabProps> = ({ onFeatureClick }) => {
       description: isSpanish 
         ? "Comparte recuerdos y reflexiones sobre tus seres queridos"
         : "Share memories and reflections about your loved ones",
-      path: "/cancer-support/memorial-wall"
+      path: "/journaling"
     },
     {
       id: "grief-groups",
@@ -79,7 +87,7 @@ const RemembranceTab: React.FC<RemembranceTabProps> = ({ onFeatureClick }) => {
       description: isSpanish 
         ? "Grupos de apoyo facilitados por profesionales especializados en duelo"
         : "Support groups facilitated by grief specialists",
-      path: "/cancer-support/grief-groups"
+      path: "/workshops"
     }
   ];
   
@@ -117,7 +125,7 @@ const RemembranceTab: React.FC<RemembranceTabProps> = ({ onFeatureClick }) => {
                     variant="ghost" 
                     size="sm" 
                     className="text-indigo-600 hover:text-indigo-700 dark:text-indigo-400 dark:hover:text-indigo-300 p-0 h-auto hover:bg-transparent"
-                    onClick={() => handleNavigate(resource.path)}
+                    onClick={() => handleResourceClick(resource.path, resource.title)}
                   >
                     {isSpanish ? "Visitar" : "Visit"}
                     <ArrowRight className="ml-1 h-3 w-3" />
@@ -136,11 +144,11 @@ const RemembranceTab: React.FC<RemembranceTabProps> = ({ onFeatureClick }) => {
         <p className="text-gray-600 dark:text-gray-300 mb-4">
           {isSpanish 
             ? "Muchas personas encuentran consuelo al participar en acciones significativas para honrar a sus seres queridos y ayudar a otros."
-            : "Many people find comfort in engaging in meaningful actions to honor their loved ones and help others."}
+            :  "Many people find comfort in engaging in meaningful actions to honor their loved ones and help others."}
         </p>
         <Button 
           className="bg-indigo-500 hover:bg-indigo-600 text-white"
-          onClick={() => handleNavigate("/cancer-support/honoring-action")}
+          onClick={() => handleResourceClick("/wellness-challenges", isSpanish ? "Desafíos de Bienestar" : "Wellness Challenges")}
         >
           {isSpanish ? "Explorar Formas de Honrar su Memoria" : "Explore Ways to Honor Their Memory"}
         </Button>

@@ -1,6 +1,5 @@
 
 import React from "react";
-import CoPayCreditPopup from "@/components/CoPayCreditPopup";
 import IndexScreenManager from "@/components/home/IndexScreenManager";
 import WelcomeTutorial from "@/components/tutorials/WelcomeTutorial";
 import { useToast } from "@/hooks/use-toast";
@@ -81,19 +80,12 @@ const IndexContent: React.FC<IndexContentProps> = ({
 }) => {
   const { toast } = useToast();
 
-  // Only show welcome tutorial when in main screen, not during onboarding
-  const shouldShowTutorial = isFirstVisit && !popupsShown.mainTutorial && screenState === 'main';
+  // Completely disable tutorial popups to prevent white popup issues
+  const shouldShowTutorial = false;
 
   const handleSkipTutorial = () => {
     setIsFirstVisit(false);
     markTutorialCompleted();
-    // Only show toast if not in onboarding
-    if (!isInOnboarding) {
-      toast({
-        title: getTranslatedText('skipForNow'),
-        description: getTranslatedText('tutorialAccess'),
-      });
-    }
   };
 
   const handleCloseTutorial = () => {
@@ -103,14 +95,6 @@ const IndexContent: React.FC<IndexContentProps> = ({
 
   return (
     <div className="relative">
-      {/* Only show CoPayCredit popup if not in onboarding */}
-      {showCoPayCredit && !popupsShown.coPayCredit && !isInOnboarding && 
-        <CoPayCreditPopup 
-          open={showCoPayCredit} 
-          onOpenChange={setShowCoPayCredit} 
-        />
-      }
-      
       <IndexScreenManager
         screenState={screenState}
         selectedMood={selectedMood}
@@ -136,14 +120,6 @@ const IndexContent: React.FC<IndexContentProps> = ({
         markTutorialCompleted={markTutorialCompleted}
         isInOnboarding={isInOnboarding}
       />
-      
-      {/* Only show welcome tutorial for tutorial button clicks, not during onboarding */}
-      {shouldShowTutorial && !isInOnboarding && 
-        <WelcomeTutorial
-          isOpen={shouldShowTutorial}
-          onClose={handleCloseTutorial}
-        />
-      }
     </div>
   );
 };
