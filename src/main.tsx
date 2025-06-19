@@ -9,32 +9,13 @@ const urlParams = new URLSearchParams(window.location.search);
 if (urlParams.get('forceReset') === 'true' || urlParams.get('resetOnboarding') === 'true') {
   console.log("[main] Resetting onboarding state due to URL parameter");
   localStorage.removeItem('hasCompletedOnboarding');
-  localStorage.removeItem('prevScreenState');
-  localStorage.removeItem('introLoaded');
-  localStorage.removeItem('stuckDetected');
 }
 
-// Clear any potentially problematic localStorage items on fresh load
-if (!localStorage.getItem('appInitialized') || window.location.pathname === '/' && urlParams.has('fresh')) {
-  console.log("[main] Fresh initialization, clearing potential state conflicts");
-  localStorage.setItem('appInitialized', 'true');
-  
-  // Only clear these if we're not in the middle of onboarding
-  const prevScreenState = localStorage.getItem('prevScreenState');
-  if (!prevScreenState || prevScreenState === 'intro' || prevScreenState === 'main') {
-    localStorage.removeItem('prevScreenState');
-    localStorage.removeItem('introLoaded');
-    localStorage.removeItem('stuckDetected');
-  }
-}
-
-// Add a force reset mechanism for when the app gets stuck
-if (localStorage.getItem('stuckDetected') === 'true') {
-  console.log("[main] Detected previous stuck state, forcing reset");
-  localStorage.removeItem('hasCompletedOnboarding');
-  localStorage.removeItem('prevScreenState');
-  localStorage.removeItem('stuckDetected');
-  localStorage.removeItem('introLoaded');
+// For investment demo purposes, ensure onboarding shows on fresh visits
+// Only skip onboarding if explicitly completed
+const hasExplicitOnboarding = localStorage.getItem('hasCompletedOnboarding');
+if (!hasExplicitOnboarding) {
+  console.log("[main] Fresh visit detected - onboarding will be shown");
 }
 
 // Ensure the root element exists

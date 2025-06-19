@@ -14,6 +14,7 @@ export const useScreenHistory = (
     console.log("[useScreenHistory] Completed onboarding:", hasCompletedOnboarding);
     console.log("[useScreenHistory] Current location:", location.pathname);
 
+    // Handle special program paths - these should skip onboarding
     const isSpecialProgramPath =
       location.pathname.includes('cancer-support') ||
       location.pathname.includes('chronic-illness') ||
@@ -29,17 +30,16 @@ export const useScreenHistory = (
       return;
     }
 
+    // Don't interfere with non-root paths
     if (location.pathname !== '/') {
       return;
     }
 
+    // Handle navigation state
     if (location.state) {
       console.log("[useScreenHistory] Navigation state:", location.state);
 
-      if (location.state.returnToFeature) {
-        console.log("[useScreenHistory] Returning to feature, maintaining state");
-        return;
-      } else if (location.state.returnToMain) {
+      if (location.state.returnToFeature || location.state.returnToMain) {
         setScreenState('main');
         return;
       } else if (location.state.screenState) {
@@ -51,22 +51,26 @@ export const useScreenHistory = (
       }
     }
 
+    // For root path, enforce onboarding rules
     if (location.pathname === '/') {
       if (hasCompletedOnboarding && screenState !== 'main') {
+        console.log("[useScreenHistory] Onboarding completed, transitioning to main");
         setScreenState('main');
-      } else if (!hasCompletedOnboarding && (screenState === 'main' || !screenState)) {
-        // Always lock to intro if onboarding isn't done
+      } else if (!hasCompletedOnboarding && (screenState === 'main')) {
+        console.log("[useScreenHistory] Onboarding not completed, returning to intro");
         setScreenState('intro');
       }
+      // If screenState is already intro and onboarding not completed, keep it as intro
     }
   }, [location, setScreenState, screenState]);
 
   useEffect(() => {
     console.log("[useScreenHistory] Screen state changed to:", screenState);
-    localStorage.setItem('prevScreenState', screenState);
-
+    
+    // Only mark onboarding complete when explicitly transitioning to main
     if (screenState === 'main') {
       localStorage.setItem('hasCompletedOnboarding', 'true');
+      console.log("[useScreenHistory] Onboarding completion saved to localStorage");
     }
   }, [screenState]);
 };
