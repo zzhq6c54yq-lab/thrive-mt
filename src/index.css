@@ -71,18 +71,51 @@
   }
 }
 
-/* Prevent popup artifacts and unwanted white elements */
+/* AGGRESSIVE POPUP AND WHITE BUTTON ELIMINATION */
+/* Hide all potential popup artifacts and white elements */
 .popup-residual,
 .radix-toast-viewport > div:empty,
 .radix-dialog-overlay:empty,
-.radix-popover-content:empty {
+.radix-popover-content:empty,
+[data-radix-portal] > div:empty,
+[data-radix-portal] > div[style*="background: white"]:not([role]),
+[data-radix-portal] > div[style*="background-color: white"]:not([role]),
+[data-radix-portal] > div[style*="background: #fff"]:not([role]),
+[data-radix-portal] > div[style*="background-color: #fff"]:not([role]),
+[data-radix-portal] > div[style*="background: rgb(255, 255, 255)"]:not([role]),
+[data-radix-portal] > div[style*="background-color: rgb(255, 255, 255)"]:not([role]) {
+  display: none !important;
+  visibility: hidden !important;
+  opacity: 0 !important;
+  pointer-events: none !important;
+}
+
+/* Hide any white buttons or elements that might be popup remnants */
+button[style*="background: white"]:not([data-component]),
+button[style*="background-color: white"]:not([data-component]),
+button[style*="background: #fff"]:not([data-component]),
+button[style*="background-color: #fff"]:not([data-component]),
+div[style*="background: white"]:empty,
+div[style*="background-color: white"]:empty,
+span[style*="background: white"]:empty,
+span[style*="background-color: white"]:empty {
   display: none !important;
 }
 
-/* Hide any empty or minimal white elements that might be popup artifacts */
-div[data-radix-portal] > div:empty,
-div[data-radix-portal] > div[style*="background: white"]:not([role]),
-div[data-radix-portal] > div[style*="background-color: white"]:not([role]) {
+/* Hide floating white elements */
+[style*="position: fixed"][style*="background: white"],
+[style*="position: absolute"][style*="background: white"],
+[style*="position: fixed"][style*="background-color: white"],
+[style*="position: absolute"][style*="background-color: white"] {
+  display: none !important;
+}
+
+/* Hide Radix UI popup artifacts more aggressively */
+[data-radix-popper-content-wrapper] > div:empty,
+[data-radix-popover-content]:empty,
+[data-radix-dropdown-menu-content]:empty,
+[data-radix-dialog-content]:empty:not([role="dialog"]),
+[data-radix-toast-viewport] > div:empty {
   display: none !important;
 }
 
