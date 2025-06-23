@@ -27,13 +27,31 @@ const SpecializedPrograms: React.FC = () => {
   }, []);
 
   const handleFeatureClick = (path: string) => {
+    // Map paths to existing routes to prevent 404 errors
+    const pathMapping: Record<string, string> = {
+      "/dod-welcome": "/dod-welcome",
+      "/college-welcome": "/college-welcome", 
+      "/small-business-welcome": "/small-business-welcome",
+      "/golden-years-welcome": "/golden-years-welcome",
+      "/adolescent-welcome": "/adolescent-welcome",
+      "/first-responders-welcome": "/first-responders-welcome",
+      "/hospitality-welcome": "/hospitality-welcome",
+      "/transport-welcome": "/transport-welcome",
+      "/law-enforcement-welcome": "/law-enforcement-welcome",
+      "/educators-welcome": "/educators-welcome",
+      "/chronic-illness-welcome": "/chronic-illness-welcome",
+      "/cancer-support-welcome": "/cancer-support-welcome"
+    };
+
+    const finalPath = pathMapping[path] || path;
+    
     toast({
       title: translations.navigating,
       description: translations.takingYou,
       duration: 1500,
     });
     
-    navigate(path, { 
+    navigate(finalPath, { 
       state: { 
         fromMainMenu: true,
         preventTutorial: true,

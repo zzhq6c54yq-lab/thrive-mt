@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
@@ -50,10 +49,15 @@ const CrisisOverlay: React.FC = () => {
       {/* Floating Crisis Button */}
       <Button
         onClick={handlePanicButton}
-        className="fixed bottom-6 left-6 z-50 h-16 w-16 rounded-full shadow-2xl bg-gradient-to-br from-red-600 via-red-700 to-red-800 hover:from-red-700 hover:via-red-800 hover:to-red-900 border-2 border-yellow-400 hover:border-yellow-300 transform hover:scale-110 transition-all duration-300"
+        className="fixed bottom-6 left-6 z-50 h-16 w-16 rounded-full shadow-2xl bg-gradient-to-br from-red-900 via-red-800 to-red-900 hover:from-red-800 hover:via-red-700 hover:to-red-800 border-4 border-gradient-to-r from-amber-600 via-yellow-600 to-amber-600 ring-2 ring-black ring-opacity-50 transform hover:scale-110 transition-all duration-300"
+        style={{
+          background: 'linear-gradient(135deg, #7f1d1d 0%, #991b1b 50%, #7f1d1d 100%)',
+          borderImage: 'linear-gradient(135deg, #d97706, #eab308, #d97706) 1',
+          boxShadow: '0 0 20px rgba(0, 0, 0, 0.5), inset 0 0 10px rgba(217, 119, 6, 0.3)'
+        }}
         aria-label="Crisis Support - Click for immediate help"
       >
-        <Shield className="h-7 w-7 text-yellow-100" />
+        <Shield className="h-7 w-7 text-yellow-500 drop-shadow-lg" style={{ color: '#eab308' }} />
       </Button>
 
       {/* Crisis Support Dialog */}
