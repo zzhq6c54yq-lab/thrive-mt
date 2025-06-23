@@ -1,7 +1,9 @@
-
-import React from "react";
+import React, { useState } from "react";
+import { Smile, Meh, Frown, HeartCrack, Angry, Brain, ChevronDown } from "lucide-react";
+import { motion } from "framer-motion";
+import { AlertDialog, AlertDialogContent, AlertDialogHeader, AlertDialogTitle, AlertDialogFooter, AlertDialogDescription, AlertDialogAction } from "@/components/ui/alert-dialog";
+import { PhoneCall, MessageSquare, LifeBuoy, Heart, AlertTriangle } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Smile, Meh, Frown, Heart, AlertTriangle, Cloud } from "lucide-react";
 import useTranslation from "@/hooks/useTranslation";
 
 interface MoodScreenProps {
@@ -9,87 +11,300 @@ interface MoodScreenProps {
 }
 
 const MoodScreen: React.FC<MoodScreenProps> = ({ onMoodSelect }) => {
-  const { isSpanish, isPortuguese, isFilipino } = useTranslation();
-
-  const moodOptions = [
+  // Use the translation hook
+  const { isSpanish } = useTranslation();
+  
+  // State for mood selection and dialogs
+  const [selectedMood, setSelectedMood] = useState<string | null>(null);
+  const [showResourcesDialog, setShowResourcesDialog] = useState(false);
+  
+  // Translations
+  const translations = {
+    title: isSpanish ? "¿Cómo te sientes hoy?" : "How are you feeling today?",
+    subtitle: isSpanish ? "Selecciona la emoción que mejor describa cómo te sientes" : "Select the emotion that best describes how you're feeling",
+    happy: isSpanish ? "Feliz" : "Happy",
+    justOk: isSpanish ? "Más o Menos" : "Just Ok",
+    neutral: isSpanish ? "Neutral" : "Neutral",
+    down: isSpanish ? "Decaído" : "Feeling Down",
+    sad: isSpanish ? "Triste" : "Sad",
+    overwhelmed: isSpanish ? "Abrumado" : "Overwhelmed",
+    continueText: isSpanish ? "Continuar" : "Continue",
+    emergencyResources: isSpanish ? "Recursos de apoyo" : "Support resources",
+    warningText: isSpanish ? "Pareces estar pasando por un momento difícil" : "You seem to be going through a difficult time",
+    helpAvailable: isSpanish ? "Hay ayuda disponible" : "Help is available",
+    callNow: isSpanish ? "Llamar ahora" : "Call now",
+    textLine: isSpanish ? "Línea de texto" : "Text line",
+    crisisSupport: isSpanish ? "Apoyo en crisis" : "Crisis support",
+    emergencyHelp: isSpanish ? "Ayuda de emergencia" : "Emergency help",
+    needHelp: isSpanish ? "¿Necesitas ayuda?" : "Need help?",
+    getSupport: isSpanish ? "Obtener apoyo" : "Get support",
+    reflectPrompt: isSpanish ? "Tómate un momento para reflexionar" : "Take a moment to reflect",
+  };
+  
+  // Mood data with the same golden gradient for all icons
+  const moods = [
     {
-      id: 'happy' as const,
-      icon: <Smile className="w-12 h-12 text-green-500" />,
-      label: isSpanish ? "Feliz" : isPortuguese ? "Feliz" : isFilipino ? "Masaya" : "Happy",
-      color: "bg-green-100 hover:bg-green-200 border-green-300"
+      id: 'happy',
+      label: translations.happy,
+      icon: <Smile className="w-full h-full" />,
+      message: isSpanish 
+        ? "Tu alegría es un regalo para el mundo. Cada sonrisa que compartes tiene el poder de iluminar el día de alguien más."
+        : "Your joy is a gift to the world. Each smile you share has the power to brighten someone else's day."
     },
     {
-      id: 'ok' as const,
-      icon: <Heart className="w-12 h-12 text-blue-500" />,
-      label: isSpanish ? "Bien" : isPortuguese ? "Bem" : isFilipino ? "Ayos" : "OK",
-      color: "bg-blue-100 hover:bg-blue-200 border-blue-300"
+      id: 'ok',
+      label: translations.justOk,
+      icon: <Brain className="w-full h-full" />,
+      message: isSpanish 
+        ? "Estar 'más o menos' es un lugar de auténtica sabiduría. No todo tiene que ser extraordinario para ser valioso."
+        : "Being 'just okay' is a place of genuine wisdom. Not everything needs to be extraordinary to be valuable."
     },
     {
-      id: 'neutral' as const,
-      icon: <Meh className="w-12 h-12 text-yellow-500" />,
-      label: isSpanish ? "Neutral" : isPortuguese ? "Neutro" : isFilipino ? "Neutral" : "Neutral",
-      color: "bg-yellow-100 hover:bg-yellow-200 border-yellow-300"
+      id: 'neutral',
+      label: translations.neutral,
+      icon: <Meh className="w-full h-full" />,
+      message: isSpanish 
+        ? "La neutralidad es un lienzo en blanco lleno de posibilidades. Desde este espacio equilibrado, puedes elegir conscientemente hacia dónde dirigir tu energía."
+        : "Neutrality is a blank canvas full of possibilities. From this balanced space, you can consciously choose where to direct your energy."
     },
     {
-      id: 'down' as const,
-      icon: <Cloud className="w-12 h-12 text-orange-500" />,
-      label: isSpanish ? "Decaído" : isPortuguese ? "Para baixo" : isFilipino ? "Malungkot" : "Down",
-      color: "bg-orange-100 hover:bg-orange-200 border-orange-300"
+      id: 'down',
+      label: translations.down,
+      icon: <HeartCrack className="w-full h-full" />,
+      message: isSpanish 
+        ? "Sentirse decaído no es un signo de debilidad, sino de humanidad. Tus emociones, incluso las difíciles, te enseñan sobre ti mismo y lo que necesitas."
+        : "Feeling down isn't a sign of weakness, but of humanity. Your emotions, even the difficult ones, teach you about yourself and what you need."
     },
     {
-      id: 'sad' as const,
-      icon: <Frown className="w-12 h-12 text-red-500" />,
-      label: isSpanish ? "Triste" : isPortuguese ? "Triste" : isFilipino ? "Nalulungkot" : "Sad",
-      color: "bg-red-100 hover:bg-red-200 border-red-300"
+      id: 'sad',
+      icon: <Frown className="w-full h-full" />,
+      label: translations.sad,
+      message: isSpanish 
+        ? "Tu tristeza habla de tu profunda capacidad para sentir. En estos momentos vulnerables, recuerda que no estás solo, aunque el camino se sienta solitario."
+        : "Your sadness speaks to your deep capacity to feel. In these vulnerable moments, remember you are not alone, even when the path feels solitary."
     },
     {
-      id: 'overwhelmed' as const,
-      icon: <AlertTriangle className="w-12 h-12 text-purple-500" />,
-      label: isSpanish ? "Abrumado" : isPortuguese ? "Sobrecarregado" : isFilipino ? "Napapagod" : "Overwhelmed",
-      color: "bg-purple-100 hover:bg-purple-200 border-purple-300"
+      id: 'overwhelmed',
+      icon: <Angry className="w-full h-full" />,
+      label: translations.overwhelmed,
+      message: isSpanish 
+        ? "Cuando todo se siente demasiado, recuerda respirar. No necesitas cargar el peso del mundo en tus hombros. Da un pequeño paso, solo uno, y luego el siguiente."
+        : "When everything feels too much, remember to breathe. You don't need to carry the weight of the world on your shoulders. Take one small step, just one, and then the next."
     }
   ];
 
-  return (
-    <div className="min-h-screen flex flex-col items-center justify-center bg-[#1a1a1f] px-4">
-      <div className="max-w-2xl w-full text-center space-y-8">
-        <div className="space-y-4">
-          <h1 className="text-4xl md:text-6xl font-bold text-white mb-4">
-            {isSpanish ? "¿Cómo te sientes hoy?" : 
-             isPortuguese ? "Como você está se sentindo hoje?" :
-             isFilipino ? "Kumusta ang iyong pakiramdam ngayon?" :
-             "How are you feeling today?"}
-          </h1>
-          <p className="text-xl text-gray-300">
-            {isSpanish ? "Selecciona la emoción que mejor describe cómo te sientes" :
-             isPortuguese ? "Selecione a emoção que melhor descreve como você está se sentindo" :
-             isFilipino ? "Piliin ang emosyon na pinakamahusay na naglalarawan kung paano mo nararamdaman" :
-             "Select the emotion that best describes how you're feeling"}
-          </p>
-        </div>
+  // Emergency resources content
+  const emergencyResources = [
+    {
+      icon: <PhoneCall className="h-5 w-5" />,
+      title: isSpanish ? "Línea Nacional de Prevención del Suicidio" : "National Suicide Prevention Lifeline",
+      description: isSpanish ? "Apoyo gratuito 24/7 para personas en crisis" : "Free 24/7 support for people in crisis",
+      contact: "988",
+      action: translations.callNow
+    },
+    {
+      icon: <MessageSquare className="h-5 w-5" />,
+      title: isSpanish ? "Línea de Texto de Crisis" : "Crisis Text Line",
+      description: isSpanish ? "Apoyo por mensaje de texto las 24 horas" : "24/7 text message support",
+      contact: "Text HOME to 741741",
+      action: translations.textLine
+    },
+    {
+      icon: <Heart className="h-5 w-5" />,
+      title: isSpanish ? "Línea de Ayuda SAMHSA" : "SAMHSA's Helpline",
+      description: isSpanish ? "Tratamiento para trastornos de salud mental" : "Treatment for mental health disorders",
+      contact: "1-800-662-4357",
+      action: translations.crisisSupport
+    },
+    {
+      icon: <LifeBuoy className="h-5 w-5" />,
+      title: isSpanish ? "Servicios de Emergencia" : "Emergency Services",
+      description: isSpanish ? "Para situaciones que amenazan la vida" : "For life-threatening situations",
+      contact: "911",
+      action: translations.emergencyHelp
+    }
+  ];
 
-        <div className="bg-[#2a2a35] rounded-lg p-6 border border-gray-700">
-          <p className="text-gray-400 italic mb-6">
-            {isSpanish ? "Tómate un momento para reflexionar" :
-             isPortuguese ? "Reserve um momento para refletir" :
-             isFilipino ? "Maglaan ng sandali upang mag-isip" :
-             "Take a moment to reflect"}
-          </p>
+  // Handle mood selection - Show resources for sad/overwhelmed immediately
+  const handleMoodClick = (mood: any) => {
+    console.log(`[MoodScreen] User selected mood: ${mood.id}`);
+    setSelectedMood(mood.id);
+    
+    // For sad/overwhelmed moods, show resources first
+    if (mood.id === 'sad' || mood.id === 'overwhelmed') {
+      setShowResourcesDialog(true);
+    } else if (mood.id) {
+      // For other moods, proceed directly
+      console.log(`[MoodScreen] Calling onMoodSelect with mood: ${mood.id}`);
+      onMoodSelect(mood.id as any);
+    }
+  };
+  
+  // Handle final continue after resources
+  const handleResourcesContinue = () => {
+    setShowResourcesDialog(false);
+    if (selectedMood) {
+      console.log(`[MoodScreen] Continuing after resources dialog with mood: ${selectedMood}`);
+      onMoodSelect(selectedMood as any);
+    }
+  };
+
+  return (
+    <div className="min-h-screen flex flex-col bg-gradient-to-br from-[#1a1a1f] via-[#221F26] to-[#2a2a35] text-white relative overflow-hidden">
+      {/* Decorative background elements */}
+      <div className="absolute inset-0 overflow-hidden pointer-events-none">
+        <div className="absolute top-0 left-0 w-96 h-96 bg-[#B87333]/10 rounded-full blur-3xl opacity-70"></div>
+        <div className="absolute bottom-0 right-0 w-96 h-96 bg-[#B87333]/10 rounded-full blur-3xl opacity-70"></div>
+        <div className="absolute top-1/4 right-1/3 w-72 h-72 bg-indigo-500/5 rounded-full blur-3xl"></div>
+        <div className="absolute bottom-1/3 left-1/4 w-48 h-48 bg-emerald-500/5 rounded-full blur-3xl"></div>
+        
+        {/* Subtle geometric patterns */}
+        <div className="absolute inset-0 opacity-10" style={{
+          backgroundImage: `radial-gradient(circle at 25px 25px, rgba(255, 255, 255, 0.15) 2px, transparent 0)`,
+          backgroundSize: '50px 50px'
+        }}></div>
+      </div>
+      
+      {/* Main Content */}
+      <div className="relative z-10 container mx-auto px-4 py-10 flex-1 flex flex-col">
+        {/* Header Section */}
+        <motion.div 
+          initial={{ opacity: 0, y: -30 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8, ease: "easeOut" }}
+          className="mb-16 text-center"
+        >
+          <motion.div
+            initial={{ scale: 0.9, opacity: 0 }}
+            animate={{ scale: 1, opacity: 1 }}
+            transition={{ delay: 0.3, duration: 0.8 }}
+            className="inline-block mb-8"
+          >
+            {/* Replace the head outline logo with MT letters */}
+            <div className="h-20 w-20 mx-auto flex items-center justify-center">
+              <div className="relative h-full w-full flex items-center justify-center">
+                {/* Gold gradient background for the letters */}
+                <div className="absolute inset-0 rounded-full bg-gradient-to-br from-[#B87333]/20 to-[#E5C5A1]/20 backdrop-blur-sm"></div>
+                
+                {/* MT letters with gold gradient */}
+                <div className="relative z-10 flex items-center justify-center text-4xl font-bold">
+                  <span className="text-transparent bg-clip-text bg-gradient-to-br from-[#B87333] to-[#E5C5A1]">MT</span>
+                </div>
+              </div>
+            </div>
+          </motion.div>
           
-          <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
-            {moodOptions.map((mood) => (
-              <Button
+          <motion.h1 
+            className="text-5xl md:text-6xl font-light mb-6 bg-clip-text text-transparent bg-gradient-to-r from-white to-[#B87333]"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.2, duration: 1 }}
+          >
+            {translations.title}
+          </motion.h1>
+          
+          <motion.p 
+            className="text-xl text-white/90 max-w-2xl mx-auto font-light"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.4, duration: 1 }}
+          >
+            {translations.subtitle}
+          </motion.p>
+          
+          <motion.div
+            initial={{ scale: 0.95, opacity: 0 }}
+            animate={{ scale: 1, opacity: 1 }}
+            transition={{ delay: 0.6, duration: 0.8 }}
+            className="mt-8 bg-white/5 backdrop-blur-sm max-w-lg mx-auto rounded-lg p-4 border border-white/10"
+          >
+            <p className="text-white/80 italic">{translations.reflectPrompt}</p>
+          </motion.div>
+        </motion.div>
+        
+        {/* Mood Grid with elegant animations */}
+        <div className="flex-1 flex items-center justify-center max-w-5xl mx-auto">
+          <div className="grid grid-cols-2 md:grid-cols-3 gap-6 md:gap-10">
+            {moods.map((mood, index) => (
+              <motion.div
                 key={mood.id}
-                onClick={() => onMoodSelect(mood.id)}
-                className={`${mood.color} h-24 flex flex-col items-center justify-center space-y-2 border-2 hover:scale-105 transition-all duration-200`}
-                variant="outline"
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ 
+                  delay: index * 0.1 + 0.5, 
+                  duration: 0.6,
+                  ease: "easeOut"
+                }}
+                whileHover={{ scale: 1.05, transition: { duration: 0.2 } }}
+                whileTap={{ scale: 0.98 }}
               >
-                {mood.icon}
-                <span className="font-medium text-gray-800">{mood.label}</span>
-              </Button>
+                <button
+                  onClick={() => handleMoodClick(mood)}
+                  className="w-full h-full flex flex-col items-center justify-center rounded-xl p-6 transition-all duration-300 bg-white/5 hover:bg-white/10 border border-white/10 hover:border-[#B87333]/30 backdrop-blur-sm shadow-lg"
+                >
+                  <div className="w-14 h-14 rounded-full flex items-center justify-center mb-4 shadow-lg transform transition-transform duration-300 group-hover:scale-110 bg-gradient-to-br from-[#B87333] to-[#E5C5A1] text-white">
+                    {mood.icon}
+                  </div>
+                  <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#B87333] to-[#E5C5A1] text-lg font-medium">{mood.label}</span>
+                </button>
+              </motion.div>
             ))}
           </div>
         </div>
+        
+        {/* Support Resources Dialog (only for sad/overwhelmed) */}
+        <AlertDialog open={showResourcesDialog} onOpenChange={setShowResourcesDialog}>
+          <AlertDialogContent className="bg-[#1a1a1f]/95 backdrop-blur-xl border-2 border-red-500/50 text-white max-w-md">
+            <AlertDialogHeader>
+              <AlertDialogTitle className="text-2xl font-bold flex items-center gap-3 text-red-400">
+                <AlertTriangle className="h-7 w-7 text-red-400" />
+                {translations.needHelp}
+              </AlertDialogTitle>
+              <AlertDialogDescription className="text-white/90 text-lg">
+                {translations.warningText}
+              </AlertDialogDescription>
+            </AlertDialogHeader>
+            
+            <div className="mt-6">
+              <h4 className="text-xl text-white font-semibold mb-4 flex items-center gap-2">
+                <Heart className="h-5 w-5 text-red-400" />
+                {translations.emergencyResources}
+              </h4>
+              
+              <div className="grid grid-cols-1 gap-4 max-h-[40vh] overflow-y-auto pr-2 pb-2">
+                {emergencyResources.map((resource, index) => (
+                  <motion.div 
+                    key={index}
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: index * 0.1, duration: 0.4 }}
+                    className="bg-red-950/20 border border-red-500/20 backdrop-blur-sm rounded-lg p-4 hover:bg-red-900/20 transition-colors"
+                  >
+                    <div className="flex items-start gap-4">
+                      <div className="p-2 bg-red-500/20 rounded-full text-red-400">
+                        {resource.icon}
+                      </div>
+                      <div>
+                        <h5 className="font-medium text-lg mb-1">{resource.title}</h5>
+                        <p className="text-white/70 mb-2">{resource.description}</p>
+                        <p className="text-red-400 font-bold text-lg">{resource.contact}</p>
+                      </div>
+                    </div>
+                  </motion.div>
+                ))}
+              </div>
+            </div>
+            
+            <AlertDialogFooter className="mt-6">
+              <AlertDialogAction 
+                className="w-full bg-red-600 hover:bg-red-700 text-white text-lg py-4 rounded-lg"
+                onClick={handleResourcesContinue}
+              >
+                {translations.continueText}
+              </AlertDialogAction>
+            </AlertDialogFooter>
+          </AlertDialogContent>
+        </AlertDialog>
       </div>
     </div>
   );

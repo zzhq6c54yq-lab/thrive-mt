@@ -7,7 +7,7 @@ import RegistrationScreen from "@/components/home/RegistrationScreen";
 import SubscriptionScreen from "@/components/home/SubscriptionScreen";
 import SubscriptionAddOns from "@/components/home/SubscriptionAddOns";
 import VisionBoard from "@/components/home/VisionBoard";
-import DashboardWrapper from "@/components/home/DashboardWrapper";
+import MainDashboard from "@/components/home/MainDashboard";
 import ErrorScreen from "./ErrorScreen";
 
 interface ScreenRendererProps {
@@ -133,11 +133,14 @@ const ScreenRenderer: React.FC<ScreenRendererProps> = ({
       );
     case 'main':
       return (
-        <DashboardWrapper
+        <MainDashboard
           userName={userInfo.name}
+          showHenry={showHenry}
+          onHenryToggle={onHenryToggle}
           selectedQualities={selectedQualities}
           selectedGoals={selectedGoals}
           navigateToFeature={navigateToFeature}
+          markTutorialCompleted={markTutorialCompleted}
         />
       );
     default:
