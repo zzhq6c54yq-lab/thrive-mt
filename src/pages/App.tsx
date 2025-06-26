@@ -94,9 +94,7 @@ import MeditationStudio from "@/pages/MeditationStudio";
 import CareerCoaching from "@/pages/CareerCoaching";
 import PersonalizedContent from "@/pages/PersonalizedContent";
 
-// Import additional routes for specific chronic illness pages if needed
-// These can be added as the specific content pages are built
-
+// Import game components
 import GameMiniSudoku from "@/components/games/GameMiniSudoku";
 import GameMemoryMatch from "@/components/games/GameMemoryMatch";
 import GameWordUnscramble from "@/components/games/GameWordUnscramble";
@@ -129,6 +127,8 @@ function App() {
         <Route path="/cosmic-games" element={<CosmicGames />} />
         <Route path="/game-play/:gameId" element={<GamePage />} />
         <Route path="/games/:gameId" element={<GamePage />} />
+        
+        {/* Individual game routes */}
         <Route path="/games/mini-sudoku" element={<GameMiniSudoku />} />
         <Route path="/games/memory-match" element={<GameMemoryMatch />} />
         <Route path="/games/word-unscramble" element={<GameWordUnscramble />} />

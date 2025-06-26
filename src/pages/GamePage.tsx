@@ -29,8 +29,8 @@ const GamePage: React.FC = () => {
       default:
         return (
           <div className="text-center py-10">
-            <h2 className="text-2xl font-bold mb-4">Game Not Found</h2>
-            <p className="text-gray-600">The requested game could not be found.</p>
+            <h2 className="text-2xl font-bold mb-4 text-white">Game Not Found</h2>
+            <p className="text-gray-300">The requested game could not be found.</p>
           </div>
         );
     }

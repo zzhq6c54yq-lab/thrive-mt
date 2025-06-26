@@ -1,3 +1,4 @@
+
 import React from "react";
 import PlaceholderMiniGame from "@/components/dashboard/PlaceholderMiniGame";
 import { useNavigate } from "react-router-dom";
@@ -5,7 +6,7 @@ import useTranslation from "@/hooks/useTranslation";
 import { Button } from "@/components/ui/button";
 
 /**
- * Only Mini Sudoku is now playable. Others show "Coming Soon."
+ * All mini games are now playable with correct routes.
  */
 const MINI_GAME_FEATURES = [
   { title: "Mini Sudoku", playable: true, route: "/games/mini-sudoku" },

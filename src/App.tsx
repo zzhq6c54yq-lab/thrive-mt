@@ -12,6 +12,8 @@ import OnboardingPage from "./pages/OnboardingPage";
 import JournalPage from "./pages/JournalPage";
 import CommunitySupport from "./pages/CommunitySupport";
 import Debug from "./pages/Debug";
+import PersonalizedContent from "./pages/PersonalizedContent";
+import SleepTracker from "./pages/SleepTracker";
 import { Toaster } from "@/components/ui/toaster";
 import { UserProvider } from "@/contexts/UserContext";
 import "./App.css";
@@ -28,10 +30,12 @@ function App() {
           <Route path="/journal" element={<JournalPage />} />
           <Route path="/community-support" element={<CommunitySupport />} />
           <Route path="/debug" element={<Debug />} />
+          <Route path="/personalized-content" element={<PersonalizedContent />} />
           <Route path="/cancer-support" element={<CancerSupportPortal />} />
           <Route path="/career-coaching" element={<CareerCoaching />} />
           <Route path="/meditation-studio" element={<MeditationStudio />} />
           <Route path="/aa-sponsor" element={<AASponsor />} />
+          <Route path="/sleep-tracker" element={<SleepTracker />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
         <Toaster />
