@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
@@ -14,17 +15,21 @@ interface AddOn {
 }
 
 interface SubscriptionAddOnsProps {
+  selectedPlan: string | null;
   selectedAddOns: string[];
   onAddOnToggle: (addOnId: string) => void;
   onContinue: () => void;
-  onBack: () => void;
+  onPrevious: () => void;
+  onSkip: () => void;
 }
 
 const SubscriptionAddOns: React.FC<SubscriptionAddOnsProps> = ({
+  selectedPlan,
   selectedAddOns,
   onAddOnToggle,
   onContinue,
-  onBack
+  onPrevious,
+  onSkip
 }) => {
   const { isSpanish } = useTranslation();
   const [showNoAddOnsMessage, setShowNoAddOnsMessage] = useState(false);
@@ -100,6 +105,11 @@ const SubscriptionAddOns: React.FC<SubscriptionAddOnsProps> = ({
             : "Select additional add-ons to personalize your wellness journey"
           }
         </p>
+        {selectedPlan && (
+          <p className="text-[#B87333] text-lg mt-2">
+            {isSpanish ? `Plan seleccionado: ${selectedPlan}` : `Selected plan: ${selectedPlan}`}
+          </p>
+        )}
       </div>
 
       {/* Conditional Message */}
@@ -187,7 +197,7 @@ const SubscriptionAddOns: React.FC<SubscriptionAddOnsProps> = ({
       {/* Navigation */}
       <div className="flex justify-between items-center mt-8">
         <Button
-          onClick={onBack}
+          onClick={onPrevious}
           variant="outline"
           className="border-white/20 text-white hover:bg-white/10"
         >
@@ -195,13 +205,23 @@ const SubscriptionAddOns: React.FC<SubscriptionAddOnsProps> = ({
           {isSpanish ? "Atrás" : "Back"}
         </Button>
 
-        <Button
-          onClick={handleContinue}
-          className="bg-[#B87333] hover:bg-[#A56625] text-white"
-        >
-          {isSpanish ? "Continuar" : "Continue"}
-          <ArrowRight className="h-4 w-4 ml-2" />
-        </Button>
+        <div className="flex gap-2">
+          <Button
+            onClick={onSkip}
+            variant="outline"
+            className="border-white/20 text-white hover:bg-white/10"
+          >
+            {isSpanish ? "Omitir" : "Skip"}
+          </Button>
+          
+          <Button
+            onClick={handleContinue}
+            className="bg-[#B87333] hover:bg-[#A56625] text-white"
+          >
+            {isSpanish ? "Continuar" : "Continue"}
+            <ArrowRight className="h-4 w-4 ml-2" />
+          </Button>
+        </div>
       </div>
     </div>
   );
