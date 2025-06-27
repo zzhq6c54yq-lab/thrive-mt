@@ -1,3 +1,4 @@
+
 import { AddOn } from './types';
 import { Shield, GraduationCap, Building2, Heart, Users, Briefcase, 
          Hotel, Truck, Stethoscope, BookOpen, BadgeCheck, Ribbon } from 'lucide-react';
@@ -32,7 +33,7 @@ export const addOns: AddOn[] = [
     description: "Support for college students navigating academic stress and transition to adult life.",
     descriptionSpanish: "Apoyo para estudiantes universitarios navegando el estrés académico y la transición a la vida adulta.",
     basePrice: 14.99,
-    imagePath: "https://images.unsplash.com/photo-1541339907198-e08756dedf3f?auto=format&fit=crop&w=500&q=80",
+    imagePath: "https://images.unsplash.com/photo-1523050854058-8df90110c9f1?auto=format&fit=crop&q=80&w=1000",
     icon: GraduationCap,
     targetAudience: "College students, recent graduates",
     features: [
@@ -52,7 +53,7 @@ export const addOns: AddOn[] = [
     description: "Mental wellness tools designed for entrepreneurs and small business teams.",
     descriptionSpanish: "Herramientas de bienestar mental diseñadas para emprendedores y equipos de pequeñas empresas.",
     basePrice: 24.99,
-    imagePath: "https://images.unsplash.com/photo-1556761175-5973dc0f32e7?auto=format&fit=crop&w=500&q=80",
+    imagePath: "https://images.unsplash.com/photo-1542744173-05336fcc7ad4?auto=format&fit=crop&q=80&w=1000",
     icon: Building2,
     targetAudience: "Entrepreneurs, small business owners, startup teams",
     features: [
@@ -72,7 +73,7 @@ export const addOns: AddOn[] = [
     description: "Specialized resources for teens and their families navigating the unique challenges of this stage.",
     descriptionSpanish: "Recursos especializados para adolescentes y sus familias navegando los desafíos únicos de esta etapa.",
     basePrice: 16.99,
-    imagePath: "https://images.unsplash.com/photo-1544717297-fa95b6ee9643?auto=format&fit=crop&w=500&q=80",
+    imagePath: "https://images.unsplash.com/photo-1529390079861-591de354faf5?auto=format&fit=crop&q=80&w=1000",
     icon: Heart,
     targetAudience: "Teenagers (13-18), parents of teens",
     features: [
@@ -112,7 +113,7 @@ export const addOns: AddOn[] = [
     description: "Specialized resources for firefighters, paramedics, police officers, and other first responders.",
     descriptionSpanish: "Recursos especializados para bomberos, paramédicos, policías y otros primeros auxilios.",
     basePrice: 22.99,
-    imagePath: "https://images.unsplash.com/photo-1551601651-2a8555f1a136?auto=format&fit=crop&w=500&q=80",
+    imagePath: "https://images.unsplash.com/photo-1587854692152-cbe660dbde88?auto=format&fit=crop&q=80&w=1000",
     icon: Shield,
     targetAudience: "Firefighters, paramedics, EMTs, emergency personnel",
     features: [
@@ -132,7 +133,7 @@ export const addOns: AddOn[] = [
     description: "Support for restaurant, hotel, and hospitality service workers.",
     descriptionSpanish: "Apoyo para trabajadores de restaurantes, hoteles y servicios de hospitalidad.",
     basePrice: 15.99,
-    imagePath: "https://images.unsplash.com/photo-1571896349842-33c89424de2d?auto=format&fit=crop&w=500&q=80",
+    imagePath: "https://images.unsplash.com/photo-1414235077428-338989a2e8c0?auto=format&fit=crop&q=80&w=1000",
     icon: Hotel,
     targetAudience: "Restaurant workers, hotel staff, hospitality professionals",
     features: [
@@ -152,7 +153,7 @@ export const addOns: AddOn[] = [
     description: "Resources for truck drivers, pilots, and other transportation professionals.",
     descriptionSpanish: "Recursos para conductores de camiones, pilotos, y otros profesionales del transporte.",
     basePrice: 17.99,
-    imagePath: "https://images.unsplash.com/photo-1544620347-c4fd4a3d5957?auto=format&fit=crop&w=500&q=80",
+    imagePath: "https://images.unsplash.com/photo-1601584115197-04ecc0da31d7?auto=format&fit=crop&q=80&w=1000",
     icon: Truck,
     targetAudience: "Truck drivers, pilots, transportation workers",
     features: [
@@ -172,7 +173,7 @@ export const addOns: AddOn[] = [
     description: "Specialized support for individuals living with chronic health conditions.",
     descriptionSpanish: "Apoyo especializado para personas que viven con condiciones de salud crónicas.",
     basePrice: 21.99,
-    imagePath: "https://images.unsplash.com/photo-1584308666744-24d5c474f2ae?auto=format&fit=crop&w=500&q=80",
+    imagePath: "https://images.unsplash.com/photo-1587854692152-cbe660dbde88?auto=format&fit=crop&q=80&w=1000",
     icon: Stethoscope,
     targetAudience: "People with chronic illnesses, their families and caregivers",
     features: [
@@ -192,7 +193,7 @@ export const addOns: AddOn[] = [
     description: "Resources for teachers, professors, and educational staff facing classroom stress.",
     descriptionSpanish: "Recursos para maestros, profesores y personal educativo enfrentando el estrés del aula.",
     basePrice: 16.99,
-    imagePath: "https://images.unsplash.com/photo-1580582932707-520aed937b7b?auto=format&fit=crop&w=500&q=80",
+    imagePath: "https://images.unsplash.com/photo-1580582932707-520aed937b7b?auto=format&fit=crop&q=80&w=1000",
     icon: BookOpen,
     targetAudience: "Teachers, professors, educational administrators",
     features: [

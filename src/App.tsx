@@ -191,6 +191,19 @@ function App() {
           <Route path="/first-responders-workshops/:workshopId" element={<WorkshopDetail />} />
           <Route path="/first-responders-assessments/:assessmentId" element={<MentalWellnessTools />} />
           
+          {/* Add missing stress management route */}
+          <Route path="/stress-management" element={<FirstRespondersStressManagement />} />
+          
+          {/* Law enforcement routes */}
+          <Route path="/law-enforcement-welcome" element={<LawEnforcementWelcome />} />
+          <Route path="/law-enforcement-portal" element={<LawEnforcementPortal />} />
+          <Route path="/law-enforcement/stress-management" element={<FirstRespondersStressManagement />} />
+          <Route path="/law-enforcement/critical-incident" element={<FirstRespondersCriticalSupport />} />
+          <Route path="/law-enforcement/peer-support" element={<FirstRespondersPeerSupport />} />
+          <Route path="/law-enforcement-practice/:practiceId" element={<GuidedPractice />} />
+          <Route path="/law-enforcement-workshops/:workshopId" element={<WorkshopDetail />} />
+          <Route path="/law-enforcement-assessments/:assessmentId" element={<MentalWellnessTools />} />
+          
           <Route path="/educators-welcome" element={<EducatorsWelcome />} />
           <Route path="/educators-portal" element={<EducatorsPortal />} />
           <Route path="/educators-workshops/:workshopId" element={<WorkshopDetail />} />
@@ -239,9 +252,6 @@ function App() {
           <Route path="/aa-sponsor" element={<AASponsor />} />
           
           <Route path="/user-lead" element={<UserLead />} />
-          
-          <Route path="/law-enforcement-welcome" element={<LawEnforcementWelcome />} />
-          <Route path="/law-enforcement-portal" element={<LawEnforcementPortal />} />
           
           <Route path="/generative-video" element={<GenerativeVideo />} />
           
