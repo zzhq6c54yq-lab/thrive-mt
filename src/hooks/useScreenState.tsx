@@ -16,15 +16,17 @@ export const useScreenState = () => {
     console.log("[useScreenState] forceOnboarding:", forceOnboarding);
     console.log("[useScreenState] forceReset:", forceReset);
     
-    // For investment demo - ensure onboarding shows for new users
-    // Reset if forced or if no explicit completion
-    if (forceReset || forceOnboarding || !hasCompletedOnboarding) {
-      console.log("[useScreenState] Starting onboarding flow");
+    // Always start with onboarding unless explicitly completed
+    if (forceReset) {
+      console.log("[useScreenState] Force reset - clearing onboarding");
       localStorage.removeItem('hasCompletedOnboarding');
       setScreenState('intro');
-    } else {
+    } else if (hasCompletedOnboarding && !forceOnboarding) {
       console.log("[useScreenState] Onboarding completed, going to main");
       setScreenState('main');
+    } else {
+      console.log("[useScreenState] Starting onboarding flow");
+      setScreenState('intro');
     }
   }, []);
 
