@@ -11,6 +11,23 @@ const Index = () => {
   const { preferredLanguage, setPreferredLanguage } = useTranslation();
   const navigate = useNavigate();
   
+  // Force onboarding flow for demo purposes
+  React.useEffect(() => {
+    const hasCompletedOnboarding = localStorage.getItem('hasCompletedOnboarding') === 'true';
+    const forceOnboarding = new URLSearchParams(window.location.search).get('onboarding') === 'true';
+    const forceReset = new URLSearchParams(window.location.search).get('forceReset') === 'true';
+    
+    console.log("[Index] hasCompletedOnboarding:", hasCompletedOnboarding);
+    console.log("[Index] forceOnboarding:", forceOnboarding);
+    console.log("[Index] forceReset:", forceReset);
+    
+    // For demo purposes, clear onboarding completion if not explicitly set
+    if (forceReset || !hasCompletedOnboarding) {
+      console.log("[Index] Clearing onboarding state to force onboarding flow");
+      localStorage.removeItem('hasCompletedOnboarding');
+    }
+  }, []);
+  
   // Get all the state and handlers from useIndexState
   const {
     screenState,
