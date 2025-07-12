@@ -62,10 +62,10 @@ const LanguageAwareNavMenu: React.FC = () => {
               <li onClick={() => handleNavigate("/department-of-defense")} className="cursor-pointer">
                 <div className="block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground">
                   <div className="text-sm font-medium leading-none">
-                    {isSpanish ? "Departamento de Defensa" :
-                     isPortuguese ? "Departamento de Defesa" :
-                     isFilipino ? "Kagawaran ng Tanggulan" :
-                     "Department of Defense"}
+                    {isSpanish ? "Militares y Veteranos" :
+                     isPortuguese ? "Militares e Veteranos" :
+                     isFilipino ? "Militar at mga Beterano" :
+                     "Military and Veterans"}
                   </div>
                   <p className="line-clamp-2 text-sm leading-snug text-muted-foreground">
                     {isSpanish ? "Recursos para personal militar y veteranos" :

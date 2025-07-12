@@ -352,10 +352,10 @@ const translations: TranslationDictionary = {
 
   // Specialized Program translations
   dodTitle: {
-    English: "Department of Defense",
-    Español: "Departamento de Defensa",
-    Português: "Departamento de Defesa",
-    Filipino: "Kagawaran ng Tanggulan"
+    English: "Military and Veterans",
+    Español: "Militares y Veteranos",
+    Português: "Militares e Veteranos",
+    Filipino: "Militar at mga Beterano"
   },
   dodDesc: {
     English: "Resources and support for military personnel and veterans",

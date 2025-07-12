@@ -154,7 +154,7 @@ const SubscriptionScreen: React.FC<SubscriptionScreenProps> = ({
   const addOns = [
     {
       id: "dod",
-      title: isSpanish ? "Departamento de Defensa" : "Department of Defense",
+      title: isSpanish ? "Militares y Veteranos" : "Military and Veterans",
       description: isSpanish ? "Apoyo especializado para personal militar" : "Specialized support for military personnel",
       icon: Shield
     },

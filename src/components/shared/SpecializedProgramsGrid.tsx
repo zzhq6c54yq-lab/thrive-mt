@@ -3,6 +3,11 @@ import React from "react";
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import useTranslation from "@/hooks/useTranslation";
+import militaryVeterans from '@/assets/military-veterans.jpg';
+import goldenYears from '@/assets/golden-years.jpg';
+import lawEnforcement from '@/assets/law-enforcement.jpg';
+import cancerSupport from '@/assets/cancer-support.jpg';
+import adolescentExperience from '@/assets/adolescent-experience.jpg';
 
 interface SpecializedProgramsGridProps {
   onProgramClick: (path: string) => void;
@@ -14,12 +19,12 @@ const SpecializedProgramsGrid: React.FC<SpecializedProgramsGridProps> = ({ onPro
   const programs = [
     {
       id: "veteran-military",
-      title: isSpanish ? "Veteranos y Militares" : "Veteran & Military",
+      title: isSpanish ? "Militares y Veteranos" : "Military and Veterans",
       description: isSpanish 
         ? "Apoyo especializado para veteranos y personal militar activo."
         : "Specialized support for veterans and active military personnel.",
       path: "/dod-welcome",
-      image: "/lovable-uploads/military-flag-badges.jpg",
+      image: militaryVeterans,
       gradient: "from-green-600 to-emerald-800"
     },
     {
@@ -49,7 +54,7 @@ const SpecializedProgramsGrid: React.FC<SpecializedProgramsGridProps> = ({ onPro
         ? "Bienestar especializado para adultos mayores y sus familias."
         : "Specialized wellness for older adults and their families.",
       path: "/golden-years-welcome",
-      image: "/lovable-uploads/elderly-musicians.jpg",
+      image: goldenYears,
       gradient: "from-amber-500 to-yellow-700"
     },
     {
@@ -59,7 +64,7 @@ const SpecializedProgramsGrid: React.FC<SpecializedProgramsGridProps> = ({ onPro
         ? "Apoyo integral para adolescentes y sus familias."
         : "Comprehensive support for adolescents and their families.",
       path: "/adolescent-welcome",
-      image: "https://images.unsplash.com/photo-1544717297-fa95b6ee9643?auto=format&fit=crop&w=500&q=80",
+      image: adolescentExperience,
       gradient: "from-purple-600 to-pink-800"
     },
     {
@@ -99,7 +104,7 @@ const SpecializedProgramsGrid: React.FC<SpecializedProgramsGridProps> = ({ onPro
         ? "Apoyo integral para oficiales de policía y personal de seguridad."
         : "Comprehensive support for police officers and security personnel.",
       path: "/law-enforcement-welcome",
-      image: "/lovable-uploads/police-badge.jpg",
+      image: lawEnforcement,
       gradient: "from-blue-700 to-indigo-900"
     },
     {
@@ -129,7 +134,7 @@ const SpecializedProgramsGrid: React.FC<SpecializedProgramsGridProps> = ({ onPro
         ? "Apoyo especializado para pacientes con cáncer y sus familias."
         : "Specialized support for cancer patients and their families.",
       path: "/cancer-support-welcome",
-      image: "/lovable-uploads/awareness-ribbons.jpg",
+      image: cancerSupport,
       gradient: "from-pink-600 to-rose-800"
     }
   ];

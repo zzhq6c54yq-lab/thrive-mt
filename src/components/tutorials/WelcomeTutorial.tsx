@@ -364,7 +364,7 @@ const WelcomeTutorial: React.FC<WelcomeTutorialProps> = ({ isOpen, onClose }) =>
           <div className="space-y-4 text-gray-300">
             <h4 className="font-medium text-white flex items-center">
               <Shield className="h-5 w-5 text-blue-400 mr-2" />
-              {isSpanish ? "Programa del Departamento de Defensa (DoD)" : "Department of Defense (DoD) Program"}
+              {isSpanish ? "Programa de Militares y Veteranos" : "Military and Veterans Program"}
             </h4>
             <p>
               {isSpanish 

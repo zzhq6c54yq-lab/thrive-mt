@@ -313,7 +313,7 @@ const DoDPortal: React.FC = () => {
 
   return (
     <Page 
-      title={isSpanish ? "Departamento de Defensa" : "Department of Defense"} 
+      title={isSpanish ? "Militares y Veteranos" : "Military and Veterans"} 
       returnToMain={returnToMain}
     >
       <div className="space-y-6">

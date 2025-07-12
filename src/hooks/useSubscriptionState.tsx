@@ -45,7 +45,7 @@ export const useSubscriptionState = () => {
 
     // Get appropriate add-on name based on language
     let addOnName = '';
-    if (id === 'dod') addOnName = preferredLanguage === 'Español' ? 'Departamento de Defensa' : preferredLanguage === 'Português' ? 'Departamento de Defesa' : 'Department of Defense';
+    if (id === 'dod') addOnName = preferredLanguage === 'Español' ? 'Militares y Veteranos' : preferredLanguage === 'Português' ? 'Militares e Veteranos' : 'Military and Veterans';
     else if (id === 'college') addOnName = preferredLanguage === 'Español' ? 'La Experiencia Universitaria' : preferredLanguage === 'Português' ? 'A Experiência Universitária' : 'The College Experience';
     else if (id === 'business') addOnName = preferredLanguage === 'Español' ? 'Pequeñas Empresas' : preferredLanguage === 'Português' ? 'Pequenos Negócios' : 'Small Business';
     else if (id === 'adolescent') addOnName = preferredLanguage === 'Español' ? 'La Experiencia Adolescente' : preferredLanguage === 'Português' ? 'A Experiência Adolescente' : 'Adolescent Experience';

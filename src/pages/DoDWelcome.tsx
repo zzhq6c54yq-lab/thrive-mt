@@ -17,8 +17,8 @@ const DoDWelcome: React.FC = () => {
       window.scrollTo(0, 0);
     } else {
       toast({
-        title: "Entering DoD Portal",
-        description: "Taking you to the Department of Defense portal",
+        title: "Entering Military Portal",
+        description: "Taking you to the Military and Veterans portal",
         duration: 2000,
       });
       

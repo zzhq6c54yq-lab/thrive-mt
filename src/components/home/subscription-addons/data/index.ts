@@ -13,8 +13,8 @@ export type { AddOn } from './types';
 export const addOns: AddOn[] = [
   {
     id: "dod",
-    title: "Department of Defense",
-    titleSpanish: "Departamento de Defensa",
+    title: "Military and Veterans",
+    titleSpanish: "Militares y Veteranos",
     description: "Specialized resources for active military personnel, veterans, and their families.",
     descriptionSpanish: "Recursos especializados para personal militar activo, veteranos y sus familias.",
     basePrice: 19.99,
