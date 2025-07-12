@@ -187,7 +187,7 @@ const SubscriptionAddOns: React.FC<SubscriptionAddOnsProps> = ({
         <Button
           onClick={onPrevious}
           variant="outline"
-          className="border-white/20 text-white hover:bg-white/10"
+          className="bg-background border-muted-foreground text-foreground hover:bg-muted"
         >
           <ArrowLeft className="h-4 w-4 mr-2" />
           {isSpanish ? "Atrás" : "Back"}
@@ -197,7 +197,7 @@ const SubscriptionAddOns: React.FC<SubscriptionAddOnsProps> = ({
           <Button
             onClick={onSkip}
             variant="outline"
-            className="border-white/20 text-white hover:bg-white/10"
+            className="bg-background border-muted-foreground text-foreground hover:bg-muted"
           >
             {isSpanish ? "Omitir" : "Skip"}
           </Button>

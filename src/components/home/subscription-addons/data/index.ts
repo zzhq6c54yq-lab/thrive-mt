@@ -2,6 +2,11 @@
 import { AddOn } from './types';
 import { Shield, GraduationCap, Building2, Heart, Users, Briefcase, 
          Hotel, Truck, Stethoscope, BookOpen, BadgeCheck, Ribbon } from 'lucide-react';
+import militaryVeterans from '@/assets/military-veterans.jpg';
+import goldenYears from '@/assets/golden-years.jpg';
+import lawEnforcement from '@/assets/law-enforcement.jpg';
+import cancerSupport from '@/assets/cancer-support.jpg';
+import adolescentExperience from '@/assets/adolescent-experience.jpg';
 
 export type { AddOn } from './types';
 
@@ -13,7 +18,7 @@ export const addOns: AddOn[] = [
     description: "Specialized resources for active military personnel, veterans, and their families.",
     descriptionSpanish: "Recursos especializados para personal militar activo, veteranos y sus familias.",
     basePrice: 19.99,
-    imagePath: "/lovable-uploads/d2ecdcd2-9a78-40ea-8a8a-ef13092b5ea1.png",
+    imagePath: militaryVeterans,
     icon: Shield,
     targetAudience: "Active military, veterans, military families",
     features: [
@@ -73,7 +78,7 @@ export const addOns: AddOn[] = [
     description: "Specialized resources for teens and their families navigating the unique challenges of this stage.",
     descriptionSpanish: "Recursos especializados para adolescentes y sus familias navegando los desafíos únicos de esta etapa.",
     basePrice: 16.99,
-    imagePath: "/lovable-uploads/11170587-bb45-4563-93d6-add9916cea87.png",
+    imagePath: adolescentExperience,
     icon: Heart,
     targetAudience: "Teenagers (13-18), parents of teens",
     features: [
@@ -93,7 +98,7 @@ export const addOns: AddOn[] = [
     description: "Comprehensive support for older adults focused on mental wellness and social connection.",
     descriptionSpanish: "Apoyo integral para adultos mayores enfocado en el bienestar mental y la conexión social.",
     basePrice: 18.99,
-    imagePath: "/lovable-uploads/bce2b3d1-dbc0-4e7c-a7d1-98811182fe0a.png",
+    imagePath: goldenYears,
     icon: Users,
     targetAudience: "Adults 65+, their families and caregivers",
     features: [
@@ -213,7 +218,7 @@ export const addOns: AddOn[] = [
     description: "Specialized support for police officers and public safety personnel.",
     descriptionSpanish: "Apoyo especializado para oficiales de policía y personal de seguridad pública.",
     basePrice: 20.99,
-    imagePath: "/lovable-uploads/10d9c6f1-9335-46e4-8942-4d4c198d3f5b.png",
+    imagePath: lawEnforcement,
     icon: BadgeCheck,
     targetAudience: "Police officers, detectives, public safety personnel",
     features: [
@@ -233,7 +238,7 @@ export const addOns: AddOn[] = [
     description: "Comprehensive resources for cancer patients, survivors, and their families.",
     descriptionSpanish: "Recursos comprensivos para pacientes de cáncer, sobrevivientes y sus familias.",
     basePrice: 25.99,
-    imagePath: "/lovable-uploads/f3c84972-8f58-42d7-b86f-82ff2d823b30.png",
+    imagePath: cancerSupport,
     icon: Ribbon,
     targetAudience: "Cancer patients, survivors, families, caregivers",
     features: [
