@@ -14,7 +14,167 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      crisis_events: {
+        Row: {
+          created_at: string | null
+          description: string
+          end_time: string
+          id: number
+          start_time: string
+          title: string
+          updated_at: string | null
+          user_id: string
+        }
+        Insert: {
+          created_at?: string | null
+          description: string
+          end_time: string
+          id?: never
+          start_time: string
+          title: string
+          updated_at?: string | null
+          user_id: string
+        }
+        Update: {
+          created_at?: string | null
+          description?: string
+          end_time?: string
+          id?: never
+          start_time?: string
+          title?: string
+          updated_at?: string | null
+          user_id?: string
+        }
+        Relationships: []
+      }
+      feedback: {
+        Row: {
+          created_at: string | null
+          id: number
+          message: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string | null
+          id?: never
+          message: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string | null
+          id?: never
+          message?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      journal_entries: {
+        Row: {
+          content: string
+          created_at: string | null
+          id: number
+          title: string
+          updated_at: string | null
+          user_id: string
+        }
+        Insert: {
+          content: string
+          created_at?: string | null
+          id?: never
+          title: string
+          updated_at?: string | null
+          user_id: string
+        }
+        Update: {
+          content?: string
+          created_at?: string | null
+          id?: never
+          title?: string
+          updated_at?: string | null
+          user_id?: string
+        }
+        Relationships: []
+      }
+      profiles: {
+        Row: {
+          avatar_url: string | null
+          created_at: string | null
+          id: number
+          updated_at: string | null
+          user_id: string
+          username: string | null
+          website: string | null
+        }
+        Insert: {
+          avatar_url?: string | null
+          created_at?: string | null
+          id?: never
+          updated_at?: string | null
+          user_id: string
+          username?: string | null
+          website?: string | null
+        }
+        Update: {
+          avatar_url?: string | null
+          created_at?: string | null
+          id?: never
+          updated_at?: string | null
+          user_id?: string
+          username?: string | null
+          website?: string | null
+        }
+        Relationships: []
+      }
+      support_wall: {
+        Row: {
+          created_at: string | null
+          id: number
+          message: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string | null
+          id?: never
+          message: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string | null
+          id?: never
+          message?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      support_wall_hearts: {
+        Row: {
+          created_at: string | null
+          id: number
+          support_wall_id: number
+          user_id: string
+        }
+        Insert: {
+          created_at?: string | null
+          id?: never
+          support_wall_id: number
+          user_id: string
+        }
+        Update: {
+          created_at?: string | null
+          id?: never
+          support_wall_id?: number
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "support_wall_hearts_support_wall_id_fkey"
+            columns: ["support_wall_id"]
+            isOneToOne: false
+            referencedRelation: "support_wall"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
     }
     Views: {
       [_ in never]: never
