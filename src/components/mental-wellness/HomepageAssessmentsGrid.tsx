@@ -14,20 +14,20 @@ const HomepageAssessmentsGrid: React.FC = () => {
   const [selectedAssessment, setSelectedAssessment] = useState<MentalHealthAssessment | null>(null);
   const [modalOpen, setModalOpen] = useState(false);
 
-  // Get the first 6 assessments for homepage display with updated cover images
+  // Get the first 6 assessments for homepage display with title-specific cover images
   const featuredAssessments = mentalHealthAssessments.slice(0, 6).map((assessment, index) => {
-    const coverImages = [
-      'https://images.unsplash.com/photo-1649972904349-6e44c42644a7?w=800&h=600&fit=crop', // woman on bed with laptop
-      'https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?w=800&h=600&fit=crop', // woman with laptop
-      'https://images.unsplash.com/photo-1470813740244-df37b8c1edcb?w=800&h=600&fit=crop', // blue starry night
-      'https://images.unsplash.com/photo-1470071459604-3b5ec3a7fe05?w=800&h=600&fit=crop', // foggy mountain
-      'https://images.unsplash.com/photo-1501854140801-50d01698950b?w=800&h=600&fit=crop', // mountain view
-      'https://images.unsplash.com/photo-1721322800607-8c38375eef04?w=800&h=600&fit=crop'  // living room
-    ];
+    const titleSpecificImages = {
+      'gad-7': 'https://images.unsplash.com/photo-1584004632229-e8b8e6d3e0ae?w=800&h=600&fit=crop', // anxiety - person with hands on face
+      'phq-9': 'https://images.unsplash.com/photo-1555952494-efd681c7e3f9?w=800&h=600&fit=crop', // depression - person looking out window
+      'perceived-stress-scale': 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=800&h=600&fit=crop', // stress - overwhelmed workspace
+      'pcl-5': 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=800&h=600&fit=crop', // PTSD - stormy sky/trauma imagery
+      'mdq': 'https://images.unsplash.com/photo-1518709268805-4e9042af2176?w=800&h=600&fit=crop', // bipolar - emotional balance/ups downs
+      'oci-r': 'https://images.unsplash.com/photo-1563356219-d29c35a3e0d9?w=800&h=600&fit=crop'  // OCD - organized/repetitive patterns
+    };
     
     return {
       ...assessment,
-      coverImage: coverImages[index] || assessment.coverImage
+      coverImage: titleSpecificImages[assessment.id] || assessment.coverImage
     };
   });
 

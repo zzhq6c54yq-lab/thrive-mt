@@ -1,89 +1,125 @@
-
 import React, { useState } from "react";
 import { Button } from "@/components/ui/button";
-import { Award } from "lucide-react";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Progress } from "@/components/ui/progress";
+import { ArrowRight, Target, Users, BookOpen, TrendingUp, CheckCircle, Star } from "lucide-react";
 
-const CAREER_TIPS = [
-  "Set clear, measurable career goals and review them quarterly.",
-  "Network authentically by helping others before asking for help.",
-  "Develop both hard skills and emotional intelligence.",
-  "Seek feedback regularly and act on constructive criticism.",
-  "Build a personal brand that reflects your values and expertise.",
-  "Stay curious and embrace lifelong learning.",
-  "Find mentors and become a mentor to others.",
-  "Take calculated risks to accelerate your growth."
+const CAREER_MODULES = [
+  {
+    id: 'goal-setting',
+    title: 'Goal Setting & Planning',
+    icon: Target,
+    content: [
+      'Set SMART goals: Specific, Measurable, Achievable, Relevant, Time-bound',
+      'Create 30, 60, 90-day action plans for career advancement',
+      'Identify key milestones and track your progress regularly',
+      'Break down long-term goals into manageable daily tasks'
+    ]
+  },
+  {
+    id: 'networking',
+    title: 'Professional Networking',
+    icon: Users,
+    content: [
+      'Identify key industry events and professionals to connect with',
+      'Craft compelling elevator pitches for different situations',
+      'Use LinkedIn strategically to expand your network',
+      'Follow up effectively and maintain long-term relationships'
+    ]
+  }
 ];
 
 const GameCareerCoaching: React.FC = () => {
-  const [currentTip, setCurrentTip] = useState(0);
-  const [showQuiz, setShowQuiz] = useState(false);
-  const [quizComplete, setQuizComplete] = useState(false);
+  const [currentModule, setCurrentModule] = useState(0);
+  const [currentContent, setCurrentContent] = useState(0);
+  const [showAssessment, setShowAssessment] = useState(false);
+  const [assessmentComplete, setAssessmentComplete] = useState(false);
 
-  const handleNextTip = () => {
-    if (currentTip < CAREER_TIPS.length - 1) {
-      setCurrentTip(currentTip + 1);
+  const handleNext = () => {
+    const module = CAREER_MODULES[currentModule];
+    if (currentContent < module.content.length - 1) {
+      setCurrentContent(currentContent + 1);
+    } else if (currentModule < CAREER_MODULES.length - 1) {
+      setCurrentModule(currentModule + 1);
+      setCurrentContent(0);
     } else {
-      setShowQuiz(true);
+      setShowAssessment(true);
     }
   };
 
-  const handleQuizComplete = () => {
-    setQuizComplete(true);
-  };
+  if (assessmentComplete) {
+    return (
+      <div className="max-w-2xl mx-auto p-6">
+        <Card className="bg-gradient-to-br from-green-100 to-emerald-100">
+          <CardHeader className="text-center">
+            <Star className="w-16 h-16 text-green-600 mx-auto mb-4" />
+            <CardTitle className="text-2xl text-green-800">Career Assessment Complete!</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <p className="text-center text-green-700">You've completed the comprehensive career coaching program!</p>
+            <Button onClick={() => window.location.reload()} className="w-full mt-4 bg-green-600 text-white">
+              Start New Session
+            </Button>
+          </CardContent>
+        </Card>
+      </div>
+    );
+  }
 
-  return (
-    <div className="flex flex-col items-center py-10 bg-gradient-to-br from-amber-100 to-yellow-50 min-h-[60vh] rounded-xl shadow-lg max-w-md mx-auto">
-      <Award className="w-14 h-14 text-amber-500 mb-4" />
-      <h2 className="text-2xl font-bold mb-2 text-amber-900">Career Coaching</h2>
-      <p className="text-lg text-amber-700 text-center mb-6 max-w-md">
-        Boost your career with actionable tips and quick assessments.
-      </p>
-      <img 
-        src="https://images.unsplash.com/photo-1517048676732-d65bc937f952?auto=format&fit=crop&w=500&q=80"
-        alt="Career Coaching illustration"
-        className="rounded-xl shadow mb-6 max-w-full object-cover w-72 h-36"
-      />
-      
-      {!showQuiz && !quizComplete && (
-        <div className="text-center max-w-sm">
-          <div className="bg-white p-6 rounded-lg shadow-md mb-4">
-            <h3 className="font-bold text-amber-800 mb-3">Career Tip #{currentTip + 1}</h3>
-            <p className="text-amber-700">{CAREER_TIPS[currentTip]}</p>
-          </div>
-          <Button onClick={handleNextTip} className="bg-gradient-to-r from-amber-500 to-orange-400 text-amber-900 font-bold">
-            {currentTip < CAREER_TIPS.length - 1 ? "Next Tip" : "Take Quick Quiz"}
-          </Button>
-        </div>
-      )}
-      
-      {showQuiz && !quizComplete && (
-        <div className="text-center max-w-sm">
-          <div className="bg-white p-6 rounded-lg shadow-md mb-4">
-            <h3 className="font-bold text-amber-800 mb-3">Quick Self-Assessment</h3>
-            <p className="text-amber-700 mb-4">On a scale of 1-10, how satisfied are you with your current career progress?</p>
-            <div className="grid grid-cols-5 gap-2 mb-4">
-              {[1,2,3,4,5,6,7,8,9,10].map(num => (
-                <button
-                  key={num}
-                  onClick={handleQuizComplete}
-                  className="px-2 py-1 bg-amber-200 hover:bg-amber-300 rounded text-amber-800 font-semibold"
+  if (showAssessment) {
+    return (
+      <div className="max-w-2xl mx-auto p-6">
+        <Card>
+          <CardHeader>
+            <CardTitle>Career Assessment</CardTitle>
+          </CardHeader>
+          <CardContent className="space-y-4">
+            <p>What's your primary career goal for the next 12 months?</p>
+            <div className="grid grid-cols-1 gap-3">
+              {["Get promoted", "Change careers", "Develop new skills", "Improve work-life balance"].map((option) => (
+                <Button
+                  key={option}
+                  onClick={() => setAssessmentComplete(true)}
+                  variant="outline"
+                  className="text-left justify-start"
                 >
-                  {num}
-                </button>
+                  {option}
+                </Button>
               ))}
             </div>
+          </CardContent>
+        </Card>
+      </div>
+    );
+  }
+
+  const module = CAREER_MODULES[currentModule];
+  const progress = ((currentModule * 4 + currentContent + 1) / (CAREER_MODULES.length * 4)) * 100;
+
+  return (
+    <div className="max-w-2xl mx-auto p-6 space-y-6">
+      <Card className="bg-gradient-to-r from-amber-100 to-yellow-100">
+        <CardHeader>
+          <div className="flex items-center gap-3">
+            <module.icon className="w-8 h-8 text-amber-600" />
+            <div>
+              <CardTitle className="text-xl text-amber-800">Career Coaching Program</CardTitle>
+              <p className="text-amber-600">Module {currentModule + 1}: {module.title}</p>
+            </div>
           </div>
-        </div>
-      )}
-      
-      {quizComplete && (
-        <div className="text-center">
-          <div className="text-lg font-bold text-green-700 mb-4">Assessment complete! 🏆</div>
-          <div className="bg-white p-4 rounded-lg shadow-md">
-            <p className="text-amber-700">Keep focusing on your goals and remember: career growth is a marathon, not a sprint!</p>
+          <Progress value={progress} className="mt-4" />
+        </CardHeader>
+        <CardContent className="space-y-4">
+          <div className="bg-white rounded-lg p-4">
+            <p className="text-gray-700">{module.content[currentContent]}</p>
           </div>
-        </div>
-      )}
+          <Button onClick={handleNext} className="w-full bg-amber-600 text-white">
+            {currentContent === module.content.length - 1 && currentModule === CAREER_MODULES.length - 1 
+              ? "Take Assessment" : "Next"}
+            <ArrowRight className="ml-2 w-4 h-4" />
+          </Button>
+        </CardContent>
+      </Card>
     </div>
   );
 };
