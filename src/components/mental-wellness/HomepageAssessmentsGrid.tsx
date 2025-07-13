@@ -75,69 +75,38 @@ const HomepageAssessmentsGrid: React.FC = () => {
         </p>
       </div>
 
-      {/* Assessments Grid - 2x3 Layout */}
-      <div className="grid grid-cols-3 grid-rows-2 gap-6 max-w-6xl mx-auto">
+      {/* Compact Assessments Grid - 3x2 Layout */}
+      <div className="grid grid-cols-3 grid-rows-2 gap-4 max-w-4xl mx-auto">
         {featuredAssessments.map((assessment, index) => (
           <Card 
             key={assessment.id} 
-            className="bg-gradient-to-br from-white/10 to-white/5 backdrop-blur-sm border border-[#B87333]/30 hover:border-[#B87333]/50 hover:from-white/15 hover:to-white/10 transition-all duration-500 cursor-pointer group transform hover:scale-105 hover:shadow-2xl hover:shadow-[#B87333]/20"
+            className="bg-gradient-to-br from-white/10 to-white/5 backdrop-blur-sm border border-[#B87333]/30 hover:border-[#B87333]/50 hover:from-white/15 hover:to-white/10 transition-all duration-300 cursor-pointer group transform hover:scale-102 hover:shadow-lg hover:shadow-[#B87333]/10"
             onClick={() => handleAssessmentClick(assessment)}
           >
-            <CardHeader className="pb-4">
-              {/* Enhanced Cover Image - Larger */}
-              <div className="w-full h-56 mb-4 rounded-lg overflow-hidden relative">
-                <img
-                  src={assessment.coverImage}
-                  alt={isSpanish ? assessment.titleSpanish : assessment.title}
-                  className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-              </div>
+            {/* Compact Cover Image */}
+            <div className="w-full h-32 rounded-t-lg overflow-hidden relative">
+              <img
+                src={assessment.coverImage}
+                alt={isSpanish ? assessment.titleSpanish : assessment.title}
+                className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent"></div>
+            </div>
 
-              <CardTitle className="text-white text-lg line-clamp-2 font-semibold group-hover:text-[#E5C5A1] transition-colors duration-300">
+            <CardContent className="p-3">
+              {/* Compact Title */}
+              <h3 className="text-white text-sm font-semibold line-clamp-2 mb-3 group-hover:text-[#E5C5A1] transition-colors duration-300 min-h-[2.5rem]">
                 {isSpanish ? assessment.titleSpanish : assessment.title}
-              </CardTitle>
-            </CardHeader>
+              </h3>
 
-            <CardContent className="space-y-4">
-              {/* Enhanced Description */}
-              <p className="text-white/80 text-sm line-clamp-3 leading-relaxed">
-                {isSpanish ? assessment.descriptionSpanish : assessment.description}
-              </p>
-
-              {/* Enhanced Badges */}
-              <div className="flex flex-wrap gap-2">
-                <Badge className="bg-[#B87333]/20 text-[#E5C5A1] border border-[#B87333]/40 font-medium">
-                  {isSpanish ? assessment.difficultySpanish : assessment.difficulty}
-                </Badge>
-                <Badge variant="secondary" className="bg-blue-500/20 text-blue-200 border border-blue-400/40">
-                  {isSpanish ? assessment.categorySpanish : assessment.category}
-                </Badge>
-              </div>
-
-              {/* Enhanced Meta Information */}
-              <div className="flex items-center justify-between text-white/70 text-sm">
-                <div className="flex items-center">
-                  <Clock className="h-4 w-4 mr-1 text-[#B87333]" />
-                  {isSpanish ? assessment.durationSpanish : assessment.duration}
-                </div>
-                <div className="flex items-center">
-                  <Users className="h-4 w-4 mr-1 text-[#B87333]" />
-                  <span className="truncate">
-                    {isSpanish ? assessment.targetAudienceSpanish : assessment.targetAudience}
-                  </span>
-                </div>
-              </div>
-
-              {/* Enhanced Action Button - Gold on Black */}
+              {/* Start Assessment Button */}
               <Button
-                className="w-full mt-4 bg-black hover:bg-black/90 text-[#B87333] border border-[#B87333] font-bold hover:text-[#E5C5A1] hover:border-[#E5C5A1] transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl"
+                className="w-full bg-[#B87333] hover:bg-[#E5C5A1] text-white hover:text-black font-medium text-xs py-2 transition-all duration-300"
                 onClick={(e) => {
                   e.stopPropagation();
                   handleAssessmentClick(assessment);
                 }}
               >
-                <Star className="h-4 w-4 mr-2" />
                 {assessment.category.toLowerCase().includes('quiz') 
                   ? translations.takeQuiz 
                   : translations.takeAssessment
