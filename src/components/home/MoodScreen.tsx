@@ -195,7 +195,7 @@ const MoodScreen: React.FC<MoodScreenProps> = ({ onMoodSelect }) => {
           </motion.div>
           
           <motion.h1 
-            className="text-4xl md:text-5xl font-light mb-6 bg-clip-text text-transparent bg-gradient-to-r from-white to-[#B87333] leading-tight px-4"
+            className="text-4xl md:text-5xl font-light mb-8 bg-clip-text text-transparent bg-gradient-to-r from-white to-[#B87333] leading-[1.2] px-4"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 0.2, duration: 1 }}
@@ -204,7 +204,7 @@ const MoodScreen: React.FC<MoodScreenProps> = ({ onMoodSelect }) => {
           </motion.h1>
           
           <motion.p 
-            className="text-xl text-white/90 max-w-2xl mx-auto font-light"
+            className="text-xl text-white/90 max-w-2xl mx-auto font-light mb-6 leading-relaxed"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 0.4, duration: 1 }}
@@ -216,9 +216,9 @@ const MoodScreen: React.FC<MoodScreenProps> = ({ onMoodSelect }) => {
             initial={{ scale: 0.95, opacity: 0 }}
             animate={{ scale: 1, opacity: 1 }}
             transition={{ delay: 0.6, duration: 0.8 }}
-            className="mt-8 bg-white/5 backdrop-blur-sm max-w-lg mx-auto rounded-lg p-4 border border-white/10"
+            className="mt-10 bg-white/5 backdrop-blur-sm max-w-lg mx-auto rounded-lg p-4 border border-white/10"
           >
-            <p className="text-white/80 italic">{translations.reflectPrompt}</p>
+            <p className="text-white/80 italic leading-relaxed">{translations.reflectPrompt}</p>
           </motion.div>
         </motion.div>
         
