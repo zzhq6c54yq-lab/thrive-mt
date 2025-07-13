@@ -131,7 +131,7 @@ const AssessmentModal: React.FC<AssessmentModalProps> = ({ assessment, open, onO
 
       <Button
         onClick={handleStartAssessment}
-        className="w-full bg-primary hover:bg-primary/90 text-white"
+        className="w-full bg-black hover:bg-black/90 text-[#B87333] border border-[#B87333] font-semibold"
         size="lg"
       >
         <Star className="h-4 w-4 mr-2" />

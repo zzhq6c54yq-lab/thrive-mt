@@ -240,12 +240,12 @@ const MoodScreen: React.FC<MoodScreenProps> = ({ onMoodSelect }) => {
               >
                 <button
                   onClick={() => handleMoodClick(mood)}
-                  className="w-full h-full flex flex-col items-center justify-center rounded-xl p-6 transition-all duration-300 bg-white/5 hover:bg-white/10 border border-white/10 hover:border-[#B87333]/30 backdrop-blur-sm shadow-lg"
+                  className="w-full h-full flex flex-col items-center justify-center rounded-xl p-6 transition-all duration-300 bg-white/5 hover:bg-white/10 border border-white/10 hover:border-[#B87333]/30 backdrop-blur-sm shadow-lg min-h-[140px]"
                 >
                   <div className="w-14 h-14 rounded-full flex items-center justify-center mb-4 shadow-lg transform transition-transform duration-300 group-hover:scale-110 bg-gradient-to-br from-[#B87333] to-[#E5C5A1] text-white">
                     {mood.icon}
                   </div>
-                  <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#B87333] to-[#E5C5A1] text-lg font-medium">{mood.label}</span>
+                  <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#B87333] to-[#E5C5A1] text-lg font-medium leading-relaxed">{mood.label}</span>
                 </button>
               </motion.div>
             ))}
