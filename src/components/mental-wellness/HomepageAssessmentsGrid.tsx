@@ -75,8 +75,8 @@ const HomepageAssessmentsGrid: React.FC = () => {
         </p>
       </div>
 
-      {/* Assessments Grid - Exactly 2 rows of 3 */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-6xl mx-auto">
+      {/* Assessments Grid - 2x3 Layout */}
+      <div className="grid grid-cols-3 grid-rows-2 gap-6 max-w-6xl mx-auto">
         {featuredAssessments.map((assessment, index) => (
           <Card 
             key={assessment.id} 
@@ -84,8 +84,8 @@ const HomepageAssessmentsGrid: React.FC = () => {
             onClick={() => handleAssessmentClick(assessment)}
           >
             <CardHeader className="pb-4">
-              {/* Enhanced Cover Image */}
-              <div className="w-full h-40 mb-4 rounded-lg overflow-hidden relative">
+              {/* Enhanced Cover Image - Larger */}
+              <div className="w-full h-56 mb-4 rounded-lg overflow-hidden relative">
                 <img
                   src={assessment.coverImage}
                   alt={isSpanish ? assessment.titleSpanish : assessment.title}
@@ -129,9 +129,9 @@ const HomepageAssessmentsGrid: React.FC = () => {
                 </div>
               </div>
 
-              {/* Enhanced Action Button */}
+              {/* Enhanced Action Button - Gold on Black */}
               <Button
-                className="w-full mt-4 bg-black hover:bg-black/90 text-[#B87333] border border-[#B87333] font-semibold hover:text-[#E5C5A1] hover:border-[#E5C5A1] transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl"
+                className="w-full mt-4 bg-black hover:bg-black/90 text-[#B87333] border border-[#B87333] font-bold hover:text-[#E5C5A1] hover:border-[#E5C5A1] transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl"
                 onClick={(e) => {
                   e.stopPropagation();
                   handleAssessmentClick(assessment);

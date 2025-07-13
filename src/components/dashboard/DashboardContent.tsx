@@ -210,16 +210,18 @@ const DashboardContent: React.FC<DashboardContentProps> = ({
                 <div className="bg-white/20 p-2 rounded-full mr-3">
                   <Heart className="h-5 w-5 text-white" />
                 </div>
-                <span className="text-base sm:text-xl font-semibold text-white">{translations.keyFeatures}</span>
+                <span className="text-base sm:text-xl font-bold text-white drop-shadow-lg">{translations.keyFeatures}</span>
               </div>
             </AccordionTrigger>
           </div>
           <AccordionContent className="mt-4 pb-6">
-            <KeyFeatures 
-              navigateToFeature={handleFeatureClick}
-              selectedQualities={selectedQualities}
-              selectedGoals={selectedGoals}
-            />
+            <div className="bg-white/5 rounded-lg p-4 backdrop-blur-sm">
+              <KeyFeatures 
+                navigateToFeature={handleFeatureClick}
+                selectedQualities={selectedQualities}
+                selectedGoals={selectedGoals}
+              />
+            </div>
           </AccordionContent>
         </AccordionItem>
       </Accordion>

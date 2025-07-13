@@ -253,6 +253,7 @@ function App() {
           <Route path="/wellness-challenges" element={<WellnessChallenges />} />
           <Route path="/my-sponsor" element={<MySponsor />} />
           <Route path="/aa-sponsor" element={<AASponsor />} />
+          <Route path="/substance-abuse-sponsor" element={<AASponsor />} />
           
           <Route path="/user-lead" element={<UserLead />} />
           

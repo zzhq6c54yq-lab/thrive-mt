@@ -142,16 +142,154 @@ const AssessmentModal: React.FC<AssessmentModalProps> = ({ assessment, open, onO
 
   const renderQuestionsStep = () => {
     if (assessment.questions.length === 0) {
-      // Demo question for assessments without full questions
+      // Create functional demo questions for assessments without full questions
+      const demoQuestions = [
+        {
+          id: 'demo1',
+          question: 'Over the past 2 weeks, how often have you been bothered by little interest or pleasure in doing things?',
+          questionSpanish: 'En las últimas 2 semanas, ¿con qué frecuencia has estado molesto por tener poco interés o placer en hacer cosas?',
+          type: 'multiple-choice' as const,
+          options: ['Not at all', 'Several days', 'More than half the days', 'Nearly every day'],
+          optionsSpanish: ['Para nada', 'Varios días', 'Más de la mitad de los días', 'Casi todos los días'],
+          required: true
+        },
+        {
+          id: 'demo2', 
+          question: 'How would you rate your overall stress level this week?',
+          questionSpanish: '¿Cómo calificarías tu nivel general de estrés esta semana?',
+          type: 'scale' as const,
+          scaleMin: 1,
+          scaleMax: 10,
+          scaleLabels: ['Very Low', 'Very High'],
+          scaleLabelsSpanish: ['Muy Bajo', 'Muy Alto'],
+          required: true
+        },
+        {
+          id: 'demo3',
+          question: 'Do you feel you have adequate support from friends and family?',
+          questionSpanish: '¿Sientes que tienes apoyo adecuado de amigos y familia?',
+          type: 'yes-no' as const,
+          required: true
+        }
+      ];
+      
+      const currentQuestion = demoQuestions[currentQuestionIndex] || demoQuestions[0];
+      const progress = ((currentQuestionIndex + 1) / demoQuestions.length) * 100;
+      
       return (
         <div className="space-y-6">
-          <div className="text-center">
-            <h3 className="text-lg font-semibold mb-2">Demo Assessment</h3>
-            <p className="text-gray-600 mb-4">
-              This is a demo version. The full assessment would contain detailed questions.
-            </p>
-            <Button onClick={() => { setCurrentStep('results'); setShowResults(true); }}>
-              View Sample Results
+          {/* Progress Bar */}
+          <div className="space-y-2">
+            <div className="flex justify-between text-sm text-gray-600">
+              <span>{translations.progress}</span>
+              <span>Question {currentQuestionIndex + 1} of {demoQuestions.length}</span>
+            </div>
+            <Progress value={progress} className="h-2" />
+          </div>
+          
+          {/* Question Card */}
+          <Card>
+            <CardHeader>
+              <CardTitle className="text-lg">
+                {isSpanish && currentQuestion.questionSpanish ? currentQuestion.questionSpanish : currentQuestion.question}
+              </CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              {/* Multiple Choice Questions */}
+              {currentQuestion.type === 'multiple-choice' && (
+                <div className="space-y-2">
+                  {(isSpanish && currentQuestion.optionsSpanish ? currentQuestion.optionsSpanish : currentQuestion.options || []).map((option, index) => (
+                    <Button
+                      key={index}
+                      variant={answers[currentQuestion.id] === index ? 'default' : 'outline'}
+                      onClick={() => handleAnswer(currentQuestion.id, index)}
+                      className="w-full justify-start text-left"
+                    >
+                      {option}
+                    </Button>
+                  ))}
+                </div>
+              )}
+              
+              {/* Scale Questions */}
+              {currentQuestion.type === 'scale' && (
+                <div className="space-y-4">
+                  <div className="flex justify-between text-sm text-gray-600">
+                    <span>{currentQuestion.scaleLabels?.[0] || currentQuestion.scaleMin}</span>
+                    <span>{currentQuestion.scaleLabels?.[1] || currentQuestion.scaleMax}</span>
+                  </div>
+                  <div className="flex gap-2">
+                    {Array.from({ length: currentQuestion.scaleMax! - currentQuestion.scaleMin! + 1 }, (_, i) => {
+                      const value = currentQuestion.scaleMin! + i;
+                      return (
+                        <Button
+                          key={value}
+                          variant={answers[currentQuestion.id] === value ? 'default' : 'outline'}
+                          onClick={() => handleAnswer(currentQuestion.id, value)}
+                          className="flex-1"
+                        >
+                          {value}
+                        </Button>
+                      );
+                    })}
+                  </div>
+                </div>
+              )}
+              
+              {/* Yes/No Questions */}
+              {currentQuestion.type === 'yes-no' && (
+                <div className="flex gap-4">
+                  <Button
+                    variant={answers[currentQuestion.id] === 'yes' ? 'default' : 'outline'}
+                    onClick={() => handleAnswer(currentQuestion.id, 'yes')}
+                    className="flex-1"
+                  >
+                    {isSpanish ? 'Sí' : 'Yes'}
+                  </Button>
+                  <Button
+                    variant={answers[currentQuestion.id] === 'no' ? 'default' : 'outline'}
+                    onClick={() => handleAnswer(currentQuestion.id, 'no')}
+                    className="flex-1"
+                  >
+                    {isSpanish ? 'No' : 'No'}
+                  </Button>
+                </div>
+              )}
+            </CardContent>
+          </Card>
+          
+          {/* Navigation */}
+          <div className="flex justify-between">
+            <Button
+              variant="outline"
+              onClick={() => {
+                if (currentQuestionIndex > 0) {
+                  setCurrentQuestionIndex(prev => prev - 1);
+                }
+              }}
+              disabled={currentQuestionIndex === 0}
+            >
+              <ArrowLeft className="h-4 w-4 mr-2" />
+              {translations.previousQuestion}
+            </Button>
+
+            <Button
+              onClick={() => {
+                if (currentQuestionIndex < demoQuestions.length - 1) {
+                  setCurrentQuestionIndex(prev => prev + 1);
+                } else {
+                  setCurrentStep('results');
+                  setShowResults(true);
+                }
+              }}
+              disabled={!answers[currentQuestion.id]}
+              className="bg-[#B87333] hover:bg-[#A56625] text-white"
+            >
+              {currentQuestionIndex === demoQuestions.length - 1 
+                ? translations.completeAssessment 
+                : translations.nextQuestion
+              }
+              <ArrowRight className="h-4 w-4 ml-2" />
             </Button>
           </div>
         </div>
