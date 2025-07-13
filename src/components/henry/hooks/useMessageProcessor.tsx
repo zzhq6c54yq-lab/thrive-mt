@@ -1,7 +1,7 @@
 
 import { useState, useEffect } from "react";
 import { useToast } from "@/hooks/use-toast";
-import { generateResponse } from "@/components/help/utils/responseGenerator";
+import { getHenryAiResponse } from "@/services/henryAiService";
 import { checkForEmergency, saveConversationToLocalStorage, analyzeSentiment } from "@/components/help/utils/messageHelpers";
 
 export interface Message {
@@ -160,38 +160,59 @@ export const useMessageProcessor = (
     
     const smallTalkResponse = handleSmallTalk(text.trim());
     
-    setTimeout(() => {
-      let responseText = "";
-      
-      if (smallTalkResponse) {
-        responseText = smallTalkResponse;
-      } else {
-        responseText = generateResponse(text, conversationContext);
-      }
-      
-      const henryMessage: Message = {
-        text: responseText,
-        isUser: false,
-        timestamp: new Date()
-      };
-      
-      addMessage(henryMessage);
-      updateConversationContext(responseText, false);
-      setProcessing(false);
-      
-      const allMessages = [...conversationContext.map(c => {
-        const [role, text] = c.split(': ', 2);
-        return {
-          text,
-          isUser: role === 'User',
+    if (smallTalkResponse) {
+      // Handle small talk immediately
+      setTimeout(() => {
+        const henryMessage: Message = {
+          text: smallTalkResponse,
+          isUser: false,
           timestamp: new Date()
         };
-      }), henryMessage];
-      
-      if (allMessages.length % 5 === 0) {
-        saveConversation(allMessages);
-      }
-    }, 1500);
+        
+        addMessage(henryMessage);
+        updateConversationContext(smallTalkResponse, false);
+        setProcessing(false);
+      }, 1000);
+    } else {
+      // Use AI for more complex responses
+      getHenryAiResponse(text, conversationContext)
+        .then((responseText) => {
+          const henryMessage: Message = {
+            text: responseText,
+            isUser: false,
+            timestamp: new Date()
+          };
+          
+          addMessage(henryMessage);
+          updateConversationContext(responseText, false);
+          setProcessing(false);
+          
+          const allMessages = [...conversationContext.map(c => {
+            const [role, text] = c.split(': ', 2);
+            return {
+              text,
+              isUser: role === 'User',
+              timestamp: new Date()
+            };
+          }), henryMessage];
+          
+          if (allMessages.length % 5 === 0) {
+            saveConversation(allMessages);
+          }
+        })
+        .catch((error) => {
+          console.error('Error getting AI response:', error);
+          const fallbackMessage: Message = {
+            text: "I'm sorry, I'm having trouble responding right now. Please try again, or if this persists, consider reaching out to a mental health professional directly.",
+            isUser: false,
+            timestamp: new Date()
+          };
+          
+          addMessage(fallbackMessage);
+          updateConversationContext(fallbackMessage.text, false);
+          setProcessing(false);
+        });
+    }
   };
 
   const handleSmallTalk = (message: string): string | null => {
