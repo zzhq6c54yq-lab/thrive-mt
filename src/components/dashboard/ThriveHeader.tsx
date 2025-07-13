@@ -39,7 +39,7 @@ const ThriveHeader: React.FC<ThriveHeaderProps> = ({
         </div>
         
         <div className="container mx-auto max-w-6xl relative z-10">
-          <div className="flex flex-col items-center pt-12 pb-16 px-6">
+          <div className="flex flex-col items-center pt-20 pb-16 px-6">
             <div className="flex flex-col items-center w-full gap-8">
               <SpinningLogo />
               <WelcomeText userName={userName} />

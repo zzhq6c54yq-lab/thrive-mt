@@ -195,7 +195,7 @@ const MoodScreen: React.FC<MoodScreenProps> = ({ onMoodSelect }) => {
           </motion.div>
           
           <motion.h1 
-            className="text-5xl md:text-6xl font-light mb-6 bg-clip-text text-transparent bg-gradient-to-r from-white to-[#B87333]"
+            className="text-4xl md:text-5xl font-light mb-6 bg-clip-text text-transparent bg-gradient-to-r from-white to-[#B87333] leading-tight px-4"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 0.2, duration: 1 }}
