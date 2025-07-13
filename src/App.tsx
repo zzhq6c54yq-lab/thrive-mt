@@ -16,6 +16,7 @@ import SleepTracker from "./pages/SleepTracker";
 import Home from "./pages/Home";
 import ProgressReports from "./pages/ProgressReports";
 import MentalWellnessTools from "./pages/MentalWellnessTools";
+import MentalWellnessAssessments from "./pages/MentalWellnessAssessments";
 import GamesAndQuizzes from "./pages/GamesAndQuizzes";
 import GamePage from "./pages/GamePage";
 import SmallBusinessExperience from "./pages/SmallBusinessExperience";
@@ -125,8 +126,10 @@ function App() {
           <Route path="/progress-reports" element={<ProgressReports />} />
           <Route path="/mental-wellness" element={<MentalWellnessTools />} />
           <Route path="/mental-wellness-tools" element={<MentalWellnessTools />} />
+          <Route path="/mental-wellness-assessments" element={<MentalWellnessAssessments />} />
           <Route path="/mental-wellness/assessments" element={<MentalWellnessTools />} />
           <Route path="/mental-wellness/assessments/:quizId" element={<MentalWellnessTools />} />
+          <Route path="/mental-wellness/assessment/:assessmentId" element={<MentalWellnessTools />} />
           <Route path="/family-resources" element={<FamilyResources />} />
           <Route path="/games-and-quizzes" element={<GamesAndQuizzes />} />
           <Route path="/mental-health-games" element={<MentalHealthGames />} />

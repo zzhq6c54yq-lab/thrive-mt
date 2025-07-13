@@ -45,7 +45,7 @@ const DashboardContent: React.FC<DashboardContentProps> = ({
   const translations = {
     dailyChallenges: isSpanish ? "Desafíos Diarios" : "Daily Challenges",
     upcomingAppointments: isSpanish ? "Próximas Citas" : "Upcoming Appointments",
-    mentalHealthQuizzes: isSpanish ? "Cuestionarios de Salud Mental" : "Mental Health Quizzes",
+    mentalHealthQuizzes: isSpanish ? "Cuestionarios y Evaluaciones de Salud Mental" : "Mental Health Quiz and Assessments",
     specializedPrograms: isSpanish ? "Programas Especializados" : "Specialized Programs",
     featuredWorkshops: isSpanish ? "Talleres Destacados" : "Featured Workshops",
     keyFeatures: isSpanish ? "Características Principales" : "Key Features",
