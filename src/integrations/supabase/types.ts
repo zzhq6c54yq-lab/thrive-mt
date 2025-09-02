@@ -7,13 +7,46 @@ export type Json =
   | Json[]
 
 export type Database = {
-  // Allows to automatically instanciate createClient with right options
+  // Allows to automatically instantiate createClient with right options
   // instead of createClient<Database, { PostgrestVersion: 'XX' }>(URL, KEY)
   __InternalSupabase: {
-    PostgrestVersion: "12.2.3 (519615d)"
+    PostgrestVersion: "13.0.4"
   }
   public: {
     Tables: {
+      appointments: {
+        Row: {
+          appointment_date: string | null
+          created_at: string | null
+          duration_minutes: number | null
+          id: string
+          notes: string | null
+          status: string | null
+          therapist_id: string | null
+          user_id: string | null
+        }
+        Insert: {
+          appointment_date?: string | null
+          created_at?: string | null
+          duration_minutes?: number | null
+          id?: string
+          notes?: string | null
+          status?: string | null
+          therapist_id?: string | null
+          user_id?: string | null
+        }
+        Update: {
+          appointment_date?: string | null
+          created_at?: string | null
+          duration_minutes?: number | null
+          id?: string
+          notes?: string | null
+          status?: string | null
+          therapist_id?: string | null
+          user_id?: string | null
+        }
+        Relationships: []
+      }
       crisis_events: {
         Row: {
           created_at: string | null
@@ -44,21 +77,21 @@ export type Database = {
       feedback: {
         Row: {
           id: string
-          message: string
+          message: string | null
           rating: number | null
           submitted_at: string | null
           user_id: string
         }
         Insert: {
           id?: string
-          message: string
+          message?: string | null
           rating?: number | null
           submitted_at?: string | null
           user_id: string
         }
         Update: {
           id?: string
-          message?: string
+          message?: string | null
           rating?: number | null
           submitted_at?: string | null
           user_id?: string
@@ -67,25 +100,67 @@ export type Database = {
       }
       journal_entries: {
         Row: {
+          ai_response: string | null
+          ai_sentiment: string | null
           created_at: string | null
           id: string
           mood: string | null
+          mood_score: number | null
           notes: string | null
           user_id: string
         }
         Insert: {
+          ai_response?: string | null
+          ai_sentiment?: string | null
           created_at?: string | null
           id?: string
           mood?: string | null
+          mood_score?: number | null
           notes?: string | null
           user_id: string
         }
         Update: {
+          ai_response?: string | null
+          ai_sentiment?: string | null
           created_at?: string | null
           id?: string
           mood?: string | null
+          mood_score?: number | null
           notes?: string | null
           user_id?: string
+        }
+        Relationships: []
+      }
+      messages: {
+        Row: {
+          content: string
+          conversation_id: string | null
+          created_at: string | null
+          id: string
+          message_type: string | null
+          read_at: string | null
+          recipient_id: string | null
+          sender_id: string | null
+        }
+        Insert: {
+          content: string
+          conversation_id?: string | null
+          created_at?: string | null
+          id?: string
+          message_type?: string | null
+          read_at?: string | null
+          recipient_id?: string | null
+          sender_id?: string | null
+        }
+        Update: {
+          content?: string
+          conversation_id?: string | null
+          created_at?: string | null
+          id?: string
+          message_type?: string | null
+          read_at?: string | null
+          recipient_id?: string | null
+          sender_id?: string | null
         }
         Relationships: []
       }
