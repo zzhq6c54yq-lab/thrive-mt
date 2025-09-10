@@ -79,7 +79,7 @@ const ExploreAddOns: React.FC = () => {
             billingCycle={billingCycle}
             onToggleExpand={handleToggleExpand}
             onToggle={handleAddOnToggle}
-            selectedPlan="Gold"
+            selectedPlan="Basic"
           />
 
           {selectedAddOns.length > 0 && (

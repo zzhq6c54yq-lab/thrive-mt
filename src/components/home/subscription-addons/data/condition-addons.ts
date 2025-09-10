@@ -15,7 +15,8 @@ export const conditionAddOns: AddOn[] = [
       "Condition-specific resources and education",
       "Coping strategies for ongoing symptoms",
       "Emotional support for chronic health challenges",
-      "Medical management tools and trackers"
+      "Medical management tools and trackers",
+      "Support network building and maintenance"
     ],
     icon: Heart,
     gradient: "from-emerald-700 to-blue-700",
