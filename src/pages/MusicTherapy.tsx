@@ -781,7 +781,7 @@ const MusicTherapy: React.FC = () => {
             </div>
           </CardContent>
         </Card>
-      </div>
+      </StudioEnvironment>
     </Page>
   );
 };
