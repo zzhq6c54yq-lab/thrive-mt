@@ -1,11 +1,9 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Button } from '@/components/ui/button';
-import { Card, CardContent } from '@/components/ui/card';
-import { motion } from 'framer-motion';
-import { X, Star, Lock, Users, Calendar, FileText, Video } from 'lucide-react';
+import { X, ArrowRight, Heart } from 'lucide-react';
+import { motion, AnimatePresence } from 'framer-motion';
 import { AddOn } from './data/types';
 import PreviewPortal from './PreviewPortal';
-import { createClient } from '@supabase/supabase-js';
 import { useToast } from '@/hooks/use-toast';
 import useTranslation from '@/hooks/useTranslation';
 
@@ -24,10 +22,9 @@ const AddOnPreview: React.FC<AddOnPreviewProps> = ({
   onClose,
   onCheckout
 }) => {
+  const [screenState, setScreenState] = useState<'welcome' | 'what-to-expect' | 'portal-preview'>('welcome');
   const { toast } = useToast();
   const { isSpanish } = useTranslation();
-
-  if (!isOpen) return null;
 
   const getPrice = () => {
     if (!selectedPlan) return '$3.00';
@@ -38,174 +35,166 @@ const AddOnPreview: React.FC<AddOnPreviewProps> = ({
   };
 
   const translations = {
-    preview: isSpanish ? 'Vista Previa' : 'Preview',
-    portalPreview: isSpanish ? 'Vista Previa del Portal' : 'Portal Preview',
-    keyFeatures: isSpanish ? 'Características Principales' : 'Key Features',
-    sampleContent: isSpanish ? 'Contenido de Muestra' : 'Sample Content',
-    continueToCheckout: isSpanish ? 'Continuar al Pago' : 'Continue to Checkout',
-    thisIsPreview: isSpanish ? 'Esta es una vista previa - Suscríbete para desbloquear' : 'This is a preview - Subscribe to unlock',
-    perMonth: isSpanish ? '/mes' : '/month',
-    unlockFullAccess: isSpanish ? 'Desbloquear Acceso Completo' : 'Unlock Full Access',
-    targetAudience: isSpanish ? 'Audiencia Objetivo' : 'Target Audience',
+    month: isSpanish ? "mes" : "month",
+    continue: isSpanish ? "Continuar" : "Continue",
+    whatToExpect: isSpanish ? "Qué Esperar" : "What to Expect",
+    enterPortal: isSpanish ? "Ingresar al Portal" : "Enter Portal",
+    portal: isSpanish ? "Portal" : "Portal",
+    monthlyPrice: isSpanish ? "Precio mensual" : "Monthly Price",
+    continueToCheckout: isSpanish ? "Continuar al pago" : "Continue to Checkout"
+  };
+
+  const handleContinue = () => {
+    if (screenState === 'welcome') {
+      setScreenState('what-to-expect');
+      window.scrollTo(0, 0);
+    } else if (screenState === 'what-to-expect') {
+      setScreenState('portal-preview');
+      window.scrollTo(0, 0);
+    }
   };
 
   const handleCheckout = () => {
-    onCheckout(addOn.id);
+    toast({
+      title: "Redirecting to Checkout",
+      description: `Processing ${addOn.title} subscription`,
+      duration: 2000,
+    });
+    
+    setTimeout(() => {
+      onCheckout(addOn.id);
+    }, 500);
   };
 
+  if (!isOpen) return null;
+
+  const backgroundImageStyle = {};
+
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm">
-      <motion.div
-        initial={{ opacity: 0, scale: 0.9 }}
-        animate={{ opacity: 1, scale: 1 }}
-        exit={{ opacity: 0, scale: 0.9 }}
-        className="bg-gradient-to-br from-gray-900/95 to-black/95 backdrop-blur-sm border border-white/20 rounded-xl max-w-4xl w-full max-h-[90vh] overflow-y-auto shadow-2xl"
-      >
-        {/* Header */}
-        <div className="sticky top-0 bg-gradient-to-r from-gray-900/95 to-black/95 backdrop-blur-sm p-6 border-b border-white/10">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-4">
-              <div className={`p-3 rounded-full bg-gradient-to-r ${addOn.gradient} bg-opacity-20`}>
-                <addOn.icon className="h-8 w-8 text-white" />
-              </div>
-              <div>
-                <h2 className="text-2xl font-bold text-white">{addOn.title}</h2>
-                <p className="text-white/70">{translations.preview}</p>
-              </div>
-            </div>
-            <div className="flex items-center gap-4">
-              <div className="text-right">
-                <div className="text-2xl font-bold text-[#E5C5A1]">{getPrice()}{translations.perMonth}</div>
-                <div className="text-sm text-white/60">{selectedPlan || 'Basic'} Plan</div>
-              </div>
-              <Button
-                variant="ghost"
-                size="sm"
+    <AnimatePresence>
+      {isOpen && (
+        <motion.div 
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          className="fixed inset-0 z-50 bg-gradient-to-b from-[#1a1a1f] via-[#242432] to-[#272730] text-white"
+          style={backgroundImageStyle}
+        >
+          <div className="absolute inset-0 bg-[url('data:image/svg+xml;utf8,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%2220%22 height=%2220%22 viewBox=%220 0 20 20%22><circle cx=%222%22 cy=%222%22 r=%221%22 fill=%22%23FFFFFF%22 fill-opacity=%220.05%22/></svg>')] opacity-20"></div>
+          
+          <div className="min-h-screen p-4 flex items-center justify-center">
+            <div className="max-w-5xl mx-auto bg-white/20 backdrop-blur-md rounded-2xl p-8 shadow-xl relative overflow-hidden w-full">
+              {/* Close Button */}
+              <Button 
+                variant="ghost" 
+                size="icon"
                 onClick={onClose}
-                className="text-white/70 hover:text-white hover:bg-white/10"
+                className="absolute top-4 right-4 z-20 text-white hover:bg-white/10"
               >
                 <X className="h-6 w-6" />
               </Button>
+
+              <div className="absolute top-0 right-0 w-80 h-80 bg-gradient-to-br from-primary/20 to-transparent rounded-full blur-3xl -z-10"></div>
+              <div className="absolute bottom-0 left-0 w-80 h-80 bg-gradient-to-tr from-primary/20 to-transparent rounded-full blur-3xl -z-10"></div>
+              
+              <motion.div 
+                key={screenState}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -20 }}
+                className="flex flex-col items-center justify-center min-h-[70vh] text-center px-4"
+              >
+                {screenState === 'welcome' ? (
+                  <>
+                    <div className="p-5 rounded-full bg-primary/30 backdrop-blur-sm mb-6">
+                      <addOn.icon className="h-16 w-16 text-white" />
+                    </div>
+                    
+                    <h1 className="text-4xl md:text-5xl font-semibold mb-8 text-white">
+                      {addOn.title}
+                    </h1>
+
+                    {addOn.targetAudience && (
+                      <div className="max-w-3xl mx-auto mb-10 bg-gradient-to-r from-purple-800/40 to-pink-800/40 p-6 rounded-lg border-l-4 border-purple-500 shadow-lg backdrop-blur-sm">
+                        <div className="flex items-start">
+                          <Heart className="text-pink-400 mr-3 min-w-[24px] mt-1" />
+                          <p className="text-xl italic text-white leading-relaxed font-light">
+                            "{addOn.targetAudience}"
+                          </p>
+                        </div>
+                      </div>
+                    )}
+                    
+                    <div className="max-w-2xl mb-10">
+                      <p className="text-xl mb-6 text-white font-medium">
+                        {addOn.description}
+                      </p>
+                    </div>
+                    
+                    <Button 
+                      onClick={handleContinue}
+                      className="bg-primary hover:bg-primary/90 text-white text-lg px-8 py-6 h-auto transition-all duration-300 transform hover:scale-105 shadow-[0_0_15px_rgba(0,0,0,0.3)]"
+                    >
+                      {translations.continue} <ArrowRight className="ml-2 h-5 w-5" />
+                    </Button>
+                  </>
+                ) : screenState === 'what-to-expect' ? (
+                  <>
+                    <h1 className="text-4xl md:text-5xl font-semibold mb-8 text-white">
+                      {translations.whatToExpect}
+                    </h1>
+                    
+                    <div className="max-w-3xl mb-10">
+                      <div className="bg-white/20 backdrop-blur-sm rounded-xl p-6 mb-8">
+                        <ul className="space-y-4 text-left">
+                          {addOn.features.slice(0, 5).map((feature, index) => (
+                            <li key={index} className="flex items-start">
+                              <div className="p-1 rounded-full bg-primary/40 mr-3 mt-1">
+                                <div className="w-3 h-3 rounded-full bg-primary"></div>
+                              </div>
+                              <span className="text-lg text-white">{feature}</span>
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
+                    </div>
+                    
+                    <Button 
+                      onClick={handleContinue}
+                      className="bg-primary hover:bg-primary/90 text-white text-lg px-8 py-6 h-auto transition-all duration-300 transform hover:scale-105 shadow-[0_0_15px_rgba(0,0,0,0.3)]"
+                    >
+                      {translations.enterPortal} <ArrowRight className="ml-2 h-5 w-5" />
+                    </Button>
+                  </>
+                ) : (
+                  <>
+                    <h1 className="text-4xl md:text-5xl font-semibold mb-8 text-white">
+                      {addOn.title} {translations.portal}
+                    </h1>
+                    
+                    <div className="max-w-4xl w-full mb-8">
+                      <PreviewPortal addOn={addOn} />
+                    </div>
+
+                    <div className="bg-white/20 backdrop-blur-sm rounded-xl p-6 mb-8 max-w-md">
+                      <p className="text-sm text-white/80 mb-2">{translations.monthlyPrice}</p>
+                      <p className="text-3xl font-bold text-white">{getPrice()}/{translations.month}</p>
+                    </div>
+                    
+                    <Button 
+                      onClick={handleCheckout}
+                      className="bg-gradient-to-r from-primary to-primary/80 hover:from-primary/90 hover:to-primary/70 text-white text-lg px-8 py-6 h-auto transition-all duration-300 transform hover:scale-105 shadow-[0_0_20px_rgba(0,0,0,0.4)]"
+                    >
+                      {translations.continueToCheckout} <ArrowRight className="ml-2 h-5 w-5" />
+                    </Button>
+                  </>
+                )}
+              </motion.div>
             </div>
           </div>
-        </div>
-
-        {/* Content */}
-        <div className="p-6 space-y-8">
-          {/* Portal Preview Section */}
-          <div>
-            <h3 className="text-xl font-semibold text-white mb-4 flex items-center gap-2">
-              <Video className="h-5 w-5 text-[#B87333]" />
-              {translations.portalPreview}
-            </h3>
-            <PreviewPortal addOn={addOn} />
-          </div>
-
-          {/* Key Features Section */}
-          <div>
-            <h3 className="text-xl font-semibold text-white mb-4 flex items-center gap-2">
-              <Star className="h-5 w-5 text-[#B87333]" />
-              {translations.keyFeatures}
-            </h3>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              {addOn.features.map((feature, idx) => (
-                <Card key={idx} className="bg-white/5 border-white/10 hover:bg-white/10 transition-colors">
-                  <CardContent className="p-4">
-                    <div className="flex items-start gap-3">
-                      <div className="h-2 w-2 bg-[#B87333] rounded-full mt-2 flex-shrink-0"></div>
-                      <span className="text-white/90 text-sm">{feature}</span>
-                    </div>
-                  </CardContent>
-                </Card>
-              ))}
-            </div>
-          </div>
-
-          {/* Sample Content Section */}
-          <div>
-            <h3 className="text-xl font-semibold text-white mb-4 flex items-center gap-2">
-              <FileText className="h-5 w-5 text-[#B87333]" />
-              {translations.sampleContent}
-            </h3>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-              <Card className="bg-white/5 border-white/10 relative overflow-hidden">
-                <CardContent className="p-4">
-                  <div className="flex items-center gap-2 mb-2">
-                    <Users className="h-4 w-4 text-blue-400" />
-                    <span className="text-white font-medium text-sm">Community Groups</span>
-                  </div>
-                  <p className="text-white/70 text-xs">Join specialized support groups...</p>
-                  <div className="absolute inset-0 bg-black/60 flex items-center justify-center backdrop-blur-[1px]">
-                    <div className="text-center">
-                      <Lock className="h-6 w-6 text-white/80 mx-auto mb-2" />
-                      <p className="text-white/80 text-xs">{translations.thisIsPreview}</p>
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
-
-              <Card className="bg-white/5 border-white/10 relative overflow-hidden">
-                <CardContent className="p-4">
-                  <div className="flex items-center gap-2 mb-2">
-                    <Calendar className="h-4 w-4 text-green-400" />
-                    <span className="text-white font-medium text-sm">Workshops</span>
-                  </div>
-                  <p className="text-white/70 text-xs">Access exclusive workshops and training...</p>
-                  <div className="absolute inset-0 bg-black/60 flex items-center justify-center backdrop-blur-[1px]">
-                    <div className="text-center">
-                      <Lock className="h-6 w-6 text-white/80 mx-auto mb-2" />
-                      <p className="text-white/80 text-xs">{translations.thisIsPreview}</p>
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
-
-              <Card className="bg-white/5 border-white/10 relative overflow-hidden">
-                <CardContent className="p-4">
-                  <div className="flex items-center gap-2 mb-2">
-                    <FileText className="h-4 w-4 text-purple-400" />
-                    <span className="text-white font-medium text-sm">Resources</span>
-                  </div>
-                  <p className="text-white/70 text-xs">Download specialized resources and guides...</p>
-                  <div className="absolute inset-0 bg-black/60 flex items-center justify-center backdrop-blur-[1px]">
-                    <div className="text-center">
-                      <Lock className="h-6 w-6 text-white/80 mx-auto mb-2" />
-                      <p className="text-white/80 text-xs">{translations.thisIsPreview}</p>
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
-            </div>
-          </div>
-
-          {/* Target Audience */}
-          <div>
-            <h3 className="text-lg font-medium text-white/90 mb-2">{translations.targetAudience}:</h3>
-            <p className="text-white/70">{addOn.targetAudience}</p>
-          </div>
-        </div>
-
-        {/* Footer */}
-        <div className="sticky bottom-0 bg-gradient-to-r from-gray-900/95 to-black/95 backdrop-blur-sm p-6 border-t border-white/10">
-          <div className="flex flex-col sm:flex-row gap-4 items-center justify-between">
-            <div className="text-center sm:text-left">
-              <div className="text-lg font-semibold text-white mb-1">
-                {translations.unlockFullAccess}
-              </div>
-              <div className="text-white/70 text-sm">
-                {translations.targetAudience}: {addOn.targetAudience}
-              </div>
-            </div>
-            <Button
-              onClick={handleCheckout}
-              className="bg-gradient-to-r from-[#B87333] to-[#E5C5A1] hover:from-[#A56625] hover:to-[#D4B48F] text-white font-semibold px-8 py-3 rounded-lg shadow-lg hover:shadow-xl transition-all"
-            >
-              {translations.continueToCheckout} {getPrice()}{translations.perMonth}
-            </Button>
-          </div>
-        </div>
-      </motion.div>
-    </div>
+        </motion.div>
+      )}
+    </AnimatePresence>
   );
 };
 
