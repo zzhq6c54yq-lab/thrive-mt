@@ -24,7 +24,8 @@ import {
   Moon,
   Flower2,
   Shield,
-  TrendingUp as CareerIcon
+  TrendingUp as CareerIcon,
+  Palette
 } from "lucide-react";
 
 export interface FeatureItem {
@@ -212,6 +213,16 @@ export const getFeatures = (isSpanish: boolean): FeatureItem[] => [
     image: "https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?auto=format&fit=crop&w=800&q=80",
     path: "/music-therapy",
     color: "blue",
+    popular: true
+  },
+  {
+    id: "art-therapy",
+    title: isSpanish ? "Terapia Artística" : "Art Therapy Studio",
+    description: isSpanish ? "Estudio de arte terapéutico con dibujo libre, pintar por números, mandalas y reflexión guiada." : "Therapeutic art studio with free draw, paint-by-numbers, mandala coloring and guided reflection.",
+    icon: <Palette className="w-6 h-6" />,
+    image: "https://images.unsplash.com/photo-1513475382585-d06e58bcb0e0?auto=format&fit=crop&w=800&q=80",
+    path: "/art-therapy",
+    color: "rose",
     popular: true
   }
 ];
