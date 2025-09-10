@@ -15,6 +15,8 @@ import VirtualKeyboard from '@/components/music-therapy/VirtualKeyboard';
 import ChordPads from '@/components/music-therapy/ChordPads';
 import InstrumentSelector from '@/components/music-therapy/InstrumentSelector';
 import InstrumentVisual from '@/components/music-therapy/InstrumentVisual';
+import FullPiano from '@/components/music-therapy/FullPiano';
+import DrumKit from '@/components/music-therapy/DrumKit';
 import { Play, Pause, Square, Mic, Video, Download, Trash2, Music, Volume2, Piano } from 'lucide-react';
 
 // Interfaces
@@ -173,16 +175,29 @@ const MusicTherapy: React.FC = () => {
     Tone.Destination.volume.value = Tone.gainToDb(volume / 100);
   }, [volume]);
 
-  // Play note function
+  // Enhanced play note function with proper cleanup
   const playNote = async (note: string, isKeyDown = false) => {
     if (!synths.current[selectedInstrument]) return;
     
     await Tone.start();
     
-    // Add visual feedback
+    // Clean up any stuck notes first
     if (isKeyDown) {
       setActiveNotes(prev => new Set(prev).add(note));
+    }
+    
+    const vel = velocity / 127;
+    
+    if (sustain || isKeyDown) {
+      // Stop the note first to prevent sticking
+      synths.current[selectedInstrument].triggerRelease(note);
+      // Small delay then trigger attack
+      setTimeout(() => {
+        synths.current[selectedInstrument].triggerAttack(note, Tone.now(), vel);
+      }, 10);
     } else {
+      // For normal notes, use triggerAttackRelease
+      synths.current[selectedInstrument].triggerAttackRelease(note, "8n", Tone.now(), vel);
       setActiveNotes(prev => new Set(prev).add(note));
       setTimeout(() => {
         setActiveNotes(prev => {
@@ -190,22 +205,20 @@ const MusicTherapy: React.FC = () => {
           newSet.delete(note);
           return newSet;
         });
-      }, 200);
-    }
-    
-    const vel = velocity / 127;
-    
-    if (sustain || isKeyDown) {
-      synths.current[selectedInstrument].triggerAttack(note, Tone.now(), vel);
-    } else {
-      synths.current[selectedInstrument].triggerAttackRelease(note, "4n", Tone.now(), vel);
+      }, 100);
     }
   };
 
   const stopNote = (note: string) => {
-    if (!synths.current[selectedInstrument]) return;
+    if (!synths.current[selectedInstrument] || sustain) return;
     
-    synths.current[selectedInstrument].triggerRelease(note);
+    // Ensure clean note release
+    try {
+      synths.current[selectedInstrument].triggerRelease(note, Tone.now());
+    } catch (error) {
+      console.warn('Note release error:', error);
+    }
+    
     setActiveNotes(prev => {
       const newSet = new Set(prev);
       newSet.delete(note);
@@ -576,9 +589,24 @@ const MusicTherapy: React.FC = () => {
           <TabsContent value="keyboard" className="space-y-6">
             <Card className="bg-white/10 border-white/20">
               <CardHeader>
-                <CardTitle className="text-white">Virtual Keyboard</CardTitle>
+                <CardTitle className="text-white">Full Piano (61 Keys)</CardTitle>
                 <CardDescription className="text-white/70">
-                  Play individual notes like a real piano keyboard
+                  Experience a complete piano range from C2 to C7 for authentic musical expression
+                </CardDescription>
+              </CardHeader>
+              <CardContent>
+                <FullPiano
+                  activeNotes={activeNotes}
+                  onNotePress={(note, isKeyDown) => isKeyDown ? playNote(note, true) : stopNote(note)}
+                />
+              </CardContent>
+            </Card>
+            
+            <Card className="bg-white/10 border-white/20">
+              <CardHeader>
+                <CardTitle className="text-white">Simple Keyboard</CardTitle>
+                <CardDescription className="text-white/70">
+                  Quick access keyboard for single octave practice
                 </CardDescription>
               </CardHeader>
               <CardContent>
@@ -611,28 +639,13 @@ const MusicTherapy: React.FC = () => {
           <TabsContent value="drums" className="space-y-6">
             <Card className="bg-white/10 border-white/20">
               <CardHeader>
-                <CardTitle className="text-white">Drum Pads</CardTitle>
+                <CardTitle className="text-white">Interactive Drum Kit</CardTitle>
                 <CardDescription className="text-white/70">
-                  Click the pads to create rhythmic beats
+                  Create rhythmic beats with visual drum animations
                 </CardDescription>
               </CardHeader>
               <CardContent>
-                <div className="grid grid-cols-2 gap-4">
-                  {[
-                    { name: 'kick', label: '🥁 KICK', color: 'bg-red-500 hover:bg-red-600' },
-                    { name: 'snare', label: '🥁 SNARE', color: 'bg-blue-500 hover:bg-blue-600' },
-                    { name: 'hihat', label: '🥁 HI-HAT', color: 'bg-yellow-500 hover:bg-yellow-600' },
-                    { name: 'clap', label: '👏 CLAP', color: 'bg-green-500 hover:bg-green-600' }
-                  ].map((drum) => (
-                    <Button
-                      key={drum.name}
-                      className={`h-24 text-lg font-bold ${drum.color} text-white`}
-                      onClick={() => playDrum(drum.name)}
-                    >
-                      {drum.label}
-                    </Button>
-                  ))}
-                </div>
+                <DrumKit onDrumHit={playDrum} />
               </CardContent>
             </Card>
           </TabsContent>
