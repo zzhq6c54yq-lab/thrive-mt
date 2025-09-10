@@ -5,7 +5,7 @@ import IntroScreen from "@/components/home/IntroScreen";
 import MoodScreen from "@/components/home/MoodScreen";
 import MoodResponse from "@/components/home/MoodResponse";
 import RegistrationScreen from "@/components/home/RegistrationScreen";
-import SubscriptionScreen from "@/components/home/SubscriptionScreen";
+import SubscriptionPage from "@/components/subscription/SubscriptionPage";
 import SubscriptionAddOns from "@/components/home/SubscriptionAddOns";
 import CheckoutScreen from "@/components/home/CheckoutScreen";
 import VisionBoard from "@/components/home/VisionBoard";
@@ -142,15 +142,7 @@ const OnboardingContainer: React.FC = () => {
       );
       
     case 'subscription':
-      return (
-        <SubscriptionScreen
-          selectedPlan={selectedPlan}
-          onPlanSelect={updatePlan}
-          onContinue={handleSubscriptionContinue}
-          onPrevious={previousStep}
-          onSkip={nextStep}
-        />
-      );
+      return <SubscriptionPage />;
       
     case 'subscriptionAddOns':
       return (
