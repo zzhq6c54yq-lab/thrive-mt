@@ -14,6 +14,7 @@ interface AddOnGridProps {
   onToggleExpand: (id: string) => void;
   onToggle: (id: string) => void;
   selectedPlan: string | null;
+  onCheckout?: (addOnId: string) => void;
 }
 
 const AddOnGrid: React.FC<AddOnGridProps> = ({
@@ -23,7 +24,8 @@ const AddOnGrid: React.FC<AddOnGridProps> = ({
   billingCycle,
   onToggleExpand,
   onToggle,
-  selectedPlan
+  selectedPlan,
+  onCheckout
 }) => {
   return (
     <motion.div 
@@ -41,8 +43,10 @@ const AddOnGrid: React.FC<AddOnGridProps> = ({
             priceDisplay={billingCycle === 'yearly' 
               ? <PriceDisplayWithStrikethrough plan={selectedPlan} billingCycle={billingCycle} />
               : getPriceDisplay(selectedPlan, billingCycle)}
+            selectedPlan={selectedPlan}
             onToggleExpand={onToggleExpand}
             onToggle={onToggle}
+            onCheckout={onCheckout}
           />
         </motion.div>
       ))}

@@ -1,18 +1,20 @@
 
-import React, { useState, useEffect } from "react";
-import { motion } from "framer-motion";
-import { Check } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import type { AddOn } from "./data";
-import { getImageUrl, handleImageError, getProgramFallbackImage } from "@/utils/imageUtils";
+import React, { useState, useEffect } from 'react';
+import { motion } from 'framer-motion';
+import { Check } from 'lucide-react';
+import { Button } from '@/components/ui/button';
+import { AddOn } from './data/types';
+import AddOnPreview from './AddOnPreview';
 
 interface AddOnCardProps {
   addOn: AddOn;
   isSelected: boolean;
   expandedAddon: string | null;
-  priceDisplay: React.ReactNode;
+  priceDisplay: React.ReactNode | string;
+  selectedPlan: string | null;
   onToggleExpand: (id: string) => void;
   onToggle: (id: string) => void;
+  onCheckout?: (addOnId: string) => void;
 }
 
 const AddOnCard: React.FC<AddOnCardProps> = ({
@@ -20,22 +22,20 @@ const AddOnCard: React.FC<AddOnCardProps> = ({
   isSelected,
   expandedAddon,
   priceDisplay,
+  selectedPlan,
   onToggleExpand,
   onToggle,
+  onCheckout
 }) => {
   const Icon = addOn.icon;
-  const [imageSrc, setImageSrc] = useState("");
-  const [imageLoaded, setImageLoaded] = useState(false);
-  const [imageAttempts, setImageAttempts] = useState(0);
+  const [imageSrc, setImageSrc] = useState<string>('');
+  const [imageLoaded, setImageLoaded] = useState<boolean>(false);
+  const [imageAttempts, setImageAttempts] = useState<number>(0);
+  const [showPreview, setShowPreview] = useState<boolean>(false);
 
   // Initialize image source with proper cache busting
   useEffect(() => {
-    const processedUrl = getImageUrl(
-      addOn.imagePath, 
-      `addon-card-${addOn.id}`,
-      getProgramFallbackImage(addOn.id)
-    );
-    setImageSrc(processedUrl);
+    setImageSrc(addOn.imagePath);
     setImageLoaded(false);
   }, [addOn.id, addOn.imagePath]);
 
@@ -46,16 +46,10 @@ const AddOnCard: React.FC<AddOnCardProps> = ({
   const handleImageErrorEvent = (e: React.SyntheticEvent<HTMLImageElement>) => {
     // Limit retry attempts to prevent infinite loops
     if (imageAttempts < 2) {
-      const fallbackSrc = handleImageError(e, `addon-card-${addOn.id}`);
-      
       console.error(`Failed to load image for ${addOn.id}, using fallback`);
-      setImageSrc(fallbackSrc);
+      const fallbackImage = "https://images.unsplash.com/photo-1486312338219-ce68d2c6f44d?auto=format&fit=crop&w=500&q=80";
+      setImageSrc(fallbackImage);
       setImageAttempts(prev => prev + 1);
-    } else {
-      // After multiple failures, use a guaranteed working fallback
-      const emergencyFallback = getProgramFallbackImage(addOn.id);
-      console.warn(`Multiple attempts failed for ${addOn.id}, using emergency fallback`);
-      setImageSrc(emergencyFallback);
     }
   };
 
@@ -71,7 +65,7 @@ const AddOnCard: React.FC<AddOnCardProps> = ({
         <div className={`absolute inset-0 bg-gray-800 animate-pulse transition-opacity ${imageLoaded ? 'opacity-0' : 'opacity-100'}`}></div>
         
         <img 
-          src={imageSrc || getProgramFallbackImage(addOn.id)} 
+          src={imageSrc || "https://images.unsplash.com/photo-1486312338219-ce68d2c6f44d?auto=format&fit=crop&w=500&q=80"} 
           alt={addOn.title}
           className={`w-full h-full object-cover transition-opacity ${imageLoaded ? 'opacity-100' : 'opacity-0'}`}
           onError={handleImageErrorEvent}
@@ -109,52 +103,25 @@ const AddOnCard: React.FC<AddOnCardProps> = ({
           </div>
 
           <div className="relative">
-            <button
-              className="text-xs text-white/90 underline flex items-center mb-2"
+            <Button 
+              variant="ghost" 
+              size="sm" 
+              className="text-xs text-white/70 hover:text-white hover:bg-white/10 p-1 h-auto"
               onClick={(e) => {
                 e.stopPropagation();
-                onToggleExpand(addOn.id);
+                setShowPreview(true);
               }}
             >
-              {expandedAddon === addOn.id ? "Hide details" : "See what's included"}
-            </button>
+              See what's included
+            </Button>
             
-            {expandedAddon === addOn.id && (
-              <div 
-                className="fixed inset-0 z-50 flex items-center justify-center p-4"
-                onClick={(e) => {
-                  if (e.target === e.currentTarget) {
-                    onToggleExpand(addOn.id);
-                  }
-                }}
-              >
-                <div 
-                  className="bg-gray-900/95 backdrop-blur-sm border border-white/30 rounded-lg p-4 max-w-sm w-full shadow-2xl"
-                  onClick={(e) => e.stopPropagation()}
-                >
-                  <div className="flex items-center justify-between mb-3">
-                    <h4 className="font-semibold text-white">Key Features</h4>
-                    <button
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        onToggleExpand(addOn.id);
-                      }}
-                      className="text-white/70 hover:text-white text-xl leading-none"
-                    >
-                      ×
-                    </button>
-                  </div>
-                  <ul className="text-sm text-white/90 space-y-2">
-                    {addOn.features?.map((feature, idx) => (
-                      <li key={idx} className="flex items-start gap-2">
-                        <span className="h-1.5 w-1.5 bg-[#B87333] rounded-full mt-2 flex-shrink-0"></span>
-                        <span>{feature}</span>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-              </div>
-            )}
+            <AddOnPreview 
+              addOn={addOn}
+              selectedPlan={selectedPlan}
+              isOpen={showPreview}
+              onClose={() => setShowPreview(false)}
+              onCheckout={onCheckout || (() => {})}
+            />
           </div>
 
           <div className="flex items-center justify-between">

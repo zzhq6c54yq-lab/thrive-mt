@@ -2,16 +2,23 @@ import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { ChevronDown, ChevronUp } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import { addOns } from '@/components/home/subscription-addons/data';
 import AddOnGrid from '@/components/home/subscription-addons/AddOnGrid';
+import { addOns } from '@/components/home/subscription-addons/data';
 import useTranslation from '@/hooks/useTranslation';
+import { createClient } from '@supabase/supabase-js';
+import { useToast } from '@/hooks/use-toast';
 
 const ExploreAddOns: React.FC = () => {
   const [isExpanded, setIsExpanded] = useState(false);
   const [selectedAddOns, setSelectedAddOns] = useState<string[]>([]);
   const [expandedAddon, setExpandedAddon] = useState<string | null>(null);
-  const [billingCycle] = useState<'monthly' | 'yearly'>('monthly');
   const { isSpanish } = useTranslation();
+  const { toast } = useToast();
+  
+  const supabase = createClient(
+    import.meta.env.VITE_SUPABASE_URL,
+    import.meta.env.VITE_SUPABASE_ANON_KEY
+  );
 
   const handleToggle = () => {
     setIsExpanded(!isExpanded);
@@ -27,6 +34,49 @@ const ExploreAddOns: React.FC = () => {
 
   const handleToggleExpand = (id: string) => {
     setExpandedAddon(expandedAddon === id ? null : id);
+  };
+
+  const handleAddOnCheckout = async (addOnId: string) => {
+    try {
+      const addOn = addOns.find(a => a.id === addOnId);
+      if (!addOn) {
+        throw new Error('Add-on not found');
+      }
+
+      const { data, error } = await supabase.functions.invoke('checkout-addon', {
+        body: {
+          addOnId: addOn.id,
+          addOnTitle: addOn.title,
+          selectedPlan: 'Basic', // Default for individual purchases
+          billingCycle: 'monthly'
+        }
+      });
+
+      if (error) {
+        throw new Error(error.message);
+      }
+
+      if (data?.url) {
+        // Open Stripe checkout in a new tab
+        window.open(data.url, '_blank');
+        
+        toast({
+          title: isSpanish ? "Redirigiendo al pago" : "Redirecting to checkout",
+          description: isSpanish ? "Abriendo Stripe Checkout en una nueva pestaña" : "Opening Stripe Checkout in a new tab",
+          duration: 3000,
+        });
+      } else {
+        throw new Error('No checkout URL received');
+      }
+    } catch (error) {
+      console.error('Checkout error:', error);
+      toast({
+        title: isSpanish ? "Error" : "Error",
+        description: isSpanish ? "No se pudo procesar el pago" : "Failed to process checkout",
+        variant: "destructive",
+        duration: 5000, 
+      });
+    }
   };
 
   return (
@@ -72,15 +122,16 @@ const ExploreAddOns: React.FC = () => {
             </p>
           </div>
 
-          <AddOnGrid
-            addOns={addOns}
-            selectedAddOns={selectedAddOns}
-            expandedAddon={expandedAddon}
-            billingCycle={billingCycle}
-            onToggleExpand={handleToggleExpand}
-            onToggle={handleAddOnToggle}
-            selectedPlan="Basic"
-          />
+            <AddOnGrid
+              addOns={addOns}
+              selectedAddOns={selectedAddOns}
+              expandedAddon={expandedAddon}
+              billingCycle="monthly"
+              selectedPlan="Basic"
+              onToggleExpand={handleToggleExpand}
+              onToggle={handleAddOnToggle}
+              onCheckout={handleAddOnCheckout}
+            />
 
           {selectedAddOns.length > 0 && (
             <motion.div
