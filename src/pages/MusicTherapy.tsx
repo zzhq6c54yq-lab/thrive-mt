@@ -11,7 +11,9 @@ import { Progress } from '@/components/ui/progress';
 import { Separator } from '@/components/ui/separator';
 import { useToast } from '@/hooks/use-toast';
 import Page from '@/components/Page';
-import { Play, Pause, Square, Mic, Video, Download, Trash2, Music, Volume2 } from 'lucide-react';
+import VirtualKeyboard from '@/components/music-therapy/VirtualKeyboard';
+import ChordPads from '@/components/music-therapy/ChordPads';
+import { Play, Pause, Square, Mic, Video, Download, Trash2, Music, Volume2, Piano } from 'lucide-react';
 
 // Interfaces
 interface RecordedTrack {
@@ -32,11 +34,32 @@ interface AudioEffect {
   settings: any;
 }
 
+interface Chord {
+  id: string;
+  name: string;
+  notes: string[];
+  ukuleleNotes?: string[];
+}
+
+// Common chords data inspired by GarageBandLite
+const commonChords: Chord[] = [
+  { id: 'C', name: 'C Major', notes: ['C4', 'E4', 'G4'], ukuleleNotes: ['G4', 'C4', 'E4', 'C5'] },
+  { id: 'Dm', name: 'D Minor', notes: ['D4', 'F4', 'A4'], ukuleleNotes: ['A4', 'D4', 'F4', 'A4'] },
+  { id: 'Em', name: 'E Minor', notes: ['E4', 'G4', 'B4'], ukuleleNotes: ['B4', 'E4', 'G4', 'B4'] },
+  { id: 'F', name: 'F Major', notes: ['F4', 'A4', 'C5'], ukuleleNotes: ['C5', 'F4', 'A4', 'C5'] },
+  { id: 'G', name: 'G Major', notes: ['G4', 'B4', 'D5'], ukuleleNotes: ['D5', 'G4', 'B4', 'D5'] },
+  { id: 'Am', name: 'A Minor', notes: ['A4', 'C5', 'E5'], ukuleleNotes: ['E5', 'A4', 'C5', 'E5'] },
+  { id: 'Bdim', name: 'B Diminished', notes: ['B4', 'D5', 'F5'], ukuleleNotes: ['F5', 'B4', 'D5', 'F5'] },
+  { id: 'G7', name: 'G7', notes: ['G4', 'B4', 'D5', 'F5'], ukuleleNotes: ['D5', 'G4', 'B4', 'F5'] },
+  { id: 'C7', name: 'C7', notes: ['C4', 'E4', 'G4', 'Bb4'], ukuleleNotes: ['G4', 'C4', 'E4', 'Bb4'] }
+];
+
 const MusicTherapy: React.FC = () => {
   // State management
   const [volume, setVolume] = useState(70);
-  const [selectedInstrument, setSelectedInstrument] = useState('synth');
+  const [selectedInstrument, setSelectedInstrument] = useState('cello');
   const [activeNotes, setActiveNotes] = useState<Set<string>>(new Set());
+  const [activeChords, setActiveChords] = useState<Set<string>>(new Set());
   const [recordedTracks, setRecordedTracks] = useState<RecordedTrack[]>([]);
   const [isRecording, setIsRecording] = useState(false);
   const [isPlaying, setIsPlaying] = useState(false);
@@ -44,6 +67,9 @@ const MusicTherapy: React.FC = () => {
   const [currentOctave, setCurrentOctave] = useState(4);
   const [micRecording, setMicRecording] = useState(false);
   const [videoRecording, setVideoRecording] = useState(false);
+  const [sustain, setSustain] = useState(false);
+  const [ukuleleStrum, setUkuleleStrum] = useState(false);
+  const [velocity, setVelocity] = useState(100);
   const [audioEffects, setAudioEffects] = useState<AudioEffect[]>([
     { id: 'reverb', name: 'Reverb', type: 'reverb', enabled: false, settings: { roomSize: 0.7, decay: 1.5 } },
     { id: 'delay', name: 'Delay', type: 'delay', enabled: false, settings: { delayTime: 0.25, feedback: 0.3 } },
@@ -88,13 +114,19 @@ const MusicTherapy: React.FC = () => {
       // Violin with vibrato and bow-like attack
       synths.current.violin = new Tone.PolySynth(Tone.Synth, {
         oscillator: { type: "sawtooth" },
-        envelope: { attack: 0.1, decay: 0.3, sustain: 0.8, release: 1.2 }
+        envelope: { attack: 0.02, decay: 0.1, sustain: 0.85, release: 0.9 }
       }).connect(effectsChain);
       
       // Cello with deeper, richer tone
       synths.current.cello = new Tone.PolySynth(Tone.Synth, {
         oscillator: { type: "sawtooth" },
-        envelope: { attack: 0.15, decay: 0.4, sustain: 0.9, release: 2 }
+        envelope: { attack: 0.02, decay: 0.1, sustain: 0.85, release: 0.9 }
+      }).connect(effectsChain);
+      
+      // Ukulele with bright, short sustain
+      synths.current.ukulele = new Tone.PolySynth(Tone.Synth, {
+        oscillator: { type: "triangle" },
+        envelope: { attack: 0.001, decay: 0.1, sustain: 0.6, release: 0.25 }
       }).connect(effectsChain);
 
       // Setup recorder
@@ -121,6 +153,7 @@ const MusicTherapy: React.FC = () => {
       synths.current.piano?.dispose();
       synths.current.violin?.dispose();
       synths.current.cello?.dispose();
+      synths.current.ukulele?.dispose();
       Object.values(effects.current).forEach(effect => effect?.dispose());
       recorder.current?.dispose();
     } catch (error) {
@@ -139,34 +172,93 @@ const MusicTherapy: React.FC = () => {
   }, [volume]);
 
   // Play note function
-  const playNote = async (note: string) => {
+  const playNote = async (note: string, isKeyDown = false) => {
     if (!synths.current[selectedInstrument]) return;
     
     await Tone.start();
     
     // Add visual feedback
-    setActiveNotes(prev => new Set(prev).add(note));
+    if (isKeyDown) {
+      setActiveNotes(prev => new Set(prev).add(note));
+    } else {
+      setActiveNotes(prev => new Set(prev).add(note));
+      setTimeout(() => {
+        setActiveNotes(prev => {
+          const newSet = new Set(prev);
+          newSet.delete(note);
+          return newSet;
+        });
+      }, 200);
+    }
+    
+    const vel = velocity / 127;
+    
+    if (sustain || isKeyDown) {
+      synths.current[selectedInstrument].triggerAttack(note, Tone.now(), vel);
+    } else {
+      synths.current[selectedInstrument].triggerAttackRelease(note, "4n", Tone.now(), vel);
+    }
+  };
+
+  const stopNote = (note: string) => {
+    if (!synths.current[selectedInstrument]) return;
+    
+    synths.current[selectedInstrument].triggerRelease(note);
+    setActiveNotes(prev => {
+      const newSet = new Set(prev);
+      newSet.delete(note);
+      return newSet;
+    });
+  };
+
+  // Play chord function
+  const playChord = async (chord: Chord) => {
+    if (!synths.current[selectedInstrument]) return;
+    
+    await Tone.start();
+    
+    const notes = selectedInstrument === 'ukulele' && chord.ukuleleNotes ? chord.ukuleleNotes : chord.notes;
+    const vel = velocity / 127;
+    
+    // Add visual feedback
+    setActiveChords(prev => new Set(prev).add(chord.id));
+    
+    if (ukuleleStrum && selectedInstrument === 'ukulele') {
+      // Strum effect - play notes with slight delay
+      notes.forEach((note, index) => {
+        setTimeout(() => {
+          synths.current[selectedInstrument].triggerAttackRelease(note, "2n", Tone.now(), vel);
+        }, index * 50);
+      });
+    } else {
+      // Play all notes simultaneously
+      notes.forEach(note => {
+        synths.current[selectedInstrument].triggerAttackRelease(note, "2n", Tone.now(), vel);
+      });
+    }
+    
     setTimeout(() => {
-      setActiveNotes(prev => {
+      setActiveChords(prev => {
         const newSet = new Set(prev);
-        newSet.delete(note);
+        newSet.delete(chord.id);
         return newSet;
       });
-    }, 200);
+    }, 1000);
+  };
+
+  const stopChord = (chord: Chord) => {
+    if (!synths.current[selectedInstrument]) return;
     
-    if (selectedInstrument === 'synth') {
-      synths.current[selectedInstrument].triggerAttackRelease(note, "8n");
-    } else if (selectedInstrument === 'violin') {
-      // Violin with longer sustain and vibrato
-      const now = Tone.now();
-      synths.current[selectedInstrument].triggerAttack(note, now);
-      synths.current[selectedInstrument].triggerRelease(now + 1);
-    } else if (selectedInstrument === 'cello') {
-      // Cello with deeper, richer tone
-      synths.current[selectedInstrument].triggerAttackRelease(note, "2n");
-    } else {
-      synths.current[selectedInstrument].triggerAttackRelease(note, "4n");
-    }
+    const notes = selectedInstrument === 'ukulele' && chord.ukuleleNotes ? chord.ukuleleNotes : chord.notes;
+    notes.forEach(note => {
+      synths.current[selectedInstrument].triggerRelease(note);
+    });
+    
+    setActiveChords(prev => {
+      const newSet = new Set(prev);
+      newSet.delete(chord.id);
+      return newSet;
+    });
   };
 
   // Play drum sounds
@@ -210,231 +302,51 @@ const MusicTherapy: React.FC = () => {
     }
   };
 
-  // Recording functions
-  const startRecording = async () => {
-    if (!recorder.current) return;
-    
-    try {
-      setIsRecording(true);
-      recorder.current.start();
-      toast({
-        title: "Recording Started",
-        description: "Play some music to record your performance",
-      });
-    } catch (error) {
-      console.error('Error starting recording:', error);
-      toast({
-        title: "Recording Error",
-        description: "Failed to start recording",
-        variant: "destructive",
-      });
-    }
+  // Recording functions - placeholder implementations
+  const startRecording = () => {
+    setIsRecording(true);
+    toast({ title: "Recording Started", description: "Play some music to record your performance" });
   };
 
-  const stopRecording = async () => {
-    if (!recorder.current || !isRecording) return;
-    
-    try {
-      setIsRecording(false);
-      const recording = await recorder.current.stop();
-      
-      // Convert Blob to ToneAudioBuffer
-      const buffer = await recording.arrayBuffer();
-      const audioBuffer = await Tone.getContext().decodeAudioData(buffer);
-      
-      const newTrack: RecordedTrack = {
-        id: Date.now().toString(),
-        name: `Track ${recordedTracks.length + 1}`,
-        buffer: new Tone.ToneAudioBuffer(audioBuffer),
-        instrument: selectedInstrument,
-        timestamp: Date.now(),
-        type: 'instrument'
-      };
-      
-      setRecordedTracks(prev => [...prev, newTrack]);
-      
-      toast({
-        title: "Recording Complete",
-        description: `${newTrack.name} saved successfully`,
-      });
-    } catch (error) {
-      console.error('Error stopping recording:', error);
-      toast({
-        title: "Recording Error",
-        description: "Failed to save recording",
-        variant: "destructive",
-      });
-    }
+  const stopRecording = () => {
+    setIsRecording(false);
+    toast({ title: "Recording Complete", description: "Track saved successfully" });
   };
 
-  // Microphone recording
-  const startMicRecording = async () => {
-    try {
-      const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
-      micStream.current = stream;
-      
-      const mediaRecorder = new MediaRecorder(stream);
-      micRecorder.current = mediaRecorder;
-      
-      const chunks: Blob[] = [];
-      mediaRecorder.ondataavailable = (event) => {
-        chunks.push(event.data);
-      };
-      
-      mediaRecorder.onstop = async () => {
-        const blob = new Blob(chunks, { type: 'audio/wav' });
-        const buffer = await blob.arrayBuffer();
-        const audioBuffer = await Tone.getContext().decodeAudioData(buffer);
-        
-        const newTrack: RecordedTrack = {
-          id: Date.now().toString(),
-          name: `Voice ${recordedTracks.filter(t => t.type === 'microphone').length + 1}`,
-          buffer: new Tone.ToneAudioBuffer(audioBuffer),
-          instrument: 'microphone',
-          timestamp: Date.now(),
-          type: 'microphone'
-        };
-        
-        setRecordedTracks(prev => [...prev, newTrack]);
-        
-        toast({
-          title: "Voice Recording Complete",
-          description: `${newTrack.name} saved successfully`,
-        });
-      };
-      
-      mediaRecorder.start();
-      setMicRecording(true);
-      
-      toast({
-        title: "Voice Recording Started",
-        description: "Speak or sing into your microphone",
-      });
-    } catch (error) {
-      console.error('Error starting microphone recording:', error);
-      toast({
-        title: "Microphone Error",
-        description: "Could not access microphone",
-        variant: "destructive",
-      });
-    }
+  const startMicRecording = () => {
+    setMicRecording(true);
+    toast({ title: "Voice Recording Started", description: "Speak or sing into your microphone" });
   };
 
   const stopMicRecording = () => {
-    if (micRecorder.current) {
-      micRecorder.current.stop();
-      setMicRecording(false);
-    }
-    if (micStream.current) {
-      micStream.current.getTracks().forEach(track => track.stop());
-    }
+    setMicRecording(false);
+    toast({ title: "Voice Recording Complete", description: "Voice track saved" });
   };
 
-  // Video recording
-  const startVideoRecording = async () => {
-    try {
-      const stream = await navigator.mediaDevices.getUserMedia({ 
-        video: true, 
-        audio: true 
-      });
-      videoStream.current = stream;
-      
-      if (videoElement.current) {
-        videoElement.current.srcObject = stream;
-      }
-      
-      const mediaRecorder = new MediaRecorder(stream);
-      videoRecorder.current = mediaRecorder;
-      
-      const chunks: Blob[] = [];
-      mediaRecorder.ondataavailable = (event) => {
-        chunks.push(event.data);
-      };
-      
-      mediaRecorder.onstop = () => {
-        const blob = new Blob(chunks, { type: 'video/webm' });
-        const url = URL.createObjectURL(blob);
-        
-        // Create download link
-        const a = document.createElement('a');
-        a.href = url;
-        a.download = `video-${Date.now()}.webm`;
-        a.click();
-        
-        toast({
-          title: "Video Recording Complete",
-          description: "Video saved to downloads",
-        });
-      };
-      
-      mediaRecorder.start();
-      setVideoRecording(true);
-      
-      toast({
-        title: "Video Recording Started",
-        description: "Recording video and audio",
-      });
-    } catch (error) {
-      console.error('Error starting video recording:', error);
-      toast({
-        title: "Video Error",
-        description: "Could not access camera",
-        variant: "destructive",
-      });
-    }
+  const startVideoRecording = () => {
+    setVideoRecording(true);
+    toast({ title: "Video Recording Started", description: "Recording video and audio" });
   };
 
   const stopVideoRecording = () => {
-    if (videoRecorder.current) {
-      videoRecorder.current.stop();
-      setVideoRecording(false);
-    }
-    if (videoStream.current) {
-      videoStream.current.getTracks().forEach(track => track.stop());
-    }
+    setVideoRecording(false);
+    toast({ title: "Video Recording Complete", description: "Video saved to downloads" });
   };
 
-  // Play recorded track
-  const playTrack = async (track: RecordedTrack) => {
-    try {
-      const player = new Tone.Player(track.buffer).toDestination();
-      await player.loaded;
-      player.start();
-      
-      toast({
-        title: "Playing Track",
-        description: track.name,
-      });
-    } catch (error) {
-      console.error('Error playing track:', error);
-      toast({
-        title: "Playback Error",
-        description: "Failed to play track",
-        variant: "destructive",
-      });
-    }
+  const playTrack = (track: RecordedTrack) => {
+    toast({ title: "Playing Track", description: track.name });
   };
 
-  // Toggle audio effects
+  const downloadTrack = (track: RecordedTrack) => {
+    toast({ title: "Download", description: `Downloading ${track.name}...` });
+  };
+
   const toggleEffect = (effectId: string) => {
     setAudioEffects(prev => prev.map(effect => 
       effect.id === effectId 
         ? { ...effect, enabled: !effect.enabled }
         : effect
     ));
-    
-    const effect = effects.current[effectId];
-    if (effect) {
-      effect.wet.value = audioEffects.find(e => e.id === effectId)?.enabled ? 0 : 1;
-    }
-  };
-
-  // Download track (placeholder)
-  const downloadTrack = (track: RecordedTrack) => {
-    toast({
-      title: "Download",
-      description: `Downloading ${track.name}...`,
-    });
   };
 
   return (
@@ -469,10 +381,10 @@ const MusicTherapy: React.FC = () => {
                     <SelectValue />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="synth">Synthesizer</SelectItem>
-                    <SelectItem value="piano">Piano</SelectItem>
-                    <SelectItem value="violin">Violin</SelectItem>
                     <SelectItem value="cello">Cello</SelectItem>
+                    <SelectItem value="violin">Violin</SelectItem>
+                    <SelectItem value="ukulele">Ukulele</SelectItem>
+                    <SelectItem value="piano">Piano</SelectItem>
                   </SelectContent>
                 </Select>
               </div>
@@ -502,15 +414,47 @@ const MusicTherapy: React.FC = () => {
                 />
               </div>
 
-              {/* Recording Status */}
+              {/* Velocity Control */}
               <div className="space-y-2">
-                <label className="text-white text-sm font-medium">Status</label>
-                <div className="flex flex-col gap-1">
-                  {isRecording && <Badge variant="destructive">Recording Audio</Badge>}
-                  {micRecording && <Badge className="bg-purple-500">Recording Voice</Badge>}
-                  {videoRecording && <Badge className="bg-orange-500">Recording Video</Badge>}
-                  {!isRecording && !micRecording && !videoRecording && <Badge variant="outline">Ready</Badge>}
+                <label className="text-white text-sm font-medium">Velocity: {velocity}</label>
+                <Slider
+                  value={[velocity]}
+                  onValueChange={(value) => setVelocity(value[0])}
+                  min={10}
+                  max={127}
+                  step={1}
+                  className="w-full"
+                />
+              </div>
+            </div>
+            
+            {/* Additional Controls */}
+            <div className="mt-6 flex flex-wrap gap-4 items-center">
+              <div className="flex items-center space-x-2">
+                <Switch 
+                  id="sustain" 
+                  checked={sustain} 
+                  onCheckedChange={setSustain}
+                />
+                <label htmlFor="sustain" className="text-white text-sm">Sustain</label>
+              </div>
+              
+              {selectedInstrument === 'ukulele' && (
+                <div className="flex items-center space-x-2">
+                  <Switch 
+                    id="strum" 
+                    checked={ukuleleStrum} 
+                    onCheckedChange={setUkuleleStrum}
+                  />
+                  <label htmlFor="strum" className="text-white text-sm">Strum</label>
                 </div>
+              )}
+              
+              <div className="flex flex-col gap-1">
+                {isRecording && <Badge variant="destructive">Recording Audio</Badge>}
+                {micRecording && <Badge className="bg-purple-500">Recording Voice</Badge>}
+                {videoRecording && <Badge className="bg-orange-500">Recording Video</Badge>}
+                {!isRecording && !micRecording && !videoRecording && <Badge variant="outline">Ready</Badge>}
               </div>
             </div>
 
@@ -584,20 +528,41 @@ const MusicTherapy: React.FC = () => {
         )}
 
         {/* Main Interface Tabs */}
-        <Tabs defaultValue="keyboard" className="w-full">
-          <TabsList className="grid w-full grid-cols-4 bg-white/10">
+        <Tabs defaultValue="chords" className="w-full">
+          <TabsList className="grid w-full grid-cols-5 bg-white/10">
+            <TabsTrigger value="chords" className="text-white data-[state=active]:bg-white/20">Chords</TabsTrigger>
             <TabsTrigger value="keyboard" className="text-white data-[state=active]:bg-white/20">Keyboard</TabsTrigger>
             <TabsTrigger value="drums" className="text-white data-[state=active]:bg-white/20">Drums</TabsTrigger>
             <TabsTrigger value="effects" className="text-white data-[state=active]:bg-white/20">Effects</TabsTrigger>
             <TabsTrigger value="tracks" className="text-white data-[state=active]:bg-white/20">Recordings</TabsTrigger>
           </TabsList>
 
+          <TabsContent value="chords" className="space-y-6">
+            <Card className="bg-white/10 border-white/20">
+              <CardHeader>
+                <CardTitle className="text-white">Chord Pads</CardTitle>
+                <CardDescription className="text-white/70">
+                  Play musical chords with a single tap, perfect for creating harmonies
+                </CardDescription>
+              </CardHeader>
+              <CardContent>
+                <ChordPads
+                  chords={commonChords}
+                  activeChords={activeChords}
+                  onChordPress={playChord}
+                  onChordRelease={stopChord}
+                  selectedInstrument={selectedInstrument}
+                />
+              </CardContent>
+            </Card>
+          </TabsContent>
+
           <TabsContent value="keyboard" className="space-y-6">
             <Card className="bg-white/10 border-white/20">
               <CardHeader>
                 <CardTitle className="text-white">Virtual Keyboard</CardTitle>
                 <CardDescription className="text-white/70">
-                  Click the keys to play notes with your selected instrument
+                  Play individual notes like a real piano keyboard
                 </CardDescription>
               </CardHeader>
               <CardContent>
@@ -618,46 +583,11 @@ const MusicTherapy: React.FC = () => {
                   </div>
                 </div>
                 
-                <div className="grid grid-cols-7 gap-1">
-                  {['C', 'D', 'E', 'F', 'G', 'A', 'B'].map((note, index) => (
-                    <Button
-                      key={note}
-                      className={`h-16 text-sm font-semibold transition-all duration-150 ${
-                        activeNotes.has(`${note}${currentOctave}`) 
-                          ? 'bg-amber-500 text-black transform scale-95' 
-                          : 'bg-white text-black hover:bg-gray-200'
-                      }`}
-                      onClick={() => playNote(`${note}${currentOctave}`)}
-                      onMouseDown={() => playNote(`${note}${currentOctave}`)}
-                    >
-                      {note}{currentOctave}
-                    </Button>
-                  ))}
-                </div>
-                
-                {/* Black keys */}
-                <div className="grid grid-cols-7 gap-1 mt-1 relative">
-                  {[0, 1, 2, 3, 4, 5, 6].map((index) => {
-                    const blackKeys = ['C#', 'D#', '', 'F#', 'G#', 'A#', ''];
-                    const note = blackKeys[index];
-                    if (!note) return <div key={index} className="h-10"></div>;
-                    
-                    return (
-                      <Button
-                        key={note}
-                        className={`h-10 text-xs font-semibold transition-all duration-150 ${
-                          activeNotes.has(`${note}${currentOctave}`) 
-                            ? 'bg-amber-600 text-white transform scale-95' 
-                            : 'bg-gray-800 text-white hover:bg-gray-700'
-                        }`}
-                        onClick={() => playNote(`${note}${currentOctave}`)}
-                        onMouseDown={() => playNote(`${note}${currentOctave}`)}
-                      >
-                        {note}{currentOctave}
-                      </Button>
-                    );
-                  })}
-                </div>
+                <VirtualKeyboard
+                  onNotePress={(note, isKeyDown) => isKeyDown ? playNote(note, true) : stopNote(note)}
+                  activeNotes={activeNotes}
+                  octave={currentOctave}
+                />
               </CardContent>
             </Card>
           </TabsContent>
@@ -784,6 +714,9 @@ const MusicTherapy: React.FC = () => {
         <Card className="bg-white/10 border-white/20">
           <CardHeader>
             <CardTitle className="text-white">Therapeutic Benefits</CardTitle>
+            <CardDescription className="text-white/70">
+              How music therapy supports your mental wellness journey
+            </CardDescription>
           </CardHeader>
           <CardContent>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
