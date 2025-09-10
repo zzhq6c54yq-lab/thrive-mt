@@ -5,6 +5,8 @@ import Page from "@/components/Page";
 import { Button } from "@/components/ui/button";
 import { Package, Trophy, Gem, Check, Sparkles, Zap, Brain, Heart, StarIcon, Shield, Lightbulb } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
+import { supabase } from "@/integrations/supabase/client";
+import { useUser } from "@/contexts/UserContext";
 
 interface SubscriptionPlan {
   id: string;
@@ -22,8 +24,10 @@ interface SubscriptionPlan {
 const SubscriptionPlansPage: React.FC = () => {
   const [selectedPlan, setSelectedPlan] = useState<string | null>(null);
   const [billingCycle, setBillingCycle] = useState<'monthly' | 'yearly'>('monthly');
+  const [loading, setLoading] = useState<string | null>(null);
   const navigate = useNavigate();
   const { toast } = useToast();
+  const { session, subscription, checkSubscription } = useUser();
 
   const getPrice = (basePrice: number) => {
     if (billingCycle === 'yearly') {
@@ -101,7 +105,7 @@ const SubscriptionPlansPage: React.FC = () => {
     setSelectedPlan(planId);
   };
 
-  const handleSubscribe = () => {
+  const handleSubscribe = async () => {
     if (!selectedPlan) {
       toast({
         title: "Please select a plan",
@@ -111,14 +115,64 @@ const SubscriptionPlansPage: React.FC = () => {
       return;
     }
 
-    // In a real app, this would redirect to payment processing
-    toast({
-      title: "Subscription Updated!",
-      description: `You've successfully subscribed to our ${selectedPlan.charAt(0).toUpperCase() + selectedPlan.slice(1)} plan`,
-      duration: 5000
-    });
+    if (!session) {
+      toast({
+        title: "Authentication Required",
+        description: "Please log in to subscribe to a plan.",
+        variant: "destructive"
+      });
+      navigate("/auth");
+      return;
+    }
+
+    const selectedPlanData = subscriptionPlans.find(p => p.id === selectedPlan);  
+    setLoading(selectedPlan);
     
-    navigate("/");
+    try {
+      // For Basic plan, just update status locally
+      if (selectedPlanData?.title === "Basic") {
+        await checkSubscription();
+        toast({
+          title: "Basic Plan Activated",
+          description: "You now have access to basic features.",
+        });
+        navigate("/");
+        return;
+      }
+
+      // For paid plans, create Stripe checkout
+      const { data, error } = await supabase.functions.invoke('create-checkout', {
+        body: { 
+          planTitle: selectedPlanData?.title,
+          billingCycle: billingCycle
+        },
+        headers: {
+          Authorization: `Bearer ${session.access_token}`,
+        },
+      });
+
+      if (error) {
+        throw error;
+      }
+
+      if (data?.url) {
+        // Open Stripe checkout in a new tab
+        window.open(data.url, '_blank');
+        toast({
+          title: "Redirecting to Payment",
+          description: "A new tab will open with the secure payment form.",
+        });
+      }
+    } catch (error) {
+      console.error('Subscription error:', error);
+      toast({
+        title: "Subscription Error",
+        description: "There was an error processing your subscription. Please try again.",
+        variant: "destructive"
+      });
+    } finally {
+      setLoading(null);
+    }
   };
 
   return (
@@ -225,8 +279,10 @@ const SubscriptionPlansPage: React.FC = () => {
                       'bg-black/30 hover:bg-black/40 text-white'
                     }`}
                     onClick={() => handlePlanSelect(plan.id)}
+                    disabled={subscription?.subscription_tier === plan.title}
                   >
-                    {selectedPlan === plan.id ? 'Selected' : 'Select Plan'}
+                    {subscription?.subscription_tier === plan.title ? 'Current Plan' :
+                     selectedPlan === plan.id ? 'Selected' : 'Select Plan'}
                   </Button>
                 </div>
                 
@@ -255,11 +311,14 @@ const SubscriptionPlansPage: React.FC = () => {
               </div>
               <Button 
                 size="lg"
-                className="bg-gradient-to-r from-[#B87333] to-[#A05C1B] hover:opacity-90 text-white min-w-40 group"
+                className="bg-gradient-to-r from-[#B87333] to-[#A05C1B] hover:opacity-90 text-white min-w-40 group disabled:opacity-50 disabled:cursor-not-allowed"
                 onClick={handleSubscribe}
+                disabled={!selectedPlan || loading !== null}
               >
-                <span className="mr-2">Subscribe Now</span>
-                <Zap className="h-4 w-4 group-hover:translate-x-1 transition-transform" />
+                <span className="mr-2">
+                  {loading ? `Processing ${loading}...` : "Subscribe Now"}
+                </span>
+                {!loading && <Zap className="h-4 w-4 group-hover:translate-x-1 transition-transform" />}
               </Button>
             </div>
           </div>

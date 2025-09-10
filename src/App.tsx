@@ -57,6 +57,7 @@ import VirtualMeetings from "./pages/VirtualMeetings";
 import CoPayCredits from "./pages/CoPayCredits";
 import BarterSystem from "./pages/BarterSystem";
 import SubscriptionPlansPage from "./pages/SubscriptionPlansPage";
+import PaymentSuccessPage from "./pages/PaymentSuccessPage";
 import FinancialAssistance from "./pages/FinancialAssistance";
 import ContactSupport from "./pages/ContactSupport";
 import GuidedPractice from "./pages/GuidedPractice";
@@ -155,6 +156,7 @@ function App() {
           <Route path="/copay-credits" element={<CoPayCredits />} />
           <Route path="/barter-system" element={<BarterSystem />} />
           <Route path="/subscription-plans" element={<SubscriptionPlansPage />} />
+          <Route path="/payment-success" element={<PaymentSuccessPage />} />
           <Route path="/financial-assistance" element={<FinancialAssistance />} />
           <Route path="/contact" element={<ContactSupport />} />
           
