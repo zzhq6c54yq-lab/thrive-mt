@@ -96,18 +96,18 @@ export const calculateTotalPrice = (
  * @returns Base price number
  */
 export const getBasePriceForPlan = (plan: string | null): number => {
-  if (!plan) return 3;
+  if (!plan) return 2;
   
   const planLower = plan.toLowerCase();
   if (planLower === 'basic') {
-    return 3;
+    return 2;
   } else if (planLower === 'gold') {
     return 2;
   } else if (planLower === 'platinum') {
     return 1;
   }
   
-  return 3; // Default to basic price
+  return 2; // Default to basic price
 };
 
 /**
