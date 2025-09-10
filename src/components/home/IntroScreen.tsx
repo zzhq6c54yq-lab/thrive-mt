@@ -48,69 +48,6 @@ const IntroScreen: React.FC<IntroScreenProps> = ({ onContinue }) => {
     <div className="min-h-screen flex flex-col items-center justify-center bg-[#1a1a1f] overflow-hidden relative z-50">
       <div className="floating-bg"></div>
       
-      {/* Demo reset button - top left */}
-      <div className="absolute top-6 left-6 z-20">
-        <Button 
-          onClick={handleResetDemo}
-          size="sm"
-          variant="ghost"
-          className="flex items-center gap-2 py-2 px-3 h-9 rounded-full bg-red-500/20 hover:bg-red-500/40 text-red-300 border border-red-500/30 transition-all duration-300"
-        >
-          <RotateCcw className="h-4 w-4" />
-          Reset Demo
-        </Button>
-      </div>
-      
-      {/* Language dropdown menu at the top */}
-      <div className="absolute top-6 right-6 z-20">
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button 
-              size="sm"
-              className="flex items-center gap-2 py-2 px-4 h-9 rounded-full bg-[#B87333]/60 hover:bg-[#B87333]/80 text-white shadow-[0_0_10px_rgba(184,115,51,0.4)] border border-[#B87333]/50 transition-all duration-300"
-            >
-              <Languages className="h-4 w-4 mr-1" />
-              {selectedLanguage}
-              <ChevronDown className="h-3.5 w-3.5 opacity-70" />
-            </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent align="end" className="bg-[#1E1916]/95 backdrop-blur-md border border-[#B87333]/40 text-white shadow-lg rounded-lg p-1 min-w-[120px]">
-            <DropdownMenuItem 
-              className={`${selectedLanguage === 'English' ? 'bg-[#B87333]/30' : ''} rounded-md flex items-center p-2 gap-2 hover:bg-[#B87333]/20 cursor-pointer`}
-              onClick={() => selectLanguage('English')}
-            >
-              <Languages className="h-4 w-4 text-[#B87333]" />
-              English
-              {selectedLanguage === 'English' && <span className="ml-auto text-[#B87333]">✓</span>}
-            </DropdownMenuItem>
-            <DropdownMenuItem 
-              className={`${selectedLanguage === 'Español' ? 'bg-[#B87333]/30' : ''} rounded-md flex items-center p-2 gap-2 hover:bg-[#B87333]/20 cursor-pointer`}
-              onClick={() => selectLanguage('Español')}
-            >
-              <Languages className="h-4 w-4 text-[#B87333]" />
-              Español
-              {selectedLanguage === 'Español' && <span className="ml-auto text-[#B87333]">✓</span>}
-            </DropdownMenuItem>
-            <DropdownMenuItem 
-              className={`${selectedLanguage === 'Português' ? 'bg-[#B87333]/30' : ''} rounded-md flex items-center p-2 gap-2 hover:bg-[#B87333]/20 cursor-pointer`}
-              onClick={() => selectLanguage('Português')}
-            >
-              <Languages className="h-4 w-4 text-[#B87333]" />
-              Português
-              {selectedLanguage === 'Português' && <span className="ml-auto text-[#B87333]">✓</span>}
-            </DropdownMenuItem>
-            <DropdownMenuItem 
-              className={`${selectedLanguage === 'Filipino' ? 'bg-[#B87333]/30' : ''} rounded-md flex items-center p-2 gap-2 hover:bg-[#B87333]/20 cursor-pointer`}
-              onClick={() => selectLanguage('Filipino')}
-            >
-              <Languages className="h-4 w-4 text-[#B87333]" />
-              Filipino
-              {selectedLanguage === 'Filipino' && <span className="ml-auto text-[#B87333]">✓</span>}
-            </DropdownMenuItem>
-          </DropdownMenuContent>
-        </DropdownMenu>
-      </div>
-      
       <div className="text-center max-w-2xl mx-auto px-4 z-10">
         <div className="mb-8">
           <img 
