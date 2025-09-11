@@ -43,12 +43,85 @@ async function saveToSupabase(_payload: {
 }
 
 /* ------------------------------------------------------------------
-   PRESETS (palettes, SVGs)
+   THERAPEUTIC THEMES FOR MENTAL HEALTH
 -------------------------------------------------------------------*/
-const PASTEL_PALETTE = [
-  "#7FB3D5", "#A9DFBF", "#F9E79F", "#F5CBA7",
-  "#D7BDE2", "#FADBD8", "#AED6F1", "#ABEBC6"
-];
+const THERAPY_THEMES = {
+  calm: {
+    name: "Calm & Serenity",
+    description: "Soft blues and greens to reduce anxiety and promote peace",
+    palette: ["#E8F4FD", "#B8E0D2", "#D6EAF8", "#EAEDED", "#F8F9FA", "#A2D2FF", "#BDE4FF", "#CCD1FF"],
+    background: "linear-gradient(135deg, #E8F4FD 0%, #D6EAF8 100%)",
+    benefit: "Promotes relaxation and reduces stress"
+  },
+  grounding: {
+    name: "Grounding & Stability",
+    description: "Earth tones to foster feelings of safety and connection",
+    palette: ["#F4E4BC", "#D4B996", "#C19A6B", "#A0815A", "#8B6F47", "#E6CCB2", "#DDB892", "#B68D40"],
+    background: "linear-gradient(135deg, #F4E4BC 0%, #DDB892 100%)",
+    benefit: "Helps with anxiety and promotes feeling centered"
+  },
+  energizing: {
+    name: "Gentle Energy",
+    description: "Warm, uplifting colors to combat depression and boost mood",
+    palette: ["#FFE5B4", "#FFCC5C", "#FFB347", "#FF8C69", "#FFA07A", "#FFDAB9", "#F0E68C", "#FFE4B5"],
+    background: "linear-gradient(135deg, #FFE5B4 0%, #FFDAB9 100%)",
+    benefit: "Elevates mood and increases motivation"
+  },
+  healing: {
+    name: "Healing & Growth",
+    description: "Gentle greens and purples for emotional healing and self-compassion",
+    palette: ["#E8F5E8", "#C8E6C9", "#A5D6A7", "#81C784", "#DCC9E8", "#C8A2C8", "#E1BEE7", "#F3E5F5"],
+    background: "linear-gradient(135deg, #E8F5E8 0%, #F3E5F5 100%)",
+    benefit: "Supports emotional healing and self-acceptance"
+  },
+  clarity: {
+    name: "Mental Clarity",
+    description: "Clear, fresh colors to enhance focus and clear mental fog",
+    palette: ["#F0F8FF", "#E0F6FF", "#B0E0E6", "#87CEEB", "#E6F3FF", "#F5F5DC", "#FFFACD", "#F0FFFF"],
+    background: "linear-gradient(135deg, #F0F8FF 0%, #E6F3FF 100%)",
+    benefit: "Improves concentration and mental clarity"
+  },
+  selfLove: {
+    name: "Self-Love & Acceptance",
+    description: "Warm pinks and soft tones to nurture self-compassion",
+    palette: ["#FFF0F5", "#FFE4E1", "#FFC0CB", "#FFB6C1", "#F8BBD9", "#E8A2C2", "#F5DEB3", "#FFEEF0"],
+    background: "linear-gradient(135deg, #FFF0F5 0%, #FFEEF0 100%)",
+    benefit: "Encourages self-compassion and inner kindness"
+  }
+};
+
+const THERAPEUTIC_PROMPTS = {
+  calm: [
+    "Paint your safe space - where do you feel most at peace?",
+    "Create flowing water or gentle clouds to represent letting go",
+    "Draw your breath - what does calm breathing look like?"
+  ],
+  grounding: [
+    "Paint roots growing deep into the earth",
+    "Create a mountain that represents your inner strength",
+    "Draw the feeling of your feet on solid ground"
+  ],
+  energizing: [
+    "Paint a sunrise that represents new hope",
+    "Create flowers blooming to show your growth",
+    "Draw warm light filling a dark space"
+  ],
+  healing: [
+    "Paint a garden where your emotions can grow safely",
+    "Create bandages of color over old wounds",
+    "Draw yourself giving yourself a gentle hug"
+  ],
+  clarity: [
+    "Paint clearing fog to reveal a beautiful landscape",
+    "Create organized patterns that feel calming",
+    "Draw light breaking through clouds"
+  ],
+  selfLove: [
+    "Paint a warm embrace you're giving yourself",
+    "Create a mirror that shows your kind inner voice",
+    "Draw all the things you appreciate about yourself"
+  ]
+};
 
 const DEFAULT_BRUSH_SIZES = [2, 4, 8, 12, 18, 24];
 const DEFAULT_OPACITIES = [1, 0.8, 0.6, 0.4, 0.2];
@@ -196,12 +269,6 @@ const PBN_TEMPLATES = {
   advanced: { name: "Advanced - Castle Scene", svg: ADVANCED_PBN_SVG, regions: 28 }
 };
 
-const SUGGESTED_PALETTES = {
-  beginner: ["#FFB6C1", "#98FB98", "#87CEEB", "#DDA0DD", "#F0E68C", "#8FBC8F"],
-  intermediate: ["#FF69B4", "#FF4500", "#32CD32", "#4169E1", "#FFD700", "#8A2BE2", "#FF1493", "#00CED1", "#FF6347"],
-  advanced: ["#87CEEB", "#B0E0E6", "#778899", "#696969", "#8B4513", "#228B22", "#FFFFFF", "#F5DEB3", "#90EE90", "#FFB6C1"]
-};
-
 const SAMPLE_MANDALA_SVG = `
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 540 540">
   <rect width="540" height="540" fill="#ffffff"/>
@@ -227,13 +294,16 @@ const SAMPLE_MANDALA_SVG = `
 -------------------------------------------------------------------*/
 export const ArtTherapyStudio: React.FC = () => {
   const [mode, setMode] = useState<Mode>("FREE_DRAW");
+  const [currentTheme, setCurrentTheme] = useState<keyof typeof THERAPY_THEMES>("calm");
+  const [isFullscreen, setIsFullscreen] = useState(false);
 
   // Shared UI state
-  const [color, setColor] = useState(PASTEL_PALETTE[0]);
+  const [color, setColor] = useState(THERAPY_THEMES.calm.palette[0]);
   const [brushSize, setBrushSize] = useState(8);
   const [opacity, setOpacity] = useState(1);
   const [tool, setTool] = useState<Tool>("BRUSH");
   const [reflection, setReflection] = useState("");
+  const [selectedPrompt, setSelectedPrompt] = useState<string>("");
 
   // For Free Draw
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
@@ -257,7 +327,7 @@ export const ArtTherapyStudio: React.FC = () => {
   // Restore last session
   useEffect(() => {
     const s = readLocal<any>({
-      color, brushSize, opacity, tool, mode, strokes, pbnColors, reflection, symmetry, guidedColoring
+      color, brushSize, opacity, tool, mode, strokes, pbnColors, reflection, symmetry, guidedColoring, currentTheme, selectedPrompt
     });
     setColor(s.color ?? color);
     setBrushSize(s.brushSize ?? brushSize);
@@ -269,14 +339,16 @@ export const ArtTherapyStudio: React.FC = () => {
     setReflection(s.reflection ?? "");
     setSymmetry(s.symmetry ?? 1);
     setGuidedColoring(s.guidedColoring ?? {});
-  }, []); // eslint-disable-line
+    setCurrentTheme(s.currentTheme ?? "calm");
+    setSelectedPrompt(s.selectedPrompt ?? "");
+  }, []);
 
   // Persist on change
   useEffect(() => {
     persistLocal({
-      color, brushSize, opacity, tool, mode, strokes, pbnColors, reflection, symmetry, guidedColoring
+      color, brushSize, opacity, tool, mode, strokes, pbnColors, reflection, symmetry, guidedColoring, currentTheme, selectedPrompt
     });
-  }, [color, brushSize, opacity, tool, mode, strokes, pbnColors, reflection, symmetry, guidedColoring]);
+  }, [color, brushSize, opacity, tool, mode, strokes, pbnColors, reflection, symmetry, guidedColoring, currentTheme, selectedPrompt]);
 
   /* ----------------------------- FREE DRAW ----------------------------- */
   useEffect(() => {
@@ -587,16 +659,70 @@ export const ArtTherapyStudio: React.FC = () => {
   }
 
   /* ----------------------------- RENDER ----------------------------- */
+  const currentThemeData = THERAPY_THEMES[currentTheme];
+  const currentPrompts = THERAPEUTIC_PROMPTS[currentTheme];
+
   return (
-    <div className="w-full h-full flex flex-col gap-4 p-4 bg-background">
-      <header className="flex flex-wrap items-center justify-between gap-3">
-        <h2 className="text-xl font-semibold text-foreground">Art Therapy Studio</h2>
-        <div className="flex items-center gap-2">
-          <ModeTab current={mode} label="Free Draw" onClick={() => setMode("FREE_DRAW")} />
-          <ModeTab current={mode} label="Paint by Numbers" onClick={() => setMode("PAINT_BY_NUMBERS")} />
-          <ModeTab current={mode} label="Mandala / Guided" onClick={() => setMode("MANDALA")} />
+    <div 
+      className={`w-full transition-all duration-500 animate-fade-in ${
+        isFullscreen ? 'fixed inset-0 z-50' : 'h-screen'
+      } flex flex-col gap-4 p-4`}
+      style={{ 
+        background: currentThemeData.background,
+        minHeight: isFullscreen ? '100vh' : '100vh'
+      }}
+    >
+      {/* Therapeutic Theme Header */}
+      <div className="bg-white/90 backdrop-blur-sm rounded-lg p-4 border border-white/20 shadow-lg animate-scale-in">
+        <div className="flex flex-wrap items-center justify-between gap-4 mb-4">
+          <div>
+            <h2 className="text-2xl font-bold text-gray-800 mb-1">Art Therapy Studio</h2>
+            <p className="text-sm text-gray-600">
+              <span className="font-medium">{currentThemeData.name}</span> • {currentThemeData.benefit}
+            </p>
+          </div>
+          <div className="flex items-center gap-2">
+            <button
+              onClick={() => setIsFullscreen(!isFullscreen)}
+              className="px-3 py-1.5 text-sm bg-white/80 hover:bg-white rounded-md border border-gray-200 transition-all hover-scale"
+              title={isFullscreen ? "Exit Fullscreen" : "Enter Fullscreen"}
+            >
+              {isFullscreen ? "Exit Fullscreen" : "🖼️ Fullscreen"}
+            </button>
+          </div>
         </div>
-      </header>
+
+        {/* Theme Selection */}
+        <div className="flex flex-wrap items-center gap-2 mb-4">
+          <span className="text-sm font-medium text-gray-700">Therapeutic Theme:</span>
+          {Object.entries(THERAPY_THEMES).map(([key, theme]) => (
+            <button
+              key={key}
+              onClick={() => {
+                setCurrentTheme(key as keyof typeof THERAPY_THEMES);
+                setColor(theme.palette[0]);
+                setSelectedPrompt("");
+              }}
+              className={`px-3 py-1.5 text-xs rounded-md border transition-all hover-scale ${
+                currentTheme === key
+                  ? "bg-white text-gray-800 border-gray-300 shadow-md"
+                  : "bg-white/60 text-gray-600 border-gray-200 hover:bg-white/80"
+              }`}
+              title={theme.description}
+            >
+              {theme.name}
+            </button>
+          ))}
+        </div>
+
+        {/* Mode Selection */}
+        <div className="flex items-center gap-2">
+          <span className="text-sm font-medium text-gray-700">Activity:</span>
+          <ModeTab current={mode} label="Free Expression" onClick={() => setMode("FREE_DRAW")} />
+          <ModeTab current={mode} label="Guided Coloring" onClick={() => setMode("PAINT_BY_NUMBERS")} />
+          <ModeTab current={mode} label="Mindful Mandala" onClick={() => setMode("MANDALA")} />
+        </div>
+      </div>
 
       <Toolbar
         mode={mode}
@@ -617,11 +743,12 @@ export const ArtTherapyStudio: React.FC = () => {
         onClear={clearCanvas}
         onExport={exportPNG}
         onSave={saveSession}
+        currentTheme={currentTheme}
       />
 
-      <div className="flex-1 grid grid-cols-1 lg:grid-cols-5 gap-4">
+      <div className={`flex-1 grid gap-4 ${isFullscreen ? 'grid-cols-1 xl:grid-cols-4' : 'grid-cols-1 lg:grid-cols-4'}`}>
         {/* Canvas / Work Area */}
-        <div className="lg:col-span-4 rounded-md border border-border overflow-hidden relative">
+        <div className={`${isFullscreen ? 'xl:col-span-3' : 'lg:col-span-3'} rounded-lg border border-white/30 overflow-hidden relative bg-white/50 backdrop-blur-sm shadow-lg`}>
           {mode !== "PAINT_BY_NUMBERS" ? (
             <CanvasArea
               canvasRef={canvasRef}
@@ -631,7 +758,7 @@ export const ArtTherapyStudio: React.FC = () => {
               onEnd={endDraw}
             />
           ) : (
-            <div ref={pbnContainerRef} className="w-full h-full bg-card overflow-auto p-4">
+            <div ref={pbnContainerRef} className="w-full h-full bg-white/90 overflow-auto p-4">
               <div
                 className="max-w-[900px] mx-auto [&_svg]:w-full [&_svg]:h-auto"
                 dangerouslySetInnerHTML={{ __html: pbnSvg }}
@@ -640,33 +767,52 @@ export const ArtTherapyStudio: React.FC = () => {
           )}
         </div>
 
-        {/* Reflection / Prompts */}
-        <aside className="lg:col-span-1 rounded-md border border-border p-3 bg-card">
-          <h3 className="font-medium mb-2 text-card-foreground">Reflection</h3>
-          <p className="text-sm text-muted-foreground mb-2">
-            Optional: How did creating this make you feel? Anything you'd like to remember?
-          </p>
-          <textarea
-            value={reflection}
-            onChange={(e) => setReflection(e.target.value)}
-            className="w-full h-40 p-2 rounded-md border border-border bg-background text-foreground outline-none focus:ring-2 focus:ring-ring"
-            placeholder="Write a few thoughts..."
-          />
-          <div className="mt-3 text-xs text-muted-foreground">
-            Prompts:
-            <ul className="list-disc ml-4 space-y-1">
-              <li>What feelings surfaced while drawing?</li>
-              <li>What colors did you choose and why?</li>
-              <li>What would you tell yourself looking at this piece?</li>
-            </ul>
+        {/* Therapeutic Sidebar */}
+        <aside className={`${isFullscreen ? 'xl:col-span-1' : 'lg:col-span-1'} space-y-4`}>
+          {/* Therapeutic Prompts */}
+          <div className="rounded-lg border border-white/30 p-4 bg-white/80 backdrop-blur-sm shadow-lg animate-fade-in">
+            <h3 className="font-semibold mb-3 text-gray-800">Guided Prompts</h3>
+            <p className="text-xs text-gray-600 mb-3">{currentThemeData.description}</p>
+            <div className="space-y-2">
+              {currentPrompts.map((prompt, index) => (
+                <button
+                  key={index}
+                  onClick={() => setSelectedPrompt(prompt)}
+                  className={`w-full text-left p-2 rounded-md text-sm transition-all hover-scale ${
+                    selectedPrompt === prompt
+                      ? "bg-white text-gray-800 shadow-md border border-gray-200"
+                      : "bg-white/60 text-gray-700 hover:bg-white/80"
+                  }`}
+                >
+                  {prompt}
+                </button>
+              ))}
+            </div>
+          </div>
+
+          {/* Reflection */}
+          <div className="rounded-lg border border-white/30 p-4 bg-white/80 backdrop-blur-sm shadow-lg">
+            <h3 className="font-semibold mb-2 text-gray-800">Reflection Space</h3>
+            {selectedPrompt && (
+              <div className="mb-3 p-2 bg-blue-50 rounded-md border border-blue-200">
+                <p className="text-xs text-blue-800 font-medium">Current prompt:</p>
+                <p className="text-sm text-blue-700">{selectedPrompt}</p>
+              </div>
+            )}
+            <textarea
+              value={reflection}
+              onChange={(e) => setReflection(e.target.value)}
+              className="w-full h-32 p-3 rounded-md border border-gray-200 outline-none focus:ring-2 focus:ring-blue-300 text-sm bg-white/90"
+              placeholder="How did this creative process feel? What emotions came up? What did you discover?"
+            />
           </div>
         </aside>
       </div>
 
       {/* Paint by Numbers Level Selection */}
       {mode === "PAINT_BY_NUMBERS" && (
-        <div className="rounded-md border border-border p-3 bg-card flex flex-wrap items-center gap-4">
-          <span className="text-sm font-medium text-card-foreground">Difficulty Level:</span>
+        <div className="rounded-lg border border-white/30 p-4 bg-white/80 backdrop-blur-sm shadow-lg flex flex-wrap items-center gap-4">
+          <span className="text-sm font-medium text-gray-800">Complexity Level:</span>
           <div className="flex items-center gap-2">
             {Object.entries(PBN_TEMPLATES).map(([key, template]) => (
               <button
@@ -676,29 +822,15 @@ export const ArtTherapyStudio: React.FC = () => {
                   setPbnSvg(template.svg);
                   setPbnColors({});
                 }}
-                className={`px-3 py-1.5 text-sm rounded-md border transition ${
+                className={`px-3 py-1.5 text-sm rounded-md border transition-all hover-scale ${
                   pbnLevel === key
-                    ? "bg-primary text-primary-foreground border-primary"
-                    : "bg-background text-foreground border-border hover:bg-accent"
+                    ? "bg-white text-gray-800 border-gray-300 shadow-md"
+                    : "bg-white/60 text-gray-600 border-gray-200 hover:bg-white/80"
                 }`}
               >
                 {template.name} ({template.regions} regions)
               </button>
             ))}
-          </div>
-          <div className="flex items-center gap-2 ml-auto">
-            <span className="text-xs text-muted-foreground">Suggested colors:</span>
-            <div className="flex items-center gap-1">
-              {SUGGESTED_PALETTES[pbnLevel].slice(0, 6).map((c, i) => (
-                <button
-                  key={i}
-                  className="h-6 w-6 rounded border border-border"
-                  style={{ background: c }}
-                  onClick={() => setColor(c)}
-                  title={c}
-                />
-              ))}
-            </div>
           </div>
         </div>
       )}
@@ -723,7 +855,7 @@ export const ArtTherapyStudio: React.FC = () => {
 
       {/* Hidden target for Mandala SVG (for future fill-on-click extension) */}
       {mode === "MANDALA" && (
-        <details className="text-xs text-muted-foreground">
+        <details className="text-xs text-gray-500">
           <summary>Show Mandala SVG (read-only)</summary>
           <div
             className="[&_svg]:w-full [&_svg]:h-auto border mt-2"
@@ -742,13 +874,13 @@ export const ArtTherapyStudio: React.FC = () => {
 const ModeTab: React.FC<{ current: Mode; label: string; onClick: () => void }> = ({ current, label, onClick }) => {
   const active =
     (current === "FREE_DRAW" && label.startsWith("Free")) ||
-    (current === "PAINT_BY_NUMBERS" && label.startsWith("Paint")) ||
-    (current === "MANDALA" && label.startsWith("Mandala"));
+    (current === "PAINT_BY_NUMBERS" && label.startsWith("Guided")) ||
+    (current === "MANDALA" && label.startsWith("Mindful"));
   return (
     <button
       onClick={onClick}
-      className={`px-3 py-1 rounded-md border text-sm transition ${
-        active ? "bg-primary text-primary-foreground border-primary" : "bg-card text-card-foreground border-border hover:bg-accent"
+      className={`px-3 py-1 rounded-md border text-sm transition-all hover-scale ${
+        active ? "bg-white text-gray-800 border-gray-300 shadow-md" : "bg-white/60 text-gray-600 border-gray-200 hover:bg-white/80"
       }`}
     >
       {label}
@@ -775,34 +907,37 @@ const Toolbar: React.FC<{
   onClear: () => void;
   onExport: () => void;
   onSave: () => void;
+  currentTheme: keyof typeof THERAPY_THEMES;
 }> = ({
   mode, tool, setTool, color, setColor, brushSize, setBrushSize, opacity, setOpacity,
-  stamp, setStamp, symmetry, setSymmetry, onUndo, onRedo, onClear, onExport, onSave
+  stamp, setStamp, symmetry, setSymmetry, onUndo, onRedo, onClear, onExport, onSave, currentTheme
 }) => {
+  const currentPalette = THERAPY_THEMES[currentTheme].palette;
+  
   return (
-    <div className="w-full rounded-md border border-border bg-card p-2 flex flex-wrap items-center gap-2">
+    <div className="w-full rounded-lg border border-white/30 bg-white/80 backdrop-blur-sm shadow-lg p-3 flex flex-wrap items-center gap-3 animate-scale-in">
       <div className="flex items-center gap-1">
         <button
           className={btn(tool === "BRUSH")}
           onClick={() => setTool("BRUSH")}
-          title="Brush"
+          title="Brush - Express freely"
         >🖌️ Brush</button>
         <button
           className={btn(tool === "ERASER")}
           onClick={() => setTool("ERASER")}
-          title="Eraser"
+          title="Eraser - Let go and release"
         >🧽 Eraser</button>
         {mode !== "PAINT_BY_NUMBERS" && (
           <button
             className={btn(tool === "FILL")}
             onClick={() => setTool("FILL")}
-            title="Soft Fill"
+            title="Fill - Complete and nurture"
           >🪣 Fill</button>
         )}
         <button
           className={btn(tool === "STAMP")}
           onClick={() => setTool("STAMP")}
-          title="Stamp"
+          title="Stamp - Add joy and playfulness"
         >✨ Stamp</button>
       </div>
 
@@ -812,16 +947,16 @@ const Toolbar: React.FC<{
         </div>
       )}
 
-      <div className="h-6 w-px bg-border mx-1" />
+      <div className="h-6 w-px bg-gray-300 mx-1" />
 
       <div className="flex items-center gap-2">
-        <span className="text-xs text-muted-foreground">Color</span>
-        <input type="color" value={color} onChange={(e) => setColor(e.target.value)} className="h-7 w-7 p-0 border rounded" />
+        <span className="text-xs text-gray-700 font-medium">Therapeutic Colors</span>
+        <input type="color" value={color} onChange={(e) => setColor(e.target.value)} className="h-8 w-8 p-0 border rounded-md" />
         <div className="flex items-center gap-1">
-          {PASTEL_PALETTE.map((c) => (
+          {currentPalette.slice(0, 8).map((c) => (
             <button
               key={c}
-              className="h-6 w-6 rounded border border-border"
+              className="h-7 w-7 rounded-md border-2 border-white shadow-sm hover-scale transition-all"
               style={{ background: c }}
               onClick={() => setColor(c)}
               title={c}
@@ -831,27 +966,27 @@ const Toolbar: React.FC<{
       </div>
 
       <div className="flex items-center gap-2">
-        <span className="text-xs text-muted-foreground">Size</span>
+        <span className="text-xs text-gray-700 font-medium">Size</span>
         <Sel value={String(brushSize)} setValue={(v) => setBrushSize(Number(v))} options={DEFAULT_BRUSH_SIZES.map(String)} />
       </div>
 
       <div className="flex items-center gap-2">
-        <span className="text-xs text-muted-foreground">Opacity</span>
+        <span className="text-xs text-gray-700 font-medium">Opacity</span>
         <Sel value={String(opacity)} setValue={(v) => setOpacity(Number(v))} options={DEFAULT_OPACITIES.map(String)} />
       </div>
 
       <div className="flex items-center gap-2">
-        <span className="text-xs text-muted-foreground">Symmetry</span>
+        <span className="text-xs text-gray-700 font-medium">Symmetry</span>
         <Sel value={String(symmetry)} setValue={(v) => setSymmetry(Number(v))} options={["1","2","4","6","8","12"]} />
-        <span className="text-[10px] text-muted-foreground">(great for Mandala)</span>
+        <span className="text-[10px] text-gray-500">(great for Mandala)</span>
       </div>
 
       <div className="ml-auto flex items-center gap-2">
-        <button className={btn()} onClick={onUndo} title="Undo">Undo</button>
-        <button className={btn()} onClick={onRedo} title="Redo">Redo</button>
-        <button className={btn()} onClick={onClear} title="Clear">🗑️ Clear</button>
-        <button className={btn(true)} onClick={onExport} title="Export PNG">⬇️ Export</button>
-        <button className={btn(true)} onClick={onSave} title="Save (Supabase/local)">💾 Save</button>
+        <button className={btn()} onClick={onUndo} title="Undo - Go back gently">↶ Undo</button>
+        <button className={btn()} onClick={onRedo} title="Redo - Move forward">↷ Redo</button>
+        <button className={btn()} onClick={onClear} title="Clear - Fresh start">🗑️ Clear</button>
+        <button className={btn(true)} onClick={onExport} title="Export - Share your creation">💾 Export</button>
+        <button className={btn(true)} onClick={onSave} title="Save - Preserve this moment">💾 Save</button>
       </div>
     </div>
   );
@@ -895,7 +1030,7 @@ const CanvasArea: React.FC<{
   }, []);
 
   return (
-    <div ref={containerRef} className="w-full h-[60vh] sm:h-[70vh] bg-card relative">
+    <div ref={containerRef} className="w-full h-[70vh] sm:h-[75vh] bg-white/90 relative rounded-lg overflow-hidden shadow-inner">
       <canvas
         ref={canvasRef}
         className="absolute inset-0 touch-none cursor-crosshair"
@@ -925,8 +1060,8 @@ const FileRow: React.FC<{
     onFile(exampleContent);
   }
   return (
-    <div className="rounded-md border border-border p-3 bg-card flex flex-wrap items-center gap-2">
-      <span className="text-sm text-card-foreground">{label}</span>
+    <div className="rounded-lg border border-white/30 p-3 bg-white/80 backdrop-blur-sm shadow-lg flex flex-wrap items-center gap-2">
+      <span className="text-sm text-gray-800">{label}</span>
       <input type="file" accept=".svg" onChange={handle} className="text-sm" />
       <button className={btn()} onClick={loadExample}>Load Example ({exampleName})</button>
     </div>
@@ -937,17 +1072,17 @@ const FileRow: React.FC<{
    UI helpers
 -------------------------------------------------------------------*/
 function btn(primary = false) {
-  return `px-3 py-1.5 text-sm rounded-md border transition ${
+  return `px-3 py-1.5 text-sm rounded-md border transition-all hover-scale ${
     primary
-      ? "bg-primary text-primary-foreground border-primary hover:bg-primary/90"
-      : "bg-card text-card-foreground border-border hover:bg-accent"
+      ? "bg-white text-gray-800 border-gray-300 shadow-md"
+      : "bg-white/80 text-gray-700 border-gray-200 hover:bg-white"
   }`;
 }
 const Sel: React.FC<{ value: string; setValue: (v: string) => void; options: string[] }> = ({ value, setValue, options }) => (
   <select
     value={value}
     onChange={(e) => setValue(e.target.value)}
-    className="px-2 py-1 rounded-md border border-border bg-background text-foreground text-sm"
+    className="px-2 py-1 rounded-md border border-gray-200 bg-white/90 text-sm"
   >
     {options.map((o) => (
       <option key={o} value={o}>{o}</option>
