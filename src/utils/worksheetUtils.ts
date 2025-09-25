@@ -115,7 +115,40 @@ export const downloadWorksheet = (workshopId: string, toastParam?: any) => {
   doc.text("Signature: _______________________     Date: _____________", 20, yPosition);
   
   // Save the PDF with workshop title
-  saveAs(doc.output('blob'), `${content.title.replace(/\s+/g, '_')}.pdf`);
+  try {
+    const blob = doc.output('blob');
+    const fileName = `${content.title.replace(/\s+/g, '_')}.pdf`;
+    console.log('Attempting to download:', fileName, 'Blob size:', blob.size);
+    
+    // Fallback download method if file-saver doesn't work
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = fileName;
+    link.style.display = 'none';
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    URL.revokeObjectURL(url);
+    
+    console.log('Download triggered successfully');
+  } catch (error) {
+    console.error('Download failed:', error);
+    
+    // Show error toast
+    if (toastParam) {
+      const toastFn = typeof toastParam === 'function' ? toastParam : 
+                     typeof toastParam.toast === 'function' ? toastParam.toast : 
+                     toastFunction;
+      toastFn({
+        title: "Download Failed",
+        description: "There was an error downloading the worksheet. Please try again.",
+        variant: "destructive",
+        duration: 5000,
+      });
+    }
+    return;
+  }
   
   // Show success toast - correctly handle the toast function
   if (toastParam) {
