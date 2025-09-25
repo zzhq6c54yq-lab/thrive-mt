@@ -121,7 +121,7 @@ const SubscriptionScreen: React.FC<SubscriptionScreenProps> = ({
   const subscriptionPlans: SubscriptionPlan[] = [
     {
       title: translations.basic.title,
-      price: billingCycle === 'monthly' ? translations.basic.price : translations.basic.price,
+      price: translations.basic.price, // Always Free
       description: translations.basic.description,
       features: translations.basic.features,
       addOnPrice: translations.basic.addOnPrice,
@@ -220,8 +220,7 @@ const SubscriptionScreen: React.FC<SubscriptionScreenProps> = ({
           {subscriptionPlans.map((plan) => (
             <div 
               key={plan.title}
-              className={`${plan.color} rounded-xl overflow-hidden transition-all duration-300 transform ${selectedPlan === plan.title ? 'scale-105 ring-2 ring-[#B87333]' : 'hover:scale-102'} relative`}
-              onClick={() => onPlanSelect(plan.title)}
+              className={`${plan.color} rounded-xl overflow-hidden transition-all duration-300 transform ${selectedPlan === plan.title ? 'scale-105 ring-2 ring-[#B87333] shadow-xl' : 'hover:scale-102'} relative cursor-pointer border-2`}
             >
               <div className="p-6">
                 <div className="flex justify-between items-start mb-4">
@@ -231,20 +230,31 @@ const SubscriptionScreen: React.FC<SubscriptionScreenProps> = ({
                   </div>
                   <plan.icon className="h-8 w-8" />
                 </div>
-                <p className="mb-4 text-sm">{plan.description}</p>
-                <ul className="space-y-2">
+                <p className="mb-4 text-sm opacity-90">{plan.description}</p>
+                <ul className="space-y-2 mb-6">
                   {plan.features.map((feature, index) => (
                     <li key={index} className="flex items-start">
-                      <Check className="h-5 w-5 mr-2 flex-shrink-0 mt-0.5" />
+                      <Check className="h-4 w-4 mr-2 flex-shrink-0 mt-0.5" />
                       <span className="text-sm">{feature}</span>
                     </li>
                   ))}
                 </ul>
               </div>
-              <div className={`p-4 border-t ${plan.recommended ? 'bg-[#B87333]/20 border-[#B87333]/30' : 'bg-black/5 border-gray-700/20'}`}>
+              <div className="px-6 pb-6">
                 <Button 
-                  className={`w-full ${selectedPlan === plan.title ? 'bg-[#B87333] hover:bg-[#B87333]/90' : 'bg-black/30 hover:bg-black/40'}`}
-                  onClick={() => onPlanSelect(plan.title)}
+                  className={`w-full transition-all ${
+                    selectedPlan === plan.title 
+                      ? 'bg-[#B87333] hover:bg-[#B87333]/90 text-white shadow-lg' 
+                      : plan.title === 'Basic' || plan.title === 'Básico'
+                        ? 'bg-gray-600 hover:bg-gray-700 text-white'
+                        : plan.title === 'Gold' || plan.title === 'Oro'
+                          ? 'bg-[#B87333]/80 hover:bg-[#B87333] text-white'
+                          : 'bg-[#7E69AB] hover:bg-[#7E69AB]/90 text-white'
+                  }`}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    onPlanSelect(plan.title);
+                  }}
                 >
                   {selectedPlan === plan.title ? translations.selected : translations.select}
                 </Button>
