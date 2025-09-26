@@ -132,8 +132,11 @@ const DailyWellnessChallenges: React.FC = () => {
           
           <div className="flex space-x-4 mb-6">
             <button
-              onClick={() => setActiveTab('wellness')}
-              className={`px-4 py-2 rounded-full text-sm font-medium transition-all ${
+              onClick={() => {
+                console.log('Wellness tab clicked');
+                setActiveTab('wellness');
+              }}
+              className={`px-4 py-2 rounded-full text-sm font-medium transition-all z-10 relative ${
                 activeTab === 'wellness'
                   ? 'bg-indigo-500 text-white'
                   : 'bg-[#3a3a4c]/50 text-gray-300 hover:bg-[#3a3a4c]'
@@ -142,8 +145,11 @@ const DailyWellnessChallenges: React.FC = () => {
               {translations.wellnessChallenges}
             </button>
             <button
-              onClick={() => setActiveTab('mental')}
-              className={`px-4 py-2 rounded-full text-sm font-medium transition-all ${
+              onClick={() => {
+                console.log('Mental health tab clicked');
+                setActiveTab('mental');
+              }}
+              className={`px-4 py-2 rounded-full text-sm font-medium transition-all z-10 relative ${
                 activeTab === 'mental'
                   ? 'bg-purple-500 text-white'
                   : 'bg-[#3a3a4c]/50 text-gray-300 hover:bg-[#3a3a4c]'

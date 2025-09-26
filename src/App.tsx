@@ -261,6 +261,7 @@ function App() {
           <Route path="/video-diary/view/:videoId" element={<VideoLibraryPage />} />
           <Route path="/resource-library" element={<ResourceLibrary />} />
           <Route path="/wellness-challenges" element={<WellnessChallenges />} />
+          <Route path="/wellness-challenges/:id" element={<WellnessChallenges />} />
           <Route path="/my-sponsor" element={<MySponsor />} />
           <Route path="/aa-sponsor" element={<AASponsor />} />
           <Route path="/substance-abuse-sponsor" element={<AASponsor />} />
