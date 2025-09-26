@@ -66,8 +66,8 @@ const ProgressDashboard: React.FC = () => {
 
       // Calculate metrics from data
       const journalCount = journalEntries?.length || 0;
-      const assessmentCount = assessmentData.data?.length || 0;
-      const workshopCount = workshopProgress.data?.length || 0;
+      const assessmentCount = assessmentData.data.length || 0;
+      const workshopCount = workshopProgress.data.length || 0;
 
       // Generate sample mood trend data (would come from actual journal entries)
       const moodTrend = Array.from({ length: 7 }, (_, i) => Math.floor(Math.random() * 5) + 3);
