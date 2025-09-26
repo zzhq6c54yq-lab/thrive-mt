@@ -144,31 +144,43 @@ const CheckoutScreen: React.FC<CheckoutScreenProps> = ({
         </CardHeader>
 
         <CardContent className="space-y-6">
-          {/* Billing Cycle Toggle */}
-          <div className="flex justify-center">
-            <div className="bg-muted/50 p-1 rounded-lg border">
+          {/* Enhanced Billing Cycle Toggle */}
+          <div className="flex flex-col items-center space-y-4">
+            <div className="bg-gradient-to-r from-muted/60 to-muted/40 p-1 rounded-xl border border-primary/20 shadow-lg">
               <div className="flex">
                 <Button
                   variant={billingCycle === 'monthly' ? 'default' : 'ghost'}
-                  size="sm"
+                  size="lg"
                   onClick={() => setBillingCycle('monthly')}
-                  className="rounded-md"
+                  className="rounded-xl px-6"
                 >
                   Monthly
                 </Button>
                 <Button
                   variant={billingCycle === 'yearly' ? 'default' : 'ghost'}
-                  size="sm"
+                  size="lg"
                   onClick={() => setBillingCycle('yearly')}
-                  className="rounded-md"
+                  className="rounded-xl px-6"
                 >
                   Yearly
-                  <span className="ml-1 text-xs bg-green-100 text-green-800 px-1.5 py-0.5 rounded-full">
-                    Save 20%
+                  <span className="ml-2 text-xs bg-gradient-to-r from-green-500 to-green-600 text-white px-3 py-1 rounded-full font-bold animate-pulse">
+                    Save 20%!
                   </span>
                 </Button>
               </div>
             </div>
+            
+            {/* Prominent yearly savings message */}
+            {billingCycle === 'yearly' && (
+              <div className="text-center p-4 bg-gradient-to-r from-green-50 to-emerald-50 border border-green-200 rounded-xl animate-fade-in">
+                <p className="text-green-800 font-semibold text-lg">
+                  🎉 Great choice! You're saving 20% with yearly billing
+                </p>
+                <p className="text-green-600 text-sm mt-1">
+                  That's 2.4 months free every year!
+                </p>
+              </div>
+            )}
           </div>
 
           {/* Order Summary */}

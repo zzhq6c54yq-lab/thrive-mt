@@ -154,6 +154,14 @@ export default {
           '100%': {
             transform: 'scale(0.8)'
           }
+        },
+        'gradient-x': {
+          '0%, 100%': {
+            'background-position': '0% 50%'
+          },
+          '50%': {
+            'background-position': '100% 50%'
+          }
         }
       },
       animation: {
@@ -165,7 +173,8 @@ export default {
         'wave': 'wave 5s infinite ease-in-out',
         'ripple': 'ripple 1.5s linear infinite',
         'pulse-ring': 'pulse-ring 1.25s cubic-bezier(0.215, 0.61, 0.355, 1) infinite',
-        'pulse-dot': 'pulse-dot 1.25s cubic-bezier(0.455, 0.03, 0.515, 0.955) infinite'
+        'pulse-dot': 'pulse-dot 1.25s cubic-bezier(0.455, 0.03, 0.515, 0.955) infinite',
+        'gradient-x': 'gradient-x 3s ease infinite'
       },
       borderRadius: {
         lg: 'var(--radius)',
