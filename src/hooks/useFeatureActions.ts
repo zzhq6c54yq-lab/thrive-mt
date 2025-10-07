@@ -183,18 +183,15 @@ export const useFeatureActions = () => {
     const currentPath = location.pathname;
     const state = location.state as any;
     
-    console.log('[useFeatureActions] handleBackNavigation called from:', currentPath);
-    console.log('[useFeatureActions] Location state:', state);
-    
     // Special handling for specialized portals
     if (isInSpecializedPortal()) {
       const portalPath = getPortalBasePath();
-      console.log('[useFeatureActions] In specialized portal, navigating to:', portalPath);
       
       navigate(portalPath, {
         state: {
           stayInPortal: true,
-          fromFeature: currentPath
+          fromFeature: currentPath,
+          preventTutorial: true
         }
       });
       return;
@@ -202,27 +199,26 @@ export const useFeatureActions = () => {
     
     // Check if we should stay in a portal context
     if (state?.stayInPortal && state?.returnToPortal) {
-      console.log('[useFeatureActions] Staying in portal, returning to:', state.returnToPortal);
       navigate(state.returnToPortal, {
         state: {
           stayInPortal: true,
-          fromFeature: currentPath
+          fromFeature: currentPath,
+          preventTutorial: true
         }
       });
       return;
     }
     
-    // For key feature pages, always return to main dashboard
-    // Ensure onboarding is marked complete to prevent intro redirect
+    // Always return to main dashboard, never to intro screen
     localStorage.setItem('hasCompletedOnboarding', 'true');
-    console.log('[useFeatureActions] Returning to main dashboard');
     navigate('/', { 
       state: { 
         screenState: 'main',
         returnToMain: true,
         fromPath: currentPath,
         preserveState: true,
-        preventIntroRedirect: true
+        preventIntroRedirect: true,
+        preventTutorial: true
       } 
     });
   };

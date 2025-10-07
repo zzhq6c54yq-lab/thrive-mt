@@ -23,15 +23,8 @@ const BackButton: React.FC<BackButtonProps> = ({
   const handleClick = () => {
     if (onCustomBack) {
       onCustomBack();
-    } else if (location.state?.previousPath) {
-      // Ensure we don't navigate to intro pages
-      const previousPath = location.state.previousPath;
-      if (previousPath === '/' || previousPath.includes('intro')) {
-        handleBackNavigation();
-      } else {
-        navigate(previousPath);
-      }
     } else {
+      // Always use handleBackNavigation which ensures we go to main dashboard, never intro
       handleBackNavigation();
     }
   };

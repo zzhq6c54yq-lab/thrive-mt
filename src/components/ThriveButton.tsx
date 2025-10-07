@@ -23,7 +23,8 @@ const ThriveButton: React.FC<ThriveButtonProps> = ({ className = '' }) => {
         returnToMain: true,
         fromPath: currentPath,
         preserveState: true,
-        preventIntroRedirect: true
+        preventIntroRedirect: true,
+        preventTutorial: true
       } 
     });
   };

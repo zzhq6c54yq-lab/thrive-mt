@@ -31,6 +31,8 @@ const SleepTracker: React.FC = () => {
   const { toast } = useToast();
   const [activeTab, setActiveTab] = useState("log");
   const [sleepEntries, setSleepEntries] = useState<SleepEntry[]>([]);
+  const [sleepGoal, setSleepGoal] = useState(8);
+  const [selectedPeriod, setSelectedPeriod] = useState<'7days' | '30days' | 'all'>('7days');
   const [newEntry, setNewEntry] = useState({
     bedTime: "",
     sleepTime: "",
@@ -40,33 +42,46 @@ const SleepTracker: React.FC = () => {
     factors: [] as string[]
   });
 
-  // Load sample data on component mount
+  // Load data from localStorage on mount
   useEffect(() => {
-    const sampleData: SleepEntry[] = [
-      {
-        id: "1",
-        date: "2024-01-13",
-        bedTime: "23:00",
-        sleepTime: "23:30",
-        wakeTime: "07:00",
-        quality: 8,
-        duration: 7.5,
-        notes: "Felt refreshed",
-        factors: ["exercise", "no-caffeine"]
-      },
-      {
-        id: "2", 
-        date: "2024-01-12",
-        bedTime: "23:30",
-        sleepTime: "00:15",
-        wakeTime: "07:30",
-        quality: 6,
-        duration: 7.25,
-        notes: "Had trouble falling asleep",
-        factors: ["screen-time", "caffeine"]
-      }
-    ];
-    setSleepEntries(sampleData);
+    const savedEntries = localStorage.getItem('sleepEntries');
+    const savedGoal = localStorage.getItem('sleepGoal');
+    
+    if (savedEntries) {
+      setSleepEntries(JSON.parse(savedEntries));
+    } else {
+      // Initial sample data
+      const sampleData: SleepEntry[] = [
+        {
+          id: "1",
+          date: new Date(Date.now() - 1 * 24 * 60 * 60 * 1000).toISOString().split('T')[0],
+          bedTime: "23:00",
+          sleepTime: "23:30",
+          wakeTime: "07:00",
+          quality: 8,
+          duration: 7.5,
+          notes: "Felt refreshed",
+          factors: ["exercise", "no-caffeine"]
+        },
+        {
+          id: "2", 
+          date: new Date(Date.now() - 2 * 24 * 60 * 60 * 1000).toISOString().split('T')[0],
+          bedTime: "23:30",
+          sleepTime: "00:15",
+          wakeTime: "07:30",
+          quality: 6,
+          duration: 7.25,
+          notes: "Had trouble falling asleep",
+          factors: ["screen-time", "caffeine"]
+        }
+      ];
+      setSleepEntries(sampleData);
+      localStorage.setItem('sleepEntries', JSON.stringify(sampleData));
+    }
+    
+    if (savedGoal) {
+      setSleepGoal(parseInt(savedGoal));
+    }
   }, []);
 
   const sleepFactors = [
@@ -103,7 +118,10 @@ const SleepTracker: React.FC = () => {
       factors: newEntry.factors
     };
 
-    setSleepEntries([entry, ...sleepEntries]);
+    const updatedEntries = [entry, ...sleepEntries];
+    setSleepEntries(updatedEntries);
+    localStorage.setItem('sleepEntries', JSON.stringify(updatedEntries));
+    
     setNewEntry({
       bedTime: "",
       sleepTime: "",
@@ -117,6 +135,8 @@ const SleepTracker: React.FC = () => {
       title: "Sleep Entry Saved",
       description: "Your sleep data has been recorded successfully"
     });
+    
+    setActiveTab("history");
   };
 
   const calculateDuration = (sleepTime: string, wakeTime: string): number => {
@@ -145,12 +165,57 @@ const SleepTracker: React.FC = () => {
 
   const getSleepGoalProgress = () => {
     const average = getAverageSleep();
-    const goal = 8; // 8 hours goal
-    return Math.min((average / goal) * 100, 100);
+    return Math.min((average / sleepGoal) * 100, 100);
   };
 
-  const chartData = sleepEntries.slice(-7).reverse().map(entry => ({
-    date: new Date(entry.date).toLocaleDateString('en-US', { weekday: 'short' }),
+  const getSleepScore = () => {
+    // Calculate a comprehensive sleep score based on duration, quality, and consistency
+    const avgDuration = getAverageSleep();
+    const avgQuality = getAverageQuality();
+    
+    // Score components
+    const durationScore = Math.min((avgDuration / sleepGoal) * 40, 40);
+    const qualityScore = (avgQuality / 10) * 40;
+    const consistencyScore = 20; // Simplified for now
+    
+    return Math.round(durationScore + qualityScore + consistencyScore);
+  };
+
+  const getBestSleepFactors = () => {
+    const factorQualityMap: { [key: string]: number[] } = {};
+    
+    sleepEntries.forEach(entry => {
+      entry.factors.forEach(factor => {
+        if (!factorQualityMap[factor]) {
+          factorQualityMap[factor] = [];
+        }
+        factorQualityMap[factor].push(entry.quality);
+      });
+    });
+    
+    return Object.entries(factorQualityMap)
+      .map(([factor, qualities]) => ({
+        factor,
+        avgQuality: qualities.reduce((a, b) => a + b, 0) / qualities.length
+      }))
+      .sort((a, b) => b.avgQuality - a.avgQuality)
+      .slice(0, 3);
+  };
+
+  const getFilteredEntries = () => {
+    const now = Date.now();
+    switch (selectedPeriod) {
+      case '7days':
+        return sleepEntries.filter(e => new Date(e.date).getTime() > now - 7 * 24 * 60 * 60 * 1000);
+      case '30days':
+        return sleepEntries.filter(e => new Date(e.date).getTime() > now - 30 * 24 * 60 * 60 * 1000);
+      default:
+        return sleepEntries;
+    }
+  };
+
+  const chartData = getFilteredEntries().slice(-14).reverse().map(entry => ({
+    date: new Date(entry.date).toLocaleDateString('en-US', { month: 'short', day: 'numeric' }),
     duration: entry.duration,
     quality: entry.quality
   }));
@@ -176,57 +241,67 @@ const SleepTracker: React.FC = () => {
           <HomeButton />
         </div>
 
-        {/* Stats Overview */}
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-8">
-          <Card className="bg-white/10 backdrop-blur-md border-white/10">
-            <CardHeader className="pb-2">
-              <div className="flex items-center gap-2">
-                <Moon className="h-5 w-5 text-[#6366f1]" />
-                <CardTitle className="text-sm text-white/90">Avg Sleep</CardTitle>
+        {/* Hero Sleep Score Section */}
+        <div className="mb-8 relative">
+          <Card className="bg-gradient-to-br from-[#6366f1]/20 via-[#8b5cf6]/20 to-[#06b6d4]/20 backdrop-blur-xl border-white/10 overflow-hidden">
+            <div className="absolute inset-0 bg-[url('data:image/svg+xml;utf8,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%2240%22 height=%2240%22 viewBox=%220 0 40 40%22><circle cx=%224%22 cy=%224%22 r=%222%22 fill=%22%23fff%22 fill-opacity=%220.03%22/></svg>')] opacity-50"></div>
+            <CardContent className="p-8 relative">
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-8 items-center">
+                <div className="text-center">
+                  <div className="relative inline-block">
+                    <div className="text-6xl font-bold text-transparent bg-clip-text bg-gradient-to-br from-[#6366f1] via-[#8b5cf6] to-[#06b6d4]">
+                      {getSleepScore()}
+                    </div>
+                    <div className="text-white/60 text-sm mt-2">Sleep Score</div>
+                  </div>
+                </div>
+                
+                <div className="space-y-3">
+                  <div>
+                    <div className="flex justify-between text-sm text-white/70 mb-1">
+                      <span className="flex items-center gap-1"><Moon className="h-3 w-3" />Duration</span>
+                      <span>{getAverageSleep().toFixed(1)}h / {sleepGoal}h</span>
+                    </div>
+                    <Progress value={(getAverageSleep() / sleepGoal) * 100} className="h-2" />
+                  </div>
+                  
+                  <div>
+                    <div className="flex justify-between text-sm text-white/70 mb-1">
+                      <span className="flex items-center gap-1"><BarChart3 className="h-3 w-3" />Quality</span>
+                      <span>{getAverageQuality().toFixed(1)} / 10</span>
+                    </div>
+                    <Progress value={(getAverageQuality() / 10) * 100} className="h-2" />
+                  </div>
+                  
+                  <div>
+                    <div className="flex justify-between text-sm text-white/70 mb-1">
+                      <span className="flex items-center gap-1"><Target className="h-3 w-3" />Goal Progress</span>
+                      <span>{getSleepGoalProgress().toFixed(0)}%</span>
+                    </div>
+                    <Progress value={getSleepGoalProgress()} className="h-2" />
+                  </div>
+                </div>
+                
+                <div className="grid grid-cols-2 gap-4">
+                  <div className="text-center bg-white/5 rounded-lg p-3">
+                    <div className="text-2xl font-bold text-white">{sleepEntries.length}</div>
+                    <div className="text-xs text-white/60">Total Nights</div>
+                  </div>
+                  <div className="text-center bg-white/5 rounded-lg p-3">
+                    <div className="text-2xl font-bold text-white">
+                      {sleepEntries.filter(e => e.quality >= 7).length}
+                    </div>
+                    <div className="text-xs text-white/60">Great Nights</div>
+                  </div>
+                  <div className="text-center bg-white/5 rounded-lg p-3 col-span-2">
+                    <div className="text-lg font-bold text-white">
+                      {sleepEntries.length > 0 ? 
+                        Math.round((sleepEntries.filter(e => e.quality >= 7).length / sleepEntries.length) * 100) : 0}%
+                    </div>
+                    <div className="text-xs text-white/60">Success Rate</div>
+                  </div>
+                </div>
               </div>
-            </CardHeader>
-            <CardContent>
-              <div className="text-2xl font-bold text-white">{getAverageSleep().toFixed(1)}h</div>
-              <p className="text-xs text-white/60">Last 7 days</p>
-            </CardContent>
-          </Card>
-
-          <Card className="bg-white/10 backdrop-blur-md border-white/10">
-            <CardHeader className="pb-2">
-              <div className="flex items-center gap-2">
-                <Target className="h-5 w-5 text-[#8b5cf6]" />
-                <CardTitle className="text-sm text-white/90">Goal Progress</CardTitle>
-              </div>
-            </CardHeader>
-            <CardContent>
-              <div className="text-2xl font-bold text-white">{getSleepGoalProgress().toFixed(0)}%</div>
-              <Progress value={getSleepGoalProgress()} className="mt-2" />
-            </CardContent>
-          </Card>
-
-          <Card className="bg-white/10 backdrop-blur-md border-white/10">
-            <CardHeader className="pb-2">
-              <div className="flex items-center gap-2">
-                <BarChart3 className="h-5 w-5 text-[#06b6d4]" />
-                <CardTitle className="text-sm text-white/90">Quality</CardTitle>
-              </div>
-            </CardHeader>
-            <CardContent>
-              <div className="text-2xl font-bold text-white">{getAverageQuality().toFixed(1)}/10</div>
-              <p className="text-xs text-white/60">Average rating</p>
-            </CardContent>
-          </Card>
-
-          <Card className="bg-white/10 backdrop-blur-md border-white/10">
-            <CardHeader className="pb-2">
-              <div className="flex items-center gap-2">
-                <TrendingUp className="h-5 w-5 text-[#10b981]" />
-                <CardTitle className="text-sm text-white/90">Entries</CardTitle>
-              </div>
-            </CardHeader>
-            <CardContent>
-              <div className="text-2xl font-bold text-white">{sleepEntries.length}</div>
-              <p className="text-xs text-white/60">Total logged</p>
             </CardContent>
           </Card>
         </div>

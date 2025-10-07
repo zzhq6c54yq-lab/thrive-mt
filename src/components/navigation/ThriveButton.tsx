@@ -24,6 +24,7 @@ const ThriveButton: React.FC<ThriveButtonProps> = ({
     // Store current location for return navigation
     const currentPath = window.location.pathname;
     localStorage.setItem('lastVisitedPath', currentPath);
+    localStorage.setItem('hasCompletedOnboarding', 'true');
     
     toast({
       title: isSpanish ? "Volviendo al Tablero Principal" : "Returning to Main Dashboard",
@@ -36,6 +37,7 @@ const ThriveButton: React.FC<ThriveButtonProps> = ({
         screenState: 'main',
         returnToMain: true,
         preventTutorial: true,
+        preventIntroRedirect: true,
         fromPath: currentPath,
         preserveState: true
       } 
