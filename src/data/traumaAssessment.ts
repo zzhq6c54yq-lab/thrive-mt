@@ -1,4 +1,5 @@
 import { MentalHealthAssessment } from './mentalHealthAssessments';
+import traumaImage from '@/assets/assessment-trauma.jpg';
 
 // Comprehensive Trauma & Adverse Childhood Experiences Assessment
 export const comprehensiveTraumaAssessment: MentalHealthAssessment = {
@@ -15,7 +16,7 @@ export const comprehensiveTraumaAssessment: MentalHealthAssessment = {
   difficultySpanish: 'Avanzado',
   targetAudience: 'Adults who have experienced traumatic events or adverse childhood experiences',
   targetAudienceSpanish: 'Adultos que han experimentado eventos traumáticos o experiencias adversas en la infancia',
-  coverImage: 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=800&h=600&fit=crop',
+  coverImage: traumaImage,
   questions: [
     // SECTION 1: Adverse Childhood Experiences (ACEs) - 10 questions
     {

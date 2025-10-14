@@ -1,4 +1,7 @@
 import { comprehensiveTraumaAssessment } from './traumaAssessment';
+import anxietyImage from '@/assets/assessment-anxiety.jpg';
+import depressionImage from '@/assets/assessment-depression.jpg';
+import stressImage from '@/assets/assessment-stress.jpg';
 
 export interface MentalHealthAssessment {
   id: string;
@@ -80,7 +83,7 @@ export const mentalHealthAssessments: MentalHealthAssessment[] = [
     difficultySpanish: 'Principiante',
     targetAudience: 'Adults experiencing anxiety symptoms',
     targetAudienceSpanish: 'Adultos que experimentan síntomas de ansiedad',
-    coverImage: 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=800&h=600&fit=crop',
+    coverImage: anxietyImage,
     questions: [
       {
         id: 'gad1',
@@ -227,7 +230,7 @@ export const mentalHealthAssessments: MentalHealthAssessment[] = [
     difficultySpanish: 'Principiante',
     targetAudience: 'Adults experiencing depressive symptoms',
     targetAudienceSpanish: 'Adultos que experimentan síntomas depresivos',
-    coverImage: 'https://images.unsplash.com/photo-1616006400265-7c4b8c26439d?w=800&h=600&fit=crop',
+    coverImage: depressionImage,
     questions: [
       {
         id: 'phq1',
@@ -401,7 +404,7 @@ export const mentalHealthAssessments: MentalHealthAssessment[] = [
     difficultySpanish: 'Principiante',
     targetAudience: 'Adults experiencing stress',
     targetAudienceSpanish: 'Adultos que experimentan estrés',
-    coverImage: 'https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=800&h=600&fit=crop',
+    coverImage: stressImage,
     questions: [
       {
         id: 'pss1',
