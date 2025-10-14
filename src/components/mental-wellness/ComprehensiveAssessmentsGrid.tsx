@@ -187,6 +187,9 @@ const ComprehensiveAssessmentsGrid: React.FC = () => {
                   <Badge variant="secondary" className="bg-blue-100 text-blue-800">
                     {isSpanish ? assessment.categorySpanish : assessment.category}
                   </Badge>
+                  <Badge variant="outline" className="bg-white/10 text-white border-white/30">
+                    {assessment.questions.length} {isSpanish ? 'Preguntas' : 'Questions'}
+                  </Badge>
                 </div>
 
                 {/* Meta Information */}

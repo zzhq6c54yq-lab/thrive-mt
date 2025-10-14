@@ -64,8 +64,6 @@ export interface ResultInterpretation {
   severity: 'low' | 'moderate' | 'high' | 'severe';
 }
 
-import { comprehensiveTraumaAssessment } from './traumaAssessment';
-
 export const mentalHealthAssessments: MentalHealthAssessment[] = [
   // GAD-7 - Complete 7 Questions
   {
