@@ -159,7 +159,7 @@ export const useRegistrationState = () => {
         email: userInfo.email,
         password: userInfo.password,
         options: {
-          emailRedirectTo: `${window.location.origin}/`,
+          emailRedirectTo: `${window.location.origin}/auth/confirm`,
           data: {
             full_name: userInfo.name,
             name: userInfo.name,
@@ -195,56 +195,62 @@ export const useRegistrationState = () => {
       }
 
       if (data.user) {
-        const successMessages = {
-          'English': {
-            title: "Registration Successful",
-            description: "Welcome to Thrive MT! Your journey to better mental health begins now."
-          },
-          'Español': {
-            title: "Registro Exitoso",
-            description: "¡Bienvenido a Thrive MT! Tu viaje hacia una mejor salud mental comienza ahora."
-          },
-          'Português': {
-            title: "Registro bem-sucedido",
-            description: "Bem-vindo ao Thrive MT! Sua jornada para uma melhor saúde mental começa agora."
-          }
-        };
+        // Check if email confirmation is required
+        const needsConfirmation = !data.session;
         
-        const message = successMessages[preferredLanguage as keyof typeof successMessages] || successMessages['English'];
-        
-        toast({
-          title: message.title,
-          description: message.description,
-        });
-        
-        // Auto-login after registration for seamless onboarding
-        // This works when email confirmation is disabled in Supabase
-        if (data.session) {
-          // User is already logged in (email confirmation disabled)
-          nextScreenSetter();
-        } else {
-          // Email confirmation required - auto-login after signup
-          const { error: loginError } = await supabase.auth.signInWithPassword({
-            email: userInfo.email,
-            password: userInfo.password,
+        if (needsConfirmation) {
+          // Email confirmation required
+          const confirmMessages = {
+            'English': {
+              title: "Check Your Email! 📧",
+              description: "We've sent a confirmation link to your email. Please click it to activate your account."
+            },
+            'Español': {
+              title: "¡Revisa tu Correo! 📧",
+              description: "Hemos enviado un enlace de confirmación a tu correo. Por favor haz clic en él para activar tu cuenta."
+            },
+            'Português': {
+              title: "Verifique seu E-mail! 📧",
+              description: "Enviamos um link de confirmação para seu e-mail. Por favor, clique nele para ativar sua conta."
+            }
+          };
+          
+          const message = confirmMessages[preferredLanguage as keyof typeof confirmMessages] || confirmMessages['English'];
+          
+          toast({
+            title: message.title,
+            description: message.description,
+            duration: 10000,
           });
           
-          if (!loginError) {
-            nextScreenSetter();
-          } else {
-            // If auto-login fails, user needs to confirm email - but still allow progression
-            toast({
-              title: isSpanish ? "Confirma tu Correo" : isPortuguese ? "Confirme seu E-mail" : "Confirm Your Email",
-              description: isSpanish 
-                ? "Por favor revisa tu correo y haz clic en el enlace de confirmación."
-                : isPortuguese
-                ? "Por favor, verifique seu e-mail e clique no link de confirmação."
-                : "Please check your email and click the confirmation link.",
-              variant: "default"
-            });
-            // Still allow user to progress through onboarding
-            nextScreenSetter();
-          }
+          // Switch to login mode but don't proceed to next screen
+          setIsLogin(true);
+          
+        } else {
+          // Email confirmation disabled - proceed as before
+          const successMessages = {
+            'English': {
+              title: "Registration Successful",
+              description: "Welcome to Thrive MT! Your journey to better mental health begins now."
+            },
+            'Español': {
+              title: "Registro Exitoso",
+              description: "¡Bienvenido a Thrive MT! Tu viaje hacia una mejor salud mental comienza ahora."
+            },
+            'Português': {
+              title: "Registro bem-sucedido",
+              description: "Bem-vindo ao Thrive MT! Sua jornada para uma melhor saúde mental começa agora."
+            }
+          };
+          
+          const message = successMessages[preferredLanguage as keyof typeof successMessages] || successMessages['English'];
+          
+          toast({
+            title: message.title,
+            description: message.description,
+          });
+          
+          nextScreenSetter();
         }
       }
     } catch (error) {

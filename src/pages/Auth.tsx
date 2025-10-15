@@ -1,17 +1,20 @@
 
 import React, { useState, useEffect } from "react";
 import { supabase } from "@/integrations/supabase/client";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { useToast } from "@/hooks/use-toast";
+import { Eye, EyeOff, Mail, Lock } from "lucide-react";
 
 const Auth: React.FC = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [isLogin, setIsLogin] = useState(true);
   const [loading, setLoading] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
   const { toast } = useToast();
   const navigate = useNavigate();
 
@@ -57,47 +60,91 @@ const Auth: React.FC = () => {
   };
 
   return (
-    <div className="flex items-center justify-center min-h-screen bg-gradient-to-br from-indigo-100 to-purple-100">
-      <Card className="w-full max-w-md shadow-xl border-2 border-indigo-200">
+    <div className="flex items-center justify-center min-h-screen bg-gradient-to-br from-primary/5 via-background to-secondary/5 p-4">
+      <Card className="w-full max-w-md shadow-2xl border border-border/50 backdrop-blur-sm">
         <CardHeader>
-          <CardTitle className="text-2xl">{isLogin ? "Log In" : "Sign Up"}</CardTitle>
+          <CardTitle className="text-2xl text-center">{isLogin ? "Log In" : "Sign Up"}</CardTitle>
         </CardHeader>
         <CardContent>
-          <form className="space-y-6" onSubmit={handleAuth}>
-            <div>
-              <label className="block mb-1">Email</label>
-              <Input
-                type="email"
-                value={email}
-                onChange={e => setEmail(e.target.value)}
-                autoComplete="email"
-                required
-              />
+          {!isLogin && (
+            <Alert className="mb-4 border-primary/20 bg-primary/5">
+              <Mail className="h-4 w-4" />
+              <AlertTitle>Email Confirmation Required</AlertTitle>
+              <AlertDescription>
+                After signing up, you'll receive a confirmation email. Click the link to activate your account.
+              </AlertDescription>
+            </Alert>
+          )}
+          
+          <form className="space-y-4" onSubmit={handleAuth}>
+            <div className="space-y-2">
+              <label className="block text-sm font-medium">Email</label>
+              <div className="relative">
+                <Mail className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
+                <Input
+                  type="email"
+                  value={email}
+                  onChange={e => setEmail(e.target.value)}
+                  autoComplete="email"
+                  className="pl-10"
+                  placeholder="your.email@example.com"
+                  required
+                />
+              </div>
             </div>
-            <div>
-              <label className="block mb-1">Password</label>
-              <Input
-                type="password"
-                value={password}
-                onChange={e => setPassword(e.target.value)}
-                autoComplete="current-password"
-                required
-              />
+            
+            <div className="space-y-2">
+              <label className="block text-sm font-medium">Password</label>
+              <div className="relative">
+                <Lock className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
+                <Input
+                  type={showPassword ? "text" : "password"}
+                  value={password}
+                  onChange={e => setPassword(e.target.value)}
+                  autoComplete={isLogin ? "current-password" : "new-password"}
+                  className="pl-10 pr-10"
+                  placeholder="••••••••"
+                  required
+                />
+                <Button
+                  type="button"
+                  variant="ghost"
+                  size="sm"
+                  className="absolute right-1 top-1 h-8 w-8 p-0"
+                  onClick={() => setShowPassword(!showPassword)}
+                >
+                  {showPassword ? (
+                    <EyeOff className="h-4 w-4" />
+                  ) : (
+                    <Eye className="h-4 w-4" />
+                  )}
+                </Button>
+              </div>
             </div>
+            
             <Button type="submit" className="w-full" disabled={loading}>
-              {isLogin ? "Log In" : "Sign Up"}
+              {loading ? "Please wait..." : isLogin ? "Log In" : "Sign Up"}
             </Button>
           </form>
-          <Button
-            variant="link"
-            className="w-full mt-2"
-            onClick={() => setIsLogin(l => !l)}
-            disabled={loading}
-          >
-            {isLogin
-              ? "Need an account? Sign up"
-              : "Already have an account? Log in"}
-          </Button>
+          
+          <div className="mt-4 space-y-2">
+            <Button
+              variant="link"
+              className="w-full"
+              onClick={() => setIsLogin(l => !l)}
+              disabled={loading}
+            >
+              {isLogin
+                ? "Need an account? Sign up"
+                : "Already have an account? Log in"}
+            </Button>
+            
+            {isLogin && (
+              <Link to="/auth/resend" className="block text-center text-sm text-muted-foreground hover:text-primary">
+                Didn't receive confirmation email?
+              </Link>
+            )}
+          </div>
         </CardContent>
       </Card>
     </div>

@@ -6,6 +6,8 @@ import CareerCoaching from "./pages/CareerCoaching";
 import MeditationStudio from "./pages/MeditationStudio";
 import AASponsor from "./pages/AASponsor";
 import Auth from "./pages/Auth";
+import ConfirmEmail from "./pages/ConfirmEmail";
+import ResendConfirmationPage from "./pages/ResendConfirmationPage";
 import Dashboard from "./pages/Dashboard";
 import OnboardingPage from "./pages/OnboardingPage";
 import JournalPage from "./pages/JournalPage";
@@ -142,6 +144,8 @@ function App() {
         <Routes>
           <Route path="/" element={<Index />} />
           <Route path="/auth" element={<Auth />} />
+          <Route path="/auth/confirm" element={<ConfirmEmail />} />
+          <Route path="/auth/resend" element={<ResendConfirmationPage />} />
           <Route path="/journal" element={<JournalApp />} />
           <Route path="/onboarding" element={<OnboardingPage />} />
           <Route path="/dashboard" element={<Dashboard />} />
