@@ -463,11 +463,112 @@ export type Database = {
       }
       support_wall: {
         Row: {
+          bookmark_count: number | null
+          category: Database["public"]["Enums"]["support_wall_category"]
+          comment_count: number | null
           content: string
           created_at: string | null
           hearts: number | null
           id: string
           is_flagged: boolean | null
+          is_pinned: boolean | null
+          tags: string[] | null
+          user_id: string
+        }
+        Insert: {
+          bookmark_count?: number | null
+          category?: Database["public"]["Enums"]["support_wall_category"]
+          comment_count?: number | null
+          content: string
+          created_at?: string | null
+          hearts?: number | null
+          id?: string
+          is_flagged?: boolean | null
+          is_pinned?: boolean | null
+          tags?: string[] | null
+          user_id: string
+        }
+        Update: {
+          bookmark_count?: number | null
+          category?: Database["public"]["Enums"]["support_wall_category"]
+          comment_count?: number | null
+          content?: string
+          created_at?: string | null
+          hearts?: number | null
+          id?: string
+          is_flagged?: boolean | null
+          is_pinned?: boolean | null
+          tags?: string[] | null
+          user_id?: string
+        }
+        Relationships: []
+      }
+      support_wall_bookmarks: {
+        Row: {
+          created_at: string | null
+          id: string
+          post_id: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string | null
+          id?: string
+          post_id: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string | null
+          id?: string
+          post_id?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "support_wall_bookmarks_post_id_fkey"
+            columns: ["post_id"]
+            isOneToOne: false
+            referencedRelation: "support_wall"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      support_wall_comment_hearts: {
+        Row: {
+          comment_id: string
+          created_at: string | null
+          id: string
+          user_id: string
+        }
+        Insert: {
+          comment_id: string
+          created_at?: string | null
+          id?: string
+          user_id: string
+        }
+        Update: {
+          comment_id?: string
+          created_at?: string | null
+          id?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "support_wall_comment_hearts_comment_id_fkey"
+            columns: ["comment_id"]
+            isOneToOne: false
+            referencedRelation: "support_wall_comments"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      support_wall_comments: {
+        Row: {
+          content: string
+          created_at: string | null
+          hearts: number | null
+          id: string
+          is_flagged: boolean | null
+          post_id: string
           user_id: string
         }
         Insert: {
@@ -476,6 +577,7 @@ export type Database = {
           hearts?: number | null
           id?: string
           is_flagged?: boolean | null
+          post_id: string
           user_id: string
         }
         Update: {
@@ -484,9 +586,18 @@ export type Database = {
           hearts?: number | null
           id?: string
           is_flagged?: boolean | null
+          post_id?: string
           user_id?: string
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "support_wall_comments_post_id_fkey"
+            columns: ["post_id"]
+            isOneToOne: false
+            referencedRelation: "support_wall"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       support_wall_hearts: {
         Row: {
@@ -517,6 +628,41 @@ export type Database = {
           },
         ]
       }
+      support_wall_reports: {
+        Row: {
+          created_at: string | null
+          id: string
+          post_id: string
+          reason: string
+          reported_by: string
+          status: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          id?: string
+          post_id: string
+          reason: string
+          reported_by: string
+          status?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          id?: string
+          post_id?: string
+          reason?: string
+          reported_by?: string
+          status?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "support_wall_reports_post_id_fkey"
+            columns: ["post_id"]
+            isOneToOne: false
+            referencedRelation: "support_wall"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
     }
     Views: {
       henry_qa_feed: {
@@ -536,8 +682,32 @@ export type Database = {
       }
     }
     Functions: {
+      decrement_bookmark_count: {
+        Args: { post_id: string }
+        Returns: undefined
+      }
+      decrement_comment_count: {
+        Args: { post_id: string }
+        Returns: undefined
+      }
+      decrement_comment_hearts: {
+        Args: { comment_id: string }
+        Returns: undefined
+      }
       decrement_hearts: {
         Args: { post_id: string }
+        Returns: undefined
+      }
+      increment_bookmark_count: {
+        Args: { post_id: string }
+        Returns: undefined
+      }
+      increment_comment_count: {
+        Args: { post_id: string }
+        Returns: undefined
+      }
+      increment_comment_hearts: {
+        Args: { comment_id: string }
         Returns: undefined
       }
       increment_hearts: {
@@ -569,6 +739,13 @@ export type Database = {
         | "trauma"
         | "motivation"
       henry_status: "pending" | "approved" | "answered" | "rejected"
+      support_wall_category:
+        | "celebration"
+        | "struggling"
+        | "gratitude"
+        | "question"
+        | "resource"
+        | "general"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -723,6 +900,14 @@ export const Constants = {
         "motivation",
       ],
       henry_status: ["pending", "approved", "answered", "rejected"],
+      support_wall_category: [
+        "celebration",
+        "struggling",
+        "gratitude",
+        "question",
+        "resource",
+        "general",
+      ],
     },
   },
 } as const
