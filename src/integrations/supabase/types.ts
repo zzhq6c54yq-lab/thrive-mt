@@ -227,6 +227,42 @@ export type Database = {
         }
         Relationships: []
       }
+      golden_years_progress: {
+        Row: {
+          completed: boolean | null
+          created_at: string | null
+          id: string
+          last_accessed_at: string | null
+          lesson_id: number
+          module_type: string
+          responses: Json | null
+          updated_at: string | null
+          user_id: string
+        }
+        Insert: {
+          completed?: boolean | null
+          created_at?: string | null
+          id?: string
+          last_accessed_at?: string | null
+          lesson_id: number
+          module_type: string
+          responses?: Json | null
+          updated_at?: string | null
+          user_id: string
+        }
+        Update: {
+          completed?: boolean | null
+          created_at?: string | null
+          id?: string
+          last_accessed_at?: string | null
+          lesson_id?: number
+          module_type?: string
+          responses?: Json | null
+          updated_at?: string | null
+          user_id?: string
+        }
+        Relationships: []
+      }
       henry_answers: {
         Row: {
           answer_text: string

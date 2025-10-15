@@ -82,6 +82,11 @@ import GoldenYearsJournal from "./pages/GoldenYearsJournal";
 import GoldenSpecializedFeature from "./pages/GoldenSpecializedFeature";
 import GoldenEndOfLifePlanning from "./pages/GoldenEndOfLifePlanning";
 import GoldenMemoryCognitive from "./pages/GoldenMemoryCognitive";
+import WellnessResourcesModule from "./pages/golden-years-modules/WellnessResourcesModule";
+import CommunityConnectionsModule from "./pages/golden-years-modules/CommunityConnectionsModule";
+import MemoryCognitiveHealthModule from "./pages/golden-years-modules/MemoryCognitiveHealthModule";
+import LifeTransitionsModule from "./pages/golden-years-modules/LifeTransitionsModule";
+import FamilyConnectionToolsModule from "./pages/golden-years-modules/FamilyConnectionToolsModule";
 import UserLead from "./pages/UserLead";
 import FirstRespondersWelcome from "./pages/FirstRespondersWelcome";
 import FirstRespondersPortal from "./pages/FirstRespondersPortal";
@@ -217,10 +222,11 @@ function App() {
           <Route path="/golden-years-planning" element={<GoldenEndOfLifePlanning />} />
           <Route path="/golden-years-memory" element={<GoldenMemoryCognitive />} />
           <Route path="/golden-years-guide" element={<GoldenSpecializedFeature />} />
-          <Route path="/golden-years-transitions" element={<GoldenSpecializedFeature />} />
-          <Route path="/golden-years-community" element={<GoldenSpecializedFeature />} />
-          <Route path="/golden-years-family" element={<GoldenSpecializedFeature />} />
-          <Route path="/golden-years-wellness" element={<GoldenSpecializedFeature />} />
+          <Route path="/golden-years-transitions" element={<LifeTransitionsModule />} />
+          <Route path="/golden-years-community" element={<CommunityConnectionsModule />} />
+          <Route path="/golden-years-family" element={<FamilyConnectionToolsModule />} />
+          <Route path="/golden-years-wellness" element={<WellnessResourcesModule />} />
+          <Route path="/golden-years-memory" element={<MemoryCognitiveHealthModule />} />
           <Route path="/golden-years-calendar" element={<GoldenSpecializedFeature />} />
           
           <Route path="/military-support" element={<MilitarySupport />} />
