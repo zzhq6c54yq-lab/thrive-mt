@@ -5,3 +5,6 @@ verify_jwt = false
 
 [functions.generate-henry-answer]
 verify_jwt = false
+
+[functions.mirror-ai-chat]
+verify_jwt = false

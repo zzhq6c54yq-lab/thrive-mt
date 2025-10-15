@@ -8,7 +8,7 @@ import { supabase } from "@/integrations/supabase/client";
 
 export const MirrorAiChat = () => {
   const [userInput, setUserInput] = useState("");
-  const [response, setResponse] = useState("AI response will appear here...");
+  const [response, setResponse] = useState("Your compassionate reflection will appear here...");
   const [isLoading, setIsLoading] = useState(false);
   const { toast } = useToast();
 
@@ -27,8 +27,7 @@ export const MirrorAiChat = () => {
     try {
       const { data, error } = await supabase.functions.invoke('mirror-ai-chat', {
         body: {
-          message: userInput,
-          systemPrompt: "You are a kind, trauma-informed psychiatrist named MirrorAI inside ThriveMT. Your goal is to help users process emotions with compassion and clarity."
+          message: userInput
         }
       });
 
@@ -78,7 +77,7 @@ export const MirrorAiChat = () => {
             </label>
             <Textarea
               id="userInput"
-              placeholder="Type your thoughts here..."
+              placeholder="Share what's on your mind and heart..."
               value={userInput}
               onChange={(e) => setUserInput(e.target.value)}
               onKeyPress={handleKeyPress}
