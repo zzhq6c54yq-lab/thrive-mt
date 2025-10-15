@@ -63,11 +63,22 @@ const CheckoutScreen: React.FC<CheckoutScreenProps> = ({
     console.log('User authentication state:', { user, loading });
 
     if (!user) {
+      // For free plans, allow proceeding without authentication
+      if (grandTotal === 0) {
+        toast({
+          title: "Success!",
+          description: "Your free plan has been activated.",
+        });
+        onContinue();
+        return;
+      }
+
       toast({
         title: "Authentication Required",
-        description: "Please log in to complete your purchase.",
+        description: "Please complete registration to continue.",
         variant: "destructive",
       });
+      onPrevious(); // Go back to registration
       return;
     }
 

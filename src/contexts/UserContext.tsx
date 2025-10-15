@@ -40,27 +40,33 @@ export const UserProvider: React.FC<{ children: React.ReactNode }> = ({ children
   useEffect(() => {
     // Set up auth state listener
     const { data: { subscription } } = supabase.auth.onAuthStateChange(
-      async (event, session) => {
+      (event, session) => {
         console.log('[UserContext] Auth state changed:', event, session?.user?.id);
         setSession(session);
         setUser(session?.user ?? null);
         
         if (session?.user) {
-          // Fetch user profile
-          const { data: profileData, error } = await supabase
-            .from('profiles')
-            .select('*')
-            .eq('id', session.user.id)
-            .single();
-            
-          if (error) {
-            console.error('[UserContext] Error fetching profile:', error);
-          } else {
-            setProfile(profileData);
-          }
+          // Defer profile fetching to avoid blocking auth state
+          setTimeout(async () => {
+            const { data: profileData, error } = await supabase
+              .from('profiles')
+              .select('*')
+              .eq('id', session.user.id)
+              .single();
+              
+            if (error) {
+              console.error('[UserContext] Error fetching profile:', error);
+            } else {
+              setProfile(profileData);
+            }
 
-          // Check subscription status for authenticated users
-          checkSubscriptionStatus();
+            // Only check subscription if onboarding is complete
+            // Don't check during onboarding to prevent "Load failed" errors
+            const isOnboarding = !localStorage.getItem('hasCompletedOnboarding');
+            if (!isOnboarding && profileData?.onboarding_completed) {
+              checkSubscriptionStatus();
+            }
+          }, 0);
         } else {
           setProfile(null);
           setSubscription(null);
@@ -101,7 +107,11 @@ export const UserProvider: React.FC<{ children: React.ReactNode }> = ({ children
   };
 
   const checkSubscriptionStatus = async () => {
-    if (!session?.access_token) return;
+    if (!session?.access_token) {
+      // Fallback to Basic for unauthenticated users
+      setSubscription({ subscribed: true, subscription_tier: 'Basic', subscription_end: null });
+      return;
+    }
 
     try {
       const { data, error } = await supabase.functions.invoke('check-subscription', {
@@ -112,12 +122,14 @@ export const UserProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
       if (error) {
         console.error('[UserContext] Error checking subscription:', error);
+        // Fallback to Basic on error
         setSubscription({ subscribed: true, subscription_tier: 'Basic', subscription_end: null });
       } else {
         setSubscription(data);
       }
     } catch (error) {
       console.error('[UserContext] Error checking subscription:', error);
+      // Fallback to Basic on error
       setSubscription({ subscribed: true, subscription_tier: 'Basic', subscription_end: null });
     }
   };
