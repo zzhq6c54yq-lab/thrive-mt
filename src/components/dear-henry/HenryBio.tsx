@@ -28,34 +28,46 @@ const HenryBio: React.FC = () => {
 
           <Dialog>
             <DialogTrigger asChild>
-              <Button variant="outline" className="border-amber-600 text-amber-700 hover:bg-amber-50">
+              <Button variant="outline" className="border-amber-600 text-amber-700 hover:bg-amber-50 dark:border-amber-500 dark:text-amber-400 dark:hover:bg-amber-950/30">
                 Learn More About Henry
               </Button>
             </DialogTrigger>
-            <DialogContent className="max-w-2xl">
-              <DialogHeader>
-                <DialogTitle className="text-2xl font-serif">About Henry</DialogTitle>
+            <DialogContent className="max-w-4xl">
+              <DialogHeader className="bg-gradient-to-r from-amber-50 via-orange-50 to-amber-50 dark:from-amber-950/20 dark:via-orange-950/20 dark:to-amber-950/20 -mx-6 -mt-6 px-6 pt-6 pb-4 rounded-t-lg">
+                <DialogTitle className="text-4xl lg:text-5xl font-playfair font-bold text-amber-900 dark:text-amber-100 flex items-center gap-3">
+                  About Henry
+                  <Heart className="w-10 h-10 lg:w-12 lg:h-12 text-amber-600 dark:text-amber-500 fill-amber-600 dark:fill-amber-500 animate-pulse" />
+                </DialogTitle>
               </DialogHeader>
-              <div className="space-y-4 py-4">
-                <p className="text-gray-700 dark:text-gray-300">
-                  Henry represents Hope, Empathy, Nurturing, Resilience, and You - the five pillars 
+              <div className="space-y-6 lg:space-y-8 py-6 lg:py-8">
+                <p className="text-lg lg:text-xl leading-relaxed text-gray-800 dark:text-gray-200">
+                  Henry represents <span className="font-semibold text-amber-700 dark:text-amber-400">Hope, Empathy, Nurturing, Resilience, and You</span> - the five pillars 
                   that guide every response in this column.
                 </p>
-                <p className="text-gray-700 dark:text-gray-300">
+                
+                <div className="h-px bg-gradient-to-r from-transparent via-amber-300 dark:via-amber-700 to-transparent"></div>
+                
+                <p className="text-lg lg:text-xl leading-relaxed text-gray-800 dark:text-gray-200">
                   Drawing from evidence-based practices and trauma-informed care, Henry provides 
                   a safe space for anyone seeking guidance on mental health, relationships, 
                   personal growth, and life's challenges.
                 </p>
-                <p className="text-gray-700 dark:text-gray-300">
+                
+                <p className="text-lg lg:text-xl leading-relaxed text-gray-800 dark:text-gray-200">
                   Every question submitted is treated with respect, compassion, and confidentiality. 
                   While Henry offers supportive guidance, remember that this column is not a 
                   substitute for professional therapy or medical advice.
                 </p>
-                <div className="pt-4 border-t border-gray-200 dark:border-gray-700">
-                  <p className="text-sm text-gray-600 dark:text-gray-400 italic">
-                    "Your mental wellbeing matters. You deserve support, understanding, and hope." 
-                    - Henry
-                  </p>
+                
+                <div className="pt-6 border-t-2 border-amber-200 dark:border-amber-800 mt-8">
+                  <div className="bg-gradient-to-r from-amber-50 to-orange-50 dark:from-amber-950/30 dark:to-orange-950/30 p-6 rounded-lg border-l-4 border-amber-500">
+                    <p className="text-base lg:text-lg text-gray-700 dark:text-gray-300 italic font-medium font-playfair">
+                      "Your mental wellbeing matters. You deserve support, understanding, and hope." 
+                      <span className="block mt-2 text-amber-700 dark:text-amber-400 not-italic font-semibold">
+                        - Henry
+                      </span>
+                    </p>
+                  </div>
                 </div>
               </div>
             </DialogContent>
