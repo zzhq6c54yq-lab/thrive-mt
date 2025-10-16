@@ -40,20 +40,20 @@ const HenryBio: React.FC = () => {
                 </DialogTitle>
               </DialogHeader>
               <div className="space-y-6 lg:space-y-8 py-6 lg:py-8">
-                <p className="text-lg lg:text-xl leading-relaxed text-gray-800 dark:text-gray-200">
-                  Henry represents <span className="font-semibold text-amber-700 dark:text-amber-400">Hope, Empathy, Nurturing, Resilience, and You</span> - the five pillars 
+                <p className="text-lg lg:text-xl leading-relaxed text-gray-900">
+                  Henry represents <span className="font-semibold text-amber-700">Hope, Empathy, Nurturing, Resilience, and You</span> - the five pillars 
                   that guide every response in this column.
                 </p>
                 
                 <div className="h-px bg-gradient-to-r from-transparent via-amber-300 dark:via-amber-700 to-transparent"></div>
                 
-                <p className="text-lg lg:text-xl leading-relaxed text-gray-800 dark:text-gray-200">
+                <p className="text-lg lg:text-xl leading-relaxed text-gray-900">
                   Drawing from evidence-based practices and trauma-informed care, Henry provides 
                   a safe space for anyone seeking guidance on mental health, relationships, 
                   personal growth, and life's challenges.
                 </p>
                 
-                <p className="text-lg lg:text-xl leading-relaxed text-gray-800 dark:text-gray-200">
+                <p className="text-lg lg:text-xl leading-relaxed text-gray-900">
                   Every question submitted is treated with respect, compassion, and confidentiality. 
                   While Henry offers supportive guidance, remember that this column is not a 
                   substitute for professional therapy or medical advice.
@@ -61,9 +61,9 @@ const HenryBio: React.FC = () => {
                 
                 <div className="pt-6 border-t-2 border-amber-200 dark:border-amber-800 mt-8">
                   <div className="bg-gradient-to-r from-amber-50 to-orange-50 dark:from-amber-950/30 dark:to-orange-950/30 p-6 rounded-lg border-l-4 border-amber-500">
-                    <p className="text-base lg:text-lg text-gray-700 dark:text-gray-300 italic font-medium font-playfair">
+                    <p className="text-base lg:text-lg text-gray-900 italic font-medium font-playfair">
                       "Your mental wellbeing matters. You deserve support, understanding, and hope." 
-                      <span className="block mt-2 text-amber-700 dark:text-amber-400 not-italic font-semibold">
+                      <span className="block mt-2 text-amber-700 not-italic font-semibold">
                         - Henry
                       </span>
                     </p>
