@@ -501,18 +501,21 @@ export type Database = {
         Row: {
           content: string
           created_at: string
+          hearts: number | null
           id: string
           whisper_id: string
         }
         Insert: {
           content: string
           created_at?: string
+          hearts?: number | null
           id?: string
           whisper_id: string
         }
         Update: {
           content?: string
           created_at?: string
+          hearts?: number | null
           id?: string
           whisper_id?: string
         }
@@ -522,6 +525,35 @@ export type Database = {
             columns: ["whisper_id"]
             isOneToOne: false
             referencedRelation: "whispers"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      reply_hearts: {
+        Row: {
+          created_at: string | null
+          id: string
+          reply_id: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string | null
+          id?: string
+          reply_id: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string | null
+          id?: string
+          reply_id?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "reply_hearts_reply_id_fkey"
+            columns: ["reply_id"]
+            isOneToOne: false
+            referencedRelation: "replies"
             referencedColumns: ["id"]
           },
         ]
@@ -749,24 +781,56 @@ export type Database = {
         }
         Relationships: []
       }
+      whisper_hearts: {
+        Row: {
+          created_at: string | null
+          id: string
+          user_id: string
+          whisper_id: string
+        }
+        Insert: {
+          created_at?: string | null
+          id?: string
+          user_id: string
+          whisper_id: string
+        }
+        Update: {
+          created_at?: string | null
+          id?: string
+          user_id?: string
+          whisper_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "whisper_hearts_whisper_id_fkey"
+            columns: ["whisper_id"]
+            isOneToOne: false
+            referencedRelation: "whispers"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       whispers: {
         Row: {
           content: string
           created_at: string
           hearts: number
           id: string
+          reply_count: number | null
         }
         Insert: {
           content: string
           created_at?: string
           hearts?: number
           id?: string
+          reply_count?: number | null
         }
         Update: {
           content?: string
           created_at?: string
           hearts?: number
           id?: string
+          reply_count?: number | null
         }
         Relationships: []
       }
