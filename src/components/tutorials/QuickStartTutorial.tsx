@@ -46,17 +46,19 @@ const QuickStartTutorial: React.FC<QuickStartTutorialProps> = ({ isOpen, onClose
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogContent className="max-w-2xl bg-gradient-to-br from-[#1a1a1f] via-[#221F26] to-[#1a1a1f] border-white/20 text-white p-0 overflow-hidden" showCloseButton={false}>
-        {/* Header with close button */}
-        <div className="relative">
-          <Button
-            variant="ghost"
-            size="icon"
-            className="absolute right-2 top-2 z-50 rounded-full bg-white/10 text-white hover:bg-white/20 hover:text-white border border-white/20"
-            onClick={onClose}
-            aria-label="Close tutorial"
-          >
-            <X className="h-5 w-5" />
-          </Button>
+        {/* Close button - positioned relative to dialog */}
+        <Button
+          variant="ghost"
+          size="icon"
+          className="absolute right-4 top-4 z-[100] rounded-full bg-black/40 text-white hover:bg-black/60 hover:text-white border-2 border-white/30 shadow-lg"
+          onClick={onClose}
+          aria-label="Close tutorial"
+        >
+          <X className="h-5 w-5" />
+        </Button>
+
+        {/* Header with image and text */}
+        <div>
 
           {/* Image section */}
           {currentStepData.image && (
