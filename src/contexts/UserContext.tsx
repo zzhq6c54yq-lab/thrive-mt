@@ -41,7 +41,6 @@ export const UserProvider: React.FC<{ children: React.ReactNode }> = ({ children
     // Set up auth state listener
     const { data: { subscription } } = supabase.auth.onAuthStateChange(
       (event, session) => {
-        console.log('[UserContext] Auth state changed:', event, session?.user?.id);
         setSession(session);
         setUser(session?.user ?? null);
         
@@ -77,7 +76,6 @@ export const UserProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
     // Check for existing session
     supabase.auth.getSession().then(({ data: { session } }) => {
-      console.log('[UserContext] Initial session check:', session?.user?.id);
       setSession(session);
       setUser(session?.user ?? null);
       if (!session) {
@@ -99,7 +97,6 @@ export const UserProvider: React.FC<{ children: React.ReactNode }> = ({ children
       .single();
       
     if (error) {
-      console.error('[UserContext] Error updating profile:', error);
       throw error;
     }
     
@@ -121,14 +118,12 @@ export const UserProvider: React.FC<{ children: React.ReactNode }> = ({ children
       });
 
       if (error) {
-        console.error('[UserContext] Error checking subscription:', error);
         // Fallback to Basic on error
         setSubscription({ subscribed: true, subscription_tier: 'Basic', subscription_end: null });
       } else {
         setSubscription(data);
       }
     } catch (error) {
-      console.error('[UserContext] Error checking subscription:', error);
       // Fallback to Basic on error
       setSubscription({ subscribed: true, subscription_tier: 'Basic', subscription_end: null });
     }

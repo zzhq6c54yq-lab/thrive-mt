@@ -8,6 +8,8 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { useToast } from "@/hooks/use-toast";
 import { Eye, EyeOff, Mail, Lock } from "lucide-react";
+import { authSchema } from "@/lib/validations";
+import { z } from "zod";
 
 const Auth: React.FC = () => {
   const [email, setEmail] = useState("");
@@ -15,6 +17,7 @@ const Auth: React.FC = () => {
   const [isLogin, setIsLogin] = useState(true);
   const [loading, setLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
+  const [errors, setErrors] = useState<{ email?: string; password?: string }>({});
   const { toast } = useToast();
   const navigate = useNavigate();
 
@@ -32,11 +35,22 @@ const Auth: React.FC = () => {
   const handleAuth = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
+    setErrors({});
 
-    if (!email || !password) {
-      toast({ title: "Missing credentials", description: "Please enter both email and password.", variant: "destructive" });
-      setLoading(false);
-      return;
+    // Validate input with Zod
+    try {
+      authSchema.parse({ email, password });
+    } catch (error) {
+      if (error instanceof z.ZodError) {
+        const fieldErrors: { email?: string; password?: string } = {};
+        error.errors.forEach((err) => {
+          if (err.path[0] === 'email') fieldErrors.email = err.message;
+          if (err.path[0] === 'password') fieldErrors.password = err.message;
+        });
+        setErrors(fieldErrors);
+        setLoading(false);
+        return;
+      }
     }
 
     if (isLogin) {
@@ -91,6 +105,9 @@ const Auth: React.FC = () => {
                   required
                 />
               </div>
+              {errors.email && (
+                <p className="text-sm text-destructive">{errors.email}</p>
+              )}
             </div>
             
             <div className="space-y-2">
@@ -120,6 +137,9 @@ const Auth: React.FC = () => {
                   )}
                 </Button>
               </div>
+              {errors.password && (
+                <p className="text-sm text-destructive">{errors.password}</p>
+              )}
             </div>
             
             <Button type="submit" className="w-full" disabled={loading}>

@@ -1,4 +1,7 @@
 import { Routes, Route } from "react-router-dom";
+import { lazy } from "react";
+import ErrorBoundary from "./components/ErrorBoundary";
+import RouteLoadingWrapper from "./components/RouteLoadingWrapper";
 import Index from "./pages/Index";
 import NotFound from "./pages/NotFound";
 import CancerSupportPortal from "./pages/CancerSupportPortal";
@@ -147,9 +150,11 @@ import "./App.css";
 
 function App() {
   return (
-    <UserProvider>
-      <div className="min-h-screen bg-gradient-to-br from-gray-900 via-gray-800 to-blue-900">
-        <Routes>
+    <ErrorBoundary>
+      <UserProvider>
+        <RouteLoadingWrapper>
+          <div className="min-h-screen bg-gradient-to-br from-gray-900 via-gray-800 to-blue-900">
+            <Routes>
           <Route path="/" element={<Index />} />
           <Route path="/auth" element={<Auth />} />
           <Route path="/auth/confirm" element={<ConfirmEmail />} />
@@ -442,10 +447,12 @@ function App() {
           <Route path="/all-workshops" element={<AllWorkshopsPage />} />
           <Route path="/not-found" element={<NotFound />} />
           <Route path="*" element={<NotFound />} />
-        </Routes>
-        <Toaster />
-      </div>
-    </UserProvider>
+            </Routes>
+            <Toaster />
+          </div>
+        </RouteLoadingWrapper>
+      </UserProvider>
+    </ErrorBoundary>
   );
 }
 
