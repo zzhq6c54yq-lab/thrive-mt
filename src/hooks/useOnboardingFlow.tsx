@@ -19,16 +19,12 @@ export const useOnboardingFlow = () => {
 
   // Initialize from localStorage - ALWAYS start from intro in preview mode
   useEffect(() => {
-    console.log("[useOnboardingFlow] Initializing onboarding flow");
-    
     // FORCE START FROM INTRO - Clear all stored progress to ensure fresh onboarding experience
     localStorage.removeItem('hasCompletedOnboarding');
     localStorage.removeItem(STORAGE_KEY);
     
     // Always start from the intro screen
     setState({ ...initialState, currentStep: 'intro' });
-    
-    console.log("[useOnboardingFlow] Forced fresh start from intro screen");
   }, []);
 
   // Save progress to localStorage
@@ -38,8 +34,6 @@ export const useOnboardingFlow = () => {
 
   // Navigation functions
   const goToStep = useCallback((step: OnboardingStep) => {
-    console.log("[useOnboardingFlow] Navigating to step:", step);
-    
     setState(prev => {
       const newState = { ...prev, currentStep: step };
       
@@ -145,11 +139,6 @@ export const useOnboardingFlow = () => {
   }, [saveProgress]);
 
   const completeOnboarding = useCallback(async () => {
-    console.log("[useOnboardingFlow] Completing onboarding with user data:", {
-      selectedGoals: state.selectedGoals,
-      selectedQualities: state.selectedQualities
-    });
-    
     // Update profile with onboarding completion and selected preferences
     try {
       const { supabase } = await import("@/integrations/supabase/client");
@@ -166,20 +155,17 @@ export const useOnboardingFlow = () => {
           .eq('id', user.id);
           
         if (error) {
-          console.error("[useOnboardingFlow] Error updating profile:", error);
-        } else {
-          console.log("[useOnboardingFlow] Profile updated successfully");
+          // Error updating profile
         }
       }
     } catch (error) {
-      console.error("[useOnboardingFlow] Error during profile update:", error);
+      // Error during profile update
     }
     
     goToStep('completed');
   }, [goToStep, state.selectedGoals, state.selectedQualities]);
 
   const resetOnboarding = useCallback(() => {
-    console.log("[useOnboardingFlow] Resetting onboarding");
     localStorage.removeItem('hasCompletedOnboarding');
     localStorage.removeItem(STORAGE_KEY);
     setState({ ...initialState, currentStep: 'intro' });

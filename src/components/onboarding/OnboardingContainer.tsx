@@ -45,12 +45,9 @@ const OnboardingContainer: React.FC = () => {
   useEffect(() => {
     const navigationState = location.state as any;
     if (navigationState?.screenState === 'main' || navigationState?.returnToMain) {
-      console.log("[OnboardingContainer] Navigation state detected - going to main dashboard");
       goToStep('completed');
     }
   }, [location.state, goToStep]);
-
-  console.log("[OnboardingContainer] Current step:", currentStep, "isComplete:", isOnboardingComplete);
 
   // Handle user info change
   const handleUserInfoChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -59,7 +56,6 @@ const OnboardingContainer: React.FC = () => {
 
   // Handle registration
   const handleRegister = async (e: React.FormEvent) => {
-    console.log("[OnboardingContainer] Registration submitted");
     // The actual registration logic is handled in useRegistrationState
     // This just serves as the nextStep callback
     nextStep();
@@ -67,31 +63,26 @@ const OnboardingContainer: React.FC = () => {
 
   // Handle subscription continue
   const handleSubscriptionContinue = () => {
-    console.log("[OnboardingContainer] Subscription step completed");
     nextStep();
   };
 
   // Handle add-ons continue
   const handleAddOnsContinue = () => {
-    console.log("[OnboardingContainer] Add-ons step completed");
     nextStep();
   };
 
   // Handle checkout continue
   const handleCheckoutContinue = () => {
-    console.log("[OnboardingContainer] Checkout step completed");
     nextStep();
   };
 
   // Handle vision board continue
   const handleVisionBoardContinue = () => {
-    console.log("[OnboardingContainer] Vision board completed - finishing onboarding");
     completeOnboarding();
   };
 
   // Handle mood selection and auto-advance
   const handleMoodSelect = (mood: 'happy' | 'ok' | 'neutral' | 'down' | 'sad' | 'overwhelmed') => {
-    console.log("[OnboardingContainer] Mood selected:", mood);
     updateMood(mood);
     goToStep('moodResponse');
   };
@@ -103,7 +94,7 @@ const OnboardingContainer: React.FC = () => {
 
   // Henry toggle (placeholder)
   const handleHenryToggle = () => {
-    console.log("Henry toggled");
+    // Placeholder for Henry toggle
   };
 
   // Mark tutorial as completed
@@ -115,11 +106,9 @@ const OnboardingContainer: React.FC = () => {
   useEffect(() => {
     if (isOnboardingComplete || currentStep === 'completed') {
       const hasSeenQuickStart = localStorage.getItem('hasSeenQuickStart');
-      console.log("Onboarding complete - checking QuickStart:", { hasSeenQuickStart });
       if (!hasSeenQuickStart) {
         // Small delay to ensure dashboard is rendered
         setTimeout(() => {
-          console.log("Showing QuickStart tutorial");
           setShowQuickStart(true);
         }, 300);
       }
@@ -227,7 +216,6 @@ const OnboardingContainer: React.FC = () => {
       );
       
     default:
-      console.error("[OnboardingContainer] Unknown step:", currentStep);
       return <IntroScreen onContinue={nextStep} />;
   }
 };
