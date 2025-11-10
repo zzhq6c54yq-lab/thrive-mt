@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
-import { ArrowLeft, MessageCircle, CheckCircle, Info, ArrowRight, Search, FileCheck, Calendar, CreditCard, Users, Loader2 } from "lucide-react";
+import { ArrowLeft, MessageCircle, CheckCircle, Info, ArrowRight, Search, FileCheck, Calendar, CreditCard, Users, Loader2, Settings } from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
 import HomeButton from "@/components/HomeButton";
 import { Separator } from "@/components/ui/separator";
@@ -16,6 +16,8 @@ import { useToast } from "@/hooks/use-toast";
 import { motion, AnimatePresence } from "framer-motion";
 import { AnimatedProgressBar } from "@/components/therapy/AnimatedProgressBar";
 import { Skeleton } from "@/components/ui/skeleton";
+import { useTherapists } from "@/hooks/useTherapists";
+import { BookingFlow } from "@/components/therapy/BookingFlow";
 
 const insuranceProviders = [
   "Blue Cross Blue Shield",
@@ -65,44 +67,7 @@ const importantFacts = [
   }
 ];
 
-const therapistProfiles = [
-  {
-    id: 1,
-    name: "Dr. Sarah Johnson",
-    title: "Licensed Clinical Psychologist",
-    specialties: ["Anxiety", "Depression", "Trauma"],
-    experience: "12 years",
-    approach: "Cognitive Behavioral Therapy, Mindfulness",
-    image: "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&q=80&w=200&ixlib=rb-4.0.3",
-    rating: 4.9,
-    reviews: 124,
-    nextAvailable: "Today"
-  },
-  {
-    id: 2,
-    name: "Michael Rodriguez, LMFT",
-    title: "Licensed Marriage & Family Therapist",
-    specialties: ["Relationships", "Family Issues", "LGBTQ+"],
-    experience: "8 years",
-    approach: "Solution-Focused, Emotionally Focused Therapy",
-    image: "https://images.unsplash.com/photo-1560250097-0b93528c311a?auto=format&fit=crop&q=80&w=200&ixlib=rb-4.0.3",
-    rating: 4.8,
-    reviews: 97,
-    nextAvailable: "Tomorrow"
-  },
-  {
-    id: 3,
-    name: "Dr. Amira Hassan",
-    title: "Psychiatrist & Psychotherapist",
-    specialties: ["Anxiety", "Depression", "Medication Management"],
-    experience: "15 years",
-    approach: "Integrative Psychiatry, Psychodynamic",
-    image: "https://images.unsplash.com/photo-1551836022-d5d88e9218df?auto=format&fit=crop&q=80&w=200&ixlib=rb-4.0.3",
-    rating: 4.9,
-    reviews: 143,
-    nextAvailable: "This week"
-  }
-];
+// Removed hardcoded therapist profiles - now using real database data
 
 const TherapistMatchingDialog = () => {
   const [step, setStep] = useState(1);
@@ -112,9 +77,12 @@ const TherapistMatchingDialog = () => {
   const [preferredGender, setPreferredGender] = useState("");
   const [extraDetails, setExtraDetails] = useState("");
   const [insurance, setInsurance] = useState("");
-  const [matchedTherapists, setMatchedTherapists] = useState(therapistProfiles);
   const [isSearching, setIsSearching] = useState(false);
+  const [selectedTherapist, setSelectedTherapist] = useState<any>(null);
   const { toast } = useToast();
+  
+  const { data: allTherapists, isLoading: loadingTherapists } = useTherapists();
+  const [matchedTherapists, setMatchedTherapists] = useState<any[]>([]);
 
   const stepLabels = ["Concerns", "Preferences", "Insurance", "Review"];
 
@@ -133,13 +101,13 @@ const TherapistMatchingDialog = () => {
       // Simulate matching algorithm with loading delay
       await new Promise(resolve => setTimeout(resolve, 1500));
       
-      const filteredTherapists = therapistProfiles
+      const filteredTherapists = (allTherapists || [])
         .filter(therapist => 
           concerns.some(concern => therapist.specialties.includes(concern))
         );
       
       setMatchedTherapists(
-        filteredTherapists.length > 0 ? filteredTherapists : therapistProfiles
+        filteredTherapists.length > 0 ? filteredTherapists : (allTherapists || [])
       );
       
       setIsSearching(false);
@@ -162,11 +130,8 @@ const TherapistMatchingDialog = () => {
     }
   };
 
-  const handleSchedule = (therapistId: number) => {
-    toast({
-      title: "Appointment Scheduled!",
-      description: "Your initial consultation has been confirmed.",
-    });
+  const handleSchedule = (therapist: any) => {
+    setSelectedTherapist(therapist);
   };
 
   const stepVariants = {
@@ -426,25 +391,27 @@ const TherapistMatchingDialog = () => {
                       className="border rounded-lg overflow-hidden hover:shadow-lg transition-shadow duration-300 group"
                     >
                       <div className="flex items-center p-4">
-                        <div className="w-16 h-16 rounded-full overflow-hidden mr-4 flex-shrink-0 ring-2 ring-muted group-hover:ring-[hsl(var(--primary))] transition-all">
-                          <img 
-                            src={therapist.image} 
-                            alt={therapist.name} 
-                            className="w-full h-full object-cover"
-                          />
-                        </div>
+                        {therapist.image_url && (
+                          <div className="w-16 h-16 rounded-full overflow-hidden mr-4 flex-shrink-0 ring-2 ring-muted group-hover:ring-[hsl(var(--primary))] transition-all">
+                            <img 
+                              src={therapist.image_url} 
+                              alt={therapist.name} 
+                              className="w-full h-full object-cover"
+                            />
+                          </div>
+                        )}
                         <div className="flex-grow">
                           <h3 className="font-medium">{therapist.name}</h3>
                           <p className="text-sm text-muted-foreground">{therapist.title}</p>
                           <div className="flex items-center mt-1">
                             <div className="flex items-center">
                               <span className="text-yellow-500">★</span>
-                              <span className="text-sm ml-1">{therapist.rating}</span>
+                              <span className="text-sm ml-1">{therapist.rating?.toFixed(1) || "N/A"}</span>
                             </div>
                             <span className="text-xs text-muted-foreground mx-2">•</span>
-                            <span className="text-sm text-muted-foreground">{therapist.reviews} reviews</span>
+                            <span className="text-sm text-muted-foreground">{therapist.total_reviews || 0} reviews</span>
                             <span className="text-xs text-muted-foreground mx-2">•</span>
-                            <span className="text-sm text-green-600">Available {therapist.nextAvailable}</span>
+                            <span className="text-sm">${therapist.hourly_rate}/hr</span>
                           </div>
                         </div>
                       </div>
@@ -473,9 +440,9 @@ const TherapistMatchingDialog = () => {
                       </div>
                       
                       <div className="bg-muted/30 px-4 py-3 flex justify-between items-center">
-                        <span className="text-sm text-muted-foreground">{therapist.experience} experience</span>
+                        <span className="text-sm text-muted-foreground">{therapist.experience_years} years exp</span>
                         <Button 
-                          onClick={() => handleSchedule(therapist.id)}
+                          onClick={() => handleSchedule(therapist)}
                           className="bg-[hsl(var(--primary))] hover:bg-[hsl(var(--primary))]/90 text-white transition-all hover:scale-105"
                         >
                           Schedule Consultation
@@ -499,6 +466,7 @@ const TherapistMatchingDialog = () => {
   };
 
   return (
+    <>
     <Dialog>
       <DialogTrigger asChild>
         <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}>
@@ -571,6 +539,15 @@ const TherapistMatchingDialog = () => {
         </DialogFooter>
       </DialogContent>
     </Dialog>
+    {selectedTherapist && (
+      <BookingFlow
+        therapistId={selectedTherapist.id}
+        therapistName={selectedTherapist.name}
+        hourlyRate={selectedTherapist.hourly_rate}
+        onClose={() => setSelectedTherapist(null)}
+      />
+    )}
+  </>
   );
 };
 

@@ -35,6 +35,8 @@ import EmployeeWelcome from "./pages/EmployeeWelcome";
 import EmployeeReadiness from "./pages/EmployeeReadiness";
 import FamilyResources from "./pages/FamilyResources";
 import RealTimeTherapy from "./pages/RealTimeTherapy";
+import TherapistAdmin from "./pages/TherapistAdmin";
+import TherapistDashboard from "./pages/TherapistDashboard";
 import HolisticWellness from "./pages/HolisticWellness";
 import AlternativeTherapies from "./pages/AlternativeTherapies";
 import AlternativeTherapyDetail from "./pages/AlternativeTherapyDetail";
@@ -306,6 +308,8 @@ function App() {
           <Route path="/workshop/:workshopId" element={<WorkshopDetail />} />
           
           <Route path="/real-time-therapy" element={<RealTimeTherapy />} />
+          <Route path="/therapist-admin" element={<TherapistAdmin />} />
+          <Route path="/therapist-dashboard" element={<TherapistDashboard />} />
           <Route path="/holistic-wellness" element={<HolisticWellness />} />
           <Route path="/binaural-beats" element={<BinauralBeats />} />
           <Route path="/journaling" element={<Journaling />} />
