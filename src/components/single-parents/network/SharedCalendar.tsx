@@ -4,12 +4,21 @@ import { Card } from "@/components/ui/card";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
 import type { ParentConnection, SharedCalendarEvent } from "@/types/database-extensions";
-import { Calendar, Plus } from "lucide-react";
-import { format } from "date-fns";
+import { Calendar as CalendarIcon, Plus, ChevronLeft, ChevronRight, List } from "lucide-react";
+import { format, addMonths, subMonths } from "date-fns";
+import EventCreationDialog from "./EventCreationDialog";
+import CalendarGrid from "./CalendarGrid";
+import EventDetailsDialog from "./EventDetailsDialog";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 const SharedCalendar: React.FC = () => {
   const [events, setEvents] = useState<SharedCalendarEvent[]>([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [createDialogOpen, setCreateDialogOpen] = useState(false);
+  const [detailsDialogOpen, setDetailsDialogOpen] = useState(false);
+  const [selectedEvent, setSelectedEvent] = useState<SharedCalendarEvent | null>(null);
+  const [selectedConnectionId, setSelectedConnectionId] = useState<string>("");
+  const [currentMonth, setCurrentMonth] = useState(new Date());
   const { toast } = useToast();
 
   useEffect(() => {
@@ -34,16 +43,19 @@ const SharedCalendar: React.FC = () => {
         return;
       }
 
-      const connectionIds = connections.map(c => c.id);
+      const connectionIds = connections.map((c: any) => c.id);
+      
+      // Set first connection as default for creating events
+      if (connectionIds.length > 0 && !selectedConnectionId) {
+        setSelectedConnectionId(connectionIds[0]);
+      }
 
       // Get events for these connections
       const { data, error } = await (supabase as any)
         .from('shared_calendar_events')
         .select('*')
         .in('connection_id', connectionIds)
-        .gte('start_time', new Date().toISOString())
-        .order('start_time', { ascending: true })
-        .limit(10);
+        .order('start_time', { ascending: true });
 
       if (error) throw error;
 
@@ -60,30 +72,37 @@ const SharedCalendar: React.FC = () => {
     }
   };
 
-  const getEventTypeColor = (type: string) => {
-    const colors: Record<string, string> = {
-      'sports': 'bg-blue-500',
-      'school': 'bg-green-500',
-      'activities': 'bg-purple-500',
-      'appointments': 'bg-red-500',
-      'pickup-dropoff': 'bg-orange-500',
-      'other': 'bg-gray-500'
-    };
-    return colors[type] || colors.other;
+  const handleAddEvent = () => {
+    if (!selectedConnectionId) {
+      toast({
+        title: "No connections",
+        description: "You need to connect with another parent first",
+        variant: "destructive"
+      });
+      return;
+    }
+    setCreateDialogOpen(true);
   };
 
+  const handleEventClick = (event: SharedCalendarEvent) => {
+    setSelectedEvent(event);
+    setDetailsDialogOpen(true);
+  };
+
+  const upcomingEvents = events.filter(e => new Date(e.start_time) >= new Date());
+
   if (isLoading) {
-    return <div className="text-center text-muted-foreground">Loading events...</div>;
+    return <div className="text-center text-muted-foreground">Loading calendar...</div>;
   }
 
   return (
     <div className="space-y-6">
       <div className="flex justify-between items-center">
         <h3 className="text-xl font-semibold text-foreground flex items-center gap-2">
-          <Calendar className="w-5 h-5" />
+          <CalendarIcon className="w-5 h-5" />
           Shared Calendar
         </h3>
-        <Button size="sm">
+        <Button size="sm" onClick={handleAddEvent}>
           <Plus className="w-4 h-4 mr-2" />
           Add Event
         </Button>
@@ -91,44 +110,108 @@ const SharedCalendar: React.FC = () => {
 
       {events.length === 0 ? (
         <Card className="p-8 text-center">
-          <Calendar className="w-12 h-12 text-muted-foreground mx-auto mb-4" />
-          <p className="text-muted-foreground">No upcoming events. Create one to get started!</p>
+          <CalendarIcon className="w-12 h-12 text-muted-foreground mx-auto mb-4" />
+          <p className="text-muted-foreground">No events yet. Create your first event!</p>
         </Card>
       ) : (
-        <div className="space-y-3">
-          {events.map((event) => (
-            <Card key={event.id} className="p-4 hover:shadow-md transition-shadow">
-              <div className="flex items-start gap-4">
-                <div className={`w-1 h-full ${getEventTypeColor(event.event_type)} rounded-full`} />
-                <div className="flex-1">
-                  <div className="flex justify-between items-start mb-2">
-                    <div>
-                      <h4 className="font-semibold text-foreground">{event.title}</h4>
-                      <p className="text-sm text-muted-foreground capitalize">
-                        {event.event_type.replace('-', ' ')}
+        <Tabs defaultValue="calendar" className="w-full">
+          <TabsList className="grid w-full grid-cols-2">
+            <TabsTrigger value="calendar">
+              <CalendarIcon className="w-4 h-4 mr-2" />
+              Calendar View
+            </TabsTrigger>
+            <TabsTrigger value="list">
+              <List className="w-4 h-4 mr-2" />
+              List View
+            </TabsTrigger>
+          </TabsList>
+
+          <TabsContent value="calendar" className="space-y-4 mt-4">
+            <div className="flex items-center justify-between">
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() => setCurrentMonth(subMonths(currentMonth, 1))}
+              >
+                <ChevronLeft className="w-4 h-4" />
+              </Button>
+              <h4 className="text-lg font-semibold">
+                {format(currentMonth, 'MMMM yyyy')}
+              </h4>
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() => setCurrentMonth(addMonths(currentMonth, 1))}
+              >
+                <ChevronRight className="w-4 h-4" />
+              </Button>
+            </div>
+
+            <CalendarGrid
+              events={events}
+              currentMonth={currentMonth}
+              onEventClick={handleEventClick}
+            />
+          </TabsContent>
+
+          <TabsContent value="list" className="space-y-4 mt-4">
+            {upcomingEvents.length === 0 ? (
+              <Card className="p-8 text-center">
+                <p className="text-muted-foreground">No upcoming events</p>
+              </Card>
+            ) : (
+              upcomingEvents.map((event) => (
+                <Card 
+                  key={event.id} 
+                  className="p-4 cursor-pointer hover:shadow-md transition-shadow"
+                  onClick={() => handleEventClick(event)}
+                >
+                  <div className="flex items-start gap-4">
+                    <div 
+                      className="w-1 h-16 rounded" 
+                      style={{ backgroundColor: event.color }}
+                    />
+                    <div className="flex-1">
+                      <h4 className="font-semibold text-foreground mb-1">{event.title}</h4>
+                      <p className="text-sm text-muted-foreground">
+                        {format(new Date(event.start_time), "EEEE, MMMM d, yyyy 'at' h:mm a")}
                       </p>
+                      {event.location && (
+                        <p className="text-sm text-muted-foreground mt-1">📍 {event.location}</p>
+                      )}
+                      {event.child_name && (
+                        <p className="text-sm text-muted-foreground">👤 {event.child_name}</p>
+                      )}
                     </div>
-                    <span className="text-sm text-muted-foreground">
-                      {format(new Date(event.start_time), 'MMM d, h:mm a')}
-                    </span>
+                    <div className="text-right">
+                      <span className="text-xs px-2 py-1 rounded bg-muted text-foreground capitalize">
+                        {event.event_type.replace('-', ' ')}
+                      </span>
+                      {event.is_recurring && (
+                        <p className="text-xs text-muted-foreground mt-1">🔁 Recurring</p>
+                      )}
+                    </div>
                   </div>
-                  {event.description && (
-                    <p className="text-sm text-muted-foreground mb-2">{event.description}</p>
-                  )}
-                  {event.child_name && (
-                    <span className="inline-block px-2 py-1 text-xs bg-rose-500/10 text-rose-600 rounded">
-                      {event.child_name}
-                    </span>
-                  )}
-                  {event.location && (
-                    <p className="text-xs text-muted-foreground mt-2">📍 {event.location}</p>
-                  )}
-                </div>
-              </div>
-            </Card>
-          ))}
-        </div>
+                </Card>
+              ))
+            )}
+          </TabsContent>
+        </Tabs>
       )}
+
+      <EventCreationDialog
+        open={createDialogOpen}
+        onOpenChange={setCreateDialogOpen}
+        connectionId={selectedConnectionId}
+        onEventCreated={loadEvents}
+      />
+
+      <EventDetailsDialog
+        event={selectedEvent}
+        open={detailsDialogOpen}
+        onOpenChange={setDetailsDialogOpen}
+        onEventDeleted={loadEvents}
+      />
     </div>
   );
 };
