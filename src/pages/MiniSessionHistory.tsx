@@ -36,7 +36,7 @@ const MiniSessionHistory: React.FC = () => {
       const { data: { user } } = await supabase.auth.getUser();
       if (!user) return;
 
-      const { data, error } = await supabase
+      const { data, error } = await (supabase as any)
         .from('mini_sessions')
         .select('*')
         .eq('user_id', user.id)
@@ -58,7 +58,7 @@ const MiniSessionHistory: React.FC = () => {
 
   const toggleShare = async (sessionId: string, currentState: boolean) => {
     try {
-      const { error } = await supabase
+      const { error } = await (supabase as any)
         .from('mini_sessions')
         .update({ shared_with_therapist: !currentState })
         .eq('id', sessionId);

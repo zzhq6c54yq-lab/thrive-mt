@@ -23,7 +23,7 @@ const ConnectionManager: React.FC = () => {
       const { data: { user } } = await supabase.auth.getUser();
       if (!user) return;
 
-      const { data, error } = await supabase
+      const { data, error } = await (supabase as any)
         .from('parent_connections')
         .select('*')
         .or(`requester_id.eq.${user.id},recipient_id.eq.${user.id}`);
@@ -64,7 +64,7 @@ const ConnectionManager: React.FC = () => {
         return;
       }
 
-      const { error } = await supabase.from('parent_connections').insert({
+      const { error } = await (supabase as any).from('parent_connections').insert({
         requester_id: user.id,
         recipient_id: recipientProfile.id,
         connection_type: 'support-friend',
@@ -94,7 +94,7 @@ const ConnectionManager: React.FC = () => {
 
   const acceptRequest = async (connectionId: string) => {
     try {
-      const { error } = await supabase
+      const { error } = await (supabase as any)
         .from('parent_connections')
         .update({ status: 'accepted', accepted_at: new Date().toISOString() })
         .eq('id', connectionId);
@@ -119,7 +119,7 @@ const ConnectionManager: React.FC = () => {
 
   const declineRequest = async (connectionId: string) => {
     try {
-      const { error } = await supabase
+      const { error } = await (supabase as any)
         .from('parent_connections')
         .update({ status: 'declined' })
         .eq('id', connectionId);

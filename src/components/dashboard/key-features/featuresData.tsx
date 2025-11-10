@@ -27,7 +27,8 @@ import {
   TrendingUp as CareerIcon,
   Palette,
   Mail,
-  CloudRain
+  CloudRain,
+  Sparkles
 } from "lucide-react";
 
 export interface FeatureItem {
@@ -43,6 +44,16 @@ export interface FeatureItem {
 }
 
 export const getFeatures = (isSpanish: boolean): FeatureItem[] => [
+  {
+    id: "mini-session",
+    title: isSpanish ? "Compañero Entre Sesiones" : "Between-Session Companion",
+    description: isSpanish ? "Apoyo terapéutico impulsado por IA entre sesiones de terapia." : "AI-powered therapeutic support between therapy sessions.",
+    icon: <Sparkles className="w-6 h-6" />,
+    image: "https://images.unsplash.com/photo-1573497491208-6b1acb260507?auto=format&fit=crop&w=800&q=80",
+    path: "/mini-session",
+    color: "purple",
+    popular: true
+  },
   {
     id: "progress-reports",
     title: isSpanish ? "Informes de Progreso" : "User-led Progress",

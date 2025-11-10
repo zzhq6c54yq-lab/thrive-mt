@@ -55,7 +55,7 @@ const MiniSession: React.FC = () => {
       // Save to database
       const { data: { user } } = await supabase.auth.getUser();
       if (user) {
-        await supabase.from('mini_sessions').insert({
+        await (supabase as any).from('mini_sessions').insert({
           user_id: user.id,
           mood,
           anxiety,

@@ -22,7 +22,7 @@ const ActivityManager: React.FC = () => {
       if (!user) return;
 
       // Get user's connections
-      const { data: connections } = await supabase
+      const { data: connections } = await (supabase as any)
         .from('parent_connections')
         .select('id')
         .or(`requester_id.eq.${user.id},recipient_id.eq.${user.id}`)
@@ -37,7 +37,7 @@ const ActivityManager: React.FC = () => {
       const connectionIds = connections.map(c => c.id);
 
       // Get activities for these connections
-      const { data, error } = await supabase
+      const { data, error } = await (supabase as any)
         .from('shared_activities')
         .select('*')
         .in('connection_id', connectionIds)
@@ -60,7 +60,7 @@ const ActivityManager: React.FC = () => {
 
   const toggleComplete = async (activityId: string, currentState: boolean) => {
     try {
-      const { error } = await supabase
+      const { error } = await (supabase as any)
         .from('shared_activities')
         .update({ 
           completed: !currentState,
