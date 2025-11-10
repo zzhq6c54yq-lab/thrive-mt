@@ -113,6 +113,10 @@ import HospitalityWorkLifeBalanceAssessment from "./pages/HospitalityWorkLifeBal
 import TransportWelcome from "./pages/TransportWelcome";
 import TransportPortal from "./pages/TransportPortal";
 import TransportStressAssessment from "./pages/TransportStressAssessment";
+import SingleParentsWelcome from "./pages/SingleParentsWelcome";
+import SingleParentsPortal from "./pages/SingleParentsPortal";
+import MiniSession from "./pages/MiniSession";
+import MiniSessionHistory from "./pages/MiniSessionHistory";
 import TransportBurnoutAssessment from "./pages/TransportBurnoutAssessment";
 import TransportWorkLifeBalanceAssessment from "./pages/TransportWorkLifeBalanceAssessment";
 import ChronicIllnessWelcome from "./pages/ChronicIllnessWelcome";

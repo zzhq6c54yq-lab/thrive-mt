@@ -11,3 +11,6 @@ verify_jwt = false
 
 [functions.unburden-reflect]
 verify_jwt = false
+
+[functions.mini-session]
+verify_jwt = false

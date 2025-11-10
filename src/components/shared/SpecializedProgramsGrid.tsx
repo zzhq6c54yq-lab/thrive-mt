@@ -136,6 +136,16 @@ const SpecializedProgramsGrid: React.FC<SpecializedProgramsGridProps> = ({ onPro
       path: "/cancer-support-welcome",
       image: cancerSupport,
       gradient: "from-pink-600 to-rose-800"
+    },
+    {
+      id: "single-parents",
+      title: isSpanish ? "Padres Solteros" : "Single Parents",
+      description: isSpanish 
+        ? "Apoyo integral para padres solteros que equilibran familia y bienestar."
+        : "Comprehensive support for single parents balancing family and wellbeing.",
+      path: "/single-parents-welcome",
+      image: "https://images.unsplash.com/photo-1476703993599-0035a21b17a9?auto=format&fit=crop&w=500&q=80",
+      gradient: "from-rose-600 to-pink-800"
     }
   ];
 
