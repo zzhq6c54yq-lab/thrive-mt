@@ -37,6 +37,22 @@ const Auth: React.FC = () => {
     setLoading(true);
     setErrors({});
 
+    // Check for therapist demo login code "0001"
+    if (email === "0001" && password === "0001") {
+      const { error } = await supabase.auth.signInWithPassword({ 
+        email: "therapist@demo.com", 
+        password: "0001" 
+      });
+      if (error) {
+        toast({ title: "Therapist login failed", description: error.message, variant: "destructive" });
+      } else {
+        toast({ title: "Welcome, Dr. Mitchell!", description: "Therapist dashboard loading..." });
+        navigate("/therapist-dashboard");
+      }
+      setLoading(false);
+      return;
+    }
+
     // Validate input with Zod
     try {
       authSchema.parse({ email, password });
@@ -54,9 +70,20 @@ const Auth: React.FC = () => {
     }
 
     if (isLogin) {
-      const { error } = await supabase.auth.signInWithPassword({ email, password });
+      const { error, data } = await supabase.auth.signInWithPassword({ email, password });
       if (error) {
         toast({ title: "Login failed", description: error.message, variant: "destructive" });
+      } else {
+        // Check if user is a therapist and redirect accordingly
+        const { data: profile } = await supabase
+          .from("profiles")
+          .select("is_therapist")
+          .eq("id", data.user.id)
+          .single();
+        
+        if (profile?.is_therapist) {
+          navigate("/therapist-dashboard");
+        }
       }
     } else {
       const { error } = await supabase.auth.signUp({
@@ -90,13 +117,19 @@ const Auth: React.FC = () => {
             </Alert>
           )}
           
+          <div className="mb-4 p-3 bg-primary/10 border border-primary/20 rounded-lg">
+            <p className="text-sm text-muted-foreground text-center">
+              <span className="font-semibold text-primary">Therapist Demo:</span> Enter <span className="font-mono bg-background px-2 py-1 rounded">0001</span> for both email and password
+            </p>
+          </div>
+
           <form className="space-y-4" onSubmit={handleAuth}>
             <div className="space-y-2">
               <label className="block text-sm font-medium">Email</label>
               <div className="relative">
                 <Mail className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
                 <Input
-                  type="email"
+                  type="text"
                   value={email}
                   onChange={e => setEmail(e.target.value)}
                   autoComplete="email"

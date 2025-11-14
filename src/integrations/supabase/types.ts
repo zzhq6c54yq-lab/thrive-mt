@@ -586,28 +586,37 @@ export type Database = {
       }
       profiles: {
         Row: {
+          avatar_url: string | null
           created_at: string | null
+          display_name: string | null
           email: string | null
           goals: string[] | null
           id: string
+          is_therapist: boolean | null
           onboarding_completed: boolean | null
           updated_at: string | null
           user_type: string | null
         }
         Insert: {
+          avatar_url?: string | null
           created_at?: string | null
+          display_name?: string | null
           email?: string | null
           goals?: string[] | null
           id: string
+          is_therapist?: boolean | null
           onboarding_completed?: boolean | null
           updated_at?: string | null
           user_type?: string | null
         }
         Update: {
+          avatar_url?: string | null
           created_at?: string | null
+          display_name?: string | null
           email?: string | null
           goals?: string[] | null
           id?: string
+          is_therapist?: boolean | null
           onboarding_completed?: boolean | null
           updated_at?: string | null
           user_type?: string | null
@@ -1091,6 +1100,50 @@ export type Database = {
         Relationships: [
           {
             foreignKeyName: "therapist_availability_therapist_id_fkey"
+            columns: ["therapist_id"]
+            isOneToOne: false
+            referencedRelation: "therapists"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      therapist_messages: {
+        Row: {
+          client_id: string
+          created_at: string | null
+          id: string
+          is_read: boolean | null
+          is_urgent: boolean | null
+          message_text: string
+          sender_type: string
+          therapist_id: string | null
+          updated_at: string | null
+        }
+        Insert: {
+          client_id: string
+          created_at?: string | null
+          id?: string
+          is_read?: boolean | null
+          is_urgent?: boolean | null
+          message_text: string
+          sender_type: string
+          therapist_id?: string | null
+          updated_at?: string | null
+        }
+        Update: {
+          client_id?: string
+          created_at?: string | null
+          id?: string
+          is_read?: boolean | null
+          is_urgent?: boolean | null
+          message_text?: string
+          sender_type?: string
+          therapist_id?: string | null
+          updated_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "therapist_messages_therapist_id_fkey"
             columns: ["therapist_id"]
             isOneToOne: false
             referencedRelation: "therapists"
