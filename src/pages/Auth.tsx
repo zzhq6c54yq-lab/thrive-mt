@@ -7,13 +7,14 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { useToast } from "@/hooks/use-toast";
-import { Eye, EyeOff, Mail, Lock } from "lucide-react";
+import { Eye, EyeOff, Mail, Lock, Key } from "lucide-react";
 import { authSchema } from "@/lib/validations";
 import { z } from "zod";
 
 const Auth: React.FC = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [accessCode, setAccessCode] = useState("");
   const [isLogin, setIsLogin] = useState(true);
   const [loading, setLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
@@ -53,9 +54,10 @@ const Auth: React.FC = () => {
     setLoading(true);
     setErrors({});
 
-    // Check for therapist demo login - only email needed
+    // Check for therapist access code
     const trimmedEmail = email.trim();
-    if (trimmedEmail === "0001" || trimmedEmail === "therapist@demo.com") {
+    const trimmedCode = accessCode.trim();
+    if (trimmedCode === "0001" || trimmedEmail === "0001" || trimmedEmail === "therapist@demo.com") {
       const { error } = await supabase.auth.signInWithPassword({ 
         email: "therapist@demo.com", 
         password: "0001" 
@@ -136,9 +138,25 @@ const Auth: React.FC = () => {
           
           <div className="mb-4 p-3 bg-primary/10 border border-primary/20 rounded-lg">
             <p className="text-sm text-muted-foreground text-center">
-              <span className="font-semibold text-primary">Therapist Demo:</span> Enter <span className="font-mono bg-background px-2 py-1 rounded">0001</span> for both email and password
+              <span className="font-semibold text-primary">Therapist Demo:</span> Enter <span className="font-mono bg-background px-2 py-1 rounded">0001</span> in access code below
             </p>
           </div>
+
+          {isLogin && (
+            <div className="space-y-2 mb-4">
+              <label className="block text-sm font-medium">Therapist Access Code</label>
+              <div className="relative">
+                <Key className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
+                <Input
+                  type="text"
+                  value={accessCode}
+                  onChange={e => setAccessCode(e.target.value)}
+                  className="pl-10"
+                  placeholder="Enter 0001 for therapist login"
+                />
+              </div>
+            </div>
+          )}
 
           <form className="space-y-4" onSubmit={handleAuth}>
             <div className="space-y-2">
