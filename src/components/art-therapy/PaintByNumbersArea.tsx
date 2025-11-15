@@ -1,5 +1,6 @@
 import React, { useEffect } from "react";
 import { usePaintByNumbers } from "@/hooks/usePaintByNumbers";
+import { SafeSvgRenderer } from "./SafeSvgRenderer";
 
 interface Props {
   pbnSvg: string;
@@ -24,9 +25,9 @@ export const PaintByNumbersArea: React.FC<Props> = ({
       ref={containerRef} 
       className="w-full h-full bg-white/90 overflow-auto p-4"
     >
-      <div
+      <SafeSvgRenderer 
+        svgContent={pbnSvg}
         className="max-w-[900px] mx-auto [&_svg]:w-full [&_svg]:h-auto"
-        dangerouslySetInnerHTML={{ __html: pbnSvg }}
       />
     </div>
   );

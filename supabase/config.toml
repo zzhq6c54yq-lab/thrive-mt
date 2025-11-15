@@ -1,22 +1,4 @@
 project_id = "daghobrbxgkgmflkcnyh"
 
-[functions.henry-ai-chat]
-verify_jwt = false
-
-[functions.generate-henry-answer]
-verify_jwt = false
-
-[functions.mirror-ai-chat]
-verify_jwt = false
-
-[functions.unburden-reflect]
-verify_jwt = false
-
-[functions.mini-session]
-verify_jwt = false
-
-[functions.setup-demo-therapist]
-verify_jwt = false
-
-[functions.create-therapist]
+[functions.therapist-access]
 verify_jwt = false

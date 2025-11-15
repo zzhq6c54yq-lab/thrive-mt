@@ -6,9 +6,13 @@ const corsHeaders = {
   'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
 };
 
-const VALID_ACCESS_CODE = "0001";
-const THERAPIST_EMAIL = "therapist@demo.com";
-const THERAPIST_PASSWORD = "0001";
+const VALID_ACCESS_CODE = Deno.env.get('THERAPIST_ACCESS_CODE');
+const THERAPIST_EMAIL = Deno.env.get('THERAPIST_EMAIL');
+const THERAPIST_PASSWORD = Deno.env.get('THERAPIST_PASSWORD');
+
+if (!VALID_ACCESS_CODE || !THERAPIST_EMAIL || !THERAPIST_PASSWORD) {
+  throw new Error('Missing required environment variables');
+}
 
 serve(async (req) => {
   // Handle CORS preflight requests
@@ -18,14 +22,60 @@ serve(async (req) => {
 
   try {
     const { accessCode } = await req.json();
+    const ip = req.headers.get('x-forwarded-for') || 'unknown';
     
-    console.log('Access code validation attempt');
+    console.log('Access code validation attempt from:', ip);
+    
+    // Create client for rate limiting checks
+    const supabaseClient = createClient(
+      Deno.env.get('SUPABASE_URL') ?? '',
+      Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') ?? '',
+      {
+        auth: {
+          autoRefreshToken: false,
+          persistSession: false
+        }
+      }
+    );
+
+    // Check rate limiting
+    const { count: recentAttempts } = await supabaseClient
+      .from('auth_user_audit')
+      .select('*', { count: 'exact', head: true })
+      .eq('operator', ip)
+      .eq('action', 'therapist_access_attempt')
+      .gte('created_at', new Date(Date.now() - 3600000).toISOString());
+
+    if (recentAttempts && recentAttempts >= 5) {
+      console.log('Rate limit exceeded for IP:', ip);
+      await supabaseClient.from('auth_user_audit').insert({
+        operator: ip,
+        action: 'rate_limit_exceeded',
+        user_id: '00000000-0000-0000-0000-000000000000',
+        details: { timestamp: new Date().toISOString() }
+      });
+      return new Response(
+        JSON.stringify({ error: 'Too many attempts. Please try again later.' }),
+        { status: 429, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+      );
+    }
+
+    // Constant-time comparison to prevent timing attacks
+    const isValidCode = accessCode && constantTimeCompare(accessCode, VALID_ACCESS_CODE);
+    
+    // Log attempt
+    await supabaseClient.from('auth_user_audit').insert({
+      operator: ip,
+      action: isValidCode ? 'therapist_access_success' : 'therapist_access_failed',
+      user_id: '00000000-0000-0000-0000-000000000000',
+      details: { timestamp: new Date().toISOString() }
+    });
     
     // Validate access code
-    if (accessCode !== VALID_ACCESS_CODE) {
+    if (!isValidCode) {
       console.log('Invalid access code provided');
       return new Response(
-        JSON.stringify({ error: 'Invalid access code' }),
+        JSON.stringify({ error: 'Access denied' }),
         { status: 401, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
       );
     }

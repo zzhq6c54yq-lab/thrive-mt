@@ -56,23 +56,22 @@ const IntroScreen: React.FC<IntroScreenProps> = ({ onContinue, onSkipToMain }) =
   };
 
   const handleTherapistAccessCode = async () => {
-    if (accessCode !== "0001") {
-      toast({
-        title: "Invalid access code",
-        description: "Please enter a valid therapist access code.",
-        variant: "destructive",
-      });
-      setAccessCode("");
-      return;
-    }
-
     setLoading(true);
     try {
       const { data, error } = await supabase.functions.invoke('therapist-access', {
         body: { accessCode }
       });
 
-      if (error) throw error;
+      if (error) {
+        toast({
+          title: "Access denied",
+          description: "Invalid access code or too many attempts.",
+          variant: "destructive",
+        });
+        setAccessCode("");
+        setLoading(false);
+        return;
+      }
 
       const { error: sessionError } = await supabase.auth.setSession({
         access_token: data.access_token,

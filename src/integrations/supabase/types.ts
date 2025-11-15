@@ -1591,6 +1591,15 @@ export type Database = {
         Returns: undefined
       }
       decrement_hearts: { Args: { post_id: string }; Returns: undefined }
+      get_anonymized_leaderboard: {
+        Args: { limit_count?: number }
+        Returns: {
+          is_current_user: boolean
+          rank: number
+          tokens_earned: number
+          total_appreciations: number
+        }[]
+      }
       has_role: {
         Args: {
           _role: Database["public"]["Enums"]["app_role"]
@@ -1608,6 +1617,7 @@ export type Database = {
         Returns: undefined
       }
       increment_hearts: { Args: { post_id: string }; Returns: undefined }
+      is_admin: { Args: never; Returns: boolean }
     }
     Enums: {
       app_role: "admin" | "moderator" | "user"

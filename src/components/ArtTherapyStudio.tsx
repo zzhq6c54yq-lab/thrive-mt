@@ -10,6 +10,7 @@ import { PaintByNumbersArea } from "@/components/art-therapy/PaintByNumbersArea"
 import { TherapeuticSidebar } from "@/components/art-therapy/TherapeuticSidebar";
 import { LevelSelector } from "@/components/art-therapy/LevelSelector";
 import { FileUploader } from "@/components/art-therapy/FileUploader";
+import { SafeSvgRenderer } from "@/components/art-therapy/SafeSvgRenderer";
 import BackButton from "@/components/navigation/BackButton";
 import { THERAPY_THEMES } from "@/data/therapeuticThemes";
 import { PBN_TEMPLATES, SAMPLE_MANDALA_SVG } from "@/data/paintByNumbersTemplates";
@@ -296,9 +297,9 @@ export const ArtTherapyStudio: React.FC = () => {
           
           <details className="text-xs text-gray-500">
             <summary>Show Mandala SVG (read-only)</summary>
-            <div
+            <SafeSvgRenderer 
+              svgContent={mandalaSvg}
               className="[&_svg]:w-full [&_svg]:h-auto border mt-2"
-              dangerouslySetInnerHTML={{ __html: mandalaSvg }}
             />
             <p className="p-2">Tip: Use symmetry greater than 1 to draw radial patterns on the canvas.</p>
           </details>
