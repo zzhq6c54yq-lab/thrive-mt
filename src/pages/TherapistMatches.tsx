@@ -287,7 +287,7 @@ const TherapistCard: React.FC<TherapistCardProps> = ({
           <span className="text-muted-foreground">Available for: </span>
           <span>Video sessions, Phone calls, In-person</span>
         </div>
-        <Link to="#" className="text-[#B87333] hover:underline">View Full Profile</Link>
+        <Link to={`/therapist/${therapist.id}`} className="text-[#B87333] hover:underline">View Full Profile</Link>
       </div>
     </Card>
   );
