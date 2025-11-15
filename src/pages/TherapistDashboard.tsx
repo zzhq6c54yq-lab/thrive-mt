@@ -1,24 +1,23 @@
-import { useState } from "react";
-import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { useEffect } from "react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
-import { ArrowLeft, Calendar, Users, FileText, Clock } from "lucide-react";
-import { Link } from "react-router-dom";
+import { LogOut } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
-import HomeButton from "@/components/HomeButton";
-import { Textarea } from "@/components/ui/textarea";
-import { Label } from "@/components/ui/label";
-import { format } from "date-fns";
+import { Button } from "@/components/ui/button";
+import OverviewTab from "@/components/therapist/OverviewTab";
+import ClientsTab from "@/components/therapist/ClientsTab";
+import ScheduleTab from "@/components/therapist/ScheduleTab";
+import MessagesTab from "@/components/therapist/MessagesTab";
+import EarningsTab from "@/components/therapist/EarningsTab";
 
 export default function TherapistDashboard() {
   const { toast } = useToast();
-  const [selectedBooking, setSelectedBooking] = useState<string | null>(null);
-  const [sessionNotes, setSessionNotes] = useState("");
+  const navigate = useNavigate();
 
   // Get current therapist profile
-  const { data: therapist } = useQuery({
+  const { data: therapist, isLoading: therapistLoading } = useQuery({
     queryKey: ["therapist-profile"],
     queryFn: async () => {
       const { data: { user } } = await supabase.auth.getUser();
@@ -60,7 +59,31 @@ export default function TherapistDashboard() {
     enabled: !!therapist?.id,
   });
 
-  // Get completed sessions
+  // Get messages
+  const { data: messages } = useQuery({
+    queryKey: ["therapist-messages", therapist?.id],
+    queryFn: async () => {
+      if (!therapist?.id) return [];
+      
+      const { data, error } = await supabase
+        .from("therapist_messages")
+        .select(`
+          *,
+          profiles:client_id (
+            display_name,
+            avatar_url
+          )
+        `)
+        .eq("therapist_id", therapist.id)
+        .order("created_at", { ascending: false });
+      
+      if (error) throw error;
+      return data;
+    },
+    enabled: !!therapist?.id,
+  });
+
+  // Get completed sessions for earnings
   const { data: sessions } = useQuery({
     queryKey: ["therapist-sessions", therapist?.id],
     queryFn: async () => {
@@ -75,8 +98,7 @@ export default function TherapistDashboard() {
           )
         `)
         .eq("therapist_id", therapist.id)
-        .order("session_date", { ascending: false })
-        .limit(10);
+        .order("session_date", { ascending: false });
       
       if (error) throw error;
       return data;
@@ -84,218 +106,183 @@ export default function TherapistDashboard() {
     enabled: !!therapist?.id,
   });
 
-  const handleSaveNotes = async (bookingId: string) => {
-    try {
-      const booking = upcomingBookings?.find(b => b.id === bookingId);
-      if (!booking) return;
-
-      const { error } = await supabase
-        .from("therapy_sessions")
-        .insert([{
-          booking_id: bookingId,
-          therapist_id: therapist?.id,
-          user_id: booking.user_id,
-          session_date: booking.appointment_date,
-          duration_minutes: booking.duration_minutes,
-          therapist_notes: sessionNotes,
-        }]);
-
-      if (error) throw error;
-
-      // Update booking status
-      await supabase
-        .from("therapy_bookings")
-        .update({ status: "completed" })
-        .eq("id", bookingId);
-
-      toast({ title: "Session notes saved successfully" });
-      setSelectedBooking(null);
-      setSessionNotes("");
-    } catch (error: any) {
-      toast({ 
-        title: "Error saving notes", 
+  const handleLogout = async () => {
+    const { error } = await supabase.auth.signOut();
+    if (error) {
+      toast({
+        title: "Error signing out",
         description: error.message,
-        variant: "destructive" 
+        variant: "destructive",
       });
+    } else {
+      navigate("/auth");
     }
   };
 
-  if (!therapist) {
+  useEffect(() => {
+    const checkAuth = async () => {
+      const { data: { user } } = await supabase.auth.getUser();
+      if (!user) {
+        navigate("/auth");
+      }
+    };
+    checkAuth();
+  }, [navigate]);
+
+  if (therapistLoading) {
     return (
-      <div className="min-h-screen flex items-center justify-center">
-        <div className="text-center">
-          <p className="text-muted-foreground mb-4">You need to be registered as a therapist to access this dashboard.</p>
-          <Link to="/therapist-admin">
-            <Button>Go to Admin Panel</Button>
-          </Link>
-        </div>
+      <div className="min-h-screen flex items-center justify-center bg-gradient-to-b from-[#1a1a1f] via-[#242432] to-[#272730]">
+        <p className="text-white">Loading dashboard...</p>
       </div>
     );
   }
 
+  if (!therapist) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-gradient-to-b from-[#1a1a1f] via-[#242432] to-[#272730]">
+        <p className="text-white">Therapist profile not found</p>
+      </div>
+    );
+  }
+
+  const unreadMessages = messages?.filter(m => !m.is_read && m.sender_type === 'client').length || 0;
+  const todayBookings = upcomingBookings?.filter(b => {
+    const bookingDate = new Date(b.appointment_date);
+    const today = new Date();
+    return bookingDate.toDateString() === today.toDateString();
+  }).length || 0;
+
   return (
-    <div className="min-h-screen bg-gradient-to-br from-background via-background to-muted/20">
-      <HomeButton />
-      
-      <div className="container mx-auto px-4 py-8 max-w-6xl">
-        <div className="flex items-center gap-4 mb-8">
-          <Link to="/real-time-therapy">
-            <Button variant="outline" size="icon">
-              <ArrowLeft className="h-4 w-4" />
+    <div className="min-h-screen bg-gradient-to-b from-[#1a1a1f] via-[#242432] to-[#272730] text-white">
+      {/* Header */}
+      <div className="border-b border-white/10 bg-black/20 backdrop-blur-sm sticky top-0 z-50">
+        <div className="max-w-7xl mx-auto px-4 md:px-8 py-4">
+          <div className="flex justify-between items-center">
+            <div className="flex items-center gap-4">
+              <img 
+                src={therapist.image_url || 'https://api.dicebear.com/7.x/avataaars/svg?seed=therapist'} 
+                alt={therapist.name}
+                className="w-12 h-12 rounded-full border-2 border-[#B87333]"
+              />
+              <div>
+                <h1 className="text-xl font-semibold">Welcome back, {therapist.name}</h1>
+                <p className="text-sm text-white/60">{therapist.title}</p>
+              </div>
+            </div>
+            <Button 
+              variant="ghost" 
+              onClick={handleLogout}
+              className="text-white/80 hover:text-white hover:bg-white/10"
+            >
+              <LogOut className="h-4 w-4 mr-2" />
+              Logout
             </Button>
-          </Link>
-          <div>
-            <h1 className="text-4xl font-bold">Therapist Dashboard</h1>
-            <p className="text-muted-foreground">Welcome back, {therapist.name}</p>
           </div>
         </div>
+      </div>
 
-        <div className="grid md:grid-cols-3 gap-4 mb-8">
-          <Card>
-            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">Upcoming Sessions</CardTitle>
-              <Calendar className="h-4 w-4 text-muted-foreground" />
-            </CardHeader>
-            <CardContent>
-              <div className="text-2xl font-bold">{upcomingBookings?.length || 0}</div>
-            </CardContent>
-          </Card>
-
-          <Card>
-            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">Total Clients</CardTitle>
-              <Users className="h-4 w-4 text-muted-foreground" />
-            </CardHeader>
-            <CardContent>
-              <div className="text-2xl font-bold">{sessions?.length || 0}</div>
-            </CardContent>
-          </Card>
-
-          <Card>
-            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">Total Sessions</CardTitle>
-              <FileText className="h-4 w-4 text-muted-foreground" />
-            </CardHeader>
-            <CardContent>
-              <div className="text-2xl font-bold">{sessions?.length || 0}</div>
-            </CardContent>
-          </Card>
+      {/* Quick Stats Bar */}
+      <div className="bg-gradient-to-r from-[#B87333]/20 to-[#E5C5A1]/20 border-b border-[#B87333]/20">
+        <div className="max-w-7xl mx-auto px-4 md:px-8 py-4">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+            <div className="text-center">
+              <div className="text-2xl font-bold text-[#B87333]">{upcomingBookings?.length || 0}</div>
+              <div className="text-xs text-white/60">Active Clients</div>
+            </div>
+            <div className="text-center">
+              <div className="text-2xl font-bold text-[#B87333]">{todayBookings}</div>
+              <div className="text-xs text-white/60">Today's Sessions</div>
+            </div>
+            <div className="text-center">
+              <div className="text-2xl font-bold text-[#B87333]">{unreadMessages}</div>
+              <div className="text-xs text-white/60">Unread Messages</div>
+            </div>
+            <div className="text-center">
+              <div className="text-2xl font-bold text-[#B87333]">{therapist.rating?.toFixed(1)}</div>
+              <div className="text-xs text-white/60">Client Rating</div>
+            </div>
+          </div>
         </div>
+      </div>
 
-        <Tabs defaultValue="upcoming" className="space-y-4">
-          <TabsList>
-            <TabsTrigger value="upcoming">Upcoming Sessions</TabsTrigger>
-            <TabsTrigger value="history">Session History</TabsTrigger>
+      {/* Main Content */}
+      <div className="max-w-7xl mx-auto px-4 md:px-8 py-8">
+        <Tabs defaultValue="overview" className="w-full">
+          <TabsList className="grid grid-cols-3 md:grid-cols-5 gap-2 bg-black/30 mb-8 p-1 rounded-lg h-auto">
+            <TabsTrigger 
+              value="overview" 
+              className="data-[state=active]:bg-[#B87333]/90 data-[state=active]:text-white py-3"
+            >
+              Overview
+            </TabsTrigger>
+            <TabsTrigger 
+              value="clients" 
+              className="data-[state=active]:bg-[#B87333]/90 data-[state=active]:text-white py-3"
+            >
+              Clients
+            </TabsTrigger>
+            <TabsTrigger 
+              value="schedule" 
+              className="data-[state=active]:bg-[#B87333]/90 data-[state=active]:text-white py-3"
+            >
+              Schedule
+            </TabsTrigger>
+            <TabsTrigger 
+              value="messages" 
+              className="data-[state=active]:bg-[#B87333]/90 data-[state=active]:text-white py-3 relative"
+            >
+              Messages
+              {unreadMessages > 0 && (
+                <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">
+                  {unreadMessages}
+                </span>
+              )}
+            </TabsTrigger>
+            <TabsTrigger 
+              value="earnings" 
+              className="data-[state=active]:bg-[#B87333]/90 data-[state=active]:text-white py-3"
+            >
+              Earnings
+            </TabsTrigger>
           </TabsList>
 
-          <TabsContent value="upcoming" className="space-y-4">
-            {!upcomingBookings || upcomingBookings.length === 0 ? (
-              <Card>
-                <CardContent className="text-center py-12">
-                  <Clock className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
-                  <p className="text-muted-foreground">No upcoming sessions scheduled</p>
-                </CardContent>
-              </Card>
-            ) : (
-              upcomingBookings.map((booking) => (
-                <Card key={booking.id}>
-                  <CardContent className="p-6">
-                    <div className="flex items-start justify-between">
-                      <div className="flex-1">
-                        <h3 className="text-lg font-semibold">
-                          {(booking.profiles as any)?.display_name || "Client"}
-                        </h3>
-                        <p className="text-muted-foreground">
-                          {format(new Date(booking.appointment_date), "PPP 'at' p")}
-                        </p>
-                        <p className="text-sm mt-2">{booking.duration_minutes} minutes • {booking.session_type}</p>
-                        {booking.concerns && booking.concerns.length > 0 && (
-                          <div className="flex flex-wrap gap-1 mt-2">
-                            {booking.concerns.map((concern: string) => (
-                              <span key={concern} className="text-xs bg-primary/10 text-primary px-2 py-1 rounded-full">
-                                {concern}
-                              </span>
-                            ))}
-                          </div>
-                        )}
-                      </div>
-                      <div className="flex gap-2">
-                        <Button 
-                          variant="outline"
-                          onClick={() => setSelectedBooking(selectedBooking === booking.id ? null : booking.id)}
-                        >
-                          {selectedBooking === booking.id ? "Close Notes" : "Add Notes"}
-                        </Button>
-                        {booking.video_room_id && (
-                          <Button>Join Call</Button>
-                        )}
-                      </div>
-                    </div>
-                    
-                    {selectedBooking === booking.id && (
-                      <div className="mt-4 pt-4 border-t space-y-4">
-                        <div>
-                          <Label htmlFor="notes">Session Notes</Label>
-                          <Textarea
-                            id="notes"
-                            rows={6}
-                            value={sessionNotes}
-                            onChange={(e) => setSessionNotes(e.target.value)}
-                            placeholder="Document session observations, client progress, interventions used..."
-                          />
-                        </div>
-                        <div className="flex gap-2">
-                          <Button onClick={() => handleSaveNotes(booking.id)}>
-                            Save & Mark Complete
-                          </Button>
-                          <Button variant="outline" onClick={() => setSelectedBooking(null)}>
-                            Cancel
-                          </Button>
-                        </div>
-                      </div>
-                    )}
-                  </CardContent>
-                </Card>
-              ))
-            )}
+          <TabsContent value="overview" className="animate-fade-in">
+            <OverviewTab 
+              therapist={therapist}
+              upcomingBookings={upcomingBookings || []}
+              messages={messages || []}
+              sessions={sessions || []}
+            />
           </TabsContent>
 
-          <TabsContent value="history" className="space-y-4">
-            {!sessions || sessions.length === 0 ? (
-              <Card>
-                <CardContent className="text-center py-12">
-                  <FileText className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
-                  <p className="text-muted-foreground">No completed sessions yet</p>
-                </CardContent>
-              </Card>
-            ) : (
-              sessions.map((session) => (
-                <Card key={session.id}>
-                  <CardContent className="p-6">
-                    <div className="flex items-start justify-between mb-2">
-                      <div>
-                        <h3 className="text-lg font-semibold">
-                          {(session.profiles as any)?.display_name || "Client"}
-                        </h3>
-                        <p className="text-muted-foreground">
-                          {format(new Date(session.session_date), "PPP")}
-                        </p>
-                      </div>
-                      {session.progress_rating && (
-                        <div className="text-sm">
-                          Rating: {session.progress_rating}/5
-                        </div>
-                      )}
-                    </div>
-                    {session.therapist_notes && (
-                      <div className="mt-2 p-3 bg-muted rounded-lg">
-                        <p className="text-sm">{session.therapist_notes}</p>
-                      </div>
-                    )}
-                  </CardContent>
-                </Card>
-              ))
-            )}
+          <TabsContent value="clients" className="animate-fade-in">
+            <ClientsTab 
+              therapist={therapist}
+              bookings={upcomingBookings || []}
+              sessions={sessions || []}
+            />
+          </TabsContent>
+
+          <TabsContent value="schedule" className="animate-fade-in">
+            <ScheduleTab 
+              therapist={therapist}
+              bookings={upcomingBookings || []}
+            />
+          </TabsContent>
+
+          <TabsContent value="messages" className="animate-fade-in">
+            <MessagesTab 
+              therapist={therapist}
+              messages={messages || []}
+            />
+          </TabsContent>
+
+          <TabsContent value="earnings" className="animate-fade-in">
+            <EarningsTab 
+              therapist={therapist}
+              sessions={sessions || []}
+              bookings={upcomingBookings || []}
+            />
           </TabsContent>
         </Tabs>
       </div>
