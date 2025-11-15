@@ -17,3 +17,6 @@ verify_jwt = false
 
 [functions.setup-demo-therapist]
 verify_jwt = false
+
+[functions.create-therapist]
+verify_jwt = false
