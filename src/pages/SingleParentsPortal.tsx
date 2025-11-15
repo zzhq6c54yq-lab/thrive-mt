@@ -56,10 +56,14 @@ const SingleParentsPortal: React.FC = () => {
   return (
     <Page title={isSpanish ? "Portal de Padres Solteros" : "Single Parents Portal"} returnToMain>
       <div className="space-y-6">
-        <PortalHeader />
+        <React.Suspense fallback={<div className="text-center text-muted-foreground">Loading...</div>}>
+          <PortalHeader />
+        </React.Suspense>
 
         <div className="bg-card border border-border rounded-lg overflow-hidden shadow-lg">
-          <TabNavigation activeTab={activeTab} onTabChange={setActiveTab} />
+          <React.Suspense fallback={<div className="text-center text-muted-foreground">Loading...</div>}>
+            <TabNavigation activeTab={activeTab} onTabChange={setActiveTab} />
+          </React.Suspense>
           
           <div className="p-6">
             <React.Suspense fallback={<div className="text-center text-muted-foreground">Loading...</div>}>
