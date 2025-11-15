@@ -56,35 +56,38 @@ const Auth: React.FC = () => {
 
     setLoading(true);
     try {
-      const { data, error } = await supabase.auth.signInWithPassword({
-        email: "therapist@demo.com",
-        password: "0001",
+      // Call the therapist-access edge function
+      const { data, error } = await supabase.functions.invoke('therapist-access', {
+        body: { accessCode }
       });
 
       if (error) throw error;
 
-      if (data.user) {
-        const { data: profile } = await supabase
-          .from("profiles")
-          .select("is_therapist")
-          .eq("id", data.user.id)
-          .single();
-
-        if (profile?.is_therapist) {
-          navigate("/therapist-dashboard");
-        }
+      if (!data.access_token || !data.refresh_token) {
+        throw new Error('Invalid response from server');
       }
+
+      // Set the session with the tokens received from edge function
+      const { error: sessionError } = await supabase.auth.setSession({
+        access_token: data.access_token,
+        refresh_token: data.refresh_token,
+      });
+
+      if (sessionError) throw sessionError;
 
       toast({
         title: "Welcome back!",
         description: "Therapist login successful.",
       });
+      
       setShowAccessCodeDialog(false);
       setAccessCode("");
+      // Navigation will be handled by the auth state listener
     } catch (error: any) {
+      console.error('Therapist login error:', error);
       toast({
         title: "Login failed",
-        description: error.message,
+        description: error.message || 'Failed to authenticate. Please try again.',
         variant: "destructive",
       });
       setAccessCode("");
