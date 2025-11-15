@@ -7,7 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { useToast } from "@/hooks/use-toast";
-import { Eye, EyeOff, Mail, Lock, Key } from "lucide-react";
+import { Eye, EyeOff, Mail, Lock, Key, Copy } from "lucide-react";
 import { authSchema } from "@/lib/validations";
 import { z } from "zod";
 
@@ -21,6 +21,14 @@ const Auth: React.FC = () => {
   const [errors, setErrors] = useState<{ email?: string; password?: string }>({});
   const { toast } = useToast();
   const navigate = useNavigate();
+
+  const copyToClipboard = (text: string, label: string) => {
+    navigator.clipboard.writeText(text);
+    toast({
+      title: "Copied!",
+      description: `${label} copied to clipboard`,
+    });
+  };
 
   // Redirect if already logged in
   useEffect(() => {
@@ -140,9 +148,31 @@ const Auth: React.FC = () => {
             <Alert className="mb-4 bg-primary/10 border-primary/20">
               <Key className="h-4 w-4" />
               <AlertTitle>Staff Login Credentials</AlertTitle>
-              <AlertDescription className="text-sm space-y-1 mt-2">
-                <p><strong>Email:</strong> <span className="font-mono">therapist@demo.com</span></p>
-                <p><strong>Password:</strong> <span className="font-mono">0001</span></p>
+              <AlertDescription className="text-sm space-y-2 mt-2">
+                <div className="flex items-center justify-between gap-2">
+                  <p><strong>Email:</strong> <span className="font-mono">therapist@demo.com</span></p>
+                  <Button
+                    type="button"
+                    variant="ghost"
+                    size="sm"
+                    className="h-7 px-2"
+                    onClick={() => copyToClipboard("therapist@demo.com", "Email")}
+                  >
+                    <Copy className="h-3 w-3" />
+                  </Button>
+                </div>
+                <div className="flex items-center justify-between gap-2">
+                  <p><strong>Password:</strong> <span className="font-mono">0001</span></p>
+                  <Button
+                    type="button"
+                    variant="ghost"
+                    size="sm"
+                    className="h-7 px-2"
+                    onClick={() => copyToClipboard("0001", "Password")}
+                  >
+                    <Copy className="h-3 w-3" />
+                  </Button>
+                </div>
                 <p className="text-xs opacity-70 mt-2">Or simply enter <span className="font-mono">0001</span> in the access code field</p>
               </AlertDescription>
             </Alert>
