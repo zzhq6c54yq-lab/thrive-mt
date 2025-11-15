@@ -42,19 +42,28 @@ export default function TherapistDashboard() {
       
       const { data, error } = await supabase
         .from("therapy_bookings")
-        .select(`
-          *,
-          profiles:user_id (
-            display_name,
-            avatar_url
-          )
-        `)
+        .select("*")
         .eq("therapist_id", therapist.id)
         .gte("appointment_date", new Date().toISOString())
         .order("appointment_date", { ascending: true });
       
       if (error) throw error;
-      return data;
+      
+      // Fetch user profiles separately
+      if (!data || data.length === 0) return [];
+      
+      const userIds = [...new Set(data.map(b => b.user_id))];
+      const { data: profiles } = await supabase
+        .from("profiles")
+        .select("id, display_name, avatar_url")
+        .in("id", userIds);
+      
+      const profileMap = new Map(profiles?.map(p => [p.id, p]) || []);
+      
+      return data.map(booking => ({
+        ...booking,
+        profiles: profileMap.get(booking.user_id)
+      }));
     },
     enabled: !!therapist?.id,
   });
@@ -67,18 +76,29 @@ export default function TherapistDashboard() {
       
       const { data, error } = await supabase
         .from("therapist_messages")
-        .select(`
-          *,
-          profiles:client_id (
-            display_name,
-            avatar_url
-          )
-        `)
+        .select("*")
         .eq("therapist_id", therapist.id)
         .order("created_at", { ascending: false });
       
       if (error) throw error;
-      return data;
+      
+      // Fetch client profiles separately
+      if (!data || data.length === 0) return [];
+      
+      const clientIds = [...new Set(data.map(m => m.client_id))];
+      const { data: profiles } = await supabase
+        .from("profiles")
+        .select("id, display_name, avatar_url")
+        .in("id", clientIds);
+      
+      // Map profiles to messages
+      const profileMap = new Map(profiles?.map(p => [p.id, p]) || []);
+      
+      return data.map(msg => ({
+        ...msg,
+        client_name: profileMap.get(msg.client_id)?.display_name || "Unknown Client",
+        profiles: profileMap.get(msg.client_id)
+      }));
     },
     enabled: !!therapist?.id,
   });
@@ -91,17 +111,27 @@ export default function TherapistDashboard() {
       
       const { data, error } = await supabase
         .from("therapy_sessions")
-        .select(`
-          *,
-          profiles:user_id (
-            display_name
-          )
-        `)
+        .select("*")
         .eq("therapist_id", therapist.id)
         .order("session_date", { ascending: false });
       
       if (error) throw error;
-      return data;
+      
+      // Fetch user profiles separately
+      if (!data || data.length === 0) return [];
+      
+      const userIds = [...new Set(data.map(s => s.user_id))];
+      const { data: profiles } = await supabase
+        .from("profiles")
+        .select("id, display_name")
+        .in("id", userIds);
+      
+      const profileMap = new Map(profiles?.map(p => [p.id, p]) || []);
+      
+      return data.map(session => ({
+        ...session,
+        profiles: profileMap.get(session.user_id)
+      }));
     },
     enabled: !!therapist?.id,
   });
@@ -151,6 +181,92 @@ export default function TherapistDashboard() {
     const today = new Date();
     return bookingDate.toDateString() === today.toDateString();
   }).length || 0;
+
+  // Transform data for OverviewTab
+  const stats = {
+    activeClients: upcomingBookings?.length || 0,
+    sessionsThisWeek: sessions?.filter(s => {
+      const sessionDate = new Date(s.session_date);
+      const now = new Date();
+      const weekStart = new Date(now.setDate(now.getDate() - now.getDay()));
+      return sessionDate >= weekStart;
+    }).length || 0,
+    upcomingToday: todayBookings,
+    earningsThisMonth: sessions?.filter(s => 
+      new Date(s.session_date).getMonth() === new Date().getMonth()
+    ).reduce((sum, s) => sum + (therapist?.hourly_rate || 0), 0) || 0,
+    avgResponseTime: "2.3h",
+    satisfaction: therapist?.rating || 0
+  };
+
+  const upcomingAppointments = upcomingBookings?.slice(0, 10).map(b => ({
+    id: b.id,
+    client_name: b.profiles?.display_name || 'Unknown Client',
+    time: b.appointment_date,
+    duration: b.duration_minutes,
+    type: b.session_type
+  })) || [];
+
+  const recentMessages = messages?.slice(0, 5).map(m => ({
+    id: m.id,
+    client_name: m.client_name,
+    message: m.message_text,
+    time: m.created_at,
+    unread: !m.is_read
+  })) || [];
+
+  // Transform data for ClientsTab
+  const uniqueClientIds = [...new Set(upcomingBookings?.map(b => b.user_id) || [])];
+  const clients = uniqueClientIds.map(userId => {
+    const booking = upcomingBookings?.find(b => b.user_id === userId);
+    const clientSessions = sessions?.filter(s => s.user_id === userId) || [];
+    
+    return {
+      id: booking?.id || userId,
+      user_id: userId,
+      name: booking?.profiles?.display_name || 'Unknown Client',
+      avatar_url: booking?.profiles?.avatar_url,
+      status: 'active',
+      last_session: clientSessions[clientSessions.length - 1]?.session_date,
+      next_appointment: booking?.appointment_date,
+      total_sessions: clientSessions.length,
+      concerns: booking?.concerns || [],
+      risk_level: 'normal'
+    };
+  });
+
+  // Transform data for ScheduleTab
+  const appointments = upcomingBookings?.map(b => ({
+    id: b.id,
+    client_name: b.profiles?.display_name || 'Unknown Client',
+    appointment_date: b.appointment_date,
+    duration_minutes: b.duration_minutes,
+    session_type: b.session_type,
+    status: b.status
+  })) || [];
+
+  // Transform data for EarningsTab
+  const payments = sessions?.map(s => ({
+    id: s.id,
+    date: s.session_date,
+    client_name: s.profiles?.display_name || 'Unknown Client',
+    session_type: 'video',
+    amount: therapist?.hourly_rate || 150,
+    status: 'completed'
+  })) || [];
+
+  const monthlyData = Array.from({ length: 6 }, (_, i) => {
+    const date = new Date();
+    date.setMonth(date.getMonth() - (5 - i));
+    const monthSessions = sessions?.filter(s => 
+      new Date(s.session_date).getMonth() === date.getMonth()
+    ) || [];
+    
+    return {
+      month: date.toLocaleString('default', { month: 'short' }),
+      earnings: monthSessions.length * (therapist?.hourly_rate || 150)
+    };
+  });
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-[#1a1a1f] via-[#242432] to-[#272730] text-white">
@@ -248,40 +364,34 @@ export default function TherapistDashboard() {
 
           <TabsContent value="overview" className="animate-fade-in">
             <OverviewTab 
-              therapist={therapist}
-              upcomingBookings={upcomingBookings || []}
-              messages={messages || []}
-              sessions={sessions || []}
+              stats={stats}
+              upcomingAppointments={upcomingAppointments}
+              recentMessages={recentMessages}
             />
           </TabsContent>
 
           <TabsContent value="clients" className="animate-fade-in">
             <ClientsTab 
-              therapist={therapist}
-              bookings={upcomingBookings || []}
-              sessions={sessions || []}
+              clients={clients}
             />
           </TabsContent>
 
           <TabsContent value="schedule" className="animate-fade-in">
             <ScheduleTab 
-              therapist={therapist}
-              bookings={upcomingBookings || []}
+              appointments={appointments}
             />
           </TabsContent>
 
           <TabsContent value="messages" className="animate-fade-in">
             <MessagesTab 
-              therapist={therapist}
               messages={messages || []}
             />
           </TabsContent>
 
           <TabsContent value="earnings" className="animate-fade-in">
             <EarningsTab 
-              therapist={therapist}
-              sessions={sessions || []}
-              bookings={upcomingBookings || []}
+              payments={payments}
+              monthlyData={monthlyData}
             />
           </TabsContent>
         </Tabs>
