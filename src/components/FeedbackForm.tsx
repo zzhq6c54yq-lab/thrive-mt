@@ -4,6 +4,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/hooks/use-toast";
+import { feedbackSchema } from "@/lib/validations";
 
 const FeedbackForm: React.FC<{ userId: string }> = ({ userId }) => {
   const [message, setMessage] = useState("");
@@ -15,11 +16,27 @@ const FeedbackForm: React.FC<{ userId: string }> = ({ userId }) => {
     e.preventDefault();
     setLoading(true);
 
-    const { error } = await supabase.from("feedback").insert({
-      user_id: userId,
-      message,
-      rating
+    // Validate input
+    const validation = feedbackSchema.safeParse({
+      message: message.trim(),
+      rating,
     });
+
+    if (!validation.success) {
+      toast({ 
+        title: "Validation Error", 
+        description: validation.error.errors[0].message,
+        variant: "destructive" 
+      });
+      setLoading(false);
+      return;
+    }
+
+    const { error } = await supabase.from("feedback").insert([{
+      user_id: userId,
+      message: validation.data.message,
+      rating: validation.data.rating
+    }]);
 
     if (error) {
       toast({ title: "Failed to submit feedback.", description: error.message, variant: "destructive" });

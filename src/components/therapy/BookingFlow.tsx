@@ -10,6 +10,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { CreditCard, Calendar as CalendarIcon, Clock, CheckCircle, Loader2 } from "lucide-react";
 import { format, addDays, setHours, setMinutes } from "date-fns";
 import { motion, AnimatePresence } from "framer-motion";
+import { therapyBookingSchema } from "@/lib/validations";
 
 interface BookingFlowProps {
   therapistId: string;
@@ -51,6 +52,18 @@ export function BookingFlow({ therapistId, therapistName, hourlyRate, onClose }:
       const [hours, minutes] = selectedTime.split(":").map(Number);
       const appointmentDate = setMinutes(setHours(selectedDate, hours), minutes);
 
+      // Validate booking data
+      const validation = therapyBookingSchema.safeParse({
+        therapist_id: therapistId,
+        appointment_date: appointmentDate.toISOString(),
+        duration_minutes: duration,
+        session_type: sessionType,
+      });
+
+      if (!validation.success) {
+        throw new Error(validation.error.errors[0].message);
+      }
+
       // Simulate payment processing
       await new Promise(resolve => setTimeout(resolve, 2000));
 
@@ -59,10 +72,12 @@ export function BookingFlow({ therapistId, therapistName, hourlyRate, onClose }:
         .from("therapy_bookings")
         .insert([{
           user_id: user.id,
-          therapist_id: therapistId,
-          appointment_date: appointmentDate.toISOString(),
-          duration_minutes: duration,
-          session_type: sessionType,
+          therapist_id: validation.data.therapist_id,
+          appointment_date: validation.data.appointment_date,
+          duration_minutes: validation.data.duration_minutes,
+          session_type: validation.data.session_type,
+          concerns: validation.data.concerns || null,
+          notes: validation.data.notes || null,
           payment_status: "paid",
           payment_amount: parseFloat(calculateTotal()),
           payment_method: paymentMethod,
