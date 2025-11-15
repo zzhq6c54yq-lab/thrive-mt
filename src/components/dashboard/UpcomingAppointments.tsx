@@ -45,12 +45,18 @@ const UpcomingAppointments = () => {
     takingToSchedule: isSpanish ? "Llevándote a tu calendario completo de citas" : "Taking you to your full appointment schedule",
   };
 
+  // Generate dynamic future dates
+  const tomorrow = new Date();
+  tomorrow.setDate(tomorrow.getDate() + 1);
+  const nextWeek = new Date();
+  nextWeek.setDate(nextWeek.getDate() + 7);
+
   // Mock data for appointments with translations
   const appointments = [
     {
       id: 1,
       title: isSpanish ? "Sesión de Terapia con Dr. Johnson" : "Therapy Session with Dr. Johnson",
-      date: "2023-06-15",
+      date: tomorrow.toISOString().split('T')[0],
       time: isSpanish ? "10:00 AM" : "10:00 AM",
       type: "video",
       color: "from-purple-600 to-violet-500"
@@ -58,7 +64,7 @@ const UpcomingAppointments = () => {
     {
       id: 2,
       title: isSpanish ? "Taller de Mindfulness" : "Mindfulness Workshop",
-      date: "2023-06-18",
+      date: nextWeek.toISOString().split('T')[0],
       time: isSpanish ? "2:00 PM" : "2:00 PM",
       type: "group",
       color: "from-blue-500 to-cyan-400"
@@ -136,11 +142,21 @@ const UpcomingAppointments = () => {
                   <div className="flex-1">
                     <h4 className="text-sm font-medium text-white">{appointment.title}</h4>
                     <p className="text-xs text-white/60">
-                      {new Date(appointment.date).toLocaleDateString(isSpanish ? "es-ES" : "en-US", {
-                        weekday: "short",
-                        month: "short",
-                        day: "numeric",
-                      })}{" "}
+                      {(() => {
+                        try {
+                          const date = new Date(appointment.date);
+                          if (isNaN(date.getTime())) {
+                            return appointment.date;
+                          }
+                          return date.toLocaleDateString(isSpanish ? "es-ES" : "en-US", {
+                            weekday: "short",
+                            month: "short",
+                            day: "numeric",
+                          });
+                        } catch {
+                          return appointment.date;
+                        }
+                      })()}{" "}
                       • {appointment.time}
                     </p>
                   </div>
