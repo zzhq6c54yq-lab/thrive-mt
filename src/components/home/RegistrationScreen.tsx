@@ -1,8 +1,11 @@
 
 import React from "react";
 import { Button } from "@/components/ui/button";
-import { ArrowLeft, User, Mail, Lock } from "lucide-react";
+import { ArrowLeft, User, Mail, Lock, Stethoscope } from "lucide-react";
 import { useRegistrationState } from "@/hooks/useRegistrationState";
+import { useNavigate } from "react-router-dom";
+import { supabase } from "@/integrations/supabase/client";
+import { useToast } from "@/hooks/use-toast";
 
 interface RegistrationScreenProps {
   userInfo: {
@@ -23,6 +26,8 @@ const RegistrationScreen: React.FC<RegistrationScreenProps> = ({
   onPrevious,
   onSkip,
 }) => {
+  const navigate = useNavigate();
+  const { toast } = useToast();
   const { 
     userInfo: registrationUserInfo, 
     isSpanish, 
@@ -33,6 +38,41 @@ const RegistrationScreen: React.FC<RegistrationScreenProps> = ({
     handleUserInfoChange, 
     handleSubmit
   } = useRegistrationState();
+
+  const [isTherapistLoading, setIsTherapistLoading] = React.useState(false);
+
+  const handleTherapistLogin = async () => {
+    setIsTherapistLoading(true);
+    try {
+      const { error } = await supabase.auth.signInWithPassword({ 
+        email: "therapist@demo.com", 
+        password: "0001" 
+      });
+      
+      if (error) {
+        toast({ 
+          title: "Therapist login failed", 
+          description: error.message, 
+          variant: "destructive" 
+        });
+      } else {
+        toast({ 
+          title: "Welcome, Dr. Mitchell!", 
+          description: "Therapist dashboard loading..." 
+        });
+        navigate("/therapist-dashboard");
+      }
+    } catch (error) {
+      console.error('Therapist login error:', error);
+      toast({ 
+        title: "Login error", 
+        description: "An unexpected error occurred", 
+        variant: "destructive" 
+      });
+    } finally {
+      setIsTherapistLoading(false);
+    }
+  };
 
   // Use the registration state but sync with onboarding flow
   React.useEffect(() => {
@@ -72,12 +112,48 @@ const RegistrationScreen: React.FC<RegistrationScreenProps> = ({
       <div className="absolute bottom-0 left-0 w-80 h-80 bg-gradient-to-tr from-[#D946EF]/20 to-transparent rounded-full blur-3xl -z-10"></div>
       
       <div className="max-w-md w-full mx-auto px-4 z-10">
+        {/* Therapist Portal Section */}
+        <div className="mb-6 bg-gradient-to-r from-[#B87333]/20 to-[#E5C5A1]/20 backdrop-blur-md p-5 rounded-lg shadow-lg border border-[#B87333]/30">
+          <div className="flex items-center gap-3 mb-3">
+            <div className="bg-[#B87333]/30 p-2 rounded-lg">
+              <Stethoscope className="h-6 w-6 text-[#E5C5A1]" />
+            </div>
+            <div>
+              <h3 className="text-xl font-semibold text-[#E5C5A1]">Therapist Portal</h3>
+              <p className="text-sm text-gray-300">Demo Login Access</p>
+            </div>
+          </div>
+          <div className="bg-black/30 rounded-md p-3 mb-3">
+            <p className="text-xs text-gray-400 mb-2">Demo Credentials:</p>
+            <div className="flex items-center gap-2 text-sm">
+              <span className="text-gray-300">Login Code:</span>
+              <code className="bg-[#B87333]/20 px-2 py-1 rounded text-[#E5C5A1] font-mono">0001</code>
+            </div>
+          </div>
+          <Button
+            onClick={handleTherapistLogin}
+            disabled={isTherapistLoading}
+            className="w-full bg-gradient-to-r from-[#B87333] to-[#E5C5A1] hover:from-[#A56625] hover:to-[#D4B48F] text-white font-semibold disabled:opacity-50"
+          >
+            {isTherapistLoading ? "Logging in..." : "Login as Therapist"}
+          </Button>
+        </div>
+
+        <div className="relative mb-6">
+          <div className="absolute inset-0 flex items-center">
+            <div className="w-full border-t border-white/20"></div>
+          </div>
+          <div className="relative flex justify-center text-sm">
+            <span className="px-4 bg-[#1a1a1f] text-gray-400">or continue as client</span>
+          </div>
+        </div>
+
         <div className="text-center mb-8">
           <h2 className="text-3xl font-bold mb-2 text-transparent bg-clip-text bg-gradient-to-r from-[#B87333] to-[#E5C5A1]">{translations.title}</h2>
           <p className="text-gray-300">{translations.subtitle}</p>
         </div>
         
-        <form 
+        <form
           onSubmit={(e) => handleSubmit(e, () => onSubmit(e))} 
           className="space-y-4 bg-white/10 backdrop-blur-md p-6 rounded-lg shadow-lg border border-white/10"
         >
