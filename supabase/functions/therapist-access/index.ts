@@ -78,41 +78,6 @@ serve(async (req) => {
         }
 
         console.log('Demo therapist setup complete');
-        
-        // Query the profile again after creation
-        const { data: newProfileData, error: refetchError } = await supabaseAdmin
-          .from('profiles')
-          .select('id')
-          .eq('email', 'therapist@demo.com')
-          .eq('is_therapist', true)
-          .single();
-        
-        if (refetchError || !newProfileData) {
-          console.error('Error refetching profile:', refetchError);
-          throw new Error('Therapist profile not found after setup');
-        }
-
-        console.log('Creating session for therapist user:', newProfileData.id);
-
-        // Create a session for the newly created user
-        const { data: sessionData, error: sessionError } = await supabaseAdmin.auth.admin.createSession({
-          userId: newProfileData.id,
-        });
-
-        if (sessionError) {
-          console.error('Error creating session:', sessionError);
-          throw sessionError;
-        }
-
-        console.log('Session created successfully');
-
-        return new Response(
-          JSON.stringify({ 
-            access_token: sessionData.access_token,
-            refresh_token: sessionData.refresh_token,
-          }),
-          { headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
-        );
       } catch (setupError) {
         console.error('Error setting up therapist:', setupError);
         return new Response(
@@ -124,24 +89,25 @@ serve(async (req) => {
       }
     }
 
-    console.log('Creating session for therapist user:', profileData.id);
+    console.log('Signing in therapist user with password');
 
-    // Create a session for the existing user
-    const { data: sessionData, error: sessionError } = await supabaseAdmin.auth.admin.createSession({
-      userId: profileData.id,
+    // Sign in with email and password to get tokens
+    const { data: signInData, error: signInError } = await supabaseAdmin.auth.signInWithPassword({
+      email: 'therapist@demo.com',
+      password: '0001',
     });
 
-    if (sessionError) {
-      console.error('Error creating session:', sessionError);
-      throw sessionError;
+    if (signInError || !signInData.session) {
+      console.error('Error signing in:', signInError);
+      throw signInError || new Error('No session returned from sign in');
     }
 
-    console.log('Session created successfully');
+    console.log('Sign in successful');
 
     return new Response(
       JSON.stringify({ 
-        access_token: sessionData.access_token,
-        refresh_token: sessionData.refresh_token,
+        access_token: signInData.session.access_token,
+        refresh_token: signInData.session.refresh_token,
       }),
       { headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
     );
