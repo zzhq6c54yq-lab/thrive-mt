@@ -28,27 +28,26 @@ serve(async (req) => {
     const email = 'therapist@demo.com';
     const password = '0001';
 
-    // First, check if profile already exists by querying the database directly
-    const { data: existingProfile, error: profileQueryError } = await supabaseAdmin
-      .from('profiles')
-      .select('id, email, is_therapist')
-      .eq('email', email)
-      .maybeSingle();
-
-    if (profileQueryError) {
-      console.error('Error querying existing profile:', profileQueryError);
+    // Check auth.users directly for the therapist account
+    console.log('Checking if therapist user exists in auth.users...');
+    const { data: { users }, error: listError } = await supabaseAdmin.auth.admin.listUsers();
+    
+    if (listError) {
+      console.error('Error listing users:', listError);
+      throw listError;
     }
 
+    const existingUser = users?.find(u => u.email === email);
     let userId: string;
 
-    // If profile exists, update the password instead of deleting
-    if (existingProfile) {
-      console.log('Found existing profile with ID:', existingProfile.id);
+    // If user exists in auth.users, update the password
+    if (existingUser) {
+      console.log('Found existing user with ID:', existingUser.id);
       console.log('Updating existing user password to 0001...');
       
-      // Update the password instead of deleting and recreating
+      // Update the password
       const { error: updateError } = await supabaseAdmin.auth.admin.updateUserById(
-        existingProfile.id,
+        existingUser.id,
         { 
           password: '0001', 
           email_confirm: true 
@@ -61,25 +60,27 @@ serve(async (req) => {
       }
       
       console.log('User password updated successfully');
-      userId = existingProfile.id;
+      userId = existingUser.id;
       
-      // Update profile to ensure correct settings
-      const { error: profileUpdateError } = await supabaseAdmin
+      // Ensure profile exists (upsert)
+      const { error: profileUpsertError } = await supabaseAdmin
         .from('profiles')
-        .update({
-          is_therapist: true,
-          onboarding_completed: true,
+        .upsert({
+          id: userId,
+          email: email,
           display_name: 'Dr. Sarah Mitchell',
-          email: email
-        })
-        .eq('id', userId);
+          is_therapist: true,
+          onboarding_completed: true
+        }, {
+          onConflict: 'id'
+        });
         
-      if (profileUpdateError) {
-        console.error('Profile update error:', profileUpdateError);
-        throw profileUpdateError;
+      if (profileUpsertError) {
+        console.error('Profile upsert error:', profileUpsertError);
+        throw profileUpsertError;
       }
       
-      console.log('Profile updated successfully');
+      console.log('Profile ensured successfully');
       
     } else {
       // Create new therapist user with correct password
