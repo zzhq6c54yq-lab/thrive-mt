@@ -33,31 +33,29 @@ const Index = () => {
 
     setLoading(true);
     try {
-      const { data, error } = await supabase.auth.signInWithPassword({
-        email: "therapist@demo.com",
-        password: "0001",
+      // Call edge function to validate and create session
+      const { data, error } = await supabase.functions.invoke('therapist-access', {
+        body: { accessCode }
       });
 
       if (error) throw error;
 
-      if (data.user) {
-        const { data: profile } = await supabase
-          .from("profiles")
-          .select("is_therapist")
-          .eq("id", data.user.id)
-          .single();
+      // Set the session with tokens from edge function
+      const { error: sessionError } = await supabase.auth.setSession({
+        access_token: data.access_token,
+        refresh_token: data.refresh_token,
+      });
 
-        if (profile?.is_therapist) {
-          navigate("/therapist-dashboard");
-        }
-      }
+      if (sessionError) throw sessionError;
 
       toast({
         title: "Welcome back!",
         description: "Therapist login successful.",
       });
+      
       setShowAccessCodeDialog(false);
       setAccessCode("");
+      navigate("/therapist-dashboard");
     } catch (error: any) {
       toast({
         title: "Login failed",
