@@ -116,6 +116,7 @@ export type Database = {
           file_type: string
           id: string
           session_date: string | null
+          shared_with_client: boolean | null
           therapist_id: string
           title: string
           updated_at: string
@@ -131,6 +132,7 @@ export type Database = {
           file_type: string
           id?: string
           session_date?: string | null
+          shared_with_client?: boolean | null
           therapist_id: string
           title: string
           updated_at?: string
@@ -146,6 +148,7 @@ export type Database = {
           file_type?: string
           id?: string
           session_date?: string | null
+          shared_with_client?: boolean | null
           therapist_id?: string
           title?: string
           updated_at?: string

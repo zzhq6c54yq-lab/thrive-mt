@@ -45,7 +45,7 @@ interface DocumentsTabProps {
 }
 
 export function DocumentsTab({ therapistId, clients }: DocumentsTabProps) {
-  const [selectedClient, setSelectedClient] = useState<string>("");
+  const [selectedClient, setSelectedClient] = useState<string>("all");
   const [uploadDialogOpen, setUploadDialogOpen] = useState(false);
   const [uploadForm, setUploadForm] = useState({
     clientId: "",
@@ -56,7 +56,7 @@ export function DocumentsTab({ therapistId, clients }: DocumentsTabProps) {
     sessionDate: "",
   });
 
-  const { data: documents, isLoading } = useClientDocuments(selectedClient || undefined);
+  const { data: documents, isLoading } = useClientDocuments(selectedClient === "all" ? undefined : selectedClient);
   const uploadMutation = useUploadClientDocument();
   const deleteMutation = useDeleteClientDocument();
   const downloadMutation = useDownloadClientDocument();
@@ -139,7 +139,7 @@ export function DocumentsTab({ therapistId, clients }: DocumentsTabProps) {
               <SelectValue placeholder="All Clients" />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="">All Clients</SelectItem>
+              <SelectItem value="all">All Clients</SelectItem>
               {clients.map((client) => (
                 <SelectItem key={client.id} value={client.id}>
                   {client.name}
