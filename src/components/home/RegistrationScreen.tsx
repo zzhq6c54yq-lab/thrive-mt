@@ -40,45 +40,30 @@ const RegistrationScreen: React.FC<RegistrationScreenProps> = ({
   } = useRegistrationState();
 
   const [staffEmail, setStaffEmail] = React.useState("");
-  const [staffPassword, setStaffPassword] = React.useState("");
   const [isStaffLoading, setIsStaffLoading] = React.useState(false);
 
   const handleStaffLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsStaffLoading(true);
     try {
-      // Demo therapist login - check for code 0001
-      if (staffEmail.trim() === "0001" && staffPassword.trim() === "0001") {
-        const { error } = await supabase.auth.signInWithPassword({ 
-          email: "therapist@demo.com", 
-          password: "0001" 
+      // Check if email is "0001" or actual therapist email
+      const trimmedEmail = staffEmail.trim();
+      const loginEmail = trimmedEmail === "0001" ? "therapist@demo.com" : trimmedEmail;
+      
+      // Staff login - use fixed password "0001"
+      const { error } = await supabase.auth.signInWithPassword({ 
+        email: loginEmail, 
+        password: "0001" 
+      });
+      
+      if (error) {
+        toast({ 
+          title: "Login failed", 
+          description: "Invalid credentials", 
+          variant: "destructive" 
         });
-        
-        if (error) {
-          toast({ 
-            title: "Login failed", 
-            description: "Invalid credentials", 
-            variant: "destructive" 
-          });
-        } else {
-          navigate("/therapist-dashboard");
-        }
       } else {
-        // Regular staff login
-        const { error } = await supabase.auth.signInWithPassword({ 
-          email: staffEmail, 
-          password: staffPassword
-        });
-        
-        if (error) {
-          toast({ 
-            title: "Login failed", 
-            description: "Invalid credentials", 
-            variant: "destructive" 
-          });
-        } else {
-          navigate("/therapist-dashboard");
-        }
+        navigate("/therapist-dashboard");
       }
     } catch (error) {
       toast({ 
@@ -215,7 +200,7 @@ const RegistrationScreen: React.FC<RegistrationScreenProps> = ({
             <form onSubmit={handleStaffLogin} className="space-y-3">
               <div className="text-center mb-3">
                 <p className="text-xs text-gray-400">Staff Access</p>
-                <p className="text-xs text-gray-500 mt-1">Code: 0001</p>
+                <p className="text-xs text-gray-500 mt-1">Enter email or use code: 0001</p>
               </div>
               
               <div className="space-y-2">
@@ -225,18 +210,7 @@ const RegistrationScreen: React.FC<RegistrationScreenProps> = ({
                     type="text"
                     value={staffEmail}
                     onChange={(e) => setStaffEmail(e.target.value)}
-                    placeholder="Staff ID"
-                    className="w-full pl-10 pr-4 py-2 bg-white/5 border border-white/10 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:border-[#B87333]/50 text-sm"
-                  />
-                </div>
-                
-                <div className="relative">
-                  <Lock className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400" />
-                  <input
-                    type="password"
-                    value={staffPassword}
-                    onChange={(e) => setStaffPassword(e.target.value)}
-                    placeholder="Access Code"
+                    placeholder="Staff Email or Code (0001)"
                     className="w-full pl-10 pr-4 py-2 bg-white/5 border border-white/10 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:border-[#B87333]/50 text-sm"
                   />
                 </div>

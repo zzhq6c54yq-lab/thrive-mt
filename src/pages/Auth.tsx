@@ -53,8 +53,9 @@ const Auth: React.FC = () => {
     setLoading(true);
     setErrors({});
 
-    // Check for therapist demo login code "0001"
-    if (email.trim() === "0001" && password.trim() === "0001") {
+    // Check for therapist demo login - only email needed
+    const trimmedEmail = email.trim();
+    if (trimmedEmail === "0001" || trimmedEmail === "therapist@demo.com") {
       const { error } = await supabase.auth.signInWithPassword({ 
         email: "therapist@demo.com", 
         password: "0001" 
