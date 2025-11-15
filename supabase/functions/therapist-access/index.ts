@@ -10,9 +10,9 @@ const VALID_ACCESS_CODE = Deno.env.get('THERAPIST_ACCESS_CODE');
 const THERAPIST_EMAIL = Deno.env.get('THERAPIST_EMAIL');
 const THERAPIST_PASSWORD = Deno.env.get('THERAPIST_PASSWORD');
 
-// Rate limiting configuration (DISABLED UNTIL LAUNCH)
-// const MAX_ATTEMPTS_PER_HOUR = 25;
-// const RATE_LIMIT_WINDOW_MS = 3600000; // 1 hour in milliseconds
+// Rate limiting configuration (DEMO MODE - 75 attempts per hour)
+const MAX_ATTEMPTS_PER_HOUR = 75;
+const RATE_LIMIT_WINDOW_MS = 3600000; // 1 hour in milliseconds
 
 if (!VALID_ACCESS_CODE || !THERAPIST_EMAIL || !THERAPIST_PASSWORD) {
   throw new Error('Missing required environment variables');
@@ -58,8 +58,6 @@ serve(async (req) => {
       }
     );
 
-    // RATE LIMITING DISABLED UNTIL LAUNCH
-    /*
     // Check rate limiting
     const { count: recentAttempts } = await supabaseClient
       .from('auth_user_audit')
@@ -81,12 +79,22 @@ serve(async (req) => {
         { status: 429, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
       );
     }
-    */
 
     // Constant-time comparison to prevent timing attacks
     const isValidCode = accessCode && constantTimeCompare(accessCode, VALID_ACCESS_CODE);
     
-    // Log attempt
+    // Log all attempts for rate limiting tracking
+    await supabaseClient.from('auth_user_audit').insert({
+      operator: ip,
+      action: 'therapist_access_attempt',
+      user_id: '00000000-0000-0000-0000-000000000000',
+      details: { 
+        timestamp: new Date().toISOString(),
+        success: isValidCode 
+      }
+    });
+    
+    // Log success/failure for audit trail
     await supabaseClient.from('auth_user_audit').insert({
       operator: ip,
       action: isValidCode ? 'therapist_access_success' : 'therapist_access_failed',
