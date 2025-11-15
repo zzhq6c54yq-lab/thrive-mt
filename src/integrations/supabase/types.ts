@@ -14,6 +14,33 @@ export type Database = {
   }
   public: {
     Tables: {
+      auth_user_audit: {
+        Row: {
+          action: string
+          created_at: string | null
+          details: Json | null
+          id: string
+          operator: string | null
+          user_id: string
+        }
+        Insert: {
+          action: string
+          created_at?: string | null
+          details?: Json | null
+          id?: string
+          operator?: string | null
+          user_id: string
+        }
+        Update: {
+          action?: string
+          created_at?: string | null
+          details?: Json | null
+          id?: string
+          operator?: string | null
+          user_id?: string
+        }
+        Relationships: []
+      }
       career_assessments: {
         Row: {
           completed_at: string | null
