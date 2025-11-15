@@ -122,7 +122,7 @@ export function useUpdateDocumentSharing() {
     mutationFn: async (params: { documentId: string; sharedWithClient: boolean }) => {
       const { data, error } = await supabase
         .from("client_documents")
-        .update({ shared_with_client: params.sharedWithClient })
+        .update({ shared_with_client: params.sharedWithClient } as any)
         .eq("id", params.documentId)
         .select()
         .single();
