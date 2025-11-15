@@ -16,6 +16,7 @@ export interface ClientDocument {
   session_date: string | null;
   created_at: string;
   updated_at: string;
+  shared_with_client: boolean;
 }
 
 export function useClientDocuments(clientId?: string) {
@@ -52,6 +53,7 @@ export function useUploadClientDocument() {
       title,
       description,
       sessionDate,
+      sharedWithClient = false,
     }: {
       file: File;
       therapistId: string;
@@ -60,6 +62,7 @@ export function useUploadClientDocument() {
       title: string;
       description?: string;
       sessionDate?: string;
+      sharedWithClient?: boolean;
     }) => {
       // Upload file to storage
       const fileExt = file.name.split(".").pop();
@@ -86,6 +89,7 @@ export function useUploadClientDocument() {
           title,
           description,
           session_date: sessionDate,
+          shared_with_client: sharedWithClient,
         })
         .select()
         .single();
@@ -104,6 +108,39 @@ export function useUploadClientDocument() {
       toast({
         title: "Upload failed",
         description: error.message,
+        variant: "destructive",
+      });
+    },
+  });
+}
+
+export function useUpdateDocumentSharing() {
+  const queryClient = useQueryClient();
+  const { toast } = useToast();
+
+  return useMutation({
+    mutationFn: async (params: { documentId: string; sharedWithClient: boolean }) => {
+      const { data, error } = await supabase
+        .from("client_documents")
+        .update({ shared_with_client: params.sharedWithClient })
+        .eq("id", params.documentId)
+        .select()
+        .single();
+
+      if (error) throw error;
+      return data;
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["client-documents"] });
+      toast({
+        title: "Success",
+        description: "Document sharing updated",
+      });
+    },
+    onError: (error: Error) => {
+      toast({
+        title: "Error",
+        description: error.message || "Failed to update sharing",
         variant: "destructive",
       });
     },

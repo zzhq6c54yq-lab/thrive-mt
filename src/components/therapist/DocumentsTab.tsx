@@ -3,6 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
+import { Switch } from "@/components/ui/switch";
 import {
   Select,
   SelectContent,
@@ -25,12 +26,13 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { FileText, Upload, Download, Trash2, Calendar, FileIcon } from "lucide-react";
+import { FileText, Upload, Download, Trash2, Calendar, FileIcon, Share2 } from "lucide-react";
 import {
   useClientDocuments,
   useUploadClientDocument,
   useDeleteClientDocument,
   useDownloadClientDocument,
+  useUpdateDocumentSharing,
 } from "@/hooks/useClientDocuments";
 import { format } from "date-fns";
 
@@ -58,6 +60,7 @@ export function DocumentsTab({ therapistId, clients }: DocumentsTabProps) {
   const uploadMutation = useUploadClientDocument();
   const deleteMutation = useDeleteClientDocument();
   const downloadMutation = useDownloadClientDocument();
+  const updateSharing = useUpdateDocumentSharing();
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files[0]) {
@@ -78,6 +81,7 @@ export function DocumentsTab({ therapistId, clients }: DocumentsTabProps) {
       title: uploadForm.title,
       description: uploadForm.description,
       sessionDate: uploadForm.sessionDate,
+      sharedWithClient: false,
     });
 
     setUploadForm({
@@ -89,6 +93,13 @@ export function DocumentsTab({ therapistId, clients }: DocumentsTabProps) {
       sessionDate: "",
     });
     setUploadDialogOpen(false);
+  };
+
+  const handleToggleSharing = (documentId: string, currentSharing: boolean) => {
+    updateSharing.mutate({
+      documentId,
+      sharedWithClient: !currentSharing,
+    });
   };
 
   const getDocumentTypeLabel = (type: string) => {
@@ -335,6 +346,19 @@ export function DocumentsTab({ therapistId, clients }: DocumentsTabProps) {
                   </div>
                 </CardHeader>
                 <CardContent>
+                  <div className="flex items-center justify-between p-3 bg-muted/50 rounded-lg mb-3">
+                    <div className="flex items-center gap-2">
+                      <Share2 className="h-4 w-4 text-muted-foreground" />
+                      <span className="text-sm font-medium">
+                        {(doc as any).shared_with_client ? "Shared with client" : "Private"}
+                      </span>
+                    </div>
+                    <Switch
+                      checked={(doc as any).shared_with_client || false}
+                      onCheckedChange={() => handleToggleSharing(doc.id, (doc as any).shared_with_client || false)}
+                      disabled={updateSharing.isPending}
+                    />
+                  </div>
                   {doc.description && (
                     <p className="text-sm text-muted-foreground mb-2">{doc.description}</p>
                   )}
