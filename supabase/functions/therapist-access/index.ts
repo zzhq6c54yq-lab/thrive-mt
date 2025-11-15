@@ -50,14 +50,39 @@ serve(async (req) => {
       throw userError;
     }
 
-    const therapistUser = userData.users.find(u => u.email === 'therapist@demo.com');
+    let therapistUser = userData.users.find(u => u.email === 'therapist@demo.com');
     
+    // If therapist user doesn't exist, create it
     if (!therapistUser) {
-      console.error('Therapist user not found');
-      return new Response(
-        JSON.stringify({ error: 'Therapist account not found' }),
-        { status: 404, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
-      );
+      console.log('Therapist user not found, creating new user');
+      
+      const { data: newUser, error: createError } = await supabaseAdmin.auth.admin.createUser({
+        email: 'therapist@demo.com',
+        password: crypto.randomUUID(), // Random password since we use access codes
+        email_confirm: true, // Auto-confirm email
+        user_metadata: {
+          is_therapist: true
+        }
+      });
+
+      if (createError) {
+        console.error('Error creating therapist user:', createError);
+        throw createError;
+      }
+
+      therapistUser = newUser.user;
+      console.log('Therapist user created:', therapistUser.id);
+
+      // Update the profile to set is_therapist flag
+      const { error: profileError } = await supabaseAdmin
+        .from('profiles')
+        .update({ is_therapist: true })
+        .eq('id', therapistUser.id);
+
+      if (profileError) {
+        console.error('Error updating profile:', profileError);
+        // Don't throw - the user is created, profile update is not critical for login
+      }
     }
 
     console.log('Creating session for therapist user:', therapistUser.id);
