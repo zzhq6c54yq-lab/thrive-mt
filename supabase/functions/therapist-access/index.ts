@@ -52,45 +52,52 @@ serve(async (req) => {
 
     let therapistUser = userData.users.find(u => u.email === 'therapist@demo.com');
     
-    // If therapist doesn't exist, create it
+    // If therapist doesn't exist, call setup function to create it
     if (!therapistUser) {
-      console.log('Therapist user not found, creating...');
+      console.log('Therapist user not found, setting up demo therapist...');
       
-      const { data: createData, error: createError } = await supabaseAdmin.auth.admin.createUser({
-        email: 'therapist@demo.com',
-        password: 'demo-therapist-2024',
-        email_confirm: true,
-        user_metadata: {
-          is_therapist: true
+      try {
+        const setupResponse = await fetch(
+          `${Deno.env.get('SUPABASE_URL')}/functions/v1/setup-demo-therapist`,
+          {
+            method: 'POST',
+            headers: {
+              'Authorization': `Bearer ${Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')}`,
+              'Content-Type': 'application/json',
+            },
+          }
+        );
+
+        if (!setupResponse.ok) {
+          const errorText = await setupResponse.text();
+          console.error('Setup demo therapist failed:', errorText);
+          throw new Error('Failed to setup demo therapist');
         }
-      });
 
-      if (createError) {
-        console.error('Error creating therapist:', createError);
-        throw createError;
+        console.log('Demo therapist setup complete, fetching user...');
+        
+        // Fetch the user again after creation
+        const { data: newUserData, error: refetchError } = await supabaseAdmin.auth.admin.listUsers();
+        
+        if (refetchError) {
+          console.error('Error refetching users:', refetchError);
+          throw refetchError;
+        }
+
+        therapistUser = newUserData.users.find(u => u.email === 'therapist@demo.com');
+        
+        if (!therapistUser) {
+          throw new Error('Therapist user not found after setup');
+        }
+      } catch (setupError) {
+        console.error('Error setting up therapist:', setupError);
+        return new Response(
+          JSON.stringify({ 
+            error: 'Failed to setup therapist account. Please try again.' 
+          }),
+          { status: 500, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+        );
       }
-
-      therapistUser = createData.user;
-      console.log('Therapist user created:', therapistUser.id);
-
-      // Update profile to set is_therapist flag
-      await supabaseAdmin
-        .from('profiles')
-        .update({ is_therapist: true })
-        .eq('id', therapistUser.id);
-
-      // Create therapist record
-      await supabaseAdmin
-        .from('therapists')
-        .upsert({
-          user_id: therapistUser.id,
-          name: 'Demo Therapist',
-          title: 'Licensed Clinical Psychologist',
-          bio: 'Demo therapist account for testing',
-          specialties: ['Anxiety', 'Depression'],
-          hourly_rate: 150,
-          is_active: true
-        });
     }
 
     console.log('Creating session for therapist user:', therapistUser.id);
