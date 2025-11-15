@@ -7,6 +7,8 @@ const corsHeaders = {
 };
 
 const VALID_ACCESS_CODE = "0001";
+const THERAPIST_EMAIL = "therapist@demo.com";
+const THERAPIST_PASSWORD = "0001";
 
 serve(async (req) => {
   // Handle CORS preflight requests
@@ -28,37 +30,7 @@ serve(async (req) => {
       );
     }
 
-    // Always reset the demo therapist account to ensure correct password
-    console.log('Setting up demo therapist account...');
-    
-    try {
-      const setupResponse = await fetch(
-        `${Deno.env.get('SUPABASE_URL')}/functions/v1/setup-demo-therapist`,
-        {
-          method: 'POST',
-          headers: {
-            'Authorization': `Bearer ${Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')}`,
-            'Content-Type': 'application/json',
-          },
-        }
-      );
-
-      if (!setupResponse.ok) {
-        const errorText = await setupResponse.text();
-        console.error('Setup demo therapist failed:', errorText);
-        throw new Error('Failed to setup demo therapist');
-      }
-
-      console.log('Demo therapist setup complete');
-    } catch (setupError) {
-      console.error('Error setting up therapist:', setupError);
-      return new Response(
-        JSON.stringify({ 
-          error: 'Failed to setup therapist account. Please try again.' 
-        }),
-        { status: 500, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
-      );
-    }
+    console.log('Access code valid, attempting sign in');
 
     // Create admin client with service role key
     const supabaseAdmin = createClient(
@@ -72,13 +44,84 @@ serve(async (req) => {
       }
     );
 
-    console.log('Signing in therapist user with password');
-
-    // Sign in with email and password to get tokens
+    // Try to sign in
     const { data: signInData, error: signInError } = await supabaseAdmin.auth.signInWithPassword({
-      email: 'therapist@demo.com',
-      password: '0001',
+      email: THERAPIST_EMAIL,
+      password: THERAPIST_PASSWORD,
     });
+
+    // If user doesn't exist, create it
+    if (signInError?.message?.includes('Invalid login credentials')) {
+      console.log('Therapist user does not exist, creating it');
+      
+      // Create the user
+      const { data: userData, error: createError } = await supabaseAdmin.auth.admin.createUser({
+        email: THERAPIST_EMAIL,
+        password: THERAPIST_PASSWORD,
+        email_confirm: true,
+      });
+
+      if (createError) {
+        console.error('Error creating therapist user:', createError);
+        throw new Error('Failed to create therapist account');
+      }
+
+      console.log('Therapist user created:', userData.user.id);
+
+      // Create profile
+      const { error: profileError } = await supabaseAdmin
+        .from('profiles')
+        .upsert({
+          id: userData.user.id,
+          email: THERAPIST_EMAIL,
+          display_name: 'Demo Therapist',
+          is_therapist: true,
+        });
+
+      if (profileError) {
+        console.error('Error creating profile:', profileError);
+      }
+
+      // Create therapist record
+      const { error: therapistError } = await supabaseAdmin
+        .from('therapists')
+        .upsert({
+          user_id: userData.user.id,
+          name: 'Demo Therapist',
+          title: 'Licensed Therapist',
+          bio: 'Demo therapist account for testing',
+          specialties: ['General Counseling'],
+          hourly_rate: 150,
+          is_active: true,
+        });
+
+      if (therapistError) {
+        console.error('Error creating therapist record:', therapistError);
+      }
+
+      console.log('Therapist account fully set up, signing in');
+
+      // Now sign in
+      const { data: newSignInData, error: newSignInError } = await supabaseAdmin.auth.signInWithPassword({
+        email: THERAPIST_EMAIL,
+        password: THERAPIST_PASSWORD,
+      });
+
+      if (newSignInError || !newSignInData.session) {
+        console.error('Error signing in after creation:', newSignInError);
+        throw newSignInError || new Error('No session returned from sign in');
+      }
+
+      console.log('Sign in successful');
+
+      return new Response(
+        JSON.stringify({ 
+          access_token: newSignInData.session.access_token,
+          refresh_token: newSignInData.session.refresh_token,
+        }),
+        { headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+      );
+    }
 
     if (signInError || !signInData.session) {
       console.error('Error signing in:', signInError);
