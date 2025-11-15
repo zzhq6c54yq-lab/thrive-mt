@@ -12,7 +12,7 @@ serve(async (req) => {
   }
 
   try {
-    console.log('Creating therapist account...');
+    console.log('Setting up therapist account...');
     
     const supabaseAdmin = createClient(
       Deno.env.get('SUPABASE_URL') ?? '',
@@ -27,97 +27,68 @@ serve(async (req) => {
 
     const email = 'therapist@demo.com';
     const password = '0001';
+    let userId: string;
 
-    // Try to create the user - if it already exists, this will fail gracefully
-    const { data: authData, error: authError } = await supabaseAdmin.auth.admin.createUser({
-      email,
-      password,
-      email_confirm: true,
-      user_metadata: {
-        display_name: 'Dr. Sarah Mitchell'
-      }
-    });
-
-    if (authError) {
-      // Check if user already exists
-      if (authError.message?.includes('already registered')) {
-        console.log('User already exists, fetching existing user...');
-        const { data: existingUsers } = await supabaseAdmin.auth.admin.listUsers();
-        const existingUser = existingUsers?.users?.find(u => u.email === email);
-        
-        if (existingUser) {
-          console.log('Found existing user:', existingUser.id);
-          
-          // Update password
-          await supabaseAdmin.auth.admin.updateUserById(existingUser.id, { password });
-          console.log('Password updated');
-          
-          // Update profile
-          const { error: profileError } = await supabaseAdmin
-            .from('profiles')
-            .update({
-              is_therapist: true,
-              onboarding_completed: true,
-              display_name: 'Dr. Sarah Mitchell'
-            })
-            .eq('id', existingUser.id);
-
-          if (profileError) {
-            console.error('Profile update error:', profileError);
-          } else {
-            console.log('Profile updated');
-          }
-
-          // Update therapist record
-          const { error: therapistError } = await supabaseAdmin
-            .from('therapists')
-            .upsert({
-              id: '550e8400-e29b-41d4-a716-446655440000',
-              user_id: existingUser.id,
-              name: 'Dr. Sarah Mitchell',
-              title: 'Clinical Psychologist',
-              bio: 'Specialized in trauma and anxiety disorders with 15+ years of experience.',
-              specialties: ['Trauma', 'Anxiety', 'Depression', 'PTSD'],
-              hourly_rate: 150,
-              experience_years: 15,
-              is_active: true
-            });
-
-          if (therapistError) {
-            console.error('Therapist update error:', therapistError);
-          } else {
-            console.log('Therapist record updated');
-          }
-
-          return new Response(
-            JSON.stringify({ 
-              success: true, 
-              message: 'Existing therapist account updated. Login with 0001/0001',
-              userId: existingUser.id
-            }),
-            { 
-              headers: { ...corsHeaders, 'Content-Type': 'application/json' },
-              status: 200 
-            }
-          );
-        }
-      }
-      
-      console.error('Auth error:', authError);
-      throw authError;
+    // Always list all users to find if therapist exists
+    console.log('Checking all users...');
+    const { data: allUsers, error: listError } = await supabaseAdmin.auth.admin.listUsers();
+    
+    if (listError) {
+      console.error('Error listing users:', listError);
+      throw listError;
     }
 
-    console.log('New user created:', authData.user.id);
+    const existingUser = allUsers?.users?.find(u => u.email === email);
+    
+    if (existingUser) {
+      console.log('Found existing user:', existingUser.id);
+      userId = existingUser.id;
+      
+      // Update password
+      const { error: updateError } = await supabaseAdmin.auth.admin.updateUserById(
+        existingUser.id, 
+        { password, email_confirm: true }
+      );
+      
+      if (updateError) {
+        console.error('Password update error:', updateError);
+      } else {
+        console.log('Password updated to: 0001');
+      }
+    } else {
+      // Create new user
+      console.log('Creating new user...');
+      const { data: authData, error: authError } = await supabaseAdmin.auth.admin.createUser({
+        email,
+        password,
+        email_confirm: true,
+        user_metadata: {
+          display_name: 'Dr. Sarah Mitchell'
+        }
+      });
 
-    // Update profile
+      if (authError) {
+        console.error('Auth error:', authError);
+        throw authError;
+      }
+      
+      userId = authData.user.id;
+      console.log('New user created:', userId);
+    }
+
+    // Update or insert profile
+    console.log('Updating profile...');
     const { error: profileError } = await supabaseAdmin
       .from('profiles')
-      .update({
+      .upsert({
+        id: userId,
+        email: email,
         is_therapist: true,
         onboarding_completed: true,
         display_name: 'Dr. Sarah Mitchell'
-      })
-      .eq('id', authData.user.id);
+      }, {
+        onConflict: 'id'
+      });
 
     if (profileError) {
       console.error('Profile error:', profileError);
@@ -125,12 +96,13 @@ serve(async (req) => {
       console.log('Profile updated');
     }
 
-    // Create therapist record
+    // Update or insert therapist record
+    console.log('Updating therapist record...');
     const { error: therapistError } = await supabaseAdmin
       .from('therapists')
       .upsert({
         id: '550e8400-e29b-41d4-a716-446655440000',
-        user_id: authData.user.id,
+        user_id: userId,
         name: 'Dr. Sarah Mitchell',
         title: 'Clinical Psychologist',
         bio: 'Specialized in trauma and anxiety disorders with 15+ years of experience.',
@@ -138,21 +110,23 @@ serve(async (req) => {
         hourly_rate: 150,
         experience_years: 15,
         is_active: true
+      }, {
+        onConflict: 'id'
       });
 
     if (therapistError) {
       console.error('Therapist error:', therapistError);
     } else {
-      console.log('Therapist record created');
+      console.log('Therapist record updated');
     }
 
-    console.log('Setup complete!');
+    console.log('Setup complete! Use code 0001 to login');
 
     return new Response(
       JSON.stringify({ 
         success: true, 
-        message: 'Therapist account created successfully. Login with 0001/0001',
-        userId: authData.user.id
+        message: 'Therapist account ready! Use code 0001 in staff login',
+        userId: userId
       }),
       { 
         headers: { ...corsHeaders, 'Content-Type': 'application/json' },
