@@ -6,6 +6,8 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
+import { Label } from "@/components/ui/label";
 import { useToast } from "@/hooks/use-toast";
 import { Eye, EyeOff, Mail, Lock, Key, Copy } from "lucide-react";
 import { authSchema } from "@/lib/validations";
@@ -14,13 +16,11 @@ import { z } from "zod";
 const Auth: React.FC = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [staffEmail, setStaffEmail] = useState("");
-  const [staffPassword, setStaffPassword] = useState("");
   const [accessCode, setAccessCode] = useState("");
   const [isLogin, setIsLogin] = useState(true);
   const [loading, setLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
-  const [showStaffPassword, setShowStaffPassword] = useState(false);
+  const [showAccessCodeDialog, setShowAccessCodeDialog] = useState(false);
   const [errors, setErrors] = useState<{ email?: string; password?: string }>({});
   const { toast } = useToast();
   const navigate = useNavigate();
@@ -60,56 +60,119 @@ const Auth: React.FC = () => {
     return () => authListener.subscription.unsubscribe();
   }, [navigate]);
 
-  const handleAuth = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setLoading(true);
-    setErrors({});
-
-    // Validate input with Zod
-    try {
-      authSchema.parse({ email, password });
-    } catch (error) {
-      if (error instanceof z.ZodError) {
-        const fieldErrors: { email?: string; password?: string } = {};
-        error.errors.forEach((err) => {
-          if (err.path[0] === 'email') fieldErrors.email = err.message;
-          if (err.path[0] === 'password') fieldErrors.password = err.message;
-        });
-        setErrors(fieldErrors);
-        setLoading(false);
-        return;
-      }
+  const handleTherapistAccessCode = async () => {
+    if (accessCode !== "0001") {
+      toast({
+        title: "Invalid access code",
+        description: "Please enter a valid therapist access code.",
+        variant: "destructive",
+      });
+      setAccessCode("");
+      return;
     }
 
-    if (isLogin) {
-      const { error, data } = await supabase.auth.signInWithPassword({ email, password });
-      if (error) {
-        toast({ title: "Login failed", description: error.message, variant: "destructive" });
-      } else {
-        // Check if user is a therapist and redirect accordingly
+    setLoading(true);
+    try {
+      const { data, error } = await supabase.auth.signInWithPassword({
+        email: "therapist@demo.com",
+        password: "0001",
+      });
+
+      if (error) throw error;
+
+      if (data.user) {
         const { data: profile } = await supabase
           .from("profiles")
           .select("is_therapist")
           .eq("id", data.user.id)
           .single();
-        
+
         if (profile?.is_therapist) {
           navigate("/therapist-dashboard");
         }
       }
-    } else {
-      const { error } = await supabase.auth.signUp({
-        email, password,
-        options: { emailRedirectTo: `${window.location.origin}/` }
+
+      toast({
+        title: "Welcome back!",
+        description: "Therapist login successful.",
       });
-      if (error) {
-        toast({ title: "Sign up failed", description: error.message, variant: "destructive" });
-      } else {
-        toast({ title: "Sign up successful!", description: "Check your email for confirmation." });
-        setIsLogin(true);
-      }
+      setShowAccessCodeDialog(false);
+      setAccessCode("");
+    } catch (error: any) {
+      toast({
+        title: "Login failed",
+        description: error.message,
+        variant: "destructive",
+      });
+      setAccessCode("");
+    } finally {
+      setLoading(false);
     }
-    setLoading(false);
+  };
+
+  const handleAuth = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setLoading(true);
+
+    const validation = authSchema.safeParse({ email, password });
+    if (!validation.success) {
+      toast({
+        title: "Validation Error",
+        description: validation.error.errors[0].message,
+        variant: "destructive",
+      });
+      setLoading(false);
+      return;
+    }
+
+    try {
+      if (isLogin) {
+        const { data, error } = await supabase.auth.signInWithPassword({
+          email,
+          password,
+        });
+
+        if (error) throw error;
+
+        if (data.user) {
+          const { data: profile } = await supabase
+            .from("profiles")
+            .select("is_therapist")
+            .eq("id", data.user.id)
+            .single();
+
+          if (profile?.is_therapist) {
+            navigate("/therapist-dashboard");
+            return;
+          }
+        }
+
+        toast({
+          title: "Welcome back!",
+          description: "You've successfully logged in.",
+        });
+      } else {
+        const { error } = await supabase.auth.signUp({
+          email,
+          password,
+        });
+
+        if (error) throw error;
+
+        toast({
+          title: "Check your email",
+          description: "We've sent you a confirmation link.",
+        });
+      }
+    } catch (error: any) {
+      toast({
+        title: isLogin ? "Login failed" : "Sign up failed",
+        description: error.message,
+        variant: "destructive",
+      });
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -117,6 +180,23 @@ const Auth: React.FC = () => {
       <Card className="w-full max-w-md shadow-2xl border border-border/50 backdrop-blur-sm">
         <CardHeader>
           <CardTitle className="text-2xl text-center">{isLogin ? "Log In" : "Sign Up"}</CardTitle>
+          
+          {isLogin && (
+            <>
+              <Button
+                type="button"
+                variant="secondary"
+                className="w-full mt-4"
+                onClick={() => setShowAccessCodeDialog(true)}
+              >
+                <Key className="mr-2 h-4 w-4" />
+                Therapist Login
+              </Button>
+              <p className="text-xs text-center text-muted-foreground mt-1">
+                For licensed therapists only
+              </p>
+            </>
+          )}
         </CardHeader>
         <CardContent>
           {!isLogin && (
@@ -127,81 +207,6 @@ const Auth: React.FC = () => {
                 After signing up, you'll receive a confirmation email. Click the link to activate your account.
               </AlertDescription>
             </Alert>
-          )}
-          
-          {isLogin && (
-            <div className="mb-4">
-              <Alert className="mb-3 bg-primary/10 border-primary/20">
-                <Key className="h-4 w-4" />
-                <AlertTitle>Staff Login</AlertTitle>
-                <AlertDescription className="text-xs opacity-70 mt-1">
-                  Demo credentials: therapist@demo.com / 0001
-                </AlertDescription>
-              </Alert>
-              
-              <div className="space-y-3 p-4 border border-primary/20 rounded-lg bg-primary/5">
-                <div className="space-y-2">
-                  <label className="block text-sm font-medium">Staff Email</label>
-                  <div className="relative">
-                    <Mail className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
-                    <Input
-                      type="email"
-                      value={staffEmail}
-                      onChange={e => setStaffEmail(e.target.value)}
-                      className="pl-10"
-                      placeholder="therapist@demo.com"
-                    />
-                  </div>
-                </div>
-                
-                <div className="space-y-2">
-                  <label className="block text-sm font-medium">Staff Password</label>
-                  <div className="relative">
-                    <Lock className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
-                    <Input
-                      type={showStaffPassword ? "text" : "password"}
-                      value={staffPassword}
-                      onChange={e => setStaffPassword(e.target.value)}
-                      className="pl-10 pr-10"
-                      placeholder="Enter staff password"
-                    />
-                    <button
-                      type="button"
-                      onClick={() => setShowStaffPassword(!showStaffPassword)}
-                      className="absolute right-3 top-3 text-muted-foreground hover:text-foreground"
-                    >
-                      {showStaffPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
-                    </button>
-                  </div>
-                </div>
-                
-                <Button
-                  type="button"
-                  onClick={async () => {
-                    if (!staffEmail || !staffPassword) {
-                      toast({ title: "Please enter staff credentials", variant: "destructive" });
-                      return;
-                    }
-                    setLoading(true);
-                    const { error } = await supabase.auth.signInWithPassword({ 
-                      email: staffEmail, 
-                      password: staffPassword 
-                    });
-                    if (error) {
-                      toast({ title: "Staff login failed", description: error.message, variant: "destructive" });
-                    } else {
-                      toast({ title: "Welcome back!", description: "Loading dashboard..." });
-                    }
-                    setLoading(false);
-                  }}
-                  disabled={loading}
-                  className="w-full"
-                  variant="secondary"
-                >
-                  Staff Login
-                </Button>
-              </div>
-            </div>
           )}
 
           <form className="space-y-4" onSubmit={handleAuth}>
@@ -281,6 +286,55 @@ const Auth: React.FC = () => {
           </div>
         </CardContent>
       </Card>
+
+      <Dialog open={showAccessCodeDialog} onOpenChange={setShowAccessCodeDialog}>
+        <DialogContent className="sm:max-w-md">
+          <DialogHeader>
+            <DialogTitle>Therapist Access</DialogTitle>
+            <DialogDescription>
+              Enter your 4-digit access code to continue
+            </DialogDescription>
+          </DialogHeader>
+          <div className="space-y-4">
+            <div className="space-y-2">
+              <Label htmlFor="access-code">Access Code</Label>
+              <Input
+                id="access-code"
+                type="password"
+                placeholder="Enter 4-digit code"
+                maxLength={4}
+                value={accessCode}
+                onChange={(e) => setAccessCode(e.target.value)}
+                onKeyDown={(e) => {
+                  if (e.key === "Enter" && accessCode.length === 4) {
+                    handleTherapistAccessCode();
+                  }
+                }}
+                autoFocus
+              />
+            </div>
+            <div className="flex gap-2">
+              <Button
+                variant="outline"
+                className="flex-1"
+                onClick={() => {
+                  setShowAccessCodeDialog(false);
+                  setAccessCode("");
+                }}
+              >
+                Cancel
+              </Button>
+              <Button
+                className="flex-1"
+                onClick={handleTherapistAccessCode}
+                disabled={loading || accessCode.length !== 4}
+              >
+                {loading ? "Verifying..." : "Submit"}
+              </Button>
+            </div>
+          </div>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 };
