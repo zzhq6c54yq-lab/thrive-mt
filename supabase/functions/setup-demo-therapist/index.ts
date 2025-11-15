@@ -30,8 +30,16 @@ serve(async (req) => {
     const existingTherapist = existingUsers?.users?.find(u => u.email === 'therapist@demo.com');
     
     if (existingTherapist) {
-      console.log('Deleting existing therapist user...');
+      console.log('Deleting existing therapist profile and user...');
+      // Delete profile first to avoid FK constraints
+      await supabaseAdmin
+        .from('profiles')
+        .delete()
+        .eq('id', existingTherapist.id);
+      
+      // Then delete auth user
       await supabaseAdmin.auth.admin.deleteUser(existingTherapist.id);
+      console.log('Deleted existing user');
     }
 
     // Create new therapist user with correct password
