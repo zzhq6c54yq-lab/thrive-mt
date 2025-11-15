@@ -2,3 +2,9 @@ project_id = "daghobrbxgkgmflkcnyh"
 
 [functions.therapist-access]
 verify_jwt = false
+
+[functions.request-therapist-reset]
+verify_jwt = false
+
+[functions.verify-therapist-reset]
+verify_jwt = false

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
-import { ArrowRight, Languages, ChevronDown, RotateCcw, Key } from "lucide-react";
+import { ArrowRight, Languages, ChevronDown, RotateCcw, Key, Mail } from "lucide-react";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -24,6 +24,9 @@ const IntroScreen: React.FC<IntroScreenProps> = ({ onContinue, onSkipToMain }) =
   const [showAccessCodeDialog, setShowAccessCodeDialog] = useState(false);
   const [accessCode, setAccessCode] = useState("");
   const [loading, setLoading] = useState(false);
+  const [isRateLimited, setIsRateLimited] = useState(false);
+  const [resetRequested, setResetRequested] = useState(false);
+  const [resetLoading, setResetLoading] = useState(false);
   const { toast } = useToast();
   const navigate = useNavigate();
   
@@ -63,9 +66,15 @@ const IntroScreen: React.FC<IntroScreenProps> = ({ onContinue, onSkipToMain }) =
       });
 
       if (error) {
+        const isRateLimitError = error.message?.includes('Too many attempts') || 
+                                error.message?.includes('429');
+        setIsRateLimited(isRateLimitError);
+        
         toast({
           title: "Access denied",
-          description: "Invalid access code or too many attempts.",
+          description: isRateLimitError 
+            ? "Too many attempts. Request a reset link to try again."
+            : "Invalid access code or too many attempts.",
           variant: "destructive",
         });
         setAccessCode("");
@@ -87,6 +96,8 @@ const IntroScreen: React.FC<IntroScreenProps> = ({ onContinue, onSkipToMain }) =
       
       setShowAccessCodeDialog(false);
       setAccessCode("");
+      setIsRateLimited(false);
+      setResetRequested(false);
       navigate("/therapist-dashboard");
     } catch (error: any) {
       toast({
@@ -97,6 +108,33 @@ const IntroScreen: React.FC<IntroScreenProps> = ({ onContinue, onSkipToMain }) =
       setAccessCode("");
     } finally {
       setLoading(false);
+    }
+  };
+
+  const handleRequestReset = async () => {
+    setResetLoading(true);
+    try {
+      const { data, error } = await supabase.functions.invoke('request-therapist-reset', {
+        body: {}
+      });
+
+      if (error) throw error;
+
+      if (data?.error) throw new Error(data.error);
+
+      setResetRequested(true);
+      toast({
+        title: "Reset link sent",
+        description: "Check your email for the reset link (valid for 1 hour).",
+      });
+    } catch (error: any) {
+      toast({
+        title: "Request failed",
+        description: error.message || "Could not send reset link. Try again later.",
+        variant: "destructive",
+      });
+    } finally {
+      setResetLoading(false);
     }
   };
   
@@ -167,7 +205,14 @@ const IntroScreen: React.FC<IntroScreenProps> = ({ onContinue, onSkipToMain }) =
         )}
       </div>
 
-      <Dialog open={showAccessCodeDialog} onOpenChange={setShowAccessCodeDialog}>
+      <Dialog open={showAccessCodeDialog} onOpenChange={(open) => {
+        setShowAccessCodeDialog(open);
+        if (!open) {
+          setIsRateLimited(false);
+          setResetRequested(false);
+          setAccessCode("");
+        }
+      }}>
         <DialogContent className="sm:max-w-md">
           <DialogHeader>
             <DialogTitle>Therapist Access</DialogTitle>
@@ -175,32 +220,89 @@ const IntroScreen: React.FC<IntroScreenProps> = ({ onContinue, onSkipToMain }) =
               Enter the 4-digit access code to continue to the therapist dashboard.
             </DialogDescription>
           </DialogHeader>
-          <div className="space-y-4 py-4">
-            <div className="space-y-2">
-              <Label htmlFor="accessCode">Access Code</Label>
-              <Input
-                id="accessCode"
-                type="password"
-                placeholder="Enter 4-digit code"
-                value={accessCode}
-                onChange={(e) => setAccessCode(e.target.value)}
-                maxLength={4}
-                onKeyDown={(e) => {
-                  if (e.key === "Enter") {
-                    handleTherapistAccessCode();
-                  }
-                }}
-                className="text-center text-2xl tracking-widest"
-              />
+          
+          {!resetRequested ? (
+            <div className="space-y-4 py-4">
+              <div className="space-y-2">
+                <Label htmlFor="accessCode">Access Code</Label>
+                <Input
+                  id="accessCode"
+                  type="password"
+                  placeholder="Enter 4-digit code"
+                  value={accessCode}
+                  onChange={(e) => setAccessCode(e.target.value)}
+                  maxLength={4}
+                  disabled={isRateLimited}
+                  className="text-center text-2xl tracking-widest"
+                  onKeyDown={(e) => {
+                    if (e.key === 'Enter' && accessCode.length === 4 && !isRateLimited) {
+                      handleTherapistAccessCode();
+                    }
+                  }}
+                />
+              </div>
+              
+              <Button
+                onClick={handleTherapistAccessCode}
+                disabled={loading || accessCode.length !== 4 || isRateLimited}
+                className="w-full"
+              >
+                {loading ? "Verifying..." : "Continue"}
+              </Button>
+              
+              {isRateLimited && (
+                <div className="pt-4 border-t">
+                  <p className="text-sm text-muted-foreground text-center mb-3">
+                    Too many failed attempts. Request a reset link to try again.
+                  </p>
+                  <Button
+                    variant="outline"
+                    onClick={handleRequestReset}
+                    disabled={resetLoading}
+                    className="w-full"
+                  >
+                    {resetLoading ? (
+                      <>
+                        <Mail className="mr-2 h-4 w-4 animate-pulse" />
+                        Sending reset link...
+                      </>
+                    ) : (
+                      <>
+                        <Mail className="mr-2 h-4 w-4" />
+                        Request Reset Link
+                      </>
+                    )}
+                  </Button>
+                </div>
+              )}
             </div>
-            <Button
-              onClick={handleTherapistAccessCode}
-              disabled={loading || accessCode.length !== 4}
-              className="w-full"
-            >
-              {loading ? "Verifying..." : "Continue"}
-            </Button>
-          </div>
+          ) : (
+            <div className="py-6 text-center space-y-4">
+              <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto">
+                <Mail className="h-8 w-8 text-green-600" />
+              </div>
+              <div>
+                <h3 className="font-semibold text-lg mb-2">Check Your Email</h3>
+                <p className="text-sm text-muted-foreground">
+                  We've sent a reset link to your email. Click the link to clear your rate limit.
+                </p>
+                <p className="text-xs text-muted-foreground mt-2">
+                  The link expires in 1 hour.
+                </p>
+              </div>
+              <Button
+                variant="ghost"
+                onClick={() => {
+                  setResetRequested(false);
+                  setIsRateLimited(false);
+                  setShowAccessCodeDialog(false);
+                }}
+                className="w-full"
+              >
+                Close
+              </Button>
+            </div>
+          )}
         </DialogContent>
       </Dialog>
     </div>

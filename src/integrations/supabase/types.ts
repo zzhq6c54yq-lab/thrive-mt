@@ -1155,6 +1155,39 @@ export type Database = {
           },
         ]
       }
+      therapist_access_reset_tokens: {
+        Row: {
+          created_at: string | null
+          email: string
+          expires_at: string
+          id: string
+          ip_address: string
+          is_valid: boolean | null
+          token: string
+          used_at: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          email: string
+          expires_at: string
+          id?: string
+          ip_address: string
+          is_valid?: boolean | null
+          token: string
+          used_at?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          email?: string
+          expires_at?: string
+          id?: string
+          ip_address?: string
+          is_valid?: boolean | null
+          token?: string
+          used_at?: string | null
+        }
+        Relationships: []
+      }
       therapist_availability: {
         Row: {
           created_at: string
@@ -1581,6 +1614,7 @@ export type Database = {
       }
     }
     Functions: {
+      cleanup_expired_reset_tokens: { Args: never; Returns: undefined }
       decrement_bookmark_count: {
         Args: { post_id: string }
         Returns: undefined
