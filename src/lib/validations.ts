@@ -96,7 +96,7 @@ export const feedbackSchema = z.object({
   rating: z
     .number()
     .min(1, { message: 'Rating must be at least 1' })
-    .max(5, { message: 'Rating must be at most 5' })
+    .max(10, { message: 'Rating must be at most 10' })
     .optional(),
 });
 
@@ -120,6 +120,71 @@ export const coachingSessionSchema = z.object({
     .optional(),
 });
 
+// Mini session validation
+export const miniSessionSchema = z.object({
+  focus: z
+    .enum(['racing_thoughts', 'conflict', 'low_mood', 'urge', 'process_therapy'], {
+      message: 'Please select a valid focus area'
+    }),
+  mood: z
+    .number()
+    .min(1, { message: 'Mood must be at least 1' })
+    .max(10, { message: 'Mood must be at most 10' })
+    .optional(),
+  anxiety: z
+    .number()
+    .min(1, { message: 'Anxiety must be at least 1' })
+    .max(10, { message: 'Anxiety must be at most 10' })
+    .optional(),
+  energy: z
+    .number()
+    .min(1, { message: 'Energy must be at least 1' })
+    .max(10, { message: 'Energy must be at most 10' })
+    .optional(),
+  urge_level: z
+    .number()
+    .min(0, { message: 'Urge level must be at least 0' })
+    .max(10, { message: 'Urge level must be at most 10' })
+    .optional(),
+  user_text_primary: z
+    .string()
+    .trim()
+    .max(2000, { message: 'Text must be less than 2000 characters' })
+    .optional(),
+  user_text_secondary: z
+    .string()
+    .trim()
+    .max(2000, { message: 'Text must be less than 2000 characters' })
+    .optional(),
+});
+
+// Therapy booking validation
+export const therapyBookingSchema = z.object({
+  therapist_id: z
+    .string()
+    .uuid({ message: 'Invalid therapist ID' }),
+  appointment_date: z
+    .string()
+    .min(1, { message: 'Appointment date is required' }),
+  duration_minutes: z
+    .number()
+    .min(30, { message: 'Session must be at least 30 minutes' })
+    .max(180, { message: 'Session must be at most 180 minutes' }),
+  session_type: z
+    .enum(['video', 'audio', 'in-person'], {
+      message: 'Please select a valid session type'
+    }),
+  concerns: z
+    .array(z.string().max(100, { message: 'Each concern must be less than 100 characters' }))
+    .max(10, { message: 'Maximum 10 concerns allowed' })
+    .optional(),
+  notes: z
+    .string()
+    .trim()
+    .max(1000, { message: 'Notes must be less than 1000 characters' })
+    .optional(),
+});
+
 export type AuthInput = z.infer<typeof authSchema>;
 export type ContactInput = z.infer<typeof contactSchema>;
 export type JournalEntryInput = z.infer<typeof journalEntrySchema>;
@@ -128,3 +193,5 @@ export type ReplyInput = z.infer<typeof replySchema>;
 export type QuestionInput = z.infer<typeof questionSchema>;
 export type FeedbackInput = z.infer<typeof feedbackSchema>;
 export type CoachingSessionInput = z.infer<typeof coachingSessionSchema>;
+export type MiniSessionInput = z.infer<typeof miniSessionSchema>;
+export type TherapyBookingInput = z.infer<typeof therapyBookingSchema>;

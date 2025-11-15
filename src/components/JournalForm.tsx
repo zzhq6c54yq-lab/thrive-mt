@@ -5,6 +5,7 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/hooks/use-toast";
+import { journalEntrySchema } from "@/lib/validations";
 
 const JournalForm: React.FC<{ userId: string; onEntrySaved?: () => void }> = ({ userId, onEntrySaved }) => {
   const [mood, setMood] = useState("");
@@ -16,17 +17,28 @@ const JournalForm: React.FC<{ userId: string; onEntrySaved?: () => void }> = ({ 
     e.preventDefault();
     setLoading(true);
 
-    if (!mood.trim()) {
-      toast({ title: "Please enter your mood.", variant: "destructive" });
+    // Validate input
+    const validation = journalEntrySchema.safeParse({
+      mood: mood.trim(),
+      notes: notes.trim() || undefined,
+    });
+
+    if (!validation.success) {
+      toast({ 
+        title: "Validation Error", 
+        description: validation.error.errors[0].message,
+        variant: "destructive" 
+      });
       setLoading(false);
       return;
     }
 
-    const { error } = await supabase.from("journal_entries").insert({
+    const { error } = await supabase.from("journal_entries").insert([{
       user_id: userId,
-      mood,
-      notes
-    });
+      mood: validation.data.mood,
+      notes: validation.data.notes || null,
+      mood_score: validation.data.mood_score
+    }]);
 
     if (error) {
       toast({ title: "Submission failed", description: error.message, variant: "destructive" });

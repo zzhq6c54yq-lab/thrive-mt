@@ -8,6 +8,7 @@ import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
 import Page from "@/components/Page";
 import { Brain, Heart, Zap, AlertCircle, BookOpen, MessageCircle, TrendingDown, Target, Sparkles } from "lucide-react";
+import { miniSessionSchema } from "@/lib/validations";
 
 const MiniSession: React.FC = () => {
   const [step, setStep] = useState(1);
@@ -33,18 +34,30 @@ const MiniSession: React.FC = () => {
   ];
 
   const handleGenerate = async () => {
+    // Validate input
+    const validation = miniSessionSchema.safeParse({
+      focus,
+      mood,
+      anxiety,
+      energy,
+      urge_level: urgeLevel,
+      user_text_primary: userTextPrimary,
+      user_text_secondary: userTextSecondary,
+    });
+
+    if (!validation.success) {
+      toast({
+        title: "Validation Error",
+        description: validation.error.errors[0].message,
+        variant: "destructive",
+      });
+      return;
+    }
+
     setIsLoading(true);
     try {
       const { data, error } = await supabase.functions.invoke('mini-session', {
-        body: {
-          focus,
-          mood,
-          anxiety,
-          energy,
-          urge_level: urgeLevel,
-          user_text_primary: userTextPrimary,
-          user_text_secondary: userTextSecondary
-        }
+        body: validation.data
       });
 
       if (error) throw error;
@@ -57,13 +70,7 @@ const MiniSession: React.FC = () => {
       if (user) {
         await (supabase as any).from('mini_sessions').insert({
           user_id: user.id,
-          mood,
-          anxiety,
-          energy,
-          urge_level: urgeLevel,
-          focus,
-          user_text_primary: userTextPrimary,
-          user_text_secondary: userTextSecondary,
+          ...validation.data,
           coaching: data.coaching,
           summary: data.summary,
           shared_with_therapist: false

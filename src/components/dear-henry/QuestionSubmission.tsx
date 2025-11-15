@@ -8,6 +8,7 @@ import { Card } from '@/components/ui/card';
 import { useToast } from '@/hooks/use-toast';
 import { supabase } from '@/integrations/supabase/client';
 import { Send, Lock } from 'lucide-react';
+import { questionSchema } from '@/lib/validations';
 import {
   Select,
   SelectContent,
@@ -41,10 +42,17 @@ const QuestionSubmission: React.FC<QuestionSubmissionProps> = ({ isOpen, onClose
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    if (!question.trim() || !category) {
+    // Validate input
+    const validation = questionSchema.safeParse({
+      question_text: question.trim(),
+      category,
+      is_anonymous: isAnonymous,
+    });
+
+    if (!validation.success) {
       toast({
-        title: "Incomplete Submission",
-        description: "Please fill out all fields before submitting.",
+        title: "Validation Error",
+        description: validation.error.errors[0].message,
         variant: "destructive",
       });
       return;
@@ -57,13 +65,13 @@ const QuestionSubmission: React.FC<QuestionSubmissionProps> = ({ isOpen, onClose
 
       const { error } = await supabase
         .from('henry_questions')
-        .insert({
-          question_text: question.trim(),
-          category: category as any,
-          is_anonymous: isAnonymous,
+        .insert([{
+          question_text: validation.data.question_text,
+          category: validation.data.category as any,
+          is_anonymous: validation.data.is_anonymous ?? true,
           user_id: user?.id || null,
           status: 'pending' as any
-        });
+        }]);
 
       if (error) throw error;
 
