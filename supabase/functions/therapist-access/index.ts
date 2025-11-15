@@ -50,16 +50,47 @@ serve(async (req) => {
       throw userError;
     }
 
-    const therapistUser = userData.users.find(u => u.email === 'therapist@demo.com');
+    let therapistUser = userData.users.find(u => u.email === 'therapist@demo.com');
     
+    // If therapist doesn't exist, create it
     if (!therapistUser) {
-      console.error('Therapist user not found');
-      return new Response(
-        JSON.stringify({ 
-          error: 'Therapist account not found. Please create a user with email therapist@demo.com in Supabase Auth.' 
-        }),
-        { status: 404, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
-      );
+      console.log('Therapist user not found, creating...');
+      
+      const { data: createData, error: createError } = await supabaseAdmin.auth.admin.createUser({
+        email: 'therapist@demo.com',
+        password: 'demo-therapist-2024',
+        email_confirm: true,
+        user_metadata: {
+          is_therapist: true
+        }
+      });
+
+      if (createError) {
+        console.error('Error creating therapist:', createError);
+        throw createError;
+      }
+
+      therapistUser = createData.user;
+      console.log('Therapist user created:', therapistUser.id);
+
+      // Update profile to set is_therapist flag
+      await supabaseAdmin
+        .from('profiles')
+        .update({ is_therapist: true })
+        .eq('id', therapistUser.id);
+
+      // Create therapist record
+      await supabaseAdmin
+        .from('therapists')
+        .upsert({
+          user_id: therapistUser.id,
+          name: 'Demo Therapist',
+          title: 'Licensed Clinical Psychologist',
+          bio: 'Demo therapist account for testing',
+          specialties: ['Anxiety', 'Depression'],
+          hourly_rate: 150,
+          is_active: true
+        });
     }
 
     console.log('Creating session for therapist user:', therapistUser.id);
