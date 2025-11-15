@@ -8,6 +8,7 @@ interface Profile {
   user_type: string | null;
   onboarding_completed: boolean;
   goals: string[] | null;
+  is_therapist: boolean | null;
   created_at: string;
   updated_at: string;
 }

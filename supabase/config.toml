@@ -14,3 +14,6 @@ verify_jwt = false
 
 [functions.mini-session]
 verify_jwt = false
+
+[functions.setup-demo-therapist]
+verify_jwt = false

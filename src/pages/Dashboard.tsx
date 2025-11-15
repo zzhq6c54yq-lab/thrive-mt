@@ -13,6 +13,9 @@ const Dashboard: React.FC = () => {
     if (!loading) {
       if (!user) {
         navigate('/auth');
+      } else if (profile?.is_therapist) {
+        // Redirect therapists to their dashboard, bypass onboarding
+        navigate('/therapist-dashboard');
       } else if (profile && !profile.onboarding_completed) {
         navigate('/onboarding');
       }

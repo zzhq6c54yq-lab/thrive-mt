@@ -26,8 +26,21 @@ const Auth: React.FC = () => {
     supabase.auth.getSession().then(({ data }) => {
       if (data.session) navigate("/");
     });
-    const { data: authListener } = supabase.auth.onAuthStateChange((_event, session) => {
-      if (session) navigate("/");
+    const { data: authListener } = supabase.auth.onAuthStateChange(async (_event, session) => {
+      if (session) {
+        // Check if user is therapist before redirecting
+        const { data: profile } = await supabase
+          .from("profiles")
+          .select("is_therapist")
+          .eq("id", session.user.id)
+          .single();
+        
+        if (profile?.is_therapist) {
+          navigate("/therapist-dashboard");
+        } else {
+          navigate("/");
+        }
+      }
     });
     return () => authListener.subscription.unsubscribe();
   }, [navigate]);
