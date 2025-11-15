@@ -14,6 +14,7 @@ import EarningsTab from "@/components/therapist/EarningsTab";
 import { DocumentsTab } from "@/components/therapist/DocumentsTab";
 import { CalendarView } from "@/components/therapist/CalendarView";
 import { useTherapyBookings } from "@/hooks/useTherapyBookings";
+import { startOfWeek } from "date-fns";
 
 export default function TherapistDashboard() {
   const { toast } = useToast();
@@ -201,15 +202,27 @@ export default function TherapistDashboard() {
   const stats = {
     activeClients: upcomingBookings?.length || 0,
     sessionsThisWeek: sessions?.filter(s => {
-      const sessionDate = new Date(s.session_date);
-      const now = new Date();
-      const weekStart = new Date(now.setDate(now.getDate() - now.getDay()));
-      return sessionDate >= weekStart;
+      if (!s?.session_date) return false;
+      try {
+        const sessionDate = new Date(s.session_date);
+        if (isNaN(sessionDate.getTime())) return false;
+        const weekStart = startOfWeek(new Date());
+        return sessionDate >= weekStart;
+      } catch {
+        return false;
+      }
     }).length || 0,
     upcomingToday: todayBookings,
-    earningsThisMonth: sessions?.filter(s => 
-      new Date(s.session_date).getMonth() === new Date().getMonth()
-    ).reduce((sum, s) => sum + (therapist?.hourly_rate || 0), 0) || 0,
+    earningsThisMonth: sessions?.filter(s => {
+      if (!s?.session_date) return false;
+      try {
+        const sessionDate = new Date(s.session_date);
+        if (isNaN(sessionDate.getTime())) return false;
+        return sessionDate.getMonth() === new Date().getMonth();
+      } catch {
+        return false;
+      }
+    }).reduce((sum, s) => sum + (therapist?.hourly_rate || 0), 0) || 0,
     avgResponseTime: "2.3h",
     satisfaction: therapist?.rating || 0
   };
@@ -273,9 +286,16 @@ export default function TherapistDashboard() {
   const monthlyData = Array.from({ length: 6 }, (_, i) => {
     const date = new Date();
     date.setMonth(date.getMonth() - (5 - i));
-    const monthSessions = sessions?.filter(s => 
-      new Date(s.session_date).getMonth() === date.getMonth()
-    ) || [];
+    const monthSessions = sessions?.filter(s => {
+      if (!s?.session_date) return false;
+      try {
+        const sessionDate = new Date(s.session_date);
+        if (isNaN(sessionDate.getTime())) return false;
+        return sessionDate.getMonth() === date.getMonth();
+      } catch {
+        return false;
+      }
+    }) || [];
     
     return {
       month: date.toLocaleString('default', { month: 'short' }),

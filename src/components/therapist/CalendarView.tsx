@@ -31,8 +31,14 @@ export function CalendarView({ bookings }: CalendarViewProps) {
 
   const getAppointmentsForDay = (date: Date) => {
     return bookings.filter((booking) => {
-      const bookingDate = new Date(booking.appointment_date);
-      return isSameDay(bookingDate, date);
+      if (!booking?.appointment_date) return false;
+      try {
+        const bookingDate = new Date(booking.appointment_date);
+        if (isNaN(bookingDate.getTime())) return false;
+        return isSameDay(bookingDate, date);
+      } catch {
+        return false;
+      }
     });
   };
 
@@ -118,7 +124,14 @@ export function CalendarView({ bookings }: CalendarViewProps) {
                       <div className="flex items-center gap-1 mb-0.5">
                         <Clock className="h-3 w-3" />
                         <span className="font-medium">
-                          {format(new Date(appointment.appointment_date), "h:mm a")}
+                          {(() => {
+                            try {
+                              const date = new Date(appointment.appointment_date);
+                              return isNaN(date.getTime()) ? "Invalid time" : format(date, "h:mm a");
+                            } catch {
+                              return "Invalid time";
+                            }
+                          })()}
                         </span>
                       </div>
                       <div className="flex items-center gap-1 truncate">
