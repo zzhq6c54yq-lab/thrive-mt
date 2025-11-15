@@ -39,78 +39,100 @@ serve(async (req) => {
       console.error('Error querying existing profile:', profileQueryError);
     }
 
-    // If profile exists, delete the auth user by ID (more reliable than listUsers)
+    let userId: string;
+
+    // If profile exists, update the password instead of deleting
     if (existingProfile) {
       console.log('Found existing profile with ID:', existingProfile.id);
-      console.log('Deleting existing auth user by ID...');
+      console.log('Updating existing user password to 0001...');
       
-      const { error: deleteError } = await supabaseAdmin.auth.admin.deleteUser(existingProfile.id);
+      // Update the password instead of deleting and recreating
+      const { error: updateError } = await supabaseAdmin.auth.admin.updateUserById(
+        existingProfile.id,
+        { 
+          password: '0001', 
+          email_confirm: true 
+        }
+      );
       
-      if (deleteError) {
-        console.error('Error deleting user:', deleteError);
-        // Continue anyway - the user might already be deleted from auth but profile remains
-      } else {
-        console.log('Auth user deleted successfully');
+      if (updateError) {
+        console.error('Error updating user password:', updateError);
+        throw updateError;
+      }
+      
+      console.log('User password updated successfully');
+      userId = existingProfile.id;
+      
+      // Update profile to ensure correct settings
+      const { error: profileUpdateError } = await supabaseAdmin
+        .from('profiles')
+        .update({
+          is_therapist: true,
+          onboarding_completed: true,
+          display_name: 'Dr. Sarah Mitchell',
+          email: email
+        })
+        .eq('id', userId);
+        
+      if (profileUpdateError) {
+        console.error('Profile update error:', profileUpdateError);
+        throw profileUpdateError;
+      }
+      
+      console.log('Profile updated successfully');
+      
+    } else {
+      // Create new therapist user with correct password
+      console.log('Creating new therapist user...');
+      const { data: authData, error: authError } = await supabaseAdmin.auth.admin.createUser({
+        email,
+        password,
+        email_confirm: true, // Auto-confirm email
+        user_metadata: {
+          display_name: 'Dr. Sarah Mitchell'
+        }
+      });
+
+      if (authError) {
+        console.error('Auth error:', authError);
+        throw authError;
       }
 
-      // Delete the profile record
-      console.log('Deleting existing profile...');
-      await supabaseAdmin
+      console.log('Therapist user created:', authData.user.id);
+      userId = authData.user.id;
+
+      // Create profile
+      const { error: profileError } = await supabaseAdmin
         .from('profiles')
-        .delete()
-        .eq('id', existingProfile.id);
+        .insert({
+          id: userId,
+          email: email,
+          display_name: 'Dr. Sarah Mitchell',
+          is_therapist: true,
+          onboarding_completed: true
+        });
+
+      if (profileError) {
+        console.error('Profile error:', profileError);
+        throw profileError;
+      }
+
+      console.log('Profile created successfully');
     }
 
-    // Delete any therapist records associated with this email
-    console.log('Cleaning up therapist records...');
+    // Delete any existing therapist records to avoid duplicates
+    console.log('Cleaning up old therapist records...');
     await supabaseAdmin
       .from('therapists')
       .delete()
-      .eq('name', 'Dr. Sarah Mitchell');
-
-    // Create new therapist user with correct password
-    console.log('Creating new therapist user...');
-    const { data: authData, error: authError } = await supabaseAdmin.auth.admin.createUser({
-      email,
-      password,
-      email_confirm: true, // Auto-confirm email
-      user_metadata: {
-        display_name: 'Dr. Sarah Mitchell'
-      }
-    });
-
-    if (authError) {
-      console.error('Auth error:', authError);
-      throw authError;
-    }
-
-    console.log('Therapist user created:', authData.user.id);
-
-    // Update or create profile
-    const { error: profileError } = await supabaseAdmin
-      .from('profiles')
-      .upsert({
-        id: authData.user.id,
-        email: email,
-        display_name: 'Dr. Sarah Mitchell',
-        is_therapist: true,
-        onboarding_completed: true
-      }, {
-        onConflict: 'id'
-      });
-
-    if (profileError) {
-      console.error('Profile error:', profileError);
-      throw profileError;
-    }
-
-    console.log('Profile updated successfully');
+      .eq('user_id', userId);
 
     // Ensure therapist record exists
+    console.log('Creating therapist record...');
     const { error: therapistError } = await supabaseAdmin
       .from('therapists')
       .insert({
-        user_id: authData.user.id,
+        user_id: userId,
         name: 'Dr. Sarah Mitchell',
         title: 'Clinical Psychologist',
         bio: 'Specialized in trauma and anxiety disorders with 15+ years of experience.',
@@ -130,8 +152,8 @@ serve(async (req) => {
     return new Response(
       JSON.stringify({ 
         success: true, 
-        message: 'Demo therapist account created successfully. You can now login with email: 0001 and password: 0001',
-        userId: authData.user.id
+        message: 'Demo therapist account ready. You can now login with access code: 0001',
+        userId: userId
       }),
       { 
         headers: { ...corsHeaders, 'Content-Type': 'application/json' },
