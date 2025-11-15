@@ -1,7 +1,7 @@
 
 import React from "react";
 import { Button } from "@/components/ui/button";
-import { FileKey, Receipt, CreditCard, Building, Wallet, Calendar } from "lucide-react";
+import { FileKey, Receipt, CreditCard, Building, Wallet, Calendar, Landmark, PiggyBank, Briefcase, TrendingUp } from "lucide-react";
 
 const FinancialDocumentsSection = () => {
   return (
@@ -24,6 +24,16 @@ const FinancialDocumentsSection = () => {
           items={[
             { icon: <Building className="h-4 w-4 text-[#D4AF37]" />, text: "Bank Account Details" },
             { icon: <Wallet className="h-4 w-4 text-[#D4AF37]" />, text: "401(k) & Investment Accounts" },
+          ]}
+        />
+        
+        <FinancialSubSection
+          title="Earned Income"
+          items={[
+            { icon: <Landmark className="h-4 w-4 text-[#D4AF37]" />, text: "Social Security Benefits" },
+            { icon: <PiggyBank className="h-4 w-4 text-[#D4AF37]" />, text: "Pension Payments" },
+            { icon: <Briefcase className="h-4 w-4 text-[#D4AF37]" />, text: "Part-Time Work Earnings" },
+            { icon: <TrendingUp className="h-4 w-4 text-[#D4AF37]" />, text: "Investment Income" },
           ]}
         />
         
