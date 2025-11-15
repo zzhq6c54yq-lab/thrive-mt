@@ -11,6 +11,7 @@ import ClientsTab from "@/components/therapist/ClientsTab";
 import ScheduleTab from "@/components/therapist/ScheduleTab";
 import MessagesTab from "@/components/therapist/MessagesTab";
 import EarningsTab from "@/components/therapist/EarningsTab";
+import { DocumentsTab } from "@/components/therapist/DocumentsTab";
 
 export default function TherapistDashboard() {
   const { toast } = useToast();
@@ -324,7 +325,7 @@ export default function TherapistDashboard() {
       {/* Main Content */}
       <div className="max-w-7xl mx-auto px-4 md:px-8 py-8">
         <Tabs defaultValue="overview" className="w-full">
-          <TabsList className="grid grid-cols-3 md:grid-cols-5 gap-2 bg-black/30 mb-8 p-1 rounded-lg h-auto">
+          <TabsList className="grid grid-cols-3 md:grid-cols-6 gap-2 bg-black/30 mb-8 p-1 rounded-lg h-auto">
             <TabsTrigger 
               value="overview" 
               className="data-[state=active]:bg-[#B87333]/90 data-[state=active]:text-white py-3"
@@ -353,6 +354,12 @@ export default function TherapistDashboard() {
                   {unreadMessages}
                 </span>
               )}
+            </TabsTrigger>
+            <TabsTrigger 
+              value="documents" 
+              className="data-[state=active]:bg-[#B87333]/90 data-[state=active]:text-white py-3"
+            >
+              Documents
             </TabsTrigger>
             <TabsTrigger 
               value="earnings" 
@@ -385,6 +392,16 @@ export default function TherapistDashboard() {
           <TabsContent value="messages" className="animate-fade-in">
             <MessagesTab 
               messages={messages || []}
+            />
+          </TabsContent>
+
+          <TabsContent value="documents" className="animate-fade-in">
+            <DocumentsTab 
+              therapistId={therapist.id}
+              clients={clients.map(c => ({
+                id: c.user_id,
+                name: c.name
+              }))}
             />
           </TabsContent>
 
