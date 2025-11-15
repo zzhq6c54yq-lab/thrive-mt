@@ -103,7 +103,15 @@ export default function OverviewTab({ stats, upcomingAppointments, recentMessage
                     <div>
                       <p className="font-medium">{appointment.client_name}</p>
                       <p className="text-sm text-muted-foreground">
-                        {format(new Date(appointment.appointment_date), "h:mm a")} • {appointment.duration_minutes} min
+                        {(() => {
+                          try {
+                            const date = new Date(appointment.appointment_date);
+                            if (isNaN(date.getTime())) return 'Invalid time';
+                            return format(date, "h:mm a");
+                          } catch {
+                            return 'Invalid time';
+                          }
+                        })()} • {appointment.duration_minutes} min
                       </p>
                     </div>
                   </div>
@@ -144,7 +152,15 @@ export default function OverviewTab({ stats, upcomingAppointments, recentMessage
                     </div>
                     <p className="text-sm text-muted-foreground line-clamp-2">{message.message_text}</p>
                     <p className="text-xs text-muted-foreground mt-1">
-                      {format(new Date(message.created_at), "MMM d, h:mm a")}
+                      {(() => {
+                        try {
+                          const date = new Date(message.created_at);
+                          if (isNaN(date.getTime())) return 'Invalid time';
+                          return format(date, "MMM d, h:mm a");
+                        } catch {
+                          return 'Invalid time';
+                        }
+                      })()}
                     </p>
                   </div>
                 </div>

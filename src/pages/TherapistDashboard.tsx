@@ -230,17 +230,17 @@ export default function TherapistDashboard() {
   const upcomingAppointments = upcomingBookings?.slice(0, 10).map(b => ({
     id: b.id,
     client_name: b.profiles?.display_name || 'Unknown Client',
-    time: b.appointment_date,
-    duration: b.duration_minutes,
+    appointment_date: b.appointment_date,
+    duration_minutes: b.duration_minutes,
     type: b.session_type
   })) || [];
 
   const recentMessages = messages?.slice(0, 5).map(m => ({
     id: m.id,
     client_name: m.client_name,
-    message: m.message_text,
-    time: m.created_at,
-    unread: !m.is_read
+    message_text: m.message_text,
+    created_at: m.created_at,
+    is_read: m.is_read
   })) || [];
 
   // Transform data for ClientsTab
