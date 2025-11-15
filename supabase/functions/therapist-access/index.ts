@@ -18,6 +18,22 @@ if (!VALID_ACCESS_CODE || !THERAPIST_EMAIL || !THERAPIST_PASSWORD) {
   throw new Error('Missing required environment variables');
 }
 
+// Constant-time string comparison to prevent timing attacks
+function constantTimeCompare(a: string, b: string): boolean {
+  // If lengths differ, already not equal (but still compare to maintain constant time)
+  if (a.length !== b.length) {
+    // Compare against a fixed string to maintain timing
+    b = a;
+  }
+  
+  let result = 0;
+  for (let i = 0; i < a.length; i++) {
+    result |= a.charCodeAt(i) ^ b.charCodeAt(i);
+  }
+  
+  return result === 0 && a.length === b.length;
+}
+
 serve(async (req) => {
   // Handle CORS preflight requests
   if (req.method === 'OPTIONS') {
