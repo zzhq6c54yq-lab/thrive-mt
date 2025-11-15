@@ -28,6 +28,38 @@ serve(async (req) => {
       );
     }
 
+    // Always reset the demo therapist account to ensure correct password
+    console.log('Setting up demo therapist account...');
+    
+    try {
+      const setupResponse = await fetch(
+        `${Deno.env.get('SUPABASE_URL')}/functions/v1/setup-demo-therapist`,
+        {
+          method: 'POST',
+          headers: {
+            'Authorization': `Bearer ${Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')}`,
+            'Content-Type': 'application/json',
+          },
+        }
+      );
+
+      if (!setupResponse.ok) {
+        const errorText = await setupResponse.text();
+        console.error('Setup demo therapist failed:', errorText);
+        throw new Error('Failed to setup demo therapist');
+      }
+
+      console.log('Demo therapist setup complete');
+    } catch (setupError) {
+      console.error('Error setting up therapist:', setupError);
+      return new Response(
+        JSON.stringify({ 
+          error: 'Failed to setup therapist account. Please try again.' 
+        }),
+        { status: 500, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+      );
+    }
+
     // Create admin client with service role key
     const supabaseAdmin = createClient(
       Deno.env.get('SUPABASE_URL') ?? '',
@@ -39,55 +71,6 @@ serve(async (req) => {
         }
       }
     );
-
-    console.log('Looking up therapist profile directly from database');
-
-    // Query profiles table directly instead of listing all users
-    const { data: profileData, error: profileError } = await supabaseAdmin
-      .from('profiles')
-      .select('id, email, is_therapist')
-      .eq('email', 'therapist@demo.com')
-      .eq('is_therapist', true)
-      .maybeSingle();
-    
-    if (profileError) {
-      console.error('Error querying profiles:', profileError);
-      throw profileError;
-    }
-
-    // If profile doesn't exist, call setup function to create it
-    if (!profileData) {
-      console.log('Therapist profile not found, setting up demo therapist...');
-      
-      try {
-        const setupResponse = await fetch(
-          `${Deno.env.get('SUPABASE_URL')}/functions/v1/setup-demo-therapist`,
-          {
-            method: 'POST',
-            headers: {
-              'Authorization': `Bearer ${Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')}`,
-              'Content-Type': 'application/json',
-            },
-          }
-        );
-
-        if (!setupResponse.ok) {
-          const errorText = await setupResponse.text();
-          console.error('Setup demo therapist failed:', errorText);
-          throw new Error('Failed to setup demo therapist');
-        }
-
-        console.log('Demo therapist setup complete');
-      } catch (setupError) {
-        console.error('Error setting up therapist:', setupError);
-        return new Response(
-          JSON.stringify({ 
-            error: 'Failed to setup therapist account. Please try again.' 
-          }),
-          { status: 500, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
-        );
-      }
-    }
 
     console.log('Signing in therapist user with password');
 
