@@ -1288,6 +1288,7 @@ export type Database = {
           total_reviews: number | null
           updated_at: string
           user_id: string | null
+          video_url: string | null
         }
         Insert: {
           approach?: string | null
@@ -1306,6 +1307,7 @@ export type Database = {
           total_reviews?: number | null
           updated_at?: string
           user_id?: string | null
+          video_url?: string | null
         }
         Update: {
           approach?: string | null
@@ -1324,6 +1326,7 @@ export type Database = {
           total_reviews?: number | null
           updated_at?: string
           user_id?: string | null
+          video_url?: string | null
         }
         Relationships: []
       }

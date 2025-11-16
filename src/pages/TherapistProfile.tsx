@@ -2,11 +2,11 @@ import { useState } from "react";
 import { useParams, Link } from "react-router-dom";
 import { useTherapist } from "@/hooks/useTherapist";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import { Skeleton } from "@/components/ui/skeleton";
-import { Star, ArrowLeft, Calendar, DollarSign, Award, Clock } from "lucide-react";
+import { Star, ArrowLeft, Calendar, DollarSign, Award, Clock, Video } from "lucide-react";
 import { BookingFlow } from "@/components/therapy/BookingFlow";
 import AvailabilityCalendar from "@/components/therapist/AvailabilityCalendar";
 
@@ -134,6 +134,35 @@ export default function TherapistProfile() {
             </div>
           </CardContent>
         </Card>
+
+        {/* Video Introduction Section */}
+        {therapist.video_url && (
+          <Card>
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2">
+                <Video className="h-5 w-5" />
+                Introduction Video
+              </CardTitle>
+              <CardDescription>
+                Get to know {therapist.name.split(' ')[0]} before booking your first session
+              </CardDescription>
+            </CardHeader>
+            <CardContent>
+              <div className="rounded-lg overflow-hidden bg-black">
+                <video
+                  src={therapist.video_url}
+                  controls
+                  controlsList="nodownload"
+                  className="w-full max-h-[500px]"
+                  preload="metadata"
+                  poster={therapist.image_url || undefined}
+                >
+                  Your browser does not support the video tag.
+                </video>
+              </div>
+            </CardContent>
+          </Card>
+        )}
 
         {/* Overview Section */}
         <Card>

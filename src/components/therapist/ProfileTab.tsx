@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
@@ -11,7 +11,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { Badge } from "@/components/ui/badge";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Loader2, Upload, X, Plus, Eye, Save, RotateCcw, ExternalLink } from "lucide-react";
+import { Loader2, Upload, X, Plus, Eye, Save, RotateCcw, ExternalLink, Video, Square } from "lucide-react";
 import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 
 const profileSchema = z.object({
@@ -24,6 +24,7 @@ const profileSchema = z.object({
   license_number: z.string().max(50).optional(),
   hourly_rate: z.number().min(0).max(999),
   image_url: z.string().optional().nullable(),
+  video_url: z.string().optional().nullable(),
 });
 
 type ProfileFormData = z.infer<typeof profileSchema>;
@@ -62,6 +63,11 @@ export function ProfileTab({ therapist, onUpdate }: ProfileTabProps) {
   const [newSpecialty, setNewSpecialty] = useState("");
   const [showPreview, setShowPreview] = useState(false);
   const [imagePreview, setImagePreview] = useState<string | null>(null);
+  const [isUploadingVideo, setIsUploadingVideo] = useState(false);
+  const [videoPreview, setVideoPreview] = useState<string | null>(null);
+  const [isRecording, setIsRecording] = useState(false);
+  const [mediaRecorder, setMediaRecorder] = useState<MediaRecorder | null>(null);
+  const videoRef = useRef<HTMLVideoElement>(null);
 
   const form = useForm<ProfileFormData>({
     resolver: zodResolver(profileSchema),
@@ -75,6 +81,7 @@ export function ProfileTab({ therapist, onUpdate }: ProfileTabProps) {
       license_number: therapist?.license_number || "",
       hourly_rate: Number(therapist?.hourly_rate) || 150,
       image_url: therapist?.image_url || null,
+      video_url: therapist?.video_url || null,
     },
   });
 
@@ -175,6 +182,161 @@ export function ProfileTab({ therapist, onUpdate }: ProfileTabProps) {
     );
   };
 
+  const handleVideoUpload = async (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (!file) return;
+
+    const validTypes = ['video/mp4', 'video/quicktime', 'video/webm'];
+    if (!validTypes.includes(file.type)) {
+      toast({
+        title: "Invalid file type",
+        description: "Please upload MP4, MOV, or WebM video",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    if (file.size > 50 * 1024 * 1024) {
+      toast({
+        title: "File too large",
+        description: "Please upload a video under 50MB",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    setIsUploadingVideo(true);
+
+    try {
+      const { data: userData } = await supabase.auth.getUser();
+      if (!userData.user) throw new Error("Not authenticated");
+
+      const fileExt = file.name.split(".").pop();
+      const fileName = `${Date.now()}.${fileExt}`;
+      const filePath = `${userData.user.id}/${fileName}`;
+
+      const { error: uploadError } = await supabase.storage
+        .from("therapist-videos")
+        .upload(filePath, file, { upsert: true });
+
+      if (uploadError) throw uploadError;
+
+      const { data } = supabase.storage
+        .from("therapist-videos")
+        .getPublicUrl(filePath);
+
+      form.setValue("video_url", data.publicUrl, { shouldDirty: true });
+      setVideoPreview(data.publicUrl);
+
+      toast({
+        title: "Video uploaded",
+        description: "Your introduction video has been uploaded successfully",
+      });
+    } catch (error: any) {
+      toast({
+        title: "Upload failed",
+        description: error.message || "Failed to upload video",
+        variant: "destructive",
+      });
+    } finally {
+      setIsUploadingVideo(false);
+    }
+  };
+
+  const handleStartRecording = async () => {
+    try {
+      const stream = await navigator.mediaDevices.getUserMedia({ 
+        video: { width: 1280, height: 720 }, 
+        audio: true 
+      });
+      
+      if (videoRef.current) {
+        videoRef.current.srcObject = stream;
+      }
+
+      const recorder = new MediaRecorder(stream, {
+        mimeType: 'video/webm'
+      });
+
+      const chunks: Blob[] = [];
+      
+      recorder.ondataavailable = (e) => {
+        if (e.data.size > 0) {
+          chunks.push(e.data);
+        }
+      };
+
+      recorder.onstop = async () => {
+        const blob = new Blob(chunks, { type: 'video/webm' });
+        stream.getTracks().forEach(track => track.stop());
+        await uploadRecordedVideo(blob);
+      };
+
+      recorder.start();
+      setMediaRecorder(recorder);
+      setIsRecording(true);
+
+    } catch (error: any) {
+      toast({
+        title: "Recording failed",
+        description: error.message || "Could not access camera/microphone",
+        variant: "destructive",
+      });
+    }
+  };
+
+  const handleStopRecording = () => {
+    if (mediaRecorder && mediaRecorder.state !== 'inactive') {
+      mediaRecorder.stop();
+      setIsRecording(false);
+    }
+  };
+
+  const uploadRecordedVideo = async (blob: Blob) => {
+    setIsUploadingVideo(true);
+
+    try {
+      const { data: userData } = await supabase.auth.getUser();
+      if (!userData.user) throw new Error("Not authenticated");
+
+      const fileName = `${Date.now()}.webm`;
+      const filePath = `${userData.user.id}/${fileName}`;
+
+      const { error: uploadError } = await supabase.storage
+        .from("therapist-videos")
+        .upload(filePath, blob, { upsert: true });
+
+      if (uploadError) throw uploadError;
+
+      const { data } = supabase.storage
+        .from("therapist-videos")
+        .getPublicUrl(filePath);
+
+      form.setValue("video_url", data.publicUrl, { shouldDirty: true });
+      setVideoPreview(data.publicUrl);
+
+      toast({
+        title: "Video recorded",
+        description: "Your introduction video has been saved successfully",
+      });
+    } catch (error: any) {
+      toast({
+        title: "Upload failed",
+        description: error.message || "Failed to save recorded video",
+        variant: "destructive",
+      });
+    } finally {
+      setIsUploadingVideo(false);
+    }
+  };
+
+  const handleRemoveVideo = () => {
+    if (confirm("Remove introduction video?")) {
+      form.setValue("video_url", null, { shouldDirty: true });
+      setVideoPreview(null);
+    }
+  };
+
   const onSubmit = async (data: ProfileFormData) => {
     try {
       const { data: userData } = await supabase.auth.getUser();
@@ -192,6 +354,7 @@ export function ProfileTab({ therapist, onUpdate }: ProfileTabProps) {
           license_number: data.license_number || null,
           hourly_rate: data.hourly_rate,
           image_url: data.image_url || null,
+          video_url: data.video_url || null,
           updated_at: new Date().toISOString(),
         })
         .eq("user_id", userData.user.id)
@@ -220,6 +383,7 @@ export function ProfileTab({ therapist, onUpdate }: ProfileTabProps) {
       if (confirm("Discard unsaved changes?")) {
         form.reset();
         setImagePreview(null);
+        setVideoPreview(null);
       }
     }
   };
@@ -228,10 +392,11 @@ export function ProfileTab({ therapist, onUpdate }: ProfileTabProps) {
     let score = 0;
     if (form.watch("name")) score += 15;
     if (form.watch("title")) score += 15;
-    if (form.watch("bio") && form.watch("bio")!.length > 50) score += 20;
-    if (form.watch("approach") && form.watch("approach")!.length > 50) score += 20;
+    if (form.watch("bio") && form.watch("bio")!.length > 50) score += 15;
+    if (form.watch("approach") && form.watch("approach")!.length > 50) score += 15;
     if (form.watch("specialties")?.length >= 3) score += 15;
-    if (form.watch("image_url")) score += 15;
+    if (form.watch("image_url")) score += 10;
+    if (form.watch("video_url")) score += 15;
     return score;
   };
 
@@ -473,6 +638,137 @@ export function ProfileTab({ therapist, onUpdate }: ProfileTabProps) {
                   </FormItem>
                 )}
               />
+            </CardContent>
+          </Card>
+
+          {/* Video Introduction */}
+          <Card className="bg-black/20 border-border">
+            <CardHeader>
+              <CardTitle className="text-foreground">Video Introduction</CardTitle>
+              <CardDescription>
+                Record or upload a short introduction video (1-3 minutes, max 50MB)
+              </CardDescription>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              {/* Video Preview */}
+              {(videoPreview || form.watch("video_url")) && (
+                <div className="relative rounded-lg overflow-hidden bg-black">
+                  <video
+                    src={videoPreview || form.watch("video_url") || ""}
+                    controls
+                    className="w-full max-h-[400px]"
+                    preload="metadata"
+                  />
+                  <Button
+                    type="button"
+                    variant="destructive"
+                    size="sm"
+                    className="absolute top-2 right-2"
+                    onClick={handleRemoveVideo}
+                  >
+                    <X className="h-4 w-4 mr-1" />
+                    Remove Video
+                  </Button>
+                </div>
+              )}
+
+              {/* Upload/Record Options */}
+              {!videoPreview && !form.watch("video_url") && (
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  {/* Upload from File */}
+                  <div className="border-2 border-dashed border-border rounded-lg p-6 text-center space-y-3">
+                    <Upload className="h-10 w-10 mx-auto text-muted-foreground" />
+                    <div>
+                      <h4 className="font-semibold text-foreground mb-1">Upload Video</h4>
+                      <p className="text-sm text-muted-foreground">
+                        MP4, MOV, or WebM up to 50MB
+                      </p>
+                    </div>
+                    <Input
+                      id="video-upload"
+                      type="file"
+                      accept="video/mp4,video/quicktime,video/webm"
+                      className="hidden"
+                      onChange={handleVideoUpload}
+                      disabled={isUploadingVideo}
+                    />
+                    <Button
+                      type="button"
+                      variant="outline"
+                      onClick={() => document.getElementById("video-upload")?.click()}
+                      disabled={isUploadingVideo}
+                    >
+                      {isUploadingVideo ? (
+                        <>
+                          <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                          Uploading...
+                        </>
+                      ) : (
+                        <>
+                          <Upload className="mr-2 h-4 w-4" />
+                          Choose File
+                        </>
+                      )}
+                    </Button>
+                  </div>
+
+                  {/* Record Video */}
+                  <div className="border-2 border-dashed border-border rounded-lg p-6 text-center space-y-3">
+                    <Video className="h-10 w-10 mx-auto text-muted-foreground" />
+                    <div>
+                      <h4 className="font-semibold text-foreground mb-1">Record Video</h4>
+                      <p className="text-sm text-muted-foreground">
+                        Record using your webcam
+                      </p>
+                    </div>
+                    <Button
+                      type="button"
+                      variant="outline"
+                      onClick={isRecording ? handleStopRecording : handleStartRecording}
+                      disabled={isUploadingVideo}
+                    >
+                      {isRecording ? (
+                        <>
+                          <Square className="mr-2 h-4 w-4" />
+                          Stop Recording
+                        </>
+                      ) : (
+                        <>
+                          <Video className="mr-2 h-4 w-4" />
+                          Start Recording
+                        </>
+                      )}
+                    </Button>
+                  </div>
+                </div>
+              )}
+
+              {/* Recording Preview */}
+              {isRecording && (
+                <div className="relative rounded-lg overflow-hidden bg-black">
+                  <video
+                    ref={videoRef}
+                    autoPlay
+                    muted
+                    className="w-full max-h-[400px]"
+                  />
+                  <div className="absolute top-2 right-2 bg-red-500 text-white px-3 py-1 rounded-full text-sm font-semibold animate-pulse">
+                    ● Recording
+                  </div>
+                </div>
+              )}
+
+              {/* Help Text */}
+              <div className="bg-muted/50 rounded-lg p-4 text-sm text-muted-foreground">
+                <p className="font-semibold mb-2 text-foreground">Tips for a great video:</p>
+                <ul className="space-y-1 list-disc list-inside">
+                  <li>Keep it short: 1-3 minutes is ideal</li>
+                  <li>Good lighting and clear audio</li>
+                  <li>Introduce yourself and your approach</li>
+                  <li>Explain what makes your practice unique</li>
+                  <li>Be authentic and welcoming</li>
+                </ul>
+              </div>
             </CardContent>
           </Card>
 
