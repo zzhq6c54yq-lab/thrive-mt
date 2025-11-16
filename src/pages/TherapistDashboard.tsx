@@ -12,6 +12,7 @@ import ScheduleTab from "@/components/therapist/ScheduleTab";
 import MessagesTab from "@/components/therapist/MessagesTab";
 import EarningsTab from "@/components/therapist/EarningsTab";
 import { DocumentsTab } from "@/components/therapist/DocumentsTab";
+import { ProfileTab } from "@/components/therapist/ProfileTab";
 import { CalendarView } from "@/components/therapist/CalendarView";
 import { useTherapyBookings } from "@/hooks/useTherapyBookings";
 import { startOfWeek } from "date-fns";
@@ -362,7 +363,7 @@ export default function TherapistDashboard() {
       {/* Main Content */}
       <div className="max-w-7xl mx-auto px-4 md:px-8 py-8">
         <Tabs defaultValue="overview" className="w-full">
-          <TabsList className="grid grid-cols-3 md:grid-cols-7 gap-2 bg-black/30 mb-8 p-1 rounded-lg h-auto">
+          <TabsList className="grid grid-cols-3 md:grid-cols-8 gap-2 bg-black/30 mb-8 p-1 rounded-lg h-auto">
             <TabsTrigger 
               value="overview" 
               className="data-[state=active]:bg-[#B87333]/90 data-[state=active]:text-white py-3"
@@ -403,6 +404,12 @@ export default function TherapistDashboard() {
               className="data-[state=active]:bg-[#B87333]/90 data-[state=active]:text-white py-3"
             >
               Documents
+            </TabsTrigger>
+            <TabsTrigger 
+              value="profile" 
+              className="data-[state=active]:bg-[#B87333]/90 data-[state=active]:text-white py-3"
+            >
+              Profile
             </TabsTrigger>
             <TabsTrigger 
               value="earnings" 
@@ -451,6 +458,13 @@ export default function TherapistDashboard() {
                 id: c.user_id,
                 name: c.name
               }))}
+            />
+          </TabsContent>
+
+          <TabsContent value="profile" className="animate-fade-in">
+            <ProfileTab 
+              therapist={therapist}
+              onUpdate={() => {}}
             />
           </TabsContent>
 
