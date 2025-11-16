@@ -146,6 +146,18 @@ serve(async (req) => {
 
       if (updateError) {
         console.error('Error updating therapist password:', updateError);
+        
+        // Check if it's a weak password error
+        if (updateError.message.includes('Password should contain')) {
+          return new Response(
+            JSON.stringify({ 
+              error: 'Configuration Error',
+              details: 'The THERAPIST_PASSWORD secret does not meet security requirements. Password must contain at least one lowercase letter, one uppercase letter, one digit, and one special character (!@#$%^&*()_+-=[]{};\':"|<>?,./`~).'
+            }),
+            { status: 500, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+          );
+        }
+        
         throw new Error(`Failed to update therapist password: ${updateError.message}`);
       }
 
@@ -162,6 +174,18 @@ serve(async (req) => {
 
       if (createError) {
         console.error('Error creating therapist user:', createError);
+        
+        // Check if it's a weak password error
+        if (createError.message.includes('Password should contain')) {
+          return new Response(
+            JSON.stringify({ 
+              error: 'Configuration Error',
+              details: 'The THERAPIST_PASSWORD secret does not meet security requirements. Password must contain at least one lowercase letter, one uppercase letter, one digit, and one special character (!@#$%^&*()_+-=[]{};\':"|<>?,./`~).'
+            }),
+            { status: 500, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+          );
+        }
+        
         throw new Error(`Failed to create therapist account: ${createError.message}`);
       }
 
