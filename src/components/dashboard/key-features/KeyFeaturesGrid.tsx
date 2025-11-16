@@ -140,8 +140,8 @@ const KeyFeaturesGrid: React.FC<KeyFeaturesGridProps> = ({
                 </div>
               )}
 
-              {/* Feature Image */}
-              <div className="relative h-48 overflow-hidden bg-muted/20">
+              {/* Compact Image - 50% smaller */}
+              <div className="relative h-24 overflow-hidden">
                 <img 
                   src={feature.image} 
                   alt={feature.title}
@@ -149,48 +149,14 @@ const KeyFeaturesGrid: React.FC<KeyFeaturesGridProps> = ({
                   onError={handleImageError}
                   loading="lazy"
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/30 via-transparent to-transparent group-hover:from-black/20 transition-all duration-300"></div>
-                
-                {/* Icon overlay on hover */}
-                <div className="absolute bottom-4 right-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                  <div className="bg-white/90 backdrop-blur-sm p-2 rounded-full shadow-lg">
-                    <ArrowRight className="w-4 h-4 text-primary" />
-                  </div>
-                </div>
+                <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent"></div>
               </div>
 
-              {/* Feature Content */}
-              {/* Feature Content */}
-              <div className="p-6 relative z-10">
-                <div className="flex items-center gap-3 mb-3">
-                  <div className={getIconColors(feature.color)}>
-                    {feature.icon}
-                  </div>
-                  <h3 className="font-bold text-lg text-foreground line-clamp-2 group-hover:text-primary transition-colors duration-300 leading-tight">
-                    {feature.title}
-                  </h3>
-                </div>
-                <p className="text-sm text-muted-foreground line-clamp-2 mb-6 leading-relaxed">
-                  {feature.description}
-                </p>
-                <button 
-                  className={`w-full px-4 py-3 rounded-lg text-sm font-semibold transition-all duration-300 flex items-center justify-center gap-2 ${
-                    feature.comingSoon 
-                      ? 'bg-muted text-muted-foreground cursor-not-allowed' 
-                      : getButtonColors(feature.color)
-                  }`}
-                  disabled={feature.comingSoon}
-                >
-                  {feature.comingSoon 
-                    ? (isSpanish ? "Próximamente" : "Coming Soon")
-                    : (
-                      <>
-                        {isSpanish ? "Explorar Ahora" : "Explore Now"}
-                        <ArrowRight className="w-4 h-4 ml-1 group-hover:translate-x-1 transition-transform" />
-                      </>
-                    )
-                  }
-                </button>
+              {/* Title Only - Compact */}
+              <div className="p-3 relative z-10">
+                <h3 className="text-sm font-semibold text-foreground line-clamp-1 group-hover:text-primary transition-colors">
+                  {feature.title}
+                </h3>
               </div>
             </div>
           </motion.div>

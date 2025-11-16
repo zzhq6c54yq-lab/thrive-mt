@@ -28,7 +28,14 @@ const ConnectionManager: React.FC = () => {
         .select('*')
         .or(`requester_id.eq.${user.id},recipient_id.eq.${user.id}`);
 
-      if (error) throw error;
+      if (error) {
+        // Check if table doesn't exist yet
+        if (error.message?.includes('relation') || error.message?.includes('does not exist')) {
+          console.log('Parent connections feature not yet configured');
+          return;
+        }
+        throw error;
+      }
 
       const accepted = ((data || []) as unknown as ParentConnection[]).filter(c => c.status === 'accepted');
       const pending = ((data || []) as unknown as ParentConnection[]).filter(c => c.status === 'pending');
@@ -37,6 +44,11 @@ const ConnectionManager: React.FC = () => {
       setPendingRequests(pending);
     } catch (error) {
       console.error('Error loading connections:', error);
+      toast({
+        title: "Error",
+        description: "Failed to load connections",
+        variant: "destructive"
+      });
     }
   };
 

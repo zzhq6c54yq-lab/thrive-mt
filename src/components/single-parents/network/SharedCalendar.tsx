@@ -31,11 +31,21 @@ const SharedCalendar: React.FC = () => {
       if (!user) return;
 
       // Get user's connections
-      const { data: connections } = await (supabase as any)
+      const { data: connections, error: connectionsError } = await (supabase as any)
         .from('parent_connections')
         .select('id')
         .or(`requester_id.eq.${user.id},recipient_id.eq.${user.id}`)
         .eq('status', 'accepted');
+
+      if (connectionsError) {
+        // Check if table doesn't exist yet
+        if (connectionsError.message?.includes('relation') || connectionsError.message?.includes('does not exist')) {
+          console.log('Parent connections feature not yet configured');
+          setIsLoading(false);
+          return;
+        }
+        throw connectionsError;
+      }
 
       if (!connections || connections.length === 0) {
         setEvents([]);
