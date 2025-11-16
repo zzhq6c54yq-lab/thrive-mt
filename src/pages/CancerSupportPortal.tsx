@@ -92,15 +92,36 @@ const CancerSupportPortal: React.FC = () => {
 
   return (
     <Page title={isSpanish ? "Portal de Apoyo para el Cáncer" : "Cancer Support Portal"} returnToMain>
-      <div className="space-y-6">
-        <PortalHeader />
-
-        <div className="bg-[#FDF2F2] dark:bg-[#1F1A1A] border-2 border-rose-300/50 dark:border-rose-500/30 rounded-xl overflow-hidden shadow-xl">
-          <TabNavigation activeTab={activeTab} onTabChange={handleTabChange} />
+      <div className="min-h-screen bg-gradient-to-br from-rose-50 via-pink-50 to-purple-50 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900">
+        {/* Hero Header Section */}
+        <div className="relative overflow-hidden bg-gradient-to-r from-rose-500 via-pink-500 to-purple-500 dark:from-rose-900 dark:via-pink-900 dark:to-purple-900">
+          <div className="absolute inset-0 bg-[url('/lovable-uploads/f3c84972-8f58-42d7-b86f-82ff2d823b30.png')] bg-cover bg-center opacity-20"></div>
+          <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-background/10"></div>
           
-          <div className="p-8">
-            {renderTabContent()}
+          <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+            <div className="text-center">
+              <h1 className="text-4xl md:text-5xl font-bold text-white mb-4">
+                {isSpanish ? "Portal de Apoyo para el Cáncer" : "Cancer Support Portal"}
+              </h1>
+              <p className="text-lg md:text-xl text-white/90 max-w-3xl mx-auto">
+                {isSpanish 
+                  ? "Recursos completos y apoyo para pacientes, cuidadores y familias afectadas por el cáncer" 
+                  : "Comprehensive resources and support for patients, caregivers, and families affected by cancer"}
+              </p>
+            </div>
           </div>
+        </div>
+
+        {/* Tab Navigation */}
+        <div className="sticky top-0 z-40 bg-white/95 dark:bg-gray-900/95 backdrop-blur-md border-b border-rose-200/50 dark:border-rose-800/50 shadow-sm">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <TabNavigation activeTab={activeTab} onTabChange={handleTabChange} />
+          </div>
+        </div>
+
+        {/* Main Content Area */}
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+          {renderTabContent()}
         </div>
       </div>
     </Page>
