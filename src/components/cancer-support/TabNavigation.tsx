@@ -23,24 +23,31 @@ const TabNavigation: React.FC<TabNavigationProps> = ({ activeTab, onTabChange })
   ];
   
   return (
-    <div className="overflow-x-auto">
-      <div className="flex space-x-1 border-b border-rose-300/30 dark:border-rose-500/20 bg-[#FBE8E8] dark:bg-[#1A1212] px-4">
+    <nav className="overflow-x-auto">
+      <div className="flex space-x-1 min-w-max">
         {tabs.map((tab) => (
           <button
             key={tab.id}
             onClick={() => onTabChange(tab.id as any)}
-            className={`flex items-center space-x-1 px-4 py-3 text-sm font-medium border-b-2 whitespace-nowrap transition-colors
+            className={`group relative flex items-center gap-2 px-6 py-4 text-sm font-medium whitespace-nowrap transition-all
               ${activeTab === tab.id ? 
-                'border-rose-500 text-rose-600 dark:text-rose-400 dark:border-rose-400' : 
-                'border-transparent text-gray-600 hover:text-gray-800 dark:text-gray-400 dark:hover:text-gray-200'
+                'text-rose-600 dark:text-rose-400' : 
+                'text-gray-600 hover:text-rose-500 dark:text-gray-400 dark:hover:text-rose-300'
               }`}
           >
-            <span className="inline-flex items-center justify-center mr-1.5">{tab.icon}</span>
+            <span className={`transition-transform ${activeTab === tab.id ? 'scale-110' : 'group-hover:scale-105'}`}>
+              {tab.icon}
+            </span>
             <span>{tab.label}</span>
+            
+            {/* Active indicator */}
+            {activeTab === tab.id && (
+              <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-gradient-to-r from-rose-500 to-pink-500"></div>
+            )}
           </button>
         ))}
       </div>
-    </div>
+    </nav>
   );
 };
 
