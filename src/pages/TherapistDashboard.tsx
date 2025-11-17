@@ -324,14 +324,21 @@ export default function TherapistDashboard() {
                 <p className="text-sm text-white/60">{therapist.title}</p>
               </div>
             </div>
-            <Button 
-              variant="ghost" 
-              onClick={handleLogout}
-              className="text-white/80 hover:text-white hover:bg-white/10"
-            >
-              <LogOut className="h-4 w-4 mr-2" />
-              Logout
-            </Button>
+            <div className="flex items-center gap-4">
+              <img 
+                src="/lovable-uploads/2a6e2d10-7c9e-4bdb-ab72-18a61d0fc6a9.png"
+                alt="Thrive Logo"
+                className="h-10 w-10 rounded-lg"
+              />
+              <Button 
+                variant="ghost" 
+                onClick={handleLogout}
+                className="text-white/80 hover:text-white hover:bg-white/10"
+              >
+                <LogOut className="h-4 w-4 mr-2" />
+                Logout
+              </Button>
+            </div>
           </div>
         </div>
       </div>

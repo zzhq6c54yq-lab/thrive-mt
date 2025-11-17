@@ -34,23 +34,29 @@ const Auth: React.FC = () => {
   }, [navigate]);
 
   return (
-    <div className="min-h-screen flex items-center justify-center p-4 bg-gradient-to-br from-background via-background to-primary/5">
-      <Card className="w-full max-w-md shadow-xl border-border/50 backdrop-blur-sm bg-card/95">
-        <CardHeader className="space-y-2 text-center pb-4">
-          <CardTitle className="text-3xl font-bold bg-gradient-to-r from-primary to-primary/60 bg-clip-text text-transparent">
-            Therapist Portal
-          </CardTitle>
-          <p className="text-sm text-muted-foreground">
-            Enter your access code to continue
+    <div className="min-h-screen flex flex-col items-center justify-center p-4 bg-gradient-to-b from-[#1a1a1f] via-[#242432] to-[#272730]">
+      <div className="text-center space-y-8 max-w-md">
+        <img 
+          src="/lovable-uploads/2a6e2d10-7c9e-4bdb-ab72-18a61d0fc6a9.png"
+          alt="Thrive Logo"
+          className="h-20 w-20 mx-auto rounded-2xl shadow-lg"
+        />
+        
+        <div className="space-y-3">
+          <h1 className="text-4xl font-bold text-white">Therapist Portal</h1>
+          <p className="text-white/60 text-lg">
+            Welcome back to your practice
           </p>
-        </CardHeader>
+        </div>
 
-        <CardContent className="space-y-6">
-          <p className="text-center text-sm text-muted-foreground">
-            This portal is for licensed therapists only. Please use the staff access on the main page.
-          </p>
-        </CardContent>
-      </Card>
+        <Card className="bg-white/5 border-white/10 backdrop-blur-sm">
+          <CardContent className="p-8">
+            <p className="text-center text-white/70 leading-relaxed">
+              This portal is for licensed therapists only. Please use the staff access on the main page to sign in.
+            </p>
+          </CardContent>
+        </Card>
+      </div>
     </div>
   );
 };
