@@ -14,6 +14,54 @@ export type Database = {
   }
   public: {
     Tables: {
+      activities_catalog: {
+        Row: {
+          category: string
+          created_at: string | null
+          description: string | null
+          estimated_minutes: number
+          goal_tags: string[] | null
+          icon_name: string | null
+          id: string
+          is_featured: boolean | null
+          points_reward: number | null
+          portal_tags: string[] | null
+          route_path: string | null
+          slug: string
+          title: string
+        }
+        Insert: {
+          category: string
+          created_at?: string | null
+          description?: string | null
+          estimated_minutes: number
+          goal_tags?: string[] | null
+          icon_name?: string | null
+          id?: string
+          is_featured?: boolean | null
+          points_reward?: number | null
+          portal_tags?: string[] | null
+          route_path?: string | null
+          slug: string
+          title: string
+        }
+        Update: {
+          category?: string
+          created_at?: string | null
+          description?: string | null
+          estimated_minutes?: number
+          goal_tags?: string[] | null
+          icon_name?: string | null
+          id?: string
+          is_featured?: boolean | null
+          points_reward?: number | null
+          portal_tags?: string[] | null
+          route_path?: string | null
+          slug?: string
+          title?: string
+        }
+        Relationships: []
+      }
       auth_user_audit: {
         Row: {
           action: string
@@ -256,6 +304,60 @@ export type Database = {
           id?: string
           source?: string | null
           user_id?: string | null
+        }
+        Relationships: []
+      }
+      daily_check_ins: {
+        Row: {
+          created_at: string
+          id: string
+          mood_label: string | null
+          mood_score: number
+          note: string | null
+          tags: string[] | null
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          mood_label?: string | null
+          mood_score: number
+          note?: string | null
+          tags?: string[] | null
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          mood_label?: string | null
+          mood_score?: number
+          note?: string | null
+          tags?: string[] | null
+          user_id?: string
+        }
+        Relationships: []
+      }
+      daily_plans: {
+        Row: {
+          activities: Json
+          generated_at: string | null
+          id: string
+          plan_date: string
+          user_id: string
+        }
+        Insert: {
+          activities: Json
+          generated_at?: string | null
+          id?: string
+          plan_date: string
+          user_id: string
+        }
+        Update: {
+          activities?: Json
+          generated_at?: string | null
+          id?: string
+          plan_date?: string
+          user_id?: string
         }
         Relationships: []
       }
@@ -529,6 +631,36 @@ export type Database = {
         }
         Relationships: []
       }
+      insights_cache: {
+        Row: {
+          generated_at: string | null
+          id: string
+          insight_text: string
+          insight_type: string
+          metadata: Json | null
+          user_id: string
+          valid_until: string
+        }
+        Insert: {
+          generated_at?: string | null
+          id?: string
+          insight_text: string
+          insight_type: string
+          metadata?: Json | null
+          user_id: string
+          valid_until: string
+        }
+        Update: {
+          generated_at?: string | null
+          id?: string
+          insight_text?: string
+          insight_type?: string
+          metadata?: Json | null
+          user_id?: string
+          valid_until?: string
+        }
+        Relationships: []
+      }
       journal_entries: {
         Row: {
           created_at: string | null
@@ -680,6 +812,9 @@ export type Database = {
           id: string
           is_therapist: boolean | null
           onboarding_completed: boolean | null
+          primary_portal: string | null
+          secondary_portal: string | null
+          time_preference_minutes: number | null
           updated_at: string | null
           user_type: string | null
         }
@@ -692,6 +827,9 @@ export type Database = {
           id: string
           is_therapist?: boolean | null
           onboarding_completed?: boolean | null
+          primary_portal?: string | null
+          secondary_portal?: string | null
+          time_preference_minutes?: number | null
           updated_at?: string | null
           user_type?: string | null
         }
@@ -704,6 +842,9 @@ export type Database = {
           id?: string
           is_therapist?: boolean | null
           onboarding_completed?: boolean | null
+          primary_portal?: string | null
+          secondary_portal?: string | null
+          time_preference_minutes?: number | null
           updated_at?: string | null
           user_type?: string | null
         }
@@ -769,6 +910,66 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      reward_transactions: {
+        Row: {
+          created_at: string | null
+          description: string | null
+          id: string
+          metadata: Json | null
+          points: number
+          source: string
+          type: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string | null
+          description?: string | null
+          id?: string
+          metadata?: Json | null
+          points: number
+          source: string
+          type: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string | null
+          description?: string | null
+          id?: string
+          metadata?: Json | null
+          points?: number
+          source?: string
+          type?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      rewards_wallet: {
+        Row: {
+          copay_credits_usd: number | null
+          current_points: number | null
+          lifetime_earned: number | null
+          lifetime_redeemed: number | null
+          updated_at: string | null
+          user_id: string
+        }
+        Insert: {
+          copay_credits_usd?: number | null
+          current_points?: number | null
+          lifetime_earned?: number | null
+          lifetime_redeemed?: number | null
+          updated_at?: string | null
+          user_id: string
+        }
+        Update: {
+          copay_credits_usd?: number | null
+          current_points?: number | null
+          lifetime_earned?: number | null
+          lifetime_redeemed?: number | null
+          updated_at?: string | null
+          user_id?: string
+        }
+        Relationships: []
       }
       shared_activities: {
         Row: {
@@ -1505,6 +1706,36 @@ export type Database = {
           created_at?: string | null
           id?: string
           role?: Database["public"]["Enums"]["app_role"]
+          user_id?: string
+        }
+        Relationships: []
+      }
+      user_streaks: {
+        Row: {
+          current_streak: number | null
+          id: string
+          last_activity_date: string | null
+          longest_streak: number | null
+          streak_type: string
+          updated_at: string | null
+          user_id: string
+        }
+        Insert: {
+          current_streak?: number | null
+          id?: string
+          last_activity_date?: string | null
+          longest_streak?: number | null
+          streak_type: string
+          updated_at?: string | null
+          user_id: string
+        }
+        Update: {
+          current_streak?: number | null
+          id?: string
+          last_activity_date?: string | null
+          longest_streak?: number | null
+          streak_type?: string
+          updated_at?: string | null
           user_id?: string
         }
         Relationships: []
