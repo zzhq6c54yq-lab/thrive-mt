@@ -20,7 +20,7 @@ const CommunitiesTab: React.FC<CommunitiesTabProps> = ({ onFeatureClick }) => {
       description: isSpanish 
         ? "Conecta con la comunidad general de apoyo para el cáncer"
         : "Connect with the general cancer support community",
-      path: "cancer-support/general-community",
+      path: "general-community",
       activeUsers: 86,
       newPosts: 12
     },
@@ -31,7 +31,7 @@ const CommunitiesTab: React.FC<CommunitiesTabProps> = ({ onFeatureClick }) => {
       description: isSpanish 
         ? "Encuentra grupos específicos para tu tipo de cáncer"
         : "Find specific groups for your type of cancer",
-      path: "cancer-support/cancer-type-communities",
+      path: "cancer-type-communities",
       activeUsers: 124,
       newPosts: 18
     },
@@ -42,7 +42,7 @@ const CommunitiesTab: React.FC<CommunitiesTabProps> = ({ onFeatureClick }) => {
       description: isSpanish 
         ? "Calendario de próximas reuniones virtuales y eventos"
         : "Calendar of upcoming virtual meetings and events",
-      path: "cancer-support/virtual-meetings",
+      path: "virtual-meetings",
       upcomingEvents: 5
     },
     {
@@ -52,7 +52,7 @@ const CommunitiesTab: React.FC<CommunitiesTabProps> = ({ onFeatureClick }) => {
       description: isSpanish 
         ? "Conecta individualmente con compañeros de apoyo"
         : "Connect individually with support companions",
-      path: "cancer-support/one-on-one",
+      path: "one-on-one",
       availableNow: 8
     }
   ];
@@ -62,25 +62,25 @@ const CommunitiesTab: React.FC<CommunitiesTabProps> = ({ onFeatureClick }) => {
       id: "young-adults",
       title: isSpanish ? "Adultos Jóvenes" : "Young Adults",
       icon: <Users className="h-5 w-5 text-blue-500" />,
-      path: "cancer-support/young-adults"
+      path: "young-adults"
     },
     {
       id: "metastatic",
       title: isSpanish ? "Cáncer Metastásico" : "Metastatic Cancer",
       icon: <Activity className="h-5 w-5 text-blue-500" />,
-      path: "cancer-support/metastatic"
+      path: "metastatic"
     },
     {
       id: "caregivers-circle",
       title: isSpanish ? "Círculo de Cuidadores" : "Caregivers Circle",
       icon: <Heart className="h-5 w-5 text-blue-500" />,
-      path: "cancer-support/caregivers-circle"
+      path: "caregivers-circle"
     },
     {
       id: "survivorship-community",
       title: isSpanish ? "Comunidad de Sobrevivientes" : "Survivorship Community",
       icon: <Clock className="h-5 w-5 text-blue-500" />,
-      path: "cancer-support/survivorship-community"
+      path: "survivorship-community"
     }
   ];
   

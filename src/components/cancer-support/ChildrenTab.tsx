@@ -20,7 +20,7 @@ const ChildrenTab: React.FC<ChildrenTabProps> = ({ onFeatureClick }) => {
       description: isSpanish 
         ? "Guías para explicar el cáncer a niños de diferentes edades"
         : "Guidelines for explaining cancer to children of different ages",
-      path: "cancer-support/talking-to-children"
+      path: "talking-to-children"
     },
     {
       id: "children-emotions",
@@ -29,7 +29,7 @@ const ChildrenTab: React.FC<ChildrenTabProps> = ({ onFeatureClick }) => {
       description: isSpanish 
         ? "Ayudando a los niños a navegar los sentimientos complejos relacionados con el cáncer"
         : "Helping children navigate complex feelings related to cancer",
-      path: "cancer-support/children-emotions"
+      path: "children-emotions"
     },
     {
       id: "parenting-through-treatment",
@@ -38,7 +38,7 @@ const ChildrenTab: React.FC<ChildrenTabProps> = ({ onFeatureClick }) => {
       description: isSpanish 
         ? "Consejos para padres que están recibiendo tratamiento para el cáncer"
         : "Advice for parents who are undergoing cancer treatment",
-      path: "cancer-support/parenting-through-treatment"
+      path: "parenting-through-treatment"
     },
     {
       id: "family-activities",
@@ -47,7 +47,7 @@ const ChildrenTab: React.FC<ChildrenTabProps> = ({ onFeatureClick }) => {
       description: isSpanish 
         ? "Actividades que familias pueden hacer juntas durante los desafíos del cáncer"
         : "Activities families can do together during cancer challenges",
-      path: "cancer-support/family-activities"
+      path: "family-activities"
     },
     {
       id: "pediatric-cancer",
@@ -56,7 +56,7 @@ const ChildrenTab: React.FC<ChildrenTabProps> = ({ onFeatureClick }) => {
       description: isSpanish 
         ? "Recursos específicos para familias con niños diagnosticados con cáncer"
         : "Specific resources for families with children diagnosed with cancer",
-      path: "cancer-support/pediatric-cancer"
+      path: "pediatric-cancer"
     },
     {
       id: "family-support",
@@ -65,7 +65,7 @@ const ChildrenTab: React.FC<ChildrenTabProps> = ({ onFeatureClick }) => {
       description: isSpanish 
         ? "Conecta con otras familias que están enfrentando desafíos similares"
         : "Connect with other families facing similar challenges",
-      path: "cancer-support/family-support"
+      path: "family-support"
     }
   ];
   
@@ -126,7 +126,7 @@ const ChildrenTab: React.FC<ChildrenTabProps> = ({ onFeatureClick }) => {
           <Button 
             variant="outline" 
             className="border-amber-300 text-amber-600 dark:border-amber-800 dark:text-amber-400 justify-start"
-            onClick={() => onFeatureClick("cancer-support/hospital-school")}
+            onClick={() => onFeatureClick("hospital-school")}
           >
             <School className="mr-2 h-4 w-4" />
             {isSpanish ? "Escuela en el Hospital" : "Hospital Schooling"}
@@ -135,7 +135,7 @@ const ChildrenTab: React.FC<ChildrenTabProps> = ({ onFeatureClick }) => {
           <Button 
             variant="outline" 
             className="border-amber-300 text-amber-600 dark:border-amber-800 dark:text-amber-400 justify-start"
-            onClick={() => onFeatureClick("cancer-support/parent-connect")}
+            onClick={() => onFeatureClick("parent-connect")}
           >
             <MessageSquare className="mr-2 h-4 w-4" />
             {isSpanish ? "Conectar con Otros Padres" : "Connect with Parents"}
@@ -144,7 +144,7 @@ const ChildrenTab: React.FC<ChildrenTabProps> = ({ onFeatureClick }) => {
           <Button 
             variant="outline" 
             className="border-amber-300 text-amber-600 dark:border-amber-800 dark:text-amber-400 justify-start"
-            onClick={() => onFeatureClick("cancer-support/kids-connect")}
+            onClick={() => onFeatureClick("kids-connect")}
           >
             <Puzzle className="mr-2 h-4 w-4" />
             {isSpanish ? "Actividades para Niños" : "Kids' Activities"}
@@ -153,7 +153,7 @@ const ChildrenTab: React.FC<ChildrenTabProps> = ({ onFeatureClick }) => {
           <Button 
             variant="outline" 
             className="border-amber-300 text-amber-600 dark:border-amber-800 dark:text-amber-400 justify-start"
-            onClick={() => onFeatureClick("cancer-support/teen-programs")}
+            onClick={() => onFeatureClick("teen-programs")}
           >
             <Users className="mr-2 h-4 w-4" />
             {isSpanish ? "Programas para Adolescentes" : "Teen Programs"}

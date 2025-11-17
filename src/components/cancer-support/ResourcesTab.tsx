@@ -20,7 +20,7 @@ const ResourcesTab: React.FC<ResourcesTabProps> = ({ onFeatureClick }) => {
       description: isSpanish 
         ? "Información sobre varios tipos de cáncer y sus tratamientos"
         : "Information about various cancer types and their treatments",
-      path: "cancer-support/cancer-types"
+      path: "cancer-types"
     },
     {
       id: "treatment-options",
@@ -29,7 +29,7 @@ const ResourcesTab: React.FC<ResourcesTabProps> = ({ onFeatureClick }) => {
       description: isSpanish 
         ? "Guías detalladas sobre tratamientos y terapias"
         : "Detailed guides on treatments and therapies",
-      path: "cancer-support/treatment-options"
+      path: "treatment-options"
     },
     {
       id: "side-effects",
@@ -38,7 +38,7 @@ const ResourcesTab: React.FC<ResourcesTabProps> = ({ onFeatureClick }) => {
       description: isSpanish 
         ? "Manejo de efectos secundarios comunes de los tratamientos"
         : "Managing common treatment side effects",
-      path: "cancer-support/side-effects"
+      path: "side-effects"
     },
     {
       id: "nutrition",
@@ -47,7 +47,7 @@ const ResourcesTab: React.FC<ResourcesTabProps> = ({ onFeatureClick }) => {
       description: isSpanish 
         ? "Consejos de alimentación durante y después del tratamiento"
         : "Dietary guidance during and after treatment",
-      path: "cancer-support/nutrition"
+      path: "nutrition"
     },
     {
       id: "clinical-trials",
@@ -56,7 +56,7 @@ const ResourcesTab: React.FC<ResourcesTabProps> = ({ onFeatureClick }) => {
       description: isSpanish 
         ? "Información sobre investigaciones y ensayos clínicos actuales"
         : "Information on current research and clinical trials",
-      path: "cancer-support/clinical-trials"
+      path: "clinical-trials"
     },
     {
       id: "research-updates",
@@ -65,7 +65,7 @@ const ResourcesTab: React.FC<ResourcesTabProps> = ({ onFeatureClick }) => {
       description: isSpanish 
         ? "Noticias y avances recientes en la investigación del cáncer"
         : "Recent news and advances in cancer research",
-      path: "cancer-support/research-updates"
+      path: "research-updates"
     }
   ];
   
@@ -74,19 +74,19 @@ const ResourcesTab: React.FC<ResourcesTabProps> = ({ onFeatureClick }) => {
       id: "financial-resources",
       title: isSpanish ? "Recursos Financieros" : "Financial Resources",
       icon: <DollarSign className="h-5 w-5 text-cyan-500" />,
-      path: "cancer-support/financial-resources"
+      path: "financial-resources"
     },
     {
       id: "healthcare-navigation",
       title: isSpanish ? "Navegación del Sistema de Salud" : "Healthcare Navigation",
       icon: <UserCog className="h-5 w-5 text-cyan-500" />,
-      path: "cancer-support/healthcare-navigation"
+      path: "healthcare-navigation"
     },
     {
       id: "legal-resources",
       title: isSpanish ? "Recursos Legales" : "Legal Resources",
       icon: <Scale className="h-5 w-5 text-cyan-500" />,
-      path: "cancer-support/legal-resources"
+      path: "legal-resources"
     }
   ];
   

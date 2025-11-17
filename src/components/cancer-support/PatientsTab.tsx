@@ -20,7 +20,7 @@ const PatientsTab: React.FC<PatientsTabProps> = ({ onFeatureClick }) => {
       description: isSpanish 
         ? "Recursos para pacientes que recientemente han sido diagnosticados con cáncer"
         : "Resources for patients who have recently been diagnosed with cancer",
-      path: "cancer-support/newly-diagnosed"
+      path: "newly-diagnosed"
     },
     {
       id: "treatment",
@@ -29,7 +29,7 @@ const PatientsTab: React.FC<PatientsTabProps> = ({ onFeatureClick }) => {
       description: isSpanish 
         ? "Apoyo durante el proceso de tratamiento y citas médicas"
         : "Support through the treatment process and medical appointments",
-      path: "cancer-support/treatment"
+      path: "treatment"
     },
     {
       id: "stages",
@@ -38,7 +38,7 @@ const PatientsTab: React.FC<PatientsTabProps> = ({ onFeatureClick }) => {
       description: isSpanish 
         ? "Información sobre las diferentes etapas del cáncer y qué esperar"
         : "Information about different cancer stages and what to expect",
-      path: "cancer-support/stages"
+      path: "stages"
     },
     {
       id: "survivorship",
@@ -47,7 +47,7 @@ const PatientsTab: React.FC<PatientsTabProps> = ({ onFeatureClick }) => {
       description: isSpanish 
         ? "Recursos para la vida después del tratamiento del cáncer"
         : "Resources for life after cancer treatment",
-      path: "cancer-support/survivorship"
+      path: "survivorship"
     },
     {
       id: "peer-connect",
@@ -56,7 +56,7 @@ const PatientsTab: React.FC<PatientsTabProps> = ({ onFeatureClick }) => {
       description: isSpanish 
         ? "Conéctate con otros pacientes para compartir experiencias"
         : "Connect with other patients to share experiences",
-      path: "cancer-support/peer-connect"
+      path: "peer-connect"
     },
     {
       id: "events",
@@ -65,7 +65,7 @@ const PatientsTab: React.FC<PatientsTabProps> = ({ onFeatureClick }) => {
       description: isSpanish 
         ? "Eventos virtuales y presenciales para pacientes"
         : "Virtual and in-person events for patients",
-      path: "cancer-support/events"
+      path: "events"
     }
   ];
   

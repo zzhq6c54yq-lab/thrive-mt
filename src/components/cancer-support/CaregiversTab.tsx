@@ -20,7 +20,7 @@ const CaregiversTab: React.FC<CaregiversTabProps> = ({ onFeatureClick }) => {
       description: isSpanish 
         ? "Información esencial para nuevos cuidadores de pacientes con cáncer"
         : "Essential information for new cancer caregivers",
-      path: "cancer-support/caregiver-basics"
+      path: "caregiver-basics"
     },
     {
       id: "caregiver-selfcare",
@@ -29,7 +29,7 @@ const CaregiversTab: React.FC<CaregiversTabProps> = ({ onFeatureClick }) => {
       description: isSpanish 
         ? "Cómo cuidar de tu propio bienestar mientras cuidas a otros"
         : "How to care for your own wellbeing while caring for others",
-      path: "cancer-support/caregiver-selfcare"
+      path: "caregiver-selfcare"
     },
     {
       id: "caregiver-communication",
@@ -38,7 +38,7 @@ const CaregiversTab: React.FC<CaregiversTabProps> = ({ onFeatureClick }) => {
       description: isSpanish 
         ? "Consejos para comunicarse con pacientes y profesionales médicos"
         : "Tips for communicating with patients and healthcare professionals",
-      path: "cancer-support/caregiver-communication"
+      path: "caregiver-communication"
     },
     {
       id: "financial-navigation",
@@ -47,7 +47,7 @@ const CaregiversTab: React.FC<CaregiversTabProps> = ({ onFeatureClick }) => {
       description: isSpanish 
         ? "Ayuda para manejar los aspectos financieros del cuidado"
         : "Help managing the financial aspects of caregiving",
-      path: "cancer-support/financial-navigation"
+      path: "financial-navigation"
     },
     {
       id: "caregiver-workshops",
@@ -56,7 +56,7 @@ const CaregiversTab: React.FC<CaregiversTabProps> = ({ onFeatureClick }) => {
       description: isSpanish 
         ? "Talleres educativos diseñados específicamente para cuidadores"
         : "Educational workshops designed specifically for caregivers",
-      path: "cancer-support/caregiver-workshops"
+      path: "caregiver-workshops"
     },
     {
       id: "caregiver-stories",
@@ -65,7 +65,7 @@ const CaregiversTab: React.FC<CaregiversTabProps> = ({ onFeatureClick }) => {
       description: isSpanish 
         ? "Experiencias compartidas por otros cuidadores de pacientes con cáncer"
         : "Experiences shared by other cancer caregivers",
-      path: "cancer-support/caregiver-stories"
+      path: "caregiver-stories"
     }
   ];
   
