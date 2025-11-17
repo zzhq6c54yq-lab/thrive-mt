@@ -8,3 +8,6 @@ verify_jwt = false
 
 [functions.verify-therapist-reset]
 verify_jwt = false
+
+[functions.generate-daily-plans]
+verify_jwt = false
