@@ -342,6 +342,7 @@ export type Database = {
           activities: Json
           generated_at: string | null
           id: string
+          metadata: Json | null
           plan_date: string
           user_id: string
         }
@@ -349,6 +350,7 @@ export type Database = {
           activities: Json
           generated_at?: string | null
           id?: string
+          metadata?: Json | null
           plan_date: string
           user_id: string
         }
@@ -356,6 +358,7 @@ export type Database = {
           activities?: Json
           generated_at?: string | null
           id?: string
+          metadata?: Json | null
           plan_date?: string
           user_id?: string
         }
@@ -799,6 +802,39 @@ export type Database = {
           recipient_id?: string
           requester_id?: string
           status?: string
+        }
+        Relationships: []
+      }
+      plan_generation_analytics: {
+        Row: {
+          ai_cost_usd: number | null
+          avg_generation_time_ms: number | null
+          errors: Json | null
+          failed_generations: number
+          generated_at: string | null
+          id: string
+          successful_generations: number
+          total_users: number
+        }
+        Insert: {
+          ai_cost_usd?: number | null
+          avg_generation_time_ms?: number | null
+          errors?: Json | null
+          failed_generations: number
+          generated_at?: string | null
+          id?: string
+          successful_generations: number
+          total_users: number
+        }
+        Update: {
+          ai_cost_usd?: number | null
+          avg_generation_time_ms?: number | null
+          errors?: Json | null
+          failed_generations?: number
+          generated_at?: string | null
+          id?: string
+          successful_generations?: number
+          total_users?: number
         }
         Relationships: []
       }
