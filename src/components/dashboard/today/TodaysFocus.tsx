@@ -1,8 +1,9 @@
 import React from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 import { useNavigate } from 'react-router-dom';
-import { Clock, ArrowRight } from 'lucide-react';
+import { Clock, ArrowRight, Info } from 'lucide-react';
 import * as Icons from 'lucide-react';
 import { motion } from 'framer-motion';
 import { DailyActivity } from '@/hooks/useTodayDashboard';
@@ -75,6 +76,22 @@ export default function TodaysFocus({ activities }: TodaysFocusProps) {
                       <span className="text-xs text-muted-foreground">
                         {getTimeOfDayLabel(activity.time_of_day)}
                       </span>
+                    )}
+                    {activity.reasoning && (
+                      <TooltipProvider>
+                        <Tooltip>
+                          <TooltipTrigger asChild>
+                            <Info className="w-3.5 h-3.5 text-blue-400 cursor-help hover:text-blue-300 transition-colors" />
+                          </TooltipTrigger>
+                          <TooltipContent className="max-w-xs bg-slate-800 border-blue-500/30">
+                            <p className="text-xs text-gray-200">
+                              <span className="font-semibold text-blue-300">Why this activity?</span>
+                              <br />
+                              {activity.reasoning}
+                            </p>
+                          </TooltipContent>
+                        </Tooltip>
+                      </TooltipProvider>
                     )}
                   </div>
                   {activity.description && (

@@ -9,7 +9,8 @@ import CareTeamSection from './CareTeamSection';
 import SafetyStrip from './SafetyStrip';
 import { Button } from '@/components/ui/button';
 import { useNavigate } from 'react-router-dom';
-import { LayoutGrid, Users, TrendingUp, Heart } from 'lucide-react';
+import { LayoutGrid, Users, TrendingUp, Heart, Sparkles } from 'lucide-react';
+import { motion } from 'framer-motion';
 
 export default function TodayDashboard() {
   const { dashboardData, loading, refetch } = useTodayDashboard();
@@ -74,6 +75,34 @@ export default function TodayDashboard() {
 
         {/* Quick Check-In */}
         <QuickCheckIn onCheckInComplete={refetch} />
+
+        {/* AI-Generated Insight (if available) */}
+        {dashboardData.planMetadata?.adaptive_note && (
+          <motion.div
+            initial={{ opacity: 0, y: -10 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="bg-gradient-to-r from-blue-500/10 to-purple-500/10 border border-blue-500/30 rounded-lg p-4 backdrop-blur-sm"
+          >
+            <div className="flex items-start gap-3">
+              <div className="flex-shrink-0 w-10 h-10 rounded-full bg-blue-500/20 flex items-center justify-center">
+                <Sparkles className="w-5 h-5 text-blue-400" />
+              </div>
+              <div className="flex-1">
+                <p className="text-sm font-semibold text-blue-100 mb-1">
+                  AI Insight for Today
+                </p>
+                <p className="text-sm text-gray-300 leading-relaxed">
+                  {dashboardData.planMetadata.adaptive_note}
+                </p>
+                {dashboardData.planMetadata?.plan_summary && (
+                  <p className="text-xs text-gray-400 mt-2 italic">
+                    {dashboardData.planMetadata.plan_summary}
+                  </p>
+                )}
+              </div>
+            </div>
+          </motion.div>
+        )}
 
         {/* Today's Focus */}
         <TodaysFocus activities={dashboardData.todaysPlan} />

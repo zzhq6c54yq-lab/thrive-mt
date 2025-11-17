@@ -15,11 +15,17 @@ export interface DailyActivity {
   points_reward: number;
   order: number;
   time_of_day?: string;
+  reasoning?: string;
 }
 
 export interface DashboardData {
   profile: any;
   todaysPlan: DailyActivity[];
+  planMetadata?: {
+    plan_summary?: string;
+    adaptive_note?: string;
+    analysis_snapshot?: any;
+  };
   checkInStreak: number;
   recentCheckIns: any[];
   upcomingAppointments: any[];
@@ -144,7 +150,12 @@ export function useTodayDashboard() {
 
       // Process today's plan
       let todaysPlan: DailyActivity[] = [];
+      let planMetadata = undefined;
+      
       if (todaysPlanData.data?.activities) {
+        // Extract metadata from the plan
+        planMetadata = todaysPlanData.data.metadata || undefined;
+        
         const activities = Array.isArray(todaysPlanData.data.activities) 
           ? todaysPlanData.data.activities 
           : [];
@@ -164,7 +175,8 @@ export function useTodayDashboard() {
                 return {
                   ...catalogActivity,
                   order: planActivity.order,
-                  time_of_day: planActivity.time_of_day
+                  time_of_day: planActivity.time_of_day,
+                  reasoning: planActivity.reasoning
                 };
               })
               .filter(Boolean) as DailyActivity[];
@@ -196,6 +208,7 @@ export function useTodayDashboard() {
       setDashboardData({
         profile: profile,
         todaysPlan,
+        planMetadata,
         checkInStreak: streakData.data?.current_streak || 0,
         recentCheckIns: checkInsData.data || [],
         upcomingAppointments: appointmentsData.data || [],
