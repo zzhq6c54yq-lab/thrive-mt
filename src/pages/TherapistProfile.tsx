@@ -49,8 +49,10 @@ export default function TherapistProfile() {
               </p>
               <Button asChild>
                 <Link to="/therapist-matches">
-                  <ArrowLeft className="mr-2 h-4 w-4" />
-                  Back to Therapists
+                  <>
+                    <ArrowLeft className="mr-2 h-4 w-4" />
+                    Back to Therapists
+                  </>
                 </Link>
               </Button>
             </CardContent>
@@ -80,8 +82,10 @@ export default function TherapistProfile() {
       <div className="max-w-5xl mx-auto p-6 space-y-6">
         <Button variant="ghost" asChild className="mb-4">
           <Link to="/therapist-matches">
-            <ArrowLeft className="mr-2 h-4 w-4" />
-            Back to Therapists
+            <>
+              <ArrowLeft className="mr-2 h-4 w-4" />
+              Back to Therapists
+            </>
           </Link>
         </Button>
 

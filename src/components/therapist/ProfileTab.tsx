@@ -876,21 +876,21 @@ export function ProfileTab({ therapist, onUpdate }: ProfileTabProps) {
               type="button"
               variant="outline"
               onClick={() => {
-                if (therapist?.id) {
-                  const url = `/therapist/${therapist.id}`;
-                  window.open(url, "_blank", "noopener,noreferrer");
-                } else {
+                if (!therapist?.id) {
                   toast({
                     title: "Preview unavailable",
-                    description: "Therapist profile not loaded yet",
+                    description: "Save your profile first to preview it",
                     variant: "destructive",
                   });
+                  return;
                 }
+                window.open(`/therapist/${therapist.id}`, "_blank", "noopener,noreferrer");
               }}
               disabled={!therapist?.id}
+              className="gap-2"
             >
-              <ExternalLink className="mr-2 h-4 w-4" />
-              Preview as Patient
+              <ExternalLink className="h-4 w-4" />
+              Preview Public Profile
             </Button>
 
             <div className="flex gap-3">
