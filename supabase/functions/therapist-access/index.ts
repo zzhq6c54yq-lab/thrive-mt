@@ -125,15 +125,21 @@ serve(async (req) => {
       }
     );
 
-    // First check if user exists using admin API
-    const { data: existingUsers, error: listError } = await supabaseAdmin.auth.admin.listUsers();
-    
-    if (listError) {
-      console.error('Error listing users:', listError);
-      throw new Error(`Failed to check existing users: ${listError.message}`);
+    // Try to sign in first to check if user exists
+    let existingUser = null;
+    try {
+      const { data: signInData, error: signInError } = await supabaseAdmin.auth.signInWithPassword({
+        email: THERAPIST_EMAIL!,
+        password: THERAPIST_PASSWORD!,
+      });
+      
+      if (signInData.user) {
+        existingUser = signInData.user;
+        console.log('Therapist user exists and credentials are valid');
+      }
+    } catch (signInAttemptError) {
+      console.log('Sign in attempt during user check:', signInAttemptError);
     }
-
-    const existingUser = existingUsers.users.find(u => u.email === THERAPIST_EMAIL);
 
     if (existingUser) {
       console.log('Therapist user exists, updating password to match environment variable');
