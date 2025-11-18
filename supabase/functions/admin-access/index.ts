@@ -106,8 +106,13 @@ serve(async (req) => {
 
     if (createError) {
       // If user already exists, that's fine - we'll sign in next
-      if (!createError.message.includes('already registered') && 
-          !createError.message.includes('User already registered')) {
+      const errorMsg = createError.message || '';
+      const isUserExistsError = errorMsg.includes('already registered') || 
+                                errorMsg.includes('already been registered') ||
+                                errorMsg.includes('User already registered') ||
+                                createError.code === 'email_exists';
+      
+      if (!isUserExistsError) {
         console.error('Error creating admin user:', createError);
         return new Response(
           JSON.stringify({ error: 'Failed to create admin account' }),
