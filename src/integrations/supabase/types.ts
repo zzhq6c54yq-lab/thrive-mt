@@ -280,6 +280,50 @@ export type Database = {
         }
         Relationships: []
       }
+      compliance_violations: {
+        Row: {
+          created_at: string | null
+          details: Json | null
+          id: string
+          resolved: boolean | null
+          resolved_at: string | null
+          resolved_by: string | null
+          severity: string
+          user_id: string | null
+          violation_type: string
+        }
+        Insert: {
+          created_at?: string | null
+          details?: Json | null
+          id?: string
+          resolved?: boolean | null
+          resolved_at?: string | null
+          resolved_by?: string | null
+          severity: string
+          user_id?: string | null
+          violation_type: string
+        }
+        Update: {
+          created_at?: string | null
+          details?: Json | null
+          id?: string
+          resolved?: boolean | null
+          resolved_at?: string | null
+          resolved_by?: string | null
+          severity?: string
+          user_id?: string | null
+          violation_type?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "compliance_violations_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       course_enrollments: {
         Row: {
           completed: boolean | null
@@ -315,6 +359,47 @@ export type Database = {
           user_id?: string
         }
         Relationships: []
+      }
+      crisis_escalations: {
+        Row: {
+          assigned_to: string | null
+          created_at: string | null
+          id: string
+          notes: string | null
+          resolved_at: string | null
+          severity: string
+          status: string | null
+          user_id: string | null
+        }
+        Insert: {
+          assigned_to?: string | null
+          created_at?: string | null
+          id?: string
+          notes?: string | null
+          resolved_at?: string | null
+          severity: string
+          status?: string | null
+          user_id?: string | null
+        }
+        Update: {
+          assigned_to?: string | null
+          created_at?: string | null
+          id?: string
+          notes?: string | null
+          resolved_at?: string | null
+          severity?: string
+          status?: string | null
+          user_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "crisis_escalations_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       crisis_events: {
         Row: {
@@ -502,6 +587,39 @@ export type Database = {
           section_id?: string
           timestamp?: string | null
           user_id?: string | null
+        }
+        Relationships: []
+      }
+      data_access_logs: {
+        Row: {
+          access_reason: string | null
+          accessed_user_id: string | null
+          accessor_id: string
+          created_at: string | null
+          data_type: string
+          id: string
+          ip_address: unknown
+          user_agent: string | null
+        }
+        Insert: {
+          access_reason?: string | null
+          accessed_user_id?: string | null
+          accessor_id: string
+          created_at?: string | null
+          data_type: string
+          id?: string
+          ip_address?: unknown
+          user_agent?: string | null
+        }
+        Update: {
+          access_reason?: string | null
+          accessed_user_id?: string | null
+          accessor_id?: string
+          created_at?: string | null
+          data_type?: string
+          id?: string
+          ip_address?: unknown
+          user_agent?: string | null
         }
         Relationships: []
       }
@@ -979,17 +1097,45 @@ export type Database = {
         }
         Relationships: []
       }
+      platform_metrics: {
+        Row: {
+          id: string
+          metric_name: string
+          metric_type: string
+          metric_value: number
+          recorded_at: string | null
+        }
+        Insert: {
+          id?: string
+          metric_name: string
+          metric_type: string
+          metric_value: number
+          recorded_at?: string | null
+        }
+        Update: {
+          id?: string
+          metric_name?: string
+          metric_type?: string
+          metric_value?: number
+          recorded_at?: string | null
+        }
+        Relationships: []
+      }
       profiles: {
         Row: {
           avatar_url: string | null
           created_at: string | null
           display_name: string | null
           email: string | null
+          financial_aid_amount: number | null
+          financial_aid_eligible: boolean | null
           goals: string[] | null
           id: string
           is_therapist: boolean | null
+          last_activity_at: string | null
           onboarding_completed: boolean | null
           primary_portal: string | null
+          risk_level: string | null
           secondary_portal: string | null
           time_preference_minutes: number | null
           updated_at: string | null
@@ -1000,11 +1146,15 @@ export type Database = {
           created_at?: string | null
           display_name?: string | null
           email?: string | null
+          financial_aid_amount?: number | null
+          financial_aid_eligible?: boolean | null
           goals?: string[] | null
           id: string
           is_therapist?: boolean | null
+          last_activity_at?: string | null
           onboarding_completed?: boolean | null
           primary_portal?: string | null
+          risk_level?: string | null
           secondary_portal?: string | null
           time_preference_minutes?: number | null
           updated_at?: string | null
@@ -1015,11 +1165,15 @@ export type Database = {
           created_at?: string | null
           display_name?: string | null
           email?: string | null
+          financial_aid_amount?: number | null
+          financial_aid_eligible?: boolean | null
           goals?: string[] | null
           id?: string
           is_therapist?: boolean | null
+          last_activity_at?: string | null
           onboarding_completed?: boolean | null
           primary_portal?: string | null
+          risk_level?: string | null
           secondary_portal?: string | null
           time_preference_minutes?: number | null
           updated_at?: string | null
@@ -1604,6 +1758,50 @@ export type Database = {
           },
         ]
       }
+      therapist_credentials: {
+        Row: {
+          created_at: string | null
+          credential_type: string
+          expiry_date: string | null
+          file_url: string
+          id: string
+          therapist_id: string | null
+          updated_at: string | null
+          verified: boolean | null
+          verified_by: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          credential_type: string
+          expiry_date?: string | null
+          file_url: string
+          id?: string
+          therapist_id?: string | null
+          updated_at?: string | null
+          verified?: boolean | null
+          verified_by?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          credential_type?: string
+          expiry_date?: string | null
+          file_url?: string
+          id?: string
+          therapist_id?: string | null
+          updated_at?: string | null
+          verified?: boolean | null
+          verified_by?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "therapist_credentials_therapist_id_fkey"
+            columns: ["therapist_id"]
+            isOneToOne: false
+            referencedRelation: "therapists"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       therapist_messages: {
         Row: {
           client_id: string
@@ -1651,14 +1849,19 @@ export type Database = {
       therapists: {
         Row: {
           approach: string | null
+          background_check_status: string | null
           bio: string | null
+          burnout_risk_score: number | null
           created_at: string
+          current_caseload: number | null
           experience_years: number | null
           hourly_rate: number
           id: string
           image_url: string | null
           is_active: boolean | null
+          license_expiry: string | null
           license_number: string | null
+          max_caseload: number | null
           name: string
           rating: number | null
           specialties: string[]
@@ -1670,14 +1873,19 @@ export type Database = {
         }
         Insert: {
           approach?: string | null
+          background_check_status?: string | null
           bio?: string | null
+          burnout_risk_score?: number | null
           created_at?: string
+          current_caseload?: number | null
           experience_years?: number | null
           hourly_rate?: number
           id?: string
           image_url?: string | null
           is_active?: boolean | null
+          license_expiry?: string | null
           license_number?: string | null
+          max_caseload?: number | null
           name: string
           rating?: number | null
           specialties?: string[]
@@ -1689,14 +1897,19 @@ export type Database = {
         }
         Update: {
           approach?: string | null
+          background_check_status?: string | null
           bio?: string | null
+          burnout_risk_score?: number | null
           created_at?: string
+          current_caseload?: number | null
           experience_years?: number | null
           hourly_rate?: number
           id?: string
           image_url?: string | null
           is_active?: boolean | null
+          license_expiry?: string | null
           license_number?: string | null
+          max_caseload?: number | null
           name?: string
           rating?: number | null
           specialties?: string[]
