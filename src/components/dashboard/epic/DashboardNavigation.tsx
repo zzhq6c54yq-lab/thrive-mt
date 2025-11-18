@@ -26,6 +26,7 @@ export default function DashboardNavigation({ userName }: DashboardNavigationPro
   const navItems = [
     { label: 'Today', icon: Home, path: '/' },
     { label: 'All Tools', icon: Grid3x3, path: '/home' },
+    { label: 'Explore Portals', icon: Users, path: '/home' },
     { label: 'Progress', icon: TrendingUp, path: '/progress-analytics' },
   ];
 

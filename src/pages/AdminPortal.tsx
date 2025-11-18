@@ -56,7 +56,7 @@ const AdminPortal: React.FC = () => {
 
   if (loading || checkingAccess) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 flex items-center justify-center">
+      <div className="min-h-screen bg-gradient-to-br from-gray-900 via-[#1a1a1a] to-gray-900 flex items-center justify-center">
         <div className="text-white text-xl">Verifying admin access...</div>
       </div>
     );
@@ -67,7 +67,7 @@ const AdminPortal: React.FC = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900">
+    <div className="min-h-screen bg-gradient-to-br from-gray-900 via-[#1a1a1a] to-gray-900">
       <AdminHeader />
       
       <div className="container mx-auto px-4 py-8 max-w-7xl">
@@ -76,24 +76,24 @@ const AdminPortal: React.FC = () => {
           className="w-full"
           onValueChange={(value) => logAction(AUDIT_ACTIONS.TAB_CHANGED, undefined, { tab: value })}
         >
-          <TabsList className="grid w-full grid-cols-5 lg:w-auto lg:inline-grid bg-slate-800/50 border border-slate-700">
-            <TabsTrigger value="users" className="flex items-center gap-2">
+          <TabsList className="grid w-full grid-cols-5 lg:w-auto lg:inline-grid bg-gray-800/50 border border-[#B87333]/30">
+            <TabsTrigger value="users" className="flex items-center gap-2 data-[state=active]:bg-[#B87333]/20 data-[state=active]:text-[#E5C5A1] data-[state=active]:border-[#B87333]/50">
               <Users className="w-4 h-4" />
               <span className="hidden sm:inline">Users</span>
             </TabsTrigger>
-            <TabsTrigger value="therapists" className="flex items-center gap-2">
+            <TabsTrigger value="therapists" className="flex items-center gap-2 data-[state=active]:bg-[#B87333]/20 data-[state=active]:text-[#E5C5A1] data-[state=active]:border-[#B87333]/50">
               <Stethoscope className="w-4 h-4" />
               <span className="hidden sm:inline">Therapists</span>
             </TabsTrigger>
-            <TabsTrigger value="operations" className="flex items-center gap-2">
+            <TabsTrigger value="operations" className="flex items-center gap-2 data-[state=active]:bg-[#B87333]/20 data-[state=active]:text-[#E5C5A1] data-[state=active]:border-[#B87333]/50">
               <Activity className="w-4 h-4" />
               <span className="hidden sm:inline">Operations</span>
             </TabsTrigger>
-            <TabsTrigger value="audit" className="flex items-center gap-2">
+            <TabsTrigger value="audit" className="flex items-center gap-2 data-[state=active]:bg-[#B87333]/20 data-[state=active]:text-[#E5C5A1] data-[state=active]:border-[#B87333]/50">
               <FileText className="w-4 h-4" />
               <span className="hidden sm:inline">Audit Logs</span>
             </TabsTrigger>
-            <TabsTrigger value="settings" className="flex items-center gap-2">
+            <TabsTrigger value="settings" className="flex items-center gap-2 data-[state=active]:bg-[#B87333]/20 data-[state=active]:text-[#E5C5A1] data-[state=active]:border-[#B87333]/50">
               <Settings className="w-4 h-4" />
               <span className="hidden sm:inline">Settings</span>
             </TabsTrigger>

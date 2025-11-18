@@ -38,7 +38,7 @@ export default function EpicDashboard() {
   // Loading state
   if (loading) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-gray-900 via-gray-800 to-blue-900 p-4 pb-20">
+      <div className="min-h-screen bg-gradient-to-br from-gray-900 via-[#1a1a1a] to-gray-900 p-4 pb-20">
         <div className="container mx-auto max-w-7xl space-y-6">
           {/* Navigation skeleton */}
           <Skeleton className="h-16 w-full bg-white/10" />
@@ -68,7 +68,7 @@ export default function EpicDashboard() {
   // Error state - user not found
   if (!user || !profile) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-gray-900 via-gray-800 to-blue-900 flex items-center justify-center p-4">
+      <div className="min-h-screen bg-gradient-to-br from-gray-900 via-[#1a1a1a] to-gray-900 flex items-center justify-center p-4">
         <div className="bg-white/10 backdrop-blur-sm border border-white/20 rounded-2xl p-8 max-w-md text-center">
           <AlertCircle className="w-16 h-16 text-red-400 mx-auto mb-4" />
           <h2 className="text-2xl font-bold text-white mb-2">
@@ -81,7 +81,7 @@ export default function EpicDashboard() {
           </p>
           <button
             onClick={() => navigate(!user ? '/auth' : '/onboarding')}
-            className="bg-gradient-to-r from-blue-500 to-purple-600 text-white px-6 py-3 rounded-lg font-medium hover:opacity-90 transition-opacity"
+            className="bg-gradient-to-r from-[#B87333] to-[#E5C5A1] text-white px-6 py-3 rounded-lg font-medium hover:opacity-90 transition-opacity"
           >
             {!user ? 'Login' : 'Complete Setup'}
           </button>
@@ -91,7 +91,7 @@ export default function EpicDashboard() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-900 via-gray-800 to-blue-900 pb-24">
+    <div className="min-h-screen bg-gradient-to-br from-gray-900 via-[#1a1a1a] to-gray-900 pb-24">
       {/* Navigation */}
       <DashboardNavigation userName={profile?.display_name || 'there'} />
 

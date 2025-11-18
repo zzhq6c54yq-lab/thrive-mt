@@ -147,7 +147,7 @@ const IntroScreen: React.FC<IntroScreenProps> = ({ onContinue, onSkipToMain }) =
   };
 
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center bg-[#1a1a1f] overflow-hidden relative z-50">
+    <div className="min-h-screen flex flex-col items-center justify-center bg-gradient-to-br from-gray-900 via-[#1a1a1a] to-gray-900 overflow-hidden relative z-50">
       <div className="floating-bg"></div>
       
       <div className="text-center max-w-2xl mx-auto px-4 z-10">

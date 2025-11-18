@@ -53,8 +53,58 @@ export default function YourDaySection({ dashboardData, onCheckInComplete }: You
         id="quick-check-in"
         onClick={() => trackClick({ component: 'quick-check-in' })}
       >
-        <QuickCheckIn onCheckInComplete={onCheckInComplete} />
+      <QuickCheckIn onCheckInComplete={onCheckInComplete} />
       </div>
+
+      {/* Explore Portals Card */}
+      <motion.div
+        initial={{ opacity: 0, y: -10 }}
+        animate={{ opacity: 1, y: 0 }}
+        className="relative overflow-hidden rounded-lg border border-[#B87333]/50 bg-gray-900/80 backdrop-blur-sm cursor-pointer hover:border-[#B87333] transition-all group"
+        onClick={() => {
+          trackClick({ component: 'explore-portals' });
+          navigate('/home');
+        }}
+      >
+        {/* Faded collage background of portal images */}
+        <div className="absolute inset-0 opacity-10 group-hover:opacity-20 transition-opacity">
+          <div className="grid grid-cols-4 grid-rows-3 h-full gap-0.5">
+            <img src="https://images.unsplash.com/photo-1472532944213-114e90954b63?auto=format&fit=crop&w=200&q=80" className="w-full h-full object-cover" alt="" />
+            <img src="https://images.unsplash.com/photo-1541339907198-e08756dedf3f?auto=format&fit=crop&w=200&q=80" className="w-full h-full object-cover" alt="" />
+            <img src="https://images.unsplash.com/photo-1476703993599-0035a21b17a9?auto=format&fit=crop&w=200&q=80" className="w-full h-full object-cover" alt="" />
+            <img src="https://images.unsplash.com/photo-1551601651-2a8555f1a136?auto=format&fit=crop&w=200&q=80" className="w-full h-full object-cover" alt="" />
+            <img src="https://images.unsplash.com/photo-1584308666744-24d5c474f2ae?auto=format&fit=crop&w=200&q=80" className="w-full h-full object-cover" alt="" />
+            <img src="https://images.unsplash.com/photo-1556761175-5973dc0f32e7?auto=format&fit=crop&w=200&q=80" className="w-full h-full object-cover" alt="" />
+            <img src="https://images.unsplash.com/photo-1509475826633-fed577a2c71b?auto=format&fit=crop&w=200&q=80" className="w-full h-full object-cover" alt="" />
+            <img src="https://images.unsplash.com/photo-1571896349842-33c89424de2d?auto=format&fit=crop&w=200&q=80" className="w-full h-full object-cover" alt="" />
+            <img src="https://images.unsplash.com/photo-1544620347-c4fd4a3d5957?auto=format&fit=crop&w=200&q=80" className="w-full h-full object-cover" alt="" />
+            <img src="https://images.unsplash.com/photo-1580582932707-520aed937b7b?auto=format&fit=crop&w=200&q=80" className="w-full h-full object-cover" alt="" />
+            <img src="https://images.unsplash.com/photo-1559027615-cd4628902d4a?auto=format&fit=crop&w=200&q=80" className="w-full h-full object-cover" alt="" />
+            <img src="https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?auto=format&fit=crop&w=200&q=80" className="w-full h-full object-cover" alt="" />
+          </div>
+        </div>
+        
+        {/* Content overlay */}
+        <div className="relative z-10 p-6 flex items-center justify-between">
+          <div className="flex items-center gap-4">
+            {/* ThriveMT Logo */}
+            <div className="w-12 h-12">
+              <img 
+                src="/lovable-uploads/f2c6ac08-6331-4884-950d-7f94d68ff15f.png" 
+                alt="ThriveMT Logo"
+                className="w-full h-full object-contain filter drop-shadow-[0_0_8px_rgba(184,115,51,0.6)]"
+              />
+            </div>
+            <div>
+              <h3 className="text-xl font-bold text-white">ThriveMT</h3>
+              <p className="text-sm text-gray-300">Explore Specialized Programs & Add-ons</p>
+            </div>
+          </div>
+          <button className="px-6 py-3 bg-gradient-to-r from-[#B87333] to-[#E5C5A1] text-white rounded-lg font-medium hover:opacity-90 transition-opacity">
+            Explore All
+          </button>
+        </div>
+      </motion.div>
 
       {/* Meet Henry Card */}
       <motion.div

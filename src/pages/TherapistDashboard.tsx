@@ -308,7 +308,7 @@ export default function TherapistDashboard() {
   });
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-[#1a1a1f] via-[#242432] to-[#272730] text-white">
+    <div className="min-h-screen bg-gradient-to-br from-gray-900 via-[#1a1a1a] to-gray-900 text-white">
       {/* Header */}
       <div className="border-b border-white/10 bg-black/20 backdrop-blur-sm sticky top-0 z-50">
         <div className="max-w-7xl mx-auto px-4 md:px-8 py-4">
@@ -326,9 +326,9 @@ export default function TherapistDashboard() {
             </div>
             <div className="flex items-center gap-4">
               <img 
-                src="/lovable-uploads/2a6e2d10-7c9e-4bdb-ab72-18a61d0fc6a9.png"
-                alt="Thrive Logo"
-                className="h-10 w-10 rounded-lg"
+                src="/lovable-uploads/f2c6ac08-6331-4884-950d-7f94d68ff15f.png"
+                alt="ThriveMT Logo"
+                className="h-10 w-10 object-contain filter drop-shadow-[0_0_8px_rgba(184,115,51,0.6)]"
               />
               <Button 
                 variant="ghost" 

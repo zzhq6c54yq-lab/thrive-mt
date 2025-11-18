@@ -1,7 +1,8 @@
 import React, { useEffect } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { useNavigate } from "react-router-dom";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { ArrowRight } from "lucide-react";
 
 const Auth: React.FC = () => {
   const navigate = useNavigate();
@@ -34,28 +35,30 @@ const Auth: React.FC = () => {
   }, [navigate]);
 
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center p-4 bg-gradient-to-b from-[#1a1a1f] via-[#242432] to-[#272730]">
+    <div className="min-h-screen flex flex-col items-center justify-center p-4 bg-gradient-to-br from-gray-900 via-[#1a1a1a] to-gray-900">
       <div className="text-center space-y-8 max-w-md">
         <img 
-          src="/lovable-uploads/2a6e2d10-7c9e-4bdb-ab72-18a61d0fc6a9.png"
-          alt="Thrive Logo"
-          className="h-20 w-20 mx-auto rounded-2xl shadow-lg"
+          src="/lovable-uploads/f2c6ac08-6331-4884-950d-7f94d68ff15f.png"
+          alt="ThriveMT Logo"
+          className="h-32 w-32 mx-auto object-contain filter drop-shadow-[0_0_12px_rgba(184,115,51,0.6)]"
         />
         
         <div className="space-y-3">
-          <h1 className="text-4xl font-bold text-white">Therapist Portal</h1>
+          <h1 className="text-5xl font-bold text-white">
+            Thrive<span className="text-[#B87333]">MT</span>
+          </h1>
           <p className="text-white/60 text-lg">
-            Welcome back to your practice
+            You've been logged out successfully
           </p>
         </div>
 
-        <Card className="bg-white/5 border-white/10 backdrop-blur-sm">
-          <CardContent className="p-8">
-            <p className="text-center text-white/70 leading-relaxed">
-              This portal is for licensed therapists only. Please use the staff access on the main page to sign in.
-            </p>
-          </CardContent>
-        </Card>
+        <Button 
+          className="bg-gradient-to-r from-[#B87333] to-[#E5C5A1] hover:opacity-90 text-white px-6 py-3"
+          onClick={() => navigate("/")}
+        >
+          Return to Login
+          <ArrowRight className="ml-2 h-4 w-4" />
+        </Button>
       </div>
     </div>
   );

@@ -76,19 +76,6 @@ export default function ToolkitSection({ userGoals }: ToolkitSectionProps) {
         { name: 'Binaural Beats', path: '/binaural-beats', description: 'Sound therapy for relaxation' },
       ]
     },
-    ...(!profile?.primary_portal ? [{
-      id: 'specialized-programs',
-      name: 'Specialized Programs',
-      icon: Users,
-      color: 'from-purple-500 to-violet-500',
-      tools: [
-        { name: 'Veterans Portal', path: '/dod-welcome', description: 'Resources for veterans' },
-        { name: 'Cancer Support', path: '/cancer-support-welcome', description: 'Support for cancer patients' },
-        { name: 'Single Parents', path: '/single-parents-welcome', description: 'Support for single parents' },
-        { name: 'First Responders', path: '/first-responders-welcome', description: 'Support for first responders' },
-        { name: 'Substance Abuse Support', path: '/substance-abuse-sponsor', description: 'Recovery support tools' },
-      ]
-    }] : []),
     {
       id: 'creative',
       name: 'Creative & Expression',
