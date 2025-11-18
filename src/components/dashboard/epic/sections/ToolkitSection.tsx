@@ -20,6 +20,9 @@ import {
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import ToolCategoryCard from '../widgets/ToolCategoryCard';
+import { useLayoutTracking } from '@/hooks/useLayoutTracking';
+import { useUser } from '@/contexts/UserContext';
+import { supabase } from '@/integrations/supabase/client';
 
 interface ToolkitSectionProps {
   userGoals: string[];
@@ -27,6 +30,13 @@ interface ToolkitSectionProps {
 
 export default function ToolkitSection({ userGoals }: ToolkitSectionProps) {
   const navigate = useNavigate();
+  const { user } = useUser();
+  const { trackClick } = useLayoutTracking({ 
+    sectionId: 'toolkit',
+    trackScroll: true,
+    trackClicks: true,
+    trackTime: true
+  });
   const [searchQuery, setSearchQuery] = useState('');
   const [expandedCategories, setExpandedCategories] = useState<string[]>(['Therapy & Professional Support']);
 

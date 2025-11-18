@@ -15,7 +15,10 @@ export default function YourDaySection({ dashboardData, onCheckInComplete }: You
   return (
     <div className="space-y-6">
       {/* Quick Check-In */}
-      <div id="quick-check-in">
+      <div 
+        id="quick-check-in"
+        onClick={() => trackClick({ component: 'quick-check-in' })}
+      >
         <QuickCheckIn onCheckInComplete={onCheckInComplete} />
       </div>
 
@@ -48,7 +51,10 @@ export default function YourDaySection({ dashboardData, onCheckInComplete }: You
       )}
 
       {/* Today's Focus */}
-      <div id="todays-focus">
+      <div 
+        id="todays-focus"
+        onClick={() => trackClick({ component: 'todays-focus' })}
+      >
         <TodaysFocus activities={dashboardData.todaysPlan} />
       </div>
 
