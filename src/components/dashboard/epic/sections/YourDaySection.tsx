@@ -4,6 +4,7 @@ import { Sparkles, Flame, Award } from 'lucide-react';
 import QuickCheckIn from '../../today/QuickCheckIn';
 import TodaysFocus from '../../today/TodaysFocus';
 import { DashboardData } from '@/hooks/useTodayDashboard';
+import { MoodPulseWidget, StreakProtectorWidget, ProgressRingWidget, QuickNotesWidget } from '../widgets/SmartWidgets';
 
 interface YourDaySectionProps {
   dashboardData: DashboardData;
@@ -14,7 +15,9 @@ export default function YourDaySection({ dashboardData, onCheckInComplete }: You
   return (
     <div className="space-y-6">
       {/* Quick Check-In */}
-      <QuickCheckIn onCheckInComplete={onCheckInComplete} />
+      <div id="quick-check-in">
+        <QuickCheckIn onCheckInComplete={onCheckInComplete} />
+      </div>
 
       {/* AI Insight Card */}
       {dashboardData.planMetadata?.adaptive_note && (
@@ -45,7 +48,20 @@ export default function YourDaySection({ dashboardData, onCheckInComplete }: You
       )}
 
       {/* Today's Focus */}
-      <TodaysFocus activities={dashboardData.todaysPlan} />
+      <div id="todays-focus">
+        <TodaysFocus activities={dashboardData.todaysPlan} />
+      </div>
+
+      {/* Smart Widgets Grid */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        <MoodPulseWidget />
+        <StreakProtectorWidget streak={dashboardData.checkInStreak} />
+        <ProgressRingWidget 
+          completed={dashboardData.weeklyStats.challengesCompleted} 
+          total={dashboardData.todaysPlan.length || 7}
+        />
+        <QuickNotesWidget />
+      </div>
 
       {/* Streaks & Wins Banner */}
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">

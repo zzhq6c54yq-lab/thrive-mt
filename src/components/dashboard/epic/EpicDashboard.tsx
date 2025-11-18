@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useTodayDashboard } from '@/hooks/useTodayDashboard';
 import { useUser } from '@/contexts/UserContext';
@@ -9,11 +9,21 @@ import YourDaySection from './sections/YourDaySection';
 import ToolkitSection from './sections/ToolkitSection';
 import ProgressSection from './sections/ProgressSection';
 import SafetyStrip from '../today/SafetyStrip';
+import QuickActions from './QuickActions';
+import CommandPalette from './CommandPalette';
+import AIContextualHelper from './AIContextualHelper';
+import { useKeyboardShortcuts } from '@/hooks/useKeyboardShortcuts';
 
 export default function EpicDashboard() {
   const navigate = useNavigate();
   const { user, profile, loading: userLoading } = useUser();
   const { dashboardData, loading: dashboardLoading, refetch } = useTodayDashboard();
+  const [isCommandPaletteOpen, setIsCommandPaletteOpen] = useState(false);
+
+  // Setup keyboard shortcuts
+  useKeyboardShortcuts({
+    onCommandPalette: () => setIsCommandPaletteOpen(true)
+  });
 
   // Redirect to auth if not authenticated
   useEffect(() => {
@@ -91,7 +101,7 @@ export default function EpicDashboard() {
         {/* Main Grid: Toolkit + Progress */}
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
           {/* Toolkit Section (2 columns) */}
-          <div className="lg:col-span-2">
+          <div className="lg:col-span-2" id="toolkit-section">
             <ToolkitSection userGoals={profile?.goals || []} />
           </div>
 
@@ -104,6 +114,14 @@ export default function EpicDashboard() {
 
       {/* Safety Strip */}
       <SafetyStrip />
+
+      {/* AI-Powered Enhancements */}
+      <QuickActions />
+      <AIContextualHelper />
+      <CommandPalette 
+        isOpen={isCommandPaletteOpen} 
+        onClose={() => setIsCommandPaletteOpen(false)} 
+      />
     </div>
   );
 }
