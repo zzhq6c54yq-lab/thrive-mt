@@ -3,11 +3,13 @@ import { useNavigate } from 'react-router-dom';
 import { supabase } from '@/integrations/supabase/client';
 import { useUser } from '@/contexts/UserContext';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Users, Stethoscope, Activity, Settings, Shield, FileText } from 'lucide-react';
+import { Users, Stethoscope, Activity, Settings, Shield, FileText, LayoutDashboard } from 'lucide-react';
 import AdminHeader from '@/components/admin/AdminHeader';
+import DashboardOverview from '@/components/admin/DashboardOverview';
 import UsersManagement from '@/components/admin/UsersManagement';
 import TherapistsManagement from '@/components/admin/TherapistsManagement';
 import OperationsAnalytics from '@/components/admin/OperationsAnalytics';
+import ComplianceDashboard from '@/components/admin/ComplianceDashboard';
 import SystemSettings from '@/components/admin/SystemSettings';
 import AuditLogsViewer from '@/components/admin/AuditLogsViewer';
 import { useAdminAudit } from '@/hooks/useAdminAudit';
@@ -72,11 +74,15 @@ const AdminPortal: React.FC = () => {
       
       <div className="container mx-auto px-4 py-8 max-w-7xl">
         <Tabs 
-          defaultValue="users" 
+          defaultValue="overview" 
           className="w-full"
           onValueChange={(value) => logAction(AUDIT_ACTIONS.TAB_CHANGED, undefined, { tab: value })}
         >
-          <TabsList className="grid w-full grid-cols-5 lg:w-auto lg:inline-grid bg-gray-800/50 border border-[#B87333]/30">
+          <TabsList className="grid w-full grid-cols-7 lg:w-auto lg:inline-grid bg-gray-800/50 border border-[#B87333]/30">
+            <TabsTrigger value="overview" className="flex items-center gap-2 data-[state=active]:bg-[#B87333]/20 data-[state=active]:text-[#E5C5A1] data-[state=active]:border-[#B87333]/50">
+              <LayoutDashboard className="w-4 h-4" />
+              <span className="hidden sm:inline">Overview</span>
+            </TabsTrigger>
             <TabsTrigger value="users" className="flex items-center gap-2 data-[state=active]:bg-[#B87333]/20 data-[state=active]:text-[#E5C5A1] data-[state=active]:border-[#B87333]/50">
               <Users className="w-4 h-4" />
               <span className="hidden sm:inline">Users</span>
@@ -84,6 +90,10 @@ const AdminPortal: React.FC = () => {
             <TabsTrigger value="therapists" className="flex items-center gap-2 data-[state=active]:bg-[#B87333]/20 data-[state=active]:text-[#E5C5A1] data-[state=active]:border-[#B87333]/50">
               <Stethoscope className="w-4 h-4" />
               <span className="hidden sm:inline">Therapists</span>
+            </TabsTrigger>
+            <TabsTrigger value="compliance" className="flex items-center gap-2 data-[state=active]:bg-[#B87333]/20 data-[state=active]:text-[#E5C5A1] data-[state=active]:border-[#B87333]/50">
+              <Shield className="w-4 h-4" />
+              <span className="hidden sm:inline">Compliance</span>
             </TabsTrigger>
             <TabsTrigger value="operations" className="flex items-center gap-2 data-[state=active]:bg-[#B87333]/20 data-[state=active]:text-[#E5C5A1] data-[state=active]:border-[#B87333]/50">
               <Activity className="w-4 h-4" />
@@ -100,12 +110,20 @@ const AdminPortal: React.FC = () => {
           </TabsList>
 
           <div className="mt-6">
+            <TabsContent value="overview" className="space-y-4">
+              <DashboardOverview />
+            </TabsContent>
+
             <TabsContent value="users" className="space-y-4">
               <UsersManagement />
             </TabsContent>
 
             <TabsContent value="therapists" className="space-y-4">
               <TherapistsManagement />
+            </TabsContent>
+
+            <TabsContent value="compliance" className="space-y-4">
+              <ComplianceDashboard />
             </TabsContent>
 
             <TabsContent value="operations" className="space-y-4">
