@@ -24,39 +24,13 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 import useTranslation from "@/hooks/useTranslation";
+import { useLogout } from "@/hooks/useLogout";
 
 const Header = () => {
   const { toast } = useToast();
   const [showWelcomeTutorial, setShowWelcomeTutorial] = useState(false);
   const { preferredLanguage, setPreferredLanguage, isSpanish, isPortuguese, isFilipino } = useTranslation();
-  
-  const handleLogout = () => {
-    const logoutMessages = {
-      'English': {
-        title: "Logged out",
-        description: "You have been successfully logged out."
-      },
-      'Español': {
-        title: "Sesión cerrada",
-        description: "Has cerrado sesión exitosamente."
-      },
-      'Português': {
-        title: "Desconectado",
-        description: "Você foi desconectado com sucesso."
-      },
-      'Filipino': {
-        title: "Na-log out",
-        description: "Matagumpay kang na-log out."
-      }
-    };
-    
-    const message = logoutMessages[preferredLanguage as keyof typeof logoutMessages] || logoutMessages['English'];
-    
-    toast({
-      title: message.title,
-      description: message.description,
-    });
-  };
+  const { logout } = useLogout();
 
   const handleThemeToggle = () => {
     const themeMessages = {
@@ -282,7 +256,7 @@ const Header = () => {
             </span>
           </DropdownMenuItem>
           <DropdownMenuSeparator />
-          <DropdownMenuItem onClick={handleLogout}>
+          <DropdownMenuItem onClick={logout}>
             <LogOut className="mr-2 h-4 w-4" />
             <span>
               {isSpanish ? "Cerrar sesión" : 

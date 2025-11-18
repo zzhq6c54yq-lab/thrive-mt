@@ -1,8 +1,18 @@
 import React from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
-import { Home, Users, Grid3x3, TrendingUp, User } from 'lucide-react';
+import { Home, Users, Grid3x3, TrendingUp, User, LogOut, Settings } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from '@/components/ui/dropdown-menu';
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { useLogout } from '@/hooks/useLogout';
 
 interface DashboardNavigationProps {
   userName: string;
@@ -11,6 +21,7 @@ interface DashboardNavigationProps {
 export default function DashboardNavigation({ userName }: DashboardNavigationProps) {
   const navigate = useNavigate();
   const location = useLocation();
+  const { logout } = useLogout();
 
   const navItems = [
     { label: 'Today', icon: Home, path: '/' },
@@ -57,6 +68,55 @@ export default function DashboardNavigation({ userName }: DashboardNavigationPro
                 </Button>
               );
             })}
+
+            {/* User Menu */}
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  className="ml-2 text-gray-300 hover:text-white hover:bg-white/10 transition-colors"
+                >
+                  <Avatar className="h-8 w-8">
+                    <AvatarImage src="" alt={userName} />
+                    <AvatarFallback className="bg-gradient-to-br from-blue-500 to-purple-600 text-white text-xs">
+                      {userName.charAt(0).toUpperCase()}
+                    </AvatarFallback>
+                  </Avatar>
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="end" className="w-56 bg-gray-900/95 border-white/10 backdrop-blur-md">
+                <DropdownMenuLabel className="text-gray-300">
+                  <div className="flex flex-col space-y-1">
+                    <p className="text-sm font-medium text-white">{userName}</p>
+                    <p className="text-xs text-gray-400">Manage your account</p>
+                  </div>
+                </DropdownMenuLabel>
+                <DropdownMenuSeparator className="bg-white/10" />
+                <DropdownMenuItem 
+                  onClick={() => navigate('/profile')}
+                  className="text-gray-300 hover:text-white hover:bg-white/10 cursor-pointer"
+                >
+                  <User className="mr-2 h-4 w-4" />
+                  <span>Profile</span>
+                </DropdownMenuItem>
+                <DropdownMenuItem 
+                  onClick={() => navigate('/settings')}
+                  className="text-gray-300 hover:text-white hover:bg-white/10 cursor-pointer"
+                >
+                  <Settings className="mr-2 h-4 w-4" />
+                  <span>Settings</span>
+                </DropdownMenuItem>
+                <DropdownMenuSeparator className="bg-white/10" />
+                <DropdownMenuItem 
+                  onClick={logout}
+                  className="text-red-400 hover:text-red-300 hover:bg-red-500/10 cursor-pointer"
+                >
+                  <LogOut className="mr-2 h-4 w-4" />
+                  <span>Log out</span>
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
           </nav>
         </div>
       </div>
