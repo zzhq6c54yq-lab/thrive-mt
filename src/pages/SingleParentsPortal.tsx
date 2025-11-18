@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { useToast } from "@/hooks/use-toast";
 import Page from "@/components/Page";
 import useTranslation from "@/hooks/useTranslation";
+import ErrorBoundary from "@/components/ErrorBoundary";
 
 // Tab components will be imported once created
 const ParentWellnessTab = React.lazy(() => import("@/components/single-parents/ParentWellnessTab"));
@@ -54,25 +55,27 @@ const SingleParentsPortal: React.FC = () => {
   };
 
   return (
-    <Page title={isSpanish ? "Portal de Padres Solteros" : "Single Parents Portal"} returnToMain>
-      <div className="space-y-6">
-        <React.Suspense fallback={<div className="text-center text-muted-foreground">Loading...</div>}>
-          <PortalHeader />
-        </React.Suspense>
-
-        <div className="bg-card border border-border rounded-lg overflow-hidden shadow-lg">
+    <ErrorBoundary>
+      <Page title={isSpanish ? "Portal de Padres Solteros" : "Single Parents Portal"} returnToMain>
+        <div className="space-y-6">
           <React.Suspense fallback={<div className="text-center text-muted-foreground">Loading...</div>}>
-            <TabNavigation activeTab={activeTab} onTabChange={setActiveTab} />
+            <PortalHeader />
           </React.Suspense>
-          
-          <div className="p-6">
+
+          <div className="bg-card border border-border rounded-lg overflow-hidden shadow-lg">
             <React.Suspense fallback={<div className="text-center text-muted-foreground">Loading...</div>}>
-              {renderTabContent()}
+              <TabNavigation activeTab={activeTab} onTabChange={setActiveTab} />
             </React.Suspense>
+            
+            <div className="p-6">
+              <React.Suspense fallback={<div className="text-center text-muted-foreground">Loading...</div>}>
+                {renderTabContent()}
+              </React.Suspense>
+            </div>
           </div>
         </div>
-      </div>
-    </Page>
+      </Page>
+    </ErrorBoundary>
   );
 };
 
