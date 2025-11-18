@@ -186,9 +186,8 @@ serve(async (req) => {
 
     return new Response(
       JSON.stringify({ 
-        success: true,
-        session: signInData.session,
-        user: signInData.user,
+        access_token: signInData.session.access_token,
+        refresh_token: signInData.session.refresh_token,
       }),
       { status: 200, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
     );

@@ -102,49 +102,42 @@ const IntroScreen: React.FC<IntroScreenProps> = ({ onContinue, onSkipToMain }) =
   };
 
   const handleAdminAccessCode = async () => {
-    if (!accessCode || accessCode.length !== 4) {
-      toast({
-        title: "Invalid code",
-        description: "Please enter a valid 4-digit access code",
-        variant: "destructive",
-      });
-      return;
-    }
-
     setLoading(true);
     try {
       const { data, error } = await supabase.functions.invoke('admin-access', {
-        body: { accessCode },
+        body: { accessCode }
       });
 
-      if (error) throw error;
-
-      if (data?.success && data?.session) {
-        // Set the session from the response
-        await supabase.auth.setSession({
-          access_token: data.session.access_token,
-          refresh_token: data.session.refresh_token,
-        });
-
-        toast({
-          title: "Welcome!",
-          description: "Admin access granted.",
-        });
-        setAccessCodeDialogOpen(false);
-        setAccessCode("");
-        navigate('/admin-portal');
-      } else {
+      if (error) {
         toast({
           title: "Access denied",
-          description: data?.error || "Invalid access code",
+          description: "Invalid access code. Please try again.",
           variant: "destructive",
         });
         setAccessCode("");
+        setLoading(false);
+        return;
       }
+
+      const { error: sessionError } = await supabase.auth.setSession({
+        access_token: data.access_token,
+        refresh_token: data.refresh_token,
+      });
+
+      if (sessionError) throw sessionError;
+
+      toast({
+        title: "Welcome!",
+        description: "Admin login successful.",
+      });
+      
+      setAccessCodeDialogOpen(false);
+      setAccessCode("");
+      navigate("/admin-portal");
     } catch (error: any) {
       toast({
         title: "Login failed",
-        description: error.message || "An error occurred",
+        description: error.message,
         variant: "destructive",
       });
       setAccessCode("");
