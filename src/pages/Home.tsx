@@ -37,7 +37,7 @@ const Home = () => {
 
   // MainDashboard prop fix and doc
   return (
-    <Page title="Home" showBackButton={false}>
+    <Page title="All Tools" showBackButton={true}>
       <MainDashboard 
         userName={userName}
         showHenry={false}

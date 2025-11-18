@@ -35,7 +35,7 @@ export default function ProgressSection({ dashboardData }: ProgressSectionProps)
               trackClick({ action: 'view-analytics' });
               navigate('/progress-analytics');
             }}
-            className="text-blue-400 hover:text-blue-300"
+            className="text-[#E5C5A1] hover:text-[#B87333]"
           >
             <TrendingUp className="w-4 h-4 mr-2" />
             View Full Analytics
@@ -60,7 +60,7 @@ export default function ProgressSection({ dashboardData }: ProgressSectionProps)
           {dashboardData.weeklyStats.latestAssessment && (
             <div className="flex items-center justify-between py-3">
               <span className="text-sm text-gray-400">Latest Assessment</span>
-              <span className="text-lg font-bold text-blue-400">
+              <span className="text-lg font-bold text-[#E5C5A1]">
                 {dashboardData.weeklyStats.latestAssessment.score}
               </span>
             </div>

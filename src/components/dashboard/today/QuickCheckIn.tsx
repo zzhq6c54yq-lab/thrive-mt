@@ -27,7 +27,7 @@ export default function QuickCheckIn({ onCheckInComplete }: { onCheckInComplete?
   const [saving, setSaving] = useState(false);
 
   const handleSaveCheckIn = async () => {
-    if (!user || !selectedMood) return;
+    if (!user) return;
 
     try {
       setSaving(true);
@@ -110,35 +110,12 @@ export default function QuickCheckIn({ onCheckInComplete }: { onCheckInComplete?
     <Card className="bg-card/50 border-border/50 backdrop-blur-sm">
       <CardHeader>
         <CardTitle className="text-xl">Good morning! 👋</CardTitle>
-        <p className="text-sm text-muted-foreground">Let's do a 10-second check-in.</p>
+        <p className="text-sm text-muted-foreground">Quick check-in (optional)</p>
       </CardHeader>
       <CardContent className="space-y-4">
-        {/* Mood Selector */}
-        <div>
-          <label className="text-sm font-medium mb-2 block">How are you feeling?</label>
-          <div className="flex gap-3 justify-between">
-            {moodOptions.map(({ score, icon: Icon, label, color }) => (
-              <motion.button
-                key={score}
-                whileHover={{ scale: 1.1 }}
-                whileTap={{ scale: 0.95 }}
-                onClick={() => setSelectedMood(score)}
-                className={`flex flex-col items-center gap-1 p-3 rounded-lg border-2 transition-all ${
-                  selectedMood === score
-                    ? 'border-primary bg-primary/10'
-                    : 'border-border hover:border-primary/50'
-                }`}
-              >
-                <Icon className={`w-6 h-6 ${selectedMood === score ? 'text-primary' : color}`} />
-                <span className="text-xs">{label}</span>
-              </motion.button>
-            ))}
-          </div>
-        </div>
-
         {/* Tags */}
         <div>
-          <label className="text-sm font-medium mb-2 block">What describes today? (optional)</label>
+          <label className="text-sm font-medium mb-2 block">What describes today?</label>
           <div className="flex flex-wrap gap-2">
             {tagOptions.map(tag => (
               <Button
@@ -168,8 +145,8 @@ export default function QuickCheckIn({ onCheckInComplete }: { onCheckInComplete?
 
         {/* Save Button */}
         <Button 
-          onClick={handleSaveCheckIn} 
-          disabled={!selectedMood || saving}
+          onClick={handleSaveCheckIn}
+          disabled={saving}
           className="w-full"
         >
           {saving ? 'Saving...' : 'Save Check-In'}

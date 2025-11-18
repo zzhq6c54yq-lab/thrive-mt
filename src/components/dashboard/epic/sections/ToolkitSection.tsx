@@ -38,7 +38,7 @@ export default function ToolkitSection({ userGoals }: ToolkitSectionProps) {
     trackTime: true
   });
   const [searchQuery, setSearchQuery] = useState('');
-  const [expandedCategories, setExpandedCategories] = useState<string[]>(['Therapy & Professional Support']);
+  const [expandedCategories, setExpandedCategories] = useState<string[]>([]);
 
   const toolkitCategories = [
     {

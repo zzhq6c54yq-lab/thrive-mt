@@ -25,10 +25,8 @@ export default function DashboardNavigation({ userName }: DashboardNavigationPro
 
   const navItems = [
     { label: 'Today', icon: Home, path: '/' },
-    { label: 'My Portals', icon: Users, path: '/portals' },
     { label: 'All Tools', icon: Grid3x3, path: '/home' },
     { label: 'Progress', icon: TrendingUp, path: '/progress-analytics' },
-    { label: 'Profile', icon: User, path: '/profile' },
   ];
 
   return (
@@ -38,8 +36,15 @@ export default function DashboardNavigation({ userName }: DashboardNavigationPro
           {/* Logo & Greeting */}
           <div className="flex items-center gap-4">
             <div className="flex items-center gap-2">
-              <div className="w-8 h-8 rounded-full bg-gradient-to-br from-blue-500 to-purple-600" />
-              <span className="font-bold text-white text-xl hidden sm:inline">Thrive</span>
+              <div className="w-8 h-8 text-[#B87333]">
+                <svg viewBox="0 0 100 100" className="w-full h-full">
+                  <path d="M50,20 Q65,20 75,35 L75,70 Q75,85 50,95 Q25,85 25,70 L25,35 Q35,20 50,20 Z" 
+                        fill="none" stroke="currentColor" strokeWidth="3"/>
+                  <path d="M50,55 L45,50 Q40,45 40,40 Q40,35 45,35 Q50,35 50,40 Q50,35 55,35 Q60,35 60,40 Q60,45 55,50 Z" 
+                        fill="currentColor"/>
+                </svg>
+              </div>
+              <span className="font-bold text-white text-xl hidden sm:inline">ThriveMT</span>
             </div>
             <div className="hidden md:block text-sm text-gray-300">
               Welcome back, <span className="text-white font-medium">{userName}</span>
@@ -79,7 +84,7 @@ export default function DashboardNavigation({ userName }: DashboardNavigationPro
                 >
                   <Avatar className="h-8 w-8">
                     <AvatarImage src="" alt={userName} />
-                    <AvatarFallback className="bg-gradient-to-br from-blue-500 to-purple-600 text-white text-xs">
+                    <AvatarFallback className="bg-gradient-to-br from-[#B87333] to-[#E5C5A1] text-white text-xs">
                       {userName.charAt(0).toUpperCase()}
                     </AvatarFallback>
                   </Avatar>

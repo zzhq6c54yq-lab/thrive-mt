@@ -35,14 +35,14 @@ export default function YourDaySection({ dashboardData, onCheckInComplete }: You
         <motion.div
           initial={{ opacity: 0, y: -10 }}
           animate={{ opacity: 1, y: 0 }}
-          className="bg-gradient-to-r from-blue-500/10 to-purple-500/10 border border-blue-500/30 rounded-lg p-4 backdrop-blur-sm"
+          className="bg-gradient-to-r from-[#B87333]/10 to-[#E5C5A1]/10 border border-[#B87333]/30 rounded-lg p-4 backdrop-blur-sm"
         >
           <div className="flex items-start gap-3">
-            <div className="flex-shrink-0 w-10 h-10 rounded-full bg-blue-500/20 flex items-center justify-center">
-              <Sparkles className="w-5 h-5 text-blue-400" />
+            <div className="flex-shrink-0 w-10 h-10 rounded-full bg-[#B87333]/20 flex items-center justify-center">
+              <Sparkles className="w-5 h-5 text-[#E5C5A1]" />
             </div>
             <div className="flex-1">
-              <p className="text-sm font-semibold text-blue-100 mb-1">
+              <p className="text-sm font-semibold text-[#E5C5A1] mb-1">
                 AI Insight for Today
               </p>
               <p className="text-sm text-gray-300 leading-relaxed">
