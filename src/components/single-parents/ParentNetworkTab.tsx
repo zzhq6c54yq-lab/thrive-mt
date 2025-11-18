@@ -2,6 +2,8 @@ import React from "react";
 import { Card } from "@/components/ui/card";
 import { Users, Calendar, Image, ListTodo } from "lucide-react";
 import useTranslation from "@/hooks/useTranslation";
+import NetworkErrorBoundary from "./network/NetworkErrorBoundary";
+import { NetworkLoadingSkeleton } from "./network/NetworkSkeleton";
 
 const ConnectionManager = React.lazy(() => import("./network/ConnectionManager"));
 const SharedCalendar = React.lazy(() => import("./network/SharedCalendar"));
@@ -24,15 +26,41 @@ const ParentNetworkTab: React.FC<ParentNetworkTabProps> = ({ onFeatureClick }) =
   ];
 
   const renderSection = () => {
+    const fallback = <NetworkLoadingSkeleton type={activeSection} />;
+    
     switch (activeSection) {
       case 'connections':
-        return <ConnectionManager />;
+        return (
+          <NetworkErrorBoundary key="connections" onReset={() => setActiveSection('connections')}>
+            <React.Suspense fallback={fallback}>
+              <ConnectionManager />
+            </React.Suspense>
+          </NetworkErrorBoundary>
+        );
       case 'calendar':
-        return <SharedCalendar />;
+        return (
+          <NetworkErrorBoundary key="calendar" onReset={() => setActiveSection('calendar')}>
+            <React.Suspense fallback={fallback}>
+              <SharedCalendar />
+            </React.Suspense>
+          </NetworkErrorBoundary>
+        );
       case 'media':
-        return <MediaGallery />;
+        return (
+          <NetworkErrorBoundary key="media" onReset={() => setActiveSection('media')}>
+            <React.Suspense fallback={fallback}>
+              <MediaGallery />
+            </React.Suspense>
+          </NetworkErrorBoundary>
+        );
       case 'activities':
-        return <ActivityManager />;
+        return (
+          <NetworkErrorBoundary key="activities" onReset={() => setActiveSection('activities')}>
+            <React.Suspense fallback={fallback}>
+              <ActivityManager />
+            </React.Suspense>
+          </NetworkErrorBoundary>
+        );
       default:
         return null;
     }
@@ -72,9 +100,7 @@ const ParentNetworkTab: React.FC<ParentNetworkTabProps> = ({ onFeatureClick }) =
       </div>
 
       <Card className="p-6 bg-card">
-        <React.Suspense fallback={<div className="text-center text-muted-foreground">Loading...</div>}>
-          {renderSection()}
-        </React.Suspense>
+        {renderSection()}
       </Card>
     </div>
   );
