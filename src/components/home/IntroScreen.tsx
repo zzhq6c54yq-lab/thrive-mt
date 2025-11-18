@@ -113,31 +113,22 @@ const IntroScreen: React.FC<IntroScreenProps> = ({ onContinue, onSkipToMain }) =
 
     setLoading(true);
     try {
-      const { data: { session } } = await supabase.auth.getSession();
-      if (!session) {
-        toast({
-          title: "Authentication required",
-          description: "Please log in first",
-          variant: "destructive",
-        });
-        return;
-      }
-
       const { data, error } = await supabase.functions.invoke('admin-access', {
         body: { accessCode },
-        headers: {
-          Authorization: `Bearer ${session.access_token}`,
-        },
       });
 
       if (error) throw error;
 
-      if (data?.success && data?.sessionToken) {
-        localStorage.setItem('admin_session_token', data.sessionToken);
-        localStorage.setItem('admin_session_expires', data.expiresAt);
+      if (data?.success && data?.session) {
+        // Set the session from the response
+        await supabase.auth.setSession({
+          access_token: data.session.access_token,
+          refresh_token: data.session.refresh_token,
+        });
+
         toast({
-          title: "Welcome, Admin!",
-          description: "Admin access granted successfully.",
+          title: "Welcome!",
+          description: "Admin access granted.",
         });
         setAccessCodeDialogOpen(false);
         setAccessCode("");
@@ -145,15 +136,15 @@ const IntroScreen: React.FC<IntroScreenProps> = ({ onContinue, onSkipToMain }) =
       } else {
         toast({
           title: "Access denied",
-          description: "Invalid access code. Please try again.",
+          description: data?.error || "Invalid access code",
           variant: "destructive",
         });
         setAccessCode("");
       }
     } catch (error: any) {
       toast({
-        title: "Access failed",
-        description: error.message || "Failed to verify access code",
+        title: "Login failed",
+        description: error.message || "An error occurred",
         variant: "destructive",
       });
       setAccessCode("");

@@ -20,59 +20,15 @@ const AdminPortal: React.FC = () => {
   const { logAction } = useAdminAudit();
   const [isAdmin, setIsAdmin] = useState(false);
   const [checkingAccess, setCheckingAccess] = useState(true);
-  const [sessionValid, setSessionValid] = useState(false);
 
   useEffect(() => {
     checkAdminAccess();
-
-    // Check session validity every minute
-    const interval = setInterval(checkSessionValidity, 60000);
-    return () => clearInterval(interval);
   }, [user, loading]);
-
-  const checkSessionValidity = () => {
-    const sessionToken = localStorage.getItem('admin_session_token');
-    const expiresAt = localStorage.getItem('admin_session_expires');
-
-    if (!sessionToken || !expiresAt) {
-      setSessionValid(false);
-      return false;
-    }
-
-    const isExpired = new Date(expiresAt) <= new Date();
-    if (isExpired) {
-      handleSessionExpired();
-      return false;
-    }
-
-    // Show warning at 5 minutes remaining
-    const timeRemaining = new Date(expiresAt).getTime() - new Date().getTime();
-    if (timeRemaining <= 5 * 60 * 1000 && timeRemaining > 4 * 60 * 1000) {
-      toast.warning('Your admin session will expire in 5 minutes');
-    }
-
-    setSessionValid(true);
-    return true;
-  };
-
-  const handleSessionExpired = async () => {
-    await logAction(AUDIT_ACTIONS.SESSION_EXPIRED);
-    localStorage.removeItem('admin_session_token');
-    localStorage.removeItem('admin_session_expires');
-    toast.error('Admin session expired. Please log in again.');
-    navigate('/');
-  };
 
   const checkAdminAccess = async () => {
     if (loading) return;
     
     if (!user) {
-      navigate('/');
-      return;
-    }
-
-    // Check session validity
-    if (!checkSessionValidity()) {
       navigate('/');
       return;
     }
@@ -106,7 +62,7 @@ const AdminPortal: React.FC = () => {
     );
   }
 
-  if (!isAdmin || !sessionValid) {
+  if (!isAdmin) {
     return null;
   }
 

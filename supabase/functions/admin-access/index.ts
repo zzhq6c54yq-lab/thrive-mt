@@ -51,36 +51,113 @@ serve(async (req) => {
     // Constant-time comparison to prevent timing attacks
     const isValid = constantTimeCompare(accessCode, storedCode);
 
-    // Initialize Supabase client
+    // Initialize Supabase client with service role for admin operations
     const supabaseUrl = Deno.env.get('SUPABASE_URL')!;
-    const supabaseKey = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!;
-    const supabase = createClient(supabaseUrl, supabaseKey);
+    const supabaseServiceKey = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!;
+    const supabase = createClient(supabaseUrl, supabaseServiceKey);
 
-    // Get current user from auth header
-    const authHeader = req.headers.get('authorization');
-    if (!authHeader) {
+    // Get admin credentials
+    const adminEmail = Deno.env.get('ADMIN_EMAIL');
+    const adminPassword = Deno.env.get('ADMIN_PASSWORD');
+
+    if (!adminEmail || !adminPassword) {
+      console.error('Admin credentials not configured');
       return new Response(
-        JSON.stringify({ error: 'Unauthorized' }),
+        JSON.stringify({ error: 'Server configuration error' }),
+        { status: 500, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+      );
+    }
+
+    if (!isValid) {
+      console.log(`Invalid access code attempt from ${ip}`);
+      
+      // Log failed attempt (no user context yet)
+      await supabase.from('auth_user_audit').insert({
+        user_id: '00000000-0000-0000-0000-000000000000', // placeholder for anonymous attempt
+        action: 'admin_access_denied',
+        operator: 'anonymous',
+        details: {
+          ip_address: ip,
+          user_agent: userAgent,
+          reason: 'Invalid access code',
+          timestamp: new Date().toISOString(),
+        }
+      });
+
+      return new Response(
+        JSON.stringify({ error: 'Invalid access code' }),
         { status: 401, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
       );
     }
 
-    const token = authHeader.replace('Bearer ', '');
-    const { data: { user }, error: userError } = await supabase.auth.getUser(token);
-
-    if (userError || !user) {
-      console.error('User authentication failed:', userError);
+    // Valid access code - now ensure admin account exists and sign in
+    
+    // Check if admin user exists
+    const { data: { users }, error: listError } = await supabase.auth.admin.listUsers();
+    
+    if (listError) {
+      console.error('Error listing users:', listError);
       return new Response(
-        JSON.stringify({ error: 'Unauthorized' }),
-        { status: 401, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+        JSON.stringify({ error: 'Failed to verify admin account' }),
+        { status: 500, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
       );
     }
 
-    // Log the attempt
+    let adminUser = users?.find(u => u.email === adminEmail);
+
+    // Create admin account if it doesn't exist
+    if (!adminUser) {
+      console.log('Creating admin account...');
+      
+      const { data: newUser, error: createError } = await supabase.auth.admin.createUser({
+        email: adminEmail,
+        password: adminPassword,
+        email_confirm: true,
+      });
+
+      if (createError) {
+        console.error('Error creating admin user:', createError);
+        return new Response(
+          JSON.stringify({ error: 'Failed to create admin account' }),
+          { status: 500, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+        );
+      }
+
+      adminUser = newUser.user;
+
+      // Assign admin role
+      const { error: roleError } = await supabase.from('user_roles').insert({
+        user_id: adminUser.id,
+        role: 'admin',
+      });
+
+      if (roleError) {
+        console.error('Error assigning admin role:', roleError);
+        // Continue anyway - they can still access with the user
+      }
+
+      console.log(`Admin account created: ${adminEmail}`);
+    }
+
+    // Sign in as admin user
+    const { data: signInData, error: signInError } = await supabase.auth.signInWithPassword({
+      email: adminEmail,
+      password: adminPassword,
+    });
+
+    if (signInError || !signInData.session) {
+      console.error('Error signing in admin:', signInError);
+      return new Response(
+        JSON.stringify({ error: 'Failed to authenticate admin account' }),
+        { status: 500, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+      );
+    }
+
+    // Log successful access
     await supabase.from('auth_user_audit').insert({
-      user_id: user.id,
-      action: isValid ? 'admin_access_granted' : 'admin_access_denied',
-      operator: user.email || user.id,
+      user_id: adminUser.id,
+      action: 'admin_access_granted',
+      operator: adminEmail,
       details: {
         ip_address: ip,
         user_agent: userAgent,
@@ -88,68 +165,16 @@ serve(async (req) => {
       }
     });
 
-    if (!isValid) {
-      console.log(`Invalid access code attempt from ${ip}`);
-      return new Response(
-        JSON.stringify({ error: 'Invalid access code' }),
-        { status: 401, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
-      );
-    }
-
-    // Check if user has admin role
-    const { data: hasAdmin } = await supabase.rpc('is_admin');
-
-    if (!hasAdmin) {
-      console.log(`Non-admin user ${user.id} attempted admin access`);
-      await supabase.from('auth_user_audit').insert({
-        user_id: user.id,
-        action: 'admin_access_unauthorized',
-        operator: user.email || user.id,
-        details: {
-          reason: 'User does not have admin role',
-          ip_address: ip,
-        }
-      });
-
-      return new Response(
-        JSON.stringify({ error: 'Unauthorized: Admin role required' }),
-        { status: 403, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
-      );
-    }
-
-    // Generate secure session token
-    const sessionToken = crypto.randomUUID() + '-' + crypto.randomUUID();
-    const expiresAt = new Date(Date.now() + 30 * 60 * 1000); // 30 minutes
-
-    // Create session
-    const { error: sessionError } = await supabase
-      .from('admin_sessions')
-      .insert({
-        user_id: user.id,
-        session_token: sessionToken,
-        ip_address: ip,
-        user_agent: userAgent,
-        expires_at: expiresAt.toISOString(),
-      });
-
-    if (sessionError) {
-      console.error('Failed to create session:', sessionError);
-      return new Response(
-        JSON.stringify({ error: 'Failed to create session' }),
-        { status: 500, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
-      );
-    }
-
     // Clear rate limit on success
     attemptCache.delete(cacheKey);
 
-    console.log(`Admin access granted to ${user.email}`);
+    console.log(`Admin access granted to ${adminEmail}`);
 
     return new Response(
       JSON.stringify({ 
-        success: true, 
-        sessionToken,
-        expiresAt: expiresAt.toISOString(),
+        success: true,
+        session: signInData.session,
+        user: signInData.user,
       }),
       { status: 200, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
     );
