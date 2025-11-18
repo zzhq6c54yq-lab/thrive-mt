@@ -39,6 +39,7 @@ import TherapistAdmin from "./pages/TherapistAdmin";
 import TherapistDashboard from "./pages/TherapistDashboard";
 import TherapistProfile from "./pages/TherapistProfile";
 import TherapistReset from "./pages/TherapistReset";
+import AdminPortal from "./pages/AdminPortal";
 import HolisticWellness from "./pages/HolisticWellness";
 import AlternativeTherapies from "./pages/AlternativeTherapies";
 import AlternativeTherapyDetail from "./pages/AlternativeTherapyDetail";
@@ -314,6 +315,7 @@ function App() {
           <Route path="/therapist-admin" element={<TherapistAdmin />} />
           <Route path="/therapist-dashboard" element={<TherapistDashboard />} />
           <Route path="/therapist-reset" element={<TherapistReset />} />
+          <Route path="/admin-portal" element={<AdminPortal />} />
           <Route path="/holistic-wellness" element={<HolisticWellness />} />
           <Route path="/binaural-beats" element={<BinauralBeats />} />
           <Route path="/journaling" element={<Journaling />} />

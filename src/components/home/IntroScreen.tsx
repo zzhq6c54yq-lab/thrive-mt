@@ -151,6 +151,16 @@ const IntroScreen: React.FC<IntroScreenProps> = ({ onContinue, onSkipToMain }) =
             <Key className="mr-2 h-4 w-4" />
             Staff Access
           </Button>
+          
+          <Button
+            variant="ghost"
+            size="sm"
+            onClick={() => navigate('/admin-portal')}
+            className="text-sm text-muted-foreground hover:text-foreground"
+          >
+            <Key className="mr-2 h-4 w-4" />
+            Admin Access
+          </Button>
         </div>
         
         {/* Development Skip Button */}
