@@ -14,6 +14,8 @@ import {
 } from '@/components/ui/table';
 import { Search, Stethoscope, DollarSign, Star, Calendar, Users } from 'lucide-react';
 import { format } from 'date-fns';
+import { useAdminAudit } from '@/hooks/useAdminAudit';
+import { AUDIT_ACTIONS } from '@/constants/auditActions';
 
 interface Therapist {
   id: string;
@@ -38,6 +40,7 @@ const TherapistsManagement: React.FC = () => {
     totalBookings: 0,
     avgRating: 0
   });
+  const { logAction } = useAdminAudit();
 
   useEffect(() => {
     fetchTherapists();

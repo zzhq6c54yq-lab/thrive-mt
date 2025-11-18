@@ -22,6 +22,7 @@ interface IntroScreenProps {
 const IntroScreen: React.FC<IntroScreenProps> = ({ onContinue, onSkipToMain }) => {
   const [selectedLanguage, setSelectedLanguage] = useState<'English' | 'Español' | 'Português' | 'Filipino'>("English");
   const [showAccessCodeDialog, setShowAccessCodeDialog] = useState(false);
+  const [accessCodeDialogOpen, setAccessCodeDialogOpen] = useState(false);
   const [accessCode, setAccessCode] = useState("");
   const [loading, setLoading] = useState(false);
   const { toast } = useToast();
@@ -100,6 +101,67 @@ const IntroScreen: React.FC<IntroScreenProps> = ({ onContinue, onSkipToMain }) =
     }
   };
 
+  const handleAdminAccessCode = async () => {
+    if (!accessCode || accessCode.length !== 4) {
+      toast({
+        title: "Invalid code",
+        description: "Please enter a valid 4-digit access code",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    setLoading(true);
+    try {
+      const { data: { session } } = await supabase.auth.getSession();
+      if (!session) {
+        toast({
+          title: "Authentication required",
+          description: "Please log in first",
+          variant: "destructive",
+        });
+        return;
+      }
+
+      const { data, error } = await supabase.functions.invoke('admin-access', {
+        body: { accessCode },
+        headers: {
+          Authorization: `Bearer ${session.access_token}`,
+        },
+      });
+
+      if (error) throw error;
+
+      if (data?.success && data?.sessionToken) {
+        localStorage.setItem('admin_session_token', data.sessionToken);
+        localStorage.setItem('admin_session_expires', data.expiresAt);
+        toast({
+          title: "Welcome, Admin!",
+          description: "Admin access granted successfully.",
+        });
+        setAccessCodeDialogOpen(false);
+        setAccessCode("");
+        navigate('/admin-portal');
+      } else {
+        toast({
+          title: "Access denied",
+          description: "Invalid access code. Please try again.",
+          variant: "destructive",
+        });
+        setAccessCode("");
+      }
+    } catch (error: any) {
+      toast({
+        title: "Access failed",
+        description: error.message || "Failed to verify access code",
+        variant: "destructive",
+      });
+      setAccessCode("");
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
     <div className="min-h-screen flex flex-col items-center justify-center bg-[#1a1a1f] overflow-hidden relative z-50">
       <div className="floating-bg"></div>
@@ -155,7 +217,7 @@ const IntroScreen: React.FC<IntroScreenProps> = ({ onContinue, onSkipToMain }) =
           <Button
             variant="ghost"
             size="sm"
-            onClick={() => navigate('/admin-portal')}
+            onClick={() => setAccessCodeDialogOpen(true)}
             className="text-sm text-muted-foreground hover:text-foreground"
           >
             <Key className="mr-2 h-4 w-4" />
@@ -212,6 +274,50 @@ const IntroScreen: React.FC<IntroScreenProps> = ({ onContinue, onSkipToMain }) =
             
             <Button
               onClick={handleTherapistAccessCode}
+              disabled={loading || accessCode.length !== 4}
+              className="w-full"
+            >
+              {loading ? "Verifying..." : "Continue"}
+            </Button>
+          </div>
+        </DialogContent>
+      </Dialog>
+
+      <Dialog open={accessCodeDialogOpen} onOpenChange={(open) => {
+        setAccessCodeDialogOpen(open);
+        if (!open) {
+          setAccessCode("");
+        }
+      }}>
+        <DialogContent className="sm:max-w-md">
+          <DialogHeader>
+            <DialogTitle>Admin Access</DialogTitle>
+            <DialogDescription>
+              Enter the 4-digit admin access code to continue to the admin portal.
+            </DialogDescription>
+          </DialogHeader>
+          
+          <div className="space-y-4 py-4">
+            <div className="space-y-2">
+              <Label htmlFor="adminAccessCode">Access Code</Label>
+              <Input
+                id="adminAccessCode"
+                type="password"
+                placeholder="Enter 4-digit code"
+                value={accessCode}
+                onChange={(e) => setAccessCode(e.target.value)}
+                maxLength={4}
+                className="text-center text-2xl tracking-widest"
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter' && accessCode.length === 4) {
+                    handleAdminAccessCode();
+                  }
+                }}
+              />
+            </div>
+            
+            <Button
+              onClick={handleAdminAccessCode}
               disabled={loading || accessCode.length !== 4}
               className="w-full"
             >

@@ -14,6 +14,8 @@ import {
 } from '@/components/ui/table';
 import { Search, UserPlus, Mail, Calendar, Shield, Stethoscope } from 'lucide-react';
 import { format } from 'date-fns';
+import { useAdminAudit } from '@/hooks/useAdminAudit';
+import { AUDIT_ACTIONS } from '@/constants/auditActions';
 
 interface UserProfile {
   id: string;
@@ -31,6 +33,7 @@ const UsersManagement: React.FC = () => {
   const [searchQuery, setSearchQuery] = useState('');
   const [totalUsers, setTotalUsers] = useState(0);
   const [activeUsers, setActiveUsers] = useState(0);
+  const { logAction } = useAdminAudit();
 
   useEffect(() => {
     fetchUsers();

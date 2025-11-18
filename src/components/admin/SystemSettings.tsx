@@ -14,9 +14,17 @@ import {
   Lock
 } from 'lucide-react';
 import { toast } from 'sonner';
+import { useAdminAudit } from '@/hooks/useAdminAudit';
+import { AUDIT_ACTIONS } from '@/constants/auditActions';
 
 const SystemSettings: React.FC = () => {
-  const handleSaveSettings = () => {
+  const { logAction } = useAdminAudit();
+  
+  const handleSaveSettings = async () => {
+    await logAction(AUDIT_ACTIONS.SETTINGS_UPDATED, undefined, {
+      settings_type: 'all',
+      action: 'save_all_settings'
+    });
     toast.success('Settings saved successfully');
   };
 

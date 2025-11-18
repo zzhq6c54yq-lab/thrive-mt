@@ -3,22 +3,65 @@ import { useNavigate } from 'react-router-dom';
 import { supabase } from '@/integrations/supabase/client';
 import { useUser } from '@/contexts/UserContext';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Users, Stethoscope, Activity, Settings, Shield } from 'lucide-react';
+import { Users, Stethoscope, Activity, Settings, Shield, FileText } from 'lucide-react';
 import AdminHeader from '@/components/admin/AdminHeader';
 import UsersManagement from '@/components/admin/UsersManagement';
 import TherapistsManagement from '@/components/admin/TherapistsManagement';
 import OperationsAnalytics from '@/components/admin/OperationsAnalytics';
 import SystemSettings from '@/components/admin/SystemSettings';
+import AuditLogsViewer from '@/components/admin/AuditLogsViewer';
+import { useAdminAudit } from '@/hooks/useAdminAudit';
+import { AUDIT_ACTIONS } from '@/constants/auditActions';
+import { toast } from 'sonner';
 
 const AdminPortal: React.FC = () => {
   const navigate = useNavigate();
   const { user, loading } = useUser();
+  const { logAction } = useAdminAudit();
   const [isAdmin, setIsAdmin] = useState(false);
   const [checkingAccess, setCheckingAccess] = useState(true);
+  const [sessionValid, setSessionValid] = useState(false);
 
   useEffect(() => {
     checkAdminAccess();
+
+    // Check session validity every minute
+    const interval = setInterval(checkSessionValidity, 60000);
+    return () => clearInterval(interval);
   }, [user, loading]);
+
+  const checkSessionValidity = () => {
+    const sessionToken = localStorage.getItem('admin_session_token');
+    const expiresAt = localStorage.getItem('admin_session_expires');
+
+    if (!sessionToken || !expiresAt) {
+      setSessionValid(false);
+      return false;
+    }
+
+    const isExpired = new Date(expiresAt) <= new Date();
+    if (isExpired) {
+      handleSessionExpired();
+      return false;
+    }
+
+    // Show warning at 5 minutes remaining
+    const timeRemaining = new Date(expiresAt).getTime() - new Date().getTime();
+    if (timeRemaining <= 5 * 60 * 1000 && timeRemaining > 4 * 60 * 1000) {
+      toast.warning('Your admin session will expire in 5 minutes');
+    }
+
+    setSessionValid(true);
+    return true;
+  };
+
+  const handleSessionExpired = async () => {
+    await logAction(AUDIT_ACTIONS.SESSION_EXPIRED);
+    localStorage.removeItem('admin_session_token');
+    localStorage.removeItem('admin_session_expires');
+    toast.error('Admin session expired. Please log in again.');
+    navigate('/');
+  };
 
   const checkAdminAccess = async () => {
     if (loading) return;
@@ -28,18 +71,25 @@ const AdminPortal: React.FC = () => {
       return;
     }
 
+    // Check session validity
+    if (!checkSessionValidity()) {
+      navigate('/');
+      return;
+    }
+
     try {
-      const { data, error } = await supabase
-        .rpc('is_admin');
+      const { data, error } = await supabase.rpc('is_admin');
 
       if (error) throw error;
 
       if (!data) {
+        await logAction(AUDIT_ACTIONS.ADMIN_ACCESS_UNAUTHORIZED);
         navigate('/');
         return;
       }
 
       setIsAdmin(true);
+      await logAction(AUDIT_ACTIONS.PORTAL_ACCESSED);
     } catch (error) {
       console.error('Error checking admin access:', error);
       navigate('/');
@@ -56,7 +106,7 @@ const AdminPortal: React.FC = () => {
     );
   }
 
-  if (!isAdmin) {
+  if (!isAdmin || !sessionValid) {
     return null;
   }
 
@@ -65,8 +115,12 @@ const AdminPortal: React.FC = () => {
       <AdminHeader />
       
       <div className="container mx-auto px-4 py-8 max-w-7xl">
-        <Tabs defaultValue="users" className="w-full">
-          <TabsList className="grid w-full grid-cols-4 lg:w-auto lg:inline-grid bg-slate-800/50 border border-slate-700">
+        <Tabs 
+          defaultValue="users" 
+          className="w-full"
+          onValueChange={(value) => logAction(AUDIT_ACTIONS.TAB_CHANGED, undefined, { tab: value })}
+        >
+          <TabsList className="grid w-full grid-cols-5 lg:w-auto lg:inline-grid bg-slate-800/50 border border-slate-700">
             <TabsTrigger value="users" className="flex items-center gap-2">
               <Users className="w-4 h-4" />
               <span className="hidden sm:inline">Users</span>
@@ -78,6 +132,10 @@ const AdminPortal: React.FC = () => {
             <TabsTrigger value="operations" className="flex items-center gap-2">
               <Activity className="w-4 h-4" />
               <span className="hidden sm:inline">Operations</span>
+            </TabsTrigger>
+            <TabsTrigger value="audit" className="flex items-center gap-2">
+              <FileText className="w-4 h-4" />
+              <span className="hidden sm:inline">Audit Logs</span>
             </TabsTrigger>
             <TabsTrigger value="settings" className="flex items-center gap-2">
               <Settings className="w-4 h-4" />
@@ -96,6 +154,10 @@ const AdminPortal: React.FC = () => {
 
             <TabsContent value="operations" className="space-y-4">
               <OperationsAnalytics />
+            </TabsContent>
+
+            <TabsContent value="audit" className="space-y-4">
+              <AuditLogsViewer />
             </TabsContent>
 
             <TabsContent value="settings" className="space-y-4">

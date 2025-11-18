@@ -4,11 +4,17 @@ import { Button } from '@/components/ui/button';
 import { Shield, LogOut } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
+import { useAdminAudit } from '@/hooks/useAdminAudit';
+import { AUDIT_ACTIONS } from '@/constants/auditActions';
 
 const AdminHeader: React.FC = () => {
   const navigate = useNavigate();
+  const { logAction } = useAdminAudit();
 
   const handleLogout = async () => {
+    await logAction(AUDIT_ACTIONS.ADMIN_LOGOUT);
+    localStorage.removeItem('admin_session_token');
+    localStorage.removeItem('admin_session_expires');
     await supabase.auth.signOut();
     toast.success('Logged out successfully');
     navigate('/');
