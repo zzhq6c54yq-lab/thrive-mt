@@ -364,6 +364,114 @@ export type Database = {
         }
         Relationships: []
       }
+      dashboard_layout_preferences: {
+        Row: {
+          created_at: string | null
+          id: string
+          is_custom: boolean | null
+          is_locked: boolean | null
+          last_auto_adjustment: string | null
+          learning_enabled: boolean | null
+          section_order: Json
+          updated_at: string | null
+          user_id: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          id?: string
+          is_custom?: boolean | null
+          is_locked?: boolean | null
+          last_auto_adjustment?: string | null
+          learning_enabled?: boolean | null
+          section_order: Json
+          updated_at?: string | null
+          user_id?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          id?: string
+          is_custom?: boolean | null
+          is_locked?: boolean | null
+          last_auto_adjustment?: string | null
+          learning_enabled?: boolean | null
+          section_order?: Json
+          updated_at?: string | null
+          user_id?: string | null
+        }
+        Relationships: []
+      }
+      dashboard_section_analytics: {
+        Row: {
+          created_at: string | null
+          date: string
+          engagement_score: number | null
+          id: string
+          interaction_count: number | null
+          section_id: string
+          total_time_seconds: number | null
+          total_views: number | null
+          updated_at: string | null
+          user_id: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          date: string
+          engagement_score?: number | null
+          id?: string
+          interaction_count?: number | null
+          section_id: string
+          total_time_seconds?: number | null
+          total_views?: number | null
+          updated_at?: string | null
+          user_id?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          date?: string
+          engagement_score?: number | null
+          id?: string
+          interaction_count?: number | null
+          section_id?: string
+          total_time_seconds?: number | null
+          total_views?: number | null
+          updated_at?: string | null
+          user_id?: string | null
+        }
+        Relationships: []
+      }
+      dashboard_section_interactions: {
+        Row: {
+          created_at: string | null
+          duration_seconds: number | null
+          id: string
+          interaction_type: string
+          metadata: Json | null
+          section_id: string
+          timestamp: string | null
+          user_id: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          duration_seconds?: number | null
+          id?: string
+          interaction_type: string
+          metadata?: Json | null
+          section_id: string
+          timestamp?: string | null
+          user_id?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          duration_seconds?: number | null
+          id?: string
+          interaction_type?: string
+          metadata?: Json | null
+          section_id?: string
+          timestamp?: string | null
+          user_id?: string | null
+        }
+        Relationships: []
+      }
       event_registrations: {
         Row: {
           created_at: string | null
@@ -1691,6 +1799,36 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      toolkit_category_interactions: {
+        Row: {
+          category_id: string
+          created_at: string | null
+          id: string
+          interaction_type: string
+          timestamp: string | null
+          tool_name: string | null
+          user_id: string | null
+        }
+        Insert: {
+          category_id: string
+          created_at?: string | null
+          id?: string
+          interaction_type: string
+          timestamp?: string | null
+          tool_name?: string | null
+          user_id?: string | null
+        }
+        Update: {
+          category_id?: string
+          created_at?: string | null
+          id?: string
+          interaction_type?: string
+          timestamp?: string | null
+          tool_name?: string | null
+          user_id?: string | null
+        }
+        Relationships: []
       }
       user_activities: {
         Row: {

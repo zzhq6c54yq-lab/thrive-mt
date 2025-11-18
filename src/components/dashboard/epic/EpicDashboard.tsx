@@ -5,13 +5,12 @@ import { useUser } from '@/contexts/UserContext';
 import { Skeleton } from '@/components/ui/skeleton';
 import { AlertCircle } from 'lucide-react';
 import DashboardNavigation from './DashboardNavigation';
-import YourDaySection from './sections/YourDaySection';
-import ToolkitSection from './sections/ToolkitSection';
-import ProgressSection from './sections/ProgressSection';
+import PersonalizedDashboard from './PersonalizedDashboard';
 import SafetyStrip from '../today/SafetyStrip';
 import QuickActions from './QuickActions';
 import CommandPalette from './CommandPalette';
 import AIContextualHelper from './AIContextualHelper';
+import LayoutControls from './LayoutControls';
 import { useKeyboardShortcuts } from '@/hooks/useKeyboardShortcuts';
 
 export default function EpicDashboard() {
@@ -92,30 +91,18 @@ export default function EpicDashboard() {
 
       {/* Main Content */}
       <div className="container mx-auto max-w-7xl px-4 space-y-6 mt-6">
-        {/* Your Day Section */}
-        <YourDaySection 
+        <PersonalizedDashboard
           dashboardData={dashboardData}
           onCheckInComplete={refetch}
+          userGoals={profile?.goals || []}
         />
-
-        {/* Main Grid: Toolkit + Progress */}
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-          {/* Toolkit Section (2 columns) */}
-          <div className="lg:col-span-2" id="toolkit-section">
-            <ToolkitSection userGoals={profile?.goals || []} />
-          </div>
-
-          {/* Progress Section (1 column) */}
-          <div>
-            <ProgressSection dashboardData={dashboardData} />
-          </div>
-        </div>
       </div>
 
       {/* Safety Strip */}
       <SafetyStrip />
 
       {/* AI-Powered Enhancements */}
+      <LayoutControls />
       <QuickActions />
       <AIContextualHelper />
       <CommandPalette 

@@ -7,6 +7,7 @@ import { DashboardData } from '@/hooks/useTodayDashboard';
 import { Button } from '@/components/ui/button';
 import { useNavigate } from 'react-router-dom';
 import { TrendingUp, Award } from 'lucide-react';
+import { useLayoutTracking } from '@/hooks/useLayoutTracking';
 
 interface ProgressSectionProps {
   dashboardData: DashboardData;
@@ -14,6 +15,12 @@ interface ProgressSectionProps {
 
 export default function ProgressSection({ dashboardData }: ProgressSectionProps) {
   const navigate = useNavigate();
+  const { trackClick } = useLayoutTracking({ 
+    sectionId: 'progress',
+    trackScroll: true,
+    trackClicks: true,
+    trackTime: true
+  });
 
   return (
     <div className="space-y-6">
@@ -24,7 +31,10 @@ export default function ProgressSection({ dashboardData }: ProgressSectionProps)
           <Button
             variant="ghost"
             size="sm"
-            onClick={() => navigate('/progress-analytics')}
+            onClick={() => {
+              trackClick({ action: 'view-analytics' });
+              navigate('/progress-analytics');
+            }}
             className="text-blue-400 hover:text-blue-300"
           >
             <TrendingUp className="w-4 h-4 mr-2" />
