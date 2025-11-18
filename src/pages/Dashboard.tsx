@@ -3,7 +3,7 @@ import React from 'react';
 import { useUser } from '@/contexts/UserContext';
 import { useNavigate } from 'react-router-dom';
 import { useEffect } from 'react';
-import TodayDashboard from '@/components/dashboard/today/TodayDashboard';
+import EpicDashboard from '@/components/dashboard/epic/EpicDashboard';
 
 const Dashboard: React.FC = () => {
   const { user, profile, loading } = useUser();
@@ -34,7 +34,7 @@ const Dashboard: React.FC = () => {
     return null; // Will redirect via useEffect
   }
 
-  return <TodayDashboard />;
+  return <EpicDashboard />;
 };
 
 export default Dashboard;

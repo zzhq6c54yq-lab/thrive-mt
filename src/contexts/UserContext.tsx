@@ -5,9 +5,15 @@ import { supabase } from '@/integrations/supabase/client';
 
 interface Profile {
   id: string;
+  display_name: string | null;
+  email: string | null;
+  avatar_url: string | null;
   user_type: string | null;
   onboarding_completed: boolean;
   goals: string[] | null;
+  primary_portal: string | null;
+  secondary_portal: string | null;
+  time_preference_minutes: number | null;
   is_therapist: boolean | null;
   created_at: string;
   updated_at: string;
