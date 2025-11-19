@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
@@ -6,6 +6,8 @@ import { Textarea } from "@/components/ui/textarea";
 import { Badge } from "@/components/ui/badge";
 import { Search, Send, Flag } from "lucide-react";
 import { format } from "date-fns";
+import { supabase } from "@/integrations/supabase/client";
+import { useToast } from "@/hooks/use-toast";
 
 interface Message {
   id: string;
@@ -22,11 +24,74 @@ interface MessagesTabProps {
   messages: Message[];
 }
 
-export default function MessagesTab({ messages }: MessagesTabProps) {
+export default function MessagesTab({ messages: initialMessages }: MessagesTabProps) {
+  const { toast } = useToast();
+  const [messages, setMessages] = useState(initialMessages);
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedClientId, setSelectedClientId] = useState<string | null>(null);
   const [replyText, setReplyText] = useState("");
   const [filter, setFilter] = useState<"all" | "unread" | "urgent">("all");
+  const [sending, setSending] = useState(false);
+  const [therapistId, setTherapistId] = useState<string | null>(null);
+
+  // Get current therapist ID
+  useEffect(() => {
+    const getTherapistId = async () => {
+      const { data: { user } } = await supabase.auth.getUser();
+      if (!user) return;
+
+      const { data } = await supabase
+        .from('therapists')
+        .select('id')
+        .eq('user_id', user.id)
+        .single();
+
+      if (data) {
+        setTherapistId(data.id);
+      }
+    };
+
+    getTherapistId();
+  }, []);
+
+  // Update messages when prop changes
+  useEffect(() => {
+    setMessages(initialMessages);
+  }, [initialMessages]);
+
+  // Real-time subscription for new messages
+  useEffect(() => {
+    if (!therapistId) return;
+
+    const channel = supabase
+      .channel('therapist-messages-realtime')
+      .on(
+        'postgres_changes',
+        {
+          event: 'INSERT',
+          schema: 'public',
+          table: 'therapist_messages',
+          filter: `therapist_id=eq.${therapistId}`
+        },
+        (payload) => {
+          const newMessage = payload.new as Message;
+          setMessages(prev => [...prev, newMessage]);
+          
+          // Show toast if viewing different conversation
+          if (selectedClientId && selectedClientId !== newMessage.client_id) {
+            toast({
+              title: "New Message",
+              description: "You have a new message from a client",
+            });
+          }
+        }
+      )
+      .subscribe();
+
+    return () => {
+      supabase.removeChannel(channel);
+    };
+  }, [therapistId, selectedClientId, toast]);
 
   // Group messages by client
   const groupedMessages = messages.reduce((acc, msg) => {
@@ -59,137 +124,182 @@ export default function MessagesTab({ messages }: MessagesTabProps) {
       if (searchTerm && !data.client_name.toLowerCase().includes(searchTerm.toLowerCase())) return false;
       return true;
     })
-    .sort(([_, a], [__, b]) => 
-      new Date(b.last_message_date).getTime() - new Date(a.last_message_date).getTime()
-    );
+    .sort((a, b) => {
+      const dateA = new Date(a[1].last_message_date);
+      const dateB = new Date(b[1].last_message_date);
+      return dateB.getTime() - dateA.getTime();
+    });
 
-  const selectedThread = selectedClientId ? groupedMessages[selectedClientId]?.messages || [] : [];
+  const selectedThread = selectedClientId 
+    ? groupedMessages[selectedClientId]?.messages || []
+    : [];
 
-  const handleSendReply = () => {
-    if (replyText.trim()) {
-      console.log("Sending reply:", replyText);
-      setReplyText("");
+  const handleSendReply = async () => {
+    if (!replyText.trim() || !selectedClientId || !therapistId) return;
+
+    setSending(true);
+    const messageText = replyText.trim();
+    setReplyText("");
+
+    const { error } = await supabase
+      .from('therapist_messages')
+      .insert({
+        client_id: selectedClientId,
+        therapist_id: therapistId,
+        message_text: messageText,
+        sender_type: 'therapist',
+        is_read: false,
+        is_urgent: false
+      });
+
+    if (error) {
+      console.error('Error sending message:', error);
+      toast({
+        title: "Failed to send message",
+        description: "Please try again",
+        variant: "destructive"
+      });
+      setReplyText(messageText);
+    } else {
+      toast({
+        title: "Message sent",
+        description: "Your message has been sent to the client",
+      });
     }
+
+    setSending(false);
   };
 
   return (
-    <div className="grid md:grid-cols-3 gap-6 h-[calc(100vh-300px)]">
-      {/* Conversations List */}
-      <Card className="md:col-span-1">
+    <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+      {/* Client List */}
+      <Card className="lg:col-span-1 bg-white/5 backdrop-blur-sm border-white/10">
         <CardHeader>
-          <CardTitle className="text-lg">Messages</CardTitle>
-          <div className="flex gap-2 mt-2">
-            <Button
-              size="sm"
-              variant={filter === "all" ? "default" : "outline"}
-              onClick={() => setFilter("all")}
-            >
-              All
-            </Button>
-            <Button
-              size="sm"
-              variant={filter === "unread" ? "default" : "outline"}
-              onClick={() => setFilter("unread")}
-            >
-              Unread
-            </Button>
-            <Button
-              size="sm"
-              variant={filter === "urgent" ? "default" : "outline"}
-              onClick={() => setFilter("urgent")}
-            >
-              Urgent
-            </Button>
-          </div>
-          <div className="relative mt-2">
-            <Search className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
-            <Input
-              placeholder="Search conversations..."
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-              className="pl-10"
-            />
+          <CardTitle className="text-white">Messages</CardTitle>
+          <div className="space-y-3 pt-4">
+            <div className="relative">
+              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-white/40 w-4 h-4" />
+              <Input
+                placeholder="Search clients..."
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+                className="pl-9 bg-white/5 border-white/10 text-white placeholder:text-white/40"
+              />
+            </div>
+            <div className="flex gap-2">
+              {(["all", "unread", "urgent"] as const).map((f) => (
+                <Button
+                  key={f}
+                  variant={filter === f ? "default" : "outline"}
+                  size="sm"
+                  onClick={() => setFilter(f)}
+                  className={filter === f ? "bg-[#D4AF37] text-black" : "border-white/20 text-white/70 hover:text-white"}
+                >
+                  {f.charAt(0).toUpperCase() + f.slice(1)}
+                </Button>
+              ))}
+            </div>
           </div>
         </CardHeader>
-        <CardContent className="overflow-y-auto max-h-[calc(100vh-450px)] space-y-2">
+        <CardContent className="space-y-2">
           {clientList.map(([clientId, data]) => (
             <div
               key={clientId}
-              className={`p-3 rounded-lg cursor-pointer transition-colors ${
-                selectedClientId === clientId
-                  ? "bg-primary/10 border-primary/20"
-                  : "hover:bg-muted/50"
-              }`}
               onClick={() => setSelectedClientId(clientId)}
+              className={`p-4 rounded-lg cursor-pointer transition-all ${
+                selectedClientId === clientId
+                  ? "bg-[#D4AF37]/20 border border-[#D4AF37]/30"
+                  : "bg-white/5 hover:bg-white/10 border border-white/10"
+              }`}
             >
-              <div className="flex items-start justify-between mb-1">
-                <h4 className="font-semibold text-sm">{data.client_name}</h4>
-                <div className="flex items-center gap-1">
-                  {data.has_urgent && <Flag className="h-3 w-3 text-red-500" />}
-                  {data.unread_count > 0 && (
-                    <Badge variant="default" className="h-5 min-w-5 flex items-center justify-center text-xs">
-                      {data.unread_count}
-                    </Badge>
-                  )}
+              <div className="flex items-start justify-between">
+                <div className="flex-1">
+                  <div className="flex items-center gap-2">
+                    <h4 className="font-medium text-white">{data.client_name}</h4>
+                    {data.has_urgent && (
+                      <Badge variant="destructive" className="h-5">
+                        <Flag className="w-3 h-3" />
+                      </Badge>
+                    )}
+                  </div>
+                  <p className="text-sm text-white/60 truncate mt-1">
+                    {data.messages[data.messages.length - 1]?.message_text}
+                  </p>
+                  <p className="text-xs text-white/40 mt-1">
+                    {format(new Date(data.last_message_date), "MMM d, h:mm a")}
+                  </p>
                 </div>
+                {data.unread_count > 0 && (
+                  <Badge className="bg-[#D4AF37] text-black ml-2">
+                    {data.unread_count}
+                  </Badge>
+                )}
               </div>
-              <p className="text-xs text-muted-foreground line-clamp-2">
-                {data.messages[data.messages.length - 1]?.message_text}
-              </p>
-              <p className="text-xs text-muted-foreground mt-1">
-                {format(new Date(data.last_message_date), "MMM d, h:mm a")}
-              </p>
             </div>
           ))}
+          {clientList.length === 0 && (
+            <p className="text-white/40 text-center py-8">No messages found</p>
+          )}
         </CardContent>
       </Card>
 
       {/* Message Thread */}
-      <Card className="md:col-span-2 flex flex-col">
+      <Card className="lg:col-span-2 bg-white/5 backdrop-blur-sm border-white/10">
         {selectedClientId ? (
           <>
-            <CardHeader>
-              <CardTitle>{groupedMessages[selectedClientId]?.client_name}</CardTitle>
+            <CardHeader className="border-b border-white/10">
+              <CardTitle className="text-white">
+                {groupedMessages[selectedClientId]?.client_name}
+              </CardTitle>
             </CardHeader>
-            <CardContent className="flex-1 overflow-y-auto space-y-4">
-              {selectedThread.map((msg) => (
-                <div
-                  key={msg.id}
-                  className={`flex ${msg.sender_type === "therapist" ? "justify-end" : "justify-start"}`}
-                >
+            <CardContent className="p-4">
+              <div className="space-y-4 max-h-[400px] overflow-y-auto mb-4 pr-2">
+                {selectedThread.map((msg) => (
                   <div
-                    className={`max-w-[70%] p-3 rounded-lg ${
-                      msg.sender_type === "therapist"
-                        ? "bg-primary text-primary-foreground"
-                        : "bg-muted"
-                    }`}
+                    key={msg.id}
+                    className={`flex ${msg.sender_type === "therapist" ? "justify-end" : "justify-start"}`}
                   >
-                    <p className="text-sm">{msg.message_text}</p>
-                    <p className={`text-xs mt-1 ${msg.sender_type === "therapist" ? "text-primary-foreground/70" : "text-muted-foreground"}`}>
-                      {format(new Date(msg.created_at), "MMM d, h:mm a")}
-                    </p>
+                    <div
+                      className={`max-w-[70%] rounded-lg p-3 ${
+                        msg.sender_type === "therapist"
+                          ? "bg-[#D4AF37]/20 text-white"
+                          : msg.sender_type === "system"
+                          ? "bg-white/5 text-white/70 border border-white/10"
+                          : "bg-white/10 text-white"
+                      }`}
+                    >
+                      <p className="whitespace-pre-wrap">{msg.message_text}</p>
+                      <p className="text-xs opacity-60 mt-1">
+                        {format(new Date(msg.created_at), "MMM d, h:mm a")}
+                      </p>
+                    </div>
                   </div>
-                </div>
-              ))}
-            </CardContent>
-            <CardContent className="border-t pt-4">
+                ))}
+              </div>
+
               <div className="flex gap-2">
                 <Textarea
-                  placeholder="Type your reply..."
                   value={replyText}
                   onChange={(e) => setReplyText(e.target.value)}
-                  className="min-h-[80px]"
+                  placeholder="Type your reply..."
+                  className="bg-white/5 border-white/10 text-white placeholder:text-white/40 resize-none"
+                  rows={3}
+                  disabled={sending}
                 />
-                <Button onClick={handleSendReply} className="self-end">
-                  <Send className="h-4 w-4" />
+                <Button
+                  onClick={handleSendReply}
+                  disabled={!replyText.trim() || sending}
+                  className="bg-[#D4AF37] hover:bg-[#B8941F] text-black"
+                >
+                  <Send className="w-4 h-4" />
                 </Button>
               </div>
             </CardContent>
           </>
         ) : (
-          <CardContent className="flex items-center justify-center h-full">
-            <p className="text-muted-foreground">Select a conversation to view messages</p>
-          </CardContent>
+          <div className="h-full flex items-center justify-center">
+            <p className="text-white/40">Select a client to view messages</p>
+          </div>
         )}
       </Card>
     </div>

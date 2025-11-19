@@ -17,3 +17,6 @@ verify_jwt = false
 
 [functions.henry-multi-agent]
 verify_jwt = false
+
+[functions.create-therapist-conversation]
+verify_jwt = false
