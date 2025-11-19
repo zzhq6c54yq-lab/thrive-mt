@@ -1,12 +1,12 @@
-
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { Dialog, DialogContent } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
-import { X, Send, Mic, AlertCircle, ArrowUp, ArrowDown } from "lucide-react";
+import { X, Send, Mic, ArrowUp, ArrowDown, UserPlus } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import HenryHeader from "./components/HenryHeader";
 import MessageList from "@/components/shared/MessageList";
 import { useMessageProcessor, Message } from "./hooks/useMessageProcessor";
+import { requestHumanSupport } from "@/services/henryMultiAgentService";
 
 interface HenryDialogProps {
   isOpen: boolean;
@@ -23,7 +23,9 @@ const HenryDialog: React.FC<HenryDialogProps> = ({
   const [inputValue, setInputValue] = useState("");
   const [isListening, setIsListening] = useState(false);
   const [scrollPosition, setScrollPosition] = useState(0);
+  const [requestingTherapist, setRequestingTherapist] = useState(false);
   const { toast } = useToast();
+  const conversationIdRef = useRef<string | null>(null);
   
   // Add a message to the chat
   const addMessage = (message: Message) => {
@@ -84,7 +86,7 @@ const HenryDialog: React.FC<HenryDialogProps> = ({
     
     setIsListening(true);
     
-    // @ts-ignore - WebkitSpeechRecognition is not in the TypeScript types
+    // @ts-ignore
     const recognition = new window.webkitSpeechRecognition();
     recognition.lang = 'en-US';
     recognition.interimResults = false;
@@ -117,90 +119,131 @@ const HenryDialog: React.FC<HenryDialogProps> = ({
     setInputValue("");
     processMessage(text);
   };
-  
+
   const handleInputChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     setInputValue(e.target.value);
   };
-  
+
   const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
-    if (e.key === 'Enter' && !e.shiftKey) {
+    if (e.key === "Enter" && !e.shiftKey) {
       e.preventDefault();
       handleSendMessage();
     }
   };
 
+  const handleRequestTherapist = async () => {
+    setRequestingTherapist(true);
+    
+    const result = await requestHumanSupport(conversationIdRef.current || undefined);
+    
+    if (result.success && result.therapistName) {
+      toast({
+        title: "Connected to Therapist",
+        description: `You're now connected with ${result.therapistName}. They'll respond soon.`,
+      });
+      
+      addMessage({
+        text: `I've connected you with ${result.therapistName}, a licensed therapist who can provide professional support. You can find your conversation in the dashboard.`,
+        isUser: false,
+        timestamp: new Date()
+      });
+    } else {
+      toast({
+        title: "Connection Failed",
+        description: result.error || "Unable to connect with a therapist. Please try again.",
+        variant: "destructive"
+      });
+    }
+    
+    setRequestingTherapist(false);
+  };
+
   return (
     <Dialog open={isOpen} onOpenChange={onOpenChange}>
       <DialogContent 
-        className="sm:max-w-md w-[350px] md:w-[400px] bg-black/90 backdrop-blur-md border border-[#B87333]/50 p-3 max-h-[80vh] overflow-hidden"
+        className="max-w-2xl h-[85vh] bg-gradient-to-br from-gray-900/95 via-[#1a1a1a]/95 to-gray-900/95 border-[#D4AF37]/20 p-0 flex flex-col overflow-hidden backdrop-blur-xl"
+        style={{
+          boxShadow: '0 0 50px rgba(212, 175, 55, 0.15)'
+        }}
       >
-        {/* Header */}
-        <HenryHeader onClose={() => onOpenChange(false)} />
-        
-        {/* Scroll Navigation */}
-        <div className="flex justify-center gap-2 mb-2">
+        <div className="absolute right-4 top-4 z-50">
           <Button
-            onClick={handleScrollUp}
-            size="sm"
             variant="ghost"
-            className="h-8 w-8 p-0 hover:bg-[#B87333]/20"
+            size="icon"
+            onClick={() => onOpenChange(false)}
+            className="rounded-full bg-white/5 hover:bg-white/10 text-white/70 hover:text-white transition-all"
           >
-            <ArrowUp className="h-4 w-4 text-[#B87333]" />
-          </Button>
-          <Button
-            onClick={handleScrollDown}
-            size="sm"
-            variant="ghost"
-            className="h-8 w-8 p-0 hover:bg-[#B87333]/20"
-          >
-            <ArrowDown className="h-4 w-4 text-[#B87333]" />
+            <X className="h-5 w-5" />
           </Button>
         </div>
-        
-        {/* Messages Area */}
-        <MessageList 
-          messages={messages} 
-          showTypingIndicator={processing}
-        />
-        
-        {/* Input Area */}
-        <div className={`relative mt-2 ${emergencyMode ? 'border border-red-500 rounded-md p-1' : ''}`}>
-          {emergencyMode && (
-            <div className="bg-red-500/10 text-red-400 p-2 rounded-md mb-2 flex items-start gap-2">
-              <AlertCircle className="h-5 w-5 flex-shrink-0 mt-0.5" />
-              <span className="text-xs">Crisis support activated. Henry can help connect you to professional resources.</span>
-            </div>
-          )}
-          <div className="flex items-end gap-2">
+
+        <div className="flex-shrink-0 px-6 pt-6 pb-4">
+          <HenryHeader />
+        </div>
+
+        <div className="absolute right-4 top-24 z-40 flex flex-col gap-2">
+          <Button
+            variant="ghost"
+            size="icon"
+            onClick={handleScrollUp}
+            className="rounded-full bg-white/5 hover:bg-white/10 text-white/70 hover:text-white transition-all"
+          >
+            <ArrowUp className="h-4 w-4" />
+          </Button>
+          <Button
+            variant="ghost"
+            size="icon"
+            onClick={handleScrollDown}
+            className="rounded-full bg-white/5 hover:bg-white/10 text-white/70 hover:text-white transition-all"
+          >
+            <ArrowDown className="h-4 w-4" />
+          </Button>
+        </div>
+
+        <div className="flex-1 overflow-hidden px-6 pb-4">
+          <MessageList messages={messages} />
+        </div>
+
+        <div className="px-6 py-3 border-t border-white/10">
+          <Button
+            onClick={handleRequestTherapist}
+            disabled={requestingTherapist}
+            className="w-full bg-[#D4AF37] hover:bg-[#B8941F] text-black font-medium"
+            variant="default"
+          >
+            <UserPlus className="w-4 h-4 mr-2" />
+            {requestingTherapist ? 'Connecting...' : 'Talk to a Real Therapist'}
+          </Button>
+        </div>
+
+        <div className="flex-shrink-0 px-6 py-4 border-t border-white/10 bg-black/20">
+          <div className="flex gap-2">
             <textarea
               value={inputValue}
               onChange={handleInputChange}
               onKeyDown={handleKeyDown}
-              placeholder="Type your message..."
-              className="flex-1 bg-[#2A2A2A] text-white border-none rounded-md p-3 focus:ring-2 focus:ring-[#B87333]/50 resize-none max-h-20 min-h-[40px]"
-              rows={1}
+              placeholder={isListening ? "Listening..." : "Share how you're feeling..."}
               disabled={processing || isListening}
+              className="flex-1 bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white placeholder-white/40 focus:outline-none focus:ring-2 focus:ring-[#D4AF37]/50 resize-none min-h-[60px] max-h-[120px]"
+              rows={2}
             />
-            <div className="flex gap-1">
+            <div className="flex flex-col gap-2">
               <Button
-                type="button"
-                onClick={startListening}
-                disabled={processing || isListening}
-                className={`rounded-full w-10 h-10 flex items-center justify-center ${
-                  isListening ? 'bg-red-500 animate-pulse' : 'bg-[#B87333]'
-                }`}
+                onClick={() => handleSendMessage()}
+                disabled={processing || !inputValue.trim() || isListening}
+                className="bg-[#D4AF37] hover:bg-[#B8941F] text-black transition-all"
                 size="icon"
               >
-                <Mic className="h-5 w-5" />
+                <Send className="h-4 w-4" />
               </Button>
               <Button
-                type="button"
-                onClick={() => handleSendMessage()}
-                disabled={!inputValue.trim() || processing}
-                className="rounded-full w-10 h-10 flex items-center justify-center bg-[#B87333]"
+                onClick={startListening}
+                disabled={processing || isListening}
+                className="bg-white/5 hover:bg-white/10 text-white transition-all"
                 size="icon"
+                variant="ghost"
               >
-                <Send className="h-5 w-5" />
+                <Mic className={`h-4 w-4 ${isListening ? 'text-[#D4AF37] animate-pulse' : ''}`} />
               </Button>
             </div>
           </div>

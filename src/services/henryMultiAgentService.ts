@@ -90,3 +90,41 @@ export async function getUserConversations() {
     return [];
   }
 }
+
+export async function requestHumanSupport(
+  conversationId?: string,
+  reason: 'user_requested' | 'crisis_detected' = 'user_requested'
+): Promise<{ success: boolean; therapistName?: string; therapistId?: string; error?: string }> {
+  try {
+    const { data: { user } } = await supabase.auth.getUser();
+    
+    if (!user) {
+      throw new Error('User not authenticated');
+    }
+    
+    const { data, error } = await supabase.functions.invoke('create-therapist-conversation', {
+      body: {
+        userId: user.id,
+        henryConversationId: conversationId,
+        reason
+      }
+    });
+    
+    if (error) {
+      console.error('Error requesting human support:', error);
+      throw error;
+    }
+    
+    return {
+      success: true,
+      therapistName: data.therapistName,
+      therapistId: data.therapistId
+    };
+  } catch (error) {
+    console.error('Error in requestHumanSupport:', error);
+    return {
+      success: false,
+      error: error instanceof Error ? error.message : 'Failed to connect with therapist'
+    };
+  }
+}

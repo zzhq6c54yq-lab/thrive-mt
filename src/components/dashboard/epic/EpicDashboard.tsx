@@ -12,6 +12,7 @@ import CommandPalette from './CommandPalette';
 import AIContextualHelper from './AIContextualHelper';
 import LayoutControls from './LayoutControls';
 import HenryDialog from '@/components/henry/HenryDialog';
+import TherapistConversation from '@/components/client/TherapistConversation';
 import { useKeyboardShortcuts } from '@/hooks/useKeyboardShortcuts';
 
 export default function EpicDashboard() {
