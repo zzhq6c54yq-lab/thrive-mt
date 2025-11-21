@@ -4,6 +4,7 @@ import { SortableContext, verticalListSortingStrategy, useSortable } from '@dnd-
 import { CSS } from '@dnd-kit/utilities';
 import { useDashboardLayout } from '@/hooks/useDashboardLayout';
 import YourDaySection from './sections/YourDaySection';
+import QuickAccessSection from './sections/QuickAccessSection';
 import ToolkitSection from './sections/ToolkitSection';
 import ProgressSection from './sections/ProgressSection';
 import { DashboardData } from '@/hooks/useTodayDashboard';
@@ -95,6 +96,9 @@ export default function PersonalizedDashboard({
         dashboardData={dashboardData}
         onCheckInComplete={onCheckInComplete}
       />
+    ),
+    'quick-access': (
+      <QuickAccessSection />
     ),
     'toolkit': (
       <ToolkitSection userGoals={userGoals} />

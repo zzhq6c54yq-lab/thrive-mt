@@ -614,24 +614,36 @@ const RealTimeTherapy = () => {
                 Connect with licensed therapists who understand your journey. Video or phone sessions, on your schedule.
               </p>
 
-              {/* Social proof stats */}
-              <div className="flex flex-wrap gap-8 pt-4">
-                <div>
-                  <div className="text-4xl font-bold text-[#D4AF37]">10,000+</div>
-                  <div className="text-sm text-gray-400">Happy Clients</div>
-                </div>
-                <div>
-                  <div className="text-4xl font-bold text-[#D4AF37]">50+</div>
-                  <div className="text-sm text-gray-400">Licensed Therapists</div>
-                </div>
-                <div>
-                  <div className="flex items-center gap-2">
-                    <div className="text-4xl font-bold text-[#D4AF37]">4.9</div>
-                    <Star className="w-6 h-6 fill-[#D4AF37] text-[#D4AF37]" />
-                  </div>
-                  <div className="text-sm text-gray-400">Average Rating</div>
-                </div>
-              </div>
+        {/* Professional emphasis */}
+        <div className="flex flex-col gap-4 pt-4 bg-white/5 backdrop-blur-sm border border-white/10 rounded-xl p-6">
+          <div className="flex items-center gap-3">
+            <div className="p-2 bg-[#D4AF37]/20 rounded-lg">
+              <Award className="w-6 h-6 text-[#D4AF37]" />
+            </div>
+            <div>
+              <div className="font-semibold text-white">Board-Certified Therapists</div>
+              <div className="text-sm text-gray-400">All licensed mental health professionals</div>
+            </div>
+          </div>
+          <div className="flex items-center gap-3">
+            <div className="p-2 bg-blue-500/20 rounded-lg">
+              <Shield className="w-6 h-6 text-blue-400" />
+            </div>
+            <div>
+              <div className="font-semibold text-white">HIPAA Compliant</div>
+              <div className="text-sm text-gray-400">Your privacy is our top priority</div>
+            </div>
+          </div>
+          <div className="flex items-center gap-3">
+            <div className="p-2 bg-green-500/20 rounded-lg">
+              <CreditCard className="w-6 h-6 text-green-400" />
+            </div>
+            <div>
+              <div className="font-semibold text-white">Insurance Accepted</div>
+              <div className="text-sm text-gray-400">Most major insurers - as low as $15/session</div>
+            </div>
+          </div>
+        </div>
 
               {/* CTA Buttons */}
               <div className="flex flex-col sm:flex-row gap-4 pt-4">

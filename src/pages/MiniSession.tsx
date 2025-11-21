@@ -1,6 +1,8 @@
 import React, { useState } from "react";
+import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
 import { Card } from "@/components/ui/card";
 import { Slider } from "@/components/ui/slider";
 import { Textarea } from "@/components/ui/textarea";
@@ -299,23 +301,40 @@ const MiniSession: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-gray-900 via-[#1a1520] to-gray-900 py-8 px-4">
-      <div className="max-w-3xl mx-auto">
-        <div className="mb-8 text-center">
-          <div className="inline-flex items-center gap-3 mb-4">
-            <div className="p-3 bg-gradient-to-br from-purple-600 to-blue-600 rounded-xl">
-              <Sparkles className="h-8 w-8 text-white" />
-            </div>
-          </div>
-          <h1 className="text-4xl md:text-5xl font-bold mb-3 text-transparent bg-clip-text bg-gradient-to-r from-purple-400 via-blue-400 to-purple-400">
-            Between-Session Companion
-          </h1>
-          <p className="text-lg text-gray-300 max-w-2xl mx-auto">AI-powered support when you need it most</p>
+    <div className="min-h-screen bg-gradient-to-br from-gray-900 via-[#1a1510] to-gray-900">
+      {/* Hero Section */}
+      <div className="relative overflow-hidden border-b border-white/10 py-12">
+        <div className="absolute inset-0">
+          <div className="absolute top-20 left-20 w-96 h-96 bg-purple-500/20 rounded-full blur-3xl animate-pulse" />
+          <div className="absolute bottom-10 right-10 w-96 h-96 bg-indigo-500/10 rounded-full blur-3xl animate-pulse" />
         </div>
 
-        <Card className="p-10 bg-gradient-to-br from-white/5 via-white/10 to-white/5 backdrop-blur-xl border-purple-500/20 shadow-2xl">
-          {renderStep()}
-        </Card>
+        <div className="container relative z-10 px-4 mx-auto max-w-4xl">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="text-center"
+          >
+            <Badge className="mb-4 bg-purple-500/20 text-purple-400 border-purple-500/40">
+              Mental Health Core
+            </Badge>
+            <h1 className="text-4xl md:text-5xl font-bold text-white mb-4 drop-shadow-2xl">
+              Between-Session Companion
+            </h1>
+            <p className="text-lg text-gray-300 leading-relaxed drop-shadow-lg max-w-2xl mx-auto">
+              AI-powered support to help you process thoughts and emotions between therapy sessions
+            </p>
+          </motion.div>
+        </div>
+      </div>
+
+      {/* Main Content */}
+      <div className="py-8 px-4">
+        <div className="max-w-3xl mx-auto">
+          <Card className="p-10 bg-gradient-to-br from-white/5 via-white/10 to-white/5 backdrop-blur-xl border-purple-500/20 shadow-2xl">
+            {renderStep()}
+          </Card>
+        </div>
       </div>
     </div>
   );

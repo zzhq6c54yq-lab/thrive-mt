@@ -1,7 +1,7 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { Sparkles, Flame, Award } from 'lucide-react';
+import { Sparkles, Flame, Award, Check, Shield, CreditCard } from 'lucide-react';
 import QuickCheckIn from '../../today/QuickCheckIn';
 import TodaysFocus from '../../today/TodaysFocus';
 import { DashboardData } from '@/hooks/useTodayDashboard';
@@ -87,21 +87,27 @@ export default function YourDaySection({ dashboardData, onCheckInComplete }: You
               </p>
             </div>
 
-            {/* Trust indicators with real stats */}
-            <div className="grid grid-cols-3 gap-4">
-              <div className="bg-white/5 backdrop-blur-sm rounded-xl p-4 border border-white/10">
-                <div className="text-3xl font-bold text-[#D4AF37]">500+</div>
-                <div className="text-sm text-gray-400 mt-1">Sessions Completed</div>
+          {/* Professional credentials emphasis */}
+          <div className="space-y-3">
+            <div className="flex items-center gap-3 text-gray-300">
+              <div className="p-2 bg-green-500/20 rounded-lg">
+                <Check className="w-5 h-5 text-green-400" />
               </div>
-              <div className="bg-white/5 backdrop-blur-sm rounded-xl p-4 border border-white/10">
-                <div className="text-3xl font-bold text-[#D4AF37]">4.9★</div>
-                <div className="text-sm text-gray-400 mt-1">Average Rating</div>
-              </div>
-              <div className="bg-white/5 backdrop-blur-sm rounded-xl p-4 border border-white/10">
-                <div className="text-3xl font-bold text-[#D4AF37]">50+</div>
-                <div className="text-sm text-gray-400 mt-1">Licensed Therapists</div>
-              </div>
+              <span className="text-sm">Board-certified licensed professionals</span>
             </div>
+            <div className="flex items-center gap-3 text-gray-300">
+              <div className="p-2 bg-blue-500/20 rounded-lg">
+                <Shield className="w-5 h-5 text-blue-400" />
+              </div>
+              <span className="text-sm">HIPAA compliant & completely confidential</span>
+            </div>
+            <div className="flex items-center gap-3 text-gray-300">
+              <div className="p-2 bg-[#D4AF37]/20 rounded-lg">
+                <CreditCard className="w-5 h-5 text-[#D4AF37]" />
+              </div>
+              <span className="text-sm">Insurance accepted - as low as $15/session</span>
+            </div>
+          </div>
           </div>
 
           {/* RIGHT SIDE: CTA + Value Props */}

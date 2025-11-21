@@ -143,6 +143,7 @@ import GoalSetting from "./pages/GoalSetting";
 import MentalWellnessExercise from "./pages/MentalWellnessExercise";
 import TherapySupport from "./pages/TherapySupport";
 import Unburdened from "./pages/Unburdened";
+import AllFeatures from "./pages/AllFeatures";
 import CareerDevelopmentModule from "./pages/career-modules/CareerDevelopmentModule";
 import LeadershipSkillsModule from "./pages/career-modules/LeadershipSkillsModule";
 import ResumeBuildingModule from "./pages/career-modules/ResumeBuildingModule";
@@ -206,6 +207,8 @@ function App() {
           <Route path="/employee-welcome" element={<EmployeeWelcome />} />
           <Route path="/employee-dashboard" element={<EmployeeDashboard />} />
           <Route path="/employee-readiness" element={<EmployeeReadiness />} />
+          <Route path="/unburdened" element={<Unburdened />} />
+          <Route path="/all-features" element={<AllFeatures />} />
           <Route path="/crisis-support" element={<CrisisSupport />} />
           <Route path="/learn-more" element={<LearnMoreAboutThrive />} />
           <Route path="/co-pay" element={<CoPay />} />

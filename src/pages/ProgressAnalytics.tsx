@@ -1,8 +1,10 @@
 
 import React from "react";
+import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
 import { ArrowLeft, LineChart, BarChart, PieChart, Calendar, Download } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
 import HomeButton from "@/components/HomeButton";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle, CardFooter } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -15,9 +17,15 @@ const ProgressAnalytics = () => {
   const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042', '#8884D8'];
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-[#f8f9fa] to-[#eef1f5]">
-      <div className="bg-gradient-to-r from-[#1a1a1f] to-[#212124] text-white py-12 relative">
-        <div className="container px-4 max-w-6xl mx-auto">
+    <div className="min-h-screen bg-gradient-to-br from-gray-900 via-[#1a1510] to-gray-900">
+      {/* Hero Section */}
+      <div className="relative overflow-hidden bg-gradient-to-r from-gray-900 via-[#1a1510] to-gray-900 text-white py-16 border-b border-white/10">
+        <div className="absolute inset-0">
+          <div className="absolute top-20 left-20 w-96 h-96 bg-blue-500/10 rounded-full blur-3xl animate-pulse" />
+          <div className="absolute bottom-10 right-10 w-96 h-96 bg-cyan-500/10 rounded-full blur-3xl animate-pulse" />
+        </div>
+
+        <div className="container px-4 max-w-6xl mx-auto relative z-10">
           <div className="flex justify-between items-center mb-6">
             <Link 
               to="/" 
@@ -25,13 +33,24 @@ const ProgressAnalytics = () => {
               className="inline-flex items-center text-blue-400 hover:text-blue-300 transition-colors"
             >
               <ArrowLeft className="mr-2 h-4 w-4" />
-              Back to Main Dashboard
+              Back to Dashboard
             </Link>
             <HomeButton />
           </div>
           
-          <h1 className="text-4xl md:text-5xl font-light mb-4">Progress Analytics</h1>
-          <p className="text-xl text-gray-300 max-w-3xl">Track your mental health journey with detailed insights and analytics.</p>
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="text-center"
+          >
+            <Badge className="mb-4 bg-blue-500/20 text-blue-400 border-blue-500/40">
+              Progress Tracking
+            </Badge>
+            <h1 className="text-5xl md:text-6xl font-bold mb-4 drop-shadow-2xl">Progress Analytics</h1>
+            <p className="text-xl text-gray-300 max-w-3xl mx-auto leading-relaxed drop-shadow-lg">
+              Track your mental health journey with detailed insights and visual analytics
+            </p>
+          </motion.div>
         </div>
       </div>
 
