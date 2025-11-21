@@ -10,7 +10,7 @@ import { Badge } from '@/components/ui/badge';
 import { Progress } from '@/components/ui/progress';
 import { Separator } from '@/components/ui/separator';
 import { useToast } from '@/hooks/use-toast';
-import { ArrowLeft, Play, Pause, SkipBack, SkipForward, Volume2, Music2, Mic, Radio, Headphones, Heart, Share2, Download, Plus, Settings, Clock, TrendingUp, BarChart3, Users } from "lucide-react";
+import { ArrowLeft, Play, Pause, SkipBack, SkipForward, Volume2, Music2, Mic, Radio, Headphones, Heart, Share2, Download, Plus, Settings, Clock, TrendingUp, BarChart3, Users, Square, Video, Trash2, Music, Piano } from "lucide-react";
 import Page from '@/components/Page';
 import StudioEnvironment from '@/components/music-therapy/StudioEnvironment';
 import AudioVisualizer from '@/components/music-therapy/AudioVisualizer';
@@ -21,7 +21,6 @@ import InstrumentSelector from '@/components/music-therapy/InstrumentSelector';
 import InstrumentVisual from '@/components/music-therapy/InstrumentVisual';
 import FullPiano from '@/components/music-therapy/FullPiano';
 import DrumKit from '@/components/music-therapy/DrumKit';
-import { Play, Pause, Square, Mic, Video, Download, Trash2, Music, Volume2, Piano } from 'lucide-react';
 
 // Interfaces
 interface RecordedTrack {
