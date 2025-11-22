@@ -3,7 +3,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 import { useNavigate } from 'react-router-dom';
-import { Clock, ArrowRight, Info } from 'lucide-react';
+import { Clock, ArrowRight, Info, Target } from 'lucide-react';
 import * as Icons from 'lucide-react';
 import { motion } from 'framer-motion';
 import { DailyActivity } from '@/hooks/useTodayDashboard';
@@ -35,11 +35,22 @@ export default function TodaysFocus({ activities }: TodaysFocusProps) {
       <Card className="bg-card/50 border-border/50 backdrop-blur-sm">
         <CardHeader>
           <CardTitle className="text-xl">Today's Focus</CardTitle>
-          <p className="text-sm text-muted-foreground">Building your personalized plan...</p>
         </CardHeader>
         <CardContent>
-          <div className="flex items-center justify-center p-8 text-muted-foreground">
-            <div className="animate-pulse">Loading activities...</div>
+          <div className="text-center py-8">
+            <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-[#D4AF37]/20 mb-4">
+              <Target className="w-8 h-8 text-[#D4AF37]" />
+            </div>
+            <h3 className="text-lg font-semibold text-white mb-2">No activities yet</h3>
+            <p className="text-sm text-muted-foreground mb-4">
+              Let's create your personalized daily plan
+            </p>
+            <Button 
+              onClick={() => navigate('/onboarding')}
+              className="bg-gradient-to-r from-[#D4AF37] to-[#B8941F] hover:from-[#B8941F] hover:to-[#D4AF37] text-black font-semibold"
+            >
+              Get Started
+            </Button>
           </div>
         </CardContent>
       </Card>

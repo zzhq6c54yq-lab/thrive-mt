@@ -2,6 +2,7 @@ import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { Sparkles, Flame, Award, Check, Shield, CreditCard } from 'lucide-react';
+import { Button } from '@/components/ui/button';
 import QuickCheckIn from '../../today/QuickCheckIn';
 import TodaysFocus from '../../today/TodaysFocus';
 import { DashboardData } from '@/hooks/useTodayDashboard';
@@ -182,15 +183,40 @@ export default function YourDaySection({ dashboardData, onCheckInComplete }: You
                 </svg>
               </span>
             </button>
-
-            {/* Trust badge */}
-            <p className="text-center text-xs text-gray-500 flex items-center justify-center gap-2">
-              <svg className="w-4 h-4 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-              </svg>
-              Backed by 10,000+ satisfied clients
-            </p>
           </div>
+        </div>
+      </motion.div>
+
+      {/* Wallet Display */}
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        className="bg-gradient-to-br from-[#D4AF37]/20 to-[#B8941F]/20 border border-[#D4AF37]/30 rounded-xl p-6 backdrop-blur-sm"
+      >
+        <div className="flex items-center justify-between">
+          <div className="flex items-center gap-4">
+            <div className="p-3 bg-[#D4AF37]/20 rounded-full">
+              <CreditCard className="w-8 h-8 text-[#D4AF37]" />
+            </div>
+            <div>
+              <p className="text-sm text-gray-400">Your Balance</p>
+              <h3 className="text-3xl font-bold text-white">
+                ${dashboardData.rewardsWallet?.copay_credits_usd || 0}
+              </h3>
+              <p className="text-sm text-[#D4AF37] mt-1">
+                {dashboardData.rewardsWallet?.current_points || 0} wellness points
+              </p>
+            </div>
+          </div>
+          <Button
+            onClick={() => {
+              trackClick({ component: 'view-rewards' });
+              navigate('/rewards');
+            }}
+            className="bg-gradient-to-r from-[#D4AF37] to-[#B8941F] hover:from-[#B8941F] hover:to-[#D4AF37] text-black font-semibold"
+          >
+            View Rewards
+          </Button>
         </div>
       </motion.div>
 
