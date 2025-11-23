@@ -13,6 +13,9 @@ import {
 } from '@/components/ui/dropdown-menu';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { useLogout } from '@/hooks/useLogout';
+import { AnimatePresence } from 'framer-motion';
+import GoodbyeRitual from './GoodbyeRitual';
+import { useState } from 'react';
 import { NotificationBell } from './NotificationBell';
 
 interface DashboardNavigationProps {
@@ -22,7 +25,8 @@ interface DashboardNavigationProps {
 export default function DashboardNavigation({ userName }: DashboardNavigationProps) {
   const navigate = useNavigate();
   const location = useLocation();
-  const { logout } = useLogout();
+  const [showGoodbye, setShowGoodbye] = useState(false);
+  const { logout, isLoggingOut } = useLogout(() => setShowGoodbye(true));
 
   const navItems = [
     { label: 'Today', icon: Home, path: '/' },
@@ -32,7 +36,18 @@ export default function DashboardNavigation({ userName }: DashboardNavigationPro
   ];
 
   return (
-    <div className="sticky top-0 z-40 bg-gray-900/80 backdrop-blur-md border-b border-white/10">
+    <>
+      {/* Goodbye Ritual */}
+      <AnimatePresence>
+        {showGoodbye && (
+          <GoodbyeRitual
+            userName={userName}
+            onClose={() => setShowGoodbye(false)}
+          />
+        )}
+      </AnimatePresence>
+
+      <div className="sticky top-0 z-40 bg-gray-900/80 backdrop-blur-md border-b border-white/10">
       <div className="container mx-auto max-w-7xl px-4">
         <div className="flex items-center justify-between py-4">
           {/* Logo & Greeting - modified to accept children for status chips */}
@@ -119,5 +134,6 @@ export default function DashboardNavigation({ userName }: DashboardNavigationPro
         </div>
       </div>
     </div>
+    </>
   );
 }

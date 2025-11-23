@@ -19,12 +19,16 @@ import HenryDialog from '@/components/henry/HenryDialog';
 import { useKeyboardShortcuts } from '@/hooks/useKeyboardShortcuts';
 import EmpathyLoadingState from '@/components/shared/EmpathyLoadingState';
 import EmpathyErrorState from '@/components/shared/EmpathyErrorState';
+import WelcomeHomeHero from './WelcomeHomeHero';
+import ConversationalCheckIn from './ConversationalCheckIn';
+import { useLastSeen } from '@/hooks/useLastSeen';
 
 export default function EpicDashboard() {
   const navigate = useNavigate();
   const { user, profile, loading: userLoading } = useUser();
   const { dashboardData, loading: dashboardLoading, refetch } = useTodayDashboard();
   const { state: dashboardState } = useDashboardState(dashboardData);
+  const { lastCheckIn } = useLastSeen();
   const [isCommandPaletteOpen, setIsCommandPaletteOpen] = useState(false);
   const [showHenryDialog, setShowHenryDialog] = useState(false);
   const [showOpeningRitual, setShowOpeningRitual] = useState(true);
@@ -318,6 +322,18 @@ export default function EpicDashboard() {
         transition={{ delay: 0.5, duration: 0.8 }}
         className="container mx-auto max-w-7xl px-4 space-y-6 mt-6 relative z-10"
       >
+        {/* Welcome Home Hero - The Magnetic Focal Point */}
+        <WelcomeHomeHero
+          user={user}
+          profile={profile}
+          lastCheckIn={lastCheckIn}
+          moodTrend={dashboardData.weeklyStats.moodTrend}
+          checkInStreak={dashboardData.checkInStreak}
+        />
+
+        {/* Conversational Check-In */}
+        <ConversationalCheckIn onComplete={refetch} />
+
         <NewYourDaySection
           dashboardData={dashboardData}
           onCheckInComplete={refetch}

@@ -1,64 +1,45 @@
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
-import useTranslation from '@/hooks/useTranslation';
 
-export const useLogout = () => {
+export const useLogout = (onGoodbyeRitual?: () => void) => {
   const navigate = useNavigate();
   const { toast } = useToast();
-  const { preferredLanguage } = useTranslation();
+  const [isLoggingOut, setIsLoggingOut] = useState(false);
 
   const logout = async () => {
+    setIsLoggingOut(true);
+    
+    // Show goodbye ritual first
+    if (onGoodbyeRitual) {
+      onGoodbyeRitual();
+      // Wait for ritual to complete
+      await new Promise(resolve => setTimeout(resolve, 5000));
+    }
+    
     try {
       const { error } = await supabase.auth.signOut();
       
-      if (error) {
-        console.error('Logout error:', error);
-        toast({
-          title: "Error",
-          description: "Failed to log out. Please try again.",
-          variant: "destructive",
-        });
-        return;
-      }
-
-      const logoutMessages = {
-        'English': {
-          title: "Logged out",
-          description: "You have been successfully logged out."
-        },
-        'Español': {
-          title: "Sesión cerrada",
-          description: "Has cerrado sesión exitosamente."
-        },
-        'Português': {
-          title: "Desconectado",
-          description: "Você foi desconectado com sucesso."
-        },
-        'Filipino': {
-          title: "Na-log out",
-          description: "Matagumpay kang na-log out."
-        }
-      };
-
-      const message = logoutMessages[preferredLanguage as keyof typeof logoutMessages] || logoutMessages['English'];
+      if (error) throw error;
 
       toast({
-        title: message.title,
-        description: message.description,
+        title: "Rest well",
+        description: "We'll be here when you're ready to return.",
       });
 
-      // Redirect to auth page
       navigate('/auth');
     } catch (error) {
-      console.error('Unexpected logout error:', error);
+      console.error('Logout error:', error);
       toast({
-        title: "Error",
-        description: "An unexpected error occurred during logout.",
+        title: "Let's try that together again",
+        description: "Something went wrong. We're here to help.",
         variant: "destructive",
       });
+    } finally {
+      setIsLoggingOut(false);
     }
   };
 
-  return { logout };
+  return { logout, isLoggingOut };
 };
