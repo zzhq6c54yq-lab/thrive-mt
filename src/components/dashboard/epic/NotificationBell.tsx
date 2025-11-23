@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Bell, MessageSquare, Lightbulb, Gift, Flame } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import {
@@ -8,60 +8,34 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 import { Badge } from '@/components/ui/badge';
-
-interface Notification {
-  id: string;
-  type: 'therapist_message' | 'ai_insight' | 'reward' | 'streak_milestone';
-  title: string;
-  message: string;
-  time: string;
-  read: boolean;
-}
+import { useCrossDashboardSync } from '@/hooks/useCrossDashboardSync';
+import { useUser } from '@/contexts/UserContext';
+import { useNavigate } from 'react-router-dom';
+import { format } from 'date-fns';
 
 export const NotificationBell: React.FC = () => {
-  // Mock notifications - will be replaced with real data
-  const [notifications] = useState<Notification[]>([
-    {
-      id: '1',
-      type: 'ai_insight',
-      title: 'New Insight Available',
-      message: 'Your mood improves on days you journal',
-      time: '2h ago',
-      read: false,
-    },
-    {
-      id: '2',
-      type: 'streak_milestone',
-      title: 'Streak Milestone! 🔥',
-      message: "You've maintained a 7-day streak!",
-      time: '1d ago',
-      read: false,
-    },
-    {
-      id: '3',
-      type: 'reward',
-      title: 'Reward Unlocked',
-      message: 'You earned $5 co-pay credit',
-      time: '2d ago',
-      read: true,
-    },
-  ]);
+  const { user } = useUser();
+  const navigate = useNavigate();
+  const { notifications, unreadCount, markAsRead, markAllAsRead } = useCrossDashboardSync(user?.id);
 
-  const unreadCount = notifications.filter(n => !n.read).length;
-
-  const getNotificationIcon = (type: Notification['type']) => {
+  const getNotificationIcon = (type: string) => {
     const iconClass = "w-5 h-5 text-[#D4AF37]";
-    switch (type) {
-      case 'therapist_message':
-        return <MessageSquare className={iconClass} />;
-      case 'ai_insight':
-        return <Lightbulb className={iconClass} />;
-      case 'reward':
-        return <Gift className={iconClass} />;
-      case 'streak_milestone':
-        return <Flame className={iconClass} />;
-      default:
-        return <Bell className={iconClass} />;
+    if (type.includes('therapist') || type.includes('message')) {
+      return <MessageSquare className={iconClass} />;
+    } else if (type.includes('insight') || type.includes('ai')) {
+      return <Lightbulb className={iconClass} />;
+    } else if (type.includes('reward') || type.includes('points')) {
+      return <Gift className={iconClass} />;
+    } else if (type.includes('streak') || type.includes('milestone')) {
+      return <Flame className={iconClass} />;
+    }
+    return <Bell className={iconClass} />;
+  };
+
+  const handleNotificationClick = (notification: any) => {
+    markAsRead(notification.id);
+    if (notification.link) {
+      navigate(notification.link);
     }
   };
 
@@ -81,8 +55,18 @@ export const NotificationBell: React.FC = () => {
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end" className="w-80">
-        <div className="px-3 py-2 border-b border-border">
+        <div className="px-3 py-2 border-b border-border flex items-center justify-between">
           <h3 className="font-semibold text-sm">Notifications</h3>
+          {unreadCount > 0 && (
+            <Button
+              variant="ghost"
+              size="sm"
+              className="h-6 text-xs"
+              onClick={markAllAsRead}
+            >
+              Mark all read
+            </Button>
+          )}
         </div>
         {notifications.length === 0 ? (
           <div className="px-3 py-8 text-center text-sm text-muted-foreground">
@@ -90,13 +74,14 @@ export const NotificationBell: React.FC = () => {
           </div>
         ) : (
           <div className="max-h-96 overflow-y-auto">
-            {notifications.slice(0, 5).map((notification) => (
+            {notifications.slice(0, 10).map((notification) => (
               <DropdownMenuItem
                 key={notification.id}
                 className="flex items-start gap-3 px-3 py-3 cursor-pointer"
+                onClick={() => handleNotificationClick(notification)}
               >
                 <div className="flex-shrink-0 mt-0.5">
-                  {getNotificationIcon(notification.type)}
+                  {getNotificationIcon((notification as any).notification_type || 'general')}
                 </div>
                 <div className="flex-1 min-w-0">
                   <p className="text-sm font-medium truncate">
@@ -106,7 +91,7 @@ export const NotificationBell: React.FC = () => {
                     {notification.message}
                   </p>
                   <p className="text-xs text-muted-foreground mt-1">
-                    {notification.time}
+                    {format(new Date(notification.created_at), 'MMM d, h:mm a')}
                   </p>
                 </div>
                 {!notification.read && (

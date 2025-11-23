@@ -1,10 +1,11 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { Calendar, MessageSquare, Video, ArrowRight, Shield, DollarSign, Clock, Users, Sparkles } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useNavigate } from 'react-router-dom';
 import { format } from 'date-fns';
 import { DashboardData } from '@/hooks/useTodayDashboard';
+import { AppointmentModal } from './AppointmentModal';
 
 interface CareHubSectionProps {
   dashboardData: DashboardData;
@@ -13,6 +14,7 @@ interface CareHubSectionProps {
 export const CareHubSection: React.FC<CareHubSectionProps> = ({ dashboardData }) => {
   const navigate = useNavigate();
   const hasTherapist = dashboardData.upcomingAppointments.length > 0;
+  const [selectedAppointment, setSelectedAppointment] = useState<any>(null);
   const nextAppointment = dashboardData.upcomingAppointments[0];
 
   if (!hasTherapist) {
@@ -235,13 +237,28 @@ export const CareHubSection: React.FC<CareHubSectionProps> = ({ dashboardData })
           {format(new Date(nextAppointment.appointment_date), 'EEEE, MMM d – h:mm a')}
         </p>
         <div className="flex flex-wrap gap-3">
-          <Button size="default" variant="outline" className="border-[#D4AF37]/40 hover:border-[#D4AF37]/60">
+          <Button 
+            size="default" 
+            variant="outline" 
+            className="border-[#D4AF37]/40 hover:border-[#D4AF37]/60"
+            onClick={() => setSelectedAppointment(nextAppointment)}
+          >
             View Details
           </Button>
-          <Button size="default" variant="outline" className="border-[#D4AF37]/40 hover:border-[#D4AF37]/60">
+          <Button 
+            size="default" 
+            variant="outline" 
+            className="border-[#D4AF37]/40 hover:border-[#D4AF37]/60"
+            onClick={() => navigate('/therapy')}
+          >
             Reschedule
           </Button>
-          <Button size="default" variant="gold" className="shadow-md hover:shadow-lg">
+          <Button 
+            size="default" 
+            variant="gold" 
+            className="shadow-md hover:shadow-lg"
+            onClick={() => window.open('/virtual-meetings', '_blank')}
+          >
             <Video className="w-4 h-4 mr-2" />
             Join Video Call
           </Button>
@@ -250,15 +267,41 @@ export const CareHubSection: React.FC<CareHubSectionProps> = ({ dashboardData })
 
       <div className="space-y-3">
         <p className="text-sm font-semibold text-muted-foreground mb-4">Between Sessions</p>
-        <Button variant="ghost" size="default" className="w-full justify-start hover:bg-[#D4AF37]/10 text-base">
+        <Button 
+          variant="ghost" 
+          size="default" 
+          className="w-full justify-start hover:bg-[#D4AF37]/10 text-base"
+          onClick={() => navigate('/journal')}
+        >
           <MessageSquare className="w-5 h-5 mr-3 text-[#D4AF37]" />
           Send your therapist an update
         </Button>
-        <Button variant="ghost" size="default" className="w-full justify-start hover:bg-[#D4AF37]/10 text-base">
+        <Button 
+          variant="ghost" 
+          size="default" 
+          className="w-full justify-start hover:bg-[#D4AF37]/10 text-base"
+          onClick={() => navigate('/journal')}
+        >
           <ArrowRight className="w-5 h-5 mr-3 text-[#D4AF37]" />
           Share today's journal summary
         </Button>
       </div>
+
+      {/* Appointment Details Modal */}
+      {selectedAppointment && (
+        <AppointmentModal
+          isOpen={!!selectedAppointment}
+          onClose={() => setSelectedAppointment(null)}
+          appointment={{
+            therapist_name: therapist?.name || 'Your Therapist',
+            therapist_title: therapist?.title || 'Licensed Therapist',
+            appointment_date: selectedAppointment.appointment_date,
+            duration_minutes: selectedAppointment.duration_minutes || 50,
+            session_type: selectedAppointment.session_type || 'individual',
+            notes: selectedAppointment.notes
+          }}
+        />
+      )}
     </motion.div>
   );
 };

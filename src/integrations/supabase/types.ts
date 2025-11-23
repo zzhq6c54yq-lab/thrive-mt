@@ -996,6 +996,45 @@ export type Database = {
         }
         Relationships: []
       }
+      cross_dashboard_notifications: {
+        Row: {
+          created_at: string | null
+          id: string
+          link: string | null
+          message: string
+          notification_type: string
+          read: boolean | null
+          recipient_id: string
+          sender_id: string | null
+          sender_type: string
+          title: string
+        }
+        Insert: {
+          created_at?: string | null
+          id?: string
+          link?: string | null
+          message: string
+          notification_type: string
+          read?: boolean | null
+          recipient_id: string
+          sender_id?: string | null
+          sender_type: string
+          title: string
+        }
+        Update: {
+          created_at?: string | null
+          id?: string
+          link?: string | null
+          message?: string
+          notification_type?: string
+          read?: boolean | null
+          recipient_id?: string
+          sender_id?: string | null
+          sender_type?: string
+          title?: string
+        }
+        Relationships: []
+      }
       custom_reports: {
         Row: {
           created_at: string | null
@@ -3306,6 +3345,47 @@ export type Database = {
           },
         ]
       }
+      therapist_client_notes: {
+        Row: {
+          client_id: string
+          content: string
+          created_at: string | null
+          id: string
+          note_type: string
+          therapist_id: string
+          updated_at: string | null
+          visible_to_client: boolean | null
+        }
+        Insert: {
+          client_id: string
+          content: string
+          created_at?: string | null
+          id?: string
+          note_type: string
+          therapist_id: string
+          updated_at?: string | null
+          visible_to_client?: boolean | null
+        }
+        Update: {
+          client_id?: string
+          content?: string
+          created_at?: string | null
+          id?: string
+          note_type?: string
+          therapist_id?: string
+          updated_at?: string | null
+          visible_to_client?: boolean | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "therapist_client_notes_therapist_id_fkey"
+            columns: ["therapist_id"]
+            isOneToOne: false
+            referencedRelation: "therapists"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       therapist_credentials: {
         Row: {
           created_at: string | null
@@ -3811,6 +3891,36 @@ export type Database = {
           id?: string
           metadata?: Json | null
           user_id?: string
+        }
+        Relationships: []
+      }
+      user_activity_stream: {
+        Row: {
+          activity_data: Json | null
+          activity_type: string
+          created_at: string | null
+          id: string
+          user_id: string
+          visible_to_admin: boolean | null
+          visible_to_therapist: boolean | null
+        }
+        Insert: {
+          activity_data?: Json | null
+          activity_type: string
+          created_at?: string | null
+          id?: string
+          user_id: string
+          visible_to_admin?: boolean | null
+          visible_to_therapist?: boolean | null
+        }
+        Update: {
+          activity_data?: Json | null
+          activity_type?: string
+          created_at?: string | null
+          id?: string
+          user_id?: string
+          visible_to_admin?: boolean | null
+          visible_to_therapist?: boolean | null
         }
         Relationships: []
       }

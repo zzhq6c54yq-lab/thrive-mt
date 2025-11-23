@@ -60,6 +60,8 @@ import PersonalizedRecommendationsPage from "./pages/PersonalizedRecommendations
 import EnhancedAudioTherapyPage from "./pages/EnhancedAudioTherapy";
 import ArtTherapyStudio from "./components/ArtTherapyStudio";
 import CrisisSupport from "./pages/CrisisSupport";
+import CrisisResources from "./pages/CrisisResources";
+import Rewards from "./pages/Rewards";
 import LearnMoreAboutThrive from "./pages/LearnMoreAboutThrive";
 import CoPay from "./pages/CoPay";
 import DoDPortal from "./pages/DoDPortal";
@@ -214,6 +216,8 @@ function App() {
           <Route path="/unburdened" element={<Unburdened />} />
           <Route path="/all-features" element={<AllFeatures />} />
           <Route path="/crisis-support" element={<CrisisSupport />} />
+          <Route path="/crisis-resources" element={<CrisisResources />} />
+          <Route path="/rewards" element={<Rewards />} />
           <Route path="/learn-more" element={<LearnMoreAboutThrive />} />
           <Route path="/co-pay" element={<CoPay />} />
           <Route path="/virtual-meetings" element={<VirtualMeetings />} />
