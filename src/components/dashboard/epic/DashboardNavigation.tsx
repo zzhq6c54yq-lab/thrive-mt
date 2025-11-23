@@ -13,6 +13,7 @@ import {
 } from '@/components/ui/dropdown-menu';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { useLogout } from '@/hooks/useLogout';
+import { NotificationBell } from './NotificationBell';
 
 interface DashboardNavigationProps {
   userName: string;
@@ -34,26 +35,32 @@ export default function DashboardNavigation({ userName }: DashboardNavigationPro
     <div className="sticky top-0 z-40 bg-gray-900/80 backdrop-blur-md border-b border-white/10">
       <div className="container mx-auto max-w-7xl px-4">
         <div className="flex items-center justify-between py-4">
-          {/* Logo & Greeting */}
-          <div className="flex items-center gap-4">
-            <div className="flex items-center gap-2">
-              {/* Use the actual bronze head logo */}
-              <div className="relative w-10 h-10">
-                <img 
-                  src="/lovable-uploads/f2c6ac08-6331-4884-950d-7f94d68ff15f.png" 
-                  alt="ThriveMT Logo" 
-                  className="w-full h-full object-contain filter drop-shadow-[0_0_8px_rgba(184,115,51,0.6)]"
-                />
+          {/* Logo & Greeting - modified to accept children for status chips */}
+          <div>
+            <div className="flex items-center gap-4 mb-1">
+              <div className="flex items-center gap-2">
+                {/* Use the actual bronze head logo */}
+                <div className="relative w-10 h-10">
+                  <img 
+                    src="/lovable-uploads/f2c6ac08-6331-4884-950d-7f94d68ff15f.png" 
+                    alt="ThriveMT Logo" 
+                    className="w-full h-full object-contain filter drop-shadow-[0_0_8px_rgba(184,115,51,0.6)]"
+                  />
+                </div>
+                <span className="font-bold text-white text-xl hidden sm:inline">ThriveMT</span>
               </div>
-              <span className="font-bold text-white text-xl hidden sm:inline">ThriveMT</span>
+              <div className="hidden md:block text-sm text-gray-300">
+                Welcome back, <span className="text-white font-medium">{userName}</span>
+              </div>
             </div>
-            <div className="hidden md:block text-sm text-gray-300">
-              Welcome back, <span className="text-white font-medium">{userName}</span>
-            </div>
+            {/* Status chips placeholder - will be rendered by parent */}
+            <div id="status-chips-container" className="ml-12" />
           </div>
 
           {/* Navigation Items */}
           <nav className="flex items-center gap-2">
+            <NotificationBell />
+            
             {navItems.map((item) => {
               const Icon = item.icon;
               const isActive = location.pathname === item.path;

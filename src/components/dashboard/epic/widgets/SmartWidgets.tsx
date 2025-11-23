@@ -7,6 +7,7 @@ import { Heart, TrendingUp, TrendingDown, Minus, Clock, Flame, CheckCircle, Stic
 import { useUser } from '@/contexts/UserContext';
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
+import { LineChart, Line, XAxis, YAxis, Tooltip, ResponsiveContainer } from 'recharts';
 
 interface MoodPulseWidgetProps {
   moodData?: { date: string; score: number }[];
@@ -22,38 +23,64 @@ export function MoodPulseWidget({ moodData = [] }: MoodPulseWidgetProps) {
     ? last7Days[last7Days.length - 1].score - last7Days[0].score
     : 0;
 
-  const getTrendIcon = () => {
-    if (trend > 0.5) return <TrendingUp className="w-4 h-4 text-green-500" />;
-    if (trend < -0.5) return <TrendingDown className="w-4 h-4 text-red-500" />;
-    return <Minus className="w-4 h-4 text-gray-500" />;
+  const getTrendText = () => {
+    if (trend > 0.5) return '↑ rising';
+    if (trend < -0.5) return '↓ slightly this week';
+    return '→ steady';
   };
 
   return (
-    <Card className="bg-card/50 border-border/50 backdrop-blur-sm p-4">
-      <div className="flex items-center justify-between mb-3">
-        <h4 className="text-sm font-semibold flex items-center gap-2">
-          <Heart className="w-4 h-4 text-pink-500" />
-          Mood Pulse
-        </h4>
-        {getTrendIcon()}
+    <motion.div
+      initial={{ opacity: 0, scale: 0.95 }}
+      animate={{ opacity: 1, scale: 1 }}
+      className="bg-gradient-to-br from-background via-background to-primary/5 border border-border rounded-lg p-6"
+    >
+      <div className="flex items-center gap-2 mb-4">
+        <Heart className="w-5 h-5 text-primary" />
+        <h3 className="font-bold text-shadow">Mood Pulse</h3>
       </div>
       
-      <div className="flex items-end gap-1 h-16 mb-2">
-        {last7Days.map((day, i) => (
-          <motion.div
-            key={i}
-            initial={{ height: 0 }}
-            animate={{ height: `${(day.score / 5) * 100}%` }}
-            transition={{ delay: i * 0.05 }}
-            className="flex-1 bg-gradient-to-t from-pink-500 to-purple-500 rounded-t"
-          />
-        ))}
+      <div className="h-32 mb-3">
+        {last7Days.length > 0 ? (
+          <ResponsiveContainer width="100%" height="100%">
+            <LineChart data={last7Days}>
+              <Line 
+                type="monotone" 
+                dataKey="score" 
+                stroke="hsl(var(--primary))" 
+                strokeWidth={2}
+                dot={{ fill: 'hsl(var(--primary))', r: 4 }}
+              />
+              <XAxis dataKey="date" tick={{ fontSize: 10 }} />
+              <YAxis domain={[0, 5]} tick={{ fontSize: 10 }} />
+              <Tooltip />
+            </LineChart>
+          </ResponsiveContainer>
+        ) : (
+          <div className="flex items-center justify-center h-full text-muted-foreground text-sm">
+            No mood data yet
+          </div>
+        )}
       </div>
-      
-      <div className="text-xs text-muted-foreground text-center">
-        7-day average: <span className="font-semibold text-foreground">{avgMood.toFixed(1)}</span>/5
+
+      <div className="text-center mb-3">
+        <p className="text-sm text-foreground">
+          7-day avg: <span className="font-bold">{avgMood.toFixed(1)}</span> / 5 · Trending: {getTrendText()}
+        </p>
+        <p className="text-xs text-muted-foreground mt-2">
+          Common tags on low days: 'Tired', 'Overwhelmed'
+        </p>
       </div>
-    </Card>
+
+      <div className="flex gap-2">
+        <Button size="sm" variant="outline" className="flex-1">
+          See Insights
+        </Button>
+        <Button size="sm" variant="outline" className="flex-1">
+          Set a Focus Goal
+        </Button>
+      </div>
+    </motion.div>
   );
 }
 
@@ -66,32 +93,65 @@ export function StreakProtectorWidget({ streak }: StreakProtectorWidgetProps) {
   const midnight = new Date(now);
   midnight.setHours(24, 0, 0, 0);
   const hoursLeft = Math.floor((midnight.getTime() - now.getTime()) / (1000 * 60 * 60));
+  const isAtRisk = hoursLeft <= 3;
+  const bestStreak = 7; // TODO: Get from user data
+  const daysToRecord = Math.max(0, bestStreak - streak);
 
   return (
-    <Card className="bg-gradient-to-br from-orange-500/20 to-red-500/20 border-orange-500/50 backdrop-blur-sm p-4">
-      <div className="flex items-center justify-between mb-3">
-        <h4 className="text-sm font-semibold flex items-center gap-2">
-          <Flame className="w-4 h-4 text-orange-500" />
-          Streak Protector
-        </h4>
-        <Clock className="w-4 h-4 text-orange-500" />
+    <motion.div
+      initial={{ opacity: 0, scale: 0.95 }}
+      animate={{ opacity: 1, scale: 1 }}
+      className="bg-gradient-to-br from-background via-background to-orange-500/10 border border-border rounded-lg p-6"
+    >
+      <div className="flex items-center gap-2 mb-4">
+        <Flame className="w-5 h-5 text-orange-500" />
+        <h3 className="font-bold text-shadow">Streak Protector</h3>
       </div>
       
-      <div className="text-center mb-3">
-        <div className="text-3xl font-bold text-orange-500">{streak}</div>
-        <div className="text-xs text-muted-foreground">day streak</div>
+      <div className="text-center mb-4">
+        <motion.div
+          animate={{ 
+            scale: isAtRisk ? [1, 1.1, 1] : 1,
+          }}
+          transition={{ 
+            duration: 1, 
+            repeat: isAtRisk ? Infinity : 0,
+            repeatDelay: 2
+          }}
+        >
+          <p className="text-4xl font-bold mb-2 flex items-center justify-center gap-2">
+            <Flame className="w-8 h-8 text-orange-500" />
+            {streak} days
+          </p>
+        </motion.div>
+        
+        {daysToRecord > 0 && (
+          <p className="text-sm text-muted-foreground mb-2">
+            You're {daysToRecord} days away from your best streak ever ({bestStreak} days)
+          </p>
+        )}
+        
+        {isAtRisk && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            className="mt-3 p-2 bg-orange-500/20 border border-orange-500/50 rounded-lg"
+          >
+            <p className="text-xs text-orange-400">
+              ⏰ You have {hoursLeft}h left to keep your streak
+            </p>
+          </motion.div>
+        )}
       </div>
 
-      {hoursLeft < 6 && (
-        <motion.div
-          animate={{ scale: [1, 1.05, 1] }}
-          transition={{ repeat: Infinity, duration: 2 }}
-          className="text-xs text-center text-orange-400"
-        >
-          ⏰ {hoursLeft}h left - Don't break your streak!
-        </motion.div>
-      )}
-    </Card>
+      <Button className="w-full" size="sm" variant="outline">
+        Do a 1-minute win
+      </Button>
+      
+      <div className="mt-3 text-xs text-muted-foreground text-center">
+        Quick options: 1-question check-in · 30-sec breathing · Write one sentence
+      </div>
+    </motion.div>
   );
 }
 

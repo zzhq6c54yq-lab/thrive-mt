@@ -1,24 +1,29 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { createPortal } from 'react-dom';
 import { useTodayDashboard } from '@/hooks/useTodayDashboard';
+import { useDashboardState } from '@/hooks/useDashboardState';
 import { useUser } from '@/contexts/UserContext';
 import { Skeleton } from '@/components/ui/skeleton';
 import { AlertCircle } from 'lucide-react';
 import DashboardNavigation from './DashboardNavigation';
-import PersonalizedDashboard from './PersonalizedDashboard';
+import { StatusChips } from './StatusChips';
+import { NewYourDaySection } from './sections/NewYourDaySection';
+import { MoodPulseWidget, StreakProtectorWidget, ProgressRingWidget, QuickNotesWidget } from './widgets/SmartWidgets';
+import ToolkitSection from './sections/ToolkitSection';
 import SafetyStrip from '../today/SafetyStrip';
 import QuickActions from './QuickActions';
 import CommandPalette from './CommandPalette';
 import AIContextualHelper from './AIContextualHelper';
 import LayoutControls from './LayoutControls';
 import HenryDialog from '@/components/henry/HenryDialog';
-import TherapistConversation from '@/components/client/TherapistConversation';
 import { useKeyboardShortcuts } from '@/hooks/useKeyboardShortcuts';
 
 export default function EpicDashboard() {
   const navigate = useNavigate();
   const { user, profile, loading: userLoading } = useUser();
   const { dashboardData, loading: dashboardLoading, refetch } = useTodayDashboard();
+  const { state: dashboardState } = useDashboardState(dashboardData);
   const [isCommandPaletteOpen, setIsCommandPaletteOpen] = useState(false);
   const [showHenryDialog, setShowHenryDialog] = useState(false);
 
@@ -35,6 +40,19 @@ export default function EpicDashboard() {
   }, [user, userLoading, navigate]);
 
   const loading = userLoading || dashboardLoading;
+
+  // Render status chips into navigation header
+  useEffect(() => {
+    if (!loading && dashboardData) {
+      const container = document.getElementById('status-chips-container');
+      if (container) {
+        createPortal(
+          <StatusChips dashboardData={dashboardData} />,
+          container
+        );
+      }
+    }
+  }, [loading, dashboardData]);
 
   // Loading state
   if (loading) {
@@ -96,13 +114,27 @@ export default function EpicDashboard() {
       {/* Navigation */}
       <DashboardNavigation userName={profile?.display_name || 'there'} />
 
-      {/* Main Content */}
+      {/* Main Content - New Command Center Layout */}
       <div className="container mx-auto max-w-7xl px-4 space-y-6 mt-6">
-        <PersonalizedDashboard
+        <NewYourDaySection
           dashboardData={dashboardData}
           onCheckInComplete={refetch}
-          userGoals={profile?.goals || []}
         />
+
+        <div className="grid md:grid-cols-2 gap-6">
+          <MoodPulseWidget moodData={dashboardData.weeklyStats.moodTrend} />
+          <StreakProtectorWidget streak={dashboardData.checkInStreak} />
+        </div>
+
+        <div className="grid md:grid-cols-2 gap-6">
+          <ProgressRingWidget completed={0} total={dashboardData.todaysPlan.length} />
+          <QuickNotesWidget />
+        </div>
+
+        <ToolkitSection userGoals={profile?.goals || []} />
+        <QuickActions />
+        <LayoutControls />
+        <AIContextualHelper />
       </div>
 
       {/* Safety Strip */}
