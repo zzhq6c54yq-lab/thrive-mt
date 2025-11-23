@@ -24,14 +24,14 @@ const CinematicIntro: React.FC<CinematicIntroProps> = ({ onContinue, onSkipToMai
   const { toast } = useToast();
   const navigate = useNavigate();
 
-  // Get time-aware greeting
+  // Get time-aware greeting with deeper emotional resonance
   const getTimeAwareGreeting = () => {
     const hour = new Date().getHours();
-    if (hour < 5) return { text: "Sometimes the night feels endless", emoji: "🌙" };
-    if (hour < 12) return { text: "A new day begins with you", emoji: "🌅" };
-    if (hour < 17) return { text: "You're here. That matters.", emoji: "☀️" };
-    if (hour < 21) return { text: "Evening has a quiet strength", emoji: "🌆" };
-    return { text: "Rest is part of healing", emoji: "✨" };
+    if (hour < 5) return { text: "Sometimes the night feels long. We're here with you.", emoji: "🌙" };
+    if (hour < 12) return { text: "Morning. Let's start gently together.", emoji: "🌅" };
+    if (hour < 17) return { text: "You're here now. That's what matters.", emoji: "☀️" };
+    if (hour < 21) return { text: "Evening. Time to breathe and be.", emoji: "🌆" };
+    return { text: "Rest is healing too. We see you.", emoji: "✨" };
   };
 
   const greeting = getTimeAwareGreeting();
@@ -66,7 +66,7 @@ const CinematicIntro: React.FC<CinematicIntroProps> = ({ onContinue, onSkipToMai
 
       toast({
         title: "Welcome back",
-        description: "We're glad you're here.",
+        description: "We're so glad you're here.",
       });
       
       setShowAccessCodeDialog(false);
@@ -74,8 +74,8 @@ const CinematicIntro: React.FC<CinematicIntroProps> = ({ onContinue, onSkipToMai
       navigate("/therapist-dashboard");
     } catch (error: any) {
       toast({
-        title: "Let's try that again",
-        description: "The code doesn't match. Take your time.",
+        title: "Let's try that together again",
+        description: "The code doesn't seem right. Take your time - we're not going anywhere.",
         variant: "destructive",
       });
       setAccessCode("");
@@ -215,20 +215,20 @@ const CinematicIntro: React.FC<CinematicIntroProps> = ({ onContinue, onSkipToMai
               </span>
             </motion.h1>
 
-            {/* Tagline */}
+            {/* Tagline - Heart-centered invitation */}
             <motion.p
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ delay: 1.2, duration: 0.8 }}
-              className="text-xl md:text-2xl text-gray-300 mb-12 leading-relaxed"
+              className="text-xl md:text-2xl text-muted-foreground mb-12 leading-relaxed font-light"
             >
               {selectedLanguage === 'Español' 
-                ? "Un lugar para sanar, crecer, y simplemente ser" 
+                ? "Un santuario para sanar, crecer y ser tú mismo" 
                 : selectedLanguage === 'Português'
-                  ? "Um lugar para curar, crescer e simplesmente ser"
+                  ? "Um santuário para curar, crescer e ser você mesmo"
                   : selectedLanguage === 'Filipino'
-                    ? "Isang lugar upang maghilom, lumaki, at maging totoo"
-                    : "A place to heal, grow, and simply be"}
+                    ? "Isang santuwaryo upang maghilom, lumaki, at maging totoo"
+                    : "A sanctuary to heal, grow, and be yourself"}
             </motion.p>
 
             {/* CTA with shimmer effect */}
@@ -239,18 +239,18 @@ const CinematicIntro: React.FC<CinematicIntroProps> = ({ onContinue, onSkipToMai
               className="flex flex-col items-center gap-4"
             >
               <Button 
-                className="group relative overflow-hidden bg-gradient-to-r from-[#B87333] via-[#D4AF37] to-[#B87333] hover:from-[#D4AF37] hover:via-[#E5C5A1] hover:to-[#D4AF37] text-white text-lg px-8 py-6 rounded-xl shadow-2xl hover:shadow-[#D4AF37]/50 transition-all duration-500"
+                className="group relative overflow-hidden bg-gradient-to-r from-[#B87333] via-[#D4AF37] to-[#B87333] hover:from-[#D4AF37] hover:via-[#E5C5A1] hover:to-[#D4AF37] text-background font-light text-lg px-8 py-6 rounded-xl shadow-2xl hover:shadow-[#D4AF37]/50 transition-all duration-500 hover:scale-105"
                 onClick={onContinue}
               >
                 <span className="absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent transform -skew-x-12 translate-x-full group-hover:translate-x-[-200%] transition-transform duration-1000"></span>
-                <span className="relative flex items-center gap-2">
+                <span className="relative flex items-center gap-2 font-light">
                   {selectedLanguage === 'Español' 
-                    ? "Comienza tu camino" 
+                    ? "Comienza tu sanación" 
                     : selectedLanguage === 'Português'
-                      ? "Comece sua jornada"
+                      ? "Comece sua cura"
                       : selectedLanguage === 'Filipino'
-                        ? "Simulan ang iyong landas"
-                        : "Begin your journey"}
+                        ? "Simulan ang iyong paghilom"
+                        : "Begin healing"}
                   <ArrowRight className="ml-2 h-5 w-5 transition-transform group-hover:translate-x-1" />
                 </span>
               </Button>
@@ -259,20 +259,20 @@ const CinematicIntro: React.FC<CinematicIntroProps> = ({ onContinue, onSkipToMai
                 variant="ghost"
                 size="sm"
                 onClick={() => setShowAccessCodeDialog(true)}
-                className="text-sm text-gray-400 hover:text-white transition-colors"
+                className="text-sm text-muted-foreground hover:text-foreground transition-colors font-light"
               >
                 <Key className="mr-2 h-4 w-4" />
-                Staff Access
+                Therapist Portal
               </Button>
               
               <Button
                 variant="ghost"
                 size="sm"
                 onClick={() => setAccessCodeDialogOpen(true)}
-                className="text-sm text-gray-400 hover:text-white transition-colors"
+                className="text-sm text-muted-foreground hover:text-foreground transition-colors font-light"
               >
                 <Key className="mr-2 h-4 w-4" />
-                Admin Access
+                System Access
               </Button>
             </motion.div>
 

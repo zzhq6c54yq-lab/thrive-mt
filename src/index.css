@@ -273,37 +273,73 @@ a:focus-visible {
   50% { transform: translateY(-20px) rotate(2deg); }
 }
 
-/* Glass morphism effects */
+/* Glass morphism effects - Enhanced sanctuary feel */
 .glass-card {
-  background: rgba(255, 255, 255, 0.05);
-  backdrop-filter: blur(20px);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+  background: rgba(255, 255, 255, 0.03);
+  backdrop-filter: blur(24px) saturate(180%);
+  -webkit-backdrop-filter: blur(24px) saturate(180%);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: 
+    0 8px 32px 0 rgba(0, 0, 0, 0.4),
+    inset 0 1px 0 0 rgba(255, 255, 255, 0.05);
 }
 
-/* Depth and texture */
+.glass-card:hover {
+  background: rgba(255, 255, 255, 0.05);
+  border-color: rgba(212, 175, 55, 0.2);
+  box-shadow: 
+    0 12px 40px 0 rgba(0, 0, 0, 0.5),
+    0 0 0 1px rgba(212, 175, 55, 0.1),
+    inset 0 1px 0 0 rgba(255, 255, 255, 0.08);
+  transform: translateY(-2px);
+  transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Depth and texture - Creating layers of meaning */
 .bronze-texture {
   background-image: 
-    linear-gradient(45deg, transparent 25%, rgba(184, 115, 51, 0.1) 25%, rgba(184, 115, 51, 0.1) 50%, transparent 50%, transparent 75%, rgba(184, 115, 51, 0.1) 75%, rgba(184, 115, 51, 0.1));
-  background-size: 4px 4px;
+    linear-gradient(45deg, transparent 25%, rgba(184, 115, 51, 0.05) 25%, rgba(184, 115, 51, 0.05) 50%, transparent 50%, transparent 75%, rgba(184, 115, 51, 0.05) 75%, rgba(184, 115, 51, 0.05)),
+    radial-gradient(circle at 50% 50%, rgba(212, 175, 55, 0.03) 0%, transparent 70%);
+  background-size: 8px 8px, 100% 100%;
+  background-blend-mode: overlay;
 }
 
 .weighted-shadow {
   box-shadow: 
-    0 2px 4px rgba(0, 0, 0, 0.1),
-    0 4px 8px rgba(0, 0, 0, 0.1),
-    0 8px 16px rgba(0, 0, 0, 0.1),
-    0 16px 32px rgba(0, 0, 0, 0.1);
+    0 1px 2px rgba(0, 0, 0, 0.12),
+    0 2px 4px rgba(0, 0, 0, 0.12),
+    0 4px 8px rgba(0, 0, 0, 0.12),
+    0 8px 16px rgba(0, 0, 0, 0.12),
+    0 16px 32px rgba(0, 0, 0, 0.08);
 }
 
-/* Breathing animation for cards */
+.weighted-shadow-bronze {
+  box-shadow: 
+    0 1px 2px rgba(212, 175, 55, 0.1),
+    0 2px 4px rgba(212, 175, 55, 0.1),
+    0 4px 8px rgba(212, 175, 55, 0.08),
+    0 8px 16px rgba(212, 175, 55, 0.06),
+    0 0 40px rgba(212, 175, 55, 0.1);
+}
+
+/* Breathing animation for cards - Living, organic feel */
 @keyframes breathe {
-  0%, 100% { transform: scale(1); opacity: 1; }
-  50% { transform: scale(1.01); opacity: 0.95; }
+  0%, 100% { 
+    transform: scale(1) translateY(0); 
+    opacity: 1;
+  }
+  50% { 
+    transform: scale(1.005) translateY(-1px); 
+    opacity: 0.98;
+  }
 }
 
 .breathe {
-  animation: breathe 4s ease-in-out infinite;
+  animation: breathe 6s ease-in-out infinite;
+}
+
+.breathe-slow {
+  animation: breathe 8s ease-in-out infinite;
 }
 
 /* Shimmer effect for buttons */
@@ -328,9 +364,23 @@ a:focus-visible {
 .layer-2 { transform: translateZ(20px); }
 .layer-3 { transform: translateZ(30px); }
 
-/* Smooth weight transitions */
+/* Smooth weight transitions - Everything has momentum */
 .weighted-transition {
-  transition: all 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+  transition: all 0.8s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.weighted-transition-slow {
+  transition: all 1.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+/* Subtle hover lift - Elements anticipate touch */
+.hover-lift {
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.hover-lift:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.3);
 }
 
 .intro-logo-icon {
