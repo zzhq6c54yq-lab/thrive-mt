@@ -28,6 +28,8 @@ export default function EpicDashboard() {
   const [isCommandPaletteOpen, setIsCommandPaletteOpen] = useState(false);
   const [showHenryDialog, setShowHenryDialog] = useState(false);
   const [showOpeningRitual, setShowOpeningRitual] = useState(true);
+  const [breathingPhase, setBreathingPhase] = useState<'inhale' | 'hold' | 'exhale'>('inhale');
+  const [ritualStep, setRitualStep] = useState<'welcome' | 'breathe' | 'fade'>('welcome');
 
   // Setup keyboard shortcuts
   useKeyboardShortcuts({
@@ -56,13 +58,50 @@ export default function EpicDashboard() {
     }
   }, [loading, dashboardData]);
 
-  // Opening ritual
+  // Enhanced opening ritual effect
   useEffect(() => {
-    if (!loading && dashboardData) {
-      const timer = setTimeout(() => setShowOpeningRitual(false), 2000);
-      return () => clearTimeout(timer);
+    if (!loading && dashboardData && showOpeningRitual) {
+      // Step 1: Welcome message (2s)
+      const welcomeTimer = setTimeout(() => {
+        setRitualStep('breathe');
+      }, 2000);
+
+      // Step 2: Breathing cycle (3 breaths, ~9s)
+      const breatheTimer = setInterval(() => {
+        setBreathingPhase(prev => {
+          if (prev === 'inhale') return 'hold';
+          if (prev === 'hold') return 'exhale';
+          return 'inhale';
+        });
+      }, 3000);
+
+      // Step 3: Fade to dashboard (after 11s total)
+      const fadeTimer = setTimeout(() => {
+        setRitualStep('fade');
+      }, 11000);
+
+      const hideTimer = setTimeout(() => {
+        setShowOpeningRitual(false);
+      }, 12500);
+
+      return () => {
+        clearTimeout(welcomeTimer);
+        clearInterval(breatheTimer);
+        clearTimeout(fadeTimer);
+        clearTimeout(hideTimer);
+      };
     }
-  }, [loading, dashboardData]);
+  }, [loading, dashboardData, showOpeningRitual]);
+
+  // Time-based greeting helper
+  const getTimeBasedGreeting = () => {
+    const hour = new Date().getHours();
+    if (hour >= 0 && hour < 5) return "Sometimes the night feels long. We're here with you.";
+    if (hour >= 5 && hour < 9) return "A new day. Let's start gently.";
+    if (hour >= 9 && hour < 17) return "How's your day treating you?";
+    if (hour >= 17 && hour < 21) return "Evening. Time to check in with yourself.";
+    return "Winding down. You made it through today.";
+  };
 
   // Loading state with empathy
   if (loading) {
@@ -114,51 +153,151 @@ export default function EpicDashboard() {
         ))}
       </div>
 
-      {/* Opening Ritual */}
+      {/* Enhanced Opening Ritual */}
       <AnimatePresence>
         {showOpeningRitual && (
           <motion.div
-            initial={{ opacity: 1 }}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            transition={{ duration: 0.8 }}
-            className="fixed inset-0 z-50 bg-gradient-to-br from-gray-900 via-[#1a1a1a] to-gray-900 flex flex-col items-center justify-center"
+            transition={{ duration: 1.5 }}
+            className="fixed inset-0 z-50 flex items-center justify-center bg-gradient-to-br from-background via-background to-background/95"
           >
-            {/* Breathing animation */}
-            <motion.div
-              animate={{
-                scale: [0.9, 1.1, 0.9],
-                opacity: [0.5, 1, 0.5],
-              }}
-              transition={{
-                duration: 3,
-                repeat: 0,
-              }}
-              className="text-center"
-            >
-              <motion.p
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                className="text-2xl text-gray-300 mb-8"
-              >
-                Welcome back, {profile?.display_name || 'friend'}
-              </motion.p>
-              <motion.div
-                initial={{ scale: 0 }}
-                animate={{ scale: 1 }}
-                transition={{ delay: 0.5, type: "spring" }}
-                className="w-20 h-20 mx-auto rounded-full bg-gradient-to-r from-[#D4AF37] to-[#B8941F] flex items-center justify-center"
-              >
-                <span className="text-3xl">✨</span>
-              </motion.div>
-              <motion.p
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ delay: 1 }}
-                className="text-lg text-gray-400 mt-8"
-              >
-                Let's take a breath together
-              </motion.p>
-            </motion.div>
+            {/* Ambient particles */}
+            <div className="absolute inset-0 overflow-hidden">
+              {[...Array(20)].map((_, i) => (
+                <motion.div
+                  key={i}
+                  animate={{
+                    y: [0, -100, 0],
+                    x: [0, Math.random() * 100 - 50, 0],
+                    opacity: [0, 0.3, 0],
+                  }}
+                  transition={{
+                    duration: 8,
+                    repeat: Infinity,
+                    delay: i * 0.4,
+                    ease: "easeInOut",
+                  }}
+                  className="absolute w-1 h-1 bg-[#D4AF37]/50 rounded-full"
+                  style={{
+                    left: `${Math.random() * 100}%`,
+                    top: `${Math.random() * 100}%`,
+                  }}
+                />
+              ))}
+            </div>
+
+            <div className="relative text-center space-y-12 px-4">
+              {/* Step 1: Personalized Welcome */}
+              {ritualStep === 'welcome' && (
+                <motion.div
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -20 }}
+                  transition={{ duration: 0.8 }}
+                  className="space-y-4"
+                >
+                  {/* Bronze skull logo breathing */}
+                  <motion.div
+                    animate={{
+                      scale: [0.95, 1.05, 0.95],
+                    }}
+                    transition={{
+                      duration: 3,
+                      repeat: Infinity,
+                      ease: "easeInOut",
+                    }}
+                    className="relative w-24 h-24 mx-auto mb-8"
+                  >
+                    <div className="absolute inset-0 bg-[#D4AF37] rounded-full blur-2xl opacity-40" />
+                    <div className="relative w-24 h-24 rounded-full bg-gradient-to-br from-[#D4AF37] via-[#E5C5A1] to-[#B8941F] flex items-center justify-center shadow-2xl">
+                      <img 
+                        src="/lovable-uploads/f2c6ac08-6331-4884-950d-7f94d68ff15f.png" 
+                        alt="ThriveMT" 
+                        className="w-16 h-16 object-contain"
+                      />
+                    </div>
+                  </motion.div>
+
+                  <h2 className="text-4xl font-light text-foreground mb-2">
+                    {getTimeBasedGreeting()}
+                  </h2>
+                  <p className="text-xl text-muted-foreground font-light">
+                    We're glad you're here, {profile?.display_name || 'friend'}
+                  </p>
+                </motion.div>
+              )}
+
+              {/* Step 2: Breathing Together */}
+              {ritualStep === 'breathe' && (
+                <motion.div
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  exit={{ opacity: 0 }}
+                  transition={{ duration: 0.8 }}
+                  className="space-y-12"
+                >
+                  <motion.p
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    className="text-2xl text-foreground/90 font-light"
+                  >
+                    Let's take a breath together
+                  </motion.p>
+
+                  {/* Breathing Circle with enhanced physics */}
+                  <div className="relative w-48 h-48 mx-auto">
+                    {/* Outer glow ring */}
+                    <motion.div
+                      animate={{
+                        scale: breathingPhase === 'inhale' ? 1.5 : breathingPhase === 'hold' ? 1.5 : 1,
+                        opacity: breathingPhase === 'inhale' ? 0.6 : breathingPhase === 'hold' ? 0.6 : 0.2,
+                      }}
+                      transition={{
+                        duration: 3,
+                        ease: [0.4, 0, 0.2, 1],
+                      }}
+                      className="absolute inset-0 rounded-full bg-[#D4AF37]/20 blur-xl"
+                    />
+
+                    {/* Main breathing circle */}
+                    <motion.div
+                      animate={{
+                        scale: breathingPhase === 'inhale' ? 1.3 : breathingPhase === 'hold' ? 1.3 : 0.7,
+                      }}
+                      transition={{
+                        duration: 3,
+                        ease: [0.4, 0, 0.2, 1],
+                      }}
+                      className="absolute inset-8 rounded-full bg-gradient-to-br from-[#D4AF37] via-[#E5C5A1] to-[#B8941F] shadow-2xl"
+                    />
+
+                    {/* Center text */}
+                    <div className="absolute inset-0 flex items-center justify-center">
+                      <motion.p
+                        key={breathingPhase}
+                        initial={{ opacity: 0, scale: 0.8 }}
+                        animate={{ opacity: 1, scale: 1 }}
+                        exit={{ opacity: 0, scale: 0.8 }}
+                        transition={{ duration: 0.5 }}
+                        className="text-lg font-light text-background capitalize"
+                      >
+                        {breathingPhase}
+                      </motion.p>
+                    </div>
+                  </div>
+
+                  <motion.p
+                    animate={{ opacity: [0.5, 1, 0.5] }}
+                    transition={{ duration: 3, repeat: Infinity }}
+                    className="text-sm text-muted-foreground font-light"
+                  >
+                    You showed up for yourself today. That takes strength.
+                  </motion.p>
+                </motion.div>
+              )}
+            </div>
           </motion.div>
         )}
       </AnimatePresence>

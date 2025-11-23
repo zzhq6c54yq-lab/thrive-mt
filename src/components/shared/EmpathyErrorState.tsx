@@ -12,8 +12,8 @@ interface EmpathyErrorStateProps {
 }
 
 const EmpathyErrorState: React.FC<EmpathyErrorStateProps> = ({ 
-  title = "Something didn't work",
-  message = "We're having trouble loading this right now. It's not your fault.",
+  title = "Let's try that together again",
+  message = "We're having trouble connecting right now. Take a breath - we'll work through this together.",
   onRetry,
   showHomeButton = true,
 }) => {
@@ -65,8 +65,8 @@ const EmpathyErrorState: React.FC<EmpathyErrorStateProps> = ({
         transition={{ delay: 0.4 }}
         className="space-y-4 max-w-md"
       >
-        <h2 className="text-2xl font-bold text-white">{title}</h2>
-        <p className="text-gray-400 leading-relaxed">{message}</p>
+        <h2 className="text-2xl font-light text-foreground">{title}</h2>
+        <p className="text-muted-foreground leading-relaxed font-light">{message}</p>
       </motion.div>
 
       {/* Action buttons */}
@@ -79,10 +79,10 @@ const EmpathyErrorState: React.FC<EmpathyErrorStateProps> = ({
         {onRetry && (
           <Button
             onClick={onRetry}
-            className="bg-gradient-to-r from-[#D4AF37] to-[#B8941F] hover:from-[#B8941F] hover:to-[#D4AF37] transition-all duration-300"
+            className="bg-gradient-to-r from-[#D4AF37] to-[#B8941F] hover:from-[#B8941F] hover:to-[#D4AF37] transition-all duration-500 shadow-lg hover:shadow-xl font-light"
           >
             <RefreshCw className="w-4 h-4 mr-2" />
-            Let's try that again
+            Let's try again together
           </Button>
         )}
         
@@ -90,22 +90,22 @@ const EmpathyErrorState: React.FC<EmpathyErrorStateProps> = ({
           <Button
             onClick={() => navigate('/dashboard')}
             variant="outline"
-            className="border-[#D4AF37]/30 hover:bg-[#D4AF37]/10"
+            className="border-[#D4AF37]/30 hover:bg-[#D4AF37]/10 transition-all duration-300 font-light"
           >
             <Home className="w-4 h-4 mr-2" />
-            Take me home
+            Take me somewhere safe
           </Button>
         )}
       </motion.div>
 
-      {/* Gentle reassurance */}
+      {/* Heart-centered reassurance */}
       <motion.p
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ delay: 0.8 }}
-        className="text-sm text-gray-500 mt-8"
+        className="text-sm text-muted-foreground mt-8 font-light"
       >
-        We're here to help. This happens sometimes, and we're working on it.
+        We're here with you. You're not alone in this.
       </motion.p>
     </motion.div>
   );
