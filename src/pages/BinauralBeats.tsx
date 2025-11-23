@@ -289,18 +289,18 @@ const BinauralBeats = () => {
           <div className="flex items-start justify-between mb-8">
             <Button 
               variant="link" 
-              className="text-white hover:text-[#8B5CF6] transition-colors p-0 flex items-center"
-              onClick={() => navigate("/home")}
+              className="text-white hover:text-[#D4AF37] transition-colors p-0 flex items-center"
+              onClick={() => navigate("/dashboard")}
             >
               <ArrowLeft className="mr-2 h-4 w-4" />
-              Back to Home
+              Back to Dashboard
             </Button>
             <HomeButton />
           </div>
           
           <div className="flex flex-col md:flex-row items-center justify-between gap-6">
             <div>
-              <h1 className="text-4xl font-bold mb-3 flex items-center">
+              <h1 className="text-4xl font-bold mb-3 flex items-center drop-shadow-[0_2px_10px_rgba(212,175,55,0.3)]">
                 <div className="relative mr-3">
                   <div className="absolute -inset-1 bg-[#8B5CF6] rounded-full blur opacity-60"></div>
                   <div className="relative">
@@ -309,9 +309,9 @@ const BinauralBeats = () => {
                 </div>
                 Binaural Beats Therapy
               </h1>
-              <p className="text-xl text-gray-300">
-                Enhance your mental state with scientifically designed audio frequencies
-              </p>
+            <p className="text-xl text-gray-300 drop-shadow-sm">
+              Enhance your mental state with scientifically designed audio frequencies
+            </p>
             </div>
             
             <Badge 

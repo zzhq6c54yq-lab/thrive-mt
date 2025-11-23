@@ -1,4 +1,4 @@
-import { Routes, Route } from "react-router-dom";
+import { Routes, Route, Navigate } from "react-router-dom";
 import { lazy } from "react";
 import ErrorBoundary from "./components/ErrorBoundary";
 import RouteLoadingWrapper from "./components/RouteLoadingWrapper";
@@ -322,6 +322,7 @@ function App() {
           <Route path="/workshop/:workshopId" element={<WorkshopDetail />} />
           
           <Route path="/real-time-therapy" element={<RealTimeTherapy />} />
+          <Route path="/therapy" element={<Navigate to="/real-time-therapy" replace />} />
           <Route path="/therapist/:id" element={<TherapistProfile />} />
           <Route path="/therapist-admin" element={<TherapistAdmin />} />
           <Route path="/therapist-dashboard" element={<TherapistDashboard />} />

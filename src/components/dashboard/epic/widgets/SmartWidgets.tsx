@@ -148,7 +148,7 @@ export function StreakProtectorWidget({ streak }: StreakProtectorWidgetProps) {
       </div>
 
       <Button variant="gold" className="w-full" size="sm">
-        Do a 1-minute win
+        Capture a mini win
       </Button>
       
       <div className="mt-3 text-xs text-muted-foreground text-center">

@@ -82,7 +82,7 @@ export const CareHubSection: React.FC<CareHubSectionProps> = ({ dashboardData })
               <Button 
                 variant="gold" 
                 size="lg" 
-                onClick={() => navigate('/therapy')} 
+              onClick={() => navigate('/real-time-therapy')}
                 className="w-full md:w-auto shadow-lg hover:shadow-xl hover:shadow-[#D4AF37]/20 transition-all"
               >
                 Browse Therapists
@@ -189,7 +189,7 @@ export const CareHubSection: React.FC<CareHubSectionProps> = ({ dashboardData })
             <Button 
               variant="gold" 
               size="lg" 
-              onClick={() => navigate('/therapy?matching=true')} 
+              onClick={() => navigate('/real-time-therapy?matching=true')} 
               className="shadow-lg hover:shadow-xl hover:shadow-[#D4AF37]/20 transition-all"
             >
               Start Matching Now
@@ -249,7 +249,7 @@ export const CareHubSection: React.FC<CareHubSectionProps> = ({ dashboardData })
             size="default" 
             variant="outline" 
             className="border-[#D4AF37]/40 hover:border-[#D4AF37]/60"
-            onClick={() => navigate('/therapy')}
+            onClick={() => navigate('/real-time-therapy')}
           >
             Reschedule
           </Button>
