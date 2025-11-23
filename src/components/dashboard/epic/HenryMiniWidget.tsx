@@ -19,21 +19,21 @@ export const HenryMiniWidget: React.FC<HenryMiniWidgetProps> = ({
       initial={{ scale: 0.9, opacity: 0 }}
       animate={{ scale: 1, opacity: 1 }}
       transition={{ delay: 0.3 }}
-      className="bg-gradient-to-br from-[#D4AF37]/10 to-[#B8941F]/10 rounded-lg p-4 border border-[#D4AF37]/30"
+      className="bg-gradient-to-br from-[#D4AF37]/10 to-[#B8941F]/10 rounded-lg p-6 border border-[#D4AF37]/40 hover:border-[#D4AF37]/60 transition-all"
     >
-      <div className="flex items-start gap-3">
-        <div className="w-10 h-10 rounded-full bg-gradient-to-br from-[#D4AF37] to-[#B8941F] flex items-center justify-center flex-shrink-0">
-          <Sparkles className="w-5 h-5 text-black" />
+      <div className="flex items-start gap-4">
+        <div className="w-12 h-12 rounded-full bg-gradient-to-br from-[#D4AF37] to-[#B8941F] flex items-center justify-center flex-shrink-0 shadow-lg">
+          <Sparkles className="w-6 h-6 text-black" />
         </div>
         <div className="flex-1">
-          <p className="text-sm text-foreground mb-3">
+          <p className="text-base text-foreground mb-4 leading-relaxed">
             {message}
           </p>
-          <div className="flex gap-2">
-            <Button size="sm" variant="gold" onClick={onStart}>
-              Yes, start
+          <div className="flex gap-3">
+            <Button size="sm" variant="gold" onClick={onStart} className="shadow-md hover:shadow-lg transition-shadow">
+              Yes, let's do it
             </Button>
-            <Button size="sm" variant="ghost" onClick={onDismiss}>
+            <Button size="sm" variant="ghost" onClick={onDismiss} className="text-muted-foreground hover:text-foreground">
               Maybe later
             </Button>
           </div>
