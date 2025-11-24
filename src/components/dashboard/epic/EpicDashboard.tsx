@@ -22,6 +22,7 @@ import EmpathyLoadingState from '@/components/shared/EmpathyLoadingState';
 import EmpathyErrorState from '@/components/shared/EmpathyErrorState';
 import WelcomeHomeHero from './WelcomeHomeHero';
 import ConversationalCheckIn from './ConversationalCheckIn';
+import WelcomeBackBanner from './WelcomeBackBanner';
 import { useLastSeen } from '@/hooks/useLastSeen';
 
 export default function EpicDashboard() {
@@ -327,6 +328,9 @@ export default function EpicDashboard() {
         transition={{ delay: 0.5, duration: 0.8 }}
         className="container mx-auto max-w-7xl px-4 space-y-6 mt-6 relative z-10"
       >
+        {/* Welcome Back Banner - First Thing Users See */}
+        <WelcomeBackBanner user={user} profile={profile} />
+
         {/* Welcome Home Hero - The Magnetic Focal Point */}
         <WelcomeHomeHero
           user={user}
@@ -338,6 +342,18 @@ export default function EpicDashboard() {
 
         {/* Conversational Check-In */}
         <ConversationalCheckIn onComplete={refetch} />
+
+        {/* Toolkit Section - Moved Up */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.8, duration: 0.6 }}
+        >
+          <ToolkitSection userGoals={profile?.goals || []} />
+        </motion.div>
+
+        {/* Specialized Programs - Moved Up */}
+        <SpecializedProgramsSection />
 
         <NewYourDaySection
           dashboardData={dashboardData}
@@ -353,17 +369,6 @@ export default function EpicDashboard() {
           <ProgressRingWidget completed={0} total={dashboardData.todaysPlan.length} />
           <QuickNotesWidget />
         </div>
-
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.8, duration: 0.6 }}
-        >
-          <ToolkitSection userGoals={profile?.goals || []} />
-        </motion.div>
-
-        {/* Specialized Programs */}
-        <SpecializedProgramsSection />
         
       </motion.div>
 
