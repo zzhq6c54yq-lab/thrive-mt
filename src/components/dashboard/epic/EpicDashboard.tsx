@@ -10,6 +10,7 @@ import { StatusChips } from './StatusChips';
 import { NewYourDaySection } from './sections/NewYourDaySection';
 import { MoodPulseWidget, StreakProtectorWidget, ProgressRingWidget, QuickNotesWidget } from './widgets/SmartWidgets';
 import ToolkitSection from './sections/ToolkitSection';
+import SpecializedProgramsSection from './sections/SpecializedProgramsSection';
 import SafetyStrip from '../today/SafetyStrip';
 import QuickActions from './QuickActions';
 import CommandPalette from './CommandPalette';
@@ -31,7 +32,10 @@ export default function EpicDashboard() {
   const { lastCheckIn } = useLastSeen();
   const [isCommandPaletteOpen, setIsCommandPaletteOpen] = useState(false);
   const [showHenryDialog, setShowHenryDialog] = useState(false);
-  const [showOpeningRitual, setShowOpeningRitual] = useState(true);
+  const [showOpeningRitual, setShowOpeningRitual] = useState(() => {
+    const hasSeenRitual = sessionStorage.getItem('hasSeenOpeningRitual');
+    return !hasSeenRitual;
+  });
   const [breathingPhase, setBreathingPhase] = useState<'inhale' | 'hold' | 'exhale'>('inhale');
   const [ritualStep, setRitualStep] = useState<'welcome' | 'breathe' | 'fade'>('welcome');
 
@@ -86,6 +90,7 @@ export default function EpicDashboard() {
 
       const hideTimer = setTimeout(() => {
         setShowOpeningRitual(false);
+        sessionStorage.setItem('hasSeenOpeningRitual', 'true');
       }, 12500);
 
       return () => {
@@ -356,10 +361,10 @@ export default function EpicDashboard() {
         >
           <ToolkitSection userGoals={profile?.goals || []} />
         </motion.div>
+
+        {/* Specialized Programs */}
+        <SpecializedProgramsSection />
         
-        <QuickActions />
-        <LayoutControls />
-        <AIContextualHelper />
       </motion.div>
 
       {/* Safety Strip */}
