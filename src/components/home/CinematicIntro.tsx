@@ -27,11 +27,11 @@ const CinematicIntro: React.FC<CinematicIntroProps> = ({ onContinue, onSkipToMai
   // Get time-aware greeting with deeper emotional resonance
   const getTimeAwareGreeting = () => {
     const hour = new Date().getHours();
-    if (hour < 5) return { text: "Sometimes the night feels long. We're here with you.", emoji: "🌙" };
-    if (hour < 12) return { text: "Morning. Let's start gently together.", emoji: "🌅" };
-    if (hour < 17) return { text: "You're here now. That's what matters.", emoji: "☀️" };
-    if (hour < 21) return { text: "Evening. Time to breathe and be.", emoji: "🌆" };
-    return { text: "Rest is healing too. We see you.", emoji: "✨" };
+    if (hour < 5) return "Sometimes the night feels long. We're here with you - because you matter.";
+    if (hour < 12) return "Morning. Let's start gently together - you deserve this.";
+    if (hour < 17) return "You're here now. That's what matters - because you're worth it.";
+    if (hour < 21) return "Evening. Time to breathe and be - you hold worth.";
+    return "Rest is healing too. We see you - because you matter.";
   };
 
   const greeting = getTimeAwareGreeting();
@@ -175,7 +175,7 @@ const CinematicIntro: React.FC<CinematicIntroProps> = ({ onContinue, onSkipToMai
               transition={{ delay: 0.5, duration: 0.8 }}
               className="text-gray-400 text-lg mb-8"
             >
-              {greeting.emoji} {greeting.text}
+              {greeting}
             </motion.p>
 
             {/* Logo with breathing animation */}
@@ -276,22 +276,6 @@ const CinematicIntro: React.FC<CinematicIntroProps> = ({ onContinue, onSkipToMai
               </Button>
             </motion.div>
 
-            {onSkipToMain && (
-              <motion.div
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ delay: 2, duration: 0.8 }}
-                className="mt-8"
-              >
-                <Button 
-                  variant="ghost" 
-                  className="text-xs text-gray-600 hover:text-gray-400"
-                  onClick={onSkipToMain}
-                >
-                  Skip to Main Menu (Dev)
-                </Button>
-              </motion.div>
-            )}
           </motion.div>
         )}
       </AnimatePresence>
