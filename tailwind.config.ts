@@ -56,6 +56,18 @@ export default {
           DEFAULT: 'hsl(var(--card))',
           foreground: 'hsl(var(--card-foreground))'
         },
+        bronze: {
+          50: '#fef7e6',
+          100: '#fce5b3',
+          200: '#f9d380',
+          300: '#f5c14d',
+          400: '#e5c5a1',
+          500: '#b87333',
+          600: '#a56625',
+          700: '#8b5a1e',
+          800: '#704a19',
+          900: '#4a3111',
+        },
         platinum: {
           light: '#E8E8EA',
           DEFAULT: '#9F9EA1',

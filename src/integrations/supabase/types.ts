@@ -309,6 +309,39 @@ export type Database = {
           },
         ]
       }
+      assessment_results: {
+        Row: {
+          assessment_type: string
+          created_at: string | null
+          id: string
+          responses: Json
+          score: number
+          severity: string | null
+          shared_with_therapist: boolean | null
+          user_id: string
+        }
+        Insert: {
+          assessment_type: string
+          created_at?: string | null
+          id?: string
+          responses: Json
+          score: number
+          severity?: string | null
+          shared_with_therapist?: boolean | null
+          user_id: string
+        }
+        Update: {
+          assessment_type?: string
+          created_at?: string | null
+          id?: string
+          responses?: Json
+          score?: number
+          severity?: string | null
+          shared_with_therapist?: boolean | null
+          user_id?: string
+        }
+        Relationships: []
+      }
       auth_user_audit: {
         Row: {
           action: string
@@ -332,6 +365,54 @@ export type Database = {
           details?: Json | null
           id?: string
           operator?: string | null
+          user_id?: string
+        }
+        Relationships: []
+      }
+      binaural_sessions: {
+        Row: {
+          created_at: string | null
+          duration_minutes: number
+          frequency_type: string
+          id: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string | null
+          duration_minutes: number
+          frequency_type: string
+          id?: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string | null
+          duration_minutes?: number
+          frequency_type?: string
+          id?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      breathing_sessions: {
+        Row: {
+          created_at: string | null
+          duration_seconds: number
+          id: string
+          pattern_type: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string | null
+          duration_seconds: number
+          id?: string
+          pattern_type: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string | null
+          duration_seconds?: number
+          id?: string
+          pattern_type?: string
           user_id?: string
         }
         Relationships: []
@@ -2040,6 +2121,39 @@ export type Database = {
           },
         ]
       }
+      meditation_sessions: {
+        Row: {
+          audio_file_url: string | null
+          category: string
+          completed: boolean | null
+          created_at: string | null
+          duration_seconds: number
+          id: string
+          session_title: string
+          user_id: string
+        }
+        Insert: {
+          audio_file_url?: string | null
+          category: string
+          completed?: boolean | null
+          created_at?: string | null
+          duration_seconds: number
+          id?: string
+          session_title: string
+          user_id: string
+        }
+        Update: {
+          audio_file_url?: string | null
+          category?: string
+          completed?: boolean | null
+          created_at?: string | null
+          duration_seconds?: number
+          id?: string
+          session_title?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       mini_sessions: {
         Row: {
           anxiety: number | null
@@ -2933,6 +3047,48 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      sleep_tracker_entries: {
+        Row: {
+          bed_time: string
+          created_at: string | null
+          date: string
+          duration: number
+          factors: string[] | null
+          id: string
+          notes: string | null
+          quality: number
+          sleep_time: string | null
+          user_id: string
+          wake_time: string
+        }
+        Insert: {
+          bed_time: string
+          created_at?: string | null
+          date: string
+          duration: number
+          factors?: string[] | null
+          id?: string
+          notes?: string | null
+          quality: number
+          sleep_time?: string | null
+          user_id: string
+          wake_time: string
+        }
+        Update: {
+          bed_time?: string
+          created_at?: string | null
+          date?: string
+          duration?: number
+          factors?: string[] | null
+          id?: string
+          notes?: string | null
+          quality?: number
+          sleep_time?: string | null
+          user_id?: string
+          wake_time?: string
+        }
+        Relationships: []
       }
       sso_configurations: {
         Row: {
@@ -4279,6 +4435,39 @@ export type Database = {
           streak_type?: string
           updated_at?: string | null
           user_id?: string
+        }
+        Relationships: []
+      }
+      video_diary_recordings: {
+        Row: {
+          created_at: string | null
+          duration_seconds: number | null
+          id: string
+          thumbnail_url: string | null
+          title: string
+          transcription: string | null
+          user_id: string
+          video_url: string
+        }
+        Insert: {
+          created_at?: string | null
+          duration_seconds?: number | null
+          id?: string
+          thumbnail_url?: string | null
+          title: string
+          transcription?: string | null
+          user_id: string
+          video_url: string
+        }
+        Update: {
+          created_at?: string | null
+          duration_seconds?: number | null
+          id?: string
+          thumbnail_url?: string | null
+          title?: string
+          transcription?: string | null
+          user_id?: string
+          video_url?: string
         }
         Relationships: []
       }
