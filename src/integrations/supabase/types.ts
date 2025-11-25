@@ -1386,6 +1386,36 @@ export type Database = {
         }
         Relationships: []
       }
+      gratitude_entries: {
+        Row: {
+          category: string | null
+          created_at: string | null
+          description: string | null
+          id: string
+          image_url: string | null
+          title: string
+          user_id: string
+        }
+        Insert: {
+          category?: string | null
+          created_at?: string | null
+          description?: string | null
+          id?: string
+          image_url?: string | null
+          title: string
+          user_id: string
+        }
+        Update: {
+          category?: string | null
+          created_at?: string | null
+          description?: string | null
+          id?: string
+          image_url?: string | null
+          title?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       henry_answers: {
         Row: {
           answer_text: string
@@ -1978,6 +2008,33 @@ export type Database = {
           user_id?: string
           user_text_primary?: string | null
           user_text_secondary?: string | null
+        }
+        Relationships: []
+      }
+      mini_wins: {
+        Row: {
+          category: string | null
+          created_at: string | null
+          description: string | null
+          id: string
+          title: string
+          user_id: string
+        }
+        Insert: {
+          category?: string | null
+          created_at?: string | null
+          description?: string | null
+          id?: string
+          title: string
+          user_id: string
+        }
+        Update: {
+          category?: string | null
+          created_at?: string | null
+          description?: string | null
+          id?: string
+          title?: string
+          user_id?: string
         }
         Relationships: []
       }
@@ -3966,6 +4023,51 @@ export type Database = {
           signup_period?: string | null
           updated_at?: string | null
           user_count?: number | null
+        }
+        Relationships: []
+      }
+      user_goals: {
+        Row: {
+          category: string | null
+          completed: boolean | null
+          created_at: string | null
+          current: number | null
+          deadline: string | null
+          description: string | null
+          goal_type: string
+          id: string
+          target: number
+          title: string
+          updated_at: string | null
+          user_id: string
+        }
+        Insert: {
+          category?: string | null
+          completed?: boolean | null
+          created_at?: string | null
+          current?: number | null
+          deadline?: string | null
+          description?: string | null
+          goal_type: string
+          id?: string
+          target: number
+          title: string
+          updated_at?: string | null
+          user_id: string
+        }
+        Update: {
+          category?: string | null
+          completed?: boolean | null
+          created_at?: string | null
+          current?: number | null
+          deadline?: string | null
+          description?: string | null
+          goal_type?: string
+          id?: string
+          target?: number
+          title?: string
+          updated_at?: string | null
+          user_id?: string
         }
         Relationships: []
       }

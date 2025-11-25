@@ -43,7 +43,7 @@ export default function ToolkitSection({ userGoals }: ToolkitSectionProps) {
 
   // Unified list of all features/tools
   const allTools = [
-    { name: 'Real-Time Therapy', path: '/therapy', description: 'Book sessions with licensed therapists', icon: Heart, imageUrl: 'https://images.unsplash.com/photo-1573497019940-1c28c88b4f3e?w=500&q=80' },
+    { name: 'Real-Time Therapy', path: '/real-time-therapy', description: 'Book sessions with licensed therapists', icon: Heart, imageUrl: 'https://images.unsplash.com/photo-1573497019940-1c28c88b4f3e?w=500&q=80' },
     { name: 'Between-Session Companion', path: '/mini-session', description: 'AI-powered micro-work between sessions', icon: Sparkles, imageUrl: 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=500&q=80' },
     { name: 'Therapist Messaging', path: '/messages', description: 'Stay connected with your care team', icon: Users, imageUrl: 'https://images.unsplash.com/photo-1516321318423-f06f85e504b3?w=500&q=80' },
     { name: 'Daily Challenges', path: '/wellness-challenges', description: 'Complete challenges, earn rewards', icon: Activity, imageUrl: 'https://images.unsplash.com/photo-1552674605-db6ffd4facb5?w=500&q=80' },

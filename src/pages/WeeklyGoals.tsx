@@ -5,10 +5,12 @@ import { ArrowLeft, Plus, TrendingUp, Flame, Trophy } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { GoalCard } from '@/components/goals/GoalCard';
+import { GoalCreationDialog } from '@/components/goals/GoalCreationDialog';
 import { addDays, endOfWeek } from 'date-fns';
 
 export default function WeeklyGoals() {
   const navigate = useNavigate();
+  const [showGoalDialog, setShowGoalDialog] = useState(false);
 
   // Sample data for demonstration
   const [goals, setGoals] = useState([
@@ -138,7 +140,10 @@ export default function WeeklyGoals() {
             transition={{ delay: 0.4 }}
           >
             <Card className="bg-gradient-to-br from-[#D4AF37]/10 to-[#B8941F]/5 border-[#D4AF37]/40 p-6">
-              <Button className="w-full h-full bg-gradient-to-r from-[#D4AF37] to-[#B8941F] text-black hover:opacity-90 font-semibold">
+              <Button 
+                className="w-full h-full bg-gradient-to-r from-[#D4AF37] to-[#B8941F] text-black hover:opacity-90 font-semibold"
+                onClick={() => setShowGoalDialog(true)}
+              >
                 <Plus className="w-5 h-5 mr-2" />
                 Add New Goal
               </Button>
@@ -205,6 +210,15 @@ export default function WeeklyGoals() {
             </div>
           </div>
         </Card>
+
+        <GoalCreationDialog 
+          open={showGoalDialog}
+          onOpenChange={setShowGoalDialog}
+          goalType="weekly"
+          onSuccess={() => {
+            // Refresh goals list if needed
+          }}
+        />
       </div>
     </div>
   );

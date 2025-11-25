@@ -148,6 +148,8 @@ import MentalWellnessExercise from "./pages/MentalWellnessExercise";
 import TherapySupport from "./pages/TherapySupport";
 import Unburdened from "./pages/Unburdened";
 import AllFeatures from "./pages/AllFeatures";
+import Messages from "./pages/Messages";
+import Gratitude from "./pages/Gratitude";
 import CareerDevelopmentModule from "./pages/career-modules/CareerDevelopmentModule";
 import LeadershipSkillsModule from "./pages/career-modules/LeadershipSkillsModule";
 import ResumeBuildingModule from "./pages/career-modules/ResumeBuildingModule";
@@ -177,6 +179,9 @@ function App() {
           <Route path="/journal" element={<JournalApp />} />
           <Route path="/onboarding" element={<OnboardingPage />} />
           <Route path="/dashboard" element={<Dashboard />} />
+          <Route path="/messages" element={<Messages />} />
+          <Route path="/support-wall" element={<CommunitySupport />} />
+          <Route path="/gratitude" element={<Gratitude />} />
           <Route path="/journal" element={<JournalPage />} />
           <Route path="/community-support" element={<CommunitySupport />} />
           <Route path="/debug" element={<Debug />} />

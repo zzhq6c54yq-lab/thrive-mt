@@ -1,4 +1,3 @@
-
 import React, { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import JournalForm from "@/components/JournalForm";
@@ -6,6 +5,7 @@ import JournalHistory from "@/components/JournalHistory";
 import FeedbackForm from "@/components/FeedbackForm";
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
+import { ArrowLeft } from "lucide-react";
 
 const JournalApp: React.FC = () => {
   const [userId, setUserId] = useState<string | null>(null);
@@ -34,6 +34,15 @@ const JournalApp: React.FC = () => {
 
   return (
     <div className="max-w-xl mx-auto py-8 px-4">
+      <Button
+        variant="ghost"
+        onClick={() => navigate('/dashboard')}
+        className="mb-6 text-gray-400 hover:text-white"
+      >
+        <ArrowLeft className="mr-2 w-4 h-4" />
+        Back to Dashboard
+      </Button>
+      
       <h1 className="text-3xl font-bold mb-6">My Journal</h1>
       <JournalForm userId={userId} />
       <JournalHistory userId={userId} />

@@ -5,11 +5,13 @@ import { ArrowLeft, Calendar, Plus, Trophy, TrendingUp, Target } from 'lucide-re
 import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { GoalCard } from '@/components/goals/GoalCard';
+import { GoalCreationDialog } from '@/components/goals/GoalCreationDialog';
 import { addDays, endOfMonth } from 'date-fns';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
 
 export default function MonthlyGoals() {
   const navigate = useNavigate();
+  const [showGoalDialog, setShowGoalDialog] = useState(false);
 
   // Sample mood trend data
   const moodData = [
@@ -106,7 +108,10 @@ export default function MonthlyGoals() {
                 <div className="text-4xl font-bold text-[#D4AF37]">21</div>
                 <div className="text-sm text-gray-400">Days Left</div>
               </div>
-              <Button className="bg-gradient-to-r from-[#D4AF37] to-[#B8941F] text-black hover:opacity-90 font-semibold">
+              <Button 
+                className="bg-gradient-to-r from-[#D4AF37] to-[#B8941F] text-black hover:opacity-90 font-semibold"
+                onClick={() => setShowGoalDialog(true)}
+              >
                 <Plus className="w-5 h-5 mr-2" />
                 Add Goal
               </Button>
@@ -195,6 +200,15 @@ export default function MonthlyGoals() {
             </div>
           </Card>
         )}
+
+        <GoalCreationDialog 
+          open={showGoalDialog}
+          onOpenChange={setShowGoalDialog}
+          goalType="monthly"
+          onSuccess={() => {
+            // Refresh goals list if needed
+          }}
+        />
       </div>
     </div>
   );
