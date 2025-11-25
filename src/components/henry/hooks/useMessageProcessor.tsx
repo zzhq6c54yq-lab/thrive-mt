@@ -52,27 +52,24 @@ export const useMessageProcessor = (
     };
     setConversationContext(prev => [...prev, newMessage]);
       
-      if (isUser) {
-        const lowerMessage = message.toLowerCase();
-        
-        if (lowerMessage.includes("happy") || lowerMessage.includes("great") || lowerMessage.includes("good")) {
-          setConversationMood("positive");
-        } else if (lowerMessage.includes("sad") || lowerMessage.includes("depressed") || lowerMessage.includes("anxious")) {
-          setConversationMood("negative");
-        } else if (lowerMessage.includes("tired") || lowerMessage.includes("exhausted")) {
-          setConversationMood("tired");
-        }
-        
-        if (lowerMessage.includes("my name is") || lowerMessage.includes("i'm called")) {
-          const nameMatch = message.match(/my name is\s+(\w+)/i) || message.match(/i'm called\s+(\w+)/i);
-          if (nameMatch && nameMatch[1]) {
-            updateUserProfile("name", nameMatch[1]);
-          }
-        }
+    if (isUser) {
+      const lowerMessage = message.toLowerCase();
+      
+      if (lowerMessage.includes("happy") || lowerMessage.includes("great") || lowerMessage.includes("good")) {
+        setConversationMood("positive");
+      } else if (lowerMessage.includes("sad") || lowerMessage.includes("depressed") || lowerMessage.includes("anxious")) {
+        setConversationMood("negative");
+      } else if (lowerMessage.includes("tired") || lowerMessage.includes("exhausted")) {
+        setConversationMood("tired");
       }
       
-      return newContext.slice(-12);
-    });
+      if (lowerMessage.includes("my name is") || lowerMessage.includes("i'm called")) {
+        const nameMatch = message.match(/my name is\s+(\w+)/i) || message.match(/i'm called\s+(\w+)/i);
+        if (nameMatch && nameMatch[1]) {
+          updateUserProfile("name", nameMatch[1]);
+        }
+      }
+    }
   };
 
   const updateUserProfile = (key: string, value: any) => {
@@ -292,19 +289,6 @@ export const useMessageProcessor = (
           addMessage(henryMessage);
           updateConversationContext(response.response, false);
           setProcessing(false);
-          
-          const allMessages = [...conversationContext.map(c => {
-            const [role, text] = c.split(': ', 2);
-            return {
-              text,
-              isUser: role === 'User',
-              timestamp: new Date()
-            };
-          }), henryMessage];
-          
-          if (allMessages.length % 5 === 0) {
-            saveConversation(allMessages);
-          }
         } catch (error) {
           console.error('Error getting AI response:', error);
           const fallbackMessage: Message = {
