@@ -1,154 +1,43 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { useSearchParams } from 'react-router-dom';
 import Page from '@/components/Page';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { BookOpen, Play } from 'lucide-react';
+import { Badge } from '@/components/ui/badge';
 import AIWorkshopPlayer from '@/components/workshop/AIWorkshopPlayer';
+import { workshopData } from '@/data/workshopData';
 
 const AIWorkshopStudio = () => {
+  const [searchParams] = useSearchParams();
   const [selectedWorkshop, setSelectedWorkshop] = useState<string | null>(null);
 
-  const workshops = [
-    {
-      id: 'mindful-communication',
-      title: 'Mindful Communication',
-      subtitle: 'Developing presence and intention in your interactions',
-      description: 'Learn to communicate with clarity, compassion, and presence.',
-      imageUrl: 'https://images.unsplash.com/photo-1573497019940-1c28c88b4f3e?w=500&q=80',
-    },
-    {
-      id: 'emotional-regulation',
-      title: 'Emotional Regulation',
-      subtitle: 'Tools for understanding and managing your emotions',
-      description: 'Develop skills to recognize, understand, and manage your emotions.',
-      imageUrl: 'https://images.unsplash.com/photo-1499209974431-9dddcece7f88?w=500&q=80',
-    },
-    {
-      id: 'stress-management',
-      title: 'Stress Management',
-      subtitle: 'Practical techniques for managing stress',
-      description: 'Build a personalized toolkit for handling life pressures.',
-      imageUrl: 'https://images.unsplash.com/photo-1506126613408-eca07ce68773?w=500&q=80',
-    },
-  ];
-
-  // Workshop content data (from worksheetUtils.ts structure)
-  const workshopContent: Record<string, any> = {
-    'mindful-communication': {
-      title: "Mindful Communication Workshop",
-      subtitle: "Developing presence and intention in your interactions",
-      introduction: "This workshop will help you develop more mindful communication habits.",
-      sections: [
-        {
-          title: "Communication Awareness",
-          description: "Before changing communication patterns, it is important to become aware of your current habits. Notice how you typically communicate when you are feeling stressed or rushed. Pay attention to situations where you find communication most challenging.",
-          exercises: [
-            {
-              title: "Communication Self-Assessment",
-              instructions: "Reflect on your typical communication patterns in different contexts.",
-              prompts: [
-                "How do you typically communicate when you are feeling stressed or rushed?",
-                "In what situations do you find communication most challenging?",
-                "How do you think others perceive your communication style?"
-              ]
-            }
-          ]
-        },
-        {
-          title: "Active Listening Practice",
-          description: "Active listening is a cornerstone of mindful communication. It means truly focusing on what others are saying without mentally preparing your reply. This practice can transform your relationships and help you connect more deeply with others.",
-          exercises: [
-            {
-              title: "Listening Without Planning Your Response",
-              instructions: "Practice truly focusing on what others are saying without mentally preparing your reply.",
-              prompts: [
-                "What makes it difficult for you to listen fully without planning your response?",
-                "How does the conversation feel different when you focus entirely on listening?",
-                "What did you notice about your conversation partner when you practiced active listening?"
-              ]
-            }
-          ]
-        }
-      ]
-    },
-    'emotional-regulation': {
-      title: "Emotional Regulation Workshop",
-      subtitle: "Tools for understanding and managing your emotions",
-      introduction: "This workshop provides a framework for developing your emotional regulation skills.",
-      sections: [
-        {
-          title: "Emotion Awareness",
-          description: "Recognizing and naming emotions is the first step toward regulating them effectively. When we can identify what we are feeling, we gain power over our emotional responses. Practice identifying your emotions throughout the day.",
-          exercises: [
-            {
-              title: "Emotion Tracking",
-              instructions: "Practice identifying your emotions throughout the day.",
-              prompts: [
-                "What emotions do you experience most frequently?",
-                "Where do you feel different emotions in your body?",
-                "How quickly do your emotions tend to change or intensify?"
-              ]
-            }
-          ]
-        },
-        {
-          title: "Regulation Strategies",
-          description: "Different situations call for different emotion regulation approaches. Building a personalized toolkit of strategies helps you respond to emotions in healthier ways. Some strategies work better for certain emotions or situations.",
-          exercises: [
-            {
-              title: "Creating Your Regulation Toolkit",
-              instructions: "Develop a personalized set of strategies for managing difficult emotions.",
-              prompts: [
-                "What helps you calm down when you are feeling overwhelmed?",
-                "Which mindfulness techniques work best for you in emotional situations?",
-                "How can you create space between feeling an emotion and acting on it?"
-              ]
-            }
-          ]
-        }
-      ]
-    },
-    'stress-management': {
-      title: "Stress Management Workshop",
-      subtitle: "Practical techniques for managing stress",
-      introduction: "This workshop will help you develop effective strategies for managing stress in your daily life.",
-      sections: [
-        {
-          title: "Stress Awareness",
-          description: "Understanding your stress patterns is essential for effective management. Notice what situations, people, or thoughts trigger stress for you. Pay attention to how your body responds when you are under stress.",
-          exercises: [
-            {
-              title: "Stress Inventory",
-              instructions: "Identify your major sources of stress and how they affect you.",
-              prompts: [
-                "What situations, people, or thoughts trigger stress for you?",
-                "How does your body respond when you are under stress?",
-                "What patterns do you notice in how you typically cope with stress?"
-              ]
-            }
-          ]
-        },
-        {
-          title: "Stress Reduction Techniques",
-          description: "Different techniques work for different people and situations. Build your personal stress management plan by identifying what works best for you. Some techniques provide quick relief, while others build long-term resilience.",
-          exercises: [
-            {
-              title: "Building Your Stress Management Plan",
-              instructions: "Create a practical plan for managing stress in various situations.",
-              prompts: [
-                "Which quick stress-relief techniques work best for you in the moment?",
-                "What longer-term practices could you incorporate into your routine?",
-                "How will you remind yourself to use these techniques when stress arises?"
-              ]
-            }
-          ]
-        }
-      ]
+  // Support URL parameter for workshop selection
+  useEffect(() => {
+    const workshopIdFromUrl = searchParams.get('selected');
+    if (workshopIdFromUrl) {
+      setSelectedWorkshop(workshopIdFromUrl);
     }
-  };
+  }, [searchParams]);
 
   if (selectedWorkshop) {
-    const content = workshopContent[selectedWorkshop];
+    const workshop = workshopData.find(w => w.id === selectedWorkshop);
+    if (!workshop) {
+      setSelectedWorkshop(null);
+      return null;
+    }
+
+    // Convert workshopData format to AIWorkshopPlayer format
+    const sections = workshop.sections.map(section => ({
+      title: section.title,
+      description: section.content,
+      exercises: [{
+        title: section.practicalExercise.title,
+        instructions: section.practicalExercise.instructions,
+        prompts: section.practicalExercise.outcomes
+      }]
+    }));
+
     return (
       <Page title="AI Workshop Studio" showBackButton={true}>
         <div className="container mx-auto px-4 py-8">
@@ -161,10 +50,11 @@ const AIWorkshopStudio = () => {
           </Button>
           <AIWorkshopPlayer
             workshopId={selectedWorkshop}
-            title={content.title}
-            subtitle={content.subtitle}
-            introduction={content.introduction}
-            sections={content.sections}
+            title={workshop.title}
+            subtitle={workshop.description}
+            introduction={workshop.learningOutcomes.join(' ')}
+            sections={sections}
+            clinicalContext={workshop.clinicalContext}
           />
         </div>
       </Page>
@@ -184,40 +74,45 @@ const AIWorkshopStudio = () => {
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {workshops.map((workshop) => (
-            <Card
-              key={workshop.id}
-              className="group hover:shadow-2xl transition-all duration-300 cursor-pointer overflow-hidden border-primary/20"
-              onClick={() => setSelectedWorkshop(workshop.id)}
-            >
-              <div className="relative h-48 overflow-hidden">
-                <img
-                  src={workshop.imageUrl}
-                  alt={workshop.title}
-                  className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-background via-background/60 to-transparent" />
-                <div className="absolute bottom-4 left-4 right-4">
-                  <h3 className="text-2xl font-bold text-foreground" style={{ textShadow: '0 2px 10px rgba(0, 0, 0, 0.5)' }}>
-                    {workshop.title}
-                  </h3>
+          {workshopData.map((workshop) => {
+            const Icon = workshop.icon;
+            return (
+              <Card
+                key={workshop.id}
+                className="group hover:shadow-2xl transition-all duration-300 cursor-pointer overflow-hidden border-primary/20"
+                onClick={() => setSelectedWorkshop(workshop.id)}
+              >
+                <div className={`relative h-48 overflow-hidden ${workshop.color}`}>
+                  <div className="absolute inset-0 bg-gradient-to-br from-[#D4AF37]/20 to-transparent" />
+                  <div className="absolute inset-0 flex items-center justify-center">
+                    <Icon className="h-16 w-16 text-[#D4AF37]" />
+                  </div>
+                  <div className="absolute top-4 left-4 flex gap-2">
+                    <Badge variant="secondary" className="bg-background/80 backdrop-blur-sm">
+                      {workshop.duration}
+                    </Badge>
+                    <Badge variant="secondary" className="bg-[#D4AF37]/20 text-[#D4AF37] backdrop-blur-sm">
+                      {workshop.clinicalContext.framework}
+                    </Badge>
+                  </div>
                 </div>
-              </div>
-              
-              <CardHeader>
-                <CardDescription className="text-base">
-                  {workshop.description}
-                </CardDescription>
-              </CardHeader>
+                
+                <CardHeader>
+                  <CardTitle className="text-xl">{workshop.title}</CardTitle>
+                  <CardDescription className="text-base">
+                    {workshop.description}
+                  </CardDescription>
+                </CardHeader>
 
-              <CardContent>
-                <Button className="w-full gap-2 bg-primary hover:bg-primary/90">
-                  <Play className="h-4 w-4" />
-                  Start Workshop
-                </Button>
-              </CardContent>
-            </Card>
-          ))}
+                <CardContent>
+                  <Button className="w-full gap-2 bg-primary hover:bg-primary/90">
+                    <Play className="h-4 w-4" />
+                    Start Workshop
+                  </Button>
+                </CardContent>
+              </Card>
+            );
+          })}
         </div>
 
         <div className="mt-12 p-6 bg-card/50 backdrop-blur-sm rounded-lg border border-border">

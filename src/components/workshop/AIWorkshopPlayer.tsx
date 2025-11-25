@@ -7,6 +7,7 @@ import WorkshopSlideViewer from './WorkshopSlideViewer';
 import { useWorkshopNarration } from '@/hooks/useWorkshopNarration';
 import { downloadWorksheet } from '@/utils/worksheetUtils';
 import { useToast } from '@/hooks/use-toast';
+import { SafetySection } from './SafetySection';
 
 interface WorkshopSection {
   title: string;
@@ -18,12 +19,26 @@ interface WorkshopSection {
   }>;
 }
 
+interface ClinicalContext {
+  framework: string;
+  evidenceBase: string;
+  contraindications: string[];
+  whenToSeekHelp: string;
+  crisisResources: {
+    name: string;
+    contact: string;
+    description: string;
+  }[];
+  culturalConsiderations: string;
+}
+
 interface AIWorkshopPlayerProps {
   workshopId: string;
   title: string;
   subtitle: string;
   introduction: string;
   sections: WorkshopSection[];
+  clinicalContext?: ClinicalContext;
 }
 
 const AIWorkshopPlayer: React.FC<AIWorkshopPlayerProps> = ({
@@ -32,6 +47,7 @@ const AIWorkshopPlayer: React.FC<AIWorkshopPlayerProps> = ({
   subtitle,
   introduction,
   sections,
+  clinicalContext,
 }) => {
   const { toast } = useToast();
   const [currentSectionIndex, setCurrentSectionIndex] = useState(0);
@@ -168,6 +184,15 @@ const AIWorkshopPlayer: React.FC<AIWorkshopPlayerProps> = ({
           <ChevronRight className="ml-2 h-4 w-4" />
         </Button>
       </div>
+
+      {/* Safety Section - Display at the end */}
+      {clinicalContext && currentSectionIndex === sections.length - 1 && (
+        <SafetySection
+          crisisResources={clinicalContext.crisisResources}
+          whenToSeekHelp={clinicalContext.whenToSeekHelp}
+          contraindications={clinicalContext.contraindications}
+        />
+      )}
     </div>
   );
 };
