@@ -776,6 +776,33 @@ export type Database = {
         }
         Relationships: []
       }
+      community_impact: {
+        Row: {
+          anonymous_quote: string | null
+          created_at: string | null
+          id: string
+          impact_type: string
+          source_post_id: string | null
+          user_id: string
+        }
+        Insert: {
+          anonymous_quote?: string | null
+          created_at?: string | null
+          id?: string
+          impact_type: string
+          source_post_id?: string | null
+          user_id: string
+        }
+        Update: {
+          anonymous_quote?: string | null
+          created_at?: string | null
+          id?: string
+          impact_type?: string
+          source_post_id?: string | null
+          user_id?: string
+        }
+        Relationships: []
+      }
       compliance_violations: {
         Row: {
           created_at: string | null
@@ -819,6 +846,45 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      constellation_data: {
+        Row: {
+          activity_type: string
+          brightness: number | null
+          color: string | null
+          date_created: string | null
+          id: string
+          metadata: Json | null
+          star_name: string
+          user_id: string
+          x_position: number
+          y_position: number
+        }
+        Insert: {
+          activity_type: string
+          brightness?: number | null
+          color?: string | null
+          date_created?: string | null
+          id?: string
+          metadata?: Json | null
+          star_name: string
+          user_id: string
+          x_position: number
+          y_position: number
+        }
+        Update: {
+          activity_type?: string
+          brightness?: number | null
+          color?: string | null
+          date_created?: string | null
+          id?: string
+          metadata?: Json | null
+          star_name?: string
+          user_id?: string
+          x_position?: number
+          y_position?: number
+        }
+        Relationships: []
       }
       content_analytics: {
         Row: {
@@ -1470,6 +1536,45 @@ export type Database = {
         }
         Relationships: []
       }
+      garden_progress: {
+        Row: {
+          activity_category: string
+          created_at: string | null
+          days_grown: number | null
+          growth_stage: string
+          id: string
+          last_watered_at: string | null
+          metadata: Json | null
+          plant_type: string
+          planted_at: string | null
+          user_id: string
+        }
+        Insert: {
+          activity_category: string
+          created_at?: string | null
+          days_grown?: number | null
+          growth_stage?: string
+          id?: string
+          last_watered_at?: string | null
+          metadata?: Json | null
+          plant_type: string
+          planted_at?: string | null
+          user_id: string
+        }
+        Update: {
+          activity_category?: string
+          created_at?: string | null
+          days_grown?: number | null
+          growth_stage?: string
+          id?: string
+          last_watered_at?: string | null
+          metadata?: Json | null
+          plant_type?: string
+          planted_at?: string | null
+          user_id?: string
+        }
+        Relationships: []
+      }
       golden_years_progress: {
         Row: {
           completed: boolean | null
@@ -2061,6 +2166,39 @@ export type Database = {
           mood?: string
           mood_score?: number | null
           notes?: string | null
+          user_id?: string
+        }
+        Relationships: []
+      }
+      journey_milestones: {
+        Row: {
+          achieved_at: string | null
+          description: string | null
+          icon_name: string | null
+          id: string
+          metadata: Json | null
+          milestone_type: string
+          title: string
+          user_id: string
+        }
+        Insert: {
+          achieved_at?: string | null
+          description?: string | null
+          icon_name?: string | null
+          id?: string
+          metadata?: Json | null
+          milestone_type: string
+          title: string
+          user_id: string
+        }
+        Update: {
+          achieved_at?: string | null
+          description?: string | null
+          icon_name?: string | null
+          id?: string
+          metadata?: Json | null
+          milestone_type?: string
+          title?: string
           user_id?: string
         }
         Relationships: []
@@ -4408,6 +4546,33 @@ export type Database = {
           },
         ]
       }
+      user_sound_preferences: {
+        Row: {
+          ambient_sound: string | null
+          created_at: string | null
+          haptics_enabled: boolean | null
+          sounds_enabled: boolean | null
+          updated_at: string | null
+          user_id: string
+        }
+        Insert: {
+          ambient_sound?: string | null
+          created_at?: string | null
+          haptics_enabled?: boolean | null
+          sounds_enabled?: boolean | null
+          updated_at?: string | null
+          user_id: string
+        }
+        Update: {
+          ambient_sound?: string | null
+          created_at?: string | null
+          haptics_enabled?: boolean | null
+          sounds_enabled?: boolean | null
+          updated_at?: string | null
+          user_id?: string
+        }
+        Relationships: []
+      }
       user_streaks: {
         Row: {
           current_streak: number | null
@@ -4468,6 +4633,48 @@ export type Database = {
           transcription?: string | null
           user_id?: string
           video_url?: string
+        }
+        Relationships: []
+      }
+      voice_notes_future: {
+        Row: {
+          audio_url: string
+          created_at: string | null
+          delivered: boolean | null
+          delivered_at: string | null
+          delivery_date: string
+          id: string
+          message: string | null
+          recording_date: string | null
+          reply_audio_url: string | null
+          title: string
+          user_id: string
+        }
+        Insert: {
+          audio_url: string
+          created_at?: string | null
+          delivered?: boolean | null
+          delivered_at?: string | null
+          delivery_date: string
+          id?: string
+          message?: string | null
+          recording_date?: string | null
+          reply_audio_url?: string | null
+          title: string
+          user_id: string
+        }
+        Update: {
+          audio_url?: string
+          created_at?: string | null
+          delivered?: boolean | null
+          delivered_at?: string | null
+          delivery_date?: string
+          id?: string
+          message?: string | null
+          recording_date?: string | null
+          reply_audio_url?: string | null
+          title?: string
+          user_id?: string
         }
         Relationships: []
       }
