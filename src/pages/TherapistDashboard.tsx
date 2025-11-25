@@ -6,7 +6,8 @@ import { LogOut } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import { Button } from "@/components/ui/button";
-import OverviewTab from "@/components/therapist/OverviewTab";
+import TherapistWelcomeBanner from "@/components/therapist/TherapistWelcomeBanner";
+import TodayTab from "@/components/therapist/TodayTab";
 import ClientsTab from "@/components/therapist/ClientsTab";
 import ScheduleTab from "@/components/therapist/ScheduleTab";
 import MessagesTab from "@/components/therapist/MessagesTab";
@@ -199,6 +200,12 @@ export default function TherapistDashboard() {
     return bookingDate.toDateString() === today.toDateString();
   }).length || 0;
 
+  // Get next session time for welcome banner
+  const nextSession = upcomingBookings?.[0];
+  const nextSessionTime = nextSession 
+    ? new Date(nextSession.appointment_date).toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' })
+    : undefined;
+
   // Transform data for OverviewTab
   const stats = {
     activeClients: upcomingBookings?.length || 0,
@@ -369,13 +376,20 @@ export default function TherapistDashboard() {
 
       {/* Main Content */}
       <div className="max-w-7xl mx-auto px-4 md:px-8 py-8">
-        <Tabs defaultValue="overview" className="w-full">
+        {/* Welcome Banner */}
+        <TherapistWelcomeBanner 
+          therapistName={therapist.name}
+          todaySessionCount={todayBookings}
+          nextSessionTime={nextSessionTime}
+        />
+
+        <Tabs defaultValue="today" className="w-full">
           <TabsList className="grid grid-cols-3 md:grid-cols-8 gap-2 bg-black/30 mb-8 p-1 rounded-lg h-auto">
             <TabsTrigger 
-              value="overview" 
+              value="today" 
               className="data-[state=active]:bg-[#B87333]/90 data-[state=active]:text-white py-3"
             >
-              Overview
+              Today
             </TabsTrigger>
             <TabsTrigger 
               value="clients" 
@@ -426,11 +440,15 @@ export default function TherapistDashboard() {
             </TabsTrigger>
           </TabsList>
 
-          <TabsContent value="overview" className="animate-fade-in">
-            <OverviewTab 
-              stats={stats}
+          <TabsContent value="today" className="animate-fade-in">
+            <TodayTab 
               upcomingAppointments={upcomingAppointments}
               recentMessages={recentMessages}
+              stats={{
+                upcomingToday: todayBookings,
+                activeClients: stats.activeClients,
+                sessionsThisWeek: stats.sessionsThisWeek
+              }}
             />
           </TabsContent>
 
