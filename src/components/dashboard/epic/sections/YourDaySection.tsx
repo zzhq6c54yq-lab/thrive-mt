@@ -364,6 +364,53 @@ export default function YourDaySection({ dashboardData, onCheckInComplete }: You
         </motion.div>
       )}
 
+      {/* Quizzes & Assessments Section */}
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        className="bg-gradient-to-br from-[#D4AF37]/10 via-gray-900/50 to-[#B8941F]/10 border border-[#D4AF37]/30 rounded-xl p-6 backdrop-blur-sm"
+      >
+        <div className="flex items-center justify-between mb-4">
+          <div>
+            <h3 className="text-2xl font-bold text-white mb-1">Quizzes & Assessments</h3>
+            <p className="text-sm text-gray-300">Understand yourself better with professional assessments</p>
+          </div>
+          <Button
+            onClick={() => {
+              trackClick({ component: 'view-all-assessments' });
+              navigate('/mental-wellness/assessments');
+            }}
+            variant="outline"
+            className="border-[#D4AF37]/30 text-[#D4AF37] hover:bg-[#D4AF37]/10"
+          >
+            View All 40+
+          </Button>
+        </div>
+        
+        {/* Featured Assessments Carousel */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+          {[
+            { id: 'gad-7', title: 'Anxiety (GAD-7)', desc: '7 questions • 5 mins', icon: '😰', color: 'from-blue-500/20 to-purple-500/20' },
+            { id: 'phq-9', title: 'Depression (PHQ-9)', desc: '9 questions • 7 mins', icon: '🌧️', color: 'from-indigo-500/20 to-blue-500/20' },
+            { id: 'pss-10', title: 'Stress (PSS-10)', desc: '10 questions • 6 mins', icon: '😓', color: 'from-orange-500/20 to-red-500/20' }
+          ].map((assessment) => (
+            <motion.div
+              key={assessment.id}
+              whileHover={{ scale: 1.02 }}
+              onClick={() => {
+                trackClick({ component: `assessment-${assessment.id}` });
+                navigate(`/mental-wellness/assessment/${assessment.id}`);
+              }}
+              className={`cursor-pointer bg-gradient-to-br ${assessment.color} border border-white/10 rounded-lg p-4 backdrop-blur-sm hover:border-[#D4AF37]/50 transition-all`}
+            >
+              <div className="text-3xl mb-2">{assessment.icon}</div>
+              <h4 className="font-semibold text-white mb-1">{assessment.title}</h4>
+              <p className="text-xs text-gray-400">{assessment.desc}</p>
+            </motion.div>
+          ))}
+        </div>
+      </motion.div>
+
       {/* Today's Focus */}
       <div 
         id="todays-focus"

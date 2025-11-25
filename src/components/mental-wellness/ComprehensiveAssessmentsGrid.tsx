@@ -93,7 +93,7 @@ const ComprehensiveAssessmentsGrid: React.FC = () => {
       </div>
 
       {/* Search and Filters */}
-      <div className="bg-white/10 backdrop-blur-sm rounded-lg p-6 mb-8">
+      <div className="bg-gradient-to-br from-[#D4AF37]/10 to-[#B8941F]/10 backdrop-blur-sm border border-[#D4AF37]/30 rounded-lg p-6 mb-8">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
           {/* Search */}
           <div className="relative">
@@ -102,7 +102,7 @@ const ComprehensiveAssessmentsGrid: React.FC = () => {
               placeholder={translations.searchPlaceholder}
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
-              className="pl-10 bg-white/20 border-white/30 text-white placeholder:text-white/60"
+              className="pl-10 bg-[#D4AF37]/10 border-[#D4AF37]/30 text-white placeholder:text-white/60 focus:border-[#D4AF37]"
             />
           </div>
 
@@ -110,7 +110,7 @@ const ComprehensiveAssessmentsGrid: React.FC = () => {
           <select
             value={selectedCategory}
             onChange={(e) => setSelectedCategory(e.target.value)}
-            className="px-3 py-2 rounded-md bg-white/20 border border-white/30 text-white focus:ring-2 focus:ring-primary"
+            className="px-3 py-2 rounded-md bg-[#D4AF37]/10 border border-[#D4AF37]/30 text-white focus:ring-2 focus:ring-[#D4AF37]"
           >
             <option value="all">{translations.allCategories}</option>
             {assessmentCategories.slice(1).map(category => (
@@ -124,7 +124,7 @@ const ComprehensiveAssessmentsGrid: React.FC = () => {
           <select
             value={selectedDifficulty}
             onChange={(e) => setSelectedDifficulty(e.target.value)}
-            className="px-3 py-2 rounded-md bg-white/20 border border-white/30 text-white focus:ring-2 focus:ring-primary"
+            className="px-3 py-2 rounded-md bg-[#D4AF37]/10 border border-[#D4AF37]/30 text-white focus:ring-2 focus:ring-[#D4AF37]"
           >
             <option value="all">{translations.allDifficulties}</option>
             <option value="beginner" className="text-gray-800">{translations.beginner}</option>
@@ -140,7 +140,7 @@ const ComprehensiveAssessmentsGrid: React.FC = () => {
               setSelectedCategory('all');
               setSelectedDifficulty('all');
             }}
-            className="bg-white/20 border-white/30 text-white hover:bg-white/30"
+            className="bg-[#D4AF37]/10 border-[#D4AF37]/30 text-white hover:bg-[#D4AF37]/20"
           >
             <Filter className="h-4 w-4 mr-2" />
             {translations.clearFilters}
@@ -157,7 +157,7 @@ const ComprehensiveAssessmentsGrid: React.FC = () => {
       {filteredAssessments.length > 0 ? (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {filteredAssessments.map((assessment) => (
-            <Card key={assessment.id} className="bg-white/10 backdrop-blur-sm border-white/20 hover:bg-white/20 transition-all duration-300 cursor-pointer group">
+            <Card key={assessment.id} className="bg-gradient-to-br from-[#D4AF37]/5 to-[#B8941F]/5 backdrop-blur-sm border-[#D4AF37]/20 hover:border-[#D4AF37]/50 hover:bg-[#D4AF37]/10 transition-all duration-300 cursor-pointer group shadow-lg hover:shadow-[#D4AF37]/20">
               <CardHeader className="pb-4">
                 {/* Cover Image */}
                 <div className="w-full h-48 mb-4 rounded-lg overflow-hidden">
@@ -207,7 +207,7 @@ const ComprehensiveAssessmentsGrid: React.FC = () => {
                 {/* Action Button */}
                 <Button
                   onClick={() => handleAssessmentClick(assessment)}
-                  className="w-full mt-4 bg-primary hover:bg-primary/80 text-white"
+                  className="w-full mt-4 bg-gradient-to-r from-[#D4AF37] to-[#B8941F] hover:from-[#B8941F] hover:to-[#D4AF37] text-black font-semibold shadow-lg hover:shadow-[#D4AF37]/50 transition-all"
                 >
                   <Star className="h-4 w-4 mr-2" />
                   {translations.takeAssessment}
