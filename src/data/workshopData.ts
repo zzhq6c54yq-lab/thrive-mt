@@ -1,4 +1,16 @@
 import { Brain, Heart, ShieldCheck, Zap, Moon, UserPlus, Laugh, PenTool, Compass, BadgeCheck, Sparkles, LucideIcon } from "lucide-react";
+import mindfulCommunicationImg from "@/assets/workshop-mindful-communication.jpg";
+import emotionalRegulationImg from "@/assets/workshop-emotional-regulation.jpg";
+import stressManagementImg from "@/assets/workshop-stress-management.jpg";
+import betterSleepImg from "@/assets/workshop-better-sleep.jpg";
+import cognitiveReframingImg from "@/assets/workshop-cognitive-reframing.jpg";
+import gratitudePracticeImg from "@/assets/workshop-gratitude-practice.jpg";
+import selfCompassionImg from "@/assets/workshop-self-compassion.jpg";
+import socialConnectionImg from "@/assets/workshop-social-connection.jpg";
+import anxietyManagementImg from "@/assets/workshop-anxiety-management.jpg";
+import boundarySettingImg from "@/assets/workshop-boundary-setting.jpg";
+import valuesAlignmentImg from "@/assets/workshop-values-alignment.jpg";
+import habitFormationImg from "@/assets/workshop-habit-formation.jpg";
 
 interface ClinicalContext {
   framework: string;
@@ -34,6 +46,7 @@ interface WorkshopData {
   description: string;
   icon: LucideIcon;
   color: string;
+  coverImage: string;
   duration: string;
   learningOutcomes: string[];
   sections: WorkshopSection[];
@@ -47,6 +60,7 @@ export const workshopData: WorkshopData[] = [
     description: "Learn evidence-based communication techniques rooted in mindfulness principles to improve personal and professional relationships.",
     icon: Brain,
     color: "bg-[#9b87f5]/10",
+    coverImage: mindfulCommunicationImg,
     duration: "50 minutes",
     learningOutcomes: [
       "Recognize communication patterns that create tension or misunderstanding",
@@ -142,6 +156,7 @@ export const workshopData: WorkshopData[] = [
     description: "Develop evidence-based skills to manage difficult emotions and respond rather than react to challenging situations.",
     icon: Heart,
     color: "bg-[#f58787]/10",
+    coverImage: emotionalRegulationImg,
     duration: "52 minutes",
     learningOutcomes: [
       "Recognize emotional triggers before they escalate",
@@ -242,6 +257,7 @@ export const workshopData: WorkshopData[] = [
     description: "Evidence-based strategies to reduce stress and build resilience in high-pressure environments.",
     icon: ShieldCheck,
     color: "bg-[#87f5c8]/10",
+    coverImage: stressManagementImg,
     duration: "48 minutes",
     learningOutcomes: [
       "Identify personal stress signatures and common triggers",
@@ -337,6 +353,7 @@ export const workshopData: WorkshopData[] = [
     description: "Evidence-based techniques for improving sleep quality based on Cognitive Behavioral Therapy for Insomnia (CBT-I).",
     icon: Moon,
     color: "bg-[#5c7de3]/10",
+    coverImage: betterSleepImg,
     duration: "50 minutes",
     learningOutcomes: [
       "Understand your unique sleep patterns and circadian rhythm",
@@ -433,6 +450,7 @@ export const workshopData: WorkshopData[] = [
     description: "Change your perspective on challenging situations through evidence-based cognitive techniques from CBT.",
     icon: Zap,
     color: "bg-[#e3b85c]/10",
+    coverImage: cognitiveReframingImg,
     duration: "50 minutes",
     learningOutcomes: [
       "Identify cognitive distortions in your thinking patterns",
@@ -528,6 +546,7 @@ export const workshopData: WorkshopData[] = [
     description: "Evidence-based gratitude interventions to enhance wellbeing based on Positive Psychology research.",
     icon: Sparkles,
     color: "bg-[#5ce39b]/10",
+    coverImage: gratitudePracticeImg,
     duration: "48 minutes",
     learningOutcomes: [
       "Understand the neuroscience of gratitude and its effects on wellbeing",
@@ -618,6 +637,7 @@ export const workshopData: WorkshopData[] = [
     description: "Develop self-compassion using Dr. Kristin Neff's research-based model to counteract self-criticism.",
     icon: Laugh,
     color: "bg-[#e35c9b]/10",
+    coverImage: selfCompassionImg,
     duration: "50 minutes",
     learningOutcomes: [
       "Understand the three components of self-compassion: self-kindness, common humanity, mindfulness",
@@ -713,6 +733,7 @@ export const workshopData: WorkshopData[] = [
     description: "Evidence-based strategies for meaningful social connections based on Interpersonal Therapy principles.",
     icon: UserPlus,
     color: "bg-[#e39b5c]/10",
+    coverImage: socialConnectionImg,
     duration: "48 minutes",
     learningOutcomes: [
       "Understand the critical role of social connection in mental and physical health",
@@ -808,6 +829,7 @@ export const workshopData: WorkshopData[] = [
     description: "Evidence-based tools from CBT, ACT, and DBT for managing anxiety in everyday situations.",
     icon: BadgeCheck,
     color: "bg-[#5ce3e3]/10",
+    coverImage: anxietyManagementImg,
     duration: "52 minutes",
     learningOutcomes: [
       "Understand the biology of anxiety and why it persists",
@@ -908,6 +930,7 @@ export const workshopData: WorkshopData[] = [
     description: "Learn to establish and maintain healthy boundaries using DBT interpersonal effectiveness skills.",
     icon: Compass,
     color: "bg-[#c85ce3]/10",
+    coverImage: boundarySettingImg,
     duration: "47 minutes",
     learningOutcomes: [
       "Identify boundary violations and their impact on wellbeing",
@@ -1003,6 +1026,7 @@ export const workshopData: WorkshopData[] = [
     description: "Clarify core values and align actions using Acceptance and Commitment Therapy (ACT) principles.",
     icon: PenTool,
     color: "bg-[#e3c85c]/10",
+    coverImage: valuesAlignmentImg,
     duration: "50 minutes",
     learningOutcomes: [
       "Identify your core personal and professional values across life domains",
@@ -1093,6 +1117,7 @@ export const workshopData: WorkshopData[] = [
     description: "Science-based approaches to building sustainable habits using behavioral psychology research.",
     icon: Sparkles,
     color: "bg-[#5cc8e3]/10",
+    coverImage: habitFormationImg,
     duration: "48 minutes",
     learningOutcomes: [
       "Understand the neuroscience and psychology of habit formation",
