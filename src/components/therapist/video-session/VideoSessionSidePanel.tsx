@@ -124,13 +124,17 @@ export default function VideoSessionSidePanel({
     if (!notes.trim()) return;
 
     const saveInterval = setInterval(async () => {
-      await supabase.from('video_session_notes').upsert({
+      const { error } = await supabase.from('video_session_notes').upsert({
         session_id: sessionId,
         therapist_id: therapistId,
         client_id: clientId,
         notes: notes,
         updated_at: new Date().toISOString()
-      }, { onConflict: 'session_id' });
+      });
+      
+      if (error) {
+        console.error('Error saving notes:', error);
+      }
     }, 30000);
 
     return () => clearInterval(saveInterval);
