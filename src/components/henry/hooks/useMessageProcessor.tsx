@@ -1,8 +1,10 @@
-
 import { useState, useEffect } from "react";
 import { useToast } from "@/hooks/use-toast";
 import { getHenryResponse } from "@/services/henryMultiAgentService";
 import { checkForEmergency, saveConversationToLocalStorage, analyzeSentiment } from "@/components/help/utils/messageHelpers";
+import { supabase } from "@/integrations/supabase/client";
+
+const STORAGE_KEY = 'henryConversationContext';
 
 export interface Message {
   text: string;
@@ -21,7 +23,7 @@ export const useMessageProcessor = (
 ) => {
   const [processing, setProcessing] = useState(false);
   const [emergencyMode, setEmergencyMode] = useState(false);
-  const [conversationContext, setConversationContext] = useState<string[]>([]);
+  const [conversationContext, setConversationContext] = useState<Message[]>([]);
   const [conversationMood, setConversationMood] = useState<string>("neutral");
   const [userProfile, setUserProfile] = useState<Record<string, any>>({});
   const { toast } = useToast();
@@ -43,9 +45,12 @@ export const useMessageProcessor = (
   }, []);
 
   const updateConversationContext = (message: string, isUser: boolean) => {
-    setConversationContext(prev => {
-      const newContext = [...prev];
-      newContext.push(`${isUser ? "User" : "Henry"}: ${message}`);
+    const newMessage: Message = {
+      text: message,
+      isUser,
+      timestamp: new Date()
+    };
+    setConversationContext(prev => [...prev, newMessage]);
       
       if (isUser) {
         const lowerMessage = message.toLowerCase();
@@ -78,25 +83,116 @@ export const useMessageProcessor = (
     });
   };
 
-  const saveConversation = (messages: Message[]) => {
-    try {
-      const savedConversations = JSON.parse(localStorage.getItem('henryConversations') || '[]');
-      const newConversation = {
-        id: Date.now(),
-        date: new Date().toISOString(),
-        messages: messages.map(m => ({
-          text: m.text,
-          isUser: m.isUser,
-          timestamp: m.timestamp.toISOString()
-        }))
-      };
-      
-      savedConversations.push(newConversation);
-      localStorage.setItem('henryConversations', JSON.stringify(savedConversations));
-    } catch (e) {
-      console.error("Failed to save conversation", e);
+  // Initialize conversation from database and localStorage
+  useEffect(() => {
+    const loadConversation = async () => {
+      try {
+        const { data: { user } } = await supabase.auth.getUser();
+        if (!user) return;
+
+        // Load from database
+        const { data: conversations } = await supabase
+          .from('henry_conversations')
+          .select('id, metadata')
+          .eq('user_id', user.id)
+          .order('last_message_at', { ascending: false })
+          .limit(1)
+          .single();
+
+        if (conversations) {
+          const { data: messages } = await supabase
+            .from('henry_messages_v2')
+            .select('*')
+            .eq('conversation_id', conversations.id)
+            .order('created_at', { ascending: true });
+
+          if (messages && messages.length > 0) {
+            const formatted = messages.map(m => ({
+              text: m.content,
+              isUser: m.role === 'user',
+              timestamp: new Date(m.created_at)
+            }));
+            setConversationContext(formatted);
+            console.log('[MessageProcessor] Loaded', formatted.length, 'messages from database');
+            return;
+          }
+        }
+
+        // Fallback to localStorage
+        const saved = localStorage.getItem(STORAGE_KEY);
+        if (saved) {
+          const parsed = JSON.parse(saved);
+          if (Array.isArray(parsed) && parsed.length > 0) {
+            setConversationContext(parsed);
+          }
+        }
+      } catch (error) {
+        console.error('[MessageProcessor] Failed to load conversation:', error);
+      }
+    };
+
+    loadConversation();
+  }, []);
+
+  // Save to database every 3 messages
+  useEffect(() => {
+    const saveToDatabase = async () => {
+      if (conversationContext.length === 0 || conversationContext.length % 3 !== 0) return;
+
+      try {
+        const { data: { user } } = await supabase.auth.getUser();
+        if (!user) return;
+
+        // Get or create conversation
+        let conversationId;
+        const { data: existingConv } = await supabase
+          .from('henry_conversations')
+          .select('id')
+          .eq('user_id', user.id)
+          .order('last_message_at', { ascending: false })
+          .limit(1)
+          .single();
+
+        if (existingConv) {
+          conversationId = existingConv.id;
+          await supabase
+            .from('henry_conversations')
+            .update({ last_message_at: new Date().toISOString(), message_count: conversationContext.length })
+            .eq('id', conversationId);
+        } else {
+          const { data: newConv } = await supabase
+            .from('henry_conversations')
+            .insert({ user_id: user.id, message_count: conversationContext.length })
+            .select('id')
+            .single();
+          conversationId = newConv?.id;
+        }
+
+        if (!conversationId) return;
+
+        // Save recent messages
+        const recentMessages = conversationContext.slice(-3);
+        const messagesToInsert = recentMessages.map(msg => ({
+          conversation_id: conversationId,
+          role: msg.isUser ? 'user' : 'assistant',
+          content: msg.text,
+          created_at: msg.timestamp.toISOString()
+        }));
+
+        await supabase.from('henry_messages_v2').insert(messagesToInsert);
+        console.log('[MessageProcessor] Saved to database');
+      } catch (error) {
+        console.error('[MessageProcessor] Failed to save to database:', error);
+      }
+    };
+
+    // Also save to localStorage
+    if (conversationContext.length > 0) {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(conversationContext));
     }
-  };
+
+    saveToDatabase();
+  }, [conversationContext]);
 
   const getContextualGreeting = () => {
     const hour = new Date().getHours();

@@ -32,13 +32,17 @@ const SAMPLE_WELLNESS_DATA = [
 ];
 
 export const useAnalyticsData = () => {
-  // Fetch mood data
+  // Fetch mood data from daily_check_ins
   const { data: moodData = [] } = useQuery({
     queryKey: ["mood-analytics"],
     queryFn: async () => {
+      const { data: { user } } = await supabase.auth.getUser();
+      if (!user) return SAMPLE_MOOD_DATA;
+
       const { data, error } = await supabase
-        .from("mood_entries")
-        .select("*")
+        .from("daily_check_ins")
+        .select("mood_score, created_at")
+        .eq("user_id", user.id)
         .order("created_at", { ascending: true })
         .limit(50);
       
@@ -47,11 +51,10 @@ export const useAnalyticsData = () => {
       // Group by week
       const groupedData: Record<string, { total: number; count: number }> = {};
       
-      data.forEach((entry) => {
+      data?.forEach((entry) => {
         const date = new Date(entry.created_at);
-        const weekStart = new Date(date);
-        weekStart.setDate(date.getDate() - date.getDay());
-        const weekKey = `Week ${Math.floor((date.getTime() - weekStart.getTime()) / (7 * 24 * 60 * 60 * 1000)) + 1}`;
+        const weekNumber = Math.ceil(date.getDate() / 7);
+        const weekKey = `Week ${weekNumber}`;
         
         if (!groupedData[weekKey]) {
           groupedData[weekKey] = { total: 0, count: 0 };
@@ -66,7 +69,6 @@ export const useAnalyticsData = () => {
         mood: Math.round(total / count)
       }));
       
-      // Return sample data if no real data exists
       return processedData.length > 0 ? processedData : SAMPLE_MOOD_DATA;
     }
   });
@@ -75,16 +77,23 @@ export const useAnalyticsData = () => {
   const { data: activityData = [] } = useQuery({
     queryKey: ["activity-analytics"],
     queryFn: async () => {
+      const { data: { user } } = await supabase.auth.getUser();
+      if (!user) return SAMPLE_ACTIVITY_DATA;
+
       const sevenDaysAgo = new Date();
       sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 7);
       
       const { data, error } = await supabase
         .from("user_activities")
         .select("*")
+        .eq("user_id", user.id)
         .gte("completed_at", sevenDaysAgo.toISOString())
         .order("completed_at", { ascending: true });
       
-      if (error) throw error;
+      if (error) {
+        console.error('Activity data error:', error);
+        return SAMPLE_ACTIVITY_DATA;
+      }
       
       // Group by day of week
       const daysOfWeek = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
@@ -94,7 +103,7 @@ export const useAnalyticsData = () => {
         groupedData[day] = 0;
       });
       
-      data.forEach((activity) => {
+      data?.forEach((activity) => {
         const day = daysOfWeek[new Date(activity.completed_at).getDay()];
         groupedData[day] += activity.duration_minutes || 0;
       });
@@ -104,8 +113,7 @@ export const useAnalyticsData = () => {
         minutes
       }));
       
-      // Return sample data if no real data exists
-      return processedData.length > 0 && processedData.some(d => d.minutes > 0) 
+      return processedData.some(d => d.minutes > 0) 
         ? processedData 
         : SAMPLE_ACTIVITY_DATA;
     }
@@ -115,18 +123,25 @@ export const useAnalyticsData = () => {
   const { data: wellnessData = [] } = useQuery({
     queryKey: ["wellness-analytics"],
     queryFn: async () => {
+      const { data: { user } } = await supabase.auth.getUser();
+      if (!user) return SAMPLE_WELLNESS_DATA;
+
       const { data, error } = await supabase
         .from("wellness_metrics")
         .select("*")
+        .eq("user_id", user.id)
         .order("recorded_at", { ascending: false })
         .limit(100);
       
-      if (error) throw error;
+      if (error) {
+        console.error('Wellness data error:', error);
+        return SAMPLE_WELLNESS_DATA;
+      }
       
       // Group by metric type
       const groupedData: Record<string, number> = {};
       
-      data.forEach((metric) => {
+      data?.forEach((metric) => {
         if (!groupedData[metric.metric_type]) {
           groupedData[metric.metric_type] = 0;
         }
@@ -138,7 +153,6 @@ export const useAnalyticsData = () => {
         value: Math.round(value)
       }));
       
-      // Return sample data if no real data exists
       return processedData.length > 0 ? processedData : SAMPLE_WELLNESS_DATA;
     }
   });

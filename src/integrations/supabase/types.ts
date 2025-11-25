@@ -972,6 +972,45 @@ export type Database = {
           },
         ]
       }
+      crisis_escalations_v2: {
+        Row: {
+          assigned_to: string | null
+          created_at: string | null
+          id: string
+          notes: string | null
+          resolved_at: string | null
+          severity: string
+          status: string | null
+          trigger_data: Json | null
+          trigger_source: string
+          user_id: string | null
+        }
+        Insert: {
+          assigned_to?: string | null
+          created_at?: string | null
+          id?: string
+          notes?: string | null
+          resolved_at?: string | null
+          severity: string
+          status?: string | null
+          trigger_data?: Json | null
+          trigger_source: string
+          user_id?: string | null
+        }
+        Update: {
+          assigned_to?: string | null
+          created_at?: string | null
+          id?: string
+          notes?: string | null
+          resolved_at?: string | null
+          severity?: string
+          status?: string | null
+          trigger_data?: Json | null
+          trigger_source?: string
+          user_id?: string | null
+        }
+        Relationships: []
+      }
       crisis_events: {
         Row: {
           created_at: string | null
@@ -1597,6 +1636,47 @@ export type Database = {
         Relationships: [
           {
             foreignKeyName: "henry_messages_conversation_id_fkey"
+            columns: ["conversation_id"]
+            isOneToOne: false
+            referencedRelation: "henry_conversations"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      henry_messages_v2: {
+        Row: {
+          agent_type: string | null
+          content: string
+          conversation_id: string
+          created_at: string | null
+          id: string
+          intent_classification: Json | null
+          risk_assessment: Json | null
+          role: string
+        }
+        Insert: {
+          agent_type?: string | null
+          content: string
+          conversation_id: string
+          created_at?: string | null
+          id?: string
+          intent_classification?: Json | null
+          risk_assessment?: Json | null
+          role: string
+        }
+        Update: {
+          agent_type?: string | null
+          content?: string
+          conversation_id?: string
+          created_at?: string | null
+          id?: string
+          intent_classification?: Json | null
+          risk_assessment?: Json | null
+          role?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "henry_messages_v2_conversation_id_fkey"
             columns: ["conversation_id"]
             isOneToOne: false
             referencedRelation: "henry_conversations"
@@ -3611,6 +3691,7 @@ export type Database = {
           is_active: boolean | null
           license_expiry: string | null
           license_number: string | null
+          match_score_factors: Json | null
           max_caseload: number | null
           name: string
           rating: number | null
@@ -3635,6 +3716,7 @@ export type Database = {
           is_active?: boolean | null
           license_expiry?: string | null
           license_number?: string | null
+          match_score_factors?: Json | null
           max_caseload?: number | null
           name: string
           rating?: number | null
@@ -3659,6 +3741,7 @@ export type Database = {
           is_active?: boolean | null
           license_expiry?: string | null
           license_number?: string | null
+          match_score_factors?: Json | null
           max_caseload?: number | null
           name?: string
           rating?: number | null
@@ -4030,6 +4113,7 @@ export type Database = {
         Row: {
           category: string | null
           completed: boolean | null
+          completed_at: string | null
           created_at: string | null
           current: number | null
           deadline: string | null
@@ -4044,6 +4128,7 @@ export type Database = {
         Insert: {
           category?: string | null
           completed?: boolean | null
+          completed_at?: string | null
           created_at?: string | null
           current?: number | null
           deadline?: string | null
@@ -4058,6 +4143,7 @@ export type Database = {
         Update: {
           category?: string | null
           completed?: boolean | null
+          completed_at?: string | null
           created_at?: string | null
           current?: number | null
           deadline?: string | null
@@ -4068,6 +4154,39 @@ export type Database = {
           title?: string
           updated_at?: string | null
           user_id?: string
+        }
+        Relationships: []
+      }
+      user_insights: {
+        Row: {
+          confidence_score: number | null
+          generated_at: string | null
+          id: string
+          insight_text: string
+          insight_type: string
+          supporting_data: Json | null
+          user_id: string
+          viewed: boolean | null
+        }
+        Insert: {
+          confidence_score?: number | null
+          generated_at?: string | null
+          id?: string
+          insight_text: string
+          insight_type: string
+          supporting_data?: Json | null
+          user_id: string
+          viewed?: boolean | null
+        }
+        Update: {
+          confidence_score?: number | null
+          generated_at?: string | null
+          id?: string
+          insight_text?: string
+          insight_type?: string
+          supporting_data?: Json | null
+          user_id?: string
+          viewed?: boolean | null
         }
         Relationships: []
       }

@@ -4,8 +4,12 @@ import { Button } from '@/components/ui/button';
 import { CheckCircle, Clock, Target } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { ProgressRing } from './ProgressRing';
+import confetti from 'canvas-confetti';
+import { supabase } from '@/integrations/supabase/client';
+import { useToast } from '@/hooks/use-toast';
 
 interface GoalCardProps {
+  id?: string;
   title: string;
   description: string;
   current: number;
@@ -18,6 +22,7 @@ interface GoalCardProps {
 }
 
 export const GoalCard: React.FC<GoalCardProps> = ({
+  id,
   title,
   description,
   current,
@@ -28,8 +33,49 @@ export const GoalCard: React.FC<GoalCardProps> = ({
   onComplete,
   index = 0,
 }) => {
+  const { toast } = useToast();
   const progress = (current / target) * 100;
   const isCompleted = status === 'completed';
+
+  const triggerConfetti = () => {
+    confetti({
+      particleCount: 100,
+      spread: 70,
+      origin: { y: 0.6 },
+      colors: ['#D4AF37', '#B8941F', '#FFD700']
+    });
+  };
+
+  const handleComplete = async () => {
+    try {
+      if (id) {
+        const { error } = await supabase
+          .from('user_goals')
+          .update({ 
+            completed: true, 
+            completed_at: new Date().toISOString() 
+          })
+          .eq('id', id);
+
+        if (error) throw error;
+      }
+
+      triggerConfetti();
+      toast({
+        title: "Goal Completed! 🎉",
+        description: "Amazing work! You're making great progress.",
+      });
+
+      if (onComplete) onComplete();
+    } catch (error) {
+      console.error('Failed to complete goal:', error);
+      toast({
+        title: "Error",
+        description: "Failed to mark goal as complete. Please try again.",
+        variant: "destructive"
+      });
+    }
+  };
 
   const getIcon = () => {
     switch (type) {
@@ -89,9 +135,9 @@ export const GoalCard: React.FC<GoalCardProps> = ({
           )}
         </div>
 
-        {!isCompleted && progress >= 100 && onComplete && (
+        {!isCompleted && progress >= 100 && (
           <Button
-            onClick={onComplete}
+            onClick={handleComplete}
             className="w-full mt-4 bg-gradient-to-r from-[#D4AF37] to-[#B8941F] text-black hover:opacity-90"
           >
             Mark Complete
