@@ -1,8 +1,10 @@
 import { useState, useRef, useEffect } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useParams, useSearchParams } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
+import { useUser } from "@/contexts/UserContext";
+import { Loader2 } from "lucide-react";
 import VideoSessionHeader from "./video-session/VideoSessionHeader";
 import VideoSessionControls from "./video-session/VideoSessionControls";
 import VideoSessionSidePanel from "./video-session/VideoSessionSidePanel";
@@ -11,8 +13,18 @@ import HIPAANotice from "./video-session/HIPAANotice";
 
 export default function TherapistVideoSession() {
   const navigate = useNavigate();
-  const { sessionId } = useParams();
+  const { sessionId: sessionIdParam } = useParams();
+  const [searchParams] = useSearchParams();
+  const { user } = useUser();
   const { toast } = useToast();
+  
+  // Support both route params and query params
+  const sessionIdFromQuery = searchParams.get('id');
+  const sessionId = sessionIdParam || sessionIdFromQuery || `session-${Date.now()}`;
+  
+  const [therapistId, setTherapistId] = useState<string | null>(null);
+  const [clientId, setClientId] = useState<string | null>(null);
+  const [loading, setLoading] = useState(true);
   
   // Video refs
   const localVideoRef = useRef<HTMLVideoElement>(null);
@@ -33,11 +45,45 @@ export default function TherapistVideoSession() {
   const clientName = "Sarah Johnson";
   const sessionType = "Individual Therapy";
   const therapistCredentials = "Licensed Therapist, LMFT";
-  const therapistId = "therapist-id"; // Get from auth
-  const clientId = "client-id"; // Get from session
+
+  // Get authenticated user
+  useEffect(() => {
+    const initUser = async () => {
+      try {
+        const { data: { user: authUser }, error } = await supabase.auth.getUser();
+        
+        if (error || !authUser) {
+          toast({
+            title: "Authentication Required",
+            description: "Please log in to access video sessions",
+            variant: "destructive",
+          });
+          navigate("/auth");
+          return;
+        }
+        
+        setTherapistId(authUser.id);
+        const clientParam = searchParams.get('clientId');
+        setClientId(clientParam || 'placeholder-client-id');
+        setLoading(false);
+      } catch (error) {
+        console.error("Error initializing user:", error);
+        toast({
+          title: "Error",
+          description: "Failed to initialize session",
+          variant: "destructive",
+        });
+        navigate("/therapist-dashboard");
+      }
+    };
+
+    initUser();
+  }, [navigate, toast, searchParams]);
 
   // Initialize video stream
   useEffect(() => {
+    if (!therapistId) return;
+
     const initializeStream = async () => {
       try {
         const stream = await navigator.mediaDevices.getUserMedia({
@@ -51,7 +97,6 @@ export default function TherapistVideoSession() {
           localVideoRef.current.srcObject = stream;
         }
 
-        // Log session start
         await logSessionEvent('session_started');
       } catch (error) {
         console.error('Error accessing media devices:', error);
@@ -70,7 +115,7 @@ export default function TherapistVideoSession() {
         localStream.getTracks().forEach(track => track.stop());
       }
     };
-  }, []);
+  }, [therapistId]);
 
   // Monitor connection quality (mock - implement real WebRTC stats)
   useEffect(() => {
@@ -84,14 +129,18 @@ export default function TherapistVideoSession() {
   }, []);
 
   const logSessionEvent = async (eventType: string, metadata?: any) => {
-    if (!sessionId) return;
+    if (!therapistId) return;
     
-    await supabase.from('video_session_logs').insert({
-      session_id: sessionId || 'mock-session-id',
-      event_type: eventType,
-      user_id: therapistId,
-      metadata
-    });
+    try {
+      await supabase.from('video_session_logs').insert({
+        session_id: sessionId,
+        event_type: eventType,
+        user_id: therapistId,
+        metadata
+      });
+    } catch (error) {
+      console.error('Error logging session event:', error);
+    }
   };
 
   const toggleMute = () => {
@@ -187,23 +236,47 @@ export default function TherapistVideoSession() {
     const confirmed = confirm("Are you sure you want to end this session?");
     if (!confirmed) return;
 
-    await logSessionEvent('session_ended');
-
-    // Stop all tracks
-    if (localStream) {
-      localStream.getTracks().forEach(track => track.stop());
+    try {
+      await logSessionEvent('session_ended');
+      
+      if (localStream) {
+        localStream.getTracks().forEach(track => track.stop());
+      }
+      
+      sessionStorage.removeItem(`session-${sessionId}`);
+      
+      toast({
+        title: "Session Ended",
+        description: "Session notes have been saved"
+      });
+      
+      navigate('/therapist-dashboard');
+    } catch (error) {
+      console.error('Error ending session:', error);
+      toast({
+        title: "Error",
+        description: "Failed to properly end session",
+        variant: "destructive",
+      });
     }
-
-    // Clear session data
-    sessionStorage.removeItem(`session-${sessionId}`);
-
-    navigate('/therapist-dashboard');
-    
-    toast({
-      title: "Session Ended",
-      description: "Session notes have been saved"
-    });
   };
+
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center h-screen bg-gray-900">
+        <Loader2 className="w-8 h-8 animate-spin text-[hsl(var(--primary))]" />
+        <p className="ml-3 text-white">Initializing session...</p>
+      </div>
+    );
+  }
+
+  if (!therapistId) {
+    return (
+      <div className="flex items-center justify-center h-screen bg-gray-900">
+        <p className="text-white">Authentication required</p>
+      </div>
+    );
+  }
 
   return (
     <div className="relative w-full h-screen bg-black overflow-hidden">
@@ -281,9 +354,9 @@ export default function TherapistVideoSession() {
 
       {/* Side Panel */}
       <VideoSessionSidePanel
-        sessionId={sessionId || 'mock-session-id'}
-        therapistId={therapistId}
-        clientId={clientId}
+        sessionId={sessionId}
+        therapistId={therapistId || ''}
+        clientId={clientId || ''}
         isOpen={isChatOpen}
         onClose={() => setIsChatOpen(false)}
       />

@@ -40,6 +40,7 @@ import RealTimeTherapy from "./pages/RealTimeTherapy";
 import TherapistAdmin from "./pages/TherapistAdmin";
 import TherapistDashboard from "./pages/TherapistDashboard";
 import TherapistVideoSession from "./pages/TherapistVideoSession";
+import SignatureMoments from "./pages/SignatureMoments";
 import TherapistProfile from "./pages/TherapistProfile";
 import TherapistReset from "./pages/TherapistReset";
 import AdminPortal from "./pages/AdminPortal";
@@ -332,7 +333,8 @@ function App() {
           <Route path="/therapist/:id" element={<TherapistProfile />} />
           <Route path="/therapist-admin" element={<TherapistAdmin />} />
           <Route path="/therapist-dashboard" element={<TherapistDashboard />} />
-          <Route path="/therapist-video-session" element={<TherapistVideoSession />} />
+          <Route path="/therapist-video-session/:sessionId?" element={<TherapistVideoSession />} />
+          <Route path="/signature-moments" element={<SignatureMoments />} />
           <Route path="/therapist-reset" element={<TherapistReset />} />
           <Route path="/admin-portal" element={<AdminPortal />} />
           <Route path="/holistic-wellness" element={<HolisticWellness />} />
