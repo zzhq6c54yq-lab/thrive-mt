@@ -40,6 +40,7 @@ import RealTimeTherapy from "./pages/RealTimeTherapy";
 import TherapistAdmin from "./pages/TherapistAdmin";
 import TherapistDashboard from "./pages/TherapistDashboard";
 import TherapistVideoSession from "./pages/TherapistVideoSession";
+import ClientVideoSession from "./components/client/ClientVideoSession";
 import SignatureMoments from "./pages/SignatureMoments";
 import TherapistProfile from "./pages/TherapistProfile";
 import TherapistReset from "./pages/TherapistReset";
@@ -335,6 +336,7 @@ function App() {
           <Route path="/therapist-admin" element={<TherapistAdmin />} />
           <Route path="/therapist-dashboard" element={<TherapistDashboard />} />
           <Route path="/therapist-video-session/:sessionId?" element={<TherapistVideoSession />} />
+          <Route path="/client-video-session/:sessionId" element={<ClientVideoSession />} />
           <Route path="/signature-moments" element={<SignatureMoments />} />
           <Route path="/therapist-reset" element={<TherapistReset />} />
           <Route path="/admin-portal" element={<AdminPortal />} />
