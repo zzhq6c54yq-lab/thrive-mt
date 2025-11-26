@@ -163,8 +163,19 @@ export default function TherapistConversation() {
     );
   }
 
-  if (!therapist || messages.length === 0) {
-    return null;
+  // Show "Start Conversation" UI if no therapist or no messages
+  if (!therapist) {
+    return (
+      <div className="text-center py-12">
+        <p className="text-muted-foreground mb-4">No therapist assigned yet</p>
+        <button
+          onClick={() => window.location.href = '/real-time-therapy'}
+          className="px-6 py-2 bg-gradient-to-r from-[#D4AF37] to-[#B8941F] text-white rounded-lg hover:shadow-lg transition-all"
+        >
+          Find a Therapist
+        </button>
+      </div>
+    );
   }
 
   return (

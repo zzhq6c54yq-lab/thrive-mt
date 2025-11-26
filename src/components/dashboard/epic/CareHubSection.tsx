@@ -281,7 +281,7 @@ export const CareHubSection: React.FC<CareHubSectionProps> = ({ dashboardData })
           variant="ghost" 
           size="default" 
           className="w-full justify-start hover:bg-[#D4AF37]/10 text-base"
-          onClick={() => navigate('/journal')}
+          onClick={() => navigate('/messages')}
         >
           <MessageSquare className="w-5 h-5 mr-3 text-[#D4AF37]" />
           Send your therapist an update

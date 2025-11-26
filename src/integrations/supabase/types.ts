@@ -2607,6 +2607,7 @@ export type Database = {
       }
       profiles: {
         Row: {
+          assigned_therapist_id: string | null
           avatar_url: string | null
           created_at: string | null
           display_name: string | null
@@ -2626,6 +2627,7 @@ export type Database = {
           user_type: string | null
         }
         Insert: {
+          assigned_therapist_id?: string | null
           avatar_url?: string | null
           created_at?: string | null
           display_name?: string | null
@@ -2645,6 +2647,7 @@ export type Database = {
           user_type?: string | null
         }
         Update: {
+          assigned_therapist_id?: string | null
           avatar_url?: string | null
           created_at?: string | null
           display_name?: string | null
@@ -2663,7 +2666,15 @@ export type Database = {
           updated_at?: string | null
           user_type?: string | null
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "profiles_assigned_therapist_id_fkey"
+            columns: ["assigned_therapist_id"]
+            isOneToOne: false
+            referencedRelation: "therapists"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       promo_codes: {
         Row: {

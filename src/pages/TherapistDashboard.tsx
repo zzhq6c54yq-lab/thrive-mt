@@ -4,25 +4,25 @@ import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
 import { LogOut } from "lucide-react";
 import { useNavigate } from "react-router-dom";
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { Button } from "@/components/ui/button";
 import TherapistWelcomeBanner from "@/components/therapist/TherapistWelcomeBanner";
 import TodayTab from "@/components/therapist/TodayTab";
-import ClientsTab from "@/components/therapist/ClientsTab";
 import ScheduleTab from "@/components/therapist/ScheduleTab";
-import MessagesTab from "@/components/therapist/MessagesTab";
 import EarningsTab from "@/components/therapist/EarningsTab";
 import { DocumentsTab } from "@/components/therapist/DocumentsTab";
 import { ProfileTab } from "@/components/therapist/ProfileTab";
 import { CalendarView } from "@/components/therapist/CalendarView";
 import VideoSessionTab from "@/components/therapist/VideoSessionTab";
 import RequestsTab from "@/components/therapist/RequestsTab";
+import ClientsMessagesTab from "@/components/therapist/ClientsMessagesTab";
 import { useTherapyBookings } from "@/hooks/useTherapyBookings";
 import { startOfWeek } from "date-fns";
 
 export default function TherapistDashboard() {
   const { toast } = useToast();
   const navigate = useNavigate();
+  const queryClient = useQueryClient();
 
   // Get current user
   const { data: user } = useQuery({
@@ -253,26 +253,6 @@ export default function TherapistDashboard() {
     is_read: m.is_read
   })) || [];
 
-  // Transform data for ClientsTab
-  const uniqueClientIds = [...new Set(upcomingBookings?.map(b => b.user_id) || [])];
-  const clients = uniqueClientIds.map(userId => {
-    const booking = upcomingBookings?.find(b => b.user_id === userId);
-    const clientSessions = sessions?.filter(s => s.user_id === userId) || [];
-    
-    return {
-      id: booking?.id || userId,
-      user_id: userId,
-      name: booking?.profiles?.display_name || 'Unknown Client',
-      avatar_url: booking?.profiles?.avatar_url,
-      status: 'active',
-      last_session: clientSessions[clientSessions.length - 1]?.session_date,
-      next_appointment: booking?.appointment_date,
-      total_sessions: clientSessions.length,
-      concerns: booking?.concerns || [],
-      risk_level: 'normal'
-    };
-  });
-
   // Transform data for ScheduleTab
   const appointments = upcomingBookings?.map(b => ({
     id: b.id,
@@ -283,23 +263,23 @@ export default function TherapistDashboard() {
     status: b.status
   })) || [];
 
-  // Transform data for EarningsTab - USE REAL PAYMENT DATA FROM BOOKINGS
+  // Transform data for EarningsTab
   const payments = allBookings?.map(b => ({
     id: b.id,
     date: b.appointment_date,
     client_id: b.user_id,
     client_name: b.profiles?.display_name || 'Unknown Client',
     client_avatar: b.profiles?.avatar_url,
-    session_type: b.session_type, // Real session type from booking
+    session_type: b.session_type,
     session_status: b.status,
     duration_minutes: b.duration_minutes,
-    amount: Number(b.payment_amount) || 0, // Real payment amount
-    status: b.payment_status, // Real payment status: paid, pending, failed
+    amount: Number(b.payment_amount) || 0,
+    status: b.payment_status,
     payment_method: b.payment_method || 'not_specified',
     created_at: b.created_at
   })) || [];
 
-  // Calculate real monthly earnings from paid bookings
+  // Calculate real monthly earnings
   const monthlyData = Array.from({ length: 6 }, (_, i) => {
     const date = new Date();
     date.setMonth(date.getMonth() - (5 - i));
@@ -307,7 +287,7 @@ export default function TherapistDashboard() {
       const paymentDate = new Date(p.date);
       return paymentDate.getMonth() === date.getMonth() && 
              paymentDate.getFullYear() === date.getFullYear() &&
-             p.status === 'paid'; // Only count paid payments
+             p.status === 'paid';
     });
     
     return {
@@ -378,7 +358,6 @@ export default function TherapistDashboard() {
 
       {/* Main Content */}
       <div className="max-w-7xl mx-auto px-4 md:px-8 py-8">
-        {/* Welcome Banner */}
         <TherapistWelcomeBanner 
           therapistName={therapist.name}
           todaySessionCount={todayBookings}
@@ -386,7 +365,7 @@ export default function TherapistDashboard() {
         />
 
         <Tabs defaultValue="today" className="w-full">
-          <TabsList className="grid grid-cols-3 md:grid-cols-10 gap-2 bg-black/30 mb-8 p-1 rounded-lg h-auto">
+          <TabsList className="grid grid-cols-2 md:grid-cols-5 gap-2 bg-black/30 mb-8 p-1 rounded-lg h-auto">
             <TabsTrigger 
               value="today" 
               className="data-[state=active]:bg-[#B87333]/90 data-[state=active]:text-white py-3"
@@ -394,23 +373,15 @@ export default function TherapistDashboard() {
               Today
             </TabsTrigger>
             <TabsTrigger 
-              value="requests" 
+              value="clients" 
               className="data-[state=active]:bg-[#B87333]/90 data-[state=active]:text-white py-3 relative"
             >
-              Requests
-              {/* Badge count can be added here */}
-            </TabsTrigger>
-            <TabsTrigger 
-              value="video-session" 
-              className="data-[state=active]:bg-[#B87333]/90 data-[state=active]:text-white py-3"
-            >
-              Video Session
-            </TabsTrigger>
-            <TabsTrigger 
-              value="clients" 
-              className="data-[state=active]:bg-[#B87333]/90 data-[state=active]:text-white py-3"
-            >
-              Clients
+              Clients & Messages
+              {unreadMessages > 0 && (
+                <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">
+                  {unreadMessages}
+                </span>
+              )}
             </TabsTrigger>
             <TabsTrigger 
               value="schedule" 
@@ -419,39 +390,16 @@ export default function TherapistDashboard() {
               Schedule
             </TabsTrigger>
             <TabsTrigger 
-              value="calendar" 
+              value="sessions" 
               className="data-[state=active]:bg-[#B87333]/90 data-[state=active]:text-white py-3"
             >
-              Calendar
+              Sessions
             </TabsTrigger>
             <TabsTrigger 
-              value="messages" 
-              className="data-[state=active]:bg-[#B87333]/90 data-[state=active]:text-white py-3 relative"
-            >
-              Messages
-              {unreadMessages > 0 && (
-                <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">
-                  {unreadMessages}
-                </span>
-              )}
-            </TabsTrigger>
-            <TabsTrigger 
-              value="documents" 
+              value="settings" 
               className="data-[state=active]:bg-[#B87333]/90 data-[state=active]:text-white py-3"
             >
-              Documents
-            </TabsTrigger>
-            <TabsTrigger 
-              value="profile" 
-              className="data-[state=active]:bg-[#B87333]/90 data-[state=active]:text-white py-3"
-            >
-              Profile
-            </TabsTrigger>
-            <TabsTrigger 
-              value="earnings" 
-              className="data-[state=active]:bg-[#B87333]/90 data-[state=active]:text-white py-3"
-            >
-              Earnings
+              Settings
             </TabsTrigger>
           </TabsList>
 
@@ -467,63 +415,60 @@ export default function TherapistDashboard() {
             />
           </TabsContent>
 
-          <TabsContent value="requests" className="animate-fade-in">
-            <RequestsTab />
-          </TabsContent>
-
-          <TabsContent value="video-session" className="animate-fade-in">
-            <VideoSessionTab 
-              hasActiveSession={false}
-              upcomingBookings={upcomingBookings}
-            />
-          </TabsContent>
-
           <TabsContent value="clients" className="animate-fade-in">
-            <ClientsTab 
-              clients={clients}
-            />
+            <ClientsMessagesTab therapistId={therapist.id} />
           </TabsContent>
 
           <TabsContent value="schedule" className="animate-fade-in">
-            <ScheduleTab 
-              appointments={appointments}
-            />
+            <div className="grid md:grid-cols-2 gap-6">
+              <div className="bg-gradient-to-br from-[#D4AF37]/10 to-[#B8941F]/5 border border-[#D4AF37]/40 rounded-xl p-6">
+                <h2 className="text-2xl font-bold mb-6 text-[#D4AF37]">Upcoming Sessions</h2>
+                <ScheduleTab appointments={appointments} />
+              </div>
+              <div className="bg-gradient-to-br from-[#D4AF37]/10 to-[#B8941F]/5 border border-[#D4AF37]/40 rounded-xl p-6">
+                <h2 className="text-2xl font-bold mb-6 text-[#D4AF37]">Calendar View</h2>
+                <CalendarView bookings={upcomingBookings || []} />
+              </div>
+            </div>
           </TabsContent>
 
-          <TabsContent value="calendar" className="animate-fade-in">
-            <CalendarView 
-              bookings={allBookings || []}
-            />
+          <TabsContent value="sessions" className="animate-fade-in">
+            <div className="space-y-6">
+              <RequestsTab />
+              <VideoSessionTab 
+                hasActiveSession={false}
+                upcomingBookings={upcomingBookings}
+              />
+            </div>
           </TabsContent>
 
-          <TabsContent value="messages" className="animate-fade-in">
-            <MessagesTab 
-              messages={messages || []}
-            />
-          </TabsContent>
-
-          <TabsContent value="documents" className="animate-fade-in">
-            <DocumentsTab 
-              therapistId={therapist.id}
-              clients={clients.map(c => ({
-                id: c.user_id,
-                name: c.name
-              }))}
-            />
-          </TabsContent>
-
-          <TabsContent value="profile" className="animate-fade-in">
-            <ProfileTab 
-              therapist={therapist}
-              onUpdate={() => {}}
-            />
-          </TabsContent>
-
-          <TabsContent value="earnings" className="animate-fade-in">
-            <EarningsTab 
-              payments={payments}
-              monthlyData={monthlyData}
-            />
+          <TabsContent value="settings" className="animate-fade-in">
+            <div className="space-y-6">
+              <div className="bg-gradient-to-br from-[#D4AF37]/10 to-[#B8941F]/5 border border-[#D4AF37]/40 rounded-xl p-6">
+                <h2 className="text-2xl font-bold mb-6 text-[#D4AF37]">Profile Settings</h2>
+                <ProfileTab 
+                  therapist={therapist} 
+                  onUpdate={() => queryClient.invalidateQueries({ queryKey: ['therapist-profile'] })}
+                />
+              </div>
+              <div className="bg-gradient-to-br from-[#D4AF37]/10 to-[#B8941F]/5 border border-[#D4AF37]/40 rounded-xl p-6">
+                <h2 className="text-2xl font-bold mb-6 text-[#D4AF37]">Earnings</h2>
+                <EarningsTab 
+                  payments={payments}
+                  monthlyData={monthlyData}
+                />
+              </div>
+              <div className="bg-gradient-to-br from-[#D4AF37]/10 to-[#B8941F]/5 border border-[#D4AF37]/40 rounded-xl p-6">
+                <h2 className="text-2xl font-bold mb-6 text-[#D4AF37]">Client Documents</h2>
+                <DocumentsTab 
+                  therapistId={therapist.id}
+                  clients={upcomingBookings?.map(b => ({
+                    id: b.user_id,
+                    name: b.profiles?.display_name || 'Unknown Client'
+                  })) || []}
+                />
+              </div>
+            </div>
           </TabsContent>
         </Tabs>
       </div>
