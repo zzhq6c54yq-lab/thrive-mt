@@ -189,6 +189,19 @@ export const therapyBookingSchema = z.object({
     .optional(),
 });
 
+// Therapist request validation
+export const therapistRequestSchema = z.object({
+  requestType: z
+    .enum(['text_message', 'video_message', 'callback_request'], {
+      message: 'Please select a valid request type'
+    }),
+  message: z
+    .string()
+    .trim()
+    .min(1, { message: 'Message is required' })
+    .max(2000, { message: 'Message must be less than 2000 characters' }),
+});
+
 export type AuthInput = z.infer<typeof authSchema>;
 export type ContactInput = z.infer<typeof contactSchema>;
 export type JournalEntryInput = z.infer<typeof journalEntrySchema>;
@@ -199,3 +212,4 @@ export type FeedbackInput = z.infer<typeof feedbackSchema>;
 export type CoachingSessionInput = z.infer<typeof coachingSessionSchema>;
 export type MiniSessionInput = z.infer<typeof miniSessionSchema>;
 export type TherapyBookingInput = z.infer<typeof therapyBookingSchema>;
+export type TherapistRequestInput = z.infer<typeof therapistRequestSchema>;

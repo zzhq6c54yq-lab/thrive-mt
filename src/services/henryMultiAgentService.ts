@@ -22,8 +22,7 @@ export async function getHenryResponse(
     const { data, error } = await supabase.functions.invoke('henry-multi-agent', {
       body: {
         message,
-        conversationId,
-        userId: user.id
+        conversationId
       }
     });
     
@@ -104,7 +103,6 @@ export async function requestHumanSupport(
     
     const { data, error } = await supabase.functions.invoke('create-therapist-conversation', {
       body: {
-        userId: user.id,
         henryConversationId: conversationId,
         reason
       }
