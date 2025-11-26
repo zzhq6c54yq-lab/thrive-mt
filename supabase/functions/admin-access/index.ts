@@ -7,9 +7,6 @@ const corsHeaders = {
   'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
 };
 
-// Rate limiting cache (simple in-memory for demo)
-const attemptCache = new Map<string, { count: number; resetAt: number }>();
-
 serve(async (req) => {
   if (req.method === 'OPTIONS') {
     return new Response(null, { headers: corsHeaders });
@@ -20,22 +17,29 @@ serve(async (req) => {
     const ip = req.headers.get('x-forwarded-for') || 'unknown';
     const userAgent = req.headers.get('user-agent') || 'unknown';
 
-    // Rate limiting: 5 attempts per hour per IP
-    const now = Date.now();
-    const cacheKey = ip;
-    const cached = attemptCache.get(cacheKey);
+    // Initialize Supabase client for rate limiting check
+    const supabaseUrl = Deno.env.get('SUPABASE_URL')!;
+    const supabaseServiceKey = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!;
+    const supabase = createClient(supabaseUrl, supabaseServiceKey);
+
+    // Database-backed rate limiting: 5 attempts per hour per IP
+    const oneHourAgo = new Date(Date.now() - 3600000).toISOString();
     
-    if (cached && cached.resetAt > now) {
-      if (cached.count >= 5) {
-        console.log(`Rate limit exceeded for IP: ${ip}`);
-        return new Response(
-          JSON.stringify({ error: 'Too many attempts. Please try again later.' }),
-          { status: 429, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
-        );
-      }
-      cached.count++;
-    } else {
-      attemptCache.set(cacheKey, { count: 1, resetAt: now + 3600000 }); // 1 hour
+    const { data: recentAttempts, error: countError } = await supabase
+      .from('auth_user_audit')
+      .select('id')
+      .eq('action', 'admin_access_denied')
+      .gte('created_at', oneHourAgo)
+      .like('details->>ip_address', ip);
+
+    if (countError) {
+      console.error('Error checking rate limit:', countError);
+    } else if (recentAttempts && recentAttempts.length >= 5) {
+      console.log(`Rate limit exceeded for IP: ${ip}`);
+      return new Response(
+        JSON.stringify({ error: 'Too many attempts. Please try again later.' }),
+        { status: 429, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+      );
     }
 
     // Get the stored access code from Supabase secrets
@@ -51,11 +55,6 @@ serve(async (req) => {
 
     // Constant-time comparison to prevent timing attacks
     const isValid = constantTimeCompare(accessCode, storedCode);
-
-    // Initialize Supabase client with service role for admin operations
-    const supabaseUrl = Deno.env.get('SUPABASE_URL')!;
-    const supabaseServiceKey = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!;
-    const supabase = createClient(supabaseUrl, supabaseServiceKey);
 
     // Get admin credentials
     const adminEmail = Deno.env.get('ADMIN_EMAIL');
@@ -183,9 +182,6 @@ serve(async (req) => {
         timestamp: new Date().toISOString(),
       }
     });
-
-    // Clear rate limit on success
-    attemptCache.delete(cacheKey);
 
     console.log(`Admin access granted to ${adminEmail}`);
 

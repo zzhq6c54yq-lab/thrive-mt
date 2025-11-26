@@ -211,10 +211,31 @@ serve(async (req) => {
     const supabaseServiceKey = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!;
     const supabase = createClient(supabaseUrl, supabaseServiceKey);
     
-    const { message, conversationId, userId } = await req.json();
+    // Extract userId from JWT token instead of request body
+    const authHeader = req.headers.get('Authorization');
+    if (!authHeader) {
+      return new Response(
+        JSON.stringify({ error: 'Missing authorization header' }),
+        { status: 401, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+      );
+    }
+
+    const token = authHeader.replace('Bearer ', '');
+    const { data: { user }, error: authError } = await supabase.auth.getUser(token);
     
-    if (!message || !userId) {
-      throw new Error('Missing required fields: message, userId');
+    if (authError || !user) {
+      console.error('Authentication error:', authError);
+      return new Response(
+        JSON.stringify({ error: 'Unauthorized' }),
+        { status: 401, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+      );
+    }
+    
+    const userId = user.id; // Use authenticated user, not client-supplied
+    const { message, conversationId } = await req.json();
+    
+    if (!message) {
+      throw new Error('Missing required field: message');
     }
     
     // Get or create conversation

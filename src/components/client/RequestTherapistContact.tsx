@@ -7,6 +7,7 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/com
 import { useToast } from '@/hooks/use-toast';
 import { supabase } from '@/integrations/supabase/client';
 import { useQuery } from '@tanstack/react-query';
+import { therapistRequestSchema } from '@/lib/validations';
 
 export const RequestTherapistContact: React.FC = () => {
   const { toast } = useToast();
@@ -62,14 +63,29 @@ export const RequestTherapistContact: React.FC = () => {
         return;
       }
 
+      // Validate input with Zod schema
+      const validation = therapistRequestSchema.safeParse({
+        requestType,
+        message: message.trim()
+      });
+
+      if (!validation.success) {
+        toast({
+          title: "Validation Error",
+          description: validation.error.errors[0].message,
+          variant: "destructive"
+        });
+        return;
+      }
+
       const { error } = await supabase
         .from('therapist_requests')
         .insert({
           user_id: user.id,
           therapist_id: therapist.id,
-          request_type: requestType || 'text_message',
-          message: message.trim(),
-          priority: requestType === 'callback_request' ? 'high' : 'normal'
+          request_type: validation.data.requestType,
+          message: validation.data.message,
+          priority: validation.data.requestType === 'callback_request' ? 'high' : 'normal'
         });
 
       if (error) throw error;
