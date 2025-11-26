@@ -97,16 +97,16 @@ export function CalendarView({ bookings }: CalendarViewProps) {
               <div
                 key={day.toISOString()}
                 className={cn(
-                  "min-h-[120px] p-2 border rounded-lg transition-colors",
+                  "min-h-[140px] p-3 border rounded-lg transition-colors",
                   isCurrentMonth ? "bg-card" : "bg-muted/30",
-                  isDayToday && "ring-2 ring-primary"
+                  isDayToday && "ring-2 ring-[#D4AF37]"
                 )}
               >
                 {/* Day Number */}
                 <div className={cn(
-                  "text-sm font-medium mb-2",
+                  "text-base font-semibold mb-2",
                   !isCurrentMonth && "text-muted-foreground",
-                  isDayToday && "text-primary font-bold"
+                  isDayToday && "text-[#D4AF37] font-bold"
                 )}>
                   {format(day, "d")}
                 </div>
@@ -117,13 +117,13 @@ export function CalendarView({ bookings }: CalendarViewProps) {
                     <div
                       key={appointment.id}
                       className={cn(
-                        "text-xs p-1.5 rounded border cursor-pointer hover:shadow-sm transition-shadow",
+                        "text-xs p-2 rounded-lg border cursor-pointer hover:shadow-md transition-all",
                         getStatusColor(appointment.status)
                       )}
                     >
-                      <div className="flex items-center gap-1 mb-0.5">
-                        <Clock className="h-3 w-3" />
-                        <span className="font-medium">
+                      <div className="flex items-center gap-1.5 mb-1">
+                        <Clock className="h-3.5 w-3.5" />
+                        <span className="font-semibold">
                           {(() => {
                             try {
                               const date = new Date(appointment.appointment_date);
@@ -134,9 +134,9 @@ export function CalendarView({ bookings }: CalendarViewProps) {
                           })()}
                         </span>
                       </div>
-                      <div className="flex items-center gap-1 truncate">
-                        <User className="h-3 w-3 flex-shrink-0" />
-                        <span className="truncate">
+                      <div className="flex items-center gap-1.5 truncate">
+                        <User className="h-3.5 w-3.5 flex-shrink-0" />
+                        <span className="truncate font-medium">
                           {appointment.profiles?.display_name || "Unknown Client"}
                         </span>
                       </div>

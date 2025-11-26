@@ -419,16 +419,14 @@ export default function TherapistDashboard() {
             <ClientsMessagesTab therapistId={therapist.id} />
           </TabsContent>
 
-          <TabsContent value="schedule" className="animate-fade-in">
-            <div className="grid md:grid-cols-2 gap-6">
-              <div className="bg-gradient-to-br from-[#D4AF37]/10 to-[#B8941F]/5 border border-[#D4AF37]/40 rounded-xl p-6">
-                <h2 className="text-2xl font-bold mb-6 text-[#D4AF37]">Upcoming Sessions</h2>
-                <ScheduleTab appointments={appointments} />
-              </div>
-              <div className="bg-gradient-to-br from-[#D4AF37]/10 to-[#B8941F]/5 border border-[#D4AF37]/40 rounded-xl p-6">
-                <h2 className="text-2xl font-bold mb-6 text-[#D4AF37]">Calendar View</h2>
-                <CalendarView bookings={upcomingBookings || []} />
-              </div>
+          <TabsContent value="schedule" className="animate-fade-in space-y-6">
+            <div className="bg-gradient-to-br from-[#D4AF37]/10 to-[#B8941F]/5 border border-[#D4AF37]/40 rounded-xl p-6">
+              <h2 className="text-2xl font-bold mb-6 text-[#D4AF37]">Upcoming Sessions</h2>
+              <ScheduleTab appointments={appointments} />
+            </div>
+            <div className="bg-gradient-to-br from-[#D4AF37]/10 to-[#B8941F]/5 border border-[#D4AF37]/40 rounded-xl p-6">
+              <h2 className="text-2xl font-bold mb-6 text-[#D4AF37]">Calendar View</h2>
+              <CalendarView bookings={upcomingBookings || []} />
             </div>
           </TabsContent>
 

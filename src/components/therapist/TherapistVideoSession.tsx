@@ -77,11 +77,11 @@ export default function TherapistVideoSession() {
   const [showReaction, setShowReaction] = useState<string | null>(null);
   const [facingMode, setFacingMode] = useState<'user' | 'environment'>('user');
   const [localStream, setLocalStream] = useState<MediaStream | null>(null);
+  const [clientInfo, setClientInfo] = useState<{name: string, avatar?: string} | null>(null);
 
-  // Mock data - replace with real session data
-  const clientName = "Sarah Johnson";
   const sessionType = "Individual Therapy";
   const therapistCredentials = "Licensed Therapist, LMFT";
+  const clientName = clientInfo?.name || "Connecting...";
 
   // Get authenticated user
   useEffect(() => {
@@ -116,6 +116,32 @@ export default function TherapistVideoSession() {
 
     initUser();
   }, [navigate, toast, searchParams]);
+
+  // Fetch client info
+  useEffect(() => {
+    const fetchClientInfo = async () => {
+      const clientIdParam = searchParams.get('clientId');
+      if (clientIdParam && clientIdParam !== 'placeholder-client-id') {
+        try {
+          const { data, error } = await supabase
+            .from('profiles')
+            .select('display_name, avatar_url')
+            .eq('id', clientIdParam)
+            .single();
+          
+          if (!error && data) {
+            setClientInfo({
+              name: data.display_name || 'Client',
+              avatar: data.avatar_url || undefined
+            });
+          }
+        } catch (error) {
+          console.error('Error fetching client info:', error);
+        }
+      }
+    };
+    fetchClientInfo();
+  }, [searchParams]);
 
   // Initialize video stream (WebRTC or fallback)
   useEffect(() => {
@@ -365,17 +391,17 @@ export default function TherapistVideoSession() {
           style={{ transform: 'scaleX(-1)' }}
         />
 
-        {/* Placeholder for client video - only shown when NOT connected */}
-        {!webrtcConnected && (
-          <div className="absolute inset-0 flex items-center justify-center bg-gradient-to-br from-[hsl(var(--primary))]/20 to-background/50">
+        {/* Placeholder for client video - only shown when NOT connected AND no video stream */}
+        {!webrtcConnected && !remoteVideoRef.current?.srcObject && (
+          <div className="absolute inset-0 flex items-center justify-center bg-gradient-to-br from-[#D4AF37]/20 to-background/50">
             <div className="text-center space-y-4">
-              <div className="w-32 h-32 rounded-full bg-[hsl(var(--primary))]/20 border-4 border-[hsl(var(--primary))] mx-auto flex items-center justify-center">
-                <span className="text-4xl font-bold text-[hsl(var(--primary))]">
-                  {clientName.split(' ').map(n => n[0]).join('')}
+              <div className="w-32 h-32 rounded-full bg-[#D4AF37]/20 border-4 border-[#D4AF37] mx-auto flex items-center justify-center">
+                <span className="text-4xl font-bold text-[#D4AF37]">
+                  {clientInfo ? clientName.split(' ').map(n => n[0]).join('') : '...'}
                 </span>
               </div>
               <p className="text-xl font-semibold text-foreground">{clientName}</p>
-              <p className="text-sm text-muted-foreground">Waiting for connection...</p>
+              <p className="text-sm text-muted-foreground">Waiting for client to join...</p>
             </div>
           </div>
         )}

@@ -1,8 +1,8 @@
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Calendar, Clock, Video, Phone } from "lucide-react";
-import { format, startOfWeek, addDays, isSameDay } from "date-fns";
+import { Calendar, Clock, Video, Phone, MessageSquare, User } from "lucide-react";
+import { format } from "date-fns";
+import { useNavigate } from "react-router-dom";
 
 interface Appointment {
   id: string;
@@ -18,15 +18,7 @@ interface ScheduleTabProps {
 }
 
 export default function ScheduleTab({ appointments }: ScheduleTabProps) {
-  const today = new Date();
-  const weekStart = startOfWeek(today, { weekStartsOn: 1 }); // Monday
-  const weekDays = Array.from({ length: 7 }, (_, i) => addDays(weekStart, i));
-
-  const getAppointmentsForDay = (day: Date) => {
-    return appointments.filter(apt => 
-      isSameDay(new Date(apt.appointment_date), day)
-    );
-  };
+  const navigate = useNavigate();
 
   const getSessionTypeIcon = (type: string) => {
     switch (type.toLowerCase()) {
@@ -53,102 +45,76 @@ export default function ScheduleTab({ appointments }: ScheduleTabProps) {
   };
 
   return (
-    <div className="space-y-6">
-      {/* Week View */}
-      <Card>
-        <CardHeader>
-          <div className="flex items-center justify-between">
-            <CardTitle>Weekly Schedule</CardTitle>
-            <div className="flex gap-2">
-              <Button variant="outline" size="sm">Today</Button>
-              <Button variant="outline" size="sm">Week</Button>
-              <Button variant="outline" size="sm">Month</Button>
+    <div className="space-y-4 max-h-[600px] overflow-y-auto pr-2">
+      {appointments
+        .filter(apt => new Date(apt.appointment_date) >= new Date())
+        .slice(0, 15)
+        .map((apt) => (
+          <div
+            key={apt.id}
+            className="flex items-start gap-4 p-6 bg-gradient-to-br from-[#D4AF37]/5 to-[#B8941F]/5 border border-[#D4AF37]/30 rounded-xl hover:border-[#D4AF37]/50 transition-all group"
+          >
+            {/* Avatar */}
+            <div className="w-16 h-16 rounded-full bg-[#D4AF37]/20 flex items-center justify-center flex-shrink-0 border-2 border-[#D4AF37]/40">
+              <User className="h-8 w-8 text-[#D4AF37]" />
+            </div>
+
+            {/* Content */}
+            <div className="flex-1 min-w-0">
+              <div className="flex items-start justify-between gap-4 mb-3">
+                <div>
+                  <h4 className="font-bold text-lg mb-1">{apt.client_name}</h4>
+                  <div className="flex items-center gap-3 text-sm text-muted-foreground">
+                    <div className="flex items-center gap-1.5">
+                      <Calendar className="h-4 w-4 text-[#D4AF37]" />
+                      <span className="font-medium">{format(new Date(apt.appointment_date), "EEE, MMM d")}</span>
+                    </div>
+                    <span>•</span>
+                    <div className="flex items-center gap-1.5">
+                      <Clock className="h-4 w-4 text-[#D4AF37]" />
+                      <span className="font-medium">{format(new Date(apt.appointment_date), "h:mm a")}</span>
+                    </div>
+                    <span>•</span>
+                    <span className="font-medium">{apt.duration_minutes} min</span>
+                  </div>
+                </div>
+                <Badge variant="outline" className={getStatusColor(apt.status)}>
+                  {apt.status}
+                </Badge>
+              </div>
+
+              {/* Action Buttons */}
+              <div className="flex flex-wrap gap-2">
+                <Button 
+                  variant="outline" 
+                  size="sm"
+                  onClick={() => navigate(`/therapist-dashboard?tab=clients`)}
+                  className="border-[#D4AF37]/40 hover:border-[#D4AF37]/60 hover:bg-[#D4AF37]/10"
+                >
+                  <MessageSquare className="h-4 w-4 mr-1.5" />
+                  Message Client
+                </Button>
+                {apt.session_type === "video" && (
+                  <Button 
+                    size="sm"
+                    variant="default"
+                    className="bg-[#D4AF37] hover:bg-[#B8941F] text-black font-semibold"
+                  >
+                    <Video className="h-4 w-4 mr-1.5" />
+                    Join Session
+                  </Button>
+                )}
+              </div>
             </div>
           </div>
-        </CardHeader>
-        <CardContent>
-          <div className="grid grid-cols-7 gap-4">
-            {weekDays.map((day) => {
-              const dayAppointments = getAppointmentsForDay(day);
-              const isToday = isSameDay(day, today);
-              
-              return (
-                <div key={day.toISOString()} className={`space-y-2 ${isToday ? 'ring-2 ring-primary rounded-lg p-2' : ''}`}>
-                  <div className="text-center">
-                    <p className="text-xs text-muted-foreground">{format(day, "EEE")}</p>
-                    <p className={`text-lg font-semibold ${isToday ? 'text-primary' : ''}`}>
-                      {format(day, "d")}
-                    </p>
-                  </div>
-                  <div className="space-y-2">
-                    {dayAppointments.map((apt) => (
-                      <div
-                        key={apt.id}
-                        className="p-2 bg-primary/10 rounded text-xs border border-primary/20"
-                      >
-                        <div className="flex items-center gap-1 mb-1">
-                          {getSessionTypeIcon(apt.session_type)}
-                          <span className="font-medium truncate">{apt.client_name}</span>
-                        </div>
-                        <p className="text-muted-foreground">
-                          {format(new Date(apt.appointment_date), "h:mm a")}
-                        </p>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              );
-            })}
-          </div>
-        </CardContent>
-      </Card>
-
-      {/* Upcoming Appointments List */}
-      <Card>
-        <CardHeader>
-          <CardTitle>Upcoming Appointments</CardTitle>
-        </CardHeader>
-        <CardContent className="space-y-4">
-          {appointments
-            .filter(apt => new Date(apt.appointment_date) >= new Date())
-            .slice(0, 10)
-            .map((apt) => (
-              <div
-                key={apt.id}
-                className="flex items-center justify-between p-4 bg-muted/50 rounded-lg hover:bg-muted transition-colors"
-              >
-                <div className="flex items-center gap-4">
-                  <div className="text-center">
-                    <p className="text-2xl font-bold">{format(new Date(apt.appointment_date), "d")}</p>
-                    <p className="text-xs text-muted-foreground">{format(new Date(apt.appointment_date), "MMM")}</p>
-                  </div>
-                  <div>
-                    <h4 className="font-semibold">{apt.client_name}</h4>
-                    <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                      <Clock className="h-3 w-3" />
-                      <span>{format(new Date(apt.appointment_date), "h:mm a")}</span>
-                      <span>•</span>
-                      <span>{apt.duration_minutes} min</span>
-                      <span>•</span>
-                      <div className="flex items-center gap-1">
-                        {getSessionTypeIcon(apt.session_type)}
-                        <span className="capitalize">{apt.session_type}</span>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <div className="flex items-center gap-2">
-                  <Badge variant="outline" className={getStatusColor(apt.status)}>
-                    {apt.status}
-                  </Badge>
-                  {apt.session_type === "video" && (
-                    <Button size="sm">Join Session</Button>
-                  )}
-                </div>
-              </div>
-            ))}
-        </CardContent>
-      </Card>
+        ))}
+      
+      {appointments.filter(apt => new Date(apt.appointment_date) >= new Date()).length === 0 && (
+        <div className="text-center py-12 text-muted-foreground">
+          <Calendar className="h-12 w-12 mx-auto mb-3 opacity-50" />
+          <p>No upcoming sessions scheduled</p>
+        </div>
+      )}
     </div>
   );
 }

@@ -278,13 +278,13 @@ export const CareHubSection: React.FC<CareHubSectionProps> = ({ dashboardData })
       <div className="space-y-3">
         <p className="text-sm font-semibold text-muted-foreground mb-4">Between Sessions</p>
         <Button 
-          variant="ghost" 
-          size="default" 
-          className="w-full justify-start hover:bg-[#D4AF37]/10 text-base"
+          variant="default"
+          size="lg" 
+          className="w-full justify-start bg-gradient-to-r from-[#D4AF37] to-[#B8941F] hover:from-[#B8941F] hover:to-[#D4AF37] text-black font-semibold shadow-lg hover:shadow-xl transition-all"
           onClick={() => navigate('/messages')}
         >
-          <MessageSquare className="w-5 h-5 mr-3 text-[#D4AF37]" />
-          Send your therapist an update
+          <MessageSquare className="w-5 h-5 mr-3" />
+          Message My Therapist
         </Button>
         <Button 
           variant="ghost" 
