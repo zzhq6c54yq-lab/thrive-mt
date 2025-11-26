@@ -8,6 +8,7 @@ import { useToast } from '@/hooks/use-toast';
 import { supabase } from '@/integrations/supabase/client';
 import { useQuery } from '@tanstack/react-query';
 import { therapistRequestSchema } from '@/lib/validations';
+import { VideoMessageRecorder } from './VideoMessageRecorder';
 
 export const RequestTherapistContact: React.FC = () => {
   const { toast } = useToast();
@@ -29,6 +30,44 @@ export const RequestTherapistContact: React.FC = () => {
       return data;
     }
   });
+
+  const handleVideoSubmit = async (videoUrl: string) => {
+    if (!therapist?.id) {
+      toast({
+        title: "Error",
+        description: "Unable to find therapist profile. Please try again.",
+        variant: "destructive"
+      });
+      return;
+    }
+
+    try {
+      const { data: { user } } = await supabase.auth.getUser();
+      if (!user) throw new Error('Not authenticated');
+
+      const { error } = await supabase
+        .from('therapist_requests')
+        .insert({
+          user_id: user.id,
+          therapist_id: therapist.id,
+          request_type: 'video_message',
+          message: 'Video message',
+          video_url: videoUrl,
+          priority: 'normal'
+        });
+
+      if (error) throw error;
+
+      setRequestType(null);
+    } catch (error) {
+      console.error('Error submitting video:', error);
+      toast({
+        title: "Error",
+        description: "Failed to send video message.",
+        variant: "destructive"
+      });
+    }
+  };
 
   const handleSubmit = async () => {
     if (!message.trim()) {
@@ -165,6 +204,16 @@ export const RequestTherapistContact: React.FC = () => {
           </motion.div>
         </CardContent>
       </Card>
+    );
+  }
+
+  // Show video recorder for video messages
+  if (requestType === 'video_message') {
+    return (
+      <VideoMessageRecorder 
+        onComplete={handleVideoSubmit}
+        onCancel={() => setRequestType(null)}
+      />
     );
   }
 

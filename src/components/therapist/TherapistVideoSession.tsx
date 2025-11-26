@@ -21,7 +21,7 @@ export default function TherapistVideoSession() {
   
   // Support both route params and query params
   const sessionIdFromQuery = searchParams.get('id');
-  const sessionId = sessionIdParam || sessionIdFromQuery || `session-${Date.now()}`;
+  const sessionId = sessionIdParam || sessionIdFromQuery || crypto.randomUUID();
   
   const [therapistId, setTherapistId] = useState<string | null>(null);
   const [clientId, setClientId] = useState<string | null>(null);
@@ -365,18 +365,20 @@ export default function TherapistVideoSession() {
           style={{ transform: 'scaleX(-1)' }}
         />
 
-        {/* Placeholder for client video (remove when real WebRTC implemented) */}
-        <div className="absolute inset-0 flex items-center justify-center bg-gradient-to-br from-[hsl(var(--primary))]/20 to-background/50">
-          <div className="text-center space-y-4">
-            <div className="w-32 h-32 rounded-full bg-[hsl(var(--primary))]/20 border-4 border-[hsl(var(--primary))] mx-auto flex items-center justify-center">
-              <span className="text-4xl font-bold text-[hsl(var(--primary))]">
-                {clientName.split(' ').map(n => n[0]).join('')}
-              </span>
+        {/* Placeholder for client video - only shown when NOT connected */}
+        {!webrtcConnected && (
+          <div className="absolute inset-0 flex items-center justify-center bg-gradient-to-br from-[hsl(var(--primary))]/20 to-background/50">
+            <div className="text-center space-y-4">
+              <div className="w-32 h-32 rounded-full bg-[hsl(var(--primary))]/20 border-4 border-[hsl(var(--primary))] mx-auto flex items-center justify-center">
+                <span className="text-4xl font-bold text-[hsl(var(--primary))]">
+                  {clientName.split(' ').map(n => n[0]).join('')}
+                </span>
+              </div>
+              <p className="text-xl font-semibold text-foreground">{clientName}</p>
+              <p className="text-sm text-muted-foreground">Waiting for connection...</p>
             </div>
-            <p className="text-xl font-semibold text-foreground">{clientName}</p>
-            <p className="text-sm text-muted-foreground">Waiting for connection...</p>
           </div>
-        </div>
+        )}
 
         {/* Therapist Video (Draggable PiP) */}
         <motion.div
