@@ -254,7 +254,9 @@ export default function TherapistDashboard() {
 
   const recentMessages = messages?.slice(0, 5).map(m => ({
     id: m.id,
+    client_id: m.client_id,
     client_name: m.client_name,
+    avatar_url: m.profiles?.avatar_url,
     message_text: m.message_text,
     created_at: m.created_at,
     is_read: m.is_read

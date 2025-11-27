@@ -2,7 +2,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
-import { Video, Clock, MessageSquare, AlertCircle, Calendar, Send, Reply } from "lucide-react";
+import { Video, Clock, MessageSquare, AlertCircle, Calendar, Send, Reply, Phone } from "lucide-react";
 import { format, formatDistanceToNow } from "date-fns";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
@@ -83,6 +83,55 @@ export default function TodayTab({
       });
     } finally {
       setSending(false);
+    }
+  };
+
+  const handleVideoCall = async (clientId: string) => {
+    try {
+      const { data: { user } } = await supabase.auth.getUser();
+      const sessionId = crypto.randomUUID();
+      
+      await supabase.from('video_call_invites').insert({
+        session_id: sessionId,
+        therapist_id: user?.id,
+        client_id: clientId,
+        status: 'pending'
+      });
+
+      navigate(`/therapist-video-session/${sessionId}?clientId=${clientId}`);
+    } catch (error) {
+      toast({
+        title: "Error",
+        description: "Failed to initiate video call.",
+        variant: "destructive",
+      });
+    }
+  };
+
+  const handleAudioCall = async (clientId: string) => {
+    try {
+      const { data: { user } } = await supabase.auth.getUser();
+      const sessionId = crypto.randomUUID();
+      
+      await supabase.from('video_call_invites').insert({
+        session_id: sessionId,
+        therapist_id: user?.id,
+        client_id: clientId,
+        status: 'pending'
+      });
+
+      navigate(`/therapist-video-session/${sessionId}?clientId=${clientId}`);
+      
+      toast({
+        title: "Audio call initiated",
+        description: "You can disable your camera in the session.",
+      });
+    } catch (error) {
+      toast({
+        title: "Error",
+        description: "Failed to initiate call.",
+        variant: "destructive",
+      });
     }
   };
 
@@ -312,15 +361,35 @@ export default function TodayTab({
                       </Button>
                     </div>
                   ) : (
-                    <Button
-                      size="sm"
-                      variant="outline"
-                      onClick={() => setReplyingTo(message.id)}
-                      className="border-white/20 text-white/70 hover:text-white hover:bg-white/5"
-                    >
-                      <Reply className="h-3 w-3 mr-1" />
-                      Reply
-                    </Button>
+                    <div className="flex gap-2">
+                      <Button
+                        size="sm"
+                        variant="outline"
+                        onClick={() => setReplyingTo(message.id)}
+                        className="border-white/20 text-white/70 hover:text-white hover:bg-white/5"
+                      >
+                        <Reply className="h-3 w-3 mr-1" />
+                        Reply
+                      </Button>
+                      <Button
+                        size="sm"
+                        variant="outline"
+                        onClick={() => handleAudioCall(message.client_id)}
+                        className="border-white/20 text-white/70 hover:text-white hover:bg-white/5"
+                      >
+                        <Phone className="h-3 w-3 mr-1" />
+                        Call
+                      </Button>
+                      <Button
+                        size="sm"
+                        variant="outline"
+                        onClick={() => handleVideoCall(message.client_id)}
+                        className="border-white/20 text-white/70 hover:text-white hover:bg-white/5"
+                      >
+                        <Video className="h-3 w-3 mr-1" />
+                        Video
+                      </Button>
+                    </div>
                   )}
                 </div>
               ))

@@ -4,7 +4,7 @@ import { supabase } from '@/integrations/supabase/client';
 import { Button } from '@/components/ui/button';
 import { Textarea } from '@/components/ui/textarea';
 import { Input } from '@/components/ui/input';
-import { Send, Search, User, MessageSquare, Loader2, Calendar, Video } from 'lucide-react';
+import { Send, Search, User, MessageSquare, Loader2, Calendar, Video, Phone } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { useToast } from '@/hooks/use-toast';
 import { format } from 'date-fns';
@@ -187,6 +187,53 @@ export default function ClientsMessagesTab({ therapistId, preSelectedClientId }:
     }
   };
 
+  const handleVideoCall = async (clientId: string) => {
+    try {
+      const sessionId = crypto.randomUUID();
+      
+      await supabase.from('video_call_invites').insert({
+        session_id: sessionId,
+        therapist_id: therapistId,
+        client_id: clientId,
+        status: 'pending'
+      });
+
+      navigate(`/therapist-video-session/${sessionId}?clientId=${clientId}`);
+    } catch (error: any) {
+      toast({
+        title: 'Error initiating video call',
+        description: error.message,
+        variant: 'destructive',
+      });
+    }
+  };
+
+  const handleAudioCall = async (clientId: string) => {
+    try {
+      const sessionId = crypto.randomUUID();
+      
+      await supabase.from('video_call_invites').insert({
+        session_id: sessionId,
+        therapist_id: therapistId,
+        client_id: clientId,
+        status: 'pending'
+      });
+
+      navigate(`/therapist-video-session/${sessionId}?clientId=${clientId}`);
+      
+      toast({
+        title: 'Audio call initiated',
+        description: 'You can disable your camera in the session.',
+      });
+    } catch (error: any) {
+      toast({
+        title: 'Error initiating call',
+        description: error.message,
+        variant: 'destructive',
+      });
+    }
+  };
+
   const filteredClients = clients?.filter(client =>
     client.name.toLowerCase().includes(searchQuery.toLowerCase())
   );
@@ -282,13 +329,19 @@ export default function ClientsMessagesTab({ therapistId, preSelectedClientId }:
                     variant="outline" 
                     size="sm" 
                     className="border-[#D4AF37]/40"
-                    onClick={() => {
-                      const sessionId = crypto.randomUUID();
-                      navigate(`/therapist-video-session/${sessionId}?clientId=${selectedClient.id}`);
-                    }}
+                    onClick={() => handleAudioCall(selectedClient.id)}
+                  >
+                    <Phone className="w-4 h-4 mr-2" />
+                    Call
+                  </Button>
+                  <Button 
+                    variant="outline" 
+                    size="sm" 
+                    className="border-[#D4AF37]/40"
+                    onClick={() => handleVideoCall(selectedClient.id)}
                   >
                     <Video className="w-4 h-4 mr-2" />
-                    Call Client
+                    Video Call
                   </Button>
                   <Button variant="outline" size="sm" className="border-[#D4AF37]/40">
                     <User className="w-4 h-4 mr-2" />
