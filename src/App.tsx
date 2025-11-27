@@ -186,7 +186,6 @@ function App() {
           <Route path="/messages" element={<Messages />} />
           <Route path="/support-wall" element={<CommunitySupport />} />
           <Route path="/gratitude" element={<Gratitude />} />
-          <Route path="/journal" element={<JournalPage />} />
           <Route path="/community-support" element={<CommunitySupport />} />
           <Route path="/debug" element={<Debug />} />
           <Route path="/personalized-content" element={<PersonalizedContent />} />
@@ -262,7 +261,6 @@ function App() {
           <Route path="/golden-years-community" element={<CommunityConnectionsModule />} />
           <Route path="/golden-years-family" element={<FamilyConnectionToolsModule />} />
           <Route path="/golden-years-wellness" element={<WellnessResourcesModule />} />
-          <Route path="/golden-years-memory" element={<MemoryCognitiveHealthModule />} />
           <Route path="/golden-years-calendar" element={<GoldenSpecializedFeature />} />
           
           <Route path="/military-support" element={<MilitarySupport />} />

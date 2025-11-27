@@ -335,15 +335,21 @@ export default function TodayTab({
                         onKeyDown={(e) => {
                           if (e.key === 'Enter' && !e.shiftKey) {
                             e.preventDefault();
-                            handleQuickReply(message.client_id);
+                            if (message.client_id) {
+                              handleQuickReply(message.client_id);
+                            }
                           }
                         }}
                         className="flex-1 bg-white/5 border-white/10"
                       />
                       <Button
                         size="sm"
-                        onClick={() => handleQuickReply(message.client_id)}
-                        disabled={sending || !replyMessage.trim()}
+                        onClick={() => {
+                          if (message.client_id) {
+                            handleQuickReply(message.client_id);
+                          }
+                        }}
+                        disabled={sending || !replyMessage.trim() || !message.client_id}
                         className="bg-[#B87333] hover:bg-[#B8941F] text-black"
                       >
                         <Send className="h-3 w-3" />
@@ -374,7 +380,12 @@ export default function TodayTab({
                       <Button
                         size="sm"
                         variant="outline"
-                        onClick={() => handleAudioCall(message.client_id)}
+                        onClick={() => {
+                          if (message.client_id) {
+                            handleAudioCall(message.client_id);
+                          }
+                        }}
+                        disabled={!message.client_id}
                         className="border-white/20 text-white/70 hover:text-white hover:bg-white/5"
                       >
                         <Phone className="h-3 w-3 mr-1" />
@@ -383,7 +394,12 @@ export default function TodayTab({
                       <Button
                         size="sm"
                         variant="outline"
-                        onClick={() => handleVideoCall(message.client_id)}
+                        onClick={() => {
+                          if (message.client_id) {
+                            handleVideoCall(message.client_id);
+                          }
+                        }}
+                        disabled={!message.client_id}
                         className="border-white/20 text-white/70 hover:text-white hover:bg-white/5"
                       >
                         <Video className="h-3 w-3 mr-1" />

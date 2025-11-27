@@ -47,12 +47,15 @@ export const HenryCompanionSection: React.FC<HenryCompanionSectionProps> = ({
 
   useEffect(() => {
     const interval = setInterval(() => {
-      setMessageIndex((prev) => (prev + 1) % funMessages.length);
-      setCurrentMessage(funMessages[messageIndex]);
+      setMessageIndex((prev) => {
+        const nextIndex = (prev + 1) % funMessages.length;
+        setCurrentMessage(funMessages[nextIndex]);
+        return nextIndex;
+      });
     }, 15000); // Change message every 15 seconds
 
     return () => clearInterval(interval);
-  }, [messageIndex]);
+  }, []);
 
   const handleChatClick = () => {
     trackClick?.('henry-companion-chat', { action: 'chat_initiated' });
