@@ -206,12 +206,52 @@ const HenryDialog: React.FC<HenryDialogProps> = ({
         </div>
 
         <div className="flex-shrink-0 px-6 py-4 border-t border-white/10 bg-black/20">
+          {/* Quick Action Buttons */}
+          <div className="flex flex-wrap gap-2 mb-3">
+            <Button
+              size="sm"
+              variant="outline"
+              onClick={() => handleSendMessage("I'm feeling anxious")}
+              disabled={processing}
+              className="border-[#D4AF37]/30 hover:bg-[#D4AF37]/10 hover:border-[#D4AF37] text-white/80 hover:text-white text-xs"
+            >
+              I'm feeling anxious
+            </Button>
+            <Button
+              size="sm"
+              variant="outline"
+              onClick={() => handleSendMessage("I need to vent")}
+              disabled={processing}
+              className="border-[#D4AF37]/30 hover:bg-[#D4AF37]/10 hover:border-[#D4AF37] text-white/80 hover:text-white text-xs"
+            >
+              Need to vent
+            </Button>
+            <Button
+              size="sm"
+              variant="outline"
+              onClick={() => handleSendMessage("Can you give me coping tips?")}
+              disabled={processing}
+              className="border-[#D4AF37]/30 hover:bg-[#D4AF37]/10 hover:border-[#D4AF37] text-white/80 hover:text-white text-xs"
+            >
+              Coping tips
+            </Button>
+            <Button
+              size="sm"
+              variant="outline"
+              onClick={() => handleSendMessage("I'm having a tough day")}
+              disabled={processing}
+              className="border-[#D4AF37]/30 hover:bg-[#D4AF37]/10 hover:border-[#D4AF37] text-white/80 hover:text-white text-xs"
+            >
+              Tough day
+            </Button>
+          </div>
+
           <div className="flex gap-2">
             <textarea
               value={inputValue}
               onChange={handleInputChange}
               onKeyDown={handleKeyDown}
-              placeholder={isListening ? "Listening..." : "Share how you're feeling..."}
+              placeholder={isListening ? "Listening..." : "What's on your mind?"}
               disabled={processing || isListening}
               className="flex-1 bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white placeholder-white/40 focus:outline-none focus:ring-2 focus:ring-[#D4AF37]/50 resize-none min-h-[60px] max-h-[120px]"
               rows={2}

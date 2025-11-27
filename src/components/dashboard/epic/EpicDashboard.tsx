@@ -237,7 +237,7 @@ export default function EpicDashboard() {
                     {getTimeBasedGreeting()}
                   </h2>
                   <p className="text-xl text-muted-foreground font-light">
-                    We're glad you're here, {profile?.display_name || 'friend'}
+                    We're glad you're here, {profile?.display_name?.split(' ')[0] || 'friend'}
                   </p>
                 </motion.div>
               )}
@@ -321,7 +321,7 @@ export default function EpicDashboard() {
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.3, duration: 0.6 }}
       >
-        <DashboardNavigation userName={profile?.display_name || 'there'} />
+        <DashboardNavigation userName={profile?.display_name?.split(' ')[0] || 'there'} />
       </motion.div>
 
       {/* Main Content with staggered animations */}
@@ -345,7 +345,7 @@ export default function EpicDashboard() {
 
         {/* Henry Companion - Star of the Dashboard */}
         <HenryCompanionSection
-          userName={profile?.display_name || user?.email?.split('@')[0]}
+          userName={profile?.display_name?.split(' ')[0] || user?.email?.split('@')[0]}
           onChatWithHenry={() => setShowHenryDialog(true)}
         />
 
@@ -400,7 +400,7 @@ export default function EpicDashboard() {
       <HenryDialog 
         isOpen={showHenryDialog} 
         onOpenChange={setShowHenryDialog}
-        userName={profile?.display_name || 'there'}
+        userName={profile?.display_name?.split(' ')[0] || 'there'}
       />
 
       {/* Incoming Call Modal for Video/Audio Sessions */}

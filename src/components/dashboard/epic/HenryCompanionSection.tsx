@@ -74,6 +74,20 @@ export const HenryCompanionSection: React.FC<HenryCompanionSectionProps> = ({
     setCurrentMessage(boosts[Math.floor(Math.random() * boosts.length)]);
   };
 
+  const handleDailyWisdom = () => {
+    trackClick?.('henry-companion-wisdom', { action: 'daily_wisdom' });
+    const wisdoms = [
+      "Your struggles don't define you - how you respond to them does. 🌱",
+      "Every small step forward is still progress. Keep going! 🦋",
+      "You don't have to have it all figured out today. 🌅",
+      "Healing isn't linear, and that's perfectly okay. 💫",
+      "The bravest thing you can do is ask for help when you need it. 🤝",
+      "You're writing your own story, one day at a time. 📖",
+      "Rest is not weakness. It's how you recharge for tomorrow. 🌙",
+    ];
+    setCurrentMessage(wisdoms[Math.floor(Math.random() * wisdoms.length)]);
+  };
+
   return (
     <motion.div
       initial={{ opacity: 0, y: 20 }}
@@ -154,6 +168,7 @@ export const HenryCompanionSection: React.FC<HenryCompanionSectionProps> = ({
                 <Button
                   size="sm"
                   variant="ghost"
+                  onClick={handleDailyWisdom}
                   className="hover:bg-[#D4AF37]/10 hover:text-[#D4AF37]"
                 >
                   <Sparkles className="w-4 h-4 mr-2" />

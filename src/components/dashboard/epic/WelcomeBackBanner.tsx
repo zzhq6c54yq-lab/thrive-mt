@@ -12,7 +12,7 @@ const WelcomeBackBanner: React.FC<WelcomeBackBannerProps> = ({ user, profile }) 
 
   const getTimeAwareGreeting = () => {
     const hour = new Date().getHours();
-    const name = profile?.display_name || 'friend';
+    const name = profile?.display_name?.split(' ')[0] || 'friend';
     
     if (hour < 5) {
       return `Late night, ${name}? We're here with you - because you're worth it.`;

@@ -21,7 +21,7 @@ const WelcomeHomeHero: React.FC<WelcomeHomeHeroProps> = ({
 }) => {
   const getTimeAwareGreeting = () => {
     const hour = new Date().getHours();
-    const name = profile?.display_name || 'friend';
+    const name = profile?.display_name?.split(' ')[0] || 'friend';
     
     if (hour >= 0 && hour < 5) {
       return {
