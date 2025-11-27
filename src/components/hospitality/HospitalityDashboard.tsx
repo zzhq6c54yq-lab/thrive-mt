@@ -105,10 +105,10 @@ const HospitalityDashboard: React.FC = () => {
                 <div className="flex items-center justify-between">
                   {action.icon}
                 </div>
-                <CardTitle className="text-lg mt-2 text-white">{action.title}</CardTitle>
+                <CardTitle className="text-lg mt-2 text-gray-900 dark:text-white">{action.title}</CardTitle>
               </CardHeader>
               <CardContent>
-                <CardDescription className="text-sm text-white/70">{action.description}</CardDescription>
+                <CardDescription className="text-sm text-gray-600 dark:text-gray-300">{action.description}</CardDescription>
               </CardContent>
             </Card>
           ))}
@@ -154,8 +154,8 @@ const HospitalityDashboard: React.FC = () => {
           <CardContent className="space-y-4">
             <div className="flex justify-between items-center">
               <div>
-                <div className="font-medium text-white">Managing Difficult Customer Interactions</div>
-                <div className="text-sm text-white/70">Strategies for staying calm under pressure</div>
+                <div className="font-medium text-gray-900 dark:text-white">Managing Difficult Customer Interactions</div>
+                <div className="text-sm text-gray-600 dark:text-gray-300">Strategies for staying calm under pressure</div>
               </div>
               <Button 
                 variant="ghost" 
@@ -176,8 +176,8 @@ const HospitalityDashboard: React.FC = () => {
             
             <div className="flex justify-between items-center">
               <div>
-                <div className="font-medium text-white">Body Mechanics for Service Work</div>
-                <div className="text-sm text-white/70">Preventing physical strain during long shifts</div>
+                <div className="font-medium text-gray-900 dark:text-white">Body Mechanics for Service Work</div>
+                <div className="text-sm text-gray-600 dark:text-gray-300">Preventing physical strain during long shifts</div>
               </div>
               <Button 
                 variant="ghost" 
@@ -208,8 +208,8 @@ const HospitalityDashboard: React.FC = () => {
           <CardContent className="space-y-4">
             <div className="flex justify-between items-center">
               <div>
-                <div className="font-medium text-white">Building Resilience in High-Pressure Environments</div>
-                <div className="text-sm text-white/70">Tomorrow, 2:00 PM</div>
+                <div className="font-medium text-gray-900 dark:text-white">Building Resilience in High-Pressure Environments</div>
+                <div className="text-sm text-gray-600 dark:text-gray-300">Tomorrow, 2:00 PM</div>
               </div>
               <Button 
                 variant="ghost" 
@@ -230,8 +230,8 @@ const HospitalityDashboard: React.FC = () => {
             
             <div className="flex justify-between items-center">
               <div>
-                <div className="font-medium text-white">Mindfulness for Service Industry Professionals</div>
-                <div className="text-sm text-white/70">Friday, 7:00 PM</div>
+                <div className="font-medium text-gray-900 dark:text-white">Mindfulness for Service Industry Professionals</div>
+                <div className="text-sm text-gray-600 dark:text-gray-300">Friday, 7:00 PM</div>
               </div>
               <Button 
                 variant="ghost" 
