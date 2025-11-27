@@ -11,6 +11,7 @@ import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
 import { motion } from "framer-motion";
 import Page from "@/components/Page";
+import HenryContextualTip from "@/components/henry/HenryContextualTip";
 
 interface JournalEntry {
   id: string;
@@ -292,6 +293,12 @@ const Journaling = () => {
         </div>
 
         <div className="container px-4 py-8 max-w-6xl mx-auto">
+          {/* Henry Contextual Tip */}
+          <HenryContextualTip 
+            message="Writing can be incredibly healing. If you're feeling stuck, I can help you with prompts or just be here to listen. Need help getting started?"
+            className="mb-6"
+          />
+          
           <div className="bg-gradient-to-r from-purple-500/10 to-indigo-500/10 rounded-xl p-5 mb-8 border border-purple-200/30 flex flex-col md:flex-row items-center justify-between backdrop-blur-sm shadow-md">
             <div className="flex items-center gap-3 mb-4 md:mb-0">
               <Quote className="h-10 w-10 text-purple-500" />

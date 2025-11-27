@@ -6,6 +6,8 @@ import { Button } from "@/components/ui/button";
 import HomeButton from "@/components/HomeButton";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle, CardFooter } from "@/components/ui/card";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
+import { motion } from "framer-motion";
+import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 
 const CrisisSupport = () => {
   return (
@@ -26,6 +28,52 @@ const CrisisSupport = () => {
       </div>
 
       <div className="container px-4 py-12 max-w-6xl mx-auto">
+        {/* Henry Crisis Support Card */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="mb-8"
+        >
+          <Card className="bg-gradient-to-br from-[#D4AF37]/10 to-[#B8941F]/10 border-[#D4AF37]/30">
+            <CardContent className="p-6">
+              <div className="flex items-start gap-4">
+                <motion.div
+                  animate={{ scale: [1, 1.05, 1] }}
+                  transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
+                  className="relative flex-shrink-0"
+                >
+                  <div className="absolute inset-0 bg-gradient-to-r from-[#D4AF37] to-[#E5C5A1] rounded-full blur-md opacity-40" />
+                  <Avatar className="w-16 h-16 border-2 border-[#D4AF37]/50 relative shadow-lg">
+                    <AvatarImage src="/lovable-uploads/f3c84972-8f58-42d7-b86f-82ff2d823b30.png" alt="Henry" />
+                    <AvatarFallback className="bg-gradient-to-br from-[#D4AF37] to-[#B8941F] text-black font-bold text-xl">
+                      H
+                    </AvatarFallback>
+                  </Avatar>
+                </motion.div>
+                <div className="flex-1">
+                  <h3 className="text-xl font-bold text-foreground mb-2">I'm here with you 💛</h3>
+                  <p className="text-foreground/90 mb-4 leading-relaxed">
+                    You're not alone in this moment. If you're in crisis, please reach out to the resources below immediately. 
+                    I'm also here to talk and support you however I can. Your life matters, and there are people who want to help.
+                  </p>
+                  <div className="flex flex-wrap gap-2">
+                    <Button 
+                      className="bg-gradient-to-r from-[#D4AF37] to-[#B8941F] hover:from-[#E5C5A1] hover:to-[#D4AF37] text-black font-semibold"
+                    >
+                      <MessageSquare className="h-4 w-4 mr-2" />
+                      Talk to Henry Now
+                    </Button>
+                    <Button variant="outline" className="border-[#D4AF37]/40">
+                      <Phone className="h-4 w-4 mr-2" />
+                      Connect to Therapist
+                    </Button>
+                  </div>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+        </motion.div>
+        
         <Alert variant="destructive" className="mb-8">
           <AlertTriangle className="h-4 w-4" />
           <AlertTitle>Emergency Notice</AlertTitle>

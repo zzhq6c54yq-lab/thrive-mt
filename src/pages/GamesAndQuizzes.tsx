@@ -19,6 +19,7 @@ import QuizzesSection from "@/components/games-and-quizzes/QuizzesSection";
 import GameInstructionsDialog from "@/components/games-and-quizzes/GameInstructionsDialog";
 import GamePlayDialog from "@/components/games-and-quizzes/GamePlayDialog";
 import GameComponentSelector from "@/components/games-and-quizzes/GameComponentSelector";
+import HenryContextualTip from "@/components/henry/HenryContextualTip";
 
 interface Quiz {
   id: string;
@@ -260,7 +261,13 @@ const GamesAndQuizzes = () => {
 
       {/* Content section with interactive elements */}
       <div className="relative z-10 max-w-6xl mx-auto px-4 py-8">
-        <motion.div 
+        {/* Henry Contextual Tip */}
+        <HenryContextualTip 
+          message="Games are great for the mind! Not sure which one to try first? I can recommend games based on what you're working on. Want some suggestions?"
+          className="mb-6"
+        />
+        
+        <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5 }}

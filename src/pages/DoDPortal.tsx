@@ -11,6 +11,7 @@ import DoDDashboard from "@/components/military/DoDDashboard";
 import DoDResources from "@/components/military/DoDResources";
 import DoDWorkshops from "@/components/military/DoDWorkshops";
 import DoDAssessments from "@/components/military/DoDAssessments";
+import PortalHenrySection from "@/components/henry/PortalHenrySection";
 
 const DoDPortal: React.FC = () => {
   const navigate = useNavigate();
@@ -421,7 +422,27 @@ const DoDPortal: React.FC = () => {
           </div>
           
           <div className="p-6">
-            {activeTab === 'dashboard' && <DoDDashboard />}
+            {activeTab === 'dashboard' && (
+              <>
+                <PortalHenrySection 
+                  portalName="Military & Veterans"
+                  portalMessage="I understand your unique challenges as a service member or veteran. Whether you're dealing with deployment stress, transition challenges, or anything else, I'm here to support you. You've served with honor - now let's focus on your wellbeing."
+                  quickActions={[
+                    { 
+                      label: "PTSD Resources", 
+                      onClick: () => handleFeatureClick("resources") 
+                    },
+                    { 
+                      label: "Veteran Support", 
+                      onClick: () => handleFeatureClick("community-support") 
+                    }
+                  ]}
+                  accentColor="#0EA5E9"
+                  className="mb-6"
+                />
+                <DoDDashboard />
+              </>
+            )}
             {activeTab === 'resources' && <DoDResources />}
             {activeTab === 'community' && <CommunitySupport />}
             {activeTab === 'assessments' && <DoDAssessments />}

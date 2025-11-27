@@ -10,6 +10,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle, CardFooter }
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { LineChart as RechartsLineChart, Line, BarChart as RechartsBarChart, Bar, PieChart as RechartsPieChart, Pie, Cell, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 import { useAnalyticsData } from "@/hooks/useAnalyticsData";
+import HenryInsightCard from "@/components/henry/HenryInsightCard";
 
 const ProgressAnalytics = () => {
   const { moodData, activityData, wellnessData } = useAnalyticsData();
@@ -55,6 +56,18 @@ const ProgressAnalytics = () => {
       </div>
 
       <div className="container px-4 py-12 max-w-6xl mx-auto">
+        {/* Henry Insight Card */}
+        <HenryInsightCard 
+          insight="I've noticed your mood improved by 125% over the past 8 weeks! On days you meditated, your mood was 40% higher. You're making real progress - keep going!"
+          metric={{
+            label: "Mood Improvement",
+            value: "+125%",
+            trend: "up"
+          }}
+          encouragement="Your consistency is paying off. We're so proud of how far you've come. 💪"
+          className="mb-8"
+        />
+        
         <Tabs defaultValue="overview" className="w-full">
           <TabsList className="grid w-full grid-cols-3 mb-8">
             <TabsTrigger value="overview">Overview</TabsTrigger>

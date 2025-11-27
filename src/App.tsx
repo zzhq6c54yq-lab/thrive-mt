@@ -167,6 +167,7 @@ import InterviewSimulator from "./pages/career-resources/InterviewSimulator";
 import GoalPlanner from "./pages/career-resources/GoalPlanner";
 import { Toaster } from "@/components/ui/toaster";
 import { UserProvider } from "@/contexts/UserContext";
+import FloatingHenryAssistant from "@/components/henry/FloatingHenryAssistant";
 import "./App.css";
 
 function App() {
@@ -175,6 +176,9 @@ function App() {
       <UserProvider>
         <RouteLoadingWrapper>
           <div className="min-h-screen bg-gradient-to-br from-gray-900 via-gray-800 to-blue-900">
+            {/* Global Floating Henry Assistant */}
+            <FloatingHenryAssistant />
+            
             <Routes>
           <Route path="/" element={<Index />} />
           <Route path="/auth" element={<Auth />} />
