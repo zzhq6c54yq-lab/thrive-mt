@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Play, Pause, SkipBack, SkipForward, Volume2, Download, Flower2, Clock, Heart, Brain } from "lucide-react";
 import useTranslation from "@/hooks/useTranslation";
 import { useToast } from "@/hooks/use-toast";
+import HenryContextualTip from "@/components/henry/HenryContextualTip";
 
 const MeditationStudio = () => {
   const { isSpanish } = useTranslation();
@@ -155,6 +156,12 @@ const MeditationStudio = () => {
   return (
     <Page title={isSpanish ? "Estudio de Meditación" : "Meditation Studio"}>
       <div className="container mx-auto px-6 py-8">
+        {/* Henry Contextual Tip */}
+        <HenryContextualTip 
+          message="Finding it hard to focus? Let me guide you. Meditation is a practice, not perfection. Want recommendations based on your goals?"
+          className="mb-6"
+        />
+        
         <div className="text-center mb-8">
           <Flower2 className="w-16 h-16 text-purple-500 mx-auto mb-4" />
           <h1 className="text-4xl font-bold text-gray-800 mb-4">
