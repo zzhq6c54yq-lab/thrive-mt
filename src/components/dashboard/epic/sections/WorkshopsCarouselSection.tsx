@@ -25,13 +25,6 @@ const WorkshopsCarouselSection: React.FC<WorkshopsCarouselSectionProps> = ({ tra
 
   const handleWorkshopClick = (workshopId: string, workshopTitle: string) => {
     trackClick?.('workshops-carousel', { workshopId, workshopTitle });
-    
-    toast({
-      title: "Starting Workshop",
-      description: `Loading ${workshopTitle}...`,
-      duration: 2000,
-    });
-
     navigate(`/ai-workshop-studio?selected=${workshopId}`);
   };
 
@@ -83,21 +76,11 @@ const WorkshopsCarouselSection: React.FC<WorkshopsCarouselSectionProps> = ({ tra
                           alt={workshop.title}
                           className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
                         />
-                        <div className="absolute inset-0 bg-gradient-to-br from-[#D4AF37]/40 via-black/20 to-[#B8941F]/40 group-hover:from-[#D4AF37]/50 transition-all duration-300" />
-                        
-                        {/* Icon Overlay */}
-                        <div className="absolute inset-0 flex items-center justify-center">
-                          <motion.div
-                            whileHover={{ scale: 1.1, rotate: 5 }}
-                            transition={{ duration: 0.3 }}
-                            className="bg-black/40 backdrop-blur-sm rounded-full p-6"
-                          >
-                            <Icon className="h-16 w-16 text-[#D4AF37] drop-shadow-2xl" />
-                          </motion.div>
-                        </div>
+                      </div>
 
-                        {/* Badges */}
-                        <div className="absolute top-3 left-3 flex flex-col gap-2">
+                      {/* Content */}
+                      <div className="p-4 flex-1 flex flex-col">
+                        <div className="flex gap-2 mb-2 flex-wrap">
                           <Badge variant="secondary" className="bg-background/80 backdrop-blur-sm text-xs">
                             {workshop.duration}
                           </Badge>
@@ -105,10 +88,6 @@ const WorkshopsCarouselSection: React.FC<WorkshopsCarouselSectionProps> = ({ tra
                             {workshop.clinicalContext.framework}
                           </Badge>
                         </div>
-                      </div>
-
-                      {/* Content */}
-                      <div className="p-4 flex-1 flex flex-col">
                         <h3 className="text-lg font-semibold text-foreground mb-2 group-hover:text-[#D4AF37] transition-colors">
                           {workshop.title}
                         </h3>

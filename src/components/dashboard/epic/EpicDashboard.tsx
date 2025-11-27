@@ -24,6 +24,7 @@ import EmpathyErrorState from '@/components/shared/EmpathyErrorState';
 import WelcomeHomeHero from './WelcomeHomeHero';
 import ConversationalCheckIn from './ConversationalCheckIn';
 import WelcomeBackBanner from './WelcomeBackBanner';
+import { HenryCompanionSection } from './HenryCompanionSection';
 import { useLastSeen } from '@/hooks/useLastSeen';
 
 export default function EpicDashboard() {
@@ -339,6 +340,12 @@ export default function EpicDashboard() {
           lastCheckIn={lastCheckIn}
           moodTrend={dashboardData.weeklyStats.moodTrend}
           checkInStreak={dashboardData.checkInStreak}
+        />
+
+        {/* Henry Companion - Star of the Dashboard */}
+        <HenryCompanionSection
+          userName={profile?.display_name || user?.email?.split('@')[0]}
+          onChatWithHenry={() => setShowHenryDialog(true)}
         />
 
         {/* Conversational Check-In */}
