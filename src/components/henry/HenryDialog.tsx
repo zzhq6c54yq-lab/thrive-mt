@@ -166,22 +166,11 @@ const HenryDialog: React.FC<HenryDialogProps> = ({
           boxShadow: '0 0 50px rgba(212, 175, 55, 0.15)'
         }}
       >
-        <div className="absolute right-4 top-4 z-50">
-          <Button
-            variant="ghost"
-            size="icon"
-            onClick={() => onOpenChange(false)}
-            className="rounded-full bg-white/5 hover:bg-white/10 text-white/70 hover:text-white transition-all"
-          >
-            <X className="h-5 w-5" />
-          </Button>
-        </div>
-
         <div className="flex-shrink-0 px-6 pt-6 pb-4">
           <HenryHeader onClose={() => onOpenChange(false)} />
         </div>
 
-        <div className="absolute right-4 top-24 z-40 flex flex-col gap-2">
+        <div className="absolute right-4 top-16 z-40 flex flex-col gap-2">
           <Button
             variant="ghost"
             size="icon"

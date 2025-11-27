@@ -94,7 +94,7 @@ export default function QuickActions() {
   const actions = getContextualActions();
 
   return (
-    <div className="fixed bottom-24 right-6 z-40">
+    <div className="fixed bottom-44 right-6 z-40">
       <AnimatePresence>
         {isExpanded && (
           <motion.div

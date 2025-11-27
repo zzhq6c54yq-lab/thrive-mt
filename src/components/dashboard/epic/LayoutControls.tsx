@@ -49,7 +49,7 @@ export default function LayoutControls() {
   };
   
   return (
-    <div className="fixed bottom-32 right-8 z-30">
+    <div className="fixed bottom-60 right-6 z-30">
       <DropdownMenu open={isOpen} onOpenChange={setIsOpen}>
         <DropdownMenuTrigger asChild>
           <Button
