@@ -267,7 +267,7 @@ export const CareHubSection: React.FC<CareHubSectionProps> = ({ dashboardData })
             size="default" 
             variant="gold" 
             className="shadow-md hover:shadow-lg"
-            onClick={() => window.open('/virtual-meetings', '_blank')}
+            onClick={() => navigate(`/client-video-session/${nextAppointment.id}`)}
           >
             <Video className="w-4 h-4 mr-2" />
             Join Video Call

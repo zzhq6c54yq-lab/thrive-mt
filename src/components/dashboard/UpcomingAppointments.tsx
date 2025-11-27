@@ -71,15 +71,21 @@ const UpcomingAppointments = () => {
     },
   ];
 
-  const handleJoinAppointment = (appointmentId: number) => {
+  const handleJoinAppointment = (appointment: any) => {
     toast({
       title: translations.joiningSession,
       description: translations.connecting,
       duration: 1500,
     });
-    // In a real app, this would navigate to the meeting room
-    console.log(`Joining appointment: ${appointmentId}`);
-    navigate("/virtual-meetings");
+    
+    // Navigate to appropriate session based on type
+    if (appointment.type === "video") {
+      // Therapy video sessions go to client video session
+      navigate(`/client-video-session/${appointment.id}`);
+    } else {
+      // Group sessions/workshops go to virtual meetings
+      navigate("/virtual-meetings");
+    }
   };
 
   const handleViewAllAppointments = () => {
@@ -164,7 +170,7 @@ const UpcomingAppointments = () => {
                     variant="outline"
                     size="sm"
                     className="text-xs border-[#B87333]/20 bg-[#B87333]/10 text-[#B87333] hover:border-[#B87333]/60 hover:bg-[#B87333]/20"
-                    onClick={() => handleJoinAppointment(appointment.id)}
+                    onClick={() => handleJoinAppointment(appointment)}
                   >
                     {translations.joinSession}
                   </Button>
