@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
+import { useNavigate } from 'react-router-dom';
 import { supabase } from '@/integrations/supabase/client';
 import { Button } from '@/components/ui/button';
 import { Textarea } from '@/components/ui/textarea';
@@ -24,6 +25,7 @@ interface Therapist {
 }
 
 export default function ClientMessaging() {
+  const navigate = useNavigate();
   const [newMessage, setNewMessage] = useState('');
   const [isSending, setIsSending] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
@@ -167,6 +169,61 @@ export default function ClientMessaging() {
     }
   };
 
+  const handleVideoCall = async () => {
+    if (!user?.id || !therapist?.id) return;
+
+    try {
+      const sessionId = crypto.randomUUID();
+      
+      const { error } = await supabase.from('video_call_invites').insert({
+        session_id: sessionId,
+        therapist_id: therapist.id,
+        client_id: user.id,
+        status: 'pending'
+      });
+
+      if (error) throw error;
+
+      navigate(`/client-video-session/${sessionId}`);
+    } catch (error: any) {
+      toast({
+        title: 'Error initiating call',
+        description: error.message,
+        variant: 'destructive',
+      });
+    }
+  };
+
+  const handleAudioCall = async () => {
+    if (!user?.id || !therapist?.id) return;
+
+    try {
+      const sessionId = crypto.randomUUID();
+      
+      const { error } = await supabase.from('video_call_invites').insert({
+        session_id: sessionId,
+        therapist_id: therapist.id,
+        client_id: user.id,
+        status: 'pending'
+      });
+
+      if (error) throw error;
+
+      toast({
+        title: 'Calling...',
+        description: `Connecting to ${therapist.name}`,
+      });
+
+      navigate(`/client-video-session/${sessionId}`);
+    } catch (error: any) {
+      toast({
+        title: 'Error initiating call',
+        description: error.message,
+        variant: 'destructive',
+      });
+    }
+  };
+
   if (therapistLoading) {
     return (
       <div className="flex items-center justify-center h-96">
@@ -203,10 +260,20 @@ export default function ClientMessaging() {
             </div>
           </div>
           <div className="flex gap-2">
-            <Button variant="outline" size="icon" className="border-[#D4AF37]/40">
+            <Button 
+              variant="outline" 
+              size="icon" 
+              className="border-[#D4AF37]/40 hover:bg-[#D4AF37]/10"
+              onClick={handleAudioCall}
+            >
               <Phone className="w-5 h-5" />
             </Button>
-            <Button variant="outline" size="icon" className="border-[#D4AF37]/40">
+            <Button 
+              variant="outline" 
+              size="icon" 
+              className="border-[#D4AF37]/40 hover:bg-[#D4AF37]/10"
+              onClick={handleVideoCall}
+            >
               <Video className="w-5 h-5" />
             </Button>
           </div>

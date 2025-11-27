@@ -18,6 +18,7 @@ import CommandPalette from './CommandPalette';
 import AIContextualHelper from './AIContextualHelper';
 import LayoutControls from './LayoutControls';
 import HenryDialog from '@/components/henry/HenryDialog';
+import IncomingCallModal from '@/components/client/IncomingCallModal';
 import { useKeyboardShortcuts } from '@/hooks/useKeyboardShortcuts';
 import EmpathyLoadingState from '@/components/shared/EmpathyLoadingState';
 import EmpathyErrorState from '@/components/shared/EmpathyErrorState';
@@ -401,6 +402,9 @@ export default function EpicDashboard() {
         onOpenChange={setShowHenryDialog}
         userName={profile?.display_name || 'there'}
       />
+
+      {/* Incoming Call Modal for Video/Audio Sessions */}
+      <IncomingCallModal />
 
       {/* Hidden trigger button for YourDaySection */}
       <button
