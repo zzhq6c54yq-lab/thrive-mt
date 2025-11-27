@@ -28,21 +28,21 @@ const HospitalityResources: React.FC = () => {
   return (
     <div className="space-y-6">
       <div className="mb-6">
-        <h2 className="text-2xl font-bold mb-2 text-gray-800 dark:text-white">Hospitality Wellness Resources</h2>
-        <p className="text-gray-600 dark:text-gray-300">
+        <h2 className="text-2xl font-bold mb-2 text-white">Hospitality Wellness Resources</h2>
+        <p className="text-white/70">
           Specialized resources to support your mental wellbeing in the restaurant and hospitality industry
         </p>
       </div>
       
       {/* Featured Guides */}
       <div>
-        <h3 className="text-xl font-semibold mb-4 text-gray-800 dark:text-gray-200 flex items-center gap-2">
+        <h3 className="text-xl font-semibold mb-4 text-white flex items-center gap-2">
           <BookOpen className="h-5 w-5 text-purple-500" />
           Featured Guides
         </h3>
         
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          <Card className="bg-white dark:bg-gray-800 border-purple-200 dark:border-purple-900">
+          <Card className="bg-white/10 border-purple-200 dark:border-purple-900">
             <CardHeader>
               <CardTitle className="flex items-center justify-between">
                 <span>Managing Difficult Customer Interactions</span>
@@ -51,7 +51,7 @@ const HospitalityResources: React.FC = () => {
               <CardDescription>Strategies for staying calm under pressure</CardDescription>
             </CardHeader>
             <CardContent>
-              <p className="text-sm text-gray-500 dark:text-gray-400">
+              <p className="text-sm text-white/60">
                 Learn effective techniques to handle challenging customer situations while maintaining your emotional wellbeing.
               </p>
             </CardContent>
@@ -66,7 +66,7 @@ const HospitalityResources: React.FC = () => {
             </CardFooter>
           </Card>
           
-          <Card className="bg-white dark:bg-gray-800 border-purple-200 dark:border-purple-900">
+          <Card className="bg-white/10 border-purple-200 dark:border-purple-900">
             <CardHeader>
               <CardTitle className="flex items-center justify-between">
                 <span>Body Mechanics for Service Work</span>
@@ -75,7 +75,7 @@ const HospitalityResources: React.FC = () => {
               <CardDescription>Preventing physical strain and injury</CardDescription>
             </CardHeader>
             <CardContent>
-              <p className="text-sm text-gray-500 dark:text-gray-400">
+              <p className="text-sm text-white/60">
                 Practical techniques to reduce physical strain during long shifts, including proper posture and movement patterns.
               </p>
             </CardContent>
@@ -90,7 +90,7 @@ const HospitalityResources: React.FC = () => {
             </CardFooter>
           </Card>
           
-          <Card className="bg-white dark:bg-gray-800 border-purple-200 dark:border-purple-900">
+          <Card className="bg-white/10 border-purple-200 dark:border-purple-900">
             <CardHeader>
               <CardTitle className="flex items-center justify-between">
                 <span>Navigating Irregular Schedules</span>
@@ -99,7 +99,7 @@ const HospitalityResources: React.FC = () => {
               <CardDescription>Maintaining sleep quality and personal time</CardDescription>
             </CardHeader>
             <CardContent>
-              <p className="text-sm text-gray-500 dark:text-gray-400">
+              <p className="text-sm text-white/60">
                 Strategies for maintaining work-life balance and healthy sleep patterns despite irregular or late-night shifts.
               </p>
             </CardContent>
@@ -118,18 +118,18 @@ const HospitalityResources: React.FC = () => {
       
       {/* Wellness Articles */}
       <div>
-        <h3 className="text-xl font-semibold mb-4 text-gray-800 dark:text-gray-200 flex items-center gap-2">
+        <h3 className="text-xl font-semibold mb-4 text-white flex items-center gap-2">
           <FileText className="h-5 w-5 text-purple-500" />
           Industry Wellness Articles
         </h3>
         
         <div className="space-y-4">
-          <Card className="bg-white dark:bg-gray-800">
+          <Card className="bg-white/10">
             <CardContent className="p-4">
               <div className="flex justify-between items-center">
                 <div>
-                  <h4 className="font-medium text-gray-900 dark:text-white">Managing Tip-Based Income Stress</h4>
-                  <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">
+                  <h4 className="font-medium text-white">Managing Tip-Based Income Stress</h4>
+                  <p className="text-sm text-white/60 mt-1">
                     Financial wellbeing strategies for service industry professionals
                   </p>
                 </div>
@@ -145,12 +145,12 @@ const HospitalityResources: React.FC = () => {
             </CardContent>
           </Card>
           
-          <Card className="bg-white dark:bg-gray-800">
+          <Card className="bg-white/10">
             <CardContent className="p-4">
               <div className="flex justify-between items-center">
                 <div>
-                  <h4 className="font-medium text-gray-900 dark:text-white">The Emotional Labor of Service Work</h4>
-                  <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">
+                  <h4 className="font-medium text-white">The Emotional Labor of Service Work</h4>
+                  <p className="text-sm text-white/60 mt-1">
                     Understanding and managing the hidden emotional demands of hospitality roles
                   </p>
                 </div>
@@ -166,12 +166,12 @@ const HospitalityResources: React.FC = () => {
             </CardContent>
           </Card>
           
-          <Card className="bg-white dark:bg-gray-800">
+          <Card className="bg-white/10">
             <CardContent className="p-4">
               <div className="flex justify-between items-center">
                 <div>
-                  <h4 className="font-medium text-gray-900 dark:text-white">Building Supportive Kitchen Culture</h4>
-                  <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">
+                  <h4 className="font-medium text-white">Building Supportive Kitchen Culture</h4>
+                  <p className="text-sm text-white/60 mt-1">
                     Creating mentally healthy work environments in high-pressure kitchens
                   </p>
                 </div>
@@ -187,12 +187,12 @@ const HospitalityResources: React.FC = () => {
             </CardContent>
           </Card>
           
-          <Card className="bg-white dark:bg-gray-800">
+          <Card className="bg-white/10">
             <CardContent className="p-4">
               <div className="flex justify-between items-center">
                 <div>
-                  <h4 className="font-medium text-gray-900 dark:text-white">Substance Use in the Hospitality Industry</h4>
-                  <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">
+                  <h4 className="font-medium text-white">Substance Use in the Hospitality Industry</h4>
+                  <p className="text-sm text-white/60 mt-1">
                     Recognizing warning signs and finding healthier coping mechanisms
                   </p>
                 </div>
@@ -212,7 +212,7 @@ const HospitalityResources: React.FC = () => {
       
       {/* Quick Practices */}
       <div>
-        <h3 className="text-xl font-semibold mb-4 text-gray-800 dark:text-gray-200 flex items-center gap-2">
+        <h3 className="text-xl font-semibold mb-4 text-white flex items-center gap-2">
           <Coffee className="h-5 w-5 text-purple-500" />
           Quick Break Practices
         </h3>
@@ -220,8 +220,8 @@ const HospitalityResources: React.FC = () => {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
           <Card className="bg-gradient-to-r from-purple-500/10 to-indigo-500/10 border-purple-200 dark:border-purple-900">
             <CardContent className="p-6">
-              <h4 className="font-medium text-gray-900 dark:text-white mb-2">2-Minute Reset</h4>
-              <p className="text-sm text-gray-800 dark:text-gray-200 mb-4">
+              <h4 className="font-medium text-white mb-2">2-Minute Reset</h4>
+              <p className="text-sm text-white/70 mb-4">
                 A quick mindfulness practice you can do during short breaks
               </p>
               <Button 
@@ -235,8 +235,8 @@ const HospitalityResources: React.FC = () => {
           
           <Card className="bg-gradient-to-r from-blue-500/10 to-cyan-500/10 border-blue-200 dark:border-blue-900">
             <CardContent className="p-6">
-              <h4 className="font-medium text-gray-900 dark:text-white mb-2">Staff Room Stretch</h4>
-              <p className="text-sm text-gray-800 dark:text-gray-200 mb-4">
+              <h4 className="font-medium text-white mb-2">Staff Room Stretch</h4>
+              <p className="text-sm text-white/70 mb-4">
                 Quick stretches to relieve physical tension during shifts
               </p>
               <Button 
@@ -250,8 +250,8 @@ const HospitalityResources: React.FC = () => {
           
           <Card className="bg-gradient-to-r from-orange-500/10 to-amber-500/10 border-orange-200 dark:border-orange-900">
             <CardContent className="p-6">
-              <h4 className="font-medium text-gray-900 dark:text-white mb-2">Emotional Regulation</h4>
-              <p className="text-sm text-gray-800 dark:text-gray-200 mb-4">
+              <h4 className="font-medium text-white mb-2">Emotional Regulation</h4>
+              <p className="text-sm text-white/70 mb-4">
                 Techniques to calm your nervous system after difficult interactions
               </p>
               <Button 

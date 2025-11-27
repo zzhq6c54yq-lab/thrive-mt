@@ -39,8 +39,8 @@ const HospitalityWorkshops: React.FC = () => {
   return (
     <div className="space-y-6">
       <div className="mb-6">
-        <h2 className="text-2xl font-bold mb-2 text-gray-800 dark:text-white">Hospitality Wellness Workshops</h2>
-        <p className="text-gray-600 dark:text-gray-300">
+        <h2 className="text-2xl font-bold mb-2 text-white">Hospitality Wellness Workshops</h2>
+        <p className="text-white/70">
           Specialized training sessions designed for restaurant and hospitality professionals
         </p>
       </div>
@@ -83,13 +83,13 @@ const HospitalityWorkshops: React.FC = () => {
       
       {/* Upcoming Workshops */}
       <div>
-        <h3 className="text-xl font-semibold mb-4 text-gray-800 dark:text-gray-200 flex items-center gap-2">
+        <h3 className="text-xl font-semibold mb-4 text-white flex items-center gap-2">
           <CalendarDays className="h-5 w-5 text-purple-500" />
           Upcoming Workshops
         </h3>
         
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          <Card className="bg-white dark:bg-gray-800">
+          <Card className="bg-white/10">
             <CardHeader>
               <CardTitle className="flex justify-between items-center">
                 <span>Mindfulness for Service Industry Professionals</span>
@@ -100,7 +100,7 @@ const HospitalityWorkshops: React.FC = () => {
               <CardDescription>Practical mindfulness techniques for busy shifts</CardDescription>
             </CardHeader>
             <CardContent>
-              <div className="flex items-center gap-4 text-sm text-gray-700 dark:text-gray-300 mb-3">
+              <div className="flex items-center gap-4 text-sm text-white/70 mb-3">
                 <div className="flex items-center gap-1">
                   <Clock className="h-4 w-4" />
                   <span>7:00 PM</span>
@@ -110,7 +110,7 @@ const HospitalityWorkshops: React.FC = () => {
                   <span>Virtual</span>
                 </div>
               </div>
-              <p className="text-sm text-gray-600 dark:text-gray-300">
+              <p className="text-sm text-white/70">
                 Learn quick, in-the-moment mindfulness techniques that can be used during busy shifts to maintain focus and emotional balance.
               </p>
             </CardContent>
@@ -130,7 +130,7 @@ const HospitalityWorkshops: React.FC = () => {
             </CardFooter>
           </Card>
           
-          <Card className="bg-white dark:bg-gray-800">
+          <Card className="bg-white/10">
             <CardHeader>
               <CardTitle className="flex justify-between items-center">
                 <span>Creating Healthy Kitchen Culture</span>
@@ -141,7 +141,7 @@ const HospitalityWorkshops: React.FC = () => {
               <CardDescription>For chefs, managers, and kitchen leads</CardDescription>
             </CardHeader>
             <CardContent>
-              <div className="flex items-center gap-4 text-sm text-gray-700 dark:text-gray-300 mb-3">
+              <div className="flex items-center gap-4 text-sm text-white/70 mb-3">
                 <div className="flex items-center gap-1">
                   <Clock className="h-4 w-4" />
                   <span>3:00 PM</span>
@@ -151,7 +151,7 @@ const HospitalityWorkshops: React.FC = () => {
                   <span>In-person & Virtual</span>
                 </div>
               </div>
-              <p className="text-sm text-gray-600 dark:text-gray-300">
+              <p className="text-sm text-white/70">
                 For those in leadership positions, learn practical steps to foster a healthier, more supportive culture in high-pressure kitchen environments.
               </p>
             </CardContent>
@@ -171,7 +171,7 @@ const HospitalityWorkshops: React.FC = () => {
             </CardFooter>
           </Card>
           
-          <Card className="bg-white dark:bg-gray-800">
+          <Card className="bg-white/10">
             <CardHeader>
               <CardTitle className="flex justify-between items-center">
                 <span>Managing Difficult Customer Interactions</span>
@@ -182,7 +182,7 @@ const HospitalityWorkshops: React.FC = () => {
               <CardDescription>Emotional regulation for front-of-house staff</CardDescription>
             </CardHeader>
             <CardContent>
-              <div className="flex items-center gap-4 text-sm text-gray-700 dark:text-gray-300 mb-3">
+              <div className="flex items-center gap-4 text-sm text-white/70 mb-3">
                 <div className="flex items-center gap-1">
                   <Clock className="h-4 w-4" />
                   <span>6:00 PM</span>
@@ -192,7 +192,7 @@ const HospitalityWorkshops: React.FC = () => {
                   <span>Virtual</span>
                 </div>
               </div>
-              <p className="text-sm text-gray-600 dark:text-gray-300">
+              <p className="text-sm text-white/70">
                 Develop strategies for managing emotions during challenging customer interactions and preventing these experiences from affecting your wellbeing.
               </p>
             </CardContent>
@@ -212,7 +212,7 @@ const HospitalityWorkshops: React.FC = () => {
             </CardFooter>
           </Card>
           
-          <Card className="bg-white dark:bg-gray-800">
+          <Card className="bg-white/10">
             <CardHeader>
               <CardTitle className="flex justify-between items-center">
                 <span>Work-Life Balance with Irregular Hours</span>
@@ -223,7 +223,7 @@ const HospitalityWorkshops: React.FC = () => {
               <CardDescription>Maintaining boundaries and personal life</CardDescription>
             </CardHeader>
             <CardContent>
-              <div className="flex items-center gap-4 text-sm text-gray-700 dark:text-gray-300 mb-3">
+              <div className="flex items-center gap-4 text-sm text-white/70 mb-3">
                 <div className="flex items-center gap-1">
                   <Clock className="h-4 w-4" />
                   <span>1:00 PM</span>
@@ -233,7 +233,7 @@ const HospitalityWorkshops: React.FC = () => {
                   <span>Virtual</span>
                 </div>
               </div>
-              <p className="text-sm text-gray-600 dark:text-gray-300">
+              <p className="text-sm text-white/70">
                 Practical strategies for maintaining meaningful personal relationships, self-care routines, and life satisfaction despite non-traditional work hours.
               </p>
             </CardContent>
@@ -257,18 +257,18 @@ const HospitalityWorkshops: React.FC = () => {
       
       {/* On-Demand Workshops */}
       <div>
-        <h3 className="text-xl font-semibold mb-4 text-gray-800 dark:text-gray-200 flex items-center gap-2">
+        <h3 className="text-xl font-semibold mb-4 text-white flex items-center gap-2">
           <CalendarClock className="h-5 w-5 text-purple-500" />
           On-Demand Workshops
         </h3>
         
-        <Card className="bg-white dark:bg-gray-800">
+        <Card className="bg-white/10">
           <CardContent className="p-6">
             <div className="space-y-4">
               <div className="flex justify-between items-center pb-3 border-b border-gray-200 dark:border-gray-700">
                 <div>
-                  <h4 className="font-medium text-gray-900 dark:text-white">Physical Wellness for Service Industry</h4>
-                  <p className="text-sm text-gray-500 dark:text-gray-400">Preventing injuries and managing physical strain</p>
+                  <h4 className="font-medium text-white">Physical Wellness for Service Industry</h4>
+                  <p className="text-sm text-white/60">Preventing injuries and managing physical strain</p>
                 </div>
                 <Button 
                   variant="ghost"
@@ -281,8 +281,8 @@ const HospitalityWorkshops: React.FC = () => {
               
               <div className="flex justify-between items-center pb-3 border-b border-gray-200 dark:border-gray-700">
                 <div>
-                  <h4 className="font-medium text-gray-900 dark:text-white">Managing Workplace Conflicts</h4>
-                  <p className="text-sm text-gray-500 dark:text-gray-400">Communication strategies for tense situations</p>
+                  <h4 className="font-medium text-white">Managing Workplace Conflicts</h4>
+                  <p className="text-sm text-white/60">Communication strategies for tense situations</p>
                 </div>
                 <Button 
                   variant="ghost"
@@ -295,8 +295,8 @@ const HospitalityWorkshops: React.FC = () => {
               
               <div className="flex justify-between items-center pb-3 border-b border-gray-200 dark:border-gray-700">
                 <div>
-                  <h4 className="font-medium text-gray-900 dark:text-white">Financial Wellness in Tip-Based Work</h4>
-                  <p className="text-sm text-gray-500 dark:text-gray-400">Managing finances with variable income</p>
+                  <h4 className="font-medium text-white">Financial Wellness in Tip-Based Work</h4>
+                  <p className="text-sm text-white/60">Managing finances with variable income</p>
                 </div>
                 <Button 
                   variant="ghost"
@@ -309,8 +309,8 @@ const HospitalityWorkshops: React.FC = () => {
               
               <div className="flex justify-between items-center">
                 <div>
-                  <h4 className="font-medium text-gray-900 dark:text-white">Setting Boundaries with Co-Workers</h4>
-                  <p className="text-sm text-gray-500 dark:text-gray-400">Creating healthy workplace relationships</p>
+                  <h4 className="font-medium text-white">Setting Boundaries with Co-Workers</h4>
+                  <p className="text-sm text-white/60">Creating healthy workplace relationships</p>
                 </div>
                 <Button 
                   variant="ghost"

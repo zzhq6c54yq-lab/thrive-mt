@@ -31,8 +31,8 @@ const HospitalityAssessments: React.FC = () => {
   return (
     <div className="space-y-6">
       <div className="mb-6">
-        <h2 className="text-2xl font-bold mb-2 text-gray-800 dark:text-white">Hospitality Wellness Assessments</h2>
-        <p className="text-gray-600 dark:text-gray-300">
+        <h2 className="text-2xl font-bold mb-2 text-white">Hospitality Wellness Assessments</h2>
+        <p className="text-white/70">
           Specialized tools designed to evaluate the unique mental health challenges faced by restaurant and hospitality professionals
         </p>
       </div>
@@ -55,13 +55,13 @@ const HospitalityAssessments: React.FC = () => {
             </CardDescription>
           </CardHeader>
           <CardContent>
-            <p className="text-sm text-gray-500 dark:text-gray-400">
+            <p className="text-sm text-white/60">
               This assessment focuses on the specific stressors common in hospitality roles, including customer interactions, 
               high-pressure environments, and irregular schedules. Get personalized insights and recommendations.
             </p>
           </CardContent>
           <CardFooter className="flex justify-between">
-            <div className="text-sm text-gray-700 dark:text-gray-300">15 questions</div>
+            <div className="text-sm text-white/70">15 questions</div>
             <Button 
               onClick={() => handleAssessmentStart("/hospitality-assessments/stress", "Service Industry Stress Assessment")}
               className="bg-orange-500 hover:bg-orange-600"
@@ -88,13 +88,13 @@ const HospitalityAssessments: React.FC = () => {
             </CardDescription>
           </CardHeader>
           <CardContent>
-            <p className="text-sm text-gray-500 dark:text-gray-400">
+            <p className="text-sm text-white/60">
               Restaurant and hospitality work can be physically and emotionally demanding. This assessment helps identify 
               if you're experiencing burnout and provides strategies for recovery and prevention.
             </p>
           </CardContent>
           <CardFooter className="flex justify-between">
-            <div className="text-sm text-gray-700 dark:text-gray-300">12 questions</div>
+            <div className="text-sm text-white/70">12 questions</div>
             <Button 
               onClick={() => handleAssessmentStart("/hospitality-assessments/burnout", "Hospitality Burnout Assessment")}
               className="bg-red-500 hover:bg-red-600"
@@ -121,13 +121,13 @@ const HospitalityAssessments: React.FC = () => {
             </CardDescription>
           </CardHeader>
           <CardContent>
-            <p className="text-sm text-gray-500 dark:text-gray-400">
+            <p className="text-sm text-white/60">
               Designed specifically for those working non-standard hours, this assessment evaluates your work-life balance 
               and provides strategies for maintaining boundaries and personal time in an industry that often blurs them.
             </p>
           </CardContent>
           <CardFooter className="flex justify-between">
-            <div className="text-sm text-gray-700 dark:text-gray-300">18 questions</div>
+            <div className="text-sm text-white/70">18 questions</div>
             <Button 
               onClick={() => handleAssessmentStart("/hospitality-assessments/work-life-balance", "Work-Life Balance Assessment")}
               className="bg-purple-500 hover:bg-purple-600"
@@ -154,13 +154,13 @@ const HospitalityAssessments: React.FC = () => {
             </CardDescription>
           </CardHeader>
           <CardContent>
-            <p className="text-sm text-gray-500 dark:text-gray-400">
+            <p className="text-sm text-white/60">
               The hospitality industry can be emotionally taxing. This assessment evaluates your resilience in the face of 
               difficult interactions, high-stress situations, and the emotional labor required in service roles.
             </p>
           </CardContent>
           <CardFooter className="flex justify-between">
-            <div className="text-sm text-gray-700 dark:text-gray-300">20 questions</div>
+            <div className="text-sm text-white/70">20 questions</div>
             <Button 
               onClick={() => handleAssessmentStart("/hospitality-assessments/burnout", "Emotional Resilience Check")}
               className="bg-blue-500 hover:bg-blue-600"
@@ -178,7 +178,7 @@ const HospitalityAssessments: React.FC = () => {
           </div>
           <div>
             <h3 className="text-lg font-medium text-purple-900 dark:text-purple-300 mb-2">Why Take These Assessments?</h3>
-            <p className="text-gray-700 dark:text-gray-300 text-sm">
+            <p className="text-white/70 text-sm">
               These assessments are designed specifically for the unique challenges of restaurant and hospitality work. 
               They can help you identify stressors, measure burnout, and develop strategies for managing the demands 
               of service roles. All assessment results are completely private and include personalized recommendations.

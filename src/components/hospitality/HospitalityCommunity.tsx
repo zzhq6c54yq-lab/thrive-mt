@@ -29,8 +29,8 @@ const HospitalityCommunity: React.FC = () => {
   return (
     <div className="space-y-6">
       <div className="mb-6">
-        <h2 className="text-2xl font-bold mb-2 text-gray-800 dark:text-white">Hospitality Community</h2>
-        <p className="text-gray-600 dark:text-gray-300">
+        <h2 className="text-2xl font-bold mb-2 text-white">Hospitality Community</h2>
+        <p className="text-white/70">
           Connect with peers who understand the unique challenges of restaurant and hospitality work
         </p>
       </div>
@@ -38,12 +38,12 @@ const HospitalityCommunity: React.FC = () => {
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         {/* Discussion Groups */}
         <div className="space-y-4">
-          <h3 className="text-xl font-semibold mb-4 text-gray-800 dark:text-gray-200 flex items-center gap-2">
+          <h3 className="text-xl font-semibold mb-4 text-white flex items-center gap-2">
             <MessageCircle className="h-5 w-5 text-purple-500" />
             Discussion Groups
           </h3>
           
-          <Card className="bg-white dark:bg-gray-800">
+          <Card className="bg-white/10">
             <CardHeader>
               <CardTitle className="text-lg">Restaurant Staff Support Circle</CardTitle>
               <CardDescription>
@@ -51,14 +51,14 @@ const HospitalityCommunity: React.FC = () => {
               </CardDescription>
             </CardHeader>
             <CardContent>
-              <div className="flex items-center text-sm text-gray-700 dark:text-gray-300 mb-3">
+              <div className="flex items-center text-sm text-white/70 mb-3">
                 <Users className="h-4 w-4 mr-2" />
                 <span>247 members</span>
                 <span className="mx-2">•</span>
                 <MessagesSquare className="h-4 w-4 mr-2" />
                 <span>Very active</span>
               </div>
-              <p className="text-sm text-gray-600 dark:text-gray-300">
+              <p className="text-sm text-white/70">
                 A supportive community for servers, hosts, and other front-of-house staff to discuss mental health challenges in customer-facing roles.
               </p>
             </CardContent>
@@ -72,7 +72,7 @@ const HospitalityCommunity: React.FC = () => {
             </CardFooter>
           </Card>
           
-          <Card className="bg-white dark:bg-gray-800">
+          <Card className="bg-white/10">
             <CardHeader>
               <CardTitle className="text-lg">Kitchen Crew Conversations</CardTitle>
               <CardDescription>
@@ -80,14 +80,14 @@ const HospitalityCommunity: React.FC = () => {
               </CardDescription>
             </CardHeader>
             <CardContent>
-              <div className="flex items-center text-sm text-gray-700 dark:text-gray-300 mb-3">
+              <div className="flex items-center text-sm text-white/70 mb-3">
                 <Users className="h-4 w-4 mr-2" />
                 <span>189 members</span>
                 <span className="mx-2">•</span>
                 <MessagesSquare className="h-4 w-4 mr-2" />
                 <span>Active</span>
               </div>
-              <p className="text-sm text-gray-600 dark:text-gray-300">
+              <p className="text-sm text-white/70">
                 A space for chefs, line cooks, and kitchen staff to share strategies for managing the high-pressure environments of professional kitchens.
               </p>
             </CardContent>
@@ -101,7 +101,7 @@ const HospitalityCommunity: React.FC = () => {
             </CardFooter>
           </Card>
           
-          <Card className="bg-white dark:bg-gray-800">
+          <Card className="bg-white/10">
             <CardHeader>
               <CardTitle className="text-lg">Management & Leadership</CardTitle>
               <CardDescription>
@@ -109,14 +109,14 @@ const HospitalityCommunity: React.FC = () => {
               </CardDescription>
             </CardHeader>
             <CardContent>
-              <div className="flex items-center text-sm text-gray-700 dark:text-gray-300 mb-3">
+              <div className="flex items-center text-sm text-white/70 mb-3">
                 <Users className="h-4 w-4 mr-2" />
                 <span>104 members</span>
                 <span className="mx-2">•</span>
                 <MessagesSquare className="h-4 w-4 mr-2" />
                 <span>Moderately active</span>
               </div>
-              <p className="text-sm text-gray-600 dark:text-gray-300">
+              <p className="text-sm text-white/70">
                 For those in leadership roles to discuss creating mentally healthy work environments and supporting staff wellbeing while managing their own stress.
               </p>
             </CardContent>
@@ -133,12 +133,12 @@ const HospitalityCommunity: React.FC = () => {
         
         {/* Community Events */}
         <div className="space-y-4">
-          <h3 className="text-xl font-semibold mb-4 text-gray-800 dark:text-gray-200 flex items-center gap-2">
+          <h3 className="text-xl font-semibold mb-4 text-white flex items-center gap-2">
             <Calendar className="h-5 w-5 text-purple-500" />
             Community Events
           </h3>
           
-          <Card className="bg-white dark:bg-gray-800">
+          <Card className="bg-white/10">
             <CardHeader>
               <div className="flex justify-between items-start">
                 <div>
@@ -153,7 +153,7 @@ const HospitalityCommunity: React.FC = () => {
               </div>
             </CardHeader>
             <CardContent>
-              <p className="text-sm text-gray-600 dark:text-gray-300">
+              <p className="text-sm text-white/70">
                 Join us for a casual virtual coffee hour to connect with others in the hospitality industry. Share experiences, challenges, and wellness tips.
               </p>
             </CardContent>
@@ -168,7 +168,7 @@ const HospitalityCommunity: React.FC = () => {
             </CardFooter>
           </Card>
           
-          <Card className="bg-white dark:bg-gray-800">
+          <Card className="bg-white/10">
             <CardHeader>
               <div className="flex justify-between items-start">
                 <div>
@@ -183,7 +183,7 @@ const HospitalityCommunity: React.FC = () => {
               </div>
             </CardHeader>
             <CardContent>
-              <p className="text-sm text-gray-600 dark:text-gray-300">
+              <p className="text-sm text-white/70">
                 A panel of mental health experts and industry veterans discuss the unique challenges of hospitality work and strategies for maintaining wellbeing.
               </p>
             </CardContent>
@@ -198,7 +198,7 @@ const HospitalityCommunity: React.FC = () => {
             </CardFooter>
           </Card>
           
-          <Card className="bg-white dark:bg-gray-800">
+          <Card className="bg-white/10">
             <CardHeader>
               <div className="flex justify-between items-start">
                 <div>
@@ -213,7 +213,7 @@ const HospitalityCommunity: React.FC = () => {
               </div>
             </CardHeader>
             <CardContent>
-              <p className="text-sm text-gray-600 dark:text-gray-300">
+              <p className="text-sm text-white/70">
                 This workshop will teach you how to recognize signs of mental health struggles in colleagues and provide appropriate support in the workplace.
               </p>
             </CardContent>
@@ -232,12 +232,12 @@ const HospitalityCommunity: React.FC = () => {
       
       {/* External Resources */}
       <div className="mt-8 bg-gradient-to-r from-purple-50 to-indigo-50 dark:from-purple-900/20 dark:to-indigo-900/20 p-6 rounded-lg border border-purple-100 dark:border-purple-800">
-        <h3 className="text-lg font-semibold mb-4 text-gray-800 dark:text-white">Industry Support Organizations</h3>
+        <h3 className="text-lg font-semibold mb-4 text-white">Industry Support Organizations</h3>
         
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
           <Button 
             variant="outline" 
-            className="justify-start bg-white dark:bg-gray-800"
+            className="justify-start bg-white/10"
             onClick={() => window.open("https://www.restaurantworkershealth.org", "_blank")}
           >
             <ExternalLink className="mr-2 h-4 w-4" />
@@ -246,7 +246,7 @@ const HospitalityCommunity: React.FC = () => {
           
           <Button 
             variant="outline" 
-            className="justify-start bg-white dark:bg-gray-800"
+            className="justify-start bg-white/10"
             onClick={() => window.open("https://www.hospitalityaction.org.uk", "_blank")}
           >
             <ExternalLink className="mr-2 h-4 w-4" />
@@ -255,7 +255,7 @@ const HospitalityCommunity: React.FC = () => {
           
           <Button 
             variant="outline" 
-            className="justify-start bg-white dark:bg-gray-800"
+            className="justify-start bg-white/10"
             onClick={() => window.open("https://www.changingtones.org", "_blank")}
           >
             <ExternalLink className="mr-2 h-4 w-4" />

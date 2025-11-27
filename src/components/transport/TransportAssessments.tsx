@@ -31,8 +31,8 @@ const TransportAssessments: React.FC = () => {
   return (
     <div className="space-y-6">
       <div className="mb-6">
-        <h2 className="text-2xl font-bold mb-2 text-gray-800 dark:text-white">Transport Industry Wellness Assessments</h2>
-        <p className="text-gray-600 dark:text-gray-300">
+        <h2 className="text-2xl font-bold mb-2 text-white">Transport Industry Wellness Assessments</h2>
+        <p className="text-white/70">
           Specialized tools designed to evaluate the unique mental health challenges faced by truck drivers and transportation workers
         </p>
       </div>
@@ -55,13 +55,13 @@ const TransportAssessments: React.FC = () => {
             </CardDescription>
           </CardHeader>
           <CardContent>
-            <p className="text-sm text-gray-500 dark:text-gray-400">
+            <p className="text-sm text-white/60">
               This assessment focuses on the specific stressors common in transportation roles, including traffic congestion, 
               tight delivery schedules, long hours behind the wheel, and other road-related challenges. Get personalized insights and recommendations.
             </p>
           </CardContent>
           <CardFooter className="flex justify-between">
-            <div className="text-sm text-gray-500">18 questions</div>
+            <div className="text-sm text-white/60">18 questions</div>
             <Button 
               onClick={() => handleAssessmentStart("/transport-assessments/stress", "Road Stress Assessment")}
               className="bg-blue-500 hover:bg-blue-600"
@@ -88,13 +88,13 @@ const TransportAssessments: React.FC = () => {
             </CardDescription>
           </CardHeader>
           <CardContent>
-            <p className="text-sm text-gray-500 dark:text-gray-400">
+            <p className="text-sm text-white/60">
               Long-haul driving and transportation work can be physically and emotionally demanding. This assessment helps identify 
               if you're experiencing burnout and provides strategies for recovery and prevention specifically tailored to transportation professionals.
             </p>
           </CardContent>
           <CardFooter className="flex justify-between">
-            <div className="text-sm text-gray-500">15 questions</div>
+            <div className="text-sm text-white/60">15 questions</div>
             <Button 
               onClick={() => handleAssessmentStart("/transport-assessments/burnout", "Driver Burnout Assessment")}
               className="bg-red-500 hover:bg-red-600"
@@ -121,13 +121,13 @@ const TransportAssessments: React.FC = () => {
             </CardDescription>
           </CardHeader>
           <CardContent>
-            <p className="text-sm text-gray-500 dark:text-gray-400">
+            <p className="text-sm text-white/60">
               Designed specifically for those with extended time away from home, this assessment evaluates your work-life balance 
               and provides strategies for maintaining family connections and personal time in an industry that often requires significant time on the road.
             </p>
           </CardContent>
           <CardFooter className="flex justify-between">
-            <div className="text-sm text-gray-500">20 questions</div>
+            <div className="text-sm text-white/60">20 questions</div>
             <Button 
               onClick={() => handleAssessmentStart("/transport-assessments/work-life-balance", "Road-Life Balance Assessment")}
               className="bg-green-500 hover:bg-green-600"
@@ -154,13 +154,13 @@ const TransportAssessments: React.FC = () => {
             </CardDescription>
           </CardHeader>
           <CardContent>
-            <p className="text-sm text-gray-500 dark:text-gray-400">
+            <p className="text-sm text-white/60">
               The transportation industry comes with unique challenges from adverse weather to mechanical issues and delivery pressures. This assessment evaluates your resilience 
               in the face of these situations and provides strategies to build mental toughness on the road.
             </p>
           </CardContent>
           <CardFooter className="flex justify-between">
-            <div className="text-sm text-gray-500">22 questions</div>
+            <div className="text-sm text-white/60">22 questions</div>
             <Button 
               onClick={() => handleAssessmentStart("/transport-assessments/resilience", "Driver Resilience Check")}
               className="bg-purple-500 hover:bg-purple-600"
@@ -178,7 +178,7 @@ const TransportAssessments: React.FC = () => {
           </div>
           <div>
             <h3 className="text-lg font-medium text-blue-900 dark:text-blue-300 mb-2">Why Take These Assessments?</h3>
-            <p className="text-gray-700 dark:text-gray-300 text-sm">
+            <p className="text-white/70 text-sm">
               These assessments are designed specifically for the unique challenges of transportation work. 
               They can help you identify stressors, measure burnout risk, and develop strategies for managing the demands 
               of long-distance driving and transportation roles. All assessment results are completely private and include personalized recommendations.

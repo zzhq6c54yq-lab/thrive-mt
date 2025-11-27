@@ -93,22 +93,22 @@ const HospitalityDashboard: React.FC = () => {
       
       {/* Quick Actions */}
       <div>
-        <h3 className="text-xl font-semibold mb-4 text-gray-800 dark:text-gray-200">Quick Actions</h3>
+        <h3 className="text-xl font-semibold mb-4 text-white">Quick Actions</h3>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
           {quickActions.map((action, index) => (
             <Card 
               key={index} 
-              className="hover:shadow-md transition-all cursor-pointer bg-white dark:bg-gray-800 hover:border-purple-300 dark:hover:border-purple-700"
+              className="hover:shadow-md transition-all cursor-pointer bg-white/10 hover:border-purple-300 dark:hover:border-purple-700"
               onClick={action.action}
             >
               <CardHeader className="pb-3">
                 <div className="flex items-center justify-between">
                   {action.icon}
                 </div>
-                <CardTitle className="text-lg mt-2 text-gray-900 dark:text-white">{action.title}</CardTitle>
+                <CardTitle className="text-lg mt-2 text-white">{action.title}</CardTitle>
               </CardHeader>
               <CardContent>
-                <CardDescription className="text-sm text-gray-600 dark:text-gray-300">{action.description}</CardDescription>
+                <CardDescription className="text-sm text-white/70">{action.description}</CardDescription>
               </CardContent>
             </Card>
           ))}
@@ -117,8 +117,8 @@ const HospitalityDashboard: React.FC = () => {
       
       {/* Industry Insights */}
       <div>
-        <h3 className="text-xl font-semibold mb-4 text-gray-800 dark:text-gray-200">Industry Insights</h3>
-        <Card className="bg-white dark:bg-gray-800">
+        <h3 className="text-xl font-semibold mb-4 text-white">Industry Insights</h3>
+        <Card className="bg-white/10">
           <CardHeader>
             <CardTitle className="text-lg flex items-center gap-2">
               <BarChart className="h-5 w-5 text-purple-500" />
@@ -131,10 +131,10 @@ const HospitalityDashboard: React.FC = () => {
           <CardContent>
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
               {insightsData.map((item, index) => (
-                <div key={index} className="text-center p-4 bg-gray-50 dark:bg-gray-900 rounded-lg">
+                <div key={index} className="text-center p-4 bg-white/5 rounded-lg">
                   <div className="text-2xl font-bold text-purple-600 dark:text-purple-400">{item.value}</div>
-                  <div className="text-sm text-gray-500 dark:text-gray-400 mt-1">{item.label}</div>
-                  <div className="text-xs mt-2 text-gray-700 dark:text-gray-300">{item.description}</div>
+                  <div className="text-sm text-white/60 mt-1">{item.label}</div>
+                  <div className="text-xs mt-2 text-white/70">{item.description}</div>
                 </div>
               ))}
             </div>
@@ -144,7 +144,7 @@ const HospitalityDashboard: React.FC = () => {
       
       {/* Featured Resources */}
       <div className="grid md:grid-cols-2 gap-6">
-        <Card className="bg-white dark:bg-gray-800">
+        <Card className="bg-white/10">
           <CardHeader>
             <CardTitle className="text-lg flex items-center gap-2">
               <BookOpen className="h-5 w-5 text-purple-500" />
@@ -154,8 +154,8 @@ const HospitalityDashboard: React.FC = () => {
           <CardContent className="space-y-4">
             <div className="flex justify-between items-center">
               <div>
-                <div className="font-medium text-gray-900 dark:text-white">Managing Difficult Customer Interactions</div>
-                <div className="text-sm text-gray-600 dark:text-gray-300">Strategies for staying calm under pressure</div>
+                <div className="font-medium text-white">Managing Difficult Customer Interactions</div>
+                <div className="text-sm text-white/70">Strategies for staying calm under pressure</div>
               </div>
               <Button 
                 variant="ghost" 
@@ -176,8 +176,8 @@ const HospitalityDashboard: React.FC = () => {
             
             <div className="flex justify-between items-center">
               <div>
-                <div className="font-medium text-gray-900 dark:text-white">Body Mechanics for Service Work</div>
-                <div className="text-sm text-gray-600 dark:text-gray-300">Preventing physical strain during long shifts</div>
+                <div className="font-medium text-white">Body Mechanics for Service Work</div>
+                <div className="text-sm text-white/70">Preventing physical strain during long shifts</div>
               </div>
               <Button 
                 variant="ghost" 
@@ -198,7 +198,7 @@ const HospitalityDashboard: React.FC = () => {
           </CardContent>
         </Card>
         
-        <Card className="bg-white dark:bg-gray-800">
+        <Card className="bg-white/10">
           <CardHeader>
             <CardTitle className="text-lg flex items-center gap-2">
               <CalendarDays className="h-5 w-5 text-purple-500" />
@@ -208,8 +208,8 @@ const HospitalityDashboard: React.FC = () => {
           <CardContent className="space-y-4">
             <div className="flex justify-between items-center">
               <div>
-                <div className="font-medium text-gray-900 dark:text-white">Building Resilience in High-Pressure Environments</div>
-                <div className="text-sm text-gray-600 dark:text-gray-300">Tomorrow, 2:00 PM</div>
+                <div className="font-medium text-white">Building Resilience in High-Pressure Environments</div>
+                <div className="text-sm text-white/70">Tomorrow, 2:00 PM</div>
               </div>
               <Button 
                 variant="ghost" 
@@ -230,8 +230,8 @@ const HospitalityDashboard: React.FC = () => {
             
             <div className="flex justify-between items-center">
               <div>
-                <div className="font-medium text-gray-900 dark:text-white">Mindfulness for Service Industry Professionals</div>
-                <div className="text-sm text-gray-600 dark:text-gray-300">Friday, 7:00 PM</div>
+                <div className="font-medium text-white">Mindfulness for Service Industry Professionals</div>
+                <div className="text-sm text-white/70">Friday, 7:00 PM</div>
               </div>
               <Button 
                 variant="ghost" 

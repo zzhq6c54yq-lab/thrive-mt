@@ -135,8 +135,8 @@ const TransportResources: React.FC = () => {
   return (
     <div className="space-y-6">
       <div className="mb-6">
-        <h2 className="text-2xl font-bold mb-2 text-gray-800 dark:text-white">Transport Industry Mental Health Resources</h2>
-        <p className="text-gray-600 dark:text-gray-300">
+        <h2 className="text-2xl font-bold mb-2 text-white">Transport Industry Mental Health Resources</h2>
+        <p className="text-white/70">
           Practical tools and information specifically designed for truck drivers and transportation workers
         </p>
       </div>
@@ -182,7 +182,7 @@ const TransportResources: React.FC = () => {
                   </CardTitle>
                 </CardHeader>
                 <CardContent className="pb-2">
-                  <p className="text-sm text-gray-500">{video.description}</p>
+                  <p className="text-sm text-white/60">{video.description}</p>
                 </CardContent>
                 <CardFooter>
                   <Button 
@@ -216,7 +216,7 @@ const TransportResources: React.FC = () => {
                   <CardDescription>{article.readTime}</CardDescription>
                 </CardHeader>
                 <CardContent>
-                  <p className="text-sm text-gray-500">{article.description}</p>
+                  <p className="text-sm text-white/60">{article.description}</p>
                 </CardContent>
                 <CardFooter>
                   <Button 
@@ -249,7 +249,7 @@ const TransportResources: React.FC = () => {
                   <CardDescription>{guide.duration}</CardDescription>
                 </CardHeader>
                 <CardContent>
-                  <p className="text-sm text-gray-500">{guide.description}</p>
+                  <p className="text-sm text-white/60">{guide.description}</p>
                 </CardContent>
                 <CardFooter>
                   <Button 
@@ -267,7 +267,7 @@ const TransportResources: React.FC = () => {
       
       <div className="mt-8 bg-blue-50 dark:bg-blue-900/20 p-6 rounded-lg border border-blue-100 dark:border-blue-800">
         <h3 className="text-lg font-medium text-blue-900 dark:text-blue-300 mb-2">Need Something Specific?</h3>
-        <p className="text-gray-700 dark:text-gray-300 text-sm mb-4">
+        <p className="text-white/70 text-sm mb-4">
           If you're looking for resources on a particular topic related to mental health in the transportation industry, 
           our team can help create custom guidance for your needs.
         </p>

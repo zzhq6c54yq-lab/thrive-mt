@@ -32,10 +32,10 @@ const HospitalityPortal: React.FC = () => {
           <UtensilsCrossed className="h-8 w-8 text-purple-600 dark:text-purple-300" />
         </div>
         <div>
-          <h1 className="text-3xl font-bold text-gray-900 dark:text-white">
+          <h1 className="text-3xl font-bold text-white">
             Hospitality Wellness Portal
           </h1>
-          <p className="text-gray-500 dark:text-gray-400">
+          <p className="text-white/70">
             Mental health resources tailored for restaurant and hospitality professionals
           </p>
         </div>
