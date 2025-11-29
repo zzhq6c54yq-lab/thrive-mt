@@ -45,7 +45,7 @@ const CoachEarningsTab = () => {
               <DollarSign className="h-8 w-8 text-emerald-400" />
             </motion.div>
             <h3 className="text-2xl font-bold bg-gradient-to-r from-emerald-400 via-cyan-400 to-blue-400 bg-clip-text text-transparent">
-              💰 YOUR BAG
+              Your Earnings
             </h3>
           </div>
 
@@ -149,13 +149,13 @@ const CoachEarningsTab = () => {
             <Award className="h-16 w-16 text-amber-400 mx-auto mb-4" />
           </motion.div>
           <div className="inline-block px-4 py-1 rounded-full bg-amber-500/20 border border-amber-500/40 mb-3">
-            <span className="text-xs font-bold text-amber-400">🏆 ACHIEVEMENT UNLOCKED</span>
+            <span className="text-xs font-bold text-amber-400">Achievement Unlocked</span>
           </div>
           <h3 className="text-2xl font-bold bg-gradient-to-r from-amber-400 via-orange-400 to-red-400 bg-clip-text text-transparent mb-2">
-            "Impact Maker" 🎖️
+            Impact Maker
           </h3>
           <p className="text-muted-foreground">
-            Helped 25+ people this month! You're absolutely crushing it! 🔥
+            Helped 25+ clients this month
           </p>
         </div>
       </motion.div>

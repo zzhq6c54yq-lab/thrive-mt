@@ -40,14 +40,14 @@ const CoachTodayTab = () => {
           >
             <Trophy className="h-6 w-6 text-amber-400" />
           </motion.div>
-          <h3 className="text-2xl font-bold bg-gradient-to-r from-blue-400 via-teal-400 to-slate-300 bg-clip-text text-transparent">
-            TODAY'S MISSION
+            <h3 className="text-2xl font-bold bg-gradient-to-r from-blue-400 via-teal-400 to-slate-300 bg-clip-text text-transparent">
+            Today's Goals
           </h3>
         </div>
         <div className="mb-4">
           <div className="flex items-center justify-between mb-2">
             <span className="text-sm font-medium text-foreground/80">Progress</span>
-            <span className="text-sm font-bold text-blue-400">3/4 sessions done! 🔥</span>
+            <span className="text-sm font-bold text-blue-400">3 of 4 sessions complete</span>
           </div>
           <div className="h-4 bg-background/40 rounded-full overflow-hidden border border-border/40">
             <motion.div
@@ -65,7 +65,7 @@ const CoachTodayTab = () => {
           </div>
         </div>
         <p className="text-muted-foreground">
-          One more session to crush your daily goal! Let's gooo! 🚀
+          One more session to reach today's goal.
         </p>
       </motion.div>
 
@@ -87,7 +87,7 @@ const CoachTodayTab = () => {
         <div className="relative z-10">
           <div className="flex items-center gap-2 mb-4">
             <Flame className="h-6 w-6 text-amber-400 animate-pulse" />
-            <h3 className="text-xl font-bold text-amber-400">NEXT UP</h3>
+            <h3 className="text-xl font-bold text-amber-400">Next Session</h3>
           </div>
           <div className="flex items-center justify-between gap-4 p-5 rounded-xl bg-background/40 border border-amber-500/30">
             <div className="flex items-center gap-4">
@@ -100,7 +100,7 @@ const CoachTodayTab = () => {
               </motion.div>
               <div>
                 <p className="text-lg font-bold text-foreground">{upcomingCalls[0].name}</p>
-                <p className="text-sm text-muted-foreground mb-1">{upcomingCalls[0].topic}</p>
+                <p className="text-sm text-muted-foreground mb-1">Career transition</p>
                 <div className="flex items-center gap-2 text-amber-400">
                   <Clock className="h-4 w-4" />
                   <motion.span 
@@ -116,7 +116,7 @@ const CoachTodayTab = () => {
             <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
               <Button className="bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-600 hover:to-orange-600 text-white font-bold px-6">
                 <Video className="h-5 w-5 mr-2" />
-                START 🎬
+                Start Session
               </Button>
             </motion.div>
           </div>
@@ -170,7 +170,7 @@ const CoachTodayTab = () => {
       >
         <h3 className="text-xl font-bold text-foreground mb-4 flex items-center gap-2">
           <Sparkles className="h-5 w-5 text-teal-400" />
-          Quick Wins - Celebrate your squad! 🎉
+          Client Achievements
         </h3>
         <div className="space-y-3">
           {quickWins.map((win, idx) => (
@@ -205,7 +205,7 @@ const CoachTodayTab = () => {
                         : "bg-gradient-to-r from-blue-500 to-teal-500 hover:from-blue-600 hover:to-teal-600 text-white"
                     }
                   >
-                    {celebratedWins.includes(win.id) ? "Celebrated! ✨" : "High-five! 🙌"}
+                    {celebratedWins.includes(win.id) ? "Celebrated" : "Celebrate"}
                   </Button>
                 </motion.div>
               </div>
@@ -223,12 +223,12 @@ const CoachTodayTab = () => {
       >
         <h3 className="text-xl font-bold text-foreground mb-4 flex items-center gap-2">
           <MessageCircle className="h-5 w-5 text-cyan-400" />
-          💬 BUZZING - Messages that need love
+          Pending Messages
         </h3>
         <div className="flex items-center justify-between">
           <div>
             <p className="text-foreground font-medium mb-2">
-              <span className="text-2xl font-bold text-cyan-400">5</span> unread - "You've got fans waiting!"
+              <span className="text-2xl font-bold text-cyan-400">5</span> unread messages awaiting your response
             </p>
             <div className="flex items-center gap-2">
               <motion.div
@@ -250,7 +250,7 @@ const CoachTodayTab = () => {
           </div>
           <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
             <Button className="bg-gradient-to-r from-cyan-500 to-blue-500 hover:from-cyan-600 hover:to-blue-600 text-white">
-              Reply All 💬
+              Reply All
             </Button>
           </motion.div>
         </div>

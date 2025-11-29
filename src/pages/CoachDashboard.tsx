@@ -27,10 +27,10 @@ const CoachDashboard = () => {
 
   const handleLogout = () => {
     sessionStorage.removeItem('coachAccess');
-    toast({
-      title: "Catch you later! 👋",
-      description: "Keep spreading those good vibes!",
-    });
+      toast({
+        title: "Logged out successfully",
+        description: "Have a great day!",
+      });
     navigate('/');
   };
 
@@ -116,7 +116,7 @@ const CoachDashboard = () => {
                   animate={{ scaleX: activeTab === 'today' ? 1 : 0 }}
                   transition={{ duration: 0.3 }}
                 />
-                🏠 Today
+                Today
               </TabsTrigger>
               <TabsTrigger 
                 value="members" 
@@ -128,7 +128,7 @@ const CoachDashboard = () => {
                   animate={{ scaleX: activeTab === 'members' ? 1 : 0 }}
                   transition={{ duration: 0.3 }}
                 />
-                👥 Squad
+                Clients
               </TabsTrigger>
               <TabsTrigger 
                 value="schedule" 
@@ -140,7 +140,7 @@ const CoachDashboard = () => {
                   animate={{ scaleX: activeTab === 'schedule' ? 1 : 0 }}
                   transition={{ duration: 0.3 }}
                 />
-                📅 Hangs
+                Schedule
               </TabsTrigger>
               <TabsTrigger 
                 value="earnings" 
@@ -152,7 +152,7 @@ const CoachDashboard = () => {
                   animate={{ scaleX: activeTab === 'earnings' ? 1 : 0 }}
                   transition={{ duration: 0.3 }}
                 />
-                💰 Money
+                Earnings
               </TabsTrigger>
             </TabsList>
 

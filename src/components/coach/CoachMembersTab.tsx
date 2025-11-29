@@ -11,9 +11,9 @@ const CoachMembersTab = () => {
       name: "Sarah M.",
       lastSession: "2 days ago",
       progress: 85,
-      status: "On Fire",
-      statusColor: "from-orange-500 to-red-500",
-      statusBg: "from-orange-500/20 to-red-500/20",
+      status: "Highly Engaged",
+      statusColor: "from-teal-500 to-cyan-500",
+      statusBg: "from-teal-500/20 to-cyan-500/20",
       mood: "🔥",
       avatar: "SM"
     },
@@ -22,7 +22,7 @@ const CoachMembersTab = () => {
       name: "James K.",
       lastSession: "5 days ago",
       progress: 60,
-      status: "Growing",
+      status: "Making Progress",
       statusColor: "from-emerald-500 to-cyan-500",
       statusBg: "from-emerald-500/20 to-cyan-500/20",
       mood: "📈",
@@ -44,7 +44,7 @@ const CoachMembersTab = () => {
       name: "Alex P.",
       lastSession: "3 days ago",
       progress: 78,
-      status: "Crushing It",
+      status: "Thriving",
       statusColor: "from-amber-500 to-yellow-500",
       statusBg: "from-amber-500/20 to-yellow-500/20",
       mood: "🎯",
@@ -83,10 +83,10 @@ const CoachMembersTab = () => {
         className="bg-gradient-to-br from-blue-500/10 via-teal-500/10 to-background/60 backdrop-blur-sm rounded-xl border border-blue-500/20 p-6"
       >
         <h3 className="text-2xl font-bold bg-gradient-to-r from-blue-400 via-teal-400 to-slate-300 bg-clip-text text-transparent mb-2">
-          👥 YOUR SQUAD
+          Your Clients ({members.length})
         </h3>
         <p className="text-muted-foreground">
-          {members.length} amazing humans you're helping thrive
+          Manage your client relationships and track their progress
         </p>
       </motion.div>
 
