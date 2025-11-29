@@ -1,44 +1,56 @@
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
-import { Calendar, Clock, Video, MapPin } from "lucide-react";
+import { Calendar, Clock, Video, Plus } from "lucide-react";
 
 const CoachScheduleTab = () => {
   const upcomingHangs = [
     {
       id: 1,
-      member: "Sarah Mitchell",
+      member: "Sarah M.",
       date: "Today",
-      time: "2:00 PM - 3:00 PM",
+      time: "2:00 PM",
+      duration: "60 min",
       topic: "Career transition check-in",
       type: "Video",
-      avatar: "SM"
+      avatar: "SM",
+      status: "soon",
+      color: "from-emerald-500 to-cyan-500"
     },
     {
       id: 2,
-      member: "James Kim",
+      member: "James K.",
       date: "Today",
-      time: "3:30 PM - 4:30 PM",
+      time: "3:30 PM",
+      duration: "60 min",
       topic: "Building confidence workshop",
       type: "Video",
-      avatar: "JK"
+      avatar: "JK",
+      status: "soon",
+      color: "from-purple-500 to-pink-500"
     },
     {
       id: 3,
-      member: "Lisa Thompson",
+      member: "Lisa T.",
       date: "Tomorrow",
-      time: "10:00 AM - 11:00 AM",
+      time: "10:00 AM",
+      duration: "60 min",
       topic: "Work-life balance strategies",
       type: "Video",
-      avatar: "LT"
+      avatar: "LT",
+      status: "later",
+      color: "from-amber-500 to-orange-500"
     },
     {
       id: 4,
-      member: "Alex Patterson",
+      member: "Alex P.",
       date: "Friday",
-      time: "1:00 PM - 2:00 PM",
+      time: "1:00 PM",
+      duration: "60 min",
       topic: "Celebrating wins & next steps",
       type: "Video",
-      avatar: "AP"
+      avatar: "AP",
+      status: "later",
+      color: "from-blue-500 to-cyan-500"
     },
   ];
 
@@ -47,92 +59,177 @@ const CoachScheduleTab = () => {
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
-        className="bg-background/60 backdrop-blur-sm rounded-lg border border-border/40 p-6"
+        className="bg-gradient-to-br from-purple-500/10 via-pink-500/10 to-background/60 backdrop-blur-sm rounded-xl border border-purple-500/20 p-6"
       >
         <div className="flex items-center justify-between mb-6">
           <div>
-            <h3 className="text-2xl font-bold text-foreground mb-2">
-              Upcoming Hangs 📅
+            <h3 className="text-2xl font-bold bg-gradient-to-r from-purple-400 via-pink-400 to-cyan-400 bg-clip-text text-transparent mb-2">
+              📅 UPCOMING HANGS
             </h3>
             <p className="text-muted-foreground">
               Your coaching calls this week
             </p>
           </div>
-          <Button className="bg-teal-500 hover:bg-teal-600 text-white">
-            <Calendar className="h-4 w-4 mr-2" />
-            View Calendar
-          </Button>
+          <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+            <Button className="bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 text-white">
+              <Calendar className="h-4 w-4 mr-2" />
+              View Calendar
+            </Button>
+          </motion.div>
         </div>
 
-        <div className="space-y-4">
-          {upcomingHangs.map((hang, idx) => (
-            <motion.div
-              key={hang.id}
-              initial={{ opacity: 0, x: -20 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ delay: idx * 0.1 }}
-              className="p-5 rounded-lg bg-background/40 border border-border/30 hover:border-teal-500/30 transition-all"
-            >
-              <div className="flex items-start justify-between gap-4">
-                <div className="flex items-start gap-4 flex-1">
-                  <div className="h-14 w-14 rounded-full bg-gradient-to-br from-teal-400 to-teal-600 flex items-center justify-center text-white font-bold text-lg flex-shrink-0">
-                    {hang.avatar}
-                  </div>
-                  <div className="flex-1 min-w-0">
-                    <h4 className="font-semibold text-foreground text-lg mb-2">
-                      {hang.member}
-                    </h4>
-                    <p className="text-muted-foreground mb-3">{hang.topic}</p>
-                    <div className="flex flex-wrap items-center gap-4 text-sm">
-                      <div className="flex items-center gap-2 text-teal-400">
-                        <Calendar className="h-4 w-4" />
-                        <span>{hang.date}</span>
-                      </div>
-                      <div className="flex items-center gap-2 text-muted-foreground">
-                        <Clock className="h-4 w-4" />
-                        <span>{hang.time}</span>
-                      </div>
-                      <div className="flex items-center gap-2 text-muted-foreground">
-                        <Video className="h-4 w-4" />
-                        <span>{hang.type}</span>
+        {/* Timeline View */}
+        <div className="relative">
+          {/* Timeline line */}
+          <div className="absolute left-8 top-0 bottom-0 w-0.5 bg-gradient-to-b from-purple-500 via-pink-500 to-cyan-500" />
+
+          <div className="space-y-6">
+            {upcomingHangs.map((hang, idx) => (
+              <motion.div
+                key={hang.id}
+                initial={{ opacity: 0, x: -20 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ delay: idx * 0.1 }}
+                className="relative pl-16"
+              >
+                {/* Timeline dot */}
+                <motion.div
+                  animate={{ 
+                    scale: hang.status === 'soon' ? [1, 1.3, 1] : 1,
+                    boxShadow: hang.status === 'soon' 
+                      ? ['0 0 0px rgba(168, 85, 247, 0.5)', '0 0 20px rgba(168, 85, 247, 0.8)', '0 0 0px rgba(168, 85, 247, 0.5)']
+                      : '0 0 0px rgba(168, 85, 247, 0.3)'
+                  }}
+                  transition={{ duration: 2, repeat: Infinity }}
+                  className={`absolute left-6 top-6 h-5 w-5 rounded-full bg-gradient-to-br ${hang.color} border-4 border-background z-10`}
+                />
+
+                <motion.div
+                  whileHover={{ x: 5, scale: 1.02 }}
+                  className={`p-6 rounded-xl border transition-all ${
+                    hang.status === 'soon'
+                      ? `bg-gradient-to-r ${hang.color.replace('from-', 'from-').replace('to-', 'to-')}/20 border-${hang.color.split(' ')[1].replace('to-', '')}/40`
+                      : 'bg-background/40 border-border/30 hover:border-purple-500/40'
+                  }`}
+                >
+                  <div className="flex items-start justify-between gap-4">
+                    <div className="flex items-start gap-4 flex-1">
+                      <motion.div
+                        whileHover={{ rotate: [0, -5, 5, -5, 0] }}
+                        transition={{ duration: 0.5 }}
+                        className={`h-16 w-16 rounded-2xl bg-gradient-to-br ${hang.color} flex items-center justify-center text-white font-bold text-xl shadow-lg flex-shrink-0`}
+                      >
+                        {hang.avatar}
+                      </motion.div>
+                      <div className="flex-1 min-w-0">
+                        <div className="flex items-center gap-2 mb-2">
+                          <h4 className="font-bold text-foreground text-lg">
+                            {hang.member}
+                          </h4>
+                          {hang.status === 'soon' && (
+                            <motion.span
+                              animate={{ scale: [1, 1.1, 1] }}
+                              transition={{ duration: 1, repeat: Infinity }}
+                              className="px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-400 text-xs font-bold border border-emerald-500/30"
+                            >
+                              🟢 SOON
+                            </motion.span>
+                          )}
+                        </div>
+                        <p className="text-muted-foreground mb-3">{hang.topic}</p>
+                        <div className="flex flex-wrap items-center gap-4 text-sm">
+                          <div className="flex items-center gap-2 text-purple-400 font-medium">
+                            <Calendar className="h-4 w-4" />
+                            <span>{hang.date}</span>
+                          </div>
+                          <div className="flex items-center gap-2 text-pink-400 font-medium">
+                            <Clock className="h-4 w-4" />
+                            <span>{hang.time} • {hang.duration}</span>
+                          </div>
+                          <div className="flex items-center gap-2 text-cyan-400">
+                            <Video className="h-4 w-4" />
+                            <span>{hang.type}</span>
+                          </div>
+                        </div>
                       </div>
                     </div>
+                    <div className="flex flex-col gap-2 flex-shrink-0">
+                      <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+                        <Button 
+                          size="sm" 
+                          className={`bg-gradient-to-r ${hang.color} hover:opacity-90 text-white font-bold`}
+                        >
+                          <Video className="h-4 w-4 mr-2" />
+                          {hang.status === 'soon' ? 'JOIN 🎬' : 'Join'}
+                        </Button>
+                      </motion.div>
+                      <Button 
+                        size="sm" 
+                        variant="outline" 
+                        className="border-border/40 hover:border-purple-500/40"
+                      >
+                        Reschedule
+                      </Button>
+                    </div>
                   </div>
-                </div>
-                <div className="flex flex-col gap-2 flex-shrink-0">
-                  <Button size="sm" className="bg-teal-500 hover:bg-teal-600 text-white">
-                    <Video className="h-4 w-4 mr-2" />
-                    Join
-                  </Button>
-                  <Button size="sm" variant="outline" className="border-teal-500/30 text-teal-400 hover:bg-teal-500/10">
-                    Reschedule
-                  </Button>
-                </div>
-              </div>
-            </motion.div>
-          ))}
+                </motion.div>
+              </motion.div>
+            ))}
+          </div>
         </div>
-      </motion.div>
 
-      {/* Free Day Message */}
-      {upcomingHangs.length === 0 && (
+        {/* Free Slots */}
         <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          className="bg-gradient-to-br from-teal-500/10 to-teal-600/10 backdrop-blur-sm rounded-lg border border-teal-500/20 p-12 text-center"
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.5 }}
+          className="mt-8 p-5 rounded-xl bg-gradient-to-r from-emerald-500/10 to-cyan-500/10 border border-emerald-500/20"
         >
-          <MapPin className="h-16 w-16 text-teal-400 mx-auto mb-4" />
-          <h3 className="text-2xl font-bold text-foreground mb-2">
-            You've got a free day! 🌴
-          </h3>
-          <p className="text-muted-foreground mb-6">
-            Perfect time to recharge or catch up on prep work
-          </p>
-          <Button className="bg-teal-500 hover:bg-teal-600 text-white">
-            Schedule Some Hangs
-          </Button>
+          <div className="flex items-center justify-between">
+            <div>
+              <p className="font-medium text-foreground mb-1">🌴 Free slots available</p>
+              <p className="text-sm text-muted-foreground">5:00 PM - 7:00 PM today</p>
+            </div>
+            <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+              <Button className="bg-gradient-to-r from-emerald-500 to-cyan-500 hover:from-emerald-600 hover:to-cyan-600 text-white">
+                <Plus className="h-4 w-4 mr-2" />
+                Add hang
+              </Button>
+            </motion.div>
+          </div>
         </motion.div>
-      )}
+
+        {/* Week view visualization */}
+        <motion.div
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.6 }}
+          className="mt-6"
+        >
+          <p className="text-sm text-muted-foreground mb-3">This week at a glance:</p>
+          <div className="flex gap-2">
+            {['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'].map((day, idx) => (
+              <motion.div
+                key={day}
+                whileHover={{ scale: 1.1 }}
+                className="flex-1"
+              >
+                <div className="text-center mb-2">
+                  <p className="text-xs text-muted-foreground">{day}</p>
+                </div>
+                <div className={`h-12 rounded-lg ${
+                  idx < 2 
+                    ? 'bg-gradient-to-t from-purple-500/40 to-pink-500/40 border border-purple-500/40' 
+                    : 'bg-background/20 border border-border/20'
+                }`} />
+              </motion.div>
+            ))}
+          </div>
+          <p className="text-xs text-center text-muted-foreground mt-2">
+            2 hangs scheduled this week
+          </p>
+        </motion.div>
+      </motion.div>
     </div>
   );
 };

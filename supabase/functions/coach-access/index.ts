@@ -27,8 +27,8 @@ serve(async (req) => {
       return new Response(
         JSON.stringify({ 
           valid: true, 
-          coachName: "Maya Thompson",
-          message: "Hey Maya! Welcome back! 👋"
+          coachName: "Stephen M.",
+          message: "Yo Stephen! Let's change some lives today! 🚀"
         }),
         { status: 200, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
       );
