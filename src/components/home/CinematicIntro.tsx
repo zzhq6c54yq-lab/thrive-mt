@@ -18,8 +18,10 @@ const CinematicIntro: React.FC<CinematicIntroProps> = ({ onContinue, onSkipToMai
   const [showContent, setShowContent] = useState(false);
   const [selectedLanguage, setSelectedLanguage] = useState<'English' | 'Español' | 'Português' | 'Filipino'>("English");
   const [showAccessCodeDialog, setShowAccessCodeDialog] = useState(false);
+  const [showCoachAccessDialog, setShowCoachAccessDialog] = useState(false);
   const [accessCodeDialogOpen, setAccessCodeDialogOpen] = useState(false);
   const [accessCode, setAccessCode] = useState("");
+  const [coachAccessCode, setCoachAccessCode] = useState("");
   const [loading, setLoading] = useState(false);
   const { toast } = useToast();
   const navigate = useNavigate();
@@ -79,6 +81,39 @@ const CinematicIntro: React.FC<CinematicIntroProps> = ({ onContinue, onSkipToMai
         variant: "destructive",
       });
       setAccessCode("");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleCoachAccess = async () => {
+    setLoading(true);
+    try {
+      const { data, error } = await supabase.functions.invoke('coach-access', {
+        body: { accessCode: coachAccessCode }
+      });
+
+      if (error) throw error;
+
+      if (data.valid) {
+        sessionStorage.setItem('coachAccess', 'true');
+        toast({
+          title: data.message || "Hey Maya! 👋",
+          description: "Welcome to your coach portal!",
+        });
+        setShowCoachAccessDialog(false);
+        setCoachAccessCode("");
+        navigate("/coach-dashboard");
+      } else {
+        throw new Error(data.error || "Invalid access code");
+      }
+    } catch (error: any) {
+      toast({
+        title: "Hmm, that doesn't look right",
+        description: error.message || "Try that code again?",
+        variant: "destructive",
+      });
+      setCoachAccessCode("");
     } finally {
       setLoading(false);
     }
@@ -268,6 +303,16 @@ const CinematicIntro: React.FC<CinematicIntroProps> = ({ onContinue, onSkipToMai
               <Button
                 variant="ghost"
                 size="sm"
+                onClick={() => setShowCoachAccessDialog(true)}
+                className="text-sm text-muted-foreground hover:text-foreground transition-colors font-light"
+              >
+                <Key className="mr-2 h-4 w-4" />
+                Coach Portal
+              </Button>
+              
+              <Button
+                variant="ghost"
+                size="sm"
                 onClick={() => setAccessCodeDialogOpen(true)}
                 className="text-sm text-muted-foreground hover:text-foreground transition-colors font-light"
               >
@@ -360,6 +405,49 @@ const CinematicIntro: React.FC<CinematicIntroProps> = ({ onContinue, onSkipToMai
               className="w-full bg-gradient-to-r from-[#B87333] to-[#D4AF37] hover:from-[#D4AF37] hover:to-[#B87333]"
             >
               {loading ? "Verifying..." : "Continue"}
+            </Button>
+          </div>
+        </DialogContent>
+      </Dialog>
+
+      {/* Coach Access Dialog */}
+      <Dialog open={showCoachAccessDialog} onOpenChange={(open) => {
+        setShowCoachAccessDialog(open);
+        if (!open) setCoachAccessCode("");
+      }}>
+        <DialogContent className="sm:max-w-md bg-gray-900/95 backdrop-blur-xl border-teal-500/30">
+          <DialogHeader>
+            <DialogTitle className="text-white">Coach Access 👋</DialogTitle>
+            <DialogDescription className="text-gray-400">
+              Enter your access code to get started
+            </DialogDescription>
+          </DialogHeader>
+          
+          <div className="space-y-4 py-4">
+            <div className="space-y-2">
+              <Label htmlFor="coachAccessCode" className="text-gray-300">Access Code</Label>
+              <Input
+                id="coachAccessCode"
+                type="password"
+                placeholder="••••"
+                value={coachAccessCode}
+                onChange={(e) => setCoachAccessCode(e.target.value)}
+                maxLength={4}
+                className="text-center text-2xl tracking-widest bg-gray-800/50 border-teal-500/30 text-white"
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter' && coachAccessCode.length === 4) {
+                    handleCoachAccess();
+                  }
+                }}
+              />
+            </div>
+            
+            <Button
+              onClick={handleCoachAccess}
+              disabled={loading || coachAccessCode.length !== 4}
+              className="w-full bg-gradient-to-r from-teal-500 to-teal-600 hover:from-teal-600 hover:to-teal-500"
+            >
+              {loading ? "Let's go..." : "Let's do this!"}
             </Button>
           </div>
         </DialogContent>

@@ -39,6 +39,7 @@ import FamilyResources from "./pages/FamilyResources";
 import RealTimeTherapy from "./pages/RealTimeTherapy";
 import TherapistAdmin from "./pages/TherapistAdmin";
 import TherapistDashboard from "./pages/TherapistDashboard";
+import CoachDashboard from "./pages/CoachDashboard";
 import TherapistVideoSession from "./pages/TherapistVideoSession";
 import ClientVideoSession from "./components/client/ClientVideoSession";
 import SignatureMoments from "./pages/SignatureMoments";
@@ -349,6 +350,7 @@ function App() {
           <Route path="/coach-questionnaire" element={<CoachQuestionnaire />} />
           <Route path="/coach-matches" element={<CoachMatches />} />
           <Route path="/coach/:id" element={<CoachProfile />} />
+          <Route path="/coach-dashboard" element={<CoachDashboard />} />
           
           <Route path="/admin-portal" element={<AdminPortal />} />
           <Route path="/holistic-wellness" element={<HolisticWellness />} />

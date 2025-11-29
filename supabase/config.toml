@@ -14,3 +14,6 @@ verify_jwt = false
 
 [functions.admin-access]
 verify_jwt = false
+
+[functions.coach-access]
+verify_jwt = false
