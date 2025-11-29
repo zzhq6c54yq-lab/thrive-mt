@@ -45,6 +45,7 @@ import ClientVideoSession from "./components/client/ClientVideoSession";
 import SignatureMoments from "./pages/SignatureMoments";
 import TherapistProfile from "./pages/TherapistProfile";
 import TherapistReset from "./pages/TherapistReset";
+import CoachIntro from "./pages/CoachIntro";
 import CoachQuestionnaire from "./pages/CoachQuestionnaire";
 import CoachMatches from "./pages/CoachMatches";
 import CoachProfile from "./pages/CoachProfile";
@@ -347,6 +348,7 @@ function App() {
           <Route path="/therapist-reset" element={<TherapistReset />} />
           
           {/* Coach Routes */}
+          <Route path="/coach-intro" element={<CoachIntro />} />
           <Route path="/coach-questionnaire" element={<CoachQuestionnaire />} />
           <Route path="/coach-matches" element={<CoachMatches />} />
           <Route path="/coach/:id" element={<CoachProfile />} />
