@@ -64,10 +64,10 @@ const CoachScheduleTab = () => {
         <div className="flex items-center justify-between mb-6">
           <div>
             <h3 className="text-2xl font-bold bg-gradient-to-r from-blue-400 via-teal-400 to-slate-300 bg-clip-text text-transparent mb-2">
-              📅 UPCOMING HANGS
+              Upcoming Sessions
             </h3>
             <p className="text-muted-foreground">
-              Your coaching calls this week
+              Your coaching sessions this week
             </p>
           </div>
           <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
@@ -160,7 +160,7 @@ const CoachScheduleTab = () => {
                           className={`bg-gradient-to-r ${hang.color} hover:opacity-90 text-white font-bold`}
                         >
                           <Video className="h-4 w-4 mr-2" />
-                          {hang.status === 'soon' ? 'JOIN 🎬' : 'Join'}
+                          Join
                         </Button>
                       </motion.div>
                       <Button 
@@ -187,7 +187,7 @@ const CoachScheduleTab = () => {
         >
           <div className="flex items-center justify-between">
             <div>
-              <p className="font-medium text-foreground mb-1">🌴 Free slots available</p>
+              <p className="font-medium text-foreground mb-1">Free slots available</p>
               <p className="text-sm text-muted-foreground">5:00 PM - 7:00 PM today</p>
             </div>
             <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
@@ -225,8 +225,8 @@ const CoachScheduleTab = () => {
               </motion.div>
             ))}
           </div>
-          <p className="text-xs text-center text-muted-foreground mt-2">
-            2 hangs scheduled this week
+              <p className="text-xs text-center text-muted-foreground mt-2">
+            2 sessions scheduled this week
           </p>
         </motion.div>
       </motion.div>

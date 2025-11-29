@@ -10,19 +10,17 @@ const CoachWelcomeBanner: React.FC<CoachWelcomeBannerProps> = ({ coachName }) =>
     const hour = new Date().getHours();
     const day = new Date().toLocaleDateString('en-US', { weekday: 'long' });
     
-    if (hour < 12) return `Yo ${coachName}! ☀️ ${day} morning vibes!`;
-    if (hour < 18) return `Hey ${coachName}! 👋 Happy ${day}!`;
-    return `Evening, ${coachName}! 🌙 ${day} wind-down mode`;
+    if (hour < 12) return `Good morning, ${coachName}. Let's make ${day} count.`;
+    if (hour < 18) return `Good afternoon, ${coachName}. Hope your ${day} is going well.`;
+    return `Good evening, ${coachName}. Wrapping up ${day}.`;
   };
 
   const getMotivationalMessage = () => {
     const messages = [
-      "Ready to change some lives today? 🚀",
-      "Your squad is about to level up! 💫",
-      "Let's help some people absolutely crush it! 🎯",
-      "Time to spread some serious good vibes! 🌟",
-      "You're making a massive impact! Keep going! 💪",
-      "Today's gonna be legendary! Let's do this! ⚡"
+      "Your clients are counting on you today.",
+      "Ready to help your clients reach their goals?",
+      "Another day to make a meaningful impact.",
+      "Your expertise matters. Let's get started."
     ];
     return messages[Math.floor(Math.random() * messages.length)];
   };
@@ -109,7 +107,7 @@ const CoachWelcomeBanner: React.FC<CoachWelcomeBannerProps> = ({ coachName }) =>
                   >
                     3
                   </motion.p>
-                  <p className="text-xs text-muted-foreground">Hangs Today</p>
+                  <p className="text-xs text-muted-foreground">Sessions Today</p>
                 </div>
               </div>
             </motion.div>
@@ -194,7 +192,7 @@ const CoachWelcomeBanner: React.FC<CoachWelcomeBannerProps> = ({ coachName }) =>
                   >
                     4.9
                   </motion.p>
-                  <p className="text-xs text-muted-foreground">Rating ⭐</p>
+                  <p className="text-xs text-muted-foreground">Rating</p>
                 </div>
               </div>
             </motion.div>
@@ -209,9 +207,9 @@ const CoachWelcomeBanner: React.FC<CoachWelcomeBannerProps> = ({ coachName }) =>
           >
             <div className="flex-1">
               <div className="flex items-center justify-between mb-2">
-                <span className="text-sm font-medium text-foreground/80">Your vibe check:</span>
+                <span className="text-sm font-medium text-foreground/80">Engagement Score:</span>
                 <span className="text-sm font-bold text-transparent bg-gradient-to-r from-blue-400 to-teal-400 bg-clip-text">
-                  🔥 FIRE MODE
+                  Excellent
                 </span>
               </div>
               <div className="h-3 bg-background/40 rounded-full overflow-hidden border border-border/40">
