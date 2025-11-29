@@ -1,14 +1,18 @@
 import { motion } from "framer-motion";
 import { Calendar, MessageCircle, TrendingUp, Sparkles, Award } from "lucide-react";
 
-const CoachWelcomeBanner = () => {
+interface CoachWelcomeBannerProps {
+  coachName: string;
+}
+
+const CoachWelcomeBanner: React.FC<CoachWelcomeBannerProps> = ({ coachName }) => {
   const getGreeting = () => {
     const hour = new Date().getHours();
     const day = new Date().toLocaleDateString('en-US', { weekday: 'long' });
     
-    if (hour < 12) return `Yo Stephen! ☀️ ${day} morning vibes!`;
-    if (hour < 18) return `Hey Stephen! 👋 Happy ${day}!`;
-    return `Evening, Stephen! 🌙 ${day} wind-down mode`;
+    if (hour < 12) return `Yo ${coachName}! ☀️ ${day} morning vibes!`;
+    if (hour < 18) return `Hey ${coachName}! 👋 Happy ${day}!`;
+    return `Evening, ${coachName}! 🌙 ${day} wind-down mode`;
   };
 
   const getMotivationalMessage = () => {
@@ -62,7 +66,7 @@ const CoachWelcomeBanner = () => {
           transition={{ duration: 4, repeat: Infinity }}
           className="hidden md:flex h-20 w-20 rounded-2xl bg-gradient-to-br from-purple-500 via-pink-500 to-cyan-500 items-center justify-center text-white font-bold text-3xl flex-shrink-0 shadow-2xl"
         >
-          S
+          {coachName.charAt(0).toUpperCase()}
         </motion.div>
 
         <div className="flex-1">

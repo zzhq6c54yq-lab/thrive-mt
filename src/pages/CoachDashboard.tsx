@@ -15,6 +15,7 @@ const CoachDashboard = () => {
   const navigate = useNavigate();
   const { toast } = useToast();
   const [activeTab, setActiveTab] = useState("today");
+  const coachName = sessionStorage.getItem('coachName') || 'Coach';
 
   useEffect(() => {
     // Check if coach has access
@@ -58,7 +59,7 @@ const CoachDashboard = () => {
                 transition={{ duration: 2, repeat: Infinity }}
                 className="h-14 w-14 rounded-full bg-gradient-to-br from-purple-500 via-pink-500 to-cyan-500 flex items-center justify-center text-white font-bold text-xl"
               >
-                S
+                {coachName.charAt(0).toUpperCase()}
               </motion.div>
               <motion.div 
                 animate={{ scale: [1, 1.2, 1] }}
@@ -78,7 +79,7 @@ const CoachDashboard = () => {
                   <Zap className="h-4 w-4 text-amber-400 fill-amber-400" />
                 </motion.div>
               </div>
-              <p className="text-sm text-muted-foreground">Stephen M. • Online</p>
+              <p className="text-sm text-muted-foreground">{coachName} • Online</p>
             </div>
           </div>
           <Button
@@ -95,7 +96,7 @@ const CoachDashboard = () => {
 
       {/* Main Content */}
       <div className="relative container mx-auto px-4 py-8">
-        <CoachWelcomeBanner />
+        <CoachWelcomeBanner coachName={coachName} />
 
         <motion.div 
           initial={{ y: 20, opacity: 0 }}

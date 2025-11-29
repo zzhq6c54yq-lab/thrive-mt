@@ -97,8 +97,9 @@ const CinematicIntro: React.FC<CinematicIntroProps> = ({ onContinue, onSkipToMai
 
       if (data.valid) {
         sessionStorage.setItem('coachAccess', 'true');
+        sessionStorage.setItem('coachName', data.coachName || 'Coach');
         toast({
-          title: data.message || "Hey Maya! 👋",
+          title: data.message || "Hey there! 👋",
           description: "Welcome to your coach portal!",
         });
         setShowCoachAccessDialog(false);
