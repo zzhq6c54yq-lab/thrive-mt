@@ -120,7 +120,7 @@ const CoachQuestionnaire = () => {
     if (currentStep > 0) {
       setCurrentStep(currentStep - 1);
     } else {
-      navigate(-1);
+      navigate('/coach-intro');
     }
   };
 
