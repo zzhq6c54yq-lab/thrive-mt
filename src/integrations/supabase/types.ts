@@ -740,6 +740,75 @@ export type Database = {
           },
         ]
       }
+      coaches: {
+        Row: {
+          approach: string | null
+          availability_hours: string | null
+          bio: string | null
+          certifications: string[] | null
+          communication_styles: string[] | null
+          created_at: string | null
+          experience_years: number | null
+          hourly_rate: number | null
+          id: string
+          image_url: string | null
+          is_active: boolean | null
+          languages: string[] | null
+          name: string
+          rating: number | null
+          specialties: string[]
+          title: string
+          total_reviews: number | null
+          updated_at: string | null
+          user_id: string | null
+          weekly_text_rate: number | null
+        }
+        Insert: {
+          approach?: string | null
+          availability_hours?: string | null
+          bio?: string | null
+          certifications?: string[] | null
+          communication_styles?: string[] | null
+          created_at?: string | null
+          experience_years?: number | null
+          hourly_rate?: number | null
+          id?: string
+          image_url?: string | null
+          is_active?: boolean | null
+          languages?: string[] | null
+          name: string
+          rating?: number | null
+          specialties?: string[]
+          title: string
+          total_reviews?: number | null
+          updated_at?: string | null
+          user_id?: string | null
+          weekly_text_rate?: number | null
+        }
+        Update: {
+          approach?: string | null
+          availability_hours?: string | null
+          bio?: string | null
+          certifications?: string[] | null
+          communication_styles?: string[] | null
+          created_at?: string | null
+          experience_years?: number | null
+          hourly_rate?: number | null
+          id?: string
+          image_url?: string | null
+          is_active?: boolean | null
+          languages?: string[] | null
+          name?: string
+          rating?: number | null
+          specialties?: string[]
+          title?: string
+          total_reviews?: number | null
+          updated_at?: string | null
+          user_id?: string | null
+          weekly_text_rate?: number | null
+        }
+        Relationships: []
+      }
       coaching_sessions: {
         Row: {
           additional_notes: string | null

@@ -44,6 +44,9 @@ import ClientVideoSession from "./components/client/ClientVideoSession";
 import SignatureMoments from "./pages/SignatureMoments";
 import TherapistProfile from "./pages/TherapistProfile";
 import TherapistReset from "./pages/TherapistReset";
+import CoachQuestionnaire from "./pages/CoachQuestionnaire";
+import CoachMatches from "./pages/CoachMatches";
+import CoachProfile from "./pages/CoachProfile";
 import AdminPortal from "./pages/AdminPortal";
 import HolisticWellness from "./pages/HolisticWellness";
 import AlternativeTherapies from "./pages/AlternativeTherapies";
@@ -341,6 +344,12 @@ function App() {
           <Route path="/client-video-session/:sessionId" element={<ClientVideoSession />} />
           <Route path="/signature-moments" element={<SignatureMoments />} />
           <Route path="/therapist-reset" element={<TherapistReset />} />
+          
+          {/* Coach Routes */}
+          <Route path="/coach-questionnaire" element={<CoachQuestionnaire />} />
+          <Route path="/coach-matches" element={<CoachMatches />} />
+          <Route path="/coach/:id" element={<CoachProfile />} />
+          
           <Route path="/admin-portal" element={<AdminPortal />} />
           <Route path="/holistic-wellness" element={<HolisticWellness />} />
           <Route path="/binaural-beats" element={<BinauralBeats />} />

@@ -367,12 +367,29 @@ const CoachingInfoModal: React.FC<CoachingInfoModalProps> = ({ isOpen, onOpenCha
                 <p className="text-bronze-300 font-bold">Feel stronger.</p>
                 <p className="text-bronze-300 font-bold">Feel better.</p>
               </div>
-              <Button 
-                size="lg" 
-                className="mt-6 bg-gradient-to-r from-bronze-500 to-bronze-600 hover:from-bronze-600 hover:to-bronze-700 text-white"
-              >
-                Get Started with Coaching
-              </Button>
+              <div className="flex flex-col sm:flex-row gap-3 justify-center">
+                <Button 
+                  size="lg" 
+                  className="mt-6 bg-gradient-to-r from-bronze-500 to-bronze-600 hover:from-bronze-600 hover:to-bronze-700 text-white"
+                  onClick={() => {
+                    onOpenChange(false);
+                    window.location.href = '/coach-questionnaire';
+                  }}
+                >
+                  Match Me to My Coach
+                </Button>
+                <Button 
+                  size="lg" 
+                  variant="outline"
+                  className="mt-6 border-bronze-300/30 hover:bg-bronze-500/10"
+                  onClick={() => {
+                    onOpenChange(false);
+                    window.location.href = '/coach-matches';
+                  }}
+                >
+                  Browse Coaches
+                </Button>
+              </div>
             </section>
           </div>
         </ScrollArea>

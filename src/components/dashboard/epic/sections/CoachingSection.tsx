@@ -1,11 +1,13 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
-import { Heart, MessageCircle, Phone, Video, ArrowRight } from 'lucide-react';
+import { Heart, MessageCircle, Phone, Video, ArrowRight, Sparkles } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import { useNavigate } from 'react-router-dom';
 import CoachingInfoModal from './CoachingInfoModal';
 
 const CoachingSection: React.FC = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const navigate = useNavigate();
 
   return (
     <>
@@ -56,18 +58,31 @@ const CoachingSection: React.FC = () => {
             </div>
 
             {/* Pricing Teaser & CTA */}
-            <div className="flex items-center justify-between pt-4 border-t border-bronze-300/10">
-              <div>
-                <p className="text-sm text-muted-foreground">Starting at</p>
-                <p className="text-2xl font-bold text-bronze-300">
-                  $29<span className="text-sm text-muted-foreground">/week</span>
-                </p>
+            <div className="space-y-3 pt-4 border-t border-bronze-300/10">
+              <div className="flex items-center justify-between">
+                <div>
+                  <p className="text-sm text-muted-foreground">Starting at</p>
+                  <p className="text-2xl font-bold text-bronze-300">
+                    $29<span className="text-sm text-muted-foreground">/week</span>
+                  </p>
+                </div>
+                <Button
+                  onClick={() => setIsModalOpen(true)}
+                  variant="outline"
+                  className="border-bronze-300/30 hover:bg-bronze-500/10"
+                >
+                  Learn More
+                  <ArrowRight className="w-4 h-4 ml-2" />
+                </Button>
               </div>
+              
               <Button
-                onClick={() => setIsModalOpen(true)}
-                className="bg-gradient-to-r from-bronze-500 to-bronze-600 hover:from-bronze-600 hover:to-bronze-700 text-white group"
+                onClick={() => navigate('/coach-questionnaire')}
+                className="w-full bg-gradient-to-r from-bronze-500 to-bronze-600 hover:from-bronze-600 hover:to-bronze-700 text-white group"
+                size="lg"
               >
-                Learn More
+                <Sparkles className="w-4 h-4 mr-2" />
+                Find Your Coach
                 <ArrowRight className="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform" />
               </Button>
             </div>
