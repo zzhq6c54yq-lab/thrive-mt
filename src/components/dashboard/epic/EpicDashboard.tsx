@@ -26,6 +26,7 @@ import WelcomeHomeHero from './WelcomeHomeHero';
 import ConversationalCheckIn from './ConversationalCheckIn';
 import WelcomeBackBanner from './WelcomeBackBanner';
 import { HenryCompanionSection } from './HenryCompanionSection';
+import CoachingSection from './sections/CoachingSection';
 import { useLastSeen } from '@/hooks/useLastSeen';
 
 export default function EpicDashboard() {
@@ -348,6 +349,9 @@ export default function EpicDashboard() {
           userName={profile?.display_name?.split(' ')[0] || user?.email?.split('@')[0]}
           onChatWithHenry={() => setShowHenryDialog(true)}
         />
+
+        {/* Mental Wellness Coaching Section */}
+        <CoachingSection />
 
         {/* Conversational Check-In */}
         <ConversationalCheckIn onComplete={refetch} />
