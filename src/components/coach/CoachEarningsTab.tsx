@@ -117,7 +117,7 @@ const CoachEarningsTab = () => {
               className="bg-background/60 backdrop-blur-sm rounded-xl p-4 border border-border/40"
             >
               <div className="flex items-center gap-2 mb-2">
-                <Award className="h-5 w-5 text-purple-400" />
+                <Award className="h-5 w-5 text-blue-400" />
                 <p className="text-xs text-muted-foreground">Rating</p>
               </div>
               <p className="text-3xl font-bold text-foreground">4.9 ⭐</p>
@@ -168,7 +168,7 @@ const CoachEarningsTab = () => {
         className="bg-background/60 backdrop-blur-sm rounded-xl border border-border/40 p-6"
       >
         <h3 className="text-xl font-bold text-foreground mb-4 flex items-center gap-2">
-          <Calendar className="h-5 w-5 text-purple-400" />
+          <Calendar className="h-5 w-5 text-blue-400" />
           Recent Sessions
         </h3>
         <div className="space-y-3">
@@ -179,7 +179,7 @@ const CoachEarningsTab = () => {
               animate={{ opacity: 1, x: 0 }}
               transition={{ delay: 0.3 + idx * 0.05 }}
               whileHover={{ x: 5 }}
-              className="flex items-center justify-between p-4 rounded-lg bg-background/40 border border-border/30 hover:border-purple-500/30 transition-all"
+              className="flex items-center justify-between p-4 rounded-lg bg-background/40 border border-border/30 hover:border-blue-500/30 transition-all"
             >
               <div>
                 <p className="font-medium text-foreground">{session.member}</p>
@@ -204,7 +204,7 @@ const CoachEarningsTab = () => {
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.4 }}
-        className="bg-gradient-to-br from-purple-500/10 to-pink-500/10 backdrop-blur-sm rounded-xl border border-purple-500/20 p-6"
+        className="bg-gradient-to-br from-blue-500/10 to-teal-500/10 backdrop-blur-sm rounded-xl border border-blue-500/20 p-6"
       >
         <h3 className="text-lg font-bold text-foreground mb-4">Weekly Earnings Trend</h3>
         <div className="flex items-end justify-between gap-2 h-32">
@@ -214,7 +214,7 @@ const CoachEarningsTab = () => {
               initial={{ height: 0 }}
               animate={{ height: `${height}%` }}
               transition={{ delay: 0.5 + idx * 0.1, duration: 0.5 }}
-              className="flex-1 bg-gradient-to-t from-purple-500 to-pink-500 rounded-t-lg relative group cursor-pointer"
+              className="flex-1 bg-gradient-to-t from-blue-500 to-teal-500 rounded-t-lg relative group cursor-pointer"
               whileHover={{ scale: 1.1 }}
             >
               <motion.div

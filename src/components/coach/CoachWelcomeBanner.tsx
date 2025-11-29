@@ -32,7 +32,7 @@ const CoachWelcomeBanner: React.FC<CoachWelcomeBannerProps> = ({ coachName }) =>
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5 }}
-      className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-purple-500/10 via-pink-500/10 to-cyan-500/10 border border-purple-500/20 backdrop-blur-sm p-8"
+      className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-blue-500/10 via-teal-500/10 to-cyan-500/10 border border-blue-500/20 backdrop-blur-sm p-8"
     >
       {/* Animated confetti particles */}
       {[...Array(12)].map((_, i) => (
@@ -40,7 +40,7 @@ const CoachWelcomeBanner: React.FC<CoachWelcomeBannerProps> = ({ coachName }) =>
           key={i}
           className="absolute w-2 h-2 rounded-full"
           style={{
-            background: ['#a855f7', '#ec4899', '#06b6d4', '#f59e0b'][i % 4],
+            background: ['#3b82f6', '#14b8a6', '#06b6d4', '#f59e0b'][i % 4],
             left: `${(i * 8) + 10}%`,
             top: `${Math.random() * 100}%`,
           }}
@@ -64,7 +64,7 @@ const CoachWelcomeBanner: React.FC<CoachWelcomeBannerProps> = ({ coachName }) =>
             rotate: [0, 5, -5, 0]
           }}
           transition={{ duration: 4, repeat: Infinity }}
-          className="hidden md:flex h-20 w-20 rounded-2xl bg-gradient-to-br from-purple-500 via-pink-500 to-cyan-500 items-center justify-center text-white font-bold text-3xl flex-shrink-0 shadow-2xl"
+          className="hidden md:flex h-20 w-20 rounded-2xl bg-gradient-to-br from-blue-600 via-teal-500 to-slate-400 items-center justify-center text-white font-bold text-3xl flex-shrink-0 shadow-2xl"
         >
           {coachName.charAt(0).toUpperCase()}
         </motion.div>
@@ -73,7 +73,7 @@ const CoachWelcomeBanner: React.FC<CoachWelcomeBannerProps> = ({ coachName }) =>
           <motion.h2 
             initial={{ x: -20 }}
             animate={{ x: 0 }}
-            className="text-4xl font-bold bg-gradient-to-r from-purple-400 via-pink-400 to-cyan-400 bg-clip-text text-transparent mb-2"
+            className="text-4xl font-bold bg-gradient-to-r from-blue-400 via-teal-400 to-slate-300 bg-clip-text text-transparent mb-2"
           >
             {getGreeting()}
           </motion.h2>
@@ -91,21 +91,21 @@ const CoachWelcomeBanner: React.FC<CoachWelcomeBannerProps> = ({ coachName }) =>
             <motion.div
               whileHover={{ scale: 1.05, y: -5 }}
               whileTap={{ scale: 0.95 }}
-              className="bg-gradient-to-br from-purple-500/20 to-purple-600/20 backdrop-blur-sm rounded-xl p-4 border border-purple-500/30 cursor-pointer group"
+              className="bg-gradient-to-br from-blue-500/20 to-blue-600/20 backdrop-blur-sm rounded-xl p-4 border border-blue-500/30 cursor-pointer group"
             >
               <div className="flex items-center gap-3">
                 <motion.div 
                   animate={{ rotate: [0, 10, -10, 0] }}
                   transition={{ duration: 2, repeat: Infinity }}
-                  className="h-12 w-12 rounded-full bg-purple-500/30 flex items-center justify-center group-hover:bg-purple-500/50 transition-colors"
+                  className="h-12 w-12 rounded-full bg-blue-500/30 flex items-center justify-center group-hover:bg-blue-500/50 transition-colors"
                 >
-                  <Calendar className="h-6 w-6 text-purple-400" />
+                  <Calendar className="h-6 w-6 text-blue-400" />
                 </motion.div>
                 <div>
                   <motion.p 
                     animate={{ scale: [1, 1.1, 1] }}
                     transition={{ duration: 1, repeat: Infinity, repeatDelay: 2 }}
-                    className="text-3xl font-bold text-purple-400"
+                    className="text-3xl font-bold text-blue-400"
                   >
                     3
                   </motion.p>
@@ -117,26 +117,26 @@ const CoachWelcomeBanner: React.FC<CoachWelcomeBannerProps> = ({ coachName }) =>
             <motion.div
               whileHover={{ scale: 1.05, y: -5 }}
               whileTap={{ scale: 0.95 }}
-              className="bg-gradient-to-br from-pink-500/20 to-pink-600/20 backdrop-blur-sm rounded-xl p-4 border border-pink-500/30 cursor-pointer group"
+              className="bg-gradient-to-br from-teal-500/20 to-teal-600/20 backdrop-blur-sm rounded-xl p-4 border border-teal-500/30 cursor-pointer group"
             >
               <div className="flex items-center gap-3">
                 <motion.div 
                   animate={{ scale: [1, 1.1, 1] }}
                   transition={{ duration: 1.5, repeat: Infinity }}
-                  className="h-12 w-12 rounded-full bg-pink-500/30 flex items-center justify-center group-hover:bg-pink-500/50 transition-colors relative"
+                  className="h-12 w-12 rounded-full bg-teal-500/30 flex items-center justify-center group-hover:bg-teal-500/50 transition-colors relative"
                 >
-                  <MessageCircle className="h-6 w-6 text-pink-400" />
+                  <MessageCircle className="h-6 w-6 text-teal-400" />
                   <motion.div
                     animate={{ scale: [0, 1.5, 0], opacity: [0, 1, 0] }}
                     transition={{ duration: 2, repeat: Infinity }}
-                    className="absolute inset-0 rounded-full bg-pink-400/30"
+                    className="absolute inset-0 rounded-full bg-teal-400/30"
                   />
                 </motion.div>
                 <div>
                   <motion.p 
                     animate={{ scale: [1, 1.1, 1] }}
                     transition={{ duration: 1, repeat: Infinity, repeatDelay: 2, delay: 0.3 }}
-                    className="text-3xl font-bold text-pink-400"
+                    className="text-3xl font-bold text-teal-400"
                   >
                     5
                   </motion.p>
@@ -210,7 +210,7 @@ const CoachWelcomeBanner: React.FC<CoachWelcomeBannerProps> = ({ coachName }) =>
             <div className="flex-1">
               <div className="flex items-center justify-between mb-2">
                 <span className="text-sm font-medium text-foreground/80">Your vibe check:</span>
-                <span className="text-sm font-bold text-transparent bg-gradient-to-r from-purple-400 to-pink-400 bg-clip-text">
+                <span className="text-sm font-bold text-transparent bg-gradient-to-r from-blue-400 to-teal-400 bg-clip-text">
                   🔥 FIRE MODE
                 </span>
               </div>
@@ -219,7 +219,7 @@ const CoachWelcomeBanner: React.FC<CoachWelcomeBannerProps> = ({ coachName }) =>
                   initial={{ width: 0 }}
                   animate={{ width: '92%' }}
                   transition={{ duration: 1.5, ease: "easeOut", delay: 0.5 }}
-                  className="h-full bg-gradient-to-r from-purple-500 via-pink-500 to-amber-500 rounded-full relative"
+                  className="h-full bg-gradient-to-r from-blue-500 via-teal-500 to-amber-500 rounded-full relative"
                 >
                   <motion.div
                     animate={{ x: ['-100%', '200%'] }}

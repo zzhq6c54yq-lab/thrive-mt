@@ -31,7 +31,7 @@ const CoachTodayTab = () => {
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.1 }}
-        className="bg-gradient-to-br from-purple-500/10 via-pink-500/10 to-background/60 backdrop-blur-sm rounded-2xl border border-purple-500/20 p-6"
+        className="bg-gradient-to-br from-blue-500/10 via-teal-500/10 to-background/60 backdrop-blur-sm rounded-2xl border border-blue-500/20 p-6"
       >
         <div className="flex items-center gap-3 mb-4">
           <motion.div
@@ -40,21 +40,21 @@ const CoachTodayTab = () => {
           >
             <Trophy className="h-6 w-6 text-amber-400" />
           </motion.div>
-          <h3 className="text-2xl font-bold bg-gradient-to-r from-purple-400 via-pink-400 to-cyan-400 bg-clip-text text-transparent">
+          <h3 className="text-2xl font-bold bg-gradient-to-r from-blue-400 via-teal-400 to-slate-300 bg-clip-text text-transparent">
             TODAY'S MISSION
           </h3>
         </div>
         <div className="mb-4">
           <div className="flex items-center justify-between mb-2">
             <span className="text-sm font-medium text-foreground/80">Progress</span>
-            <span className="text-sm font-bold text-purple-400">3/4 sessions done! 🔥</span>
+            <span className="text-sm font-bold text-blue-400">3/4 sessions done! 🔥</span>
           </div>
           <div className="h-4 bg-background/40 rounded-full overflow-hidden border border-border/40">
             <motion.div
               initial={{ width: 0 }}
               animate={{ width: '75%' }}
               transition={{ duration: 1, ease: "easeOut" }}
-              className="h-full bg-gradient-to-r from-purple-500 via-pink-500 to-cyan-500 rounded-full relative"
+              className="h-full bg-gradient-to-r from-blue-500 via-teal-500 to-cyan-500 rounded-full relative"
             >
               <motion.div
                 animate={{ x: ['-100%', '200%'] }}
@@ -94,7 +94,7 @@ const CoachTodayTab = () => {
               <motion.div
                 animate={{ scale: [1, 1.05, 1] }}
                 transition={{ duration: 2, repeat: Infinity }}
-                className="h-16 w-16 rounded-full bg-gradient-to-br from-purple-500 via-pink-500 to-cyan-500 flex items-center justify-center text-white font-bold text-xl"
+                className="h-16 w-16 rounded-full bg-gradient-to-br from-blue-600 via-teal-500 to-slate-400 flex items-center justify-center text-white font-bold text-xl"
               >
                 SM
               </motion.div>
@@ -131,7 +131,7 @@ const CoachTodayTab = () => {
         className="bg-background/60 backdrop-blur-sm rounded-xl border border-border/40 p-6"
       >
         <h3 className="text-xl font-bold text-foreground mb-4 flex items-center gap-2">
-          <Calendar className="h-5 w-5 text-purple-400" />
+          <Calendar className="h-5 w-5 text-blue-400" />
           Rest of Today
         </h3>
         <div className="space-y-3">
@@ -142,10 +142,10 @@ const CoachTodayTab = () => {
               animate={{ opacity: 1, x: 0 }}
               transition={{ delay: 0.4 + idx * 0.1 }}
               whileHover={{ x: 5 }}
-              className="flex items-center justify-between p-4 rounded-lg bg-background/40 border border-border/30 hover:border-purple-500/30 transition-all"
+              className="flex items-center justify-between p-4 rounded-lg bg-background/40 border border-border/30 hover:border-blue-500/30 transition-all"
             >
               <div className="flex items-center gap-4">
-                <div className="h-12 w-12 rounded-full bg-gradient-to-br from-purple-400 to-pink-600 flex items-center justify-center text-white font-bold">
+                <div className="h-12 w-12 rounded-full bg-gradient-to-br from-blue-500 to-teal-500 flex items-center justify-center text-white font-bold">
                   {call.name.charAt(0)}
                 </div>
                 <div>
@@ -154,7 +154,7 @@ const CoachTodayTab = () => {
                 </div>
               </div>
               <div className="flex items-center gap-3">
-                <span className="text-sm text-purple-400 font-medium">{call.time}</span>
+                <span className="text-sm text-blue-400 font-medium">{call.time}</span>
               </div>
             </motion.div>
           ))}
@@ -169,7 +169,7 @@ const CoachTodayTab = () => {
         className="bg-background/60 backdrop-blur-sm rounded-xl border border-border/40 p-6"
       >
         <h3 className="text-xl font-bold text-foreground mb-4 flex items-center gap-2">
-          <Sparkles className="h-5 w-5 text-pink-400" />
+          <Sparkles className="h-5 w-5 text-teal-400" />
           Quick Wins - Celebrate your squad! 🎉
         </h3>
         <div className="space-y-3">
@@ -182,13 +182,13 @@ const CoachTodayTab = () => {
               className={`p-4 rounded-lg border transition-all ${
                 celebratedWins.includes(win.id)
                   ? 'bg-gradient-to-r from-emerald-500/20 to-cyan-500/20 border-emerald-500/40'
-                  : 'bg-gradient-to-r from-purple-500/10 to-pink-500/10 border-purple-500/20 hover:border-purple-500/40'
+                  : 'bg-gradient-to-r from-blue-500/10 to-teal-500/10 border-blue-500/20 hover:border-blue-500/40'
               }`}
             >
               <div className="flex items-center justify-between">
                 <p className="text-foreground">
                   <span className="text-2xl mr-2">{win.emoji}</span>
-                  <span className="font-semibold text-purple-400">{win.member}</span>
+                  <span className="font-semibold text-blue-400">{win.member}</span>
                   {" "}
                   {win.achievement}
                 </p>
@@ -202,7 +202,7 @@ const CoachTodayTab = () => {
                     className={
                       celebratedWins.includes(win.id)
                         ? "bg-emerald-500 hover:bg-emerald-600 text-white"
-                        : "bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 text-white"
+                        : "bg-gradient-to-r from-blue-500 to-teal-500 hover:from-blue-600 hover:to-teal-600 text-white"
                     }
                   >
                     {celebratedWins.includes(win.id) ? "Celebrated! ✨" : "High-five! 🙌"}

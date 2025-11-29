@@ -66,7 +66,7 @@ const CoachMembersTab = () => {
           <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
           <Input 
             placeholder="Search your squad..." 
-            className="pl-10 bg-background/60 border-border/40 focus:border-purple-500/40"
+            className="pl-10 bg-background/60 border-border/40 focus:border-blue-500/40"
           />
         </div>
         <Button variant="outline" className="border-border/40">
@@ -80,9 +80,9 @@ const CoachMembersTab = () => {
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.1 }}
-        className="bg-gradient-to-br from-purple-500/10 via-pink-500/10 to-background/60 backdrop-blur-sm rounded-xl border border-purple-500/20 p-6"
+        className="bg-gradient-to-br from-blue-500/10 via-teal-500/10 to-background/60 backdrop-blur-sm rounded-xl border border-blue-500/20 p-6"
       >
-        <h3 className="text-2xl font-bold bg-gradient-to-r from-purple-400 via-pink-400 to-cyan-400 bg-clip-text text-transparent mb-2">
+        <h3 className="text-2xl font-bold bg-gradient-to-r from-blue-400 via-teal-400 to-slate-300 bg-clip-text text-transparent mb-2">
           👥 YOUR SQUAD
         </h3>
         <p className="text-muted-foreground">
@@ -107,8 +107,8 @@ const CoachMembersTab = () => {
             <Star className="h-5 w-5 text-amber-400 fill-amber-400" />
             <span className="text-sm font-bold text-amber-400">MEMBER SPOTLIGHT</span>
           </div>
-          <p className="text-lg text-foreground">
-            <span className="font-bold text-purple-400">{spotlightMember.name}</span> just crushed their career transition interview! 🎉
+            <p className="text-lg text-foreground">
+            <span className="font-bold text-blue-400">{spotlightMember.name}</span> just crushed their career transition interview! 🎉
           </p>
         </div>
       </motion.div>
@@ -122,7 +122,7 @@ const CoachMembersTab = () => {
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.3 + idx * 0.1 }}
             whileHover={{ y: -5, scale: 1.02 }}
-            className="bg-background/60 backdrop-blur-sm rounded-xl border border-border/40 hover:border-purple-500/40 p-5 transition-all"
+            className="bg-background/60 backdrop-blur-sm rounded-xl border border-border/40 hover:border-blue-500/40 p-5 transition-all"
           >
             <div className="flex flex-col gap-4">
               <div className="flex items-start justify-between">
@@ -160,7 +160,7 @@ const CoachMembersTab = () => {
               <div>
                 <div className="flex items-center justify-between mb-2">
                   <span className="text-xs text-muted-foreground">Progress</span>
-                  <span className="text-xs font-bold text-purple-400">{member.progress}%</span>
+                  <span className="text-xs font-bold text-blue-400">{member.progress}%</span>
                 </div>
                 <Progress value={member.progress} className="h-2" />
               </div>
@@ -170,7 +170,7 @@ const CoachMembersTab = () => {
                 <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
                   <Button 
                     size="sm" 
-                    className="w-full bg-purple-500/20 hover:bg-purple-500/30 text-purple-400 border border-purple-500/30"
+                    className="w-full bg-blue-500/20 hover:bg-blue-500/30 text-blue-400 border border-blue-500/30"
                   >
                     <MessageCircle className="h-3 w-3" />
                   </Button>
@@ -178,7 +178,7 @@ const CoachMembersTab = () => {
                 <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
                   <Button 
                     size="sm" 
-                    className="w-full bg-pink-500/20 hover:bg-pink-500/30 text-pink-400 border border-pink-500/30"
+                    className="w-full bg-teal-500/20 hover:bg-teal-500/30 text-teal-400 border border-teal-500/30"
                   >
                     <Video className="h-3 w-3" />
                   </Button>

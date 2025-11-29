@@ -59,11 +59,11 @@ const CoachScheduleTab = () => {
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
-        className="bg-gradient-to-br from-purple-500/10 via-pink-500/10 to-background/60 backdrop-blur-sm rounded-xl border border-purple-500/20 p-6"
+        className="bg-gradient-to-br from-blue-500/10 via-teal-500/10 to-background/60 backdrop-blur-sm rounded-xl border border-blue-500/20 p-6"
       >
         <div className="flex items-center justify-between mb-6">
           <div>
-            <h3 className="text-2xl font-bold bg-gradient-to-r from-purple-400 via-pink-400 to-cyan-400 bg-clip-text text-transparent mb-2">
+            <h3 className="text-2xl font-bold bg-gradient-to-r from-blue-400 via-teal-400 to-slate-300 bg-clip-text text-transparent mb-2">
               📅 UPCOMING HANGS
             </h3>
             <p className="text-muted-foreground">
@@ -71,7 +71,7 @@ const CoachScheduleTab = () => {
             </p>
           </div>
           <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
-            <Button className="bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 text-white">
+            <Button className="bg-gradient-to-r from-blue-500 to-teal-500 hover:from-blue-600 hover:to-teal-600 text-white">
               <Calendar className="h-4 w-4 mr-2" />
               View Calendar
             </Button>
@@ -81,7 +81,7 @@ const CoachScheduleTab = () => {
         {/* Timeline View */}
         <div className="relative">
           {/* Timeline line */}
-          <div className="absolute left-8 top-0 bottom-0 w-0.5 bg-gradient-to-b from-purple-500 via-pink-500 to-cyan-500" />
+          <div className="absolute left-8 top-0 bottom-0 w-0.5 bg-gradient-to-b from-blue-500 via-teal-500 to-cyan-500" />
 
           <div className="space-y-6">
             {upcomingHangs.map((hang, idx) => (
@@ -97,8 +97,8 @@ const CoachScheduleTab = () => {
                   animate={{ 
                     scale: hang.status === 'soon' ? [1, 1.3, 1] : 1,
                     boxShadow: hang.status === 'soon' 
-                      ? ['0 0 0px rgba(168, 85, 247, 0.5)', '0 0 20px rgba(168, 85, 247, 0.8)', '0 0 0px rgba(168, 85, 247, 0.5)']
-                      : '0 0 0px rgba(168, 85, 247, 0.3)'
+                      ? ['0 0 0px rgba(59, 130, 246, 0.5)', '0 0 20px rgba(59, 130, 246, 0.8)', '0 0 0px rgba(59, 130, 246, 0.5)']
+                      : '0 0 0px rgba(59, 130, 246, 0.3)'
                   }}
                   transition={{ duration: 2, repeat: Infinity }}
                   className={`absolute left-6 top-6 h-5 w-5 rounded-full bg-gradient-to-br ${hang.color} border-4 border-background z-10`}
@@ -109,7 +109,7 @@ const CoachScheduleTab = () => {
                   className={`p-6 rounded-xl border transition-all ${
                     hang.status === 'soon'
                       ? `bg-gradient-to-r ${hang.color.replace('from-', 'from-').replace('to-', 'to-')}/20 border-${hang.color.split(' ')[1].replace('to-', '')}/40`
-                      : 'bg-background/40 border-border/30 hover:border-purple-500/40'
+                      : 'bg-background/40 border-border/30 hover:border-blue-500/40'
                   }`}
                 >
                   <div className="flex items-start justify-between gap-4">
@@ -138,11 +138,11 @@ const CoachScheduleTab = () => {
                         </div>
                         <p className="text-muted-foreground mb-3">{hang.topic}</p>
                         <div className="flex flex-wrap items-center gap-4 text-sm">
-                          <div className="flex items-center gap-2 text-purple-400 font-medium">
+                          <div className="flex items-center gap-2 text-blue-400 font-medium">
                             <Calendar className="h-4 w-4" />
                             <span>{hang.date}</span>
                           </div>
-                          <div className="flex items-center gap-2 text-pink-400 font-medium">
+                          <div className="flex items-center gap-2 text-teal-400 font-medium">
                             <Clock className="h-4 w-4" />
                             <span>{hang.time} • {hang.duration}</span>
                           </div>
@@ -166,7 +166,7 @@ const CoachScheduleTab = () => {
                       <Button 
                         size="sm" 
                         variant="outline" 
-                        className="border-border/40 hover:border-purple-500/40"
+                        className="border-border/40 hover:border-blue-500/40"
                       >
                         Reschedule
                       </Button>
@@ -219,7 +219,7 @@ const CoachScheduleTab = () => {
                 </div>
                 <div className={`h-12 rounded-lg ${
                   idx < 2 
-                    ? 'bg-gradient-to-t from-purple-500/40 to-pink-500/40 border border-purple-500/40' 
+                    ? 'bg-gradient-to-t from-blue-500/40 to-teal-500/40 border border-blue-500/40' 
                     : 'bg-background/20 border border-border/20'
                 }`} />
               </motion.div>
