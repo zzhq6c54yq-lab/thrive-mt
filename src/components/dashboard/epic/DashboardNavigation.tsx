@@ -1,7 +1,7 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
-import { Home, TrendingUp, LogOut, Calendar, CalendarDays } from 'lucide-react';
+import { Home, TrendingUp, LogOut, Calendar, CalendarDays, User } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import {
   DropdownMenu,
@@ -15,8 +15,9 @@ import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { useLogout } from '@/hooks/useLogout';
 import { AnimatePresence } from 'framer-motion';
 import GoodbyeRitual from './GoodbyeRitual';
-import { useState } from 'react';
 import { NotificationBell } from './NotificationBell';
+import EditProfileModal from '@/components/profile/EditProfileModal';
+import { useUser } from '@/contexts/UserContext';
 
 interface DashboardNavigationProps {
   userName: string;
@@ -26,7 +27,22 @@ export default function DashboardNavigation({ userName }: DashboardNavigationPro
   const navigate = useNavigate();
   const location = useLocation();
   const [showGoodbye, setShowGoodbye] = useState(false);
+  const [showEditProfile, setShowEditProfile] = useState(false);
   const { logout, isLoggingOut } = useLogout(() => setShowGoodbye(true));
+  const { profile } = useUser();
+  const [avatarUrl, setAvatarUrl] = useState<string>('');
+
+  useEffect(() => {
+    if (profile?.avatar_url) {
+      setAvatarUrl(profile.avatar_url);
+    }
+  }, [profile]);
+
+  const handleProfileUpdate = () => {
+    if (profile?.avatar_url) {
+      setAvatarUrl(profile.avatar_url);
+    }
+  };
 
   const navItems = [
     { label: 'Today', icon: Home, path: '/' },
@@ -106,7 +122,7 @@ export default function DashboardNavigation({ userName }: DashboardNavigationPro
                   className="ml-2 text-gray-300 hover:text-white hover:bg-white/10 transition-colors"
                 >
                   <Avatar className="h-8 w-8">
-                    <AvatarImage src="" alt={userName} />
+                    <AvatarImage src={avatarUrl} alt={userName} />
                     <AvatarFallback className="bg-gradient-to-br from-[#B87333] to-[#E5C5A1] text-white text-xs">
                       {userName.charAt(0).toUpperCase()}
                     </AvatarFallback>
@@ -122,6 +138,14 @@ export default function DashboardNavigation({ userName }: DashboardNavigationPro
                 </DropdownMenuLabel>
                 <DropdownMenuSeparator className="bg-white/10" />
                 <DropdownMenuItem 
+                  onClick={() => setShowEditProfile(true)}
+                  className="text-gray-300 hover:text-white hover:bg-white/10 cursor-pointer"
+                >
+                  <User className="mr-2 h-4 w-4" />
+                  <span>Edit Profile</span>
+                </DropdownMenuItem>
+                <DropdownMenuSeparator className="bg-white/10" />
+                <DropdownMenuItem 
                   onClick={logout}
                   className="text-red-400 hover:text-red-300 hover:bg-red-500/10 cursor-pointer"
                 >
@@ -134,6 +158,13 @@ export default function DashboardNavigation({ userName }: DashboardNavigationPro
         </div>
       </div>
     </div>
+
+      {/* Edit Profile Modal */}
+      <EditProfileModal 
+        open={showEditProfile}
+        onClose={() => setShowEditProfile(false)}
+        onUpdate={handleProfileUpdate}
+      />
     </>
   );
 }
