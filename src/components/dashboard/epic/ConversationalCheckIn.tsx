@@ -6,6 +6,7 @@ import { Slider } from '@/components/ui/slider';
 import { useToast } from '@/hooks/use-toast';
 import { supabase } from '@/integrations/supabase/client';
 import { useUser } from '@/contexts/UserContext';
+import { THRIVE_LOGO } from '@/constants/branding';
 
 type ConversationStep = 'question' | 'response' | 'insight';
 
@@ -111,8 +112,8 @@ const ConversationalCheckIn: React.FC<{ onComplete?: () => void }> = ({ onComple
           <div className="absolute inset-0 bg-[#D4AF37] rounded-full blur-xl opacity-40" />
           <div className="relative w-12 h-12 rounded-full bg-gradient-to-br from-[#D4AF37] to-[#B8941F] flex items-center justify-center shadow-lg">
             <img 
-              src="/lovable-uploads/f2c6ac08-6331-4884-950d-7f94d68ff15f.png" 
-              alt="Henry" 
+              src={THRIVE_LOGO} 
+              alt="Henry"
               className="w-8 h-8 object-contain"
             />
           </div>

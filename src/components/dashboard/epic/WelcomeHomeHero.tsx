@@ -3,6 +3,7 @@ import { motion } from 'framer-motion';
 import { User } from '@supabase/supabase-js';
 import { format, formatDistanceToNow } from 'date-fns';
 import { Heart, TrendingUp, TrendingDown, Minus } from 'lucide-react';
+import { THRIVE_LOGO } from '@/constants/branding';
 
 interface WelcomeHomeHeroProps {
   user: User;
@@ -204,8 +205,8 @@ const WelcomeHomeHero: React.FC<WelcomeHomeHeroProps> = ({
           {/* Henry skull */}
           <div className="relative w-32 h-32 rounded-full bg-gradient-to-br from-[#D4AF37] via-[#E5C5A1] to-[#B8941F] flex items-center justify-center shadow-2xl">
             <img 
-              src="/lovable-uploads/f2c6ac08-6331-4884-950d-7f94d68ff15f.png" 
-              alt="Henry" 
+              src={THRIVE_LOGO} 
+              alt="Henry"
               className="w-24 h-24 object-contain"
             />
           </div>

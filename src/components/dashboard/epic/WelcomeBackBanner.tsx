@@ -1,6 +1,7 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { useLastSeen } from '@/hooks/useLastSeen';
+import { THRIVE_LOGO } from '@/constants/branding';
 
 interface WelcomeBackBannerProps {
   user: any;
@@ -119,7 +120,7 @@ const WelcomeBackBanner: React.FC<WelcomeBackBannerProps> = ({ user, profile }) 
           className="flex-shrink-0"
         >
           <img
-            src="/lovable-uploads/f2c6ac08-6331-4884-950d-7f94d68ff15f.png"
+            src={THRIVE_LOGO}
             alt="ThriveMT"
             className="w-12 h-12 md:w-16 md:h-16 rounded-full"
           />

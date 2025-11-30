@@ -9,6 +9,7 @@ import { DashboardData } from '@/hooks/useTodayDashboard';
 import { MoodPulseWidget, StreakProtectorWidget, ProgressRingWidget, QuickNotesWidget } from '../widgets/SmartWidgets';
 import { useLayoutTracking } from '@/hooks/useLayoutTracking';
 import { useUser } from '@/contexts/UserContext';
+import { THRIVE_LOGO } from '@/constants/branding';
 
 interface YourDaySectionProps {
   dashboardData: DashboardData;
@@ -254,7 +255,7 @@ export default function YourDaySection({ dashboardData, onCheckInComplete }: You
             {/* ThriveMT Logo */}
             <div className="w-12 h-12">
               <img 
-                src="/lovable-uploads/f2c6ac08-6331-4884-950d-7f94d68ff15f.png" 
+                src={THRIVE_LOGO} 
                 alt="ThriveMT Logo"
                 className="w-full h-full object-contain filter drop-shadow-[0_0_8px_rgba(184,115,51,0.6)]"
               />

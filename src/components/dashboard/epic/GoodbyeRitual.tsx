@@ -1,6 +1,7 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { format, addDays } from 'date-fns';
+import { THRIVE_LOGO } from '@/constants/branding';
 
 interface GoodbyeRitualProps {
   userName?: string;
@@ -57,8 +58,8 @@ const GoodbyeRitual: React.FC<GoodbyeRitualProps> = ({
           />
           <div className="relative w-24 h-24 mx-auto rounded-full bg-gradient-to-br from-[#D4AF37] via-[#E5C5A1] to-[#B8941F] flex items-center justify-center shadow-2xl">
             <img 
-              src="/lovable-uploads/f2c6ac08-6331-4884-950d-7f94d68ff15f.png" 
-              alt="Henry" 
+              src={THRIVE_LOGO} 
+              alt="Henry"
               className="w-16 h-16 object-contain"
             />
           </div>

@@ -16,6 +16,7 @@ import {
   Clock, Zap, BookOpen, HeartPulse, HelpCircle, Bell
 } from "lucide-react";
 import { ScrollArea } from "@/components/ui/scroll-area";
+import { THRIVE_LOGO } from "@/constants/branding";
 
 interface WelcomeTutorialProps {
   isOpen: boolean;
@@ -80,8 +81,8 @@ const WelcomeTutorial: React.FC<WelcomeTutorialProps> = ({ isOpen, onClose }) =>
             <div className="absolute bottom-[40px] left-[-15px] w-3 h-3 bg-white rounded-full animate-ping" style={{animationDuration: '2.4s', animationDelay: '0.7s'}}></div>
             
             <img 
-              src="/lovable-uploads/f2c6ac08-6331-4884-950d-7f94d68ff15f.png" 
-              alt="Thrive MT Logo" 
+              src={THRIVE_LOGO} 
+              alt="ThriveMT Logo"
               className="relative h-[112px] w-[112px] object-contain filter drop-shadow-[0_0_35px_rgba(184,115,51,1)] transition-all duration-500 group-hover:scale-110 group-hover:drop-shadow-[0_0_45px_rgba(184,115,51,1)]"
             />
             

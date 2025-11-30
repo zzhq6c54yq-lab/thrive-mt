@@ -8,6 +8,7 @@ import { Label } from "@/components/ui/label";
 import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
 import { useNavigate } from "react-router-dom";
+import { THRIVE_LOGO } from "@/constants/branding";
 
 interface CinematicIntroProps {
   onContinue: () => void;
@@ -227,8 +228,8 @@ const CinematicIntro: React.FC<CinematicIntroProps> = ({ onContinue, onSkipToMai
               }}
             >
               <img 
-                src="/lovable-uploads/f2c6ac08-6331-4884-950d-7f94d68ff15f.png" 
-                alt="ThriveMT" 
+                src={THRIVE_LOGO} 
+                alt="ThriveMT"
                 className="w-40 md:w-48 mx-auto drop-shadow-[0_0_30px_rgba(184,115,51,0.4)]"
               />
             </motion.div>

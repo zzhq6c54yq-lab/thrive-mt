@@ -5,6 +5,7 @@ import { X, ArrowRight } from "lucide-react";
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import useTranslation from "@/hooks/useTranslation";
+import { THRIVE_LOGO } from "@/constants/branding";
 
 interface DashboardTutorialProps {
   showTutorial: boolean;
@@ -38,8 +39,8 @@ const DashboardTutorial: React.FC<DashboardTutorialProps> = ({
 
           <div className="w-full flex justify-center items-center py-6 border-b border-white/10 bg-gradient-to-r from-[#181820] via-[#221F26] to-[#181820]">
             <img 
-              src="/lovable-uploads/f2c6ac08-6331-4884-950d-7f94d68ff15f.png" 
-              alt="Thrive MT Logo" 
+              src={THRIVE_LOGO} 
+              alt="ThriveMT Logo"
               className="h-20 w-20 object-contain"
             />
           </div>
