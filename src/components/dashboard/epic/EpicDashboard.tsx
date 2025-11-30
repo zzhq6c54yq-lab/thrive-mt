@@ -27,7 +27,7 @@ import ConversationalCheckIn from './ConversationalCheckIn';
 import WelcomeBackBanner from './WelcomeBackBanner';
 import { HenryCompanionSection } from './HenryCompanionSection';
 import CoachingSection from './sections/CoachingSection';
-import UserServicesPricing from './sections/UserServicesPricing';
+import ServicesPricingCard from './sections/ServicesPricingCard';
 import { THRIVE_LOGO } from '@/constants/branding';
 import { useLastSeen } from '@/hooks/useLastSeen';
 
@@ -352,13 +352,22 @@ export default function EpicDashboard() {
           onChatWithHenry={() => setShowHenryDialog(true)}
         />
 
-        {/* Mental Wellness Coaching Section */}
-        <CoachingSection />
-
-        {/* Conversational Check-In */}
+        {/* Conversational Check-In - Moved Up for Daily Engagement */}
         <ConversationalCheckIn onComplete={refetch} />
 
-        {/* Toolkit Section - Moved Up */}
+        {/* Your Day Section - Daily Content First */}
+        <NewYourDaySection
+          dashboardData={dashboardData}
+          onCheckInComplete={refetch}
+        />
+
+        {/* Two-Column Grid: Services & Coaching */}
+        <div className="grid md:grid-cols-2 gap-6">
+          <ServicesPricingCard />
+          <CoachingSection />
+        </div>
+
+        {/* Toolkit Section */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -367,19 +376,11 @@ export default function EpicDashboard() {
           <ToolkitSection userGoals={profile?.goals || []} />
         </motion.div>
 
-        {/* Specialized Programs - Moved Up */}
-        <SpecializedProgramsSection />
-
         {/* Learning & Discovery Section - Workshops + Assessments Side-by-Side */}
         <LearningDiscoverySection />
 
-        {/* Services & Pricing Section */}
-        <UserServicesPricing />
-
-        <NewYourDaySection
-          dashboardData={dashboardData}
-          onCheckInComplete={refetch}
-        />
+        {/* Specialized Programs */}
+        <SpecializedProgramsSection />
 
         <div className="grid md:grid-cols-2 gap-6">
           <MoodPulseWidget moodData={dashboardData.weeklyStats.moodTrend} />
