@@ -27,6 +27,7 @@ import ConversationalCheckIn from './ConversationalCheckIn';
 import WelcomeBackBanner from './WelcomeBackBanner';
 import { HenryCompanionSection } from './HenryCompanionSection';
 import CoachingSection from './sections/CoachingSection';
+import UserServicesPricing from './sections/UserServicesPricing';
 import { useLastSeen } from '@/hooks/useLastSeen';
 
 export default function EpicDashboard() {
@@ -370,6 +371,9 @@ export default function EpicDashboard() {
 
         {/* Learning & Discovery Section - Workshops + Assessments Side-by-Side */}
         <LearningDiscoverySection />
+
+        {/* Services & Pricing Section */}
+        <UserServicesPricing />
 
         <NewYourDaySection
           dashboardData={dashboardData}
