@@ -191,11 +191,11 @@ const CoachingInfoModal: React.FC<CoachingInfoModalProps> = ({ isOpen, onOpenCha
                     </p>
                     <p className="flex justify-between text-muted-foreground">
                       <span>30 minutes</span>
-                      <span className="text-bronze-300 font-semibold">$22</span>
+                      <span className="text-bronze-300 font-semibold">$25</span>
                     </p>
                     <p className="flex justify-between text-muted-foreground">
                       <span>45 minutes</span>
-                      <span className="text-bronze-300 font-semibold">$32</span>
+                      <span className="text-bronze-300 font-semibold">$37</span>
                     </p>
                   </div>
                 </div>
@@ -205,16 +205,16 @@ const CoachingInfoModal: React.FC<CoachingInfoModalProps> = ({ isOpen, onOpenCha
                   <h4 className="text-lg font-semibold text-bronze-200 mb-2">🎥 Video Coaching Sessions</h4>
                   <div className="grid grid-cols-3 gap-4 text-sm">
                     <div className="text-center">
-                      <p className="text-muted-foreground mb-1">15 minutes</p>
-                      <p className="text-2xl font-bold text-bronze-300">$18</p>
-                    </div>
-                    <div className="text-center">
                       <p className="text-muted-foreground mb-1">30 minutes</p>
-                      <p className="text-2xl font-bold text-bronze-300">$32</p>
+                      <p className="text-2xl font-bold text-bronze-300">$25</p>
                     </div>
                     <div className="text-center">
                       <p className="text-muted-foreground mb-1">45 minutes</p>
-                      <p className="text-2xl font-bold text-bronze-300">$42</p>
+                      <p className="text-2xl font-bold text-bronze-300">$37</p>
+                    </div>
+                    <div className="text-center">
+                      <p className="text-muted-foreground mb-1">60 minutes</p>
+                      <p className="text-2xl font-bold text-bronze-300">$47</p>
                     </div>
                   </div>
                 </div>

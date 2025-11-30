@@ -109,7 +109,7 @@ const CoachEarningsTab = () => {
                 <DollarSign className="h-5 w-5 text-cyan-400" />
                 <p className="text-xs text-muted-foreground">Avg/Session</p>
               </div>
-              <p className="text-3xl font-bold text-foreground">$120</p>
+              <p className="text-3xl font-bold text-foreground">$37</p>
             </motion.div>
 
             <motion.div 

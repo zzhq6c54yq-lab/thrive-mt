@@ -6,6 +6,7 @@ import CoachTodayTab from "@/components/coach/CoachTodayTab";
 import CoachMembersTab from "@/components/coach/CoachMembersTab";
 import CoachScheduleTab from "@/components/coach/CoachScheduleTab";
 import CoachEarningsTab from "@/components/coach/CoachEarningsTab";
+import CoachServicesPricing from "@/components/coach/CoachServicesPricing";
 import { Button } from "@/components/ui/button";
 import { LogOut, Zap } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
@@ -105,7 +106,7 @@ const CoachDashboard = () => {
           className="mt-8"
         >
           <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-            <TabsList className="grid w-full grid-cols-4 bg-background/60 backdrop-blur-sm border border-border/40 h-14">
+            <TabsList className="grid w-full grid-cols-5 bg-background/60 backdrop-blur-sm border border-border/40 h-14">
               <TabsTrigger 
                 value="today" 
                 className="data-[state=active]:bg-gradient-to-r data-[state=active]:from-blue-500/20 data-[state=active]:to-teal-500/20 data-[state=active]:text-blue-400 relative overflow-hidden group text-base"
@@ -154,6 +155,18 @@ const CoachDashboard = () => {
                 />
                 Earnings
               </TabsTrigger>
+              <TabsTrigger 
+                value="services" 
+                className="data-[state=active]:bg-gradient-to-r data-[state=active]:from-blue-500/20 data-[state=active]:to-teal-500/20 data-[state=active]:text-blue-400 relative overflow-hidden group text-base"
+              >
+                <motion.div
+                  className="absolute bottom-0 left-0 right-0 h-0.5 bg-gradient-to-r from-blue-500 to-teal-500"
+                  initial={{ scaleX: 0 }}
+                  animate={{ scaleX: activeTab === 'services' ? 1 : 0 }}
+                  transition={{ duration: 0.3 }}
+                />
+                Services
+              </TabsTrigger>
             </TabsList>
 
             <TabsContent value="today" className="mt-6">
@@ -170,6 +183,10 @@ const CoachDashboard = () => {
 
             <TabsContent value="earnings" className="mt-6">
               <CoachEarningsTab />
+            </TabsContent>
+
+            <TabsContent value="services" className="mt-6">
+              <CoachServicesPricing />
             </TabsContent>
           </Tabs>
         </motion.div>

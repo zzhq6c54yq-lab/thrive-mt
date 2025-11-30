@@ -178,20 +178,20 @@ const CoachProfile = () => {
 
                 <Separator />
 
-                <div>
+                  <div>
                   <p className="font-medium mb-2">Audio Calls</p>
                   <div className="space-y-1 text-sm text-muted-foreground">
                     <div className="flex justify-between">
-                      <span>15 minutes</span>
-                      <span className="font-semibold">$12</span>
-                    </div>
-                    <div className="flex justify-between">
                       <span>30 minutes</span>
-                      <span className="font-semibold">$22</span>
+                      <span className="font-semibold">$25</span>
                     </div>
                     <div className="flex justify-between">
                       <span>45 minutes</span>
-                      <span className="font-semibold">$32</span>
+                      <span className="font-semibold">$37</span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span>60 minutes</span>
+                      <span className="font-semibold">$47</span>
                     </div>
                   </div>
                 </div>
@@ -202,16 +202,16 @@ const CoachProfile = () => {
                   <p className="font-medium mb-2">Video Sessions</p>
                   <div className="space-y-1 text-sm text-muted-foreground">
                     <div className="flex justify-between">
-                      <span>15 minutes</span>
-                      <span className="font-semibold">$18</span>
-                    </div>
-                    <div className="flex justify-between">
                       <span>30 minutes</span>
-                      <span className="font-semibold">${coach.hourly_rate}</span>
+                      <span className="font-semibold">$25</span>
                     </div>
                     <div className="flex justify-between">
                       <span>45 minutes</span>
-                      <span className="font-semibold">$42</span>
+                      <span className="font-semibold">$37</span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span>60 minutes</span>
+                      <span className="font-semibold">$47</span>
                     </div>
                   </div>
                 </div>
