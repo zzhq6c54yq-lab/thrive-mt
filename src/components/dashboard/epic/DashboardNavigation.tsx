@@ -18,6 +18,7 @@ import GoodbyeRitual from './GoodbyeRitual';
 import { NotificationBell } from './NotificationBell';
 import EditProfileModal from '@/components/profile/EditProfileModal';
 import { useUser } from '@/contexts/UserContext';
+import { THRIVE_LOGO } from '@/constants/branding';
 
 interface DashboardNavigationProps {
   userName: string;
@@ -73,8 +74,8 @@ export default function DashboardNavigation({ userName }: DashboardNavigationPro
                 {/* Use the actual bronze head logo */}
                 <div className="relative w-10 h-10">
                   <img 
-                    src="/lovable-uploads/f2c6ac08-6331-4884-950d-7f94d68ff15f.png" 
-                    alt="ThriveMT Logo" 
+                    src={THRIVE_LOGO} 
+                    alt="ThriveMT Logo"
                     className="w-full h-full object-contain filter drop-shadow-[0_0_8px_rgba(184,115,51,0.6)]"
                   />
                 </div>

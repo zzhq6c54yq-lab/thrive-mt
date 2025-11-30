@@ -2,6 +2,7 @@
 import React from "react";
 import { motion } from "framer-motion";
 import RobustImage from "@/components/ui/robust-image";
+import { THRIVE_LOGO } from "@/constants/branding";
 
 export interface BaseCardProps {
   id: string;
@@ -44,7 +45,7 @@ const BaseCard: React.FC<BaseCardProps> = ({
     } else if (id.includes("law") || id.includes("enforcement")) {
       return "/lovable-uploads/10d9c6f1-9335-46e4-8942-4d4c198d3f5b.png";
     } else if (id.includes("small-business")) {
-      return "/lovable-uploads/f2c6ac08-6331-4884-950d-7f94d68ff15f.png";
+      return THRIVE_LOGO;
     } else if (id.includes("cancer")) {
       return "/lovable-uploads/f3c84972-8f58-42d7-b86f-82ff2d823b30.png";
     }

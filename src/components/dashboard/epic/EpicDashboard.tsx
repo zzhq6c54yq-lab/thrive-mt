@@ -28,6 +28,7 @@ import WelcomeBackBanner from './WelcomeBackBanner';
 import { HenryCompanionSection } from './HenryCompanionSection';
 import CoachingSection from './sections/CoachingSection';
 import UserServicesPricing from './sections/UserServicesPricing';
+import { THRIVE_LOGO } from '@/constants/branding';
 import { useLastSeen } from '@/hooks/useLastSeen';
 
 export default function EpicDashboard() {
@@ -228,8 +229,8 @@ export default function EpicDashboard() {
                     <div className="absolute inset-0 bg-[#D4AF37] rounded-full blur-2xl opacity-40" />
                     <div className="relative w-24 h-24 rounded-full bg-gradient-to-br from-[#D4AF37] via-[#E5C5A1] to-[#B8941F] flex items-center justify-center shadow-2xl">
                       <img 
-                        src="/lovable-uploads/f2c6ac08-6331-4884-950d-7f94d68ff15f.png" 
-                        alt="ThriveMT" 
+                        src={THRIVE_LOGO} 
+                        alt="ThriveMT"
                         className="w-16 h-16 object-contain"
                       />
                     </div>

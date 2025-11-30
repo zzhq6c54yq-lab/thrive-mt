@@ -1,5 +1,6 @@
 import { motion } from "framer-motion";
 import { useEffect, useState } from "react";
+import { THRIVE_LOGO } from "@/constants/branding";
 
 interface TherapistWelcomeBannerProps {
   therapistName: string;
@@ -71,8 +72,8 @@ export default function TherapistWelcomeBanner({
         }}
       >
         <img 
-          src="/lovable-uploads/f2c6ac08-6331-4884-950d-7f94d68ff15f.png" 
-          alt="" 
+          src={THRIVE_LOGO} 
+          alt=""
           className="w-32 h-32 object-contain filter drop-shadow-[0_0_20px_rgba(184,115,51,0.6)]"
         />
       </motion.div>

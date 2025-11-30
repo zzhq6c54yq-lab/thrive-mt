@@ -1,5 +1,6 @@
 import React from 'react';
 import { motion } from 'framer-motion';
+import { THRIVE_LOGO } from '@/constants/branding';
 
 interface EmpathyLoadingStateProps {
   message?: string;
@@ -61,8 +62,8 @@ const EmpathyLoadingState: React.FC<EmpathyLoadingStateProps> = ({ message }) =>
         {/* Bronze skull logo */}
         <div className="relative w-24 h-24 rounded-full bg-gradient-to-br from-[#D4AF37] via-[#E5C5A1] to-[#B8941F] flex items-center justify-center shadow-2xl">
           <img 
-            src="/lovable-uploads/f2c6ac08-6331-4884-950d-7f94d68ff15f.png" 
-            alt="ThriveMT" 
+            src={THRIVE_LOGO} 
+            alt="ThriveMT"
             className="w-16 h-16 object-contain"
           />
         </div>
