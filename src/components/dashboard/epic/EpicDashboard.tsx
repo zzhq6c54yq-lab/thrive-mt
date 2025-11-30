@@ -24,10 +24,11 @@ import EmpathyLoadingState from '@/components/shared/EmpathyLoadingState';
 import EmpathyErrorState from '@/components/shared/EmpathyErrorState';
 import WelcomeHomeHero from './WelcomeHomeHero';
 import ConversationalCheckIn from './ConversationalCheckIn';
-import WelcomeBackBanner from './WelcomeBackBanner';
 import { HenryCompanionSection } from './HenryCompanionSection';
 import CoachingSection from './sections/CoachingSection';
 import ServicesPricingCard from './sections/ServicesPricingCard';
+import { WeeklyProgressSection } from './sections/WeeklyProgressSection';
+import { DashboardFooter } from './sections/DashboardFooter';
 import { THRIVE_LOGO } from '@/constants/branding';
 import { useLastSeen } from '@/hooks/useLastSeen';
 
@@ -322,7 +323,7 @@ export default function EpicDashboard() {
       <motion.div
         initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.3, duration: 0.6 }}
+        transition={{ delay: 0.1, duration: 0.6 }}
       >
         <DashboardNavigation userName={profile?.display_name?.split(' ')[0] || 'there'} />
       </motion.div>
@@ -331,67 +332,124 @@ export default function EpicDashboard() {
       <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
-        transition={{ delay: 0.5, duration: 0.8 }}
-        className="container mx-auto max-w-7xl px-4 space-y-6 mt-6 relative z-10"
+        transition={{ delay: 0.2, duration: 0.8 }}
+        className="container mx-auto max-w-7xl px-4 space-y-8 mt-6 relative z-10"
       >
-        {/* Welcome Back Banner - First Thing Users See */}
-        <WelcomeBackBanner user={user} profile={profile} />
-
         {/* Welcome Home Hero - The Magnetic Focal Point */}
-        <WelcomeHomeHero
-          user={user}
-          profile={profile}
-          lastCheckIn={lastCheckIn}
-          moodTrend={dashboardData.weeklyStats.moodTrend}
-          checkInStreak={dashboardData.checkInStreak}
-        />
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.3, duration: 0.6 }}
+        >
+          <WelcomeHomeHero
+            user={user}
+            profile={profile}
+            lastCheckIn={lastCheckIn}
+            moodTrend={dashboardData.weeklyStats.moodTrend}
+            checkInStreak={dashboardData.checkInStreak}
+          />
+        </motion.div>
 
         {/* Henry Companion - Star of the Dashboard */}
-        <HenryCompanionSection
-          userName={profile?.display_name?.split(' ')[0] || user?.email?.split('@')[0]}
-          onChatWithHenry={() => setShowHenryDialog(true)}
-        />
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.4, duration: 0.6 }}
+        >
+          <HenryCompanionSection
+            userName={profile?.display_name?.split(' ')[0] || user?.email?.split('@')[0]}
+            onChatWithHenry={() => setShowHenryDialog(true)}
+          />
+        </motion.div>
 
-        {/* Conversational Check-In - Moved Up for Daily Engagement */}
-        <ConversationalCheckIn onComplete={refetch} />
+        {/* Conversational Check-In - Daily Engagement */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.5, duration: 0.6 }}
+        >
+          <ConversationalCheckIn onComplete={refetch} />
+        </motion.div>
 
-        {/* Your Day Section - Daily Content First */}
-        <NewYourDaySection
-          dashboardData={dashboardData}
-          onCheckInComplete={refetch}
-        />
+        {/* Section Divider */}
+        <div className="h-px bg-gradient-to-r from-transparent via-[#D4AF37]/20 to-transparent my-8" />
 
         {/* Two-Column Grid: Services & Coaching */}
-        <div className="grid md:grid-cols-2 gap-6">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.6, duration: 0.6 }}
+          className="grid md:grid-cols-2 gap-6"
+        >
           <ServicesPricingCard />
           <CoachingSection />
-        </div>
+        </motion.div>
+
+        {/* Section Divider */}
+        <div className="h-px bg-gradient-to-r from-transparent via-[#D4AF37]/20 to-transparent my-8" />
 
         {/* Toolkit Section */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.8, duration: 0.6 }}
+          transition={{ delay: 0.7, duration: 0.6 }}
         >
           <ToolkitSection userGoals={profile?.goals || []} />
         </motion.div>
 
-        {/* Learning & Discovery Section - Workshops + Assessments Side-by-Side */}
-        <LearningDiscoverySection />
+        {/* Learning & Discovery Section */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.8, duration: 0.6 }}
+        >
+          <LearningDiscoverySection />
+        </motion.div>
+
+        {/* Section Divider */}
+        <div className="h-px bg-gradient-to-r from-transparent via-[#D4AF37]/20 to-transparent my-8" />
+
+        {/* Weekly Progress Section - NEW */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.9, duration: 0.6 }}
+        >
+          <WeeklyProgressSection />
+        </motion.div>
 
         {/* Specialized Programs */}
-        <SpecializedProgramsSection />
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 1.0, duration: 0.6 }}
+        >
+          <SpecializedProgramsSection />
+        </motion.div>
 
-        <div className="grid md:grid-cols-2 gap-6">
-          <MoodPulseWidget moodData={dashboardData.weeklyStats.moodTrend} />
-          <StreakProtectorWidget streak={dashboardData.checkInStreak} />
-        </div>
+        {/* Section Divider */}
+        <div className="h-px bg-gradient-to-r from-transparent via-[#D4AF37]/20 to-transparent my-8" />
 
-        <div className="grid md:grid-cols-2 gap-6">
-          <ProgressRingWidget completed={0} total={dashboardData.todaysPlan.length} />
-          <QuickNotesWidget />
-        </div>
-        
+        {/* Smart Widgets Grid */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 1.1, duration: 0.6 }}
+          className="space-y-6"
+        >
+          <div className="grid md:grid-cols-2 gap-6">
+            <MoodPulseWidget moodData={dashboardData.weeklyStats.moodTrend} />
+            <StreakProtectorWidget streak={dashboardData.checkInStreak} />
+          </div>
+
+          <div className="grid md:grid-cols-2 gap-6">
+            <ProgressRingWidget completed={0} total={dashboardData.todaysPlan.length} />
+            <QuickNotesWidget />
+          </div>
+        </motion.div>
+
+        {/* Dashboard Footer - NEW */}
+        <DashboardFooter />
       </motion.div>
 
       {/* Safety Strip */}
