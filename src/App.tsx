@@ -173,6 +173,16 @@ import GoalPlanner from "./pages/career-resources/GoalPlanner";
 import { Toaster } from "@/components/ui/toaster";
 import { UserProvider } from "@/contexts/UserContext";
 import FloatingHenryAssistant from "@/components/henry/FloatingHenryAssistant";
+import SiteLayout from "@/components/site/SiteLayout";
+import SiteLanding from "@/pages/site/SiteLanding";
+import SiteTherapy from "@/pages/site/SiteTherapy";
+import SiteCoaching from "@/pages/site/SiteCoaching";
+import SitePricing from "@/pages/site/SitePricing";
+import SiteDemo from "@/pages/site/SiteDemo";
+import SiteCareers from "@/pages/site/SiteCareers";
+import SiteInvestors from "@/pages/site/SiteInvestors";
+import SiteAbout from "@/pages/site/SiteAbout";
+import SiteContact from "@/pages/site/SiteContact";
 import "./App.css";
 
 function App() {
@@ -185,6 +195,20 @@ function App() {
             <FloatingHenryAssistant />
             
             <Routes>
+          {/* Marketing Website Routes */}
+          <Route path="/site" element={<SiteLayout />}>
+            <Route index element={<SiteLanding />} />
+            <Route path="therapy" element={<SiteTherapy />} />
+            <Route path="coaching" element={<SiteCoaching />} />
+            <Route path="pricing" element={<SitePricing />} />
+            <Route path="demo" element={<SiteDemo />} />
+            <Route path="careers" element={<SiteCareers />} />
+            <Route path="investors" element={<SiteInvestors />} />
+            <Route path="about" element={<SiteAbout />} />
+            <Route path="contact" element={<SiteContact />} />
+          </Route>
+
+          {/* App Routes */}
           <Route path="/" element={<Index />} />
           <Route path="/auth" element={<Auth />} />
           <Route path="/auth/confirm" element={<ConfirmEmail />} />
