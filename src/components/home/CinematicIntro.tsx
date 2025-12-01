@@ -105,7 +105,7 @@ const CinematicIntro: React.FC<CinematicIntroProps> = ({ onContinue, onSkipToMai
         });
         setShowCoachAccessDialog(false);
         setCoachAccessCode("");
-        navigate("/coach-dashboard");
+        navigate("/app/coach-dashboard");
       } else {
         throw new Error(data.error || "Invalid access code");
       }
@@ -142,7 +142,7 @@ const CinematicIntro: React.FC<CinematicIntroProps> = ({ onContinue, onSkipToMai
       
       setAccessCodeDialogOpen(false);
       setAccessCode("");
-      navigate("/admin-portal");
+      navigate("/app/admin-portal");
     } catch (error: any) {
       toast({
         title: "Let's try that again",
