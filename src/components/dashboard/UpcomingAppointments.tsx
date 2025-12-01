@@ -81,7 +81,7 @@ const UpcomingAppointments = () => {
     // Navigate to appropriate session based on type
     if (appointment.type === "video") {
       // Therapy video sessions go to client video session
-      navigate(`/client-video-session/${appointment.id}`);
+      navigate(`/app/client-video-session/${appointment.id}`);
     } else {
       // Group sessions/workshops go to virtual meetings
       navigate("/virtual-meetings");

@@ -73,7 +73,7 @@ export default function IncomingCallModal() {
       .eq('id', incomingCall.id);
 
     // Navigate to video session
-    navigate(`/client-video-session/${incomingCall.session_id}`);
+    navigate(`/app/client-video-session/${incomingCall.session_id}`);
     setIncomingCall(null);
   };
 

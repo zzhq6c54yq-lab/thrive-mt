@@ -148,7 +148,7 @@ export default function RequestsTab() {
   // Start video call
   const handleStartCall = (request: TherapistRequest) => {
     const sessionId = `session_${request.user_id}_${Date.now()}`;
-    navigate(`/therapist-video-session/${sessionId}`);
+    navigate(`/app/therapist-video-session/${sessionId}`);
     
     // Mark request as completed
     supabase

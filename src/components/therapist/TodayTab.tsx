@@ -51,7 +51,7 @@ export default function TodayTab({
   });
 
   const handleStartSession = (appointmentId: string, clientName: string) => {
-    navigate(`/therapist-video-session?id=${appointmentId}&client=${encodeURIComponent(clientName)}`);
+    navigate(`/app/therapist-video-session?id=${appointmentId}&client=${encodeURIComponent(clientName)}`);
   };
 
   const handleQuickReply = async (clientId: string) => {
@@ -98,7 +98,7 @@ export default function TodayTab({
         status: 'pending'
       });
 
-      navigate(`/therapist-video-session/${sessionId}?clientId=${clientId}`);
+      navigate(`/app/therapist-video-session/${sessionId}?clientId=${clientId}`);
     } catch (error) {
       toast({
         title: "Error",
@@ -120,7 +120,7 @@ export default function TodayTab({
         status: 'pending'
       });
 
-      navigate(`/therapist-video-session/${sessionId}?clientId=${clientId}`);
+      navigate(`/app/therapist-video-session/${sessionId}?clientId=${clientId}`);
       
       toast({
         title: "Audio call initiated",
