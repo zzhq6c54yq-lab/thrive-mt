@@ -84,7 +84,7 @@ const UpcomingAppointments = () => {
       navigate(`/app/client-video-session/${appointment.id}`);
     } else {
       // Group sessions/workshops go to virtual meetings
-      navigate("/virtual-meetings");
+      navigate("/app/virtual-meetings");
     }
   };
 
@@ -94,7 +94,7 @@ const UpcomingAppointments = () => {
       description: translations.takingToSchedule,
       duration: 1500,
     });
-    navigate("/scheduling");
+    navigate("/app/scheduling");
   };
 
   const handleScheduleNow = () => {
@@ -103,7 +103,7 @@ const UpcomingAppointments = () => {
       description: isSpanish ? "Abriendo programación de citas" : "Opening appointment scheduling",
       duration: 1500,
     });
-    navigate("/scheduling");
+    navigate("/app/scheduling");
   };
 
   return (

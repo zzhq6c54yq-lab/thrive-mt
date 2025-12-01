@@ -96,7 +96,7 @@ export default function TherapistVideoSession() {
             description: "Please log in to access video sessions",
             variant: "destructive",
           });
-          navigate("/auth");
+          navigate("/app/auth");
           return;
         }
         

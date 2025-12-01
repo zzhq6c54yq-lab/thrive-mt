@@ -71,7 +71,7 @@ export default function ClientVideoSession() {
           description: "Please log in to join the session",
           variant: "destructive"
         });
-        navigate('/auth');
+        navigate('/app/auth');
       }
     };
     getUser();
@@ -93,7 +93,7 @@ export default function ClientVideoSession() {
       title: "Call ended",
       description: "You have left the session",
     });
-    navigate('/dashboard');
+    navigate('/app/dashboard');
   };
 
   return (

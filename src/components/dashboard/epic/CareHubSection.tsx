@@ -92,7 +92,7 @@ export const CareHubSection: React.FC<CareHubSectionProps> = ({ dashboardData })
               <Button 
                 variant="gold" 
                 size="lg" 
-              onClick={() => navigate('/real-time-therapy')}
+                onClick={() => navigate('/app/real-time-therapy')}
                 className="w-full md:w-auto shadow-lg hover:shadow-xl hover:shadow-[#D4AF37]/20 transition-all"
               >
                 Browse Therapists
