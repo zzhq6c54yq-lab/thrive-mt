@@ -111,7 +111,7 @@ export default function TherapistVideoSession() {
           description: "Failed to initialize session",
           variant: "destructive",
         });
-        navigate("/therapist-dashboard");
+        navigate("/app/therapist-dashboard");
       }
     };
 
@@ -343,7 +343,7 @@ export default function TherapistVideoSession() {
         description: "Session notes have been saved"
       });
       
-      navigate('/therapist-dashboard');
+      navigate('/app/therapist-dashboard');
     } catch (error) {
       console.error('Error ending session:', error);
       toast({

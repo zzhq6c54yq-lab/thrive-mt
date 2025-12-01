@@ -207,7 +207,7 @@ const GoldenSpecializedFeature: React.FC = () => {
               
               <Button
                 className="bg-[#D4AF37] hover:bg-[#B8860B] text-white border border-[#FFC000]/30"
-                onClick={() => navigate('/golden-years-journal', { 
+                onClick={() => navigate('/app/golden-years-journal', { 
                   state: { 
                     stayInPortal: true,
                     preventTutorial: true,

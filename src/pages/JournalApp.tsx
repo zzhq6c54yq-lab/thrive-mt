@@ -14,7 +14,7 @@ const JournalApp: React.FC = () => {
   useEffect(() => {
     supabase.auth.getSession().then(({ data }) => {
       if (!data.session) {
-        navigate("/auth");
+        navigate("/app/auth");
       } else {
         setUserId(data.session.user.id);
       }
@@ -22,7 +22,7 @@ const JournalApp: React.FC = () => {
     const { data: listener } = supabase.auth.onAuthStateChange((_event, session) => {
       if (!session) {
         setUserId(null);
-        navigate("/auth");
+        navigate("/app/auth");
       } else {
         setUserId(session.user.id);
       }
@@ -34,13 +34,13 @@ const JournalApp: React.FC = () => {
 
   return (
     <div className="max-w-xl mx-auto py-8 px-4">
-      <Button
-        variant="ghost"
-        onClick={() => navigate('/dashboard')}
-        className="mb-6 text-gray-400 hover:text-white"
-      >
-        <ArrowLeft className="mr-2 w-4 h-4" />
-        Back to Dashboard
+        <Button
+          variant="ghost"
+          onClick={() => navigate('/app/dashboard')}
+          className="mb-6 text-gray-400 hover:text-white"
+        >
+          <ArrowLeft className="mr-2 w-4 h-4" />
+          Back to Dashboard
       </Button>
       
       <h1 className="text-3xl font-bold mb-6">My Journal</h1>

@@ -12,7 +12,7 @@ const AssessmentsTab: React.FC = () => {
   const { toast } = useToast();
 
   const handleAssessmentStart = (assessmentType: string) => {
-    navigate("/mental-wellness-assessments");
+    navigate("/app/mental-wellness-assessments");
     toast({
       title: "Starting Assessment",
       description: `Loading ${assessmentType} assessment...`,

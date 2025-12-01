@@ -249,7 +249,7 @@ const AllWorkshopsPage: React.FC = () => {
             </CardContent>
             <CardFooter>
               <Button className="w-full"
-                onClick={() => navigate("/workshops")}
+                onClick={() => navigate("/app/workshops")}
               >
                 View Details
               </Button>

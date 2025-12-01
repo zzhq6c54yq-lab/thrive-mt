@@ -35,7 +35,7 @@ export default function CareTeamSection({ appointments }: CareTeamSectionProps) 
         <CardContent>
           <div className="text-center py-6">
             <p className="text-muted-foreground mb-4">No appointments scheduled</p>
-            <Button onClick={() => navigate('/therapy-booking')}>
+            <Button onClick={() => navigate('/app/therapy-booking')}>
               Schedule a Session
             </Button>
           </div>
@@ -125,7 +125,7 @@ export default function CareTeamSection({ appointments }: CareTeamSectionProps) 
         <Button
           variant="ghost"
           className="w-full"
-          onClick={() => navigate('/therapy-booking')}
+          onClick={() => navigate('/app/therapy-booking')}
         >
           View All Appointments
         </Button>

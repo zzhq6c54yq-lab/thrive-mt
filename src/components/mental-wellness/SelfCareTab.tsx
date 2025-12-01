@@ -204,7 +204,7 @@ const SelfCareTab: React.FC = () => {
                     description={tool.description}
                     icon={<tool.icon className="h-6 w-6 text-primary" />}
                     features={tool.features}
-                    onStartClick={() => navigate("/mental-wellness-tools")}
+                    onStartClick={() => navigate("/app/mental-wellness-tools")}
                   />
                 </motion.div>
               ))}
@@ -241,7 +241,7 @@ const SelfCareTab: React.FC = () => {
           <Button 
             size="lg"
             className="bg-primary hover:bg-primary/90 shadow-lg hover:shadow-xl transition-all"
-            onClick={() => navigate("/mental-wellness-tools/goals")}
+            onClick={() => navigate("/app/mental-wellness-tools/goals")}
           >
             <Sparkles className="mr-2 h-5 w-5" />
             Build My Custom Plan

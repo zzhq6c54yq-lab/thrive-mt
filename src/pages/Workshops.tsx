@@ -33,7 +33,7 @@ const Workshops = () => {
     });
     
     // Navigate directly to the workshop content tab
-    navigate(`/workshop/${workshopId}`, { state: { activeTab: "workshop", workshopTitle } });
+    navigate(`/app/workshop/${workshopId}`, { state: { activeTab: "workshop", workshopTitle } });
   };
 
   // Workshop cover images mapped to topics with direct links

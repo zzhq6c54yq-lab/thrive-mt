@@ -13,7 +13,7 @@ const CommunitySupport: React.FC = () => {
 
   useEffect(() => {
     if (!loading && !user) {
-      navigate('/auth');
+      navigate('/app/auth');
     }
   }, [user, loading, navigate]);
 
@@ -31,7 +31,7 @@ const CommunitySupport: React.FC = () => {
         <div className="mb-6">
           <Button
             variant="ghost"
-            onClick={() => navigate('/', { state: { screenState: 'main', returnToMain: true } })}
+            onClick={() => navigate('/app/dashboard', { state: { screenState: 'main', returnToMain: true } })}
             className="text-white hover:bg-white/10 mb-4"
           >
             <ArrowLeft className="h-4 w-4 mr-2" />

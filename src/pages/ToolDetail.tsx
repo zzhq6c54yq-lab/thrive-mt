@@ -361,7 +361,7 @@ const ToolDetail = () => {
                     variant="outline" 
                     className="border-[#B87333] text-[#B87333] hover:bg-[#B87333]/10"
                     onClick={() => {
-                      navigate("/workshops");
+                      navigate("/app/workshops");
                       toast({
                         title: "Workshops",
                         description: "Learn with others in structured environments",

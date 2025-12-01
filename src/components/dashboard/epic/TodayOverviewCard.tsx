@@ -174,11 +174,11 @@ export const TodayOverviewCard: React.FC<TodayOverviewCardProps> = ({
 
       {/* Quick Actions */}
       <div className="flex flex-wrap gap-3 pt-6 border-t border-[#D4AF37]/20 mt-6">
-        <Button size="sm" variant="outline" onClick={() => navigate('/journal')}>
+        <Button size="sm" variant="outline" onClick={() => navigate('/app/journal')}>
           <BookOpen className="w-4 h-4 mr-1" />
           Journal
         </Button>
-        <Button size="sm" variant="outline" onClick={() => navigate('/therapy')}>
+        <Button size="sm" variant="outline" onClick={() => navigate('/app/messages')}>
           <MessageSquare className="w-4 h-4 mr-1" />
           Message therapist
         </Button>

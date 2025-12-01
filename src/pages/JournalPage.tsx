@@ -14,7 +14,7 @@ const JournalPage: React.FC = () => {
 
   useEffect(() => {
     if (!loading && !user) {
-      navigate('/auth');
+      navigate('/app/auth');
     }
   }, [user, loading, navigate]);
 
@@ -36,7 +36,7 @@ const JournalPage: React.FC = () => {
         <div className="mb-6">
           <Button
             variant="ghost"
-            onClick={() => navigate('/dashboard')}
+            onClick={() => navigate('/app/dashboard')}
             className="text-white hover:bg-white/10 mb-4"
           >
             <ArrowLeft className="h-4 w-4 mr-2" />

@@ -204,7 +204,7 @@ const ResourcesTab: React.FC = () => {
           <Button 
             variant="outline" 
             className="border-2 border-primary/30 hover:bg-primary/10"
-            onClick={() => navigate("/real-time-therapy")}
+            onClick={() => navigate("/app/real-time-therapy")}
           >
             <Users className="mr-2 h-4 w-4" />
             Therapist Directory
@@ -212,7 +212,7 @@ const ResourcesTab: React.FC = () => {
           <Button 
             variant="outline" 
             className="border-2 border-primary/30 hover:bg-primary/10"
-            onClick={() => navigate("/real-time-therapy")}
+            onClick={() => navigate("/app/real-time-therapy")}
           >
             <Video className="mr-2 h-4 w-4" />
             Teletherapy Options

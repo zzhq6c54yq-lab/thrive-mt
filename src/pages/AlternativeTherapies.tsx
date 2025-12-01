@@ -57,7 +57,7 @@ const AlternativeTherapies = () => {
     });
     
     // Fix: Only pass serializable data in the navigation state
-    navigate(`/guided-practice/${therapyId}`, {
+    navigate(`/app/guided-practice/${therapyId}`, {
       state: { 
         therapyId,
         therapyName,
@@ -67,7 +67,7 @@ const AlternativeTherapies = () => {
   };
   
   const handleViewDetails = (therapyId: string) => {
-    navigate(`/alternative-therapies/detail/${therapyId}`, {
+    navigate(`/app/alternative-therapies/detail/${therapyId}`, {
       state: { returnPath: location.pathname }
     });
   };

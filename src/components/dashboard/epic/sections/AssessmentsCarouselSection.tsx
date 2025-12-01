@@ -40,7 +40,7 @@ const AssessmentsCarouselSection: React.FC<AssessmentsCarouselSectionProps> = ({
       duration: 1500,
     });
     
-    navigate(`/mental-wellness-assessments?selected=${assessment.id}`);
+    navigate(`/app/mental-wellness-assessments?selected=${assessment.id}`);
   };
 
   return (

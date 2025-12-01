@@ -192,7 +192,7 @@ const FamilySupport: React.FC = () => {
   };
 
   const handleConnectWithProfessional = () => {
-    navigate('/real-time-therapy', { 
+    navigate('/app/real-time-therapy', { 
       state: { 
         fromFamilySupport: true,
         preventTutorial: true
@@ -201,7 +201,7 @@ const FamilySupport: React.FC = () => {
   };
 
   const handleViewAllEvents = () => {
-    navigate('/workshops', { 
+    navigate('/app/workshops', { 
       state: { 
         eventCategory: 'family',
         preventTutorial: true

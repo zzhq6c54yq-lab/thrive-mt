@@ -58,7 +58,7 @@ const WorkshopDetail = () => {
         <div className="text-center py-12">
           <h2 className="text-2xl font-bold mb-4">Workshop Not Found</h2>
           <p className="mb-6">The workshop you're looking for doesn't exist or has been removed.</p>
-          <Button onClick={() => navigate("/workshops")}>
+          <Button onClick={() => navigate("/app/workshops")}>
             Return to Workshops
           </Button>
         </div>
