@@ -2,25 +2,25 @@ import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { PlayCircle, Check } from "lucide-react";
+import SiteHeroSection from "@/components/site/SiteHeroSection";
 
 const SiteDemo = () => {
   return (
-    <div className="bg-[#0F1319] py-20 px-6">
-      <div className="container mx-auto max-w-6xl">
-        <div className="text-center mb-16">
-          <h1 className="text-5xl font-bold mb-6 bg-gradient-to-r from-bronze-400 to-bronze-600 bg-clip-text text-transparent">
-            Try Our App Demo
-          </h1>
-          <p className="text-xl text-foreground/80 max-w-3xl mx-auto mb-8">
-            Experience ThriveMT instantly — explore tools, programs, mood tracking, AI companion, and sample sessions without creating an account.
-          </p>
-          <Link to="/">
-            <Button size="lg" className="bg-gradient-to-r from-bronze-500 to-bronze-600 hover:from-bronze-600 hover:to-bronze-700 text-black font-semibold text-lg px-12">
-              <PlayCircle className="w-6 h-6 mr-2" />
-              Launch Interactive Demo
-            </Button>
-          </Link>
-        </div>
+    <div className="bg-[#0F1319]">
+      <SiteHeroSection
+        title="Experience It Yourself"
+        subtitle="No signup. No pressure. Just explore."
+      >
+        <Link to="/">
+          <Button size="lg" className="bg-gradient-to-r from-bronze-500 to-bronze-600 hover:from-bronze-600 hover:to-bronze-700 text-black font-semibold text-lg px-12 mt-6">
+            <PlayCircle className="w-6 h-6 mr-2" />
+            Launch Interactive Demo
+          </Button>
+        </Link>
+      </SiteHeroSection>
+
+      <div className="py-20 px-6">
+        <div className="container mx-auto max-w-6xl">
 
         {/* Demo Features */}
         <div className="mb-16">
@@ -70,6 +70,7 @@ const SiteDemo = () => {
               </Button>
             </Link>
           </div>
+        </div>
         </div>
       </div>
     </div>

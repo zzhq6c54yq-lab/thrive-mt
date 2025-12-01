@@ -3,34 +3,29 @@ import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Check, Brain, Users, TrendingUp, Shield, Clock, Heart } from "lucide-react";
 import { bundles } from "@/data/servicePricing";
+import SiteHeroSection from "@/components/site/SiteHeroSection";
 
 const SiteLanding = () => {
   return (
     <div className="bg-[#0F1319]">
       {/* Hero Section */}
-      <section className="relative py-20 px-6 overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-br from-bronze-500/10 via-transparent to-bronze-600/5" />
-        <div className="container mx-auto relative z-10 text-center max-w-4xl">
-          <h1 className="text-5xl md:text-7xl font-bold mb-6 bg-gradient-to-r from-bronze-400 via-bronze-500 to-bronze-600 bg-clip-text text-transparent">
-            Modern Mental Health for Real Life
-          </h1>
-          <p className="text-xl md:text-2xl text-foreground/80 mb-8 max-w-2xl mx-auto">
-            Accessible therapy, premium coaching, and AI-powered wellness tools — designed to help you feel better and grow stronger.
-          </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Link to="/">
-              <Button size="lg" className="bg-gradient-to-r from-bronze-500 to-bronze-600 hover:from-bronze-600 hover:to-bronze-700 text-black font-semibold text-lg px-8">
-                Get Started
-              </Button>
-            </Link>
-            <Link to="/site/demo">
-              <Button size="lg" variant="outline" className="border-bronze-500 text-bronze-400 hover:bg-bronze-500/10 text-lg px-8">
-                Try Live Demo
-              </Button>
-            </Link>
-          </div>
+      <SiteHeroSection
+        title="Modern Mental Health for Real Life"
+        subtitle="Accessible therapy, premium coaching, and AI-powered wellness tools — designed to help you feel better and grow stronger."
+      >
+        <div className="flex flex-col sm:flex-row gap-4 justify-center">
+          <Link to="/">
+            <Button size="lg" className="bg-gradient-to-r from-bronze-500 to-bronze-600 hover:from-bronze-600 hover:to-bronze-700 text-black font-semibold text-lg px-8">
+              Get Started
+            </Button>
+          </Link>
+          <Link to="/site/demo">
+            <Button size="lg" variant="outline" className="border-bronze-500 text-bronze-400 hover:bg-bronze-500/10 text-lg px-8">
+              Try Live Demo
+            </Button>
+          </Link>
         </div>
-      </section>
+      </SiteHeroSection>
 
       {/* Why Choose ThriveMT */}
       <section className="py-20 px-6 bg-[#141921]">

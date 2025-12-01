@@ -174,6 +174,7 @@ import { Toaster } from "@/components/ui/toaster";
 import { UserProvider } from "@/contexts/UserContext";
 import FloatingHenryAssistant from "@/components/henry/FloatingHenryAssistant";
 import SiteLayout from "@/components/site/SiteLayout";
+import SiteEntry from "@/pages/site/SiteEntry";
 import SiteLanding from "@/pages/site/SiteLanding";
 import SiteTherapy from "@/pages/site/SiteTherapy";
 import SiteCoaching from "@/pages/site/SiteCoaching";
@@ -197,7 +198,8 @@ function App() {
             <Routes>
           {/* Marketing Website Routes */}
           <Route path="/site" element={<SiteLayout />}>
-            <Route index element={<SiteLanding />} />
+            <Route index element={<SiteEntry />} />
+            <Route path="home" element={<SiteLanding />} />
             <Route path="therapy" element={<SiteTherapy />} />
             <Route path="coaching" element={<SiteCoaching />} />
             <Route path="pricing" element={<SitePricing />} />
