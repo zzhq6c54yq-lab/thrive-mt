@@ -52,7 +52,9 @@ const SiteEntry = () => {
               alt="ThriveMT" 
               className="w-96 h-auto"
               style={{ 
-                mixBlendMode: 'lighten',
+                mixBlendMode: 'screen',
+                WebkitMaskImage: 'radial-gradient(ellipse 80% 80% at center, black 60%, transparent 100%)',
+                maskImage: 'radial-gradient(ellipse 80% 80% at center, black 60%, transparent 100%)',
                 filter: 'drop-shadow(0 0 40px rgba(212,165,116,0.5))'
               }}
             />
@@ -71,7 +73,9 @@ const SiteEntry = () => {
               alt="ThriveMT Logo" 
               className="w-64 h-64"
               style={{ 
-                mixBlendMode: 'lighten',
+                mixBlendMode: 'screen',
+                WebkitMaskImage: 'radial-gradient(ellipse 80% 80% at center, black 60%, transparent 100%)',
+                maskImage: 'radial-gradient(ellipse 80% 80% at center, black 60%, transparent 100%)',
                 filter: 'drop-shadow(0 0 60px rgba(212,165,116,0.4)) drop-shadow(0 0 30px rgba(255,255,255,0.2))' 
               }}
             />
@@ -110,7 +114,7 @@ const SiteEntry = () => {
               style={{
                 background: 'linear-gradient(90deg, #B87333 0%, #D4A574 25%, #FFFFFF 50%, #D4A574 75%, #B87333 100%)',
                 backgroundSize: '200% 100%',
-                animation: 'light-sweep 2s ease-in-out forwards',
+                animation: 'light-sweep 2s ease-in-out infinite',
               }}
             >
               ENTER
