@@ -4,32 +4,36 @@ import thriveOutlineLogoImage from "@/assets/thrivemt-outline-logo.png";
 const SiteFooter = () => {
   return (
     <footer className="bg-black border-t border-[#D4A574]/30 mt-20">
-      <div className="container mx-auto px-6 py-12">
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
-          <div>
-            <div className="flex items-center gap-3 mb-4">
-              <img 
-                src={thriveOutlineLogoImage} 
-                alt="ThriveMT" 
-                className="w-10 h-10"
-                style={{ filter: 'drop-shadow(0 0 8px rgba(212,165,116,0.3))' }}
-              />
-              <h3 
-                className="text-xl font-bold"
-                style={{
-                  background: 'linear-gradient(135deg, #E8D4C0 0%, #D4A574 50%, #B87333 100%)',
-                  WebkitBackgroundClip: 'text',
-                  WebkitTextFillColor: 'transparent',
-                  backgroundClip: 'text',
-                }}
-              >
-                ThriveMT
-              </h3>
-            </div>
-            <p className="text-white/60 text-sm">
-              Modern Mental Health & Wellness
-            </p>
-          </div>
+      <div className="container mx-auto px-6 pt-6 pb-12">
+        {/* ThriveMT Branding - Full Width */}
+        <div className="flex items-center gap-3 mb-2">
+          <img 
+            src={thriveOutlineLogoImage} 
+            alt="ThriveMT" 
+            className="w-10 h-10"
+            style={{ filter: 'drop-shadow(0 0 8px rgba(212,165,116,0.3))' }}
+          />
+          <h3 
+            className="text-xl font-bold"
+            style={{
+              background: 'linear-gradient(135deg, #E8D4C0 0%, #D4A574 50%, #B87333 100%)',
+              WebkitBackgroundClip: 'text',
+              WebkitTextFillColor: 'transparent',
+              backgroundClip: 'text',
+            }}
+          >
+            ThriveMT
+          </h3>
+        </div>
+        <p className="text-white/60 text-sm mb-6">
+          Modern Mental Health & Wellness
+        </p>
+        
+        {/* Separator Line */}
+        <div className="border-t border-[#D4A574]/20 mb-8"></div>
+        
+        {/* Link Columns - 3 columns instead of 4 */}
+        <div className="grid grid-cols-2 md:grid-cols-3 gap-8">
 
           <div>
             <h4 className="font-semibold text-white mb-4">Services</h4>

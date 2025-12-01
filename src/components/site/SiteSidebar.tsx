@@ -140,27 +140,6 @@ const SiteSidebar = ({ collapsed = false }: SiteSidebarProps) => {
             </div>
           </div>
         ))}
-
-        {/* Action Buttons */}
-        {!collapsed && (
-          <div className="mt-8 space-y-3 px-4">
-            <Link to="/">
-              <Button 
-                variant="outline" 
-                className="w-full border-[#D4A574] text-[#D4A574] hover:bg-[#D4A574]/10"
-              >
-                Sign In
-              </Button>
-            </Link>
-            <Link to="/">
-              <Button 
-                className="w-full bg-gradient-to-r from-[#D4A574] to-[#B87333] hover:from-[#E8D4C0] hover:to-[#D4A574] text-black font-semibold shadow-[0_0_15px_rgba(212,165,116,0.3)]"
-              >
-                Get Started
-              </Button>
-            </Link>
-          </div>
-        )}
       </div>
     </motion.aside>
   );
