@@ -89,7 +89,7 @@ const QuizzesSection: React.FC<QuizzesSectionProps> = ({
     });
     
     setTimeout(() => {
-      navigate("/mental-wellness/assessments", { 
+      navigate("/app/mental-wellness/assessments", { 
         state: { 
           activeTab: "assessments", 
           preventTutorial: true,

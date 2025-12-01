@@ -43,7 +43,7 @@ const FirstRespondersAssessments: React.FC = () => {
       description: `Beginning ${title}...`,
       duration: 2000
     });
-    navigate("/mental-wellness/assessments");
+    navigate("/app/mental-wellness/assessments");
   };
 
   return (

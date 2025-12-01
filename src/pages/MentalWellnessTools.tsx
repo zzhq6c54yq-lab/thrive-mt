@@ -88,7 +88,7 @@ const MentalWellnessTools: React.FC = () => {
       title: "Breathing Exercise",
       description: "Interactive guided breathing to reduce anxiety in minutes",
       icon: <Leaf className="h-6 w-6 text-green-500" />,
-      action: () => navigate("/mental-wellness-tools/breathing"),
+      action: () => navigate("/app/mental-wellness-tools/breathing"),
       color: "from-green-50 to-emerald-50 border-green-100",
       iconBg: "bg-green-100"
     },
@@ -96,7 +96,7 @@ const MentalWellnessTools: React.FC = () => {
       title: "Thought Reframing",
       description: "Transform negative thoughts with this guided exercise",
       icon: <Brain className="h-6 w-6 text-purple-500" />,
-      action: () => navigate("/mental-wellness-tools/reframing"),
+      action: () => navigate("/app/mental-wellness-tools/reframing"),
       color: "from-purple-50 to-violet-50 border-purple-100",
       iconBg: "bg-purple-100"
     },
@@ -104,7 +104,7 @@ const MentalWellnessTools: React.FC = () => {
       title: "Quick Mood Boost",
       description: "Science-backed activities to lift your spirits in minutes",
       icon: <Smile className="h-6 w-6 text-yellow-500" />,
-      action: () => navigate("/mental-wellness-tools/mood-boost"),
+      action: () => navigate("/app/mental-wellness-tools/mood-boost"),
       color: "from-yellow-50 to-amber-50 border-yellow-100",
       iconBg: "bg-yellow-100"
     },
@@ -112,7 +112,7 @@ const MentalWellnessTools: React.FC = () => {
       title: "Stress Relief Games",
       description: "Fun interactive games designed to reduce stress",
       icon: <Puzzle className="h-6 w-6 text-blue-500" />,
-      action: () => navigate("/games-and-quizzes"),
+      action: () => navigate("/app/games-and-quizzes"),
       color: "from-blue-50 to-sky-50 border-blue-100",
       iconBg: "bg-blue-100"
     }
@@ -123,19 +123,19 @@ const MentalWellnessTools: React.FC = () => {
       title: "Mental Health Tracking",
       description: "Monitor moods, symptoms, and progress over time with visual charts and insights",
       icon: <BarChart4 className="h-6 w-6 text-[#9b87f5]" />,
-      path: "/progress-reports"
+      path: "/app/progress-reports"
     },
     {
       title: "Therapy Integration",
       description: "Tools to support your therapy work between sessions",
       icon: <Clipboard className="h-6 w-6 text-blue-500" />,
-      path: "/mental-wellness-tools/therapy-support"
+      path: "/app/mental-wellness-tools/therapy-support"
     },
     {
       title: "Journal Prompts",
       description: "Guided journaling exercises for reflection and growth",
       icon: <FileText className="h-6 w-6 text-amber-500" />,
-      path: "/journaling"
+      path: "/app/journaling"
     }
   ];
 
@@ -168,7 +168,7 @@ const MentalWellnessTools: React.FC = () => {
             <Button 
               variant="ghost" 
               className="text-foreground hover:text-primary transition-colors p-0 flex items-center"
-              onClick={() => navigate("/home")}
+              onClick={() => navigate("/app/home")}
             >
               <ArrowLeft className="mr-2 h-4 w-4" />
               Back to Home
@@ -243,7 +243,7 @@ const MentalWellnessTools: React.FC = () => {
                       "Mindful Meditation": "/mental-wellness-tools/meditation",
                       "Quick Mood Boost": "/mental-wellness-tools/mood-boost"
                     };
-                    navigate(routes[dailySkills[currentSkill].title] || "/mental-wellness-tools");
+                    navigate(routes[dailySkills[currentSkill].title] || "/app/mental-wellness-tools");
                   }}>Try Now</Button>
                   <Button variant="outline" onClick={() => window.scrollTo({ top: 800, behavior: 'smooth' })}>View All</Button>
                 </div>

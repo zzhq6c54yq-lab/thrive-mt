@@ -192,8 +192,8 @@ const MentalWellnessMenu: React.FC<MentalWellnessMenuProps> = ({
     });
     
     // Navigate to mental wellness with assessment parameter
-    navigate("/mental-wellness", {
-      state: { 
+    navigate("/app/mental-wellness", {
+      state: {
         activeTab: "assessments",
         startAssessment: true,
         assessmentId: assessmentId,

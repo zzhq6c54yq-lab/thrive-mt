@@ -25,7 +25,7 @@ const ModuleHeader: React.FC<ModuleHeaderProps> = ({
     <div className="mb-8">
       <Button
         variant="ghost"
-        onClick={() => navigate("/golden-years-portal")}
+        onClick={() => navigate("/app/golden-years-portal")}
         className="mb-4 text-[#D4AF37] hover:text-[#F5DEB3] hover:bg-[#D4AF37]/10"
       >
         <ArrowLeft className="h-4 w-4 mr-2" />
