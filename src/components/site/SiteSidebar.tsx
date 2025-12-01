@@ -11,7 +11,8 @@ import {
   TrendingUp, 
   Mail,
   Users,
-  Smartphone
+  Smartphone,
+  X
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
@@ -19,9 +20,11 @@ import thriveOutlineLogoImage from "@/assets/thrivemt-outline-logo.png";
 
 interface SiteSidebarProps {
   collapsed?: boolean;
+  isOpen?: boolean;
+  onClose?: () => void;
 }
 
-const SiteSidebar = ({ collapsed = false }: SiteSidebarProps) => {
+const SiteSidebar = ({ collapsed = false, isOpen = false, onClose }: SiteSidebarProps) => {
   const location = useLocation();
 
   const navSections = [
@@ -65,14 +68,24 @@ const SiteSidebar = ({ collapsed = false }: SiteSidebarProps) => {
   return (
     <motion.aside
       initial={{ x: -300 }}
-      animate={{ x: 0 }}
+      animate={{ x: isOpen ? 0 : -300 }}
       transition={{ type: "spring", stiffness: 100, damping: 20 }}
       className={cn(
         "fixed left-0 top-0 h-screen bg-black border-r border-[#D4A574]/30 z-40 overflow-y-auto",
+        "md:translate-x-0",  // Always visible on desktop
         collapsed ? "w-20" : "w-64"
       )}
     >
-      <div className="p-6">
+      {/* Close button for mobile */}
+      <button
+        onClick={onClose}
+        className="absolute top-4 right-4 md:hidden p-2 rounded-lg hover:bg-[#D4A574]/10 transition-colors"
+        aria-label="Close menu"
+      >
+        <X className="w-5 h-5 text-[#D4A574]" />
+      </button>
+
+      <div className="p-6 pt-16 md:pt-6">
         {/* Logo */}
         <Link to="/home" className="flex items-center gap-3 mb-8">
           <img 
