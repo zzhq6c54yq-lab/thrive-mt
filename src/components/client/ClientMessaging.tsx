@@ -184,7 +184,7 @@ export default function ClientMessaging() {
 
       if (error) throw error;
 
-      navigate(`/client-video-session/${sessionId}`);
+      navigate(`/app/client-video-session/${sessionId}`);
     } catch (error: any) {
       toast({
         title: 'Error initiating call',
@@ -214,7 +214,7 @@ export default function ClientMessaging() {
         description: `Connecting to ${therapist.name}`,
       });
 
-      navigate(`/client-video-session/${sessionId}`);
+      navigate(`/app/client-video-session/${sessionId}`);
     } catch (error: any) {
       toast({
         title: 'Error initiating call',

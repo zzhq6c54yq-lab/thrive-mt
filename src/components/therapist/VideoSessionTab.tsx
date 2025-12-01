@@ -143,7 +143,7 @@ const VideoSessionTab: React.FC<VideoSessionTabProps> = ({
                       {/* Action Buttons */}
                       <div className="flex gap-2">
                         <Button
-                          onClick={() => navigate(`/therapist-video-session?id=${booking.id}&clientId=${booking.user_id}`)}
+                          onClick={() => navigate(`/app/therapist-video-session?id=${booking.id}&clientId=${booking.user_id}`)}
                           className={`${
                             isSoon
                               ? 'bg-gradient-to-r from-[#B87333] to-[#D4AF37] hover:from-[#D4AF37] hover:to-[#B87333]'
@@ -176,7 +176,7 @@ const VideoSessionTab: React.FC<VideoSessionTabProps> = ({
               Begin an unscheduled video session for emergency consultations or walk-ins
             </p>
             <Button
-              onClick={() => navigate('/therapist-video-session')}
+              onClick={() => navigate('/app/therapist-video-session')}
               variant="outline"
               className="border-[#D4AF37]/50 text-[#D4AF37] hover:bg-[#D4AF37]/10 hover:border-[#D4AF37]"
             >

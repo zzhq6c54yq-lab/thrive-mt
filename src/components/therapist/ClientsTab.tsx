@@ -31,7 +31,7 @@ export default function ClientsTab({ clients }: ClientsTabProps) {
 
   const handleCallClient = (clientUserId: string) => {
     const sessionId = `session_${clientUserId}_${Date.now()}`;
-    navigate(`/therapist-video-session/${sessionId}`);
+    navigate(`/app/therapist-video-session/${sessionId}`);
   };
 
   const filteredClients = clients.filter((client) => {

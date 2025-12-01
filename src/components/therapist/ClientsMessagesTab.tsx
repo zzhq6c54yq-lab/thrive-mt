@@ -198,7 +198,7 @@ export default function ClientsMessagesTab({ therapistId, preSelectedClientId }:
         status: 'pending'
       });
 
-      navigate(`/therapist-video-session/${sessionId}?clientId=${clientId}`);
+      navigate(`/app/therapist-video-session/${sessionId}?clientId=${clientId}`);
     } catch (error: any) {
       toast({
         title: 'Error initiating video call',
@@ -219,7 +219,7 @@ export default function ClientsMessagesTab({ therapistId, preSelectedClientId }:
         status: 'pending'
       });
 
-      navigate(`/therapist-video-session/${sessionId}?clientId=${clientId}`);
+      navigate(`/app/therapist-video-session/${sessionId}?clientId=${clientId}`);
       
       toast({
         title: 'Audio call initiated',
