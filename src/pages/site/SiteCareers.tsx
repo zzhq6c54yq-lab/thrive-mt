@@ -2,19 +2,29 @@ import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { DollarSign, Clock, Heart, TrendingUp, Shield, Users } from "lucide-react";
+import SiteHeroSection from "@/components/site/SiteHeroSection";
 
 const SiteCareers = () => {
   return (
-    <div className="bg-[#0F1319] py-20 px-6">
-      <div className="container mx-auto max-w-6xl">
-        <div className="text-center mb-16">
-          <h1 className="text-5xl font-bold mb-6 bg-gradient-to-r from-bronze-400 to-bronze-600 bg-clip-text text-transparent">
-            Why Join ThriveMT?
-          </h1>
-          <p className="text-xl text-foreground/80 max-w-3xl mx-auto">
-            We're building the future of mental health care. Join a team that values clinicians and treats them like the professionals they are.
-          </p>
+    <div className="bg-[#0F1319]">
+      <SiteHeroSection
+        title="Join the Movement"
+        subtitle="Help us build the future of mental health care."
+      >
+        <div className="flex flex-col sm:flex-row gap-4 justify-center mt-6">
+          <Button size="lg" className="bg-gradient-to-r from-bronze-500 to-bronze-600 hover:from-bronze-600 hover:to-bronze-700 text-black font-semibold">
+            Apply Now
+          </Button>
+          <Link to="/site/contact">
+            <Button size="lg" variant="outline" className="border-bronze-500 text-bronze-400 hover:bg-bronze-500/10">
+              Talk to Our Clinical Lead
+            </Button>
+          </Link>
         </div>
+      </SiteHeroSection>
+
+      <div className="py-20 px-6">
+        <div className="container mx-auto max-w-6xl">
 
         {/* Benefits */}
         <div className="mb-16">
@@ -91,6 +101,7 @@ const SiteCareers = () => {
               </Button>
             </Link>
           </div>
+        </div>
         </div>
       </div>
     </div>

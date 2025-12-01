@@ -1,18 +1,17 @@
 import { Card } from "@/components/ui/card";
 import { Heart, Eye, Target, Users } from "lucide-react";
+import SiteHeroSection from "@/components/site/SiteHeroSection";
 
 const SiteAbout = () => {
   return (
-    <div className="bg-[#0F1319] py-20 px-6">
-      <div className="container mx-auto max-w-6xl">
-        <div className="text-center mb-16">
-          <h1 className="text-5xl font-bold mb-6 bg-gradient-to-r from-bronze-400 to-bronze-600 bg-clip-text text-transparent">
-            About ThriveMT
-          </h1>
-          <p className="text-xl text-foreground/80 max-w-3xl mx-auto">
-            We're on a mission to make mental health support simple, affordable, modern, and accessible to everyone.
-          </p>
-        </div>
+    <div className="bg-[#0F1319]">
+      <SiteHeroSection
+        title="Built by People Who Understand"
+        subtitle="Because mental health deserves more than an app."
+      />
+
+      <div className="py-20 px-6">
+        <div className="container mx-auto max-w-6xl">
 
         {/* Mission */}
         <div className="mb-16">
@@ -87,6 +86,7 @@ const SiteAbout = () => {
               Today, we're building exactly that — a platform where quality mental health care is accessible, affordable, and actually works for real people living real lives.
             </p>
           </div>
+        </div>
         </div>
       </div>
     </div>
