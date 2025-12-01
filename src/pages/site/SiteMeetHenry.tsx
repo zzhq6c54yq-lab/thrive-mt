@@ -89,7 +89,7 @@ const SiteMeetHenry = () => {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.2 }}
-            className="text-5xl md:text-7xl font-bold mb-6 bg-gradient-to-r from-[#D4AF37] to-[#B8941F] bg-clip-text text-transparent"
+            className="text-5xl md:text-7xl font-bold mb-6 bg-gradient-to-r from-[#B87333] to-[#8B5A2B] bg-clip-text text-transparent"
           >
             Meet Henry
           </motion.h1>
@@ -113,7 +113,7 @@ const SiteMeetHenry = () => {
             <Link to="/site/demo">
               <Button
                 size="lg"
-                className="bg-gradient-to-r from-[#D4AF37] to-[#B8941F] hover:from-[#E5C350] hover:to-[#C9A430] text-black font-bold text-lg px-12 py-6"
+                className="bg-gradient-to-r from-[#B87333] to-[#8B5A2B] hover:from-[#CD8B4E] hover:to-[#A06628] text-black font-bold text-lg px-12 py-6"
               >
                 Chat with Henry (Live Demo)
               </Button>
@@ -125,7 +125,7 @@ const SiteMeetHenry = () => {
       {/* Features Grid */}
       <section className="py-20 px-6">
         <div className="max-w-6xl mx-auto">
-          <h2 className="text-4xl font-bold text-center mb-4 bg-gradient-to-r from-[#D4AF37] to-[#B8941F] bg-clip-text text-transparent">
+          <h2 className="text-4xl font-bold text-center mb-4 bg-gradient-to-r from-[#B87333] to-[#8B5A2B] bg-clip-text text-transparent">
             What Henry Can Do
           </h2>
           <p className="text-xl text-white/70 text-center mb-16 max-w-2xl mx-auto">
@@ -140,9 +140,9 @@ const SiteMeetHenry = () => {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.5, delay: index * 0.1 }}
-                className="bg-[#141921] border border-[#D4AF37]/20 rounded-lg p-6 hover:border-[#D4AF37]/40 transition-colors"
+                className="bg-[#141921] border border-[#B87333]/20 rounded-lg p-6 hover:border-[#B87333]/40 transition-colors"
               >
-                <feature.icon className="w-8 h-8 text-[#D4AF37] mb-4" />
+                <feature.icon className="w-8 h-8 text-[#B87333] mb-4" />
                 <h3 className="text-lg font-semibold text-white mb-2">
                   {feature.title}
                 </h3>
@@ -158,26 +158,26 @@ const SiteMeetHenry = () => {
       {/* How It Works */}
       <section className="py-20 px-6 bg-[#0F1319]">
         <div className="max-w-4xl mx-auto text-center">
-          <h2 className="text-4xl font-bold mb-12 bg-gradient-to-r from-[#D4AF37] to-[#B8941F] bg-clip-text text-transparent">
+          <h2 className="text-4xl font-bold mb-12 bg-gradient-to-r from-[#B87333] to-[#8B5A2B] bg-clip-text text-transparent">
             Always Here for You
           </h2>
           
           <div className="space-y-8 text-left">
-            <div className="bg-black/50 border border-[#D4AF37]/20 rounded-lg p-6">
+            <div className="bg-black/50 border border-[#B87333]/20 rounded-lg p-6">
               <h3 className="text-xl font-semibold text-white mb-3">Safe & Confidential</h3>
               <p className="text-white/70">
                 Your conversations with Henry are private and secure. Henry uses advanced AI to provide support while maintaining complete confidentiality.
               </p>
             </div>
 
-            <div className="bg-black/50 border border-[#D4AF37]/20 rounded-lg p-6">
+            <div className="bg-black/50 border border-[#B87333]/20 rounded-lg p-6">
               <h3 className="text-xl font-semibold text-white mb-3">Personalized to You</h3>
               <p className="text-white/70">
                 Henry learns from your patterns and preferences to provide increasingly personalized recommendations and support over time.
               </p>
             </div>
 
-            <div className="bg-black/50 border border-[#D4AF37]/20 rounded-lg p-6">
+            <div className="bg-black/50 border border-[#B87333]/20 rounded-lg p-6">
               <h3 className="text-xl font-semibold text-white mb-3">Human Connection When Needed</h3>
               <p className="text-white/70">
                 If Henry detects you need additional support, he'll connect you with our licensed therapists for immediate human care.
@@ -189,7 +189,7 @@ const SiteMeetHenry = () => {
             <Link to="/site/demo">
               <Button
                 size="lg"
-                className="bg-gradient-to-r from-[#D4AF37] to-[#B8941F] hover:from-[#E5C350] hover:to-[#C9A430] text-black font-bold text-lg px-12 py-6"
+                className="bg-gradient-to-r from-[#B87333] to-[#8B5A2B] hover:from-[#CD8B4E] hover:to-[#A06628] text-black font-bold text-lg px-12 py-6"
               >
                 Try Henry Now
               </Button>

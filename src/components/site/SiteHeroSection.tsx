@@ -23,14 +23,14 @@ const SiteHeroSection = ({
       case "rose":
         return "from-rose-400 to-rose-600";
       default:
-        return "from-[#D4AF37] to-[#B8941F]";
+        return "from-[#B87333] to-[#8B5A2B]";
     }
   };
 
   return (
     <section className="relative py-24 px-6 overflow-hidden bg-black">
       {/* Subtle bronze accent line */}
-      <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-[#D4AF37] to-transparent opacity-30" />
+      <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-[#B87333] to-transparent opacity-30" />
 
       {/* Content */}
       <div className="container mx-auto relative z-10 text-center max-w-4xl">
