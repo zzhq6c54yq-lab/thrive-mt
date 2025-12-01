@@ -40,7 +40,44 @@ export default function EpicDashboard({ demoMode = false }: EpicDashboardProps) 
   const navigate = useNavigate();
   const { user, profile, loading: userLoading } = useUser();
   const { dashboardData, loading: dashboardLoading, refetch } = useTodayDashboard();
-  const { state: dashboardState } = useDashboardState(dashboardData);
+  
+  // Provide fallback profile data for demo users
+  const displayProfile = profile || {
+    display_name: 'Demo User',
+    goals: ['stress_management', 'sleep_improvement', 'mindfulness']
+  };
+
+  // Provide mock dashboard data for demo mode
+  const displayDashboardData = demoMode ? {
+    profile: displayProfile,
+    todaysPlan: [
+      { id: '1', slug: 'morning-meditation', title: 'Morning Meditation', description: 'Start your day mindfully', category: 'mindfulness', estimated_minutes: 10, icon_name: 'brain', route_path: '/app/meditation', points_reward: 50, order: 1, time_of_day: 'morning' },
+      { id: '2', slug: 'breathing-exercise', title: 'Breathing Exercise', description: 'Calm your nervous system', category: 'stress', estimated_minutes: 5, icon_name: 'wind', route_path: '/app/breathing', points_reward: 30, order: 2, time_of_day: 'afternoon' },
+      { id: '3', slug: 'evening-journal', title: 'Evening Reflection', description: 'Process your day', category: 'journaling', estimated_minutes: 10, icon_name: 'book', route_path: '/app/journal', points_reward: 40, order: 3, time_of_day: 'evening' }
+    ],
+    checkInStreak: 7,
+    recentCheckIns: [
+      { mood_score: 4, created_at: new Date().toISOString(), tags: ['motivated', 'calm'] }
+    ],
+    upcomingAppointments: [],
+    rewardsWallet: { current_points: 250, copay_credits_usd: 5, lifetime_earned: 500 },
+    latestInsight: { insight_text: "You've been consistent with your morning routines. Keep it up!", insight_type: 'encouragement' },
+    weeklyStats: {
+      challengesCompleted: 12,
+      latestAssessment: { score: 6, label: 'Mild' },
+      moodTrend: [
+        { date: 'Nov 25', score: 3 },
+        { date: 'Nov 26', score: 4 },
+        { date: 'Nov 27', score: 4 },
+        { date: 'Nov 28', score: 5 },
+        { date: 'Nov 29', score: 4 },
+        { date: 'Nov 30', score: 5 },
+        { date: 'Dec 01', score: 5 }
+      ]
+    }
+  } : dashboardData;
+  
+  const { state: dashboardState } = useDashboardState(displayDashboardData);
   const { lastCheckIn } = useLastSeen();
   const [isCommandPaletteOpen, setIsCommandPaletteOpen] = useState(false);
   const [showHenryDialog, setShowHenryDialog] = useState(false);
@@ -63,24 +100,25 @@ export default function EpicDashboard({ demoMode = false }: EpicDashboardProps) 
     }
   }, [user, userLoading, navigate, demoMode]);
 
-  const loading = userLoading || dashboardLoading;
+  // In demo mode, don't wait for dashboard data loading (it will never complete without a user)
+  const loading = demoMode ? false : (userLoading || dashboardLoading);
 
   // Render status chips into navigation header
   useEffect(() => {
-    if (!loading && dashboardData) {
+    if (!loading && displayDashboardData) {
       const container = document.getElementById('status-chips-container');
       if (container) {
         createPortal(
-          <StatusChips dashboardData={dashboardData} />,
+          <StatusChips dashboardData={displayDashboardData} />,
           container
         );
       }
     }
-  }, [loading, dashboardData]);
+  }, [loading, displayDashboardData]);
 
   // Enhanced opening ritual effect
   useEffect(() => {
-    if (!loading && dashboardData && showOpeningRitual) {
+    if (!loading && displayDashboardData && showOpeningRitual) {
       // Step 1: Welcome message (2s)
       const welcomeTimer = setTimeout(() => {
         setRitualStep('breathe');
@@ -112,7 +150,7 @@ export default function EpicDashboard({ demoMode = false }: EpicDashboardProps) 
         clearTimeout(hideTimer);
       };
     }
-  }, [loading, dashboardData, showOpeningRitual]);
+  }, [loading, displayDashboardData, showOpeningRitual]);
 
   // Time-based greeting helper
   const getTimeBasedGreeting = () => {
@@ -148,12 +186,6 @@ export default function EpicDashboard({ demoMode = false }: EpicDashboardProps) 
       </div>
     );
   }
-
-  // Provide fallback profile data for demo users
-  const displayProfile = profile || {
-    display_name: 'Demo User',
-    goals: []
-  };
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-900 via-[#1a1a1a] to-gray-900 pb-24 relative overflow-hidden">
@@ -355,8 +387,8 @@ export default function EpicDashboard({ demoMode = false }: EpicDashboardProps) 
             user={user}
             profile={displayProfile}
             lastCheckIn={lastCheckIn}
-            moodTrend={dashboardData.weeklyStats.moodTrend}
-            checkInStreak={dashboardData.checkInStreak}
+            moodTrend={displayDashboardData.weeklyStats.moodTrend}
+            checkInStreak={displayDashboardData.checkInStreak}
           />
         </motion.div>
 
@@ -448,12 +480,12 @@ export default function EpicDashboard({ demoMode = false }: EpicDashboardProps) 
           className="space-y-6"
         >
           <div className="grid md:grid-cols-2 gap-6">
-            <MoodPulseWidget moodData={dashboardData.weeklyStats.moodTrend} />
-            <StreakProtectorWidget streak={dashboardData.checkInStreak} />
+            <MoodPulseWidget moodData={displayDashboardData.weeklyStats.moodTrend} />
+            <StreakProtectorWidget streak={displayDashboardData.checkInStreak} />
           </div>
 
           <div className="grid md:grid-cols-2 gap-6">
-            <ProgressRingWidget completed={0} total={dashboardData.todaysPlan.length} />
+            <ProgressRingWidget completed={0} total={displayDashboardData.todaysPlan.length} />
             <QuickNotesWidget />
           </div>
         </motion.div>
@@ -478,7 +510,7 @@ export default function EpicDashboard({ demoMode = false }: EpicDashboardProps) 
       <HenryDialog 
         isOpen={showHenryDialog} 
         onOpenChange={setShowHenryDialog}
-        userName={profile?.display_name?.split(' ')[0] || 'there'}
+        userName={displayProfile?.display_name?.split(' ')[0] || 'there'}
       />
 
       {/* Incoming Call Modal for Video/Audio Sessions */}
