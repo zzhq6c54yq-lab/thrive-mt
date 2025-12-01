@@ -13,6 +13,10 @@ import VisionBoard from "@/components/home/VisionBoard";
 const OnboardingContainer: React.FC = () => {
   const navigate = useNavigate();
   const location = useLocation();
+  
+  // Check if we're in demo mode
+  const demoMode = location.state?.demoMode || new URLSearchParams(location.search).get('demo') === 'true';
+  
   const {
     currentStep,
     selectedMood,
@@ -36,7 +40,7 @@ const OnboardingContainer: React.FC = () => {
     toggleQuality,
     toggleGoal,
     completeOnboarding,
-  } = useOnboardingFlow();
+  } = useOnboardingFlow(demoMode);
 
   // Check for navigation state from ThriveButton or other sources
   useEffect(() => {
@@ -87,9 +91,14 @@ const OnboardingContainer: React.FC = () => {
   // Redirect to dashboard after onboarding completion
   useEffect(() => {
     if (isOnboardingComplete || currentStep === 'completed') {
-      navigate('/dashboard');
+      // In demo mode, pass demoUser flag to dashboard
+      if (demoMode) {
+        navigate('/dashboard', { state: { demoUser: true } });
+      } else {
+        navigate('/dashboard');
+      }
     }
-  }, [isOnboardingComplete, currentStep, navigate]);
+  }, [isOnboardingComplete, currentStep, navigate, demoMode]);
 
   // Show loading message while redirecting
   if (isOnboardingComplete || currentStep === 'completed') {

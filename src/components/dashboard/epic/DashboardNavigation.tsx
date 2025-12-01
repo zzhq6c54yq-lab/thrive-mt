@@ -32,6 +32,9 @@ export default function DashboardNavigation({ userName }: DashboardNavigationPro
   const { logout, isLoggingOut } = useLogout(() => setShowGoodbye(true));
   const { profile } = useUser();
   const [avatarUrl, setAvatarUrl] = useState<string>('');
+  
+  // Check if this is demo mode
+  const demoUser = location.state?.demoUser;
 
   useEffect(() => {
     if (profile?.avatar_url) {
@@ -82,7 +85,7 @@ export default function DashboardNavigation({ userName }: DashboardNavigationPro
                 <span className="font-bold text-white text-xl hidden sm:inline">ThriveMT</span>
               </div>
               <div className="hidden md:block text-sm text-gray-300">
-                Welcome back, <span className="text-white font-medium">{userName}</span>
+                {demoUser ? 'Hello User' : `Welcome back, ${userName}`}
               </div>
             </div>
             {/* Status chips placeholder - will be rendered by parent */}

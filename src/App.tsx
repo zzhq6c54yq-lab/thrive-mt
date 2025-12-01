@@ -185,6 +185,7 @@ import SiteCareers from "@/pages/site/SiteCareers";
 import SiteInvestors from "@/pages/site/SiteInvestors";
 import SiteAbout from "@/pages/site/SiteAbout";
 import SiteContact from "@/pages/site/SiteContact";
+import SiteApp from "@/pages/site/SiteApp";
 import "./App.css";
 
 function App() {
@@ -210,6 +211,7 @@ function App() {
             <Route path="investors" element={<SiteInvestors />} />
             <Route path="about" element={<SiteAbout />} />
             <Route path="contact" element={<SiteContact />} />
+            <Route path="app" element={<SiteApp />} />
           </Route>
 
           {/* App Routes */}

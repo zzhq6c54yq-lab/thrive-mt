@@ -10,7 +10,8 @@ import {
   Briefcase, 
   TrendingUp, 
   Mail,
-  Users
+  Users,
+  Smartphone
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
@@ -41,6 +42,7 @@ const SiteSidebar = ({ collapsed = false }: SiteSidebarProps) => {
     {
       title: "EXPLORE",
       items: [
+        { icon: Smartphone, label: "The App", path: "/site/app" },
         { icon: Play, label: "Live Demo", path: "/site/demo" },
       ]
     },

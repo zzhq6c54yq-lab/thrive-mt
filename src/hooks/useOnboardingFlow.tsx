@@ -14,7 +14,7 @@ const initialState: OnboardingState = {
   isOnboardingComplete: false,
 };
 
-export const useOnboardingFlow = () => {
+export const useOnboardingFlow = (demoMode: boolean = false) => {
   const [state, setState] = useState<OnboardingState>(initialState);
 
   // Initialize from localStorage - ALWAYS start from intro in preview mode
@@ -51,16 +51,21 @@ export const useOnboardingFlow = () => {
   }, [saveProgress]);
 
   const nextStep = useCallback(() => {
-    const stepOrder: OnboardingStep[] = [
+    // Simplified demo flow: intro -> mood -> moodResponse -> completed
+    const demoStepOrder: OnboardingStep[] = ['intro', 'mood', 'moodResponse', 'completed'];
+    
+    // Full flow for normal onboarding
+    const fullStepOrder: OnboardingStep[] = [
       'intro', 'mood', 'moodResponse', 'register', 
       'subscription', 'subscriptionAddOns', 'checkout', 'visionBoard', 'completed'
     ];
     
+    const stepOrder = demoMode ? demoStepOrder : fullStepOrder;
     const currentIndex = stepOrder.indexOf(state.currentStep);
     if (currentIndex < stepOrder.length - 1) {
       goToStep(stepOrder[currentIndex + 1]);
     }
-  }, [state.currentStep, goToStep]);
+  }, [state.currentStep, goToStep, demoMode]);
 
   const previousStep = useCallback(() => {
     const stepOrder: OnboardingStep[] = [
