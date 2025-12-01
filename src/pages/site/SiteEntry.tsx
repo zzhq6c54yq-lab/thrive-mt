@@ -12,9 +12,9 @@ const SiteEntry = () => {
   useEffect(() => {
     const timers = [
       setTimeout(() => setStage(1), 500),    // ThriveMT text fades in
-      setTimeout(() => setStage(2), 5000),   // Logo fades in
-      setTimeout(() => setStage(3), 9500),   // "Build the Best You" fades in
-      setTimeout(() => setStage(4), 13000),  // Button appears with light sweep
+      setTimeout(() => setStage(2), 6000),   // Logo fades in
+      setTimeout(() => setStage(3), 11000),  // "Build the Best You" fades in
+      setTimeout(() => setStage(4), 15000),  // Button appears with light sweep
     ];
     
     return () => timers.forEach(clearTimeout);
@@ -30,15 +30,12 @@ const SiteEntry = () => {
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: stage >= 1 ? 1 : 0 }}
-          transition={{ duration: 2.5, ease: "easeInOut" }}
+          transition={{ duration: 4, ease: [0.25, 0.1, 0.25, 1] }}
         >
           <img 
             src={thriveTextLogo} 
             alt="ThriveMT" 
             className="w-96 h-auto"
-            style={{ 
-              filter: 'drop-shadow(0 0 30px rgba(255,180,100,0.6))'
-            }}
           />
         </motion.div>
 
@@ -46,7 +43,7 @@ const SiteEntry = () => {
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: stage >= 2 ? 1 : 0 }}
-          transition={{ duration: 2.5, ease: "easeInOut" }}
+          transition={{ duration: 3, ease: "easeInOut" }}
         >
           <img 
             src={thriveOutlineLogo} 
@@ -59,10 +56,10 @@ const SiteEntry = () => {
         <motion.h1
           initial={{ opacity: 0 }}
           animate={{ opacity: stage >= 3 ? 1 : 0 }}
-          transition={{ duration: 2.5, ease: "easeInOut" }}
+          transition={{ duration: 3, ease: "easeInOut" }}
           className="text-6xl md:text-7xl font-bold text-center leading-tight"
           style={{
-            background: 'linear-gradient(135deg, #FFE4C4 0%, #FFB347 40%, #FF8C00 70%, #CD853F 100%)',
+            background: 'linear-gradient(135deg, #FFFFFF 0%, #E8D4C0 30%, #D4A574 60%, #B87333 100%)',
             WebkitBackgroundClip: 'text',
             WebkitTextFillColor: 'transparent',
             backgroundClip: 'text',
@@ -82,9 +79,9 @@ const SiteEntry = () => {
             onClick={() => navigate("/site/home")}
             className="relative overflow-hidden text-black font-bold text-xl px-20 py-8 rounded-lg"
             style={{
-              background: 'linear-gradient(90deg, #CD853F 0%, #FFB347 25%, #FFFFFF 50%, #FFB347 75%, #CD853F 100%)',
-              backgroundSize: '200% 100%',
-              animation: 'light-sweep 2s ease-in-out infinite',
+              background: 'linear-gradient(90deg, #B87333 0%, #D4A574 15%, #FFFFFF 40%, #FFFFFF 60%, #D4A574 85%, #B87333 100%)',
+              backgroundSize: '300% 100%',
+              animation: 'light-sweep 4s ease-in-out infinite',
             }}
           >
             ENTER
