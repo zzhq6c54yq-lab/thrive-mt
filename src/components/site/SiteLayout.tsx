@@ -11,7 +11,6 @@ const SiteLayout = () => {
     <div className="min-h-screen bg-black flex">
       {showSidebar && <SiteSidebar />}
       <div className={`flex-1 flex flex-col ${showSidebar ? "md:ml-64" : ""}`}>
-        {showSidebar && <SiteHeader />}
         <main className="flex-1">
           <Outlet />
         </main>

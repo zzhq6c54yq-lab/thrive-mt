@@ -29,7 +29,7 @@ const SiteSidebar = ({ collapsed = false }: SiteSidebarProps) => {
       items: [
         { icon: Stethoscope, label: "Therapy", path: "/site/therapy" },
         { icon: Heart, label: "Coaching", path: "/site/coaching" },
-        { icon: Play, label: "AI Companion", path: "/site/demo" },
+        { icon: Play, label: "Meet Henry", path: "/site/henry" },
       ]
     },
     {
