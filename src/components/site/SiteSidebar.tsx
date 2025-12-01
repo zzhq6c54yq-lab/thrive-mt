@@ -14,7 +14,7 @@ import {
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
-import thriveLogoImage from "@/assets/thrivemt-logo.png";
+import thriveOutlineLogoImage from "@/assets/thrivemt-outline-logo.png";
 
 interface SiteSidebarProps {
   collapsed?: boolean;
@@ -67,7 +67,7 @@ const SiteSidebar = ({ collapsed = false }: SiteSidebarProps) => {
       animate={{ x: 0 }}
       transition={{ type: "spring", stiffness: 100, damping: 20 }}
       className={cn(
-        "fixed left-0 top-0 h-screen bg-black border-r border-[#B87333]/20 z-40 overflow-y-auto",
+        "fixed left-0 top-0 h-screen bg-black border-r border-[#D4A574]/30 z-40 overflow-y-auto",
         collapsed ? "w-20" : "w-64"
       )}
     >
@@ -75,12 +75,21 @@ const SiteSidebar = ({ collapsed = false }: SiteSidebarProps) => {
         {/* Logo */}
         <Link to="/site/home" className="flex items-center gap-3 mb-8">
           <img 
-            src={thriveLogoImage} 
+            src={thriveOutlineLogoImage} 
             alt="ThriveMT" 
             className="w-10 h-10"
+            style={{ filter: 'drop-shadow(0 0 8px rgba(212,165,116,0.3))' }}
           />
           {!collapsed && (
-            <span className="text-2xl font-bold bg-gradient-to-r from-[#B87333] to-[#8B5A2B] bg-clip-text text-transparent">
+            <span 
+              className="text-2xl font-bold"
+              style={{
+                background: 'linear-gradient(135deg, #E8D4C0 0%, #D4A574 50%, #B87333 100%)',
+                WebkitBackgroundClip: 'text',
+                WebkitTextFillColor: 'transparent',
+                backgroundClip: 'text',
+              }}
+            >
               ThriveMT
             </span>
           )}
@@ -93,8 +102,8 @@ const SiteSidebar = ({ collapsed = false }: SiteSidebarProps) => {
             className={cn(
               "flex items-center gap-3 px-4 py-3 rounded-lg mb-6 transition-colors",
               location.pathname === "/site/home" 
-                ? "bg-[#B87333]/10 text-[#B87333]" 
-                : "text-white/70 hover:text-[#B87333] hover:bg-[#B87333]/5"
+                ? "bg-[#D4A574]/10 text-[#D4A574]" 
+                : "text-white/70 hover:text-[#D4A574] hover:bg-[#D4A574]/5"
             )}
           >
             <Home className="w-5 h-5" />
@@ -118,8 +127,8 @@ const SiteSidebar = ({ collapsed = false }: SiteSidebarProps) => {
                     className={cn(
                       "flex items-center gap-3 px-4 py-3 rounded-lg transition-colors",
                       location.pathname === item.path 
-                        ? "bg-[#B87333]/10 text-[#B87333]" 
-                        : "text-white/70 hover:text-[#B87333] hover:bg-[#B87333]/5"
+                        ? "bg-[#D4A574]/10 text-[#D4A574]" 
+                        : "text-white/70 hover:text-[#D4A574] hover:bg-[#D4A574]/5"
                     )}
                   >
                     <item.icon className="w-5 h-5" />
@@ -137,14 +146,14 @@ const SiteSidebar = ({ collapsed = false }: SiteSidebarProps) => {
             <Link to="/">
               <Button 
                 variant="outline" 
-                className="w-full border-[#B87333] text-[#B87333] hover:bg-[#B87333]/10"
+                className="w-full border-[#D4A574] text-[#D4A574] hover:bg-[#D4A574]/10"
               >
                 Sign In
               </Button>
             </Link>
             <Link to="/">
               <Button 
-                className="w-full bg-gradient-to-r from-[#B87333] to-[#8B5A2B] hover:from-[#CD8B4E] hover:to-[#A06628] text-black font-semibold"
+                className="w-full bg-gradient-to-r from-[#D4A574] to-[#B87333] hover:from-[#E8D4C0] hover:to-[#D4A574] text-black font-semibold shadow-[0_0_15px_rgba(212,165,116,0.3)]"
               >
                 Get Started
               </Button>

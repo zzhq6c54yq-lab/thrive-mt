@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { motion, AnimatePresence } from "framer-motion";
-import thriveLogoImage from "@/assets/thrivemt-logo.png";
+import thriveOutlineLogoImage from "@/assets/thrivemt-outline-logo.png";
 
 const SiteEntry = () => {
   const navigate = useNavigate();
@@ -10,9 +10,9 @@ const SiteEntry = () => {
 
   useEffect(() => {
     const timers = [
-      setTimeout(() => setStage(1), 500),    // Show ThriveMT text (dual-tone)
+      setTimeout(() => setStage(1), 500),    // Show ThriveMT text (unified bronze)
       setTimeout(() => setStage(2), 3000),   // Fade out text
-      setTimeout(() => setStage(3), 4500),   // Show logo with white glow
+      setTimeout(() => setStage(3), 4500),   // Show outline logo
       setTimeout(() => setStage(4), 7000),   // Fade out logo
       setTimeout(() => setStage(5), 8000),   // Show final screen
     ];
@@ -39,7 +39,7 @@ const SiteEntry = () => {
 
       {/* Animation Stages */}
       <AnimatePresence mode="wait">
-        {/* Stage 1: ThriveMT Text Fade In - Dual-Tone (Thrive=white, MT=gold) */}
+        {/* Stage 1: ThriveMT Text Fade In - Unified Metallic Bronze */}
         {stage === 1 && (
           <motion.div
             key="thrive-text"
@@ -49,16 +49,24 @@ const SiteEntry = () => {
             transition={{ duration: 1.5, ease: "easeInOut" }}
             className="absolute flex items-center justify-center"
           >
-            <div className="text-9xl font-bold tracking-tight" style={{ textShadow: '0 4px 20px rgba(0,0,0,0.5)' }}>
-              <span style={{ color: '#F5F5F5' }}>Thrive</span>
-              <span style={{ color: '#D4A574' }}>MT</span>
+            <div 
+              className="text-9xl font-bold tracking-tight" 
+              style={{ 
+                background: 'linear-gradient(180deg, #E8D4C0 0%, #D4A574 30%, #B87333 100%)',
+                WebkitBackgroundClip: 'text',
+                WebkitTextFillColor: 'transparent',
+                backgroundClip: 'text',
+                textShadow: '0 4px 20px rgba(212,165,116,0.5)'
+              }}
+            >
+              ThriveMT
             </div>
           </motion.div>
         )}
 
         {/* Stage 2: Text Fade Out (handled by exit animation) */}
 
-        {/* Stage 3: Logo Fade In with White Glow/Halo */}
+        {/* Stage 3: Outline Logo Fade In */}
         {stage === 3 && (
           <motion.div
             key="thrive-logo"
@@ -69,10 +77,10 @@ const SiteEntry = () => {
             className="absolute flex items-center justify-center"
           >
             <img 
-              src={thriveLogoImage} 
+              src={thriveOutlineLogoImage} 
               alt="ThriveMT Logo" 
               className="w-72 h-72"
-              style={{ filter: 'drop-shadow(0 0 60px rgba(255,255,255,0.5)) drop-shadow(0 0 30px rgba(255,255,255,0.3))' }}
+              style={{ filter: 'drop-shadow(0 0 60px rgba(212,165,116,0.4)) drop-shadow(0 0 30px rgba(255,255,255,0.2))' }}
             />
           </motion.div>
         )}
@@ -88,7 +96,7 @@ const SiteEntry = () => {
             transition={{ duration: 2, ease: "easeInOut" }}
             className="relative z-10 text-center px-6 max-w-4xl mx-auto"
           >
-            {/* Logo with White Glow */}
+            {/* Outline Logo */}
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
@@ -96,21 +104,21 @@ const SiteEntry = () => {
               className="mb-8"
             >
               <img 
-                src={thriveLogoImage} 
+                src={thriveOutlineLogoImage} 
                 alt="ThriveMT Logo" 
                 className="w-32 h-32 mx-auto"
-                style={{ filter: 'drop-shadow(0 0 40px rgba(255,255,255,0.4))' }}
+                style={{ filter: 'drop-shadow(0 0 40px rgba(212,165,116,0.4))' }}
               />
             </motion.div>
 
-            {/* Headline - Elegant Dual-Tone Gradient */}
+            {/* Headline - Metallic Bronze Gradient */}
             <motion.h1
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 1, delay: 0.6 }}
               className="text-6xl md:text-8xl font-bold mb-16 leading-tight"
               style={{
-                background: 'linear-gradient(135deg, #F5F5F5 0%, #D4A574 100%)',
+                background: 'linear-gradient(135deg, #E8D4C0 0%, #D4A574 50%, #B87333 100%)',
                 WebkitBackgroundClip: 'text',
                 WebkitTextFillColor: 'transparent',
                 backgroundClip: 'text',
@@ -128,7 +136,7 @@ const SiteEntry = () => {
               <Button
                 size="xl"
                 onClick={() => navigate("/site/home")}
-                className="bg-gradient-to-r from-[#FFC107] to-[#FFB300] hover:from-[#FFD54F] hover:to-[#FFC107] text-black font-bold text-xl px-20 py-8 rounded-lg transition-all hover:shadow-[0_0_30px_rgba(255,193,7,0.4)]"
+                className="bg-gradient-to-r from-[#D4A574] to-[#B87333] hover:from-[#E8D4C0] hover:to-[#D4A574] text-black font-bold text-xl px-20 py-8 rounded-lg transition-all hover:shadow-[0_0_30px_rgba(212,165,116,0.5)]"
               >
                 ENTER
               </Button>
