@@ -25,138 +25,78 @@ const CoachEarningsTab = () => {
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
-        className="bg-gradient-to-br from-emerald-500/10 via-cyan-500/10 to-background/60 backdrop-blur-sm rounded-2xl border border-emerald-500/20 p-8 relative overflow-hidden"
+        className="bg-gradient-to-br from-teal-500/10 via-blue-500/10 to-background/60 backdrop-blur-sm rounded-2xl border border-teal-500/20 p-8"
       >
-        <motion.div
-          animate={{ 
-            scale: [1, 1.2, 1],
-            opacity: [0.1, 0.2, 0.1]
-          }}
-          transition={{ duration: 3, repeat: Infinity }}
-          className="absolute top-0 right-0 w-96 h-96 bg-emerald-500/20 rounded-full blur-3xl"
-        />
-        
-        <div className="relative z-10">
-          <div className="flex items-center gap-3 mb-6">
-            <motion.div
-              animate={{ rotate: [0, 10, -10, 0] }}
-              transition={{ duration: 2, repeat: Infinity }}
-            >
-              <DollarSign className="h-8 w-8 text-emerald-400" />
-            </motion.div>
-            <h3 className="text-2xl font-bold bg-gradient-to-r from-emerald-400 via-cyan-400 to-blue-400 bg-clip-text text-transparent">
-              Your Earnings
-            </h3>
-          </div>
+        <div className="flex items-center gap-3 mb-6">
+          <DollarSign className="h-8 w-8 text-teal-400" />
+          <h3 className="text-2xl font-bold text-foreground">
+            Monthly Earnings
+          </h3>
+        </div>
 
-          {/* Big Number with animated counter */}
-          <div className="mb-6">
-            <p className="text-sm text-muted-foreground mb-2">This Month</p>
-            <motion.p 
-              initial={{ scale: 0.9 }}
-              animate={{ scale: 1 }}
-              className="text-5xl font-bold bg-gradient-to-r from-emerald-400 to-cyan-400 bg-clip-text text-transparent mb-2"
-            >
-              ${monthlyEarnings.current.toLocaleString()}
-            </motion.p>
-            <div className="flex items-center gap-2 text-emerald-400">
-              <TrendingUp className="h-5 w-5" />
-              <span className="text-lg font-bold">+{monthlyEarnings.growth}% from last month</span>
-            </div>
-          </div>
-
-          {/* Progress to Goal */}
-          <div className="mb-6">
-            <div className="flex items-center justify-between mb-3">
-              <div className="flex items-center gap-2">
-                <Target className="h-5 w-5 text-emerald-400" />
-                <span className="text-sm font-medium text-foreground/80">Monthly Goal Progress</span>
-              </div>
-              <span className="text-sm font-bold text-emerald-400">
-                ${monthlyEarnings.goal.toLocaleString()}
-              </span>
-            </div>
-            <div className="relative">
-              <Progress value={goalProgress} className="h-4" />
-              <motion.div
-                animate={{ x: `${goalProgress}%` }}
-                className="absolute -top-8 text-sm font-bold text-emerald-400"
-                style={{ left: 0, transform: 'translateX(-50%)' }}
-              >
-                {Math.round(goalProgress)}%
-              </motion.div>
-            </div>
-          </div>
-
-          {/* Stats Grid */}
-          <div className="grid grid-cols-3 gap-4">
-            <motion.div 
-              whileHover={{ scale: 1.05, y: -5 }}
-              className="bg-background/60 backdrop-blur-sm rounded-xl p-4 border border-border/40"
-            >
-              <div className="flex items-center gap-2 mb-2">
-                <Zap className="h-5 w-5 text-amber-400" />
-                <p className="text-xs text-muted-foreground">Sessions</p>
-              </div>
-              <p className="text-3xl font-bold text-foreground">27</p>
-            </motion.div>
-
-            <motion.div 
-              whileHover={{ scale: 1.05, y: -5 }}
-              className="bg-background/60 backdrop-blur-sm rounded-xl p-4 border border-border/40"
-            >
-              <div className="flex items-center gap-2 mb-2">
-                <DollarSign className="h-5 w-5 text-cyan-400" />
-                <p className="text-xs text-muted-foreground">Avg/Session</p>
-              </div>
-              <p className="text-3xl font-bold text-foreground">$37</p>
-            </motion.div>
-
-            <motion.div 
-              whileHover={{ scale: 1.05, y: -5 }}
-              className="bg-background/60 backdrop-blur-sm rounded-xl p-4 border border-border/40"
-            >
-              <div className="flex items-center gap-2 mb-2">
-                <Award className="h-5 w-5 text-blue-400" />
-                <p className="text-xs text-muted-foreground">Rating</p>
-              </div>
-              <p className="text-3xl font-bold text-foreground">4.9 ⭐</p>
-            </motion.div>
+        {/* Big Number */}
+        <div className="mb-6">
+          <p className="text-sm text-muted-foreground mb-2">This Month</p>
+          <p className="text-5xl font-bold text-foreground mb-2">
+            ${monthlyEarnings.current.toLocaleString()}
+          </p>
+          <div className="flex items-center gap-2 text-teal-400">
+            <TrendingUp className="h-5 w-5" />
+            <span className="text-lg font-bold">+{monthlyEarnings.growth}% from last month</span>
           </div>
         </div>
-      </motion.div>
 
-      {/* Achievement Unlocked */}
-      <motion.div
-        initial={{ opacity: 0, scale: 0.95 }}
-        animate={{ opacity: 1, scale: 1 }}
-        transition={{ delay: 0.1 }}
-        className="bg-gradient-to-r from-amber-500/20 via-orange-500/20 to-red-500/20 backdrop-blur-sm rounded-2xl border-2 border-amber-500/40 p-6 text-center relative overflow-hidden"
-      >
-        <motion.div
-          animate={{ rotate: 360 }}
-          transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
-          className="absolute inset-0 bg-gradient-to-r from-amber-500/10 via-orange-500/10 to-red-500/10"
-        />
-        <div className="relative z-10">
-          <motion.div
-            animate={{ 
-              y: [0, -10, 0],
-              rotate: [0, 10, -10, 0]
-            }}
-            transition={{ duration: 2, repeat: Infinity }}
-          >
-            <Award className="h-16 w-16 text-amber-400 mx-auto mb-4" />
-          </motion.div>
-          <div className="inline-block px-4 py-1 rounded-full bg-amber-500/20 border border-amber-500/40 mb-3">
-            <span className="text-xs font-bold text-amber-400">Achievement Unlocked</span>
+        {/* Progress to Goal */}
+        <div className="mb-6">
+          <div className="flex items-center justify-between mb-3">
+            <div className="flex items-center gap-2">
+              <Target className="h-5 w-5 text-teal-400" />
+              <span className="text-sm font-medium text-muted-foreground">Monthly Goal Progress</span>
+            </div>
+            <span className="text-sm font-bold text-teal-400">
+              ${monthlyEarnings.goal.toLocaleString()}
+            </span>
           </div>
-          <h3 className="text-2xl font-bold bg-gradient-to-r from-amber-400 via-orange-400 to-red-400 bg-clip-text text-transparent mb-2">
-            Impact Maker
-          </h3>
-          <p className="text-muted-foreground">
-            Helped 25+ clients this month
+          <Progress value={goalProgress} className="h-4" />
+          <p className="text-sm text-muted-foreground mt-2">
+            {Math.round(goalProgress)}% complete
           </p>
+        </div>
+
+        {/* Stats Grid */}
+        <div className="grid grid-cols-3 gap-4">
+          <motion.div 
+            whileHover={{ scale: 1.02 }}
+            className="bg-background/60 backdrop-blur-sm rounded-xl p-4 border border-border/40"
+          >
+            <div className="flex items-center gap-2 mb-2">
+              <Zap className="h-5 w-5 text-amber-400" />
+              <p className="text-xs text-muted-foreground">Sessions</p>
+            </div>
+            <p className="text-3xl font-bold text-foreground">27</p>
+          </motion.div>
+
+          <motion.div 
+            whileHover={{ scale: 1.02 }}
+            className="bg-background/60 backdrop-blur-sm rounded-xl p-4 border border-border/40"
+          >
+            <div className="flex items-center gap-2 mb-2">
+              <DollarSign className="h-5 w-5 text-teal-400" />
+              <p className="text-xs text-muted-foreground">Avg/Session</p>
+            </div>
+            <p className="text-3xl font-bold text-foreground">$120</p>
+          </motion.div>
+
+          <motion.div 
+            whileHover={{ scale: 1.02 }}
+            className="bg-background/60 backdrop-blur-sm rounded-xl p-4 border border-border/40"
+          >
+            <div className="flex items-center gap-2 mb-2">
+              <Award className="h-5 w-5 text-amber-400" />
+              <p className="text-xs text-muted-foreground">Rating</p>
+            </div>
+            <p className="text-3xl font-bold text-foreground">4.9 ⭐</p>
+          </motion.div>
         </div>
       </motion.div>
 
@@ -186,12 +126,9 @@ const CoachEarningsTab = () => {
                 <p className="text-sm text-muted-foreground">{session.type}</p>
               </div>
               <div className="text-right">
-                <motion.p 
-                  whileHover={{ scale: 1.1 }}
-                  className="font-bold text-emerald-400 text-xl"
-                >
+                <p className="font-bold text-teal-400 text-xl">
                   ${session.amount}
-                </motion.p>
+                </p>
                 <p className="text-sm text-muted-foreground">{session.date}</p>
               </div>
             </motion.div>

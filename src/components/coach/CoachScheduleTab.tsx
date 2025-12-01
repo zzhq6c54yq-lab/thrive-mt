@@ -93,16 +93,7 @@ const CoachScheduleTab = () => {
                 className="relative pl-16"
               >
                 {/* Timeline dot */}
-                <motion.div
-                  animate={{ 
-                    scale: hang.status === 'soon' ? [1, 1.3, 1] : 1,
-                    boxShadow: hang.status === 'soon' 
-                      ? ['0 0 0px rgba(59, 130, 246, 0.5)', '0 0 20px rgba(59, 130, 246, 0.8)', '0 0 0px rgba(59, 130, 246, 0.5)']
-                      : '0 0 0px rgba(59, 130, 246, 0.3)'
-                  }}
-                  transition={{ duration: 2, repeat: Infinity }}
-                  className={`absolute left-6 top-6 h-5 w-5 rounded-full bg-gradient-to-br ${hang.color} border-4 border-background z-10`}
-                />
+                <div className={`absolute left-6 top-6 h-5 w-5 rounded-full bg-gradient-to-br ${hang.color} border-4 border-background z-10`} />
 
                 <motion.div
                   whileHover={{ x: 5, scale: 1.02 }}
@@ -114,26 +105,18 @@ const CoachScheduleTab = () => {
                 >
                   <div className="flex items-start justify-between gap-4">
                     <div className="flex items-start gap-4 flex-1">
-                      <motion.div
-                        whileHover={{ rotate: [0, -5, 5, -5, 0] }}
-                        transition={{ duration: 0.5 }}
-                        className={`h-16 w-16 rounded-2xl bg-gradient-to-br ${hang.color} flex items-center justify-center text-white font-bold text-xl shadow-lg flex-shrink-0`}
-                      >
+                      <div className={`h-16 w-16 rounded-2xl bg-gradient-to-br ${hang.color} flex items-center justify-center text-white font-bold text-xl shadow-lg flex-shrink-0`}>
                         {hang.avatar}
-                      </motion.div>
+                      </div>
                       <div className="flex-1 min-w-0">
                         <div className="flex items-center gap-2 mb-2">
                           <h4 className="font-bold text-foreground text-lg">
                             {hang.member}
                           </h4>
                           {hang.status === 'soon' && (
-                            <motion.span
-                              animate={{ scale: [1, 1.1, 1] }}
-                              transition={{ duration: 1, repeat: Infinity }}
-                              className="px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-400 text-xs font-bold border border-emerald-500/30"
-                            >
-                              🟢 SOON
-                            </motion.span>
+                            <span className="px-2 py-0.5 rounded-full bg-teal-500/20 text-teal-400 text-xs font-bold border border-teal-500/30">
+                              Soon
+                            </span>
                           )}
                         </div>
                         <p className="text-muted-foreground mb-3">{hang.topic}</p>
@@ -191,9 +174,9 @@ const CoachScheduleTab = () => {
               <p className="text-sm text-muted-foreground">5:00 PM - 7:00 PM today</p>
             </div>
             <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
-              <Button className="bg-gradient-to-r from-emerald-500 to-cyan-500 hover:from-emerald-600 hover:to-cyan-600 text-white">
+              <Button className="bg-gradient-to-r from-teal-500 to-blue-500 hover:from-teal-600 hover:to-blue-600 text-white">
                 <Plus className="h-4 w-4 mr-2" />
-                Add hang
+                Add Session
               </Button>
             </motion.div>
           </div>

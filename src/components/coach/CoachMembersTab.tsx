@@ -14,7 +14,6 @@ const CoachMembersTab = () => {
       status: "Highly Engaged",
       statusColor: "from-teal-500 to-cyan-500",
       statusBg: "from-teal-500/20 to-cyan-500/20",
-      mood: "🔥",
       avatar: "SM"
     },
     {
@@ -25,7 +24,6 @@ const CoachMembersTab = () => {
       status: "Making Progress",
       statusColor: "from-emerald-500 to-cyan-500",
       statusBg: "from-emerald-500/20 to-cyan-500/20",
-      mood: "📈",
       avatar: "JK"
     },
     {
@@ -36,7 +34,6 @@ const CoachMembersTab = () => {
       status: "Thriving",
       statusColor: "from-purple-500 to-pink-500",
       statusBg: "from-purple-500/20 to-pink-500/20",
-      mood: "💚",
       avatar: "LT"
     },
     {
@@ -47,7 +44,6 @@ const CoachMembersTab = () => {
       status: "Thriving",
       statusColor: "from-amber-500 to-yellow-500",
       statusBg: "from-amber-500/20 to-yellow-500/20",
-      mood: "🎯",
       avatar: "AP"
     },
   ];
@@ -65,7 +61,7 @@ const CoachMembersTab = () => {
         <div className="relative flex-1">
           <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
           <Input 
-            placeholder="Search your squad..." 
+            placeholder="Search clients..." 
             className="pl-10 bg-background/60 border-border/40 focus:border-blue-500/40"
           />
         </div>
@@ -90,27 +86,20 @@ const CoachMembersTab = () => {
         </p>
       </motion.div>
 
-      {/* Member Spotlight */}
+      {/* Featured Client */}
       <motion.div
         initial={{ opacity: 0, scale: 0.95 }}
         animate={{ opacity: 1, scale: 1 }}
         transition={{ delay: 0.2 }}
-        className={`bg-gradient-to-br ${spotlightMember.statusBg} backdrop-blur-sm rounded-2xl border-2 border-orange-500/40 p-6 relative overflow-hidden`}
+        className="bg-gradient-to-br from-teal-500/10 to-blue-500/10 backdrop-blur-sm rounded-2xl border border-teal-500/40 p-6"
       >
-        <motion.div
-          animate={{ rotate: 360 }}
-          transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
-          className="absolute top-0 right-0 w-64 h-64 bg-orange-500/20 rounded-full blur-3xl"
-        />
-        <div className="relative z-10">
-          <div className="flex items-center gap-2 mb-4">
-            <Star className="h-5 w-5 text-amber-400 fill-amber-400" />
-            <span className="text-sm font-bold text-amber-400">MEMBER SPOTLIGHT</span>
-          </div>
-            <p className="text-lg text-foreground">
-            <span className="font-bold text-blue-400">{spotlightMember.name}</span> just crushed their career transition interview! 🎉
-          </p>
+        <div className="flex items-center gap-2 mb-4">
+          <Star className="h-5 w-5 text-teal-400 fill-teal-400" />
+          <span className="text-sm font-semibold text-teal-400">Featured Client</span>
         </div>
+        <p className="text-lg text-foreground">
+          <span className="font-bold text-teal-400">{spotlightMember.name}</span> achieved their career transition interview milestone
+        </p>
       </motion.div>
 
       {/* Member Grid */}
@@ -127,25 +116,14 @@ const CoachMembersTab = () => {
             <div className="flex flex-col gap-4">
               <div className="flex items-start justify-between">
                 <div className="flex items-center gap-3">
-                  <motion.div
-                    whileHover={{ rotate: [0, -10, 10, -10, 0] }}
-                    transition={{ duration: 0.5 }}
-                    className={`h-16 w-16 rounded-2xl bg-gradient-to-br ${member.statusColor} flex items-center justify-center text-white font-bold text-xl shadow-lg`}
-                  >
+                  <div className={`h-16 w-16 rounded-2xl bg-gradient-to-br ${member.statusColor} flex items-center justify-center text-white font-bold text-xl shadow-lg`}>
                     {member.avatar}
-                  </motion.div>
+                  </div>
                   <div>
                     <h4 className="font-bold text-foreground text-lg">{member.name}</h4>
                     <p className="text-xs text-muted-foreground">Last: {member.lastSession}</p>
                   </div>
                 </div>
-                <motion.div 
-                  animate={{ rotate: [0, 10, -10, 0] }}
-                  transition={{ duration: 2, repeat: Infinity }}
-                  className="text-3xl"
-                >
-                  {member.mood}
-                </motion.div>
               </div>
 
               {/* Status Badge */}
