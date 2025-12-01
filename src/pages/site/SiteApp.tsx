@@ -158,7 +158,6 @@ const SiteApp = () => {
                       </div>
                       <div className="flex-1">
                         <h3 className="text-lg font-semibold mb-1 text-foreground">{addon.title}</h3>
-                        <p className="text-sm text-bronze-400 font-medium">${addon.basePrice}/month</p>
                       </div>
                     </div>
                     <p className="text-sm text-foreground/70 mb-3">{addon.description}</p>
@@ -183,50 +182,47 @@ const SiteApp = () => {
               What Else We Offer
             </h2>
             
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-              <Card className="bg-gradient-to-br from-purple-500/10 to-purple-600/5 border-purple-500/20 p-8">
-                <div className="p-4 rounded-full bg-purple-500/20 w-fit mb-6">
-                  <Video className="w-8 h-8 text-purple-400" />
+            <div className="flex flex-col gap-4">
+              <Card className="bg-gradient-to-r from-purple-500/10 to-purple-500/5 border-purple-500/20 p-6 flex flex-col md:flex-row items-center gap-6">
+                <div className="p-3 rounded-full bg-purple-500/20 flex-shrink-0">
+                  <Video className="w-6 h-6 text-purple-400" />
                 </div>
-                <h3 className="text-2xl font-bold mb-4 text-foreground">Professional Therapy</h3>
-                <p className="text-foreground/70 mb-6">
-                  Connect with licensed therapists for one-on-one video sessions. 
-                  Self-pay and insurance options available.
-                </p>
+                <div className="flex-1 text-center md:text-left">
+                  <h3 className="text-xl font-bold text-foreground mb-2">Professional Therapy</h3>
+                  <p className="text-sm text-foreground/70">Connect with licensed therapists for one-on-one video sessions. Self-pay and insurance options available.</p>
+                </div>
                 <Link to="/site/therapy">
-                  <Button variant="outline" className="border-purple-500/50 text-purple-400 hover:bg-purple-500/10">
+                  <Button variant="outline" className="border-purple-500/50 text-purple-400 hover:bg-purple-500/10 whitespace-nowrap">
                     Learn More
                   </Button>
                 </Link>
               </Card>
 
-              <Card className="bg-gradient-to-br from-teal-500/10 to-teal-600/5 border-teal-500/20 p-8">
-                <div className="p-4 rounded-full bg-teal-500/20 w-fit mb-6">
-                  <MessageCircle className="w-8 h-8 text-teal-400" />
+              <Card className="bg-gradient-to-r from-teal-500/10 to-teal-500/5 border-teal-500/20 p-6 flex flex-col md:flex-row items-center gap-6">
+                <div className="p-3 rounded-full bg-teal-500/20 flex-shrink-0">
+                  <MessageCircle className="w-6 h-6 text-teal-400" />
                 </div>
-                <h3 className="text-2xl font-bold mb-4 text-foreground">Mental Wellness Coaching</h3>
-                <p className="text-foreground/70 mb-6">
-                  Work with certified coaches on personal development, stress management, 
-                  and life transitions.
-                </p>
+                <div className="flex-1 text-center md:text-left">
+                  <h3 className="text-xl font-bold text-foreground mb-2">Mental Wellness Coaching</h3>
+                  <p className="text-sm text-foreground/70">Work with certified coaches on personal development, stress management, and life transitions.</p>
+                </div>
                 <Link to="/site/coaching">
-                  <Button variant="outline" className="border-teal-500/50 text-teal-400 hover:bg-teal-500/10">
+                  <Button variant="outline" className="border-teal-500/50 text-teal-400 hover:bg-teal-500/10 whitespace-nowrap">
                     Learn More
                   </Button>
                 </Link>
               </Card>
 
-              <Card className="bg-gradient-to-br from-bronze-500/10 to-bronze-600/5 border-bronze-500/20 p-8">
-                <div className="p-4 rounded-full bg-bronze-500/20 w-fit mb-6">
-                  <Sparkles className="w-8 h-8 text-bronze-400" />
+              <Card className="bg-gradient-to-r from-bronze-500/10 to-bronze-500/5 border-bronze-500/20 p-6 flex flex-col md:flex-row items-center gap-6">
+                <div className="p-3 rounded-full bg-bronze-500/20 flex-shrink-0">
+                  <Sparkles className="w-6 h-6 text-bronze-400" />
                 </div>
-                <h3 className="text-2xl font-bold mb-4 text-foreground">AI Companion "Henry"</h3>
-                <p className="text-foreground/70 mb-6">
-                  24/7 support from Henry, your trauma-informed AI companion for daily check-ins, 
-                  coping tools, and encouragement.
-                </p>
+                <div className="flex-1 text-center md:text-left">
+                  <h3 className="text-xl font-bold text-foreground mb-2">AI Companion "Henry"</h3>
+                  <p className="text-sm text-foreground/70">24/7 support from Henry, your trauma-informed AI companion for daily check-ins, coping tools, and encouragement.</p>
+                </div>
                 <Link to="/site/henry">
-                  <Button variant="outline" className="border-bronze-500/50 text-bronze-400 hover:bg-bronze-500/10">
+                  <Button variant="outline" className="border-bronze-500/50 text-bronze-400 hover:bg-bronze-500/10 whitespace-nowrap">
                     Meet Henry
                   </Button>
                 </Link>
@@ -249,41 +245,42 @@ const SiteApp = () => {
             </h2>
             <p className="text-center text-foreground/70 mb-12 text-lg">Flexible pricing that grows with your needs</p>
             
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-6xl mx-auto">
+            <div className="flex flex-col gap-4 max-w-5xl mx-auto">
               {pricingTiers.map((tier) => {
                 const IconComponent = tier.icon;
                 return (
                   <Card 
                     key={tier.name}
-                    className={`bg-card/50 backdrop-blur-sm border-border/50 p-8 relative hover:shadow-xl hover:shadow-bronze-500/20 transition-all duration-300 ${tier.recommended ? 'ring-2 ring-bronze-500' : ''}`}
+                    className={`bg-card/50 backdrop-blur-sm border-border/50 p-6 flex flex-col md:flex-row items-center gap-6 relative ${tier.recommended ? 'ring-2 ring-bronze-500' : ''}`}
                   >
                     {tier.recommended && (
-                      <div className="absolute -top-4 left-1/2 transform -translate-x-1/2">
-                        <span className="bg-gradient-to-r from-bronze-500 to-bronze-600 text-black text-xs font-bold px-4 py-1 rounded-full">
+                      <div className="absolute -top-3 left-6">
+                        <span className="bg-gradient-to-r from-bronze-500 to-bronze-600 text-black text-xs font-bold px-3 py-1 rounded-full">
                           RECOMMENDED
                         </span>
                       </div>
                     )}
                     
-                    <div className="text-center mb-6">
-                      <div className={`inline-block p-4 rounded-full bg-gradient-to-r ${tier.color} mb-4`}>
-                        <IconComponent className="w-8 h-8 text-white" />
+                    <div className="flex items-center gap-4 min-w-[200px]">
+                      <div className={`p-3 rounded-full bg-gradient-to-r ${tier.color} flex-shrink-0`}>
+                        <IconComponent className="w-6 h-6 text-white" />
                       </div>
-                      <h3 className="text-2xl font-bold mb-2 text-foreground">{tier.name}</h3>
-                      <p className="text-3xl font-bold text-bronze-400">{tier.price}</p>
+                      <div>
+                        <h3 className="text-xl font-bold text-foreground">{tier.name}</h3>
+                        <p className="text-2xl font-bold text-bronze-400">{tier.price}</p>
+                      </div>
                     </div>
                     
-                    <ul className="space-y-3 mb-8">
-                      {tier.features.map((feature, idx) => (
-                        <li key={idx} className="flex items-start gap-2">
-                          <Check className="w-5 h-5 text-green-400 flex-shrink-0 mt-0.5" />
-                          <span className="text-sm text-foreground/80">{feature}</span>
-                        </li>
+                    <div className="flex-1 flex flex-wrap gap-2">
+                      {tier.features.slice(0, 3).map((feature, idx) => (
+                        <span key={idx} className="text-xs bg-bronze-500/10 text-foreground/80 px-3 py-1 rounded-full">
+                          {feature}
+                        </span>
                       ))}
-                    </ul>
+                    </div>
                     
                     <Link to="/site/demo">
-                      <Button className={`w-full bg-gradient-to-r ${tier.color} text-white hover:opacity-90`}>
+                      <Button className={`bg-gradient-to-r ${tier.color} text-white hover:opacity-90 whitespace-nowrap`}>
                         Get Started
                       </Button>
                     </Link>

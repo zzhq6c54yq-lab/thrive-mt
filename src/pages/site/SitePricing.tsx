@@ -78,19 +78,19 @@ const SitePricing = () => {
             <h2 className="text-3xl font-bold mb-8 text-foreground">Popular Bundles</h2>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
               {bundles.hybrid.map((bundle, idx) => (
-                <Card key={idx} className={`bg-black border-[#D4AF37]/20 p-8 ${bundle.popular ? 'ring-2 ring-[#D4AF37]' : ''}`}>
+                <Card key={idx} className={`bg-black border-[#D4AF37]/20 p-6 ${bundle.popular ? 'ring-2 ring-[#D4AF37]' : ''}`}>
                   {bundle.popular && (
                     <div className="bg-bronze-500 text-black text-xs font-bold px-3 py-1 rounded-full inline-block mb-4">
                       MOST POPULAR
                     </div>
                   )}
-                  <h3 className="text-2xl font-bold text-foreground mb-2">{bundle.name}</h3>
+                  <h3 className="text-xl font-bold text-foreground mb-2 break-words">{bundle.name}</h3>
                   <p className="text-foreground/60 mb-4 text-sm">{bundle.description}</p>
-                  <div className="text-3xl font-bold text-bronze-400 mb-6">
+                  <div className="text-2xl font-bold text-bronze-400 mb-6">
                     ${bundle.price}{(bundle as any).period || ''}
                   </div>
                   <Link to="/">
-                    <Button className="w-full bg-bronze-500 hover:bg-bronze-600 text-black font-semibold">
+                    <Button className="w-full bg-bronze-500 hover:bg-bronze-600 text-black font-semibold whitespace-nowrap px-4">
                       Get Started
                     </Button>
                   </Link>

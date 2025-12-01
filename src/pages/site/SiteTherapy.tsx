@@ -102,9 +102,9 @@ const SiteTherapy = () => {
             }}>Our Specialties</h2>
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4 max-w-4xl mx-auto">
               {["Anxiety", "Depression", "Trauma", "Military/Veteran Care", "Family & Relationships", "BPD & DBT", "Holistic Therapy", "Mindfulness"].map((specialty, idx) => (
-                <Card key={idx} className="bg-black border-[#D4AF37]/20 p-4 text-center">
-                  <Check className="w-6 h-6 text-bronze-400 mx-auto mb-2" />
-                  <p className="text-foreground">{specialty}</p>
+                <Card key={idx} className="bg-black border-[#D4AF37]/20 p-4 text-center min-h-[80px] flex flex-col items-center justify-center">
+                  <Check className="w-6 h-6 text-bronze-400 mb-2" />
+                  <p className="text-foreground text-sm break-words px-1">{specialty}</p>
                 </Card>
               ))}
             </div>
