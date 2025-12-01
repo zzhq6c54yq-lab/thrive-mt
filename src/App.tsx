@@ -178,6 +178,7 @@ import SiteEntry from "@/pages/site/SiteEntry";
 import SiteLanding from "@/pages/site/SiteLanding";
 import SiteTherapy from "@/pages/site/SiteTherapy";
 import SiteCoaching from "@/pages/site/SiteCoaching";
+import SiteMeetHenry from "@/pages/site/SiteMeetHenry";
 import SitePricing from "@/pages/site/SitePricing";
 import SiteDemo from "@/pages/site/SiteDemo";
 import SiteCareers from "@/pages/site/SiteCareers";
@@ -202,6 +203,7 @@ function App() {
             <Route path="home" element={<SiteLanding />} />
             <Route path="therapy" element={<SiteTherapy />} />
             <Route path="coaching" element={<SiteCoaching />} />
+            <Route path="henry" element={<SiteMeetHenry />} />
             <Route path="pricing" element={<SitePricing />} />
             <Route path="demo" element={<SiteDemo />} />
             <Route path="careers" element={<SiteCareers />} />
