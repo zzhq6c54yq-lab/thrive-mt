@@ -1,5 +1,4 @@
 import { Link, useLocation } from "react-router-dom";
-import { motion } from "framer-motion";
 import { 
   Home, 
   Stethoscope, 
@@ -66,13 +65,15 @@ const SiteSidebar = ({ collapsed = false, isOpen = false, onClose }: SiteSidebar
   ];
 
   return (
-    <motion.aside
-      initial={{ x: -300 }}
-      animate={{ x: isOpen ? 0 : -300 }}
-      transition={{ type: "spring", stiffness: 100, damping: 20 }}
+    <aside
       className={cn(
         "fixed left-0 top-0 h-screen bg-black border-r border-[#D4A574]/30 z-40 overflow-y-auto",
-        "md:translate-x-0",  // Always visible on desktop
+        // Mobile: slide off-screen unless open
+        "-translate-x-full transition-transform duration-300 ease-out",
+        // Mobile: when open, slide in
+        isOpen && "translate-x-0",
+        // Tablet/Desktop: always visible
+        "md:translate-x-0",
         collapsed ? "w-20" : "w-64"
       )}
     >
@@ -111,8 +112,7 @@ const SiteSidebar = ({ collapsed = false, isOpen = false, onClose }: SiteSidebar
 
         {/* Home Link */}
         <Link to="/home">
-          <motion.div
-            whileHover={{ x: 5 }}
+          <div
             className={cn(
               "flex items-center gap-3 px-4 py-3 rounded-lg mb-6 transition-colors",
               location.pathname === "/home"
@@ -122,7 +122,7 @@ const SiteSidebar = ({ collapsed = false, isOpen = false, onClose }: SiteSidebar
           >
             <Home className="w-5 h-5" />
             {!collapsed && <span className="font-medium">Home</span>}
-          </motion.div>
+          </div>
         </Link>
 
         {/* Navigation Sections */}
@@ -136,8 +136,7 @@ const SiteSidebar = ({ collapsed = false, isOpen = false, onClose }: SiteSidebar
             <div className="space-y-1">
               {section.items.map((item) => (
                 <Link key={item.path} to={item.path}>
-                  <motion.div
-                    whileHover={{ x: 5 }}
+                  <div
                     className={cn(
                       "flex items-center gap-3 px-4 py-3 rounded-lg transition-colors",
                       location.pathname === item.path 
@@ -147,14 +146,14 @@ const SiteSidebar = ({ collapsed = false, isOpen = false, onClose }: SiteSidebar
                   >
                     <item.icon className="w-5 h-5" />
                     {!collapsed && <span className="font-medium">{item.label}</span>}
-                  </motion.div>
+                  </div>
                 </Link>
               ))}
             </div>
           </div>
         ))}
       </div>
-    </motion.aside>
+    </aside>
   );
 };
 

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { createPortal } from 'react-dom';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -47,35 +47,40 @@ export default function EpicDashboard({ demoMode = false }: EpicDashboardProps) 
     goals: ['stress_management', 'sleep_improvement', 'mindfulness']
   };
 
-  // Provide mock dashboard data for demo mode
-  const displayDashboardData = demoMode ? {
-    profile: displayProfile,
-    todaysPlan: [
-      { id: '1', slug: 'morning-meditation', title: 'Morning Meditation', description: 'Start your day mindfully', category: 'mindfulness', estimated_minutes: 10, icon_name: 'brain', route_path: '/app/meditation', points_reward: 50, order: 1, time_of_day: 'morning' },
-      { id: '2', slug: 'breathing-exercise', title: 'Breathing Exercise', description: 'Calm your nervous system', category: 'stress', estimated_minutes: 5, icon_name: 'wind', route_path: '/app/breathing', points_reward: 30, order: 2, time_of_day: 'afternoon' },
-      { id: '3', slug: 'evening-journal', title: 'Evening Reflection', description: 'Process your day', category: 'journaling', estimated_minutes: 10, icon_name: 'book', route_path: '/app/journal', points_reward: 40, order: 3, time_of_day: 'evening' }
-    ],
-    checkInStreak: 7,
-    recentCheckIns: [
-      { mood_score: 4, created_at: new Date().toISOString(), tags: ['motivated', 'calm'] }
-    ],
-    upcomingAppointments: [],
-    rewardsWallet: { current_points: 250, copay_credits_usd: 5, lifetime_earned: 500 },
-    latestInsight: { insight_text: "You've been consistent with your morning routines. Keep it up!", insight_type: 'encouragement' },
-    weeklyStats: {
-      challengesCompleted: 12,
-      latestAssessment: { score: 6, label: 'Mild' },
-      moodTrend: [
-        { date: 'Nov 25', score: 3 },
-        { date: 'Nov 26', score: 4 },
-        { date: 'Nov 27', score: 4 },
-        { date: 'Nov 28', score: 5 },
-        { date: 'Nov 29', score: 4 },
-        { date: 'Nov 30', score: 5 },
-        { date: 'Dec 01', score: 5 }
-      ]
+  // Provide mock dashboard data for demo mode - memoized to prevent useEffect reruns
+  const displayDashboardData = useMemo(() => {
+    if (demoMode) {
+      return {
+        profile: displayProfile,
+        todaysPlan: [
+          { id: '1', slug: 'morning-meditation', title: 'Morning Meditation', description: 'Start your day mindfully', category: 'mindfulness', estimated_minutes: 10, icon_name: 'brain', route_path: '/app/meditation', points_reward: 50, order: 1, time_of_day: 'morning' },
+          { id: '2', slug: 'breathing-exercise', title: 'Breathing Exercise', description: 'Calm your nervous system', category: 'stress', estimated_minutes: 5, icon_name: 'wind', route_path: '/app/breathing', points_reward: 30, order: 2, time_of_day: 'afternoon' },
+          { id: '3', slug: 'evening-journal', title: 'Evening Reflection', description: 'Process your day', category: 'journaling', estimated_minutes: 10, icon_name: 'book', route_path: '/app/journal', points_reward: 40, order: 3, time_of_day: 'evening' }
+        ],
+        checkInStreak: 7,
+        recentCheckIns: [
+          { mood_score: 4, created_at: new Date().toISOString(), tags: ['motivated', 'calm'] }
+        ],
+        upcomingAppointments: [],
+        rewardsWallet: { current_points: 250, copay_credits_usd: 5, lifetime_earned: 500 },
+        latestInsight: { insight_text: "You've been consistent with your morning routines. Keep it up!", insight_type: 'encouragement' },
+        weeklyStats: {
+          challengesCompleted: 12,
+          latestAssessment: { score: 6, label: 'Mild' },
+          moodTrend: [
+            { date: 'Nov 25', score: 3 },
+            { date: 'Nov 26', score: 4 },
+            { date: 'Nov 27', score: 4 },
+            { date: 'Nov 28', score: 5 },
+            { date: 'Nov 29', score: 4 },
+            { date: 'Nov 30', score: 5 },
+            { date: 'Dec 01', score: 5 }
+          ]
+        }
+      };
     }
-  } : dashboardData;
+    return dashboardData;
+  }, [demoMode, dashboardData, displayProfile]);
   
   const { state: dashboardState } = useDashboardState(displayDashboardData);
   const { lastCheckIn } = useLastSeen();
@@ -114,7 +119,7 @@ export default function EpicDashboard({ demoMode = false }: EpicDashboardProps) 
         );
       }
     }
-  }, [loading, displayDashboardData]);
+  }, [loading, !!displayDashboardData]);
 
   // Enhanced opening ritual effect
   useEffect(() => {
@@ -150,7 +155,7 @@ export default function EpicDashboard({ demoMode = false }: EpicDashboardProps) 
         clearTimeout(hideTimer);
       };
     }
-  }, [loading, displayDashboardData, showOpeningRitual]);
+  }, [loading, !!displayDashboardData, showOpeningRitual]);
 
   // Time-based greeting helper
   const getTimeBasedGreeting = () => {
