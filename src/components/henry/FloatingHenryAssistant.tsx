@@ -16,6 +16,7 @@ const FloatingHenryAssistant: React.FC<FloatingHenryAssistantProps> = ({ classNa
   // Don't show on auth/onboarding/marketing site pages
   if (location.pathname === '/app/auth' || 
       location.pathname === '/app/onboarding' || 
+      location.pathname === '/app' ||
       location.pathname === '/' || 
       location.pathname === '/app/auth/confirm' ||
       !location.pathname.startsWith('/app')) {

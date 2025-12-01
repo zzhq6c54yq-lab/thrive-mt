@@ -11,7 +11,7 @@ import {
   Users,
   Zap
 } from "lucide-react";
-import henryOutlinedLogo from "@/assets/henry-outlined-logo.png";
+import thriveOutlineLogo from "@/assets/thrivemt-outline-logo.png";
 
 const SiteMeetHenry = () => {
   const features = [
@@ -78,7 +78,7 @@ const SiteMeetHenry = () => {
             className="mb-8"
           >
             <img 
-              src={henryOutlinedLogo} 
+              src={thriveOutlineLogo} 
               alt="Henry AI" 
               className="w-32 h-32 mx-auto mb-6"
             />

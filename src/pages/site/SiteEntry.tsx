@@ -12,9 +12,9 @@ const SiteEntry = () => {
   useEffect(() => {
     const timers = [
       setTimeout(() => setStage(1), 500),    // ThriveMT text fades in
-      setTimeout(() => setStage(2), 6000),   // Logo fades in
-      setTimeout(() => setStage(3), 11000),  // "Build the Best You" fades in
-      setTimeout(() => setStage(4), 15000),  // Button appears with light sweep
+      setTimeout(() => setStage(2), 3000),   // Logo fades in
+      setTimeout(() => setStage(3), 5500),   // "Build the Best You" fades in
+      setTimeout(() => setStage(4), 8000),   // Button appears with light sweep
     ];
     
     return () => timers.forEach(clearTimeout);
