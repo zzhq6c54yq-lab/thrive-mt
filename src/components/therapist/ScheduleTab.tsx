@@ -88,7 +88,7 @@ export default function ScheduleTab({ appointments }: ScheduleTabProps) {
                 <Button 
                   variant="outline" 
                   size="sm"
-                  onClick={() => navigate(`/therapist-dashboard?tab=clients`)}
+                  onClick={() => navigate(`/app/therapist-dashboard?tab=clients`)}
                   className="border-[#D4AF37]/40 hover:border-[#D4AF37]/60 hover:bg-[#D4AF37]/10"
                 >
                   <MessageSquare className="h-4 w-4 mr-1.5" />

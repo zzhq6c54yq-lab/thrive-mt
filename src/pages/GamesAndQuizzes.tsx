@@ -148,7 +148,7 @@ const GamesAndQuizzes = () => {
     
     // Navigate to the quiz assessment page
     setTimeout(() => {
-      navigate(`/mental-wellness/assessments/${quiz.id}`, { 
+      navigate(`/app/mental-wellness/assessments/${quiz.id}`, { 
         state: { 
           quizId: quiz.id, 
           quizTitle: quiz.title,
@@ -247,7 +247,7 @@ const GamesAndQuizzes = () => {
             <Button 
               variant="link" 
               className="text-white hover:text-[#9b87f5] transition-colors p-0 flex items-center"
-              onClick={() => navigate("/home")}
+              onClick={() => navigate("/app/home")}
             >
               <ArrowLeft className="mr-2 h-4 w-4" />
               Back to Home

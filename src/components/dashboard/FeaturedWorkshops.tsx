@@ -36,7 +36,7 @@ const FeaturedWorkshops: React.FC<FeaturedWorkshopsProps> = ({ navigate, onWorks
   };
 
   const handleViewAllWorkshops = () => {
-    navigate("/workshops");
+    navigate("/app/workshops");
   };
 
   return (

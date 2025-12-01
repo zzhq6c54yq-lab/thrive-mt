@@ -172,7 +172,7 @@ export default function YourDaySection({ dashboardData, onCheckInComplete }: You
             <button
               onClick={() => {
                 trackClick({ component: 'real-time-therapy-cta' });
-                navigate('/real-time-therapy');
+                navigate('/app/real-time-therapy');
               }}
               className="w-full h-16 bg-gradient-to-r from-[#D4AF37] via-[#E5C5A1] to-[#D4AF37] hover:from-[#B8941F] hover:via-[#D4AF37] hover:to-[#B8941F] text-black font-bold text-lg rounded-xl shadow-2xl hover:shadow-[#D4AF37]/50 transition-all duration-300 transform hover:scale-[1.02] relative overflow-hidden group"
             >
@@ -379,7 +379,7 @@ export default function YourDaySection({ dashboardData, onCheckInComplete }: You
           <Button
             onClick={() => {
               trackClick({ component: 'view-all-assessments' });
-              navigate('/mental-wellness/assessments');
+              navigate('/app/mental-wellness/assessments');
             }}
             variant="outline"
             className="border-[#D4AF37]/30 text-[#D4AF37] hover:bg-[#D4AF37]/10"
@@ -400,7 +400,7 @@ export default function YourDaySection({ dashboardData, onCheckInComplete }: You
               whileHover={{ scale: 1.02 }}
               onClick={() => {
                 trackClick({ component: `assessment-${assessment.id}` });
-                navigate(`/mental-wellness/assessment/${assessment.id}`);
+                navigate(`/app/mental-wellness/assessment/${assessment.id}`);
               }}
               className={`cursor-pointer bg-gradient-to-br ${assessment.color} border border-white/10 rounded-lg p-4 backdrop-blur-sm hover:border-[#D4AF37]/50 transition-all`}
             >

@@ -87,7 +87,7 @@ const GoldenYearsJournal: React.FC = () => {
   
   // Handle navigation back to portal
   const handleBack = () => {
-    navigate("/golden-years-portal", { 
+    navigate("/app/golden-years-portal", { 
       state: { 
         stayInPortal: true,
         preventTutorial: true

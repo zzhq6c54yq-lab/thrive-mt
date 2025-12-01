@@ -17,7 +17,7 @@ const AdminHeader: React.FC = () => {
     localStorage.removeItem('admin_session_expires');
     await supabase.auth.signOut();
     toast.success('Logged out successfully');
-    navigate('/');
+    navigate('/app/auth');
   };
 
   return (

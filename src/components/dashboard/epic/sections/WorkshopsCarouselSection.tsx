@@ -25,7 +25,7 @@ const WorkshopsCarouselSection: React.FC<WorkshopsCarouselSectionProps> = ({ tra
 
   const handleWorkshopClick = (workshopId: string, workshopTitle: string) => {
     trackClick?.('workshops-carousel', { workshopId, workshopTitle });
-    navigate(`/ai-workshop-studio?selected=${workshopId}`);
+    navigate(`/app/ai-workshop-studio?selected=${workshopId}`);
   };
 
   return (

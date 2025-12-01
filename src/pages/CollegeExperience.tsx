@@ -368,12 +368,12 @@ const CollegeExperience: React.FC = () => {
                                 </div>
                               </div>
                               <div className="mt-4 md:mt-0">
-                                <Button 
-                                  className="bg-[#D946EF] hover:bg-[#D946EF]/80 text-white font-medium shadow-md transition-all duration-300 group"
-                                  onClick={() => navigate("/workshops")}
-                                >
-                                  <span>Join Workshop</span>
-                                  <Play className="ml-1 h-4 w-4 group-hover:scale-110 transition-transform" />
+                <Button 
+                  className="bg-[#D946EF] hover:bg-[#D946EF]/80 text-white font-medium shadow-md transition-all duration-300 group"
+                  onClick={() => navigate("/app/workshops")}
+                >
+                  <span>Join Workshop</span>
+                  <Play className="ml-1 h-4 w-4 group-hover:scale-110 transition-transform" />
                                 </Button>
                                 <div className="text-xs text-[#D6BCFA] mt-1 text-center">
                                   {typeof workshop.spots === 'number' ? `${workshop.spots} spots left` : workshop.spots}
@@ -386,7 +386,7 @@ const CollegeExperience: React.FC = () => {
                       
                       <Button 
                         className="mt-6 w-full bg-gradient-to-r from-[#D946EF]/80 to-[#8B5CF6]/80 hover:from-[#D946EF] hover:to-[#8B5CF6] text-white font-medium shadow-md transition-all duration-300 border-none"
-                        onClick={() => navigate("/workshops")}
+                        onClick={() => navigate("/app/workshops")}
                       >
                         <span>View All Workshops</span>
                         <CalendarDays className="ml-2 h-4 w-4" />
@@ -547,7 +547,7 @@ const CollegeExperience: React.FC = () => {
             <Button 
               variant="outline" 
               className="border-[#8B5CF6]/40 bg-[#1A1F2C]/50 hover:bg-[#8B5CF6]/30 h-auto py-4 flex flex-col gap-2 text-white transition-all duration-300 hover:scale-105"
-              onClick={() => navigate("/mental-wellness-tools")}
+              onClick={() => navigate("/app/mental-wellness-tools")}
             >
               <GraduationCap className="h-5 w-5" />
               <span>Academic Support</span>
@@ -557,7 +557,7 @@ const CollegeExperience: React.FC = () => {
             <Button 
               variant="outline" 
               className="border-[#D946EF]/40 bg-[#1A1F2C]/50 hover:bg-[#D946EF]/30 h-auto py-4 flex flex-col gap-2 text-white transition-all duration-300 hover:scale-105"
-              onClick={() => navigate("/community-support")}
+              onClick={() => navigate("/app/community-support")}
             >
               <HeartHandshake className="h-5 w-5" />
               <span>Peer Counseling</span>

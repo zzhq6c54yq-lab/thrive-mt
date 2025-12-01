@@ -105,7 +105,7 @@ const ProgressReports: React.FC = () => {
 
   const handleGoBack = () => {
     if (location.state && location.state.fromMainMenu) {
-      navigate('/home');
+      navigate('/app/home');
     } else {
       navigate(-1);
     }

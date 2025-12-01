@@ -73,11 +73,11 @@ const AlternativeTherapyDetail = () => {
       duration: 2000,
     });
     
-    navigate(`/guided-practice/${therapyId}`, {
+    navigate(`/app/guided-practice/${therapyId}`, {
       state: { 
         therapyId,
         therapyName: therapy?.name,
-        returnPath: `/alternative-therapies/detail/${therapyId}`
+        returnPath: `/app/alternative-therapies/detail/${therapyId}`
       }
     });
   };
