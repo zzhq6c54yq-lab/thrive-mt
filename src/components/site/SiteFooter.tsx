@@ -39,22 +39,22 @@ const SiteFooter = () => {
             <h4 className="font-semibold text-white mb-4">Services</h4>
             <ul className="space-y-2 text-sm">
               <li>
-                <Link to="/site/therapy" className="text-white/60 hover:text-[#D4A574] transition-colors">
+                <Link to="/therapy" className="text-white/60 hover:text-[#D4A574] transition-colors">
                   Therapy
                 </Link>
               </li>
               <li>
-                <Link to="/site/coaching" className="text-white/60 hover:text-[#D4A574] transition-colors">
+                <Link to="/coaching" className="text-white/60 hover:text-[#D4A574] transition-colors">
                   Coaching
                 </Link>
               </li>
               <li>
-                <Link to="/site/pricing" className="text-white/60 hover:text-[#D4A574] transition-colors">
+                <Link to="/pricing" className="text-white/60 hover:text-[#D4A574] transition-colors">
                   Pricing
                 </Link>
               </li>
               <li>
-                <Link to="/site/demo" className="text-white/60 hover:text-[#D4A574] transition-colors">
+                <Link to="/demo" className="text-white/60 hover:text-[#D4A574] transition-colors">
                   Try Demo
                 </Link>
               </li>
@@ -65,22 +65,22 @@ const SiteFooter = () => {
             <h4 className="font-semibold text-white mb-4">Company</h4>
             <ul className="space-y-2 text-sm">
               <li>
-                <Link to="/site/about" className="text-white/60 hover:text-[#D4A574] transition-colors">
+                <Link to="/about" className="text-white/60 hover:text-[#D4A574] transition-colors">
                   About Us
                 </Link>
               </li>
               <li>
-                <Link to="/site/careers" className="text-white/60 hover:text-[#D4A574] transition-colors">
+                <Link to="/careers" className="text-white/60 hover:text-[#D4A574] transition-colors">
                   Careers
                 </Link>
               </li>
               <li>
-                <Link to="/site/investors" className="text-white/60 hover:text-[#D4A574] transition-colors">
+                <Link to="/investors" className="text-white/60 hover:text-[#D4A574] transition-colors">
                   Investors
                 </Link>
               </li>
               <li>
-                <Link to="/site/contact" className="text-white/60 hover:text-[#D4A574] transition-colors">
+                <Link to="/contact" className="text-white/60 hover:text-[#D4A574] transition-colors">
                   Contact
                 </Link>
               </li>

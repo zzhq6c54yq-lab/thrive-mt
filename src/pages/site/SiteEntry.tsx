@@ -76,7 +76,7 @@ const SiteEntry = () => {
         >
           <Button
             size="xl"
-            onClick={() => navigate("/site/home")}
+            onClick={() => navigate("/home")}
             className="relative overflow-hidden text-black font-bold text-xl px-20 py-8 rounded-lg"
             style={{
               background: 'linear-gradient(90deg, #B87333 0%, #D4A574 15%, #FFFFFF 40%, #FFFFFF 60%, #D4A574 85%, #B87333 100%)',

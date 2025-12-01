@@ -15,12 +15,12 @@ const SiteTherapy = () => {
         accentColor="lavender"
       >
         <div className="flex flex-col sm:flex-row gap-4 justify-center mt-6">
-          <Link to="/">
+          <Link to="/app">
             <Button size="lg" className="bg-gradient-to-r from-bronze-500 to-bronze-600 hover:from-bronze-600 hover:to-bronze-700 text-black font-semibold">
               Book Therapy
             </Button>
           </Link>
-          <Link to="/site/pricing">
+          <Link to="/pricing">
             <Button size="lg" variant="outline" className="border-bronze-500 text-bronze-400 hover:bg-bronze-500/10">
               View All Pricing
             </Button>

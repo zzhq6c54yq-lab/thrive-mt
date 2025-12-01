@@ -12,12 +12,12 @@ const Dashboard: React.FC = () => {
   useEffect(() => {
     if (!loading) {
       if (!user) {
-        navigate('/auth');
+        navigate('/app/auth');
       } else if (profile?.is_therapist) {
         // Redirect therapists to their dashboard, bypass onboarding
-        navigate('/therapist-dashboard');
+        navigate('/app/therapist-dashboard');
       } else if (profile && !profile.onboarding_completed) {
-        navigate('/onboarding');
+        navigate('/app/onboarding');
       }
     }
   }, [user, profile, loading, navigate]);

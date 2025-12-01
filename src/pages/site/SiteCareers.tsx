@@ -15,7 +15,7 @@ const SiteCareers = () => {
           <Button size="lg" className="bg-gradient-to-r from-bronze-500 to-bronze-600 hover:from-bronze-600 hover:to-bronze-700 text-black font-semibold">
             Apply Now
           </Button>
-          <Link to="/site/contact">
+          <Link to="/contact">
             <Button size="lg" variant="outline" className="border-bronze-500 text-bronze-400 hover:bg-bronze-500/10">
               Talk to Our Clinical Lead
             </Button>
@@ -115,7 +115,7 @@ const SiteCareers = () => {
             <Button size="lg" className="bg-gradient-to-r from-bronze-500 to-bronze-600 hover:from-bronze-600 hover:to-bronze-700 text-black font-semibold">
               Apply Now
             </Button>
-            <Link to="/site/contact">
+            <Link to="/contact">
               <Button size="lg" variant="outline" className="border-bronze-500 text-bronze-400 hover:bg-bronze-500/10">
                 Talk to Our Clinical Lead
               </Button>

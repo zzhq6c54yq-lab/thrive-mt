@@ -14,12 +14,12 @@ const SiteLanding = () => {
         subtitle="Accessible therapy, premium coaching, and AI-powered wellness tools — designed to help you feel better and grow stronger."
       >
         <div className="flex flex-col sm:flex-row gap-4 justify-center">
-          <Link to="/">
+          <Link to="/app">
             <Button size="lg" className="bg-gradient-to-r from-bronze-500 to-bronze-600 hover:from-bronze-600 hover:to-bronze-700 text-black font-semibold text-lg px-8">
               Get Started
             </Button>
           </Link>
-          <Link to="/site/demo">
+          <Link to="/demo">
             <Button size="lg" variant="outline" className="border-bronze-500 text-bronze-400 hover:bg-bronze-500/10 text-lg px-8">
               Try Live Demo
             </Button>
@@ -58,19 +58,19 @@ const SiteLanding = () => {
             Our Core Services
           </h2>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            <Link to="/site/therapy">
+            <Link to="/therapy">
               <Card className="bg-black border-[#D4AF37]/20 p-8 hover:border-[#D4AF37]/40 transition-all cursor-pointer">
                 <h3 className="text-2xl font-bold text-bronze-400 mb-4">Therapy</h3>
                 <p className="text-foreground/80">Licensed clinicians, insurance & self-pay options</p>
               </Card>
             </Link>
-            <Link to="/site/coaching">
+            <Link to="/coaching">
               <Card className="bg-[#141921] border-bronze-500/20 p-8 hover:border-bronze-500/40 transition-all cursor-pointer">
                 <h3 className="text-2xl font-bold text-bronze-400 mb-4">Wellness Coaching</h3>
                 <p className="text-foreground/80">Goal-focused support for growth and motivation</p>
               </Card>
             </Link>
-            <Link to="/site/demo">
+            <Link to="/demo">
               <Card className="bg-[#141921] border-bronze-500/20 p-8 hover:border-bronze-500/40 transition-all cursor-pointer">
                 <h3 className="text-2xl font-bold text-bronze-400 mb-4">AI Companion</h3>
                 <p className="text-foreground/80">24/7 AI-powered support and wellness tools</p>
@@ -100,7 +100,7 @@ const SiteLanding = () => {
                 <div className="text-3xl font-bold text-bronze-400 mb-4">
                   ${bundle.price}{(bundle as any).period || ''}
                 </div>
-                <Link to="/site/pricing">
+                <Link to="/pricing">
                   <Button className="w-full bg-bronze-500 hover:bg-bronze-600 text-black font-semibold">
                     Learn More
                   </Button>
@@ -118,7 +118,7 @@ const SiteLanding = () => {
           <p className="text-xl text-foreground/80 mb-8">
             Join thousands who are already thriving with modern mental health support
           </p>
-          <Link to="/">
+          <Link to="/app">
             <Button size="lg" className="bg-gradient-to-r from-bronze-500 to-bronze-600 hover:from-bronze-600 hover:to-bronze-700 text-black font-semibold text-lg px-12">
               Create Free Account
             </Button>

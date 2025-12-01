@@ -11,7 +11,7 @@ const Index = () => {
   // Redirect authenticated users with completed onboarding to dashboard
   useEffect(() => {
     if (!loading && user && profile?.onboarding_completed) {
-      navigate('/dashboard');
+      navigate('/app/dashboard');
     }
   }, [user, profile, loading, navigate]);
 

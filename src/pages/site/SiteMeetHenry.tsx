@@ -110,7 +110,7 @@ const SiteMeetHenry = () => {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.6 }}
           >
-            <Link to="/site/demo">
+            <Link to="/demo">
               <Button
                 size="lg"
                 className="bg-gradient-to-r from-[#B87333] to-[#8B5A2B] hover:from-[#CD8B4E] hover:to-[#A06628] text-black font-bold text-lg px-12 py-6"
@@ -186,7 +186,7 @@ const SiteMeetHenry = () => {
           </div>
 
           <div className="mt-12">
-            <Link to="/site/demo">
+            <Link to="/demo">
               <Button
                 size="lg"
                 className="bg-gradient-to-r from-[#B87333] to-[#8B5A2B] hover:from-[#CD8B4E] hover:to-[#A06628] text-black font-bold text-lg px-12 py-6"

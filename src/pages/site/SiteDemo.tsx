@@ -11,7 +11,7 @@ const SiteDemo = () => {
         title="Experience It Yourself"
         subtitle="No signup. No pressure. Just explore."
       >
-        <Link to="/?demo=true">
+        <Link to="/app?demo=true">
           <Button size="lg" className="bg-gradient-to-r from-bronze-500 to-bronze-600 hover:from-bronze-600 hover:to-bronze-700 text-black font-semibold text-lg px-12 mt-6">
             <PlayCircle className="w-6 h-6 mr-2" />
             Launch Interactive Demo
@@ -59,12 +59,12 @@ const SiteDemo = () => {
         {/* CTA */}
         <div className="text-center">
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Link to="/?demo=true">
+            <Link to="/app?demo=true">
               <Button size="lg" className="bg-gradient-to-r from-bronze-500 to-bronze-600 hover:from-bronze-600 hover:to-bronze-700 text-black font-semibold">
                 Try Demo Now
               </Button>
             </Link>
-            <Link to="/auth">
+            <Link to="/app/auth">
               <Button size="lg" variant="outline" className="border-bronze-500 text-bronze-400 hover:bg-bronze-500/10">
                 Create Free Account
               </Button>

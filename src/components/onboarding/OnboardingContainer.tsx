@@ -93,9 +93,9 @@ const OnboardingContainer: React.FC = () => {
     if (isOnboardingComplete || currentStep === 'completed') {
       // In demo mode, pass demoUser flag to dashboard
       if (demoMode) {
-        navigate('/dashboard', { state: { demoUser: true } });
+        navigate('/app/dashboard', { state: { demoUser: true } });
       } else {
-        navigate('/dashboard');
+        navigate('/app/dashboard');
       }
     }
   }, [isOnboardingComplete, currentStep, navigate, demoMode]);

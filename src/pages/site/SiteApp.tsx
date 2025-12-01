@@ -62,7 +62,7 @@ const SiteApp = () => {
         title="Discover ThriveMT"
         subtitle="The most comprehensive mental health platform designed to meet you where you are"
       >
-        <Link to="/site/demo">
+        <Link to="/demo">
           <Button size="lg" className="bg-gradient-to-r from-bronze-500 to-bronze-600 hover:from-bronze-600 hover:to-bronze-700 text-black font-semibold text-lg px-12 mt-6">
             Try Live Demo
           </Button>
@@ -191,7 +191,7 @@ const SiteApp = () => {
                   <h3 className="text-xl font-bold text-foreground mb-2">Professional Therapy</h3>
                   <p className="text-sm text-foreground/70">Connect with licensed therapists for one-on-one video sessions. Self-pay and insurance options available.</p>
                 </div>
-                <Link to="/site/therapy">
+                <Link to="/therapy">
                   <Button variant="outline" className="border-purple-500/50 text-purple-400 hover:bg-purple-500/10 whitespace-nowrap">
                     Learn More
                   </Button>
@@ -206,7 +206,7 @@ const SiteApp = () => {
                   <h3 className="text-xl font-bold text-foreground mb-2">Mental Wellness Coaching</h3>
                   <p className="text-sm text-foreground/70">Work with certified coaches on personal development, stress management, and life transitions.</p>
                 </div>
-                <Link to="/site/coaching">
+                <Link to="/coaching">
                   <Button variant="outline" className="border-teal-500/50 text-teal-400 hover:bg-teal-500/10 whitespace-nowrap">
                     Learn More
                   </Button>
@@ -221,7 +221,7 @@ const SiteApp = () => {
                   <h3 className="text-xl font-bold text-foreground mb-2">AI Companion "Henry"</h3>
                   <p className="text-sm text-foreground/70">24/7 support from Henry, your trauma-informed AI companion for daily check-ins, coping tools, and encouragement.</p>
                 </div>
-                <Link to="/site/henry">
+                <Link to="/henry">
                   <Button variant="outline" className="border-bronze-500/50 text-bronze-400 hover:bg-bronze-500/10 whitespace-nowrap">
                     Meet Henry
                   </Button>
@@ -279,7 +279,7 @@ const SiteApp = () => {
                       ))}
                     </div>
                     
-                    <Link to="/site/demo">
+                    <Link to="/demo">
                       <Button className={`bg-gradient-to-r ${tier.color} text-white hover:opacity-90 whitespace-nowrap`}>
                         Get Started
                       </Button>
@@ -294,12 +294,12 @@ const SiteApp = () => {
           <div className="text-center">
             <h3 className="text-3xl font-bold mb-6 text-foreground">Ready to start your journey?</h3>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Link to="/site/demo">
+              <Link to="/demo">
                 <Button size="lg" className="bg-gradient-to-r from-bronze-500 to-bronze-600 hover:from-bronze-600 hover:to-bronze-700 text-black font-semibold">
                   Try Live Demo
                 </Button>
               </Link>
-              <Link to="/auth">
+              <Link to="/app/auth">
                 <Button size="lg" variant="outline" className="border-bronze-500 text-bronze-400 hover:bg-bronze-500/10">
                   Create Free Account
                 </Button>

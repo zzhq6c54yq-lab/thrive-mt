@@ -28,36 +28,36 @@ const SiteSidebar = ({ collapsed = false }: SiteSidebarProps) => {
     {
       title: "SERVICES",
       items: [
-        { icon: Stethoscope, label: "Therapy", path: "/site/therapy" },
-        { icon: Heart, label: "Coaching", path: "/site/coaching" },
-        { icon: Play, label: "Meet Henry", path: "/site/henry" },
+        { icon: Stethoscope, label: "Therapy", path: "/therapy" },
+        { icon: Heart, label: "Coaching", path: "/coaching" },
+        { icon: Play, label: "Meet Henry", path: "/henry" },
       ]
     },
     {
       title: "PRICING",
       items: [
-        { icon: DollarSign, label: "Plans", path: "/site/pricing" },
+        { icon: DollarSign, label: "Plans", path: "/pricing" },
       ]
     },
     {
       title: "EXPLORE",
       items: [
-        { icon: Smartphone, label: "The App", path: "/site/app" },
-        { icon: Play, label: "Live Demo", path: "/site/demo" },
+        { icon: Smartphone, label: "The App", path: "/the-app" },
+        { icon: Play, label: "Live Demo", path: "/demo" },
       ]
     },
     {
       title: "COMPANY",
       items: [
-        { icon: Info, label: "About Us", path: "/site/about" },
-        { icon: Briefcase, label: "Careers", path: "/site/careers" },
-        { icon: TrendingUp, label: "Investors", path: "/site/investors" },
+        { icon: Info, label: "About Us", path: "/about" },
+        { icon: Briefcase, label: "Careers", path: "/careers" },
+        { icon: TrendingUp, label: "Investors", path: "/investors" },
       ]
     },
     {
       title: "CONNECT",
       items: [
-        { icon: Mail, label: "Contact", path: "/site/contact" },
+        { icon: Mail, label: "Contact", path: "/contact" },
       ]
     }
   ];
@@ -74,7 +74,7 @@ const SiteSidebar = ({ collapsed = false }: SiteSidebarProps) => {
     >
       <div className="p-6">
         {/* Logo */}
-        <Link to="/site/home" className="flex items-center gap-3 mb-8">
+        <Link to="/home" className="flex items-center gap-3 mb-8">
           <img 
             src={thriveOutlineLogoImage} 
             alt="ThriveMT" 
@@ -97,12 +97,12 @@ const SiteSidebar = ({ collapsed = false }: SiteSidebarProps) => {
         </Link>
 
         {/* Home Link */}
-        <Link to="/site/home">
+        <Link to="/home">
           <motion.div
             whileHover={{ x: 5 }}
             className={cn(
               "flex items-center gap-3 px-4 py-3 rounded-lg mb-6 transition-colors",
-              location.pathname === "/site/home" 
+              location.pathname === "/home"
                 ? "bg-[#D4A574]/10 text-[#D4A574]" 
                 : "text-white/70 hover:text-[#D4A574] hover:bg-[#D4A574]/5"
             )}

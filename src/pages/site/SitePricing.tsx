@@ -11,7 +11,7 @@ const SitePricing = () => {
         title="Invest in Your Wellbeing"
         subtitle="Premium care, transparent pricing, real results."
       >
-        <Link to="/">
+        <Link to="/app">
           <Button size="lg" className="bg-gradient-to-r from-bronze-500 to-bronze-600 hover:from-bronze-600 hover:to-bronze-700 text-black font-semibold mt-6">
             Get Started Today
           </Button>
@@ -89,11 +89,11 @@ const SitePricing = () => {
                   <div className="text-2xl font-bold text-bronze-400 mb-6">
                     ${bundle.price}{(bundle as any).period || ''}
                   </div>
-                  <Link to="/">
-                    <Button className="w-full bg-bronze-500 hover:bg-bronze-600 text-black font-semibold whitespace-nowrap px-4">
-                      Get Started
-                    </Button>
-                  </Link>
+                <Link to="/app">
+                  <Button className="w-full bg-bronze-500 hover:bg-bronze-600 text-black font-semibold whitespace-nowrap px-4">
+                    Get Started
+                  </Button>
+                </Link>
                 </Card>
               ))}
             </div>
