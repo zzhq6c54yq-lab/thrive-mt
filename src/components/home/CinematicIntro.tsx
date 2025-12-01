@@ -74,7 +74,7 @@ const CinematicIntro: React.FC<CinematicIntroProps> = ({ onContinue, onSkipToMai
       
       setShowAccessCodeDialog(false);
       setAccessCode("");
-      navigate("/therapist-dashboard");
+      navigate("/app/therapist-dashboard");
     } catch (error: any) {
       toast({
         title: "Let's try that together again",
