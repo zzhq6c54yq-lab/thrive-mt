@@ -62,7 +62,7 @@ const SiteEntry = () => {
             opacity: stage >= 2 ? 1 : 0,
           }}
           transition={{ duration: 0.5, ease: "easeOut" }}
-          className="relative w-[14rem] h-[14rem] md:w-[16rem] md:h-[16rem]"
+          className="relative w-[14rem] h-[14rem] md:w-[16rem] md:h-[16rem] logo-container"
         >
           <img 
             src={headLogo}
@@ -76,7 +76,7 @@ const SiteEntry = () => {
           initial={{ opacity: 0 }}
           animate={{ opacity: stage >= 3 ? 1 : 0 }}
           transition={{ duration: 1.2, ease: "easeOut" }}
-          className="text-6xl md:text-7xl font-bold text-center leading-tight"
+          className="text-6xl md:text-7xl font-bold text-center leading-tight whitespace-nowrap"
           style={{
             background: 'linear-gradient(135deg, #FFFFFF 0%, #E8D4C0 30%, #D4A574 60%, #B87333 100%)',
             WebkitBackgroundClip: 'text',
@@ -135,25 +135,40 @@ const SiteEntry = () => {
         }
 
         .logo-tracer {
-          animation: outline-tracer 4s ease-in-out infinite;
+          filter: drop-shadow(0 0 10px rgba(212, 165, 116, 0.3));
         }
 
-        @keyframes outline-tracer {
-          0% {
-            filter: drop-shadow(-20px 0 15px #B87333) drop-shadow(-20px 0 30px #B87333);
-          }
-          25% {
-            filter: drop-shadow(0 -20px 20px #D4A574) drop-shadow(0 -20px 40px #FFFFFF);
-          }
-          50% {
-            filter: drop-shadow(20px 0 20px #FFFFFF) drop-shadow(20px 0 40px #D4A574);
-          }
-          75% {
-            filter: drop-shadow(0 20px 20px #D4A574) drop-shadow(0 20px 40px #FFFFFF);
-          }
-          100% {
-            filter: drop-shadow(-20px 0 15px #B87333) drop-shadow(-20px 0 30px #B87333);
-          }
+        .logo-container::before {
+          content: '';
+          position: absolute;
+          width: 10px;
+          height: 10px;
+          background: #FFFFFF;
+          border-radius: 50%;
+          box-shadow: 0 0 10px #FFFFFF, 0 0 20px #FFFFFF, 0 0 30px #FFFFFF;
+          animation: trace-outline 8s linear infinite;
+          z-index: 10;
+        }
+
+        .logo-container::after {
+          content: '';
+          position: absolute;
+          width: 10px;
+          height: 10px;
+          background: #B87333;
+          border-radius: 50%;
+          box-shadow: 0 0 10px #B87333, 0 0 20px #D4A574, 0 0 30px #B87333;
+          animation: trace-outline 8s linear infinite;
+          animation-delay: -4s;
+          z-index: 10;
+        }
+
+        @keyframes trace-outline {
+          0% { top: 0%; left: 50%; transform: translate(-50%, -50%); }
+          25% { top: 50%; left: 100%; transform: translate(-50%, -50%); }
+          50% { top: 100%; left: 50%; transform: translate(-50%, -50%); }
+          75% { top: 50%; left: 0%; transform: translate(-50%, -50%); }
+          100% { top: 0%; left: 50%; transform: translate(-50%, -50%); }
         }
 
       `}</style>
