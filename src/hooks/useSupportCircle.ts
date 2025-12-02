@@ -6,63 +6,39 @@ export const useSupportCircle = (userId: string | undefined) => {
   const { toast } = useToast();
   const queryClient = useQueryClient();
 
-  const { data: circle, isLoading } = useQuery({
+  const { data: members, isLoading } = useQuery({
     queryKey: ["support-circle", userId],
     queryFn: async () => {
-      if (!userId) return null;
+      if (!userId) return [];
       
       const { data, error } = await supabase
-        .from("support_circles")
-        .select("*, members:support_circle_members(*)")
-        .eq("user_id", userId)
-        .single();
+        .from("support_circle_members")
+        .select("*")
+        .eq("user_id", userId);
 
-      if (error && error.code !== "PGRST116") throw error;
-      return data;
+      if (error) throw error;
+      return data || [];
     },
     enabled: !!userId,
   });
 
-  const createCircle = useMutation({
-    mutationFn: async (name?: string) => {
-      if (!userId) throw new Error("User not authenticated");
-
-      const { data, error } = await supabase
-        .from("support_circles")
-        .insert({
-          user_id: userId,
-          name: name || "My Support Circle",
-        })
-        .select()
-        .single();
-
-      if (error) throw error;
-      return data;
-    },
-    onSuccess: () => {
-      toast({
-        title: "Support Circle Created!",
-        description: "Start inviting your support network.",
-      });
-      queryClient.invalidateQueries({ queryKey: ["support-circle"] });
-    },
-  });
-
   const inviteMember = useMutation({
     mutationFn: async (member: {
-      email: string;
-      name: string;
+      member_email: string;
+      member_name: string;
       relationship: string;
-      permissions: any;
     }) => {
-      if (!circle) throw new Error("No circle found");
+      if (!userId) throw new Error("User not authenticated");
+
+      const invite_token = crypto.randomUUID();
 
       const { error } = await supabase
         .from("support_circle_members")
         .insert({
-          circle_id: circle.id,
+          user_id: userId,
           ...member,
-          invite_status: "pending",
+          invite_token,
+          status: "pending",
         });
 
       if (error) throw error;
@@ -76,12 +52,37 @@ export const useSupportCircle = (userId: string | undefined) => {
     },
   });
 
-  const updatePermissions = useMutation({
-    mutationFn: async ({ memberId, permissions }: { memberId: string; permissions: any }) => {
+  const removeMember = useMutation({
+    mutationFn: async (memberId: string) => {
       const { error } = await supabase
         .from("support_circle_members")
-        .update(permissions)
+        .delete()
         .eq("id", memberId);
+
+      if (error) throw error;
+    },
+    onSuccess: () => {
+      toast({
+        title: "Member Removed",
+        description: "Support circle member has been removed.",
+      });
+      queryClient.invalidateQueries({ queryKey: ["support-circle"] });
+    },
+  });
+
+  const updatePermissions = useMutation({
+    mutationFn: async ({ memberId, permissionType, enabled }: { 
+      memberId: string; 
+      permissionType: string;
+      enabled: boolean;
+    }) => {
+      const { error } = await supabase
+        .from("support_circle_permissions")
+        .upsert({
+          member_id: memberId,
+          permission_type: permissionType,
+          enabled,
+        });
 
       if (error) throw error;
     },
@@ -95,10 +96,10 @@ export const useSupportCircle = (userId: string | undefined) => {
   });
 
   return {
-    circle,
+    members,
     isLoading,
-    createCircle,
     inviteMember,
+    removeMember,
     updatePermissions,
   };
 };

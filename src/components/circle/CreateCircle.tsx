@@ -1,25 +1,15 @@
-import { useState } from "react";
 import { Card } from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
-import { Label } from "@/components/ui/label";
-import { useSupportCircle } from "@/hooks/useSupportCircle";
+import { Users } from "lucide-react";
 
 const CreateCircle = ({ userId }: { userId?: string }) => {
-  const [name, setName] = useState("My Support Circle");
-  const { createCircle } = useSupportCircle(userId);
-
   return (
     <Card className="p-8 glass-card max-w-md mx-auto">
-      <h2 className="text-2xl font-bold gradient-heading mb-6">Create Your Support Circle</h2>
-      <div className="space-y-4">
-        <div>
-          <Label htmlFor="name">Circle Name</Label>
-          <Input id="name" value={name} onChange={(e) => setName(e.target.value)} className="mt-1" />
-        </div>
-        <Button onClick={() => createCircle.mutate(name)} className="w-full" disabled={createCircle.isPending}>
-          {createCircle.isPending ? "Creating..." : "Create Circle"}
-        </Button>
+      <div className="text-center space-y-4">
+        <Users className="w-16 h-16 mx-auto text-primary" />
+        <h2 className="text-2xl font-bold gradient-heading">Start Your Support Circle</h2>
+        <p className="text-muted-foreground">
+          Your support circle is ready! Invite family members and caregivers below to keep them connected to your journey.
+        </p>
       </div>
     </Card>
   );

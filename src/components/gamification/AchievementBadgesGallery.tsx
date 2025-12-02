@@ -33,14 +33,14 @@ export function AchievementBadgesGallery() {
 
   const categories = ["all", ...new Set(allBadges.map(b => b.category))];
 
-  const earnedBadgeIds = new Set(earnedBadges.map(eb => eb.badge_id));
+  const earnedBadgeKeys = new Set(earnedBadges.map(eb => eb.badge_key));
 
   const filteredBadges = selectedCategory === "all"
     ? allBadges
     : allBadges.filter(b => b.category === selectedCategory);
 
-  const earnedFiltered = filteredBadges.filter(b => earnedBadgeIds.has(b.id));
-  const lockedFiltered = filteredBadges.filter(b => !earnedBadgeIds.has(b.id));
+  const earnedFiltered = filteredBadges.filter(b => earnedBadgeKeys.has(b.badge_key));
+  const lockedFiltered = filteredBadges.filter(b => !earnedBadgeKeys.has(b.badge_key));
 
   return (
     <div className="space-y-6">
@@ -130,13 +130,20 @@ export function AchievementBadgesGallery() {
                   </h3>
                   <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4">
                     {earnedFiltered.map((badge, index) => {
-                      const earnedBadge = earnedBadges.find(eb => eb.badge_id === badge.id);
+                      const userBadge = earnedBadges.find(eb => eb.badge_key === badge.badge_key);
                       return (
                         <BadgeCard
                           key={badge.id}
-                          badge={badge}
+                          badge={{
+                            id: badge.id,
+                            name: badge.title,
+                            description: badge.description,
+                            icon_name: badge.icon_name,
+                            category: badge.category,
+                            points_value: badge.points_value,
+                          }}
                           earned={true}
-                          earnedAt={earnedBadge?.earned_at}
+                          earnedAt={userBadge?.earned_at}
                           index={index}
                         />
                       );
@@ -156,7 +163,14 @@ export function AchievementBadgesGallery() {
                     {lockedFiltered.map((badge, index) => (
                       <BadgeCard
                         key={badge.id}
-                        badge={badge}
+                        badge={{
+                          id: badge.id,
+                          name: badge.title,
+                          description: badge.description,
+                          icon_name: badge.icon_name,
+                          category: badge.category,
+                          points_value: badge.points_value,
+                        }}
                         earned={false}
                         index={index}
                       />

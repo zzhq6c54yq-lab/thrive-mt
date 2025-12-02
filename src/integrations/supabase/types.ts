@@ -14,6 +14,48 @@ export type Database = {
   }
   public: {
     Tables: {
+      achievement_badges: {
+        Row: {
+          badge_key: string
+          category: string
+          created_at: string | null
+          description: string
+          icon_name: string
+          id: string
+          points_value: number | null
+          requirement_type: string
+          requirement_value: number
+          tier: string | null
+          title: string
+        }
+        Insert: {
+          badge_key: string
+          category: string
+          created_at?: string | null
+          description: string
+          icon_name: string
+          id?: string
+          points_value?: number | null
+          requirement_type: string
+          requirement_value: number
+          tier?: string | null
+          title: string
+        }
+        Update: {
+          badge_key?: string
+          category?: string
+          created_at?: string | null
+          description?: string
+          icon_name?: string
+          id?: string
+          points_value?: number | null
+          requirement_type?: string
+          requirement_value?: number
+          tier?: string | null
+          title?: string
+        }
+        Relationships: []
+      }
       activities_catalog: {
         Row: {
           category: string
@@ -2514,37 +2556,37 @@ export type Database = {
       }
       life_transition_programs: {
         Row: {
-          content: Json | null
+          category: string
+          cover_image_url: string | null
           created_at: string | null
-          description: string | null
-          duration_weeks: number | null
-          icon_name: string | null
+          description: string
+          duration_weeks: number
           id: string
-          name: string
-          resources: Json | null
           slug: string
+          title: string
+          weekly_content: Json
         }
         Insert: {
-          content?: Json | null
+          category: string
+          cover_image_url?: string | null
           created_at?: string | null
-          description?: string | null
-          duration_weeks?: number | null
-          icon_name?: string | null
+          description: string
+          duration_weeks: number
           id?: string
-          name: string
-          resources?: Json | null
           slug: string
+          title: string
+          weekly_content: Json
         }
         Update: {
-          content?: Json | null
+          category?: string
+          cover_image_url?: string | null
           created_at?: string | null
-          description?: string | null
-          duration_weeks?: number | null
-          icon_name?: string | null
+          description?: string
+          duration_weeks?: number
           id?: string
-          name?: string
-          resources?: Json | null
           slug?: string
+          title?: string
+          weekly_content?: Json
         }
         Relationships: []
       }
@@ -3584,6 +3626,39 @@ export type Database = {
         }
         Relationships: []
       }
+      sms_check_ins: {
+        Row: {
+          created_at: string | null
+          id: string
+          mood_score: number | null
+          parsed_sentiment: string | null
+          responded_at: string | null
+          response_text: string | null
+          sent_at: string | null
+          user_id: string
+        }
+        Insert: {
+          created_at?: string | null
+          id?: string
+          mood_score?: number | null
+          parsed_sentiment?: string | null
+          responded_at?: string | null
+          response_text?: string | null
+          sent_at?: string | null
+          user_id: string
+        }
+        Update: {
+          created_at?: string | null
+          id?: string
+          mood_score?: number | null
+          parsed_sentiment?: string | null
+          responded_at?: string | null
+          response_text?: string | null
+          sent_at?: string | null
+          user_id?: string
+        }
+        Relationships: []
+      }
       sms_checkin_responses: {
         Row: {
           id: string
@@ -3621,6 +3696,42 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      sms_preferences: {
+        Row: {
+          created_at: string | null
+          enabled: boolean | null
+          frequency: string | null
+          id: string
+          phone_number: string | null
+          preferred_time: string | null
+          timezone: string | null
+          updated_at: string | null
+          user_id: string
+        }
+        Insert: {
+          created_at?: string | null
+          enabled?: boolean | null
+          frequency?: string | null
+          id?: string
+          phone_number?: string | null
+          preferred_time?: string | null
+          timezone?: string | null
+          updated_at?: string | null
+          user_id: string
+        }
+        Update: {
+          created_at?: string | null
+          enabled?: boolean | null
+          frequency?: string | null
+          id?: string
+          phone_number?: string | null
+          preferred_time?: string | null
+          timezone?: string | null
+          updated_at?: string | null
+          user_id?: string
+        }
+        Relationships: []
       }
       sms_subscriptions: {
         Row: {
@@ -3800,52 +3911,70 @@ export type Database = {
       support_circle_members: {
         Row: {
           accepted_at: string | null
-          can_view_appointments: boolean | null
-          can_view_mood: boolean | null
-          can_view_progress: boolean | null
-          circle_id: string
-          email: string
-          emergency_contact: boolean | null
+          created_at: string | null
           id: string
-          invite_status: string | null
+          invite_token: string | null
           invited_at: string | null
-          name: string | null
+          member_email: string
+          member_name: string
           relationship: string | null
+          status: string | null
+          user_id: string
         }
         Insert: {
           accepted_at?: string | null
-          can_view_appointments?: boolean | null
-          can_view_mood?: boolean | null
-          can_view_progress?: boolean | null
-          circle_id: string
-          email: string
-          emergency_contact?: boolean | null
+          created_at?: string | null
           id?: string
-          invite_status?: string | null
+          invite_token?: string | null
           invited_at?: string | null
-          name?: string | null
+          member_email: string
+          member_name: string
           relationship?: string | null
+          status?: string | null
+          user_id: string
         }
         Update: {
           accepted_at?: string | null
-          can_view_appointments?: boolean | null
-          can_view_mood?: boolean | null
-          can_view_progress?: boolean | null
-          circle_id?: string
-          email?: string
-          emergency_contact?: boolean | null
+          created_at?: string | null
           id?: string
-          invite_status?: string | null
+          invite_token?: string | null
           invited_at?: string | null
-          name?: string | null
+          member_email?: string
+          member_name?: string
           relationship?: string | null
+          status?: string | null
+          user_id?: string
+        }
+        Relationships: []
+      }
+      support_circle_permissions: {
+        Row: {
+          created_at: string | null
+          enabled: boolean | null
+          id: string
+          member_id: string
+          permission_type: string
+        }
+        Insert: {
+          created_at?: string | null
+          enabled?: boolean | null
+          id?: string
+          member_id: string
+          permission_type: string
+        }
+        Update: {
+          created_at?: string | null
+          enabled?: boolean | null
+          id?: string
+          member_id?: string
+          permission_type?: string
         }
         Relationships: [
           {
-            foreignKeyName: "support_circle_members_circle_id_fkey"
-            columns: ["circle_id"]
+            foreignKeyName: "support_circle_permissions_member_id_fkey"
+            columns: ["member_id"]
             isOneToOne: false
-            referencedRelation: "support_circles"
+            referencedRelation: "support_circle_members"
             referencedColumns: ["id"]
           },
         ]
@@ -4953,37 +5082,28 @@ export type Database = {
       }
       user_badges: {
         Row: {
-          category: string | null
-          created_at: string | null
-          description: string | null
-          icon_name: string | null
+          badge_key: string
+          completed: boolean | null
+          earned_at: string | null
           id: string
-          image_url: string | null
-          name: string
-          points_value: number | null
-          requirements: Json | null
+          progress: number | null
+          user_id: string
         }
         Insert: {
-          category?: string | null
-          created_at?: string | null
-          description?: string | null
-          icon_name?: string | null
+          badge_key: string
+          completed?: boolean | null
+          earned_at?: string | null
           id?: string
-          image_url?: string | null
-          name: string
-          points_value?: number | null
-          requirements?: Json | null
+          progress?: number | null
+          user_id: string
         }
         Update: {
-          category?: string | null
-          created_at?: string | null
-          description?: string | null
-          icon_name?: string | null
+          badge_key?: string
+          completed?: boolean | null
+          earned_at?: string | null
           id?: string
-          image_url?: string | null
-          name?: string
-          points_value?: number | null
-          requirements?: Json | null
+          progress?: number | null
+          user_id?: string
         }
         Relationships: []
       }
@@ -5054,15 +5174,7 @@ export type Database = {
           metadata?: Json | null
           user_id?: string
         }
-        Relationships: [
-          {
-            foreignKeyName: "user_earned_badges_badge_id_fkey"
-            columns: ["badge_id"]
-            isOneToOne: false
-            referencedRelation: "user_badges"
-            referencedColumns: ["id"]
-          },
-        ]
+        Relationships: []
       }
       user_goals: {
         Row: {
@@ -5292,9 +5404,45 @@ export type Database = {
           progress?: Json | null
           user_id?: string
         }
+        Relationships: []
+      }
+      user_transition_progress: {
+        Row: {
+          completed_at: string | null
+          created_at: string | null
+          current_week: number | null
+          id: string
+          notes: Json | null
+          program_id: string
+          started_at: string | null
+          updated_at: string | null
+          user_id: string
+        }
+        Insert: {
+          completed_at?: string | null
+          created_at?: string | null
+          current_week?: number | null
+          id?: string
+          notes?: Json | null
+          program_id: string
+          started_at?: string | null
+          updated_at?: string | null
+          user_id: string
+        }
+        Update: {
+          completed_at?: string | null
+          created_at?: string | null
+          current_week?: number | null
+          id?: string
+          notes?: Json | null
+          program_id?: string
+          started_at?: string | null
+          updated_at?: string | null
+          user_id?: string
+        }
         Relationships: [
           {
-            foreignKeyName: "user_transition_enrollments_program_id_fkey"
+            foreignKeyName: "user_transition_progress_program_id_fkey"
             columns: ["program_id"]
             isOneToOne: false
             referencedRelation: "life_transition_programs"

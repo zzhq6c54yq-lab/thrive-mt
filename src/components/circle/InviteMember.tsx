@@ -5,14 +5,18 @@ import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { useSupportCircle } from "@/hooks/useSupportCircle";
 
-const InviteMember = ({ circleId }: { circleId: string }) => {
-  const { inviteMember } = useSupportCircle(undefined);
+const InviteMember = ({ userId }: { userId?: string }) => {
+  const { inviteMember } = useSupportCircle(userId);
   const [email, setEmail] = useState("");
   const [name, setName] = useState("");
   const [relationship, setRelationship] = useState("family");
 
   const handleInvite = () => {
-    inviteMember.mutate({ email, name, relationship, permissions: {} }, {
+    inviteMember.mutate({ 
+      member_email: email, 
+      member_name: name, 
+      relationship 
+    }, {
       onSuccess: () => { setEmail(""); setName(""); }
     });
   };

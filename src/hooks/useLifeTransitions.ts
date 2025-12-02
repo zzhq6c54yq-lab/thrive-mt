@@ -25,7 +25,7 @@ export const useLifeTransitions = (userId: string | undefined) => {
       if (!userId) return [];
       
       const { data, error } = await supabase
-        .from("user_transition_enrollments")
+        .from("user_transition_progress")
         .select("*, program:life_transition_programs(*)")
         .eq("user_id", userId);
 
@@ -40,12 +40,12 @@ export const useLifeTransitions = (userId: string | undefined) => {
       if (!userId) throw new Error("User not authenticated");
 
       const { error } = await supabase
-        .from("user_transition_enrollments")
+        .from("user_transition_progress")
         .insert({
           user_id: userId,
           program_id: programId,
           current_week: 1,
-          progress: {},
+          notes: {},
         });
 
       if (error) throw error;
@@ -60,10 +60,10 @@ export const useLifeTransitions = (userId: string | undefined) => {
   });
 
   const updateProgress = useMutation({
-    mutationFn: async ({ enrollmentId, progress }: { enrollmentId: string; progress: any }) => {
+    mutationFn: async ({ enrollmentId, notes }: { enrollmentId: string; notes: any }) => {
       const { error } = await supabase
-        .from("user_transition_enrollments")
-        .update({ progress })
+        .from("user_transition_progress")
+        .update({ notes })
         .eq("id", enrollmentId);
 
       if (error) throw error;

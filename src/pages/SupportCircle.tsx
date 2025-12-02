@@ -8,7 +8,7 @@ import { Shield, Users, Bell, Lock } from "lucide-react";
 
 const SupportCircle = () => {
   const { user } = useUser();
-  const { circle, isLoading } = useSupportCircle(user?.id);
+  const { members, isLoading } = useSupportCircle(user?.id);
 
   if (isLoading) {
     return (
@@ -66,34 +66,30 @@ const SupportCircle = () => {
           </Card>
         </div>
 
-        {!circle ? (
-          <CreateCircle userId={user?.id} />
-        ) : (
-          <div className="space-y-6">
-            {/* Circle Name */}
-            <Card className="p-6 glass-card">
-              <h2 className="text-2xl font-bold gradient-heading mb-4">{circle.name}</h2>
-              <p className="text-muted-foreground">
-                {circle.members?.length || 0} member{circle.members?.length !== 1 ? 's' : ''}
-              </p>
-            </Card>
+        <div className="space-y-6">
+          {/* Support Circle Info */}
+          <Card className="p-6 glass-card">
+            <h2 className="text-2xl font-bold gradient-heading mb-4">My Support Circle</h2>
+            <p className="text-muted-foreground">
+              {members?.length || 0} member{members?.length !== 1 ? 's' : ''}
+            </p>
+          </Card>
 
-            {/* Invite New Member */}
-            <InviteMember circleId={circle.id} />
+          {/* Invite New Member */}
+          <InviteMember userId={user?.id} />
 
-            {/* Members List */}
-            {circle.members && circle.members.length > 0 && (
-              <div className="space-y-4">
-                <h3 className="text-xl font-bold text-foreground">Circle Members</h3>
-                <div className="grid md:grid-cols-2 gap-4">
-                  {circle.members.map((member: any) => (
-                    <CircleMemberCard key={member.id} member={member} />
-                  ))}
-                </div>
+          {/* Members List */}
+          {members && members.length > 0 && (
+            <div className="space-y-4">
+              <h3 className="text-xl font-bold text-foreground">Circle Members</h3>
+              <div className="grid md:grid-cols-2 gap-4">
+                {members.map((member: any) => (
+                  <CircleMemberCard key={member.id} member={member} />
+                ))}
               </div>
-            )}
-          </div>
-        )}
+            </div>
+          )}
+        </div>
       </div>
     </div>
   );
