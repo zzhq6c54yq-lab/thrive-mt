@@ -42,21 +42,21 @@ export default function CommandPalette({ isOpen, onClose }: CommandPaletteProps)
 
   const allCommands: Command[] = useMemo(() => [
     // Mental Health Tools
-    { id: 'mood-tracker', title: 'Mood Tracker', category: 'tool', icon: <Heart className="w-4 h-4" />, path: '/mood-tracker', keywords: ['mood', 'emotions', 'feelings', 'track'], estimatedTime: '2 min' },
-    { id: 'journal', title: 'Journaling', category: 'tool', icon: <Book className="w-4 h-4" />, path: '/journaling', keywords: ['journal', 'write', 'thoughts', 'diary'], estimatedTime: '10 min' },
-    { id: 'meditation', title: 'Meditation Studio', category: 'tool', icon: <Sparkles className="w-4 h-4" />, path: '/meditation', keywords: ['meditation', 'mindfulness', 'calm', 'relax'], estimatedTime: '15 min' },
-    { id: 'breathing', title: 'Breathing Exercises', category: 'tool', icon: <Activity className="w-4 h-4" />, path: '/breathing', keywords: ['breathing', 'breathe', 'calm', 'anxiety'], estimatedTime: '3 min' },
-    { id: 'assessments', title: 'Mental Health Assessments', category: 'tool', icon: <Brain className="w-4 h-4" />, path: '/mental-wellness', keywords: ['assessment', 'phq', 'gad', 'test', 'score'], estimatedTime: '5 min' },
+    { id: 'mood-tracker', title: 'Mood Tracker', category: 'tool', icon: <Heart className="w-4 h-4" />, path: '/app/dashboard', keywords: ['mood', 'emotions', 'feelings', 'track'], estimatedTime: '2 min' },
+    { id: 'journal', title: 'Journaling', category: 'tool', icon: <Book className="w-4 h-4" />, path: '/app/journal', keywords: ['journal', 'write', 'thoughts', 'diary'], estimatedTime: '10 min' },
+    { id: 'meditation', title: 'Meditation Studio', category: 'tool', icon: <Sparkles className="w-4 h-4" />, path: '/app/meditation-studio', keywords: ['meditation', 'mindfulness', 'calm', 'relax'], estimatedTime: '15 min' },
+    { id: 'breathing', title: 'Breathing Exercises', category: 'tool', icon: <Activity className="w-4 h-4" />, path: '/app/mental-wellness-tools/breathing', keywords: ['breathing', 'breathe', 'calm', 'anxiety'], estimatedTime: '3 min' },
+    { id: 'assessments', title: 'Mental Health Assessments', category: 'tool', icon: <Brain className="w-4 h-4" />, path: '/app/mental-wellness-assessments', keywords: ['assessment', 'phq', 'gad', 'test', 'score'], estimatedTime: '5 min' },
     
     // Therapy & Support
-    { id: 'therapy', title: 'Real-Time Therapy', category: 'tool', icon: <Users className="w-4 h-4" />, path: '/therapy', keywords: ['therapy', 'therapist', 'counseling', 'session'], estimatedTime: '50 min' },
-    { id: 'mini-session', title: 'Between-Session Companion', category: 'tool', icon: <MessageCircle className="w-4 h-4" />, path: '/mini-session', keywords: ['ai', 'chat', 'companion', 'talk', 'help'], estimatedTime: '10 min' },
-    { id: 'henry', title: 'Talk to Henry (AI)', category: 'tool', icon: <MessageCircle className="w-4 h-4" />, path: '/mirror-ai', keywords: ['ai', 'henry', 'chat', 'talk', 'assistant'], estimatedTime: '5 min' },
+    { id: 'therapy', title: 'Real-Time Therapy', category: 'tool', icon: <Users className="w-4 h-4" />, path: '/app/real-time-therapy', keywords: ['therapy', 'therapist', 'counseling', 'session'], estimatedTime: '50 min' },
+    { id: 'mini-session', title: 'Between-Session Companion', category: 'tool', icon: <MessageCircle className="w-4 h-4" />, path: '/app/mini-session', keywords: ['ai', 'chat', 'companion', 'talk', 'help'], estimatedTime: '10 min' },
+    { id: 'henry', title: 'Talk to Henry (AI)', category: 'tool', icon: <MessageCircle className="w-4 h-4" />, path: '/app/mirror-ai', keywords: ['ai', 'henry', 'chat', 'talk', 'assistant'], estimatedTime: '5 min' },
     
     // Creative Tools
-    { id: 'art-therapy', title: 'Art Therapy', category: 'tool', icon: <Palette className="w-4 h-4" />, path: '/art-therapy', keywords: ['art', 'draw', 'paint', 'creative'], estimatedTime: '15 min' },
-    { id: 'music', title: 'Music Therapy', category: 'tool', icon: <Music className="w-4 h-4" />, path: '/music-therapy', keywords: ['music', 'sound', 'audio', 'relax'], estimatedTime: '10 min' },
-    { id: 'binaural', title: 'Binaural Beats', category: 'tool', icon: <Music className="w-4 h-4" />, path: '/binaural-beats', keywords: ['binaural', 'beats', 'sound', 'therapy'], estimatedTime: '20 min' },
+    { id: 'art-therapy', title: 'Art Therapy', category: 'tool', icon: <Palette className="w-4 h-4" />, path: '/app/art-therapy', keywords: ['art', 'draw', 'paint', 'creative'], estimatedTime: '15 min' },
+    { id: 'music', title: 'Music Therapy', category: 'tool', icon: <Music className="w-4 h-4" />, path: '/app/music-therapy', keywords: ['music', 'sound', 'audio', 'relax'], estimatedTime: '10 min' },
+    { id: 'binaural', title: 'Binaural Beats', category: 'tool', icon: <Music className="w-4 h-4" />, path: '/app/binaural-beats', keywords: ['binaural', 'beats', 'sound', 'therapy'], estimatedTime: '20 min' },
     
     // Navigation
     { id: 'dashboard', title: 'Dashboard', category: 'navigation', icon: <Activity className="w-4 h-4" />, path: '/app/dashboard', keywords: ['dashboard', 'home', 'main'] },
@@ -64,8 +64,8 @@ export default function CommandPalette({ isOpen, onClose }: CommandPaletteProps)
     { id: 'profile', title: 'My Profile', category: 'navigation', icon: <Users className="w-4 h-4" />, path: '/app/profile', keywords: ['profile', 'settings', 'account'] },
     
     // Help
-    { id: 'crisis', title: 'Emergency Help', category: 'help', icon: <Heart className="w-4 h-4" />, path: '/crisis-resources', keywords: ['emergency', 'crisis', 'help', 'urgent', 'suicide'] },
-    { id: 'support', title: 'Contact Support', category: 'help', icon: <MessageCircle className="w-4 h-4" />, path: '/feedback', keywords: ['support', 'help', 'contact', 'question'] },
+    { id: 'crisis', title: 'Emergency Help', category: 'help', icon: <Heart className="w-4 h-4" />, path: '/app/crisis-resources', keywords: ['emergency', 'crisis', 'help', 'urgent', 'suicide'] },
+    { id: 'support', title: 'Contact Support', category: 'help', icon: <MessageCircle className="w-4 h-4" />, path: '/app/contact', keywords: ['support', 'help', 'contact', 'question'] },
   ], []);
 
   // Filter commands based on search
