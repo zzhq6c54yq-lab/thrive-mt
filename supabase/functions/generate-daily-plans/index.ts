@@ -62,6 +62,45 @@ serve(async (req) => {
   }
 
   try {
+    // Authentication check - validate service role key or admin access
+    const authHeader = req.headers.get('Authorization');
+    const cronSecret = req.headers.get('x-cron-secret');
+    
+    // Allow if called with service role key (for cron jobs) or with valid cron secret
+    const expectedCronSecret = Deno.env.get('CRON_SECRET');
+    const isAuthorizedCron = cronSecret && expectedCronSecret && cronSecret === expectedCronSecret;
+    
+    // Also allow if called with service role key in Authorization header
+    const isServiceRole = authHeader?.includes(SUPABASE_SERVICE_ROLE_KEY);
+    
+    // For user-initiated calls, verify the user is an admin
+    let isAdmin = false;
+    if (authHeader && !isServiceRole) {
+      const token = authHeader.replace('Bearer ', '');
+      const supabaseAuth = createClient(SUPABASE_URL, Deno.env.get('SUPABASE_ANON_KEY')!);
+      const { data: { user }, error: authError } = await supabaseAuth.auth.getUser(token);
+      
+      if (!authError && user) {
+        // Check if user has admin role
+        const { data: adminRole } = await createClient(SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY)
+          .from('user_roles')
+          .select('role')
+          .eq('user_id', user.id)
+          .eq('role', 'admin')
+          .maybeSingle();
+        
+        isAdmin = !!adminRole;
+      }
+    }
+    
+    if (!isAuthorizedCron && !isServiceRole && !isAdmin) {
+      console.error('Unauthorized access attempt to generate-daily-plans');
+      return new Response(
+        JSON.stringify({ error: 'Unauthorized. This endpoint requires admin access or service role key.' }),
+        { status: 401, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+      );
+    }
+
     const supabase = createClient(SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY);
     const startTime = Date.now();
 
