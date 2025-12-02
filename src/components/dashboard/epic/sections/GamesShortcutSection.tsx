@@ -28,7 +28,7 @@ export default function GamesShortcutSection() {
       description: 'Word puzzle challenge',
       icon: Trophy,
       route: '/app/games/word-unscramble',
-      image: 'https://images.unsplash.com/photo-1564866657315-c7a5e8e5f080?w=500&q=80'
+      image: 'https://images.unsplash.com/photo-1456513080510-7bf3a84b82f8?w=500&q=80'
     },
     {
       title: 'Mood Challenge',

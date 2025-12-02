@@ -150,7 +150,7 @@ const MoodScreen: React.FC<MoodScreenProps> = ({ onMoodSelect }) => {
   };
 
   return (
-    <div className="min-h-screen flex flex-col bg-gradient-to-br from-[#1a1a1f] via-[#221F26] to-[#2a2a35] text-white relative overflow-hidden">
+    <div className="min-h-screen flex flex-col bg-[#000000] text-white relative overflow-hidden">
       {/* Decorative background elements */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
         <div className="absolute top-0 left-0 w-96 h-96 bg-[#B87333]/10 rounded-full blur-3xl opacity-70"></div>

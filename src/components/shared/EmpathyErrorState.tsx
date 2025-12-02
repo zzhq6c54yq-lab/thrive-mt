@@ -88,7 +88,7 @@ const EmpathyErrorState: React.FC<EmpathyErrorStateProps> = ({
         
         {showHomeButton && (
           <Button
-            onClick={() => navigate('/dashboard')}
+            onClick={() => navigate('/app/dashboard')}
             variant="outline"
             className="border-[#D4AF37]/30 hover:bg-[#D4AF37]/10 transition-all duration-300 font-light"
           >

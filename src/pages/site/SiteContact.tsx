@@ -41,16 +41,24 @@ const SiteContact = () => {
               <Card className="bg-black border-[#D4AF37]/20 p-8">
                 <Mail className="w-10 h-10 text-bronze-400 mb-4" />
                 <h3 className="text-xl font-bold text-foreground mb-2">General Support</h3>
-                <a href="mailto:support@thrivemt.com" className="text-bronze-400 hover:text-bronze-300">
-                  support@thrivemt.com
+                <a href="mailto:support@thrive-mental.com" className="text-bronze-400 hover:text-bronze-300">
+                  support@thrive-mental.com
                 </a>
               </Card>
 
-              <Card className="bg-[#141921] border-bronze-500/20 p-8">
+              <Card className="bg-black border-[#D4AF37]/20 p-8">
                 <MessageSquare className="w-10 h-10 text-bronze-400 mb-4" />
                 <h3 className="text-xl font-bold text-foreground mb-2">Business Inquiries</h3>
-                <a href="mailto:business@thrivemt.com" className="text-bronze-400 hover:text-bronze-300">
-                  business@thrivemt.com
+                <a href="mailto:business@thrive-mental.com" className="text-bronze-400 hover:text-bronze-300">
+                  business@thrive-mental.com
+                </a>
+              </Card>
+
+              <Card className="bg-black border-[#D4AF37]/20 p-8">
+                <Mail className="w-10 h-10 text-bronze-400 mb-4" />
+                <h3 className="text-xl font-bold text-foreground mb-2">Investor Relations</h3>
+                <a href="mailto:investor@thrive-mental.com" className="text-bronze-400 hover:text-bronze-300">
+                  investor@thrive-mental.com
                 </a>
               </Card>
 

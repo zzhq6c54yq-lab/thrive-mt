@@ -12,15 +12,15 @@ const OnboardingPage: React.FC = () => {
   useEffect(() => {
     if (!loading) {
       if (!user) {
-        navigate('/auth');
+        navigate('/app/auth');
       } else if (profile?.onboarding_completed) {
-        navigate('/dashboard');
+        navigate('/app/dashboard');
       }
     }
   }, [user, profile, loading, navigate]);
 
   const handleOnboardingComplete = () => {
-    navigate('/dashboard');
+    navigate('/app/dashboard');
   };
 
   if (loading) {

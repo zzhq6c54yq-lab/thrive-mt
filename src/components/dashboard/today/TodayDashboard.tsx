@@ -55,7 +55,7 @@ export default function TodayDashboard() {
             <Button
               variant="ghost"
               size="sm"
-              onClick={() => navigate('/dashboard')}
+              onClick={() => navigate('/app/dashboard')}
               className="text-white hover:bg-white/10"
             >
               <Users className="w-4 h-4 mr-2" />
@@ -143,7 +143,7 @@ export default function TodayDashboard() {
             <Button
               variant="outline"
               size="sm"
-              onClick={() => navigate('/dashboard')}
+              onClick={() => navigate('/app/dashboard')}
             >
               Go to Portal
             </Button>

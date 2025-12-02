@@ -77,7 +77,7 @@ export default function AllFeatures() {
         <div className="container relative z-10 px-4 py-20 mx-auto max-w-7xl">
           <Button
             variant="ghost"
-            onClick={() => navigate('/dashboard')}
+            onClick={() => navigate('/app/dashboard')}
             className="mb-8 text-gray-400 hover:text-white"
           >
             <ArrowLeft className="mr-2 w-4 h-4" />

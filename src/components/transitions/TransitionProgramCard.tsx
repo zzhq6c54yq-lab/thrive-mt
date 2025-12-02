@@ -30,8 +30,15 @@ const TransitionProgramCard = ({ program, icon: Icon, isEnrolled, currentWeek, u
 
   const coverImage = program.cover_image_url || defaultCovers[program.slug] || "https://images.unsplash.com/photo-1499750310107-5fef28a66643?w=800&q=80";
 
+  const handleNavigate = () => {
+    navigate(`/app/life-transitions/${program.slug}`);
+  };
+
   return (
-    <Card className="overflow-hidden bg-gray-900/50 border-[#D4AF37]/30 hover:scale-[1.02] transition-all group">
+    <Card 
+      className="overflow-hidden bg-gray-900/50 border-[#D4AF37]/30 hover:scale-[1.02] transition-all group cursor-pointer"
+      onClick={handleNavigate}
+    >
       {/* Cover Image */}
       <div className="relative h-40 overflow-hidden">
         <img 
@@ -68,7 +75,10 @@ const TransitionProgramCard = ({ program, icon: Icon, isEnrolled, currentWeek, u
         {isEnrolled ? (
           <Button 
             className="w-full bg-gradient-to-r from-[#B87333] to-[#D4AF37] hover:from-[#D4AF37] hover:to-[#B87333] text-black" 
-            onClick={() => navigate(`/app/life-transitions/${program.slug}`)}
+            onClick={(e) => {
+              e.stopPropagation();
+              navigate(`/app/life-transitions/${program.slug}`);
+            }}
           >
             Continue Program
           </Button>
@@ -76,7 +86,10 @@ const TransitionProgramCard = ({ program, icon: Icon, isEnrolled, currentWeek, u
           <Button 
             className="w-full" 
             variant="outline"
-            onClick={() => enrollInProgram.mutate(program.id)} 
+            onClick={(e) => {
+              e.stopPropagation();
+              enrollInProgram.mutate(program.id);
+            }} 
             disabled={enrollInProgram.isPending}
           >
             {enrollInProgram.isPending ? "Enrolling..." : "Enroll Now"}

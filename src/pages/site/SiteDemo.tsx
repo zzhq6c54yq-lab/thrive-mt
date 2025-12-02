@@ -3,6 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { PlayCircle, Check } from "lucide-react";
 import SiteHeroSection from "@/components/site/SiteHeroSection";
+import WaitlistSignup from "@/components/site/WaitlistSignup";
 
 const SiteDemo = () => {
   return (
@@ -42,6 +43,11 @@ const SiteDemo = () => {
               </Card>
             ))}
           </div>
+        </div>
+
+        {/* Waitlist Signup */}
+        <div className="mb-16 max-w-md mx-auto">
+          <WaitlistSignup />
         </div>
 
         {/* App Preview Placeholder */}

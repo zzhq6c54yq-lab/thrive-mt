@@ -125,7 +125,7 @@ export default function Gratitude() {
       <div className="container mx-auto max-w-7xl px-4 py-8">
         <Button
           variant="ghost"
-          onClick={() => navigate('/dashboard')}
+          onClick={() => navigate('/app/dashboard')}
           className="mb-6 text-gray-400 hover:text-white"
         >
           <ArrowLeft className="mr-2 w-4 h-4" />

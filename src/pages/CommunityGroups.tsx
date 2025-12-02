@@ -2,13 +2,16 @@ import { useUser } from "@/contexts/UserContext";
 import { useCommunityGroups } from "@/hooks/useCommunityGroups";
 import GroupCard from "@/components/community/GroupCard";
 import { Input } from "@/components/ui/input";
-import { Search } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Search, ArrowLeft } from "lucide-react";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 const CommunityGroups = () => {
   const { user } = useUser();
   const { groups, memberships, isLoading } = useCommunityGroups(user?.id);
   const [searchQuery, setSearchQuery] = useState("");
+  const navigate = useNavigate();
 
   const filteredGroups = groups?.filter(group =>
     group.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
@@ -27,11 +30,21 @@ const CommunityGroups = () => {
   }
 
   return (
-    <div className="min-h-screen bg-background p-6">
+    <div className="min-h-screen bg-[#000000] p-6">
       <div className="max-w-7xl mx-auto space-y-8">
+        {/* Back Button */}
+        <Button
+          variant="ghost"
+          onClick={() => navigate('/app/dashboard')}
+          className="text-gray-400 hover:text-white"
+        >
+          <ArrowLeft className="w-4 h-4 mr-2" />
+          Back to Dashboard
+        </Button>
+
         {/* Header */}
         <div className="text-center space-y-4">
-          <h1 className="text-5xl font-bold gradient-heading">
+          <h1 className="text-5xl font-bold bg-gradient-to-r from-[#E8D4C0] via-[#D4A574] to-[#B87333] bg-clip-text text-transparent">
             Community Groups
           </h1>
           <p className="text-xl text-muted-foreground max-w-2xl mx-auto">

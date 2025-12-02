@@ -56,6 +56,7 @@ import AlternativeTherapyDetail from "./pages/AlternativeTherapyDetail";
 import BadgesPage from "./pages/Badges";
 import BarterApplicationPage from "./pages/BarterApplication";
 import LifeTransitions from "./pages/LifeTransitions";
+import LifeTransitionProgram from "./pages/LifeTransitionProgram";
 import SupportCircle from "./pages/SupportCircle";
 import BuddySystem from "./pages/BuddySystem";
 import BinauralBeats from "./pages/BinauralBeats";
@@ -409,6 +410,7 @@ function App() {
           <Route path="/app/wellness-challenges/:id" element={<WellnessChallenges />} />
           <Route path="/app/badges" element={<BadgesPage />} />
           <Route path="/app/life-transitions" element={<LifeTransitions />} />
+          <Route path="/app/life-transitions/:slug" element={<LifeTransitionProgram />} />
           <Route path="/app/support-circle" element={<SupportCircle />} />
           <Route path="/app/buddy-system" element={<BuddySystem />} />
           <Route path="/app/my-sponsor" element={<MySponsor />} />

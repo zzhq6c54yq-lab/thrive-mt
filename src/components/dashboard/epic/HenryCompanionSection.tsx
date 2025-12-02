@@ -2,8 +2,10 @@ import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { MessageSquare, Sparkles, Heart, Gamepad2 } from 'lucide-react';
+import { MessageSquare, Sparkles, Heart } from 'lucide-react';
 import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar';
+import MoodBoostDialog from '@/components/henry/MoodBoostDialog';
+import DailyWisdomDialog from '@/components/henry/DailyWisdomDialog';
 
 interface HenryCompanionSectionProps {
   userName?: string;
@@ -44,6 +46,9 @@ export const HenryCompanionSection: React.FC<HenryCompanionSectionProps> = ({
 }) => {
   const [currentMessage, setCurrentMessage] = useState(getTimeBasedGreeting());
   const [messageIndex, setMessageIndex] = useState(0);
+  const [showMoodBoost, setShowMoodBoost] = useState(false);
+  const [showDailyWisdom, setShowDailyWisdom] = useState(false);
+  const [dialogMessage, setDialogMessage] = useState('');
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -71,7 +76,9 @@ export const HenryCompanionSection: React.FC<HenryCompanionSectionProps> = ({
       "You've overcome 100% of your worst days. That's pretty incredible! 💪",
       "Your presence here matters more than you know. 💙",
     ];
-    setCurrentMessage(boosts[Math.floor(Math.random() * boosts.length)]);
+    const message = boosts[Math.floor(Math.random() * boosts.length)];
+    setDialogMessage(message);
+    setShowMoodBoost(true);
   };
 
   const handleDailyWisdom = () => {
@@ -85,7 +92,9 @@ export const HenryCompanionSection: React.FC<HenryCompanionSectionProps> = ({
       "You're writing your own story, one day at a time. 📖",
       "Rest is not weakness. It's how you recharge for tomorrow. 🌙",
     ];
-    setCurrentMessage(wisdoms[Math.floor(Math.random() * wisdoms.length)]);
+    const message = wisdoms[Math.floor(Math.random() * wisdoms.length)];
+    setDialogMessage(message);
+    setShowDailyWisdom(true);
   };
 
   return (
@@ -179,6 +188,20 @@ export const HenryCompanionSection: React.FC<HenryCompanionSectionProps> = ({
           </div>
         </div>
       </Card>
+
+      {/* Mood Boost Dialog */}
+      <MoodBoostDialog 
+        open={showMoodBoost} 
+        onClose={() => setShowMoodBoost(false)} 
+        message={dialogMessage} 
+      />
+
+      {/* Daily Wisdom Dialog */}
+      <DailyWisdomDialog 
+        open={showDailyWisdom} 
+        onClose={() => setShowDailyWisdom(false)} 
+        message={dialogMessage} 
+      />
     </motion.div>
   );
 };

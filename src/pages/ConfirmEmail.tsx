@@ -30,7 +30,7 @@ const ConfirmEmail = () => {
       const timer = setTimeout(() => setCountdown(countdown - 1), 1000);
       return () => clearTimeout(timer);
     } else if (status === 'success' && countdown === 0) {
-      navigate('/dashboard');
+      navigate('/app/dashboard');
     }
   }, [status, countdown, navigate]);
 
@@ -101,7 +101,7 @@ const ConfirmEmail = () => {
                 <p className="text-sm text-muted-foreground">
                   Redirecting in {countdown} second{countdown !== 1 ? 's' : ''}...
                 </p>
-                <Button onClick={() => navigate('/dashboard')} className="w-full">
+                <Button onClick={() => navigate('/app/dashboard')} className="w-full">
                   Continue to Dashboard
                 </Button>
               </>
