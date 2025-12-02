@@ -14,28 +14,28 @@ export default function GamesShortcutSection() {
       description: 'Classic puzzle game',
       icon: Brain,
       route: '/app/games/mini-sudoku',
-      image: 'https://images.unsplash.com/photo-1559757175-5700dde675bc?w=500&q=80'
+      image: 'https://images.unsplash.com/photo-1611996575749-79a3a250f948?w=500&q=80'
     },
     {
       title: 'Memory Match',
       description: 'Test your memory',
       icon: Sparkles,
       route: '/app/games/memory-match',
-      image: 'https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?w=500&q=80'
+      image: 'https://images.unsplash.com/photo-1606326608606-aa0b62935f2b?w=500&q=80'
     },
     {
       title: 'Word Unscramble',
       description: 'Word puzzle challenge',
       icon: Trophy,
       route: '/app/games/word-unscramble',
-      image: 'https://images.unsplash.com/photo-1487058792275-0ad4aaf24ca7?w=500&q=80'
+      image: 'https://images.unsplash.com/photo-1564866657315-c7a5e8e5f080?w=500&q=80'
     },
     {
-      title: 'Sleep Tracker',
-      description: 'Monitor your rest',
-      icon: Moon,
-      route: '/app/sleep-tracker',
-      image: 'https://images.unsplash.com/photo-1541781774459-bb2af2f05b55?w=500&q=80'
+      title: 'Mood Challenge',
+      description: 'Boost your spirits',
+      icon: Heart,
+      route: '/app/mental-wellness-tools/mood-boost',
+      image: 'https://images.unsplash.com/photo-1533090161767-e6ffed986c88?w=500&q=80'
     }
   ];
 
