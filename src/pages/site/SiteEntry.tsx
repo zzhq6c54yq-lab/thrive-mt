@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { motion } from "framer-motion";
-import thriveOutlineLogo from "@/assets/thrivemt-outline-logo.png";
+import { HeadOutlineSVG } from "@/components/site/HeadOutlineSVG";
 
 const SiteEntry = () => {
   const navigate = useNavigate();
@@ -12,10 +12,9 @@ const SiteEntry = () => {
     const timers = [
       setTimeout(() => setStage(1), 500),    // "Thrive" text fades in
       setTimeout(() => setStage(2), 2000),   // "MT" ignites with glow
-      setTimeout(() => setStage(3), 3500),   // Light beam shoots down
-      setTimeout(() => setStage(4), 4500),   // Logo illuminates & pulses
-      setTimeout(() => setStage(5), 5500),   // "Build the Best You" fades in
-      setTimeout(() => setStage(6), 8000),   // Button appears with light sweep
+      setTimeout(() => setStage(3), 3500),   // Logo light trail starts
+      setTimeout(() => setStage(4), 6000),   // "Build the Best You" fades in
+      setTimeout(() => setStage(5), 8000),   // Button appears with light sweep
     ];
     
     return () => timers.forEach(clearTimeout);
@@ -73,44 +72,22 @@ const SiteEntry = () => {
           </motion.span>
         </div>
 
-        {/* Light Beam shooting down from MT to Logo - Stage 3 */}
-        {stage >= 3 && stage < 4 && (
-          <motion.div
-            initial={{ y: -100, scaleY: 0.5, opacity: 0 }}
-            animate={{ y: 100, scaleY: 1, opacity: [0, 1, 0] }}
-            transition={{ duration: 1, ease: "easeInOut" }}
-            className="absolute w-2 h-32 z-20"
-            style={{
-              background: 'linear-gradient(180deg, #D4AF37 0%, #D4A574 50%, transparent 100%)',
-              filter: 'blur(4px)',
-              top: '35%',
-            }}
-          />
-        )}
-
-        {/* Outline Head Logo - Illuminates at stage 4 and pulses continuously */}
+        {/* SVG Head Logo with Light Trail Animation - Stage 3 */}
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ 
-            opacity: stage >= 4 ? 1 : 0,
+            opacity: stage >= 3 ? 1 : 0,
           }}
           transition={{ duration: 0.5, ease: "easeOut" }}
-          className={`relative ${stage >= 4 ? 'logo-pulse' : ''}`}
+          className={`relative w-80 h-80 md:w-96 md:h-96 ${stage >= 3 ? 'logo-neon-pulse' : ''}`}
         >
-          <img 
-            src={thriveOutlineLogo} 
-            alt="ThriveMT Logo" 
-            className="w-64 h-64"
-            style={{
-              filter: stage >= 4 ? 'drop-shadow(0 0 30px #D4A574) brightness(1.2)' : 'none',
-            }}
-          />
+          <HeadOutlineSVG isAnimating={stage >= 3} />
         </motion.div>
 
-        {/* "Build the Best You" Headline - Fades in at stage 5 */}
+        {/* "Build the Best You" Headline - Fades in at stage 4 */}
         <motion.h1
           initial={{ opacity: 0 }}
-          animate={{ opacity: stage >= 5 ? 1 : 0 }}
+          animate={{ opacity: stage >= 4 ? 1 : 0 }}
           transition={{ duration: 3, ease: "easeInOut" }}
           className="text-6xl md:text-7xl font-bold text-center leading-tight"
           style={{
@@ -123,10 +100,10 @@ const SiteEntry = () => {
           Build the Best You
         </motion.h1>
 
-        {/* ENTER Button with Light Sweep - Fades in at stage 6 */}
+        {/* ENTER Button with Light Sweep - Fades in at stage 5 */}
         <motion.div
           initial={{ opacity: 0 }}
-          animate={{ opacity: stage >= 6 ? 1 : 0 }}
+          animate={{ opacity: stage >= 5 ? 1 : 0 }}
           transition={{ duration: 2, ease: "easeInOut" }}
         >
           <Button
@@ -170,18 +147,28 @@ const SiteEntry = () => {
           }
         }
 
-        .logo-pulse {
-          animation: logo-pulse 2s ease-in-out infinite;
+        .logo-neon-pulse {
+          animation: logo-neon-pulse 3s ease-in-out infinite;
         }
 
-        @keyframes logo-pulse {
+        @keyframes logo-neon-pulse {
           0%, 100% { 
-            filter: drop-shadow(0 0 30px #D4A574) brightness(1.2);
+            filter: 
+              drop-shadow(0 0 2px #FFFFFF) 
+              drop-shadow(0 0 10px #FFD700) 
+              drop-shadow(0 0 30px #D4A574) 
+              drop-shadow(0 0 60px #B87333) 
+              drop-shadow(0 0 100px #B87333);
             transform: scale(1);
           }
           50% { 
-            filter: drop-shadow(0 0 60px #D4AF37) drop-shadow(0 0 100px #B87333) brightness(1.5);
-            transform: scale(1.03);
+            filter: 
+              drop-shadow(0 0 4px #FFFFFF) 
+              drop-shadow(0 0 20px #FFD700) 
+              drop-shadow(0 0 50px #D4A574) 
+              drop-shadow(0 0 100px #B87333) 
+              drop-shadow(0 0 150px #B87333);
+            transform: scale(1.05);
           }
         }
       `}</style>
