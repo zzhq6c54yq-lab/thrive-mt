@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { motion } from "framer-motion";
-import { HeadOutlineSVG } from "@/components/site/HeadOutlineSVG";
+import headLogo from "@/assets/thrivemt-head-logo.png";
 
 const SiteEntry = () => {
   const navigate = useNavigate();
@@ -55,7 +55,7 @@ const SiteEntry = () => {
           </motion.span>
         </div>
 
-        {/* Head Outline SVG with Animated Light-Sweep - Stage 2 */}
+        {/* Your Logo with Animated Bronze-White Glow - Stage 2 */}
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ 
@@ -64,7 +64,11 @@ const SiteEntry = () => {
           transition={{ duration: 0.5, ease: "easeOut" }}
           className="relative w-[28rem] h-[28rem] md:w-[32rem] md:h-[32rem]"
         >
-          <HeadOutlineSVG isAnimating={stage >= 2} />
+          <img 
+            src={headLogo}
+            alt="ThriveMT Head Logo"
+            className="w-full h-full object-contain logo-tracer"
+          />
         </motion.div>
 
         {/* "Build the Best You" Headline - Fades in at stage 3 */}
@@ -127,6 +131,22 @@ const SiteEntry = () => {
           50% { 
             text-shadow: 0 0 40px #D4AF37, 0 0 80px #D4A574, 0 0 120px #B87333;
             filter: brightness(1.2);
+          }
+        }
+
+        .logo-tracer {
+          animation: outline-tracer 3s ease-in-out infinite;
+        }
+
+        @keyframes outline-tracer {
+          0% {
+            filter: drop-shadow(0 0 15px #B87333) drop-shadow(0 0 30px #B87333);
+          }
+          50% {
+            filter: drop-shadow(0 0 30px #FFFFFF) drop-shadow(0 0 60px #D4A574) drop-shadow(0 0 90px #B87333);
+          }
+          100% {
+            filter: drop-shadow(0 0 15px #B87333) drop-shadow(0 0 30px #B87333);
           }
         }
 
