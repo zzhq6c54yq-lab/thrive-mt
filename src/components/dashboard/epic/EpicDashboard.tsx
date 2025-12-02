@@ -36,6 +36,8 @@ import { LifeTransitionsSection } from './sections/LifeTransitionsSection';
 import { SupportCircleSection } from './sections/SupportCircleSection';
 import { BuddySystemSection } from './sections/BuddySystemSection';
 import { CommunityGroupsSection } from './sections/CommunityGroupsSection';
+import GamesShortcutSection from './sections/GamesShortcutSection';
+import LifeChallengesShortcutSection from './sections/LifeChallengesShortcutSection';
 
 interface EpicDashboardProps {
   demoMode?: boolean;
@@ -494,6 +496,20 @@ export default function EpicDashboard({ demoMode = false }: EpicDashboardProps) 
           <SupportCircleSection />
           <BuddySystemSection />
           <CommunityGroupsSection />
+        </motion.div>
+
+        {/* Section Divider */}
+        <div className="h-px bg-gradient-to-r from-transparent via-[#D4AF37]/20 to-transparent my-8" />
+
+        {/* Games & Life Challenges Shortcuts */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 1.2, duration: 0.6 }}
+          className="space-y-6"
+        >
+          <GamesShortcutSection />
+          <LifeChallengesShortcutSection />
         </motion.div>
 
         {/* Section Divider */}
