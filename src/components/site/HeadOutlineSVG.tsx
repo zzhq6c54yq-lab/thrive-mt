@@ -9,46 +9,63 @@ export const HeadOutlineSVG = ({ isAnimating, className = "" }: HeadOutlineSVGPr
   return (
     <div className={className}>
       <svg 
-        width="260" 
-        height="300" 
+        width="450" 
+        height="520" 
         viewBox="0 0 512 512"
         fill="none" 
         xmlns="http://www.w3.org/2000/svg"
-        style={{display:'block', margin:'auto', filter:'drop-shadow(0 0 18px #c98a5caa)'}}
+        style={{display:'block', margin:'auto', filter:'drop-shadow(0 0 25px #c98a5caa)'}}
       >
+        <defs>
+          <linearGradient id="sweep-gradient" x1="0%" y1="0%" x2="100%" y2="0%">
+            <stop offset="0%" stopColor="#B87333" />
+            <stop offset="15%" stopColor="#D4A574" />
+            <stop offset="40%" stopColor="#FFFFFF" />
+            <stop offset="60%" stopColor="#FFFFFF" />
+            <stop offset="85%" stopColor="#D4A574" />
+            <stop offset="100%" stopColor="#B87333" />
+            <animate 
+              attributeName="x1" 
+              values="-100%;200%" 
+              dur="4s" 
+              repeatCount="indefinite" 
+            />
+            <animate 
+              attributeName="x2" 
+              values="0%;300%" 
+              dur="4s" 
+              repeatCount="indefinite" 
+            />
+          </linearGradient>
+        </defs>
+        
         <style>
           {`
             .glow {
-              stroke: #C98A5C;
+              stroke: url(#sweep-gradient);
               stroke-width: 26;
               stroke-linecap: round;
               stroke-linejoin: round;
               fill: none;
-              animation: pulse 3s ease-in-out infinite;
+              filter: drop-shadow(0 0 8px #c98a5c);
             }
 
             .inner {
-              stroke: #C98A5C;
+              stroke: url(#sweep-gradient);
               stroke-width: 22;
               stroke-linecap: round;
               stroke-linejoin: round;
               fill: none;
-              animation: pulse 3s ease-in-out infinite;
+              filter: drop-shadow(0 0 6px #c98a5c);
             }
 
             .heart {
-              stroke: #C98A5C;
+              stroke: url(#sweep-gradient);
               stroke-width: 18;
               stroke-linecap: round;
               stroke-linejoin: round;
               fill: none;
-              animation: pulse 3s ease-in-out infinite;
-            }
-
-            @keyframes pulse {
-              0% { filter: drop-shadow(0 0 3px #c98a5c); }
-              50% { filter: drop-shadow(0 0 12px #c98a5c); }
-              100% { filter: drop-shadow(0 0 3px #c98a5c); }
+              filter: drop-shadow(0 0 5px #c98a5c);
             }
           `}
         </style>

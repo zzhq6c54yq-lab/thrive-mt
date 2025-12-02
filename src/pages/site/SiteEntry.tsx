@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { motion } from "framer-motion";
-import thrivemtLogo from "@/assets/thrivemt-logo.png";
+import { HeadOutlineSVG } from "@/components/site/HeadOutlineSVG";
 
 const SiteEntry = () => {
   const navigate = useNavigate();
@@ -31,7 +31,7 @@ const SiteEntry = () => {
             initial={{ opacity: 0 }}
             animate={{ opacity: stage >= 1 ? 1 : 0 }}
             transition={{ duration: 1, ease: "easeOut" }}
-            className="text-8xl md:text-9xl font-bold tracking-tight"
+            className="text-5xl md:text-6xl font-bold tracking-tight"
             style={{ color: '#FFFFFF' }}
           >
             Thrive
@@ -43,7 +43,7 @@ const SiteEntry = () => {
               opacity: stage >= 1 ? 1 : 0,
             }}
             transition={{ duration: 1, ease: "easeOut" }}
-            className="text-8xl md:text-9xl font-bold tracking-tight mt-glow"
+            className="text-5xl md:text-6xl font-bold tracking-tight mt-glow"
             style={{
               background: 'linear-gradient(135deg, #B87333 0%, #D4A574 50%, #D4AF37 100%)',
               WebkitBackgroundClip: 'text',
@@ -55,23 +55,16 @@ const SiteEntry = () => {
           </motion.span>
         </div>
 
-        {/* Logo Image - Stage 2 */}
+        {/* Head Outline SVG with Animated Light-Sweep - Stage 2 */}
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ 
             opacity: stage >= 2 ? 1 : 0,
           }}
           transition={{ duration: 0.5, ease: "easeOut" }}
-          className="relative w-80 h-80 md:w-96 md:h-96"
+          className="relative w-[28rem] h-[28rem] md:w-[32rem] md:h-[32rem]"
         >
-          <img 
-            src={thrivemtLogo}
-            alt="ThriveMT Logo"
-            className="w-full h-full object-contain"
-            style={{
-              filter: 'drop-shadow(0 0 20px #c98a5c) drop-shadow(0 0 40px #c98a5caa)'
-            }}
-          />
+          <HeadOutlineSVG isAnimating={stage >= 2} />
         </motion.div>
 
         {/* "Build the Best You" Headline - Fades in at stage 3 */}
