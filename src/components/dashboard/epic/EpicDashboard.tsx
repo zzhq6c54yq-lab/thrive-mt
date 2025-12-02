@@ -34,7 +34,6 @@ import { DashboardFooter } from './sections/DashboardFooter';
 import { THRIVE_LOGO } from '@/constants/branding';
 import { useLastSeen } from '@/hooks/useLastSeen';
 import { BadgesSection } from './sections/BadgesSection';
-import { LifeTransitionsSection } from './sections/LifeTransitionsSection';
 import { SupportCircleSection } from './sections/SupportCircleSection';
 import { BuddySystemSection } from './sections/BuddySystemSection';
 import { CommunityGroupsSection } from './sections/CommunityGroupsSection';
@@ -512,7 +511,6 @@ export default function EpicDashboard({ demoMode = false }: EpicDashboardProps) 
           className="grid md:grid-cols-2 gap-6"
         >
           <BadgesSection />
-          <LifeTransitionsSection />
           <SupportCircleSection />
           <BuddySystemSection />
           <CommunityGroupsSection />

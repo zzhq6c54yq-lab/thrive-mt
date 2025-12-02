@@ -3,6 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Users, MessageCircle } from "lucide-react";
 import { useCommunityGroups } from "@/hooks/useCommunityGroups";
 import { useNavigate } from "react-router-dom";
+import { useToast } from "@/hooks/use-toast";
 
 interface GroupCardProps {
   group: any;
@@ -13,11 +14,20 @@ interface GroupCardProps {
 const GroupCard = ({ group, isMember, userId }: GroupCardProps) => {
   const { joinGroup, leaveGroup } = useCommunityGroups(userId);
   const navigate = useNavigate();
+  const { toast } = useToast();
 
   const handleAction = () => {
     if (isMember) {
       leaveGroup.mutate(group.id);
     } else {
+      if (!userId) {
+        toast({
+          title: "Please Log In",
+          description: "You need to be logged in to join groups.",
+          variant: "destructive",
+        });
+        return;
+      }
       joinGroup.mutate(group.id);
     }
   };

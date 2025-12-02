@@ -58,6 +58,15 @@ export const useCommunityGroups = (userId: string | undefined) => {
       queryClient.invalidateQueries({ queryKey: ["community-groups"] });
       queryClient.invalidateQueries({ queryKey: ["group-memberships"] });
     },
+    onError: (error: Error) => {
+      toast({
+        title: "Unable to Join",
+        description: error.message === "User not authenticated" 
+          ? "Please log in to join groups." 
+          : "Something went wrong. Please try again.",
+        variant: "destructive",
+      });
+    },
   });
 
   const leaveGroup = useMutation({

@@ -247,10 +247,10 @@ const GamesAndQuizzes = () => {
             <Button 
               variant="link" 
               className="text-white hover:text-[#9b87f5] transition-colors p-0 flex items-center"
-              onClick={() => navigate("/app/home")}
+              onClick={() => navigate("/app/dashboard")}
             >
               <ArrowLeft className="mr-2 h-4 w-4" />
-              Back to Home
+              Back to Dashboard
             </Button>
             <HomeButton />
           </div>

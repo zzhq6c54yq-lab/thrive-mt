@@ -56,13 +56,7 @@ const Page: React.FC<PageProps> = ({
       navigate(location.state.previousPath);
     } else {
       // Always navigate to main dashboard for key features
-      navigate('/', { 
-        state: { 
-          screenState: 'main',
-          returnToMain: true,
-          preserveState: true
-        } 
-      });
+      navigate('/app/dashboard');
     }
   };
   
