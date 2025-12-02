@@ -156,7 +156,7 @@ const CinematicIntro: React.FC<CinematicIntroProps> = ({ onContinue, onSkipToMai
   };
 
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center bg-gradient-to-br from-gray-900 via-[#1a1a1a] to-gray-900 overflow-hidden relative">
+    <div className="min-h-screen flex flex-col items-center justify-center bg-[#000000] overflow-hidden relative">
       {/* Animated particle field */}
       <div className="absolute inset-0 overflow-hidden">
         {Array.from({ length: 30 }).map((_, i) => (
@@ -230,7 +230,7 @@ const CinematicIntro: React.FC<CinematicIntroProps> = ({ onContinue, onSkipToMai
               <img 
                 src={THRIVE_LOGO} 
                 alt="ThriveMT"
-                className="w-40 md:w-48 mx-auto drop-shadow-[0_0_30px_rgba(184,115,51,0.4)]"
+                className="w-24 md:w-32 mx-auto drop-shadow-[0_0_30px_rgba(184,115,51,0.4)]"
               />
             </motion.div>
 

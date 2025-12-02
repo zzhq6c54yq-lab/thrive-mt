@@ -584,6 +584,60 @@ export type Database = {
           },
         ]
       }
+      buddy_volunteers: {
+        Row: {
+          availability_hours: string | null
+          created_at: string
+          email: string
+          experience_description: string | null
+          full_name: string
+          id: string
+          motivation: string | null
+          phone: string | null
+          reviewed_at: string | null
+          reviewed_by: string | null
+          specialties: string[] | null
+          status: string
+          training_background: string[] | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          availability_hours?: string | null
+          created_at?: string
+          email: string
+          experience_description?: string | null
+          full_name: string
+          id?: string
+          motivation?: string | null
+          phone?: string | null
+          reviewed_at?: string | null
+          reviewed_by?: string | null
+          specialties?: string[] | null
+          status?: string
+          training_background?: string[] | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          availability_hours?: string | null
+          created_at?: string
+          email?: string
+          experience_description?: string | null
+          full_name?: string
+          id?: string
+          motivation?: string | null
+          phone?: string | null
+          reviewed_at?: string | null
+          reviewed_by?: string | null
+          specialties?: string[] | null
+          status?: string
+          training_background?: string[] | null
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       campaign_analytics: {
         Row: {
           bounce_count: number | null
@@ -1011,6 +1065,38 @@ export type Database = {
           user_id?: string
         }
         Relationships: []
+      }
+      community_group_messages: {
+        Row: {
+          content: string
+          created_at: string
+          group_id: string
+          id: string
+          user_id: string
+        }
+        Insert: {
+          content: string
+          created_at?: string
+          group_id: string
+          id?: string
+          user_id: string
+        }
+        Update: {
+          content?: string
+          created_at?: string
+          group_id?: string
+          id?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "community_group_messages_group_id_fkey"
+            columns: ["group_id"]
+            isOneToOne: false
+            referencedRelation: "community_groups"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       community_groups: {
         Row: {

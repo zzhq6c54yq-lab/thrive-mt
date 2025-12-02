@@ -12,7 +12,7 @@ export const useLifeTransitions = (userId: string | undefined) => {
       const { data, error } = await supabase
         .from("life_transition_programs")
         .select("*")
-        .order("name");
+        .order("title");
 
       if (error) throw error;
       return data;
