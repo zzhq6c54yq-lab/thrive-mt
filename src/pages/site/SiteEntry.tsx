@@ -10,10 +10,10 @@ const SiteEntry = () => {
 
   useEffect(() => {
     const timers = [
-      setTimeout(() => setStage(1), 500),    // "Thrive" text fades in
-      setTimeout(() => setStage(2), 2000),   // "MT" ignites with glow + Logo light trail starts
-      setTimeout(() => setStage(3), 7000),   // "Build the Best You" fades in
-      setTimeout(() => setStage(4), 9000),   // Button appears with light sweep
+      setTimeout(() => setStage(1), 300),    // "ThriveMT" fades in
+      setTimeout(() => setStage(2), 1500),   // Logo fades in
+      setTimeout(() => setStage(3), 3000),   // "Build the Best You" fades in
+      setTimeout(() => setStage(4), 4500),   // Button appears
     ];
     
     return () => timers.forEach(clearTimeout);
@@ -25,49 +25,33 @@ const SiteEntry = () => {
       {/* Stacked vertical layout - cinematic animation sequence */}
       <div className="relative z-10 flex flex-col items-center justify-center gap-8 px-6">
         
-        {/* ThriveMT Text Logo - Split into "Thrive" and "MT" */}
+        {/* ThriveMT Text Logo - Fades in together */}
         <div className="relative flex items-baseline gap-0">
-          {/* "Thrive" Text - Fades in at stage 1 */}
           <motion.span
             initial={{ opacity: 0 }}
             animate={{ opacity: stage >= 1 ? 1 : 0 }}
-            transition={{ duration: 1.5, ease: "easeOut" }}
+            transition={{ duration: 1, ease: "easeOut" }}
             className="text-8xl md:text-9xl font-bold tracking-tight"
             style={{ color: '#FFFFFF' }}
           >
             Thrive
           </motion.span>
 
-          {/* "MT" Text - Ignites with glow at stage 2 */}
           <motion.span
             initial={{ opacity: 0 }}
             animate={{ 
-              opacity: stage >= 2 ? 1 : 0,
+              opacity: stage >= 1 ? 1 : 0,
             }}
-            transition={{ duration: 0.5, ease: "easeOut" }}
-            className={`text-8xl md:text-9xl font-bold tracking-tight ${stage >= 2 ? 'mt-glow' : ''}`}
+            transition={{ duration: 1, ease: "easeOut" }}
+            className="text-8xl md:text-9xl font-bold tracking-tight mt-glow"
             style={{
-              background: stage >= 2 ? 'linear-gradient(135deg, #B87333 0%, #D4A574 50%, #D4AF37 100%)' : '#FFFFFF',
-              WebkitBackgroundClip: stage >= 2 ? 'text' : 'unset',
-              WebkitTextFillColor: stage >= 2 ? 'transparent' : '#FFFFFF',
-              backgroundClip: stage >= 2 ? 'text' : 'unset',
-              position: 'relative',
+              background: 'linear-gradient(135deg, #B87333 0%, #D4A574 50%, #D4AF37 100%)',
+              WebkitBackgroundClip: 'text',
+              WebkitTextFillColor: 'transparent',
+              backgroundClip: 'text',
             }}
           >
             MT
-            {/* Light burst behind MT letters */}
-            {stage >= 2 && (
-              <motion.div
-                initial={{ scale: 0, opacity: 0 }}
-                animate={{ scale: 2, opacity: 0 }}
-                transition={{ duration: 1, ease: "easeOut" }}
-                className="absolute inset-0 -z-10"
-                style={{
-                  background: 'radial-gradient(circle, rgba(212, 165, 116, 0.8) 0%, rgba(212, 165, 116, 0.4) 50%, transparent 70%)',
-                  filter: 'blur(20px)',
-                }}
-              />
-            )}
           </motion.span>
         </div>
 
@@ -87,7 +71,7 @@ const SiteEntry = () => {
         <motion.h1
           initial={{ opacity: 0 }}
           animate={{ opacity: stage >= 3 ? 1 : 0 }}
-          transition={{ duration: 3, ease: "easeInOut" }}
+          transition={{ duration: 1.2, ease: "easeOut" }}
           className="text-6xl md:text-7xl font-bold text-center leading-tight"
           style={{
             background: 'linear-gradient(135deg, #FFFFFF 0%, #E8D4C0 30%, #D4A574 60%, #B87333 100%)',
@@ -103,7 +87,7 @@ const SiteEntry = () => {
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: stage >= 4 ? 1 : 0 }}
-          transition={{ duration: 2, ease: "easeInOut" }}
+          transition={{ duration: 1, ease: "easeOut" }}
         >
           <Button
             size="xl"

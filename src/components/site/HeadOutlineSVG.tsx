@@ -24,9 +24,7 @@ export const HeadOutlineSVG = ({ isAnimating, className = "" }: HeadOutlineSVGPr
               stroke-linecap: round;
               stroke-linejoin: round;
               fill: none;
-              stroke-dasharray: 2000;
-              stroke-dashoffset: 2000;
-              animation: draw 3s ease forwards, pulse 3s ease-in-out infinite;
+              animation: pulse 3s ease-in-out infinite;
             }
 
             .inner {
@@ -35,9 +33,7 @@ export const HeadOutlineSVG = ({ isAnimating, className = "" }: HeadOutlineSVGPr
               stroke-linecap: round;
               stroke-linejoin: round;
               fill: none;
-              stroke-dasharray: 1400;
-              stroke-dashoffset: 1400;
-              animation: draw 3s ease forwards 0.4s, pulse 3s ease-in-out infinite;
+              animation: pulse 3s ease-in-out infinite;
             }
 
             .heart {
@@ -46,13 +42,7 @@ export const HeadOutlineSVG = ({ isAnimating, className = "" }: HeadOutlineSVGPr
               stroke-linecap: round;
               stroke-linejoin: round;
               fill: none;
-              stroke-dasharray: 900;
-              stroke-dashoffset: 900;
-              animation: draw 3s ease forwards 0.7s, pulse 3s ease-in-out infinite;
-            }
-
-            @keyframes draw {
-              to { stroke-dashoffset: 0; }
+              animation: pulse 3s ease-in-out infinite;
             }
 
             @keyframes pulse {
