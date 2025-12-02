@@ -6,40 +6,14 @@ interface HeadOutlineSVGProps {
 }
 
 export const HeadOutlineSVG = ({ isAnimating, className = "" }: HeadOutlineSVGProps) => {
-  // Total path length will be calculated by the browser
-  const pathLength = 1000; // Approximate value for animation timing
-
   return (
     <div className={`relative ${className}`}>
-      {/* Radiant light burst background - appears when logo lights up */}
-      {isAnimating && (
-        <>
-          <motion.div
-            initial={{ opacity: 0, scale: 0.5 }}
-            animate={{ opacity: [0, 0.6, 0.4], scale: [0.5, 2, 1.8] }}
-            transition={{ duration: 2, ease: "easeOut" }}
-            className="absolute inset-0 -z-10"
-            style={{
-              background: 'radial-gradient(circle, rgba(255, 215, 0, 0.4) 0%, rgba(212, 165, 116, 0.3) 30%, rgba(184, 115, 51, 0.2) 50%, transparent 70%)',
-              filter: 'blur(40px)',
-              transform: 'translate(-50%, -50%)',
-              left: '50%',
-              top: '50%',
-              width: '200%',
-              height: '200%',
-            }}
-          />
-          {/* Animated light rays */}
-          <div className="absolute inset-0 -z-10 light-rays" />
-        </>
-      )}
-
       <svg
         viewBox="0 0 512 512"
-        className="w-full h-full"
+        className={`w-full h-full ${isAnimating ? 'logo-stroke-pulse' : ''}`}
         style={{
           filter: isAnimating
-            ? 'drop-shadow(0 0 2px #FFFFFF) drop-shadow(0 0 10px #FFD700) drop-shadow(0 0 30px #D4A574) drop-shadow(0 0 60px #B87333) drop-shadow(0 0 100px #B87333)'
+            ? 'drop-shadow(0 0 4px #D4A574) drop-shadow(0 0 8px #B87333) drop-shadow(0 0 15px #B87333)'
             : 'none',
         }}
       >
@@ -59,10 +33,6 @@ export const HeadOutlineSVG = ({ isAnimating, className = "" }: HeadOutlineSVGPr
             duration: 2,
             ease: "easeInOut",
           }}
-          style={{
-            strokeDasharray: pathLength,
-            strokeDashoffset: isAnimating ? 0 : pathLength,
-          }}
         />
 
         {/* Outer circular arrow path */}
@@ -77,9 +47,9 @@ export const HeadOutlineSVG = ({ isAnimating, className = "" }: HeadOutlineSVGPr
             pathLength: isAnimating ? 1 : 0,
           }}
           transition={{
-            duration: 2,
+            duration: 1.5,
             ease: "easeInOut",
-            delay: 0.3,
+            delay: 2,
           }}
         />
 
@@ -98,7 +68,7 @@ export const HeadOutlineSVG = ({ isAnimating, className = "" }: HeadOutlineSVGPr
           transition={{
             duration: 0.5,
             ease: "easeOut",
-            delay: 0.8,
+            delay: 2.2,
           }}
         />
 
@@ -117,7 +87,7 @@ export const HeadOutlineSVG = ({ isAnimating, className = "" }: HeadOutlineSVGPr
           transition={{
             duration: 0.5,
             ease: "easeOut",
-            delay: 0.9,
+            delay: 3.5,
           }}
         />
 
@@ -136,32 +106,24 @@ export const HeadOutlineSVG = ({ isAnimating, className = "" }: HeadOutlineSVGPr
           transition={{
             duration: 1,
             ease: "easeInOut",
-            delay: 1.2,
+            delay: 4,
           }}
         />
       </svg>
 
       <style>{`
-        .light-rays {
-          background: 
-            conic-gradient(
-              from 0deg at 50% 50%,
-              transparent 0deg,
-              rgba(255, 215, 0, 0.1) 45deg,
-              transparent 90deg,
-              rgba(255, 215, 0, 0.1) 135deg,
-              transparent 180deg,
-              rgba(255, 215, 0, 0.1) 225deg,
-              transparent 270deg,
-              rgba(255, 215, 0, 0.1) 315deg,
-              transparent 360deg
-            );
-          animation: rotate-rays 20s linear infinite;
+        @keyframes logo-stroke-pulse {
+          0%, 100% { 
+            filter: drop-shadow(0 0 4px #D4A574) drop-shadow(0 0 8px #B87333);
+          }
+          50% { 
+            filter: drop-shadow(0 0 8px #D4A574) drop-shadow(0 0 15px #B87333) drop-shadow(0 0 20px #B87333);
+          }
         }
 
-        @keyframes rotate-rays {
-          from { transform: rotate(0deg); }
-          to { transform: rotate(360deg); }
+        .logo-stroke-pulse {
+          animation: logo-stroke-pulse 3s ease-in-out infinite;
+          animation-delay: 5s;
         }
       `}</style>
     </div>
