@@ -26,14 +26,32 @@ Deno.serve(async (req) => {
 
     const {
       data: { user },
-      error: userError,
     } = await supabaseClient.auth.getUser();
 
-    if (userError || !user) {
-      return new Response(JSON.stringify({ error: 'Unauthorized' }), {
-        status: 401,
-        headers: { ...corsHeaders, 'Content-Type': 'application/json' },
-      });
+    // For unauthenticated/demo users, return default micro-goals
+    if (!user) {
+      const hour = new Date().getHours();
+      let timeOfDay = 'morning';
+      if (hour >= 12 && hour < 17) timeOfDay = 'afternoon';
+      else if (hour >= 17 && hour < 21) timeOfDay = 'evening';
+      else if (hour >= 21 || hour < 5) timeOfDay = 'night';
+
+      const defaultGoals = [
+        { text: "Take 3 deep breaths", category: "breathwork" },
+        { text: "Drink a glass of water", category: "physical" },
+        { text: "Write down one positive thing about today", category: "mindfulness" },
+        { text: "Do a quick stretch", category: "movement" },
+        { text: "Send a kind message to someone", category: "connection" }
+      ];
+
+      return new Response(
+        JSON.stringify({ 
+          microGoals: defaultGoals,
+          generatedAt: new Date().toISOString(),
+          context: { timeOfDay, avgMood: 'unknown' }
+        }),
+        { headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+      );
     }
 
     console.log(`Generating micro-goals for user ${user.id}`);
