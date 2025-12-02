@@ -62,7 +62,7 @@ const SiteEntry = () => {
             opacity: stage >= 2 ? 1 : 0,
           }}
           transition={{ duration: 0.5, ease: "easeOut" }}
-          className="relative w-[28rem] h-[28rem] md:w-[32rem] md:h-[32rem]"
+          className="relative w-[14rem] h-[14rem] md:w-[16rem] md:h-[16rem]"
         >
           <img 
             src={headLogo}
@@ -135,18 +135,24 @@ const SiteEntry = () => {
         }
 
         .logo-tracer {
-          animation: outline-tracer 3s ease-in-out infinite;
+          animation: outline-tracer 4s ease-in-out infinite;
         }
 
         @keyframes outline-tracer {
           0% {
-            filter: drop-shadow(0 0 15px #B87333) drop-shadow(0 0 30px #B87333);
+            filter: drop-shadow(-20px 0 15px #B87333) drop-shadow(-20px 0 30px #B87333);
+          }
+          25% {
+            filter: drop-shadow(0 -20px 20px #D4A574) drop-shadow(0 -20px 40px #FFFFFF);
           }
           50% {
-            filter: drop-shadow(0 0 30px #FFFFFF) drop-shadow(0 0 60px #D4A574) drop-shadow(0 0 90px #B87333);
+            filter: drop-shadow(20px 0 20px #FFFFFF) drop-shadow(20px 0 40px #D4A574);
+          }
+          75% {
+            filter: drop-shadow(0 20px 20px #D4A574) drop-shadow(0 20px 40px #FFFFFF);
           }
           100% {
-            filter: drop-shadow(0 0 15px #B87333) drop-shadow(0 0 30px #B87333);
+            filter: drop-shadow(-20px 0 15px #B87333) drop-shadow(-20px 0 30px #B87333);
           }
         }
 
