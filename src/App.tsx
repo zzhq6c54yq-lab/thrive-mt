@@ -60,6 +60,7 @@ import SupportCircle from "./pages/SupportCircle";
 import BuddySystem from "./pages/BuddySystem";
 import BinauralBeats from "./pages/BinauralBeats";
 import Journaling from "./pages/Journaling";
+import CommunityGroups from "./pages/CommunityGroups";
 import MindfulnessSleep from "./pages/MindfulnessSleep";
 import VideoDiary from "./pages/VideoDiary";
 import ResourceLibrary from "./pages/ResourceLibrary";
@@ -232,6 +233,7 @@ function App() {
           <Route path="/app/messages" element={<Messages />} />
           <Route path="/app/support-wall" element={<CommunitySupport />} />
           <Route path="/app/gratitude" element={<Gratitude />} />
+          <Route path="/app/community" element={<CommunityGroups />} />
           <Route path="/app/community-support" element={<CommunitySupport />} />
           <Route path="/app/debug" element={<Debug />} />
           <Route path="/app/personalized-content" element={<PersonalizedContent />} />

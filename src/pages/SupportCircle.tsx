@@ -4,11 +4,14 @@ import CreateCircle from "@/components/circle/CreateCircle";
 import InviteMember from "@/components/circle/InviteMember";
 import CircleMemberCard from "@/components/circle/CircleMemberCard";
 import { Card } from "@/components/ui/card";
-import { Shield, Users, Bell, Lock } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Shield, Users, Bell, Lock, ArrowLeft } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 
 const SupportCircle = () => {
   const { user } = useUser();
   const { members, isLoading } = useSupportCircle(user?.id);
+  const navigate = useNavigate();
 
   if (isLoading) {
     return (
@@ -21,6 +24,16 @@ const SupportCircle = () => {
   return (
     <div className="min-h-screen bg-background p-6">
       <div className="max-w-6xl mx-auto space-y-8">
+        {/* Back Button */}
+        <Button
+          variant="ghost"
+          onClick={() => navigate('/app/dashboard')}
+          className="mb-4"
+        >
+          <ArrowLeft className="w-4 h-4 mr-2" />
+          Back to Dashboard
+        </Button>
+
         {/* Header */}
         <div className="text-center space-y-4">
           <h1 className="text-5xl font-bold gradient-heading">
