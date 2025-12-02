@@ -11,10 +11,9 @@ const SiteEntry = () => {
   useEffect(() => {
     const timers = [
       setTimeout(() => setStage(1), 500),    // "Thrive" text fades in
-      setTimeout(() => setStage(2), 2000),   // "MT" ignites with glow
-      setTimeout(() => setStage(3), 3500),   // Logo light trail starts
-      setTimeout(() => setStage(4), 6000),   // "Build the Best You" fades in
-      setTimeout(() => setStage(5), 8000),   // Button appears with light sweep
+      setTimeout(() => setStage(2), 2000),   // "MT" ignites with glow + Logo light trail starts
+      setTimeout(() => setStage(3), 7000),   // "Build the Best You" fades in
+      setTimeout(() => setStage(4), 9000),   // Button appears with light sweep
     ];
     
     return () => timers.forEach(clearTimeout);
@@ -72,22 +71,22 @@ const SiteEntry = () => {
           </motion.span>
         </div>
 
-        {/* SVG Head Logo with Light Trail Animation - Stage 3 */}
+        {/* SVG Head Logo with Light Trail Animation - Stage 2 */}
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ 
-            opacity: stage >= 3 ? 1 : 0,
+            opacity: stage >= 2 ? 1 : 0,
           }}
           transition={{ duration: 0.5, ease: "easeOut" }}
-          className={`relative w-80 h-80 md:w-96 md:h-96 ${stage >= 3 ? 'logo-neon-pulse' : ''}`}
+          className="relative w-80 h-80 md:w-96 md:h-96"
         >
-          <HeadOutlineSVG isAnimating={stage >= 3} />
+          <HeadOutlineSVG isAnimating={stage >= 2} />
         </motion.div>
 
-        {/* "Build the Best You" Headline - Fades in at stage 4 */}
+        {/* "Build the Best You" Headline - Fades in at stage 3 */}
         <motion.h1
           initial={{ opacity: 0 }}
-          animate={{ opacity: stage >= 4 ? 1 : 0 }}
+          animate={{ opacity: stage >= 3 ? 1 : 0 }}
           transition={{ duration: 3, ease: "easeInOut" }}
           className="text-6xl md:text-7xl font-bold text-center leading-tight"
           style={{
@@ -100,10 +99,10 @@ const SiteEntry = () => {
           Build the Best You
         </motion.h1>
 
-        {/* ENTER Button with Light Sweep - Fades in at stage 5 */}
+        {/* ENTER Button with Light Sweep - Fades in at stage 4 */}
         <motion.div
           initial={{ opacity: 0 }}
-          animate={{ opacity: stage >= 5 ? 1 : 0 }}
+          animate={{ opacity: stage >= 4 ? 1 : 0 }}
           transition={{ duration: 2, ease: "easeInOut" }}
         >
           <Button
@@ -147,30 +146,6 @@ const SiteEntry = () => {
           }
         }
 
-        .logo-neon-pulse {
-          animation: logo-neon-pulse 3s ease-in-out infinite;
-        }
-
-        @keyframes logo-neon-pulse {
-          0%, 100% { 
-            filter: 
-              drop-shadow(0 0 2px #FFFFFF) 
-              drop-shadow(0 0 10px #FFD700) 
-              drop-shadow(0 0 30px #D4A574) 
-              drop-shadow(0 0 60px #B87333) 
-              drop-shadow(0 0 100px #B87333);
-            transform: scale(1);
-          }
-          50% { 
-            filter: 
-              drop-shadow(0 0 4px #FFFFFF) 
-              drop-shadow(0 0 20px #FFD700) 
-              drop-shadow(0 0 50px #D4A574) 
-              drop-shadow(0 0 100px #B87333) 
-              drop-shadow(0 0 150px #B87333);
-            transform: scale(1.05);
-          }
-        }
       `}</style>
     </div>
   );
