@@ -170,7 +170,7 @@ const AssessmentsTab: React.FC = () => {
           <Button 
             size="lg"
             className="bg-primary hover:bg-primary/90"
-            onClick={() => navigate("/progress-reports")}
+            onClick={() => navigate("/app/progress-reports")}
           >
             View Assessment History
           </Button>

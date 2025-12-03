@@ -105,7 +105,7 @@ export default function ClientVideoSession() {
       <div className="bg-black/40 backdrop-blur-sm border-b border-white/10 p-4">
         <div className="max-w-7xl mx-auto flex items-center justify-between">
           <div>
-            <h1 className="text-xl font-semibold text-white">Video Session with Dr. Damien Pena</h1>
+            <h1 className="text-xl font-semibold text-white">Video Session with Dr. Chris Hopkins</h1>
             <p className="text-sm text-gray-300">
               {isConnected ? '● Connected' : '○ Connecting...'}
             </p>

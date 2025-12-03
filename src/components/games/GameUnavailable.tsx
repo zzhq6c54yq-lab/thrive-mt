@@ -13,8 +13,8 @@ const GameUnavailable: React.FC = () => {
       <p className="mb-4 text-zinc-600 text-center max-w-xs">
         Sorry, this mini-game isn't ready yet. Please check back soon!
       </p>
-      <Button onClick={() => navigate("/")} className="bg-gradient-to-r from-orange-400 to-amber-300 text-black">
-        Back to Home
+      <Button onClick={() => navigate("/app/dashboard")} className="bg-gradient-to-r from-orange-400 to-amber-300 text-black">
+        Back to Dashboard
       </Button>
     </div>
   );

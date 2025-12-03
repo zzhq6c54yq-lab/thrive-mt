@@ -46,7 +46,7 @@ export const SafetyPlanCard: React.FC<SafetyPlanCardProps> = ({
             <p className="text-xs text-muted-foreground mb-2">
               2-minute grounding exercise
             </p>
-            <Button size="sm" variant="outline" onClick={() => navigate('/breathing')}>
+            <Button size="sm" variant="outline" onClick={() => navigate('/app/breathing')}>
               <Wind className="w-4 h-4 mr-1" />
               Start
             </Button>
@@ -92,7 +92,7 @@ export const SafetyPlanCard: React.FC<SafetyPlanCardProps> = ({
             <Button
               size="sm"
               variant="destructive"
-              onClick={() => navigate('/crisis-resources')}
+              onClick={() => navigate('/app/crisis-resources')}
             >
               <AlertCircle className="w-4 h-4 mr-1" />
               Crisis Resources

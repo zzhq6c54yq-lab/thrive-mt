@@ -147,7 +147,7 @@ export const VideoMessageRecorder: React.FC<VideoMessageRecorderProps> = ({ onCo
       
       toast({
         title: "Video message recorded",
-        description: "Your video message has been sent to Dr. Damien Pena.",
+        description: "Your video message has been sent to Dr. Chris Hopkins.",
       });
     } catch (error) {
       console.error('Error uploading video:', error);
@@ -258,7 +258,7 @@ export const VideoMessageRecorder: React.FC<VideoMessageRecorderProps> = ({ onCo
         {/* Info text */}
         <p className="text-sm text-center text-muted-foreground">
           {!recordedBlob 
-            ? `Record up to ${MAX_DURATION / 60} minutes. Your message will be sent to Dr. Damien Pena.`
+            ? `Record up to ${MAX_DURATION / 60} minutes. Your message will be sent to Dr. Chris Hopkins.`
             : `Video recorded: ${formatTime(recordingTime)}. Review and send when ready.`
           }
         </p>

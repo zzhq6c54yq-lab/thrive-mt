@@ -21,7 +21,7 @@ export const CareHubSection: React.FC<CareHubSectionProps> = ({ dashboardData })
   if (!hasTherapist) {
     return (
       <div className="space-y-6">
-        {/* Contact Dr. Damien Pena Card */}
+        {/* Contact Dr. Chris Hopkins Card */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -199,7 +199,7 @@ export const CareHubSection: React.FC<CareHubSectionProps> = ({ dashboardData })
             <Button 
               variant="gold" 
               size="lg" 
-              onClick={() => navigate('/real-time-therapy?matching=true')} 
+              onClick={() => navigate('/app/real-time-therapy?matching=true')} 
               className="shadow-lg hover:shadow-xl hover:shadow-[#D4AF37]/20 transition-all"
             >
               Start Matching Now
@@ -259,7 +259,7 @@ export const CareHubSection: React.FC<CareHubSectionProps> = ({ dashboardData })
             size="default" 
             variant="outline" 
             className="border-[#D4AF37]/40 hover:border-[#D4AF37]/60"
-            onClick={() => navigate('/real-time-therapy')}
+            onClick={() => navigate('/app/real-time-therapy')}
           >
             Reschedule
           </Button>
@@ -281,7 +281,7 @@ export const CareHubSection: React.FC<CareHubSectionProps> = ({ dashboardData })
           variant="default"
           size="lg" 
           className="w-full justify-start bg-gradient-to-r from-[#D4AF37] to-[#B8941F] hover:from-[#B8941F] hover:to-[#D4AF37] text-black font-semibold shadow-lg hover:shadow-xl transition-all"
-          onClick={() => navigate('/messages')}
+          onClick={() => navigate('/app/messages')}
         >
           <MessageSquare className="w-5 h-5 mr-3" />
           Message My Therapist
@@ -290,7 +290,7 @@ export const CareHubSection: React.FC<CareHubSectionProps> = ({ dashboardData })
           variant="ghost" 
           size="default" 
           className="w-full justify-start hover:bg-[#D4AF37]/10 text-base"
-          onClick={() => navigate('/journal')}
+          onClick={() => navigate('/app/journal')}
         >
           <ArrowRight className="w-5 h-5 mr-3 text-[#D4AF37]" />
           Share today's journal summary

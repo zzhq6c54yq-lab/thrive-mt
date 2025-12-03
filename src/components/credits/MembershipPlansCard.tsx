@@ -15,7 +15,7 @@ const MembershipPlansCard: React.FC<MembershipPlansCardProps> = ({ currentPlan, 
   const [billingCycle, setBillingCycle] = useState<'monthly' | 'yearly'>('monthly');
   
   const handleViewAllPlans = () => {
-    navigate("/subscription-plans");
+    navigate("/app/subscription-plans");
   };
   
   const getPrice = (monthlyPrice: string | number) => {

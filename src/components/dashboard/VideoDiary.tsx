@@ -38,13 +38,13 @@ const VideoDiary: React.FC = () => {
       duration: 1500
     });
     
-    navigate("/video-diary/new", { 
+    navigate("/app/video-diary/new", { 
       state: { from: window.location.pathname } 
     });
   };
   
   const handleViewAll = () => {
-    navigate("/video-diary", { 
+    navigate("/app/video-diary", { 
       state: { from: window.location.pathname } 
     });
   };
@@ -127,7 +127,7 @@ const VideoDiary: React.FC = () => {
                 <div 
                   key={video.id}
                   className="group cursor-pointer relative bg-[#292938] rounded-xl overflow-hidden shadow-md border border-[#393950] hover:border-orange-500/50 transition-all"
-                  onClick={() => navigate(`/video-diary/${video.id}`)}
+                  onClick={() => navigate(`/app/video-diary/${video.id}`)}
                 >
                   <div className="relative rounded-t-lg overflow-hidden mb-2">
                     {activeVideoId === video.id ? (

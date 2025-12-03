@@ -46,7 +46,7 @@ export default function TodaysFocus({ activities }: TodaysFocusProps) {
               Let's create your personalized daily plan
             </p>
             <Button 
-              onClick={() => navigate('/onboarding')}
+              onClick={() => navigate('/app/onboarding')}
               className="bg-gradient-to-r from-[#D4AF37] to-[#B8941F] hover:from-[#B8941F] hover:to-[#D4AF37] text-black font-semibold"
             >
               Get Started

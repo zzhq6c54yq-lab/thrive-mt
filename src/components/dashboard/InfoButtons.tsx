@@ -10,17 +10,17 @@ const InfoButtons: React.FC = () => {
 
   const handleBarterSystem = () => {
     console.log("Barter System clicked");
-    navigate("/barter-system");
+    navigate("/app/barter-system");
   };
 
   const handleUpgradePlan = () => {
     console.log("Upgrade Plan clicked");
-    navigate("/subscription-plans");
+    navigate("/app/subscription-plans");
   };
 
   const handleOmniCredits = () => {
     console.log("Omni Credits clicked");
-    navigate("/copay-credits");
+    navigate("/app/copay-credits");
   };
 
   return (

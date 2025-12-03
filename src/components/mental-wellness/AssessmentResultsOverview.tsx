@@ -327,7 +327,7 @@ export const AssessmentResultsOverview: React.FC<AssessmentResultsOverviewProps>
                 </p>
                 <Button
                   className="bg-red-600 hover:bg-red-700"
-                  onClick={() => navigate('/real-time-therapy')}
+                  onClick={() => navigate('/app/real-time-therapy')}
                 >
                   {isSpanish ? 'Conectar con un Terapeuta' : 'Connect with a Therapist'}
                 </Button>

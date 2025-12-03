@@ -273,7 +273,7 @@ const VisionBoard: React.FC<VisionBoardProps> = ({
     setIsProcessing(true);
     
     setTimeout(() => {
-      navigate("/personalized-content", { state: { qualities: selectedQualities, goals: selectedGoals } });
+      navigate("/app/personalized-content", { state: { qualities: selectedQualities, goals: selectedGoals } });
       setIsProcessing(false);
     }, 500);
   };

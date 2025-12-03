@@ -46,28 +46,28 @@ export function useKeyboardShortcuts({ onCommandPalette }: KeyboardShortcutsConf
     // Journal: Cmd/Ctrl + J
     if (modKey && e.key === 'j') {
       e.preventDefault();
-      navigate('/journaling');
+      navigate('/app/journaling');
       return;
     }
 
     // AI Companion: Cmd/Ctrl + H
     if (modKey && e.key === 'h') {
       e.preventDefault();
-      navigate('/mini-session');
+      navigate('/app/mini-session');
       return;
     }
 
     // Today's Plan: Cmd/Ctrl + T
     if (modKey && e.key === 't') {
       e.preventDefault();
-      navigate('/dashboard');
+      navigate('/app/dashboard');
       return;
     }
 
     // Progress: Cmd/Ctrl + P
     if (modKey && e.key === 'p') {
       e.preventDefault();
-      navigate('/progress-analytics');
+      navigate('/app/progress-analytics');
       return;
     }
 

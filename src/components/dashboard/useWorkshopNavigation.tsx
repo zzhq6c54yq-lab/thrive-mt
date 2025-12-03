@@ -21,28 +21,28 @@ export const useWorkshopNavigation = () => {
     
     switch(workshopId) {
       case "mindful-communication":
-        navigate("/workshop/mindful-communication", { 
+        navigate("/app/workshop/mindful-communication", { 
           state: { workshopTitle: isSpanish ? "Comunicación Consciente" : "Mindful Communication" } 
         });
         break;
       case "emotional-regulation":
-        navigate("/workshop/emotional-regulation", {
+        navigate("/app/workshop/emotional-regulation", {
           state: { workshopTitle: isSpanish ? "Regulación Emocional" : "Emotional Regulation" }
         });
         break;
       case "stress-management":
-        navigate("/workshop/stress-management", {
+        navigate("/app/workshop/stress-management", {
           state: { workshopTitle: isSpanish ? "Manejo del Estrés" : "Stress Management" }
         });
         break;
       default:
         if (workshopId.startsWith("military-")) {
           const militaryWorkshopId = workshopId.replace("military-", "");
-          navigate(`/military-workshop/${militaryWorkshopId}`);
+          navigate(`/app/military-workshop/${militaryWorkshopId}`);
         } 
         else if (workshopId.startsWith("corporate-")) {
           const corporateWorkshopId = workshopId.replace("corporate-", "");
-          navigate("/corporate-wellness", { 
+          navigate("/app/corporate-wellness", { 
             state: { 
               workshop: workshopTitle, 
               showWorkshopContent: true 
@@ -50,7 +50,7 @@ export const useWorkshopNavigation = () => {
           });
         }
         else {
-          navigate(`/workshop/${workshopId}`);
+          navigate(`/app/workshop/${workshopId}`);
         }
     }
   };

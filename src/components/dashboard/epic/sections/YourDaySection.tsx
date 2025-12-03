@@ -212,7 +212,7 @@ export default function YourDaySection({ dashboardData, onCheckInComplete }: You
           <Button
             onClick={() => {
               trackClick({ component: 'view-rewards' });
-              navigate('/rewards');
+              navigate('/app/rewards');
             }}
             className="bg-gradient-to-r from-[#D4AF37] to-[#B8941F] hover:from-[#B8941F] hover:to-[#D4AF37] text-black font-semibold"
           >
@@ -228,7 +228,7 @@ export default function YourDaySection({ dashboardData, onCheckInComplete }: You
         className="relative overflow-hidden rounded-lg border border-[#B87333]/50 bg-gray-900/80 backdrop-blur-sm cursor-pointer hover:border-[#B87333] transition-all group"
         onClick={() => {
           trackClick({ component: 'explore-portals' });
-          navigate('/home');
+          navigate('/app/dashboard');
         }}
       >
         {/* Faded collage background of portal images */}

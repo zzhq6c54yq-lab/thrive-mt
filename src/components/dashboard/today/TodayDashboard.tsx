@@ -46,7 +46,7 @@ export default function TodayDashboard() {
             <Button
               variant="ghost"
               size="sm"
-              onClick={() => navigate('/home')}
+              onClick={() => navigate('/app/dashboard')}
               className="text-white hover:bg-white/10"
             >
               <LayoutGrid className="w-4 h-4 mr-2" />

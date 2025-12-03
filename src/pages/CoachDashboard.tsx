@@ -22,7 +22,7 @@ const CoachDashboard = () => {
     // Check if coach has access
     const coachAccess = sessionStorage.getItem('coachAccess');
     if (coachAccess !== 'true') {
-      navigate('/');
+      navigate('/app/auth');
     }
   }, [navigate]);
 
@@ -32,7 +32,7 @@ const CoachDashboard = () => {
         title: "Logged out successfully",
         description: "Have a great day!",
       });
-    navigate('/');
+    navigate('/app/auth');
   };
 
   return (

@@ -90,7 +90,7 @@ const DailyWellnessChallenges: React.FC = () => {
   
   const handleViewAll = () => {
     // Pass the active tab to the WellnessChallenges page
-    navigate("/wellness-challenges", { state: { initialTab: activeTab } });
+    navigate("/app/wellness-challenges", { state: { initialTab: activeTab } });
   };
   
   const handleChallengeClick = (id: string) => {
@@ -99,7 +99,7 @@ const DailyWellnessChallenges: React.FC = () => {
       description: translations.openingDetails,
       duration: 1500
     });
-    navigate(`/wellness-challenges/${id}`);
+    navigate(`/app/wellness-challenges/${id}`);
   };
 
   const handleToggleCompletion = (id: string, e: React.MouseEvent) => {
@@ -202,7 +202,7 @@ const DailyWellnessChallenges: React.FC = () => {
             </button>
             
             <button
-              onClick={() => navigate("/copay-credits")}
+              onClick={() => navigate("/app/copay-credits")}
               className="flex items-center text-amber-300 hover:text-amber-200 text-sm font-medium transition-colors"
             >
               {translations.redeemForCredits}

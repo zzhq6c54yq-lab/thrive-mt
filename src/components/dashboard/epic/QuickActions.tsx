@@ -39,7 +39,7 @@ export default function QuickActions() {
       id: 'emergency',
       label: 'Emergency Help',
       icon: <Heart className="w-4 h-4" />,
-      onClick: () => navigate('/crisis-resources'),
+      onClick: () => navigate('/app/crisis-resources'),
       color: 'bg-red-500 hover:bg-red-600',
       urgent: true
     });
@@ -49,7 +49,7 @@ export default function QuickActions() {
       id: 'breathing',
       label: 'Quick Breathing',
       icon: <Wind className="w-4 h-4" />,
-      onClick: () => navigate('/breathing'),
+      onClick: () => navigate('/app/breathing'),
       color: 'bg-blue-500 hover:bg-blue-600'
     });
 
@@ -60,7 +60,7 @@ export default function QuickActions() {
         id: 'continue-plan',
         label: `Start ${firstIncomplete.title}`,
         icon: <Play className="w-4 h-4" />,
-        onClick: () => navigate(firstIncomplete.route_path || '/dashboard'),
+        onClick: () => navigate(firstIncomplete.route_path || '/app/dashboard'),
         color: 'bg-green-500 hover:bg-green-600'
       });
     }
@@ -70,7 +70,7 @@ export default function QuickActions() {
       id: 'ai-chat',
       label: 'Talk to AI Companion',
       icon: <MessageCircle className="w-4 h-4" />,
-      onClick: () => navigate('/mini-session'),
+      onClick: () => navigate('/app/mini-session'),
       color: 'bg-purple-500 hover:bg-purple-600'
     });
 

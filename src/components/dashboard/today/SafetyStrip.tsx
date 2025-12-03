@@ -19,7 +19,7 @@ export default function SafetyStrip() {
           <Button
             size="sm"
             variant="destructive"
-            onClick={() => navigate('/crisis-support')}
+            onClick={() => navigate('/app/crisis-support')}
             className="flex-shrink-0"
           >
             Crisis Resources

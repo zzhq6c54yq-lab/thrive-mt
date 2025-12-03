@@ -16,14 +16,14 @@ export const RequestTherapistContact: React.FC = () => {
   const [message, setMessage] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  // Get Dr. Damien Pena's therapist ID
+  // Get Dr. Chris Hopkins' therapist ID
   const { data: therapist } = useQuery({
-    queryKey: ['dr-damien-pena'],
+    queryKey: ['dr-chris-hopkins'],
     queryFn: async () => {
       const { data, error } = await supabase
         .from('therapists')
         .select('id, name')
-        .ilike('name', '%Damien Pena%')
+        .ilike('name', '%Chris Hopkins%')
         .single();
       
       if (error) throw error;
@@ -73,7 +73,7 @@ export const RequestTherapistContact: React.FC = () => {
     if (!message.trim()) {
       toast({
         title: "Message required",
-        description: "Please enter a message to send to Dr. Damien Pena",
+        description: "Please enter a message to send to Dr. Chris Hopkins",
         variant: "destructive"
       });
       return;
@@ -131,7 +131,7 @@ export const RequestTherapistContact: React.FC = () => {
 
       toast({
         title: "Request sent successfully",
-        description: `Dr. Damien Pena will review your ${requestType === 'callback_request' ? 'callback request' : 'message'} and respond soon.`,
+        description: `Dr. Chris Hopkins will review your ${requestType === 'callback_request' ? 'callback request' : 'message'} and respond soon.`,
       });
 
       setMessage('');
@@ -154,7 +154,7 @@ export const RequestTherapistContact: React.FC = () => {
       <Card className="bg-gradient-to-br from-[#D4AF37]/10 to-[#B8941F]/5 border border-[#D4AF37]/40">
         <CardHeader>
           <CardTitle className="text-2xl bg-gradient-to-r from-[#D4AF37] to-[#E5C5A1] bg-clip-text text-transparent">
-            Contact Dr. Damien Pena
+            Contact Dr. Chris Hopkins
           </CardTitle>
           <CardDescription className="text-base">
             Choose how you'd like to reach out
@@ -237,7 +237,7 @@ export const RequestTherapistContact: React.FC = () => {
         </div>
         <CardDescription>
           {requestType === 'callback_request' 
-            ? 'Let Dr. Damien Pena know when you\'re available' 
+            ? 'Let Dr. Chris Hopkins know when you\'re available' 
             : 'Share what brings you here today'}
         </CardDescription>
       </CardHeader>

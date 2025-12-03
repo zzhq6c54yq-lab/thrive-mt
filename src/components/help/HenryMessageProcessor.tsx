@@ -44,7 +44,7 @@ const HenryMessageProcessor: React.FC<HenryMessageProcessorProps> = ({ onNewMess
         
         // Simulate counselor joining after delay
         setTimeout(() => {
-          const counselorJoiningMessage = "Hello, I'm Dr. Damien Pena, a licensed therapist who's joining this conversation. I appreciate your courage in sharing these difficult feelings. I'd like to work with you directly now to ensure your safety and provide the support you need. Could you share a bit more about what's happening for you right now?";
+          const counselorJoiningMessage = "Hello, I'm Dr. Chris Hopkins, a licensed therapist who's joining this conversation. I appreciate your courage in sharing these difficult feelings. I'd like to work with you directly now to ensure your safety and provide the support you need. Could you share a bit more about what's happening for you right now?";
           
           onNewMessage({ 
             text: counselorJoiningMessage, 
@@ -125,7 +125,7 @@ export const useHenryMessageProcessor = (
         
         // Simulate counselor joining after delay
         setTimeout(() => {
-          const counselorJoiningMessage = "Hello, I'm Dr. Damien Pena, a licensed therapist who's joining this conversation. I appreciate your courage in sharing these difficult feelings. I'd like to work with you directly now to ensure your safety and provide the support you need. Could you share a bit more about what's happening for you right now?";
+          const counselorJoiningMessage = "Hello, I'm Dr. Chris Hopkins, a licensed therapist who's joining this conversation. I appreciate your courage in sharing these difficult feelings. I'd like to work with you directly now to ensure your safety and provide the support you need. Could you share a bit more about what's happening for you right now?";
           
           onNewMessage({ 
             text: counselorJoiningMessage, 

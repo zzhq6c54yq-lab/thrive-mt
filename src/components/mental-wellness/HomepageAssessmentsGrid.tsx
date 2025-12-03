@@ -45,7 +45,7 @@ const HomepageAssessmentsGrid: React.FC = () => {
   };
 
   const handleViewAllAssessments = () => {
-    navigate('/mental-wellness-assessments');
+    navigate('/app/mental-wellness-assessments');
   };
 
   const getDifficultyColor = (difficulty: string) => {

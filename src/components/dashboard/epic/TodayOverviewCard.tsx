@@ -136,7 +136,7 @@ export const TodayOverviewCard: React.FC<TodayOverviewCardProps> = ({
                   size="sm"
                   variant="outline"
                   className="mt-3"
-                  onClick={() => navigate('/onboarding')}
+                  onClick={() => navigate('/app/onboarding')}
                 >
                   Set Your Goals
                 </Button>

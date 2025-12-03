@@ -8,9 +8,9 @@ export const DashboardFooter: React.FC = () => {
   const navigate = useNavigate();
 
   const quickLinks = [
-    { label: 'Help & Support', icon: HelpCircle, onClick: () => navigate('/help') },
-    { label: 'Settings', icon: Settings, onClick: () => navigate('/settings') },
-    { label: 'Crisis Resources', icon: Phone, onClick: () => navigate('/crisis') },
+    { label: 'Help & Support', icon: HelpCircle, onClick: () => navigate('/app/help') },
+    { label: 'Settings', icon: Settings, onClick: () => navigate('/app/settings') },
+    { label: 'Crisis Resources', icon: Phone, onClick: () => navigate('/app/crisis-resources') },
   ];
 
   return (

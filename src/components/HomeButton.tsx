@@ -42,12 +42,7 @@ const HomeButton: React.FC<HomeButtonProps> = ({
       
       // Always navigate to main screen with the 'main' screenState to avoid intro screens
       // Also prevent tutorials from showing
-      navigate("/", { 
-        state: { 
-          screenState: 'main',
-          preventTutorial: true 
-        }
-      });
+      navigate("/app/dashboard");
     }
   };
 

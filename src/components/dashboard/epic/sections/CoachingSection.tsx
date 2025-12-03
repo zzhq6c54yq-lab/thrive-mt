@@ -77,7 +77,7 @@ const CoachingSection: React.FC = () => {
               </div>
               
               <Button
-                onClick={() => navigate('/coach-intro')}
+                onClick={() => navigate('/app/coach-intro')}
                 className="w-full bg-gradient-to-r from-bronze-500 to-bronze-600 hover:from-bronze-600 hover:to-bronze-700 text-white group"
                 size="lg"
               >

@@ -17,16 +17,7 @@ const ThriveButton: React.FC<ThriveButtonProps> = ({ className = '' }) => {
     // Ensure onboarding is marked complete
     localStorage.setItem('hasCompletedOnboarding', 'true');
     
-    navigate('/', { 
-      state: { 
-        screenState: 'main',
-        returnToMain: true,
-        fromPath: currentPath,
-        preserveState: true,
-        preventIntroRedirect: true,
-        preventTutorial: true
-      } 
-    });
+    navigate('/app/dashboard');
   };
   
   return (

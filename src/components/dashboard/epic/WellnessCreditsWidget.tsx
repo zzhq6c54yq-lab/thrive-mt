@@ -117,10 +117,10 @@ export const WellnessCreditsWidget: React.FC<WellnessCreditsWidgetProps> = ({
       </div>
 
       <div className="flex gap-2">
-        <Button variant="gold" className="flex-1" onClick={() => navigate('/rewards')}>
+        <Button variant="gold" className="flex-1" onClick={() => navigate('/app/rewards')}>
           View All Rewards
         </Button>
-        <Button variant="outline" onClick={() => navigate('/rewards')}>
+        <Button variant="outline" onClick={() => navigate('/app/rewards')}>
           How it works
         </Button>
       </div>

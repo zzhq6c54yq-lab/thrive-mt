@@ -220,7 +220,7 @@ const ResourcesTab: React.FC = () => {
           <Button 
             variant="outline" 
             className="border-2 border-primary/30 hover:bg-primary/10"
-            onClick={() => navigate("/crisis-support")}
+            onClick={() => navigate("/app/crisis-support")}
           >
             <Heart className="mr-2 h-4 w-4" />
             Crisis Resources
