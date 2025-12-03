@@ -6,9 +6,8 @@ import { toast } from "sonner";
 const LS_KEY = "artTherapyStudio.v2";
 
 // Stub: wire this to your Supabase instance later.
-async function saveToSupabase(payload: SaveData) {
+async function saveToSupabase(_payload: SaveData) {
   // In a real implementation, this would save to Supabase
-  console.log("Saving to Supabase:", payload);
   return { ok: true };
 }
 

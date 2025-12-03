@@ -39,9 +39,7 @@ const usePopupManagement = (screenState: string): PopupManagementReturn => {
   }, [popupsShown]);
 
   const markTutorialCompleted = () => {
-    // Reduced logging - only log once when tutorial is actually completed
     if (!localStorage.getItem('tutorialCompleted')) {
-      console.log("Tutorial completed for the first time");
       localStorage.setItem('tutorialCompleted', 'true');
     }
     

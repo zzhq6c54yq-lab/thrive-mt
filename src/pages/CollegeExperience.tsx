@@ -51,84 +51,84 @@ const CollegeExperience: React.FC = () => {
       title: "Academic Stress Management",
       description: "Techniques for balancing coursework, exams, and deadlines",
       icon: BookOpen,
-      path: "/mental-wellness-tools",
+      path: "/app/mental-wellness-tools",
       category: "academic"
     },
     {
       title: "Campus Counseling Services",
       description: "Directory of free mental health services available on campus",
       icon: MapPin,
-      path: "/resource-library",
+      path: "/app/resource-library",
       category: "support"
     },
     {
       title: "Peer Support Network",
       description: "Connect with trained student mentors for one-on-one conversations",
       icon: Users,
-      path: "/community-support",
+      path: "/app/community-support",
       category: "support"
     },
     {
       title: "Time Management Workshop",
       description: "Interactive tools to balance academics, social life, and self-care",
       icon: Calendar,
-      path: "/workshops",
+      path: "/app/workshops",
       category: "academic"
     },
     {
       title: "Test Anxiety Relief",
       description: "Strategies to manage anxiety and perform your best on exams",
       icon: CopyCheck,
-      path: "/mental-wellness-tools",
+      path: "/app/mental-wellness-tools",
       category: "academic"
     },
     {
       title: "Mindfulness for Students",
       description: "Quick meditation practices adapted for busy student schedules",
       icon: Brain,
-      path: "/mindfulness",
+      path: "/app/mindfulness",
       category: "wellness"
     },
     {
       title: "Healthy Sleep Habits",
       description: "Improve your sleep quality despite dorm life and late-night study sessions",
       icon: Moon,
-      path: "/mindfulness",
+      path: "/app/mindfulness",
       category: "wellness"
     },
     {
       title: "Social Anxiety Workshop",
       description: "Navigate campus social life with confidence and ease",
       icon: User,
-      path: "/workshops",
+      path: "/app/workshops",
       category: "social"
     },
     {
       title: "Financial Stress Relief",
       description: "Coping strategies for students dealing with financial pressure",
       icon: Lightbulb,
-      path: "/financial-assistance",
+      path: "/app/financial-assistance",
       category: "lifestyle"
     },
     {
       title: "Substance Use Awareness",
       description: "Education and support for making informed choices about alcohol and drugs",
       icon: Coffee,
-      path: "/resource-library",
+      path: "/app/resource-library",
       category: "wellness"
     },
     {
       title: "Nutrition on a Budget",
       description: "Eating well in college with limited time and money",
       icon: Utensils,
-      path: "/lifestyle-integration",
+      path: "/app/lifestyle-integration",
       category: "wellness"
     },
     {
       title: "Campus Workout Guide",
       description: "Making the most of your campus recreation facilities",
       icon: Dumbbell,
-      path: "/holistic-wellness",
+      path: "/app/holistic-wellness",
       category: "wellness"
     }
   ];
@@ -218,7 +218,7 @@ const CollegeExperience: React.FC = () => {
               </p>
               <Button 
                 className="bg-[#D946EF] hover:bg-[#D946EF]/80 text-white font-medium shadow-lg group transition-all duration-300 hover:translate-x-1"
-                onClick={() => navigate("/mindfulness")}
+                onClick={() => navigate("/app/mindfulness")}
               >
                 Start Your Journey <ArrowRight className="ml-1 h-4 w-4 group-hover:translate-x-1 transition-transform"/>
               </Button>

@@ -65,11 +65,8 @@ export function useTodayDashboard() {
 
   const loadDashboardData = async () => {
     if (!user) {
-      console.log('[Dashboard] No user found, skipping data load');
       return;
     }
-
-    console.log('[Dashboard] Loading dashboard data for user:', user.id);
 
     try {
       setLoading(true);
@@ -209,15 +206,6 @@ export function useTodayDashboard() {
           label: score < 5 ? 'Minimal' : score < 10 ? 'Mild' : score < 15 ? 'Moderate' : score < 20 ? 'Moderately Severe' : 'Severe'
         };
       }
-
-      console.log('[Dashboard] Data loaded successfully:', {
-        planCount: todaysPlan.length,
-        streak: streakData.data?.current_streak || 0,
-        checkIns: checkInsData.data?.length || 0,
-        appointments: appointmentsData.data?.length || 0,
-        hasWallet: !!walletData.data,
-        hasInsight: !!insightData.data
-      });
 
       setDashboardData({
         profile: profile,

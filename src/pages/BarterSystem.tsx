@@ -26,13 +26,13 @@ const BarterSystem = () => {
       });
       
       // Clean up the URL
-      navigate('/barter-system', { replace: true });
+      navigate('/app/barter-system', { replace: true });
     }
   }, [location, navigate, toast]);
 
   // This function properly navigates to the financial assistance page
   const handleStartApplication = () => {
-    navigate("/financial-assistance");
+    navigate("/app/financial-assistance");
   };
 
   // This function properly navigates to the contact support page  

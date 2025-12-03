@@ -37,7 +37,7 @@ const TutorialButton: React.FC<TutorialButtonProps> = ({
     const path = location.pathname;
     
     // Hide button on DoD Portal first two screens
-    if (path === "/dod-portal" || path === "/department-of-defense") {
+    if (path === "/app/dod-portal" || path === "/app/department-of-defense") {
       return false;
     }
     

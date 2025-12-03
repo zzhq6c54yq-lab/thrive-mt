@@ -59,7 +59,7 @@ const LanguageAwareNavMenu: React.FC = () => {
           </NavigationMenuTrigger>
           <NavigationMenuContent>
             <ul className="grid w-[400px] gap-3 p-4 md:w-[500px] md:grid-cols-2 lg:w-[600px]">
-              <li onClick={() => handleNavigate("/department-of-defense")} className="cursor-pointer">
+              <li onClick={() => handleNavigate("/app/department-of-defense")} className="cursor-pointer">
                 <div className="block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground">
                   <div className="text-sm font-medium leading-none">
                     {isSpanish ? "Militares y Veteranos" :
@@ -75,7 +75,7 @@ const LanguageAwareNavMenu: React.FC = () => {
                   </p>
                 </div>
               </li>
-              <li onClick={() => handleNavigate("/college-portal")} className="cursor-pointer">
+              <li onClick={() => handleNavigate("/app/college-portal")} className="cursor-pointer">
                 <div className="block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground">
                   <div className="text-sm font-medium leading-none">
                     {isSpanish ? "La Experiencia Universitaria" :
@@ -91,7 +91,7 @@ const LanguageAwareNavMenu: React.FC = () => {
                   </p>
                 </div>
               </li>
-              <li onClick={() => handleNavigate("/small-business-selection")} className="cursor-pointer">
+              <li onClick={() => handleNavigate("/app/small-business-selection")} className="cursor-pointer">
                 <div className="block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground">
                   <div className="text-sm font-medium leading-none">
                     {isSpanish ? "Pequeñas Empresas" :
@@ -107,7 +107,7 @@ const LanguageAwareNavMenu: React.FC = () => {
                   </p>
                 </div>
               </li>
-              <li onClick={() => handleNavigate("/adolescent-selection")} className="cursor-pointer">
+              <li onClick={() => handleNavigate("/app/adolescent-selection")} className="cursor-pointer">
                 <div className="block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground">
                   <div className="text-sm font-medium leading-none">
                     {isSpanish ? "La Experiencia Adolescente" :
@@ -123,7 +123,7 @@ const LanguageAwareNavMenu: React.FC = () => {
                   </p>
                 </div>
               </li>
-              <li onClick={() => handleNavigate("/golden-years-welcome")} className="cursor-pointer">
+              <li onClick={() => handleNavigate("/app/golden-years-welcome")} className="cursor-pointer">
                 <div className="block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground">
                   <div className="text-sm font-medium leading-none">
                     {isSpanish ? "Los Años Dorados" :
@@ -139,7 +139,7 @@ const LanguageAwareNavMenu: React.FC = () => {
                   </p>
                 </div>
               </li>
-              <li onClick={() => handleNavigate("/employee-welcome")} className="cursor-pointer">
+              <li onClick={() => handleNavigate("/app/employee-welcome")} className="cursor-pointer">
                 <div className="block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground">
                   <div className="text-sm font-medium leading-none">
                     {isSpanish ? "Portal para Empleados" :
@@ -155,7 +155,7 @@ const LanguageAwareNavMenu: React.FC = () => {
                   </p>
                 </div>
               </li>
-              <li onClick={() => handleNavigate("/police-officers-welcome")} className="cursor-pointer">
+              <li onClick={() => handleNavigate("/app/police-officers-welcome")} className="cursor-pointer">
                 <div className="block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground">
                   <div className="text-sm font-medium leading-none">
                     {isSpanish ? "Programa para Oficiales de Policía" :
@@ -184,7 +184,7 @@ const LanguageAwareNavMenu: React.FC = () => {
           </NavigationMenuTrigger>
           <NavigationMenuContent>
             <ul className="grid gap-3 p-4 md:w-[400px] lg:w-[500px] lg:grid-cols-2">
-              <li onClick={() => handleNavigate("/resource-library")} className="cursor-pointer">
+              <li onClick={() => handleNavigate("/app/resource-library")} className="cursor-pointer">
                 <NavigationMenuLink asChild>
                   <div
                     className="block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground"
@@ -204,7 +204,7 @@ const LanguageAwareNavMenu: React.FC = () => {
                   </div>
                 </NavigationMenuLink>
               </li>
-              <li onClick={() => handleNavigate("/workshops")} className="cursor-pointer">
+              <li onClick={() => handleNavigate("/app/workshops")} className="cursor-pointer">
                 <NavigationMenuLink asChild>
                   <div
                     className="block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground"
@@ -224,7 +224,7 @@ const LanguageAwareNavMenu: React.FC = () => {
                   </div>
                 </NavigationMenuLink>
               </li>
-              <li onClick={() => handleNavigate("/self-help-resources")} className="cursor-pointer">
+              <li onClick={() => handleNavigate("/app/self-help-resources")} className="cursor-pointer">
                 <NavigationMenuLink asChild>
                   <div
                     className="block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground"
@@ -244,7 +244,7 @@ const LanguageAwareNavMenu: React.FC = () => {
                   </div>
                 </NavigationMenuLink>
               </li>
-              <li onClick={() => handleNavigate("/community-support")} className="cursor-pointer">
+              <li onClick={() => handleNavigate("/app/community-support")} className="cursor-pointer">
                 <NavigationMenuLink asChild>
                   <div
                     className="block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground"
@@ -277,7 +277,7 @@ const LanguageAwareNavMenu: React.FC = () => {
           </NavigationMenuTrigger>
           <NavigationMenuContent>
             <ul className="grid w-[400px] gap-3 p-4 md:w-[500px] md:grid-cols-2 lg:w-[600px] lg:grid-cols-3">
-              <li onClick={() => handleNavigate("/mental-wellness-tools")} className="cursor-pointer">
+              <li onClick={() => handleNavigate("/app/mental-wellness-tools")} className="cursor-pointer">
                 <div className="block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground">
                   <div className="text-sm font-medium leading-none">
                     {isSpanish ? "Herramientas de Bienestar" :
@@ -293,7 +293,7 @@ const LanguageAwareNavMenu: React.FC = () => {
                   </p>
                 </div>
               </li>
-              <li onClick={() => handleNavigate("/journaling")} className="cursor-pointer">
+              <li onClick={() => handleNavigate("/app/journaling")} className="cursor-pointer">
                 <div className="block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground">
                   <div className="text-sm font-medium leading-none">
                     {isSpanish ? "Diario Personal" :
@@ -309,7 +309,7 @@ const LanguageAwareNavMenu: React.FC = () => {
                   </p>
                 </div>
               </li>
-              <li onClick={() => handleNavigate("/mindfulness")} className="cursor-pointer">
+              <li onClick={() => handleNavigate("/app/mindfulness")} className="cursor-pointer">
                 <div className="block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground">
                   <div className="text-sm font-medium leading-none">
                     {isSpanish ? "Mindfulness y Sueño" :

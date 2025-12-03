@@ -290,7 +290,7 @@ const BinauralBeats = () => {
             <Button 
               variant="link" 
               className="text-white hover:text-[#D4AF37] transition-colors p-0 flex items-center"
-              onClick={() => navigate("/dashboard")}
+              onClick={() => navigate("/app/dashboard")}
             >
               <ArrowLeft className="mr-2 h-4 w-4" />
               Back to Dashboard

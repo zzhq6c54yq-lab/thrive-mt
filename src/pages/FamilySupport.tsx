@@ -147,7 +147,7 @@ const FamilySupport: React.FC = () => {
 
   const handleGoBack = () => {
     if (location.state?.fromMainMenu) {
-      navigate('/home', { state: { preventTutorial: true } });
+      navigate('/app/dashboard', { state: { preventTutorial: true } });
     } else if (location.state?.returnToPortal) {
       navigate(location.state.returnToPortal, { 
         state: { 
@@ -155,7 +155,7 @@ const FamilySupport: React.FC = () => {
         } 
       });
     } else {
-      navigate('/home', { state: { preventTutorial: true } });
+      navigate('/app/dashboard', { state: { preventTutorial: true } });
     }
   };
 
@@ -165,7 +165,7 @@ const FamilySupport: React.FC = () => {
       description: "Loading your selected resource...",
       duration: 1500,
     });
-    navigate('/resource-library', { 
+    navigate('/app/resource-library', { 
       state: { 
         highlightResource: resourceId,
         preventTutorial: true,
@@ -216,7 +216,7 @@ const FamilySupport: React.FC = () => {
       duration: 2000,
     });
     setTimeout(() => {
-      navigate('/community-support', { 
+      navigate('/app/community-support', { 
         state: { 
           openSubmission: true,
           preventTutorial: true
@@ -347,7 +347,7 @@ const FamilySupport: React.FC = () => {
                   <Button 
                     variant="link" 
                     className="text-pink-400"
-                    onClick={() => navigate('/resource-library', { 
+                    onClick={() => navigate('/app/resource-library', { 
                       state: { 
                         category: 'family',
                         preventTutorial: true 

@@ -10,7 +10,7 @@ const Auth: React.FC = () => {
   // Redirect if already logged in
   useEffect(() => {
     supabase.auth.getSession().then(({ data }) => {
-      if (data.session) navigate("/");
+      if (data.session) navigate("/app/dashboard");
     });
     const { data: authListener } = supabase.auth.onAuthStateChange((_event, session) => {
       if (session) {
@@ -23,9 +23,9 @@ const Auth: React.FC = () => {
             .single()
             .then(({ data: profile }) => {
               if (profile?.is_therapist) {
-                navigate("/therapist-dashboard");
+                navigate("/app/therapist-portal");
               } else {
-                navigate("/");
+                navigate("/app/dashboard");
               }
             });
         }, 0);
@@ -54,9 +54,9 @@ const Auth: React.FC = () => {
 
         <Button 
           className="bg-gradient-to-r from-[#B87333] to-[#E5C5A1] hover:opacity-90 text-white px-6 py-3"
-          onClick={() => navigate("/")}
+          onClick={() => navigate("/app/dashboard")}
         >
-          Return to Login
+          Return to App
           <ArrowRight className="ml-2 h-4 w-4" />
         </Button>
       </div>

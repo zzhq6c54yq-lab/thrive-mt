@@ -74,8 +74,7 @@ export function useKeyboardShortcuts({ onCommandPalette }: KeyboardShortcutsConf
     // Help: Cmd/Ctrl + /
     if (modKey && e.key === '/') {
       e.preventDefault();
-      // Could show a shortcuts help modal
-      console.log('Keyboard shortcuts help');
+      // Could show a shortcuts help modal in the future
       return;
     }
   }, [navigate, onCommandPalette]);

@@ -1,0 +1,33 @@
+-- Fix all database functions with proper search_path to prevent schema hijacking
+
+ALTER FUNCTION public.sync_profile_email() SET search_path = public;
+ALTER FUNCTION public.update_sms_preferences_updated_at() SET search_path = public;
+ALTER FUNCTION public.update_journal_updated_at() SET search_path = public;
+ALTER FUNCTION public.handle_updated_at() SET search_path = public;
+ALTER FUNCTION public.update_transition_progress_updated_at() SET search_path = public;
+ALTER FUNCTION public.update_video_session_notes_updated_at() SET search_path = public;
+ALTER FUNCTION public.update_therapist_requests_updated_at() SET search_path = public;
+ALTER FUNCTION public.cleanup_expired_admin_sessions() SET search_path = public;
+ALTER FUNCTION public.increment_whisper_hearts() SET search_path = public;
+ALTER FUNCTION public.has_role(uuid, app_role) SET search_path = public;
+ALTER FUNCTION public.decrement_whisper_hearts() SET search_path = public;
+ALTER FUNCTION public.increment_reply_hearts() SET search_path = public;
+ALTER FUNCTION public.decrement_reply_hearts() SET search_path = public;
+ALTER FUNCTION public.increment_reply_count() SET search_path = public;
+ALTER FUNCTION public.decrement_reply_count() SET search_path = public;
+ALTER FUNCTION public.award_appreciation_token() SET search_path = public;
+ALTER FUNCTION public.award_bookmark_token() SET search_path = public;
+ALTER FUNCTION public.increment_comment_count(uuid) SET search_path = public;
+ALTER FUNCTION public.decrement_comment_count(uuid) SET search_path = public;
+ALTER FUNCTION public.increment_bookmark_count(uuid) SET search_path = public;
+ALTER FUNCTION public.decrement_bookmark_count(uuid) SET search_path = public;
+ALTER FUNCTION public.increment_comment_hearts(uuid) SET search_path = public;
+ALTER FUNCTION public.decrement_comment_hearts(uuid) SET search_path = public;
+ALTER FUNCTION public.update_golden_years_progress_updated_at() SET search_path = public;
+ALTER FUNCTION public.is_admin() SET search_path = public;
+ALTER FUNCTION public.get_anonymized_leaderboard(integer) SET search_path = public;
+ALTER FUNCTION public.cleanup_expired_reset_tokens() SET search_path = public;
+ALTER FUNCTION public.update_updated_at_column() SET search_path = public;
+ALTER FUNCTION public.handle_new_user() SET search_path = public;
+ALTER FUNCTION public.increment_hearts(uuid) SET search_path = public;
+ALTER FUNCTION public.decrement_hearts(uuid) SET search_path = public;
