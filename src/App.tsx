@@ -287,6 +287,7 @@ function App() {
           <Route path="/app/subscription-plans" element={<SubscriptionPlansPage />} />
           <Route path="/app/payment-success" element={<PaymentSuccessPage />} />
           <Route path="/app/financial-assistance" element={<FinancialAssistance />} />
+          <Route path="/app/barter-application" element={<BarterApplicationPage />} />
           <Route path="/app/contact" element={<ContactSupport />} />
           
           <Route path="/app/alternative-therapies" element={<AlternativeTherapies />} />

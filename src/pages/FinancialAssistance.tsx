@@ -112,7 +112,7 @@ const FinancialAssistance = () => {
         title: "Application submitted!",
         description: "We'll review your application and contact you within 2 business days.",
       });
-      navigate("/barter-system?success=true");
+      navigate("/app/barter-system?success=true");
     }, 2000);
   };
 

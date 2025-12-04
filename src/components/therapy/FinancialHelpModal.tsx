@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
-import { Heart, ArrowRight, Users, DollarSign, HandHelping, Sparkles, CheckCircle } from "lucide-react";
+import { Heart, ArrowRight, Users, DollarSign, HandHelping, Sparkles, CheckCircle, Shield, Clock, MessageCircle } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useNavigate } from "react-router-dom";
 import { VisuallyHidden } from "@radix-ui/react-visually-hidden";
@@ -49,16 +49,15 @@ export function FinancialHelpModal({ open, onOpenChange }: FinancialHelpModalPro
             transition={{ duration: 0.3 }}
             className="text-center py-8 px-4"
           >
-            {/* Heart animation */}
             <motion.div
               className="mx-auto mb-8"
               animate={{ scale: [1, 1.1, 1] }}
               transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
             >
               <div className="relative">
-                <div className="absolute inset-0 bg-[hsl(var(--primary))]/20 rounded-full blur-2xl scale-150" />
-                <div className="relative p-6 bg-gradient-to-br from-[hsl(var(--primary))]/20 to-[#D4AF37]/20 rounded-full">
-                  <Heart className="w-16 h-16 text-[hsl(var(--primary))]" fill="currentColor" />
+                <div className="absolute inset-0 bg-primary/20 rounded-full blur-2xl scale-150" />
+                <div className="relative p-6 bg-gradient-to-br from-primary/20 to-[#D4AF37]/20 rounded-full border border-primary/30">
+                  <Heart className="w-16 h-16 text-primary" fill="currentColor" />
                 </div>
               </div>
             </motion.div>
@@ -79,7 +78,7 @@ export function FinancialHelpModal({ open, onOpenChange }: FinancialHelpModalPro
             </motion.h2>
 
             <motion.p
-              className="text-lg text-muted-foreground max-w-md mx-auto mb-8"
+              className="text-lg text-muted-foreground max-w-md mx-auto mb-4"
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ delay: 0.4 }}
@@ -87,10 +86,19 @@ export function FinancialHelpModal({ open, onOpenChange }: FinancialHelpModalPro
               Taking the first step to ask for help takes courage. We're honored you're here, and we want you to know — you're not alone in this.
             </motion.p>
 
+            <motion.p
+              className="text-sm text-muted-foreground/80 max-w-md mx-auto mb-8"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 0.5 }}
+            >
+              Financial barriers should never stand between you and the care you deserve. That's why we've created multiple pathways to make therapy accessible.
+            </motion.p>
+
             <Button 
               onClick={() => setStep(2)}
               size="lg"
-              className="bg-gradient-to-r from-[hsl(var(--primary))] to-[#D4AF37] hover:opacity-90 font-semibold"
+              className="bg-gradient-to-r from-primary to-[#D4AF37] hover:opacity-90 font-semibold text-primary-foreground"
             >
               Continue
               <ArrowRight className="w-4 h-4 ml-2" />
@@ -115,7 +123,9 @@ export function FinancialHelpModal({ open, onOpenChange }: FinancialHelpModalPro
               animate={{ scale: 1 }}
               transition={{ type: "spring", duration: 0.6 }}
             >
-              <Sparkles className="w-16 h-16 text-[#D4AF37] mx-auto" />
+              <div className="p-4 bg-gradient-to-br from-[#D4AF37]/20 to-primary/20 rounded-full inline-block border border-[#D4AF37]/30">
+                <Sparkles className="w-12 h-12 text-[#D4AF37]" />
+              </div>
             </motion.div>
 
             <motion.div
@@ -137,20 +147,36 @@ export function FinancialHelpModal({ open, onOpenChange }: FinancialHelpModalPro
             </motion.div>
 
             <motion.div
-              className="bg-muted/50 rounded-xl p-6 mb-8 max-w-lg mx-auto"
+              className="bg-card/50 border border-border/50 rounded-xl p-6 mb-6 max-w-lg mx-auto"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.4 }}
             >
-              <p className="text-muted-foreground italic">
+              <p className="text-muted-foreground italic text-lg">
                 "We believe that healing shouldn't depend on your bank account. Every person deserves compassionate, professional care — and we're committed to making that possible for you."
               </p>
+            </motion.div>
+
+            <motion.div
+              className="grid grid-cols-2 gap-4 max-w-md mx-auto mb-8"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.5 }}
+            >
+              <div className="bg-card/30 border border-border/30 rounded-lg p-3 text-center">
+                <p className="text-2xl font-bold text-primary">1 in 4</p>
+                <p className="text-xs text-muted-foreground">Adults face mental health challenges yearly</p>
+              </div>
+              <div className="bg-card/30 border border-border/30 rounded-lg p-3 text-center">
+                <p className="text-2xl font-bold text-[#D4AF37]">60%</p>
+                <p className="text-xs text-muted-foreground">Don't seek help due to cost concerns</p>
+              </div>
             </motion.div>
 
             <Button 
               onClick={() => setStep(3)}
               size="lg"
-              className="bg-gradient-to-r from-[hsl(var(--primary))] to-[#D4AF37] hover:opacity-90 font-semibold"
+              className="bg-gradient-to-r from-primary to-[#D4AF37] hover:opacity-90 font-semibold text-primary-foreground"
             >
               Continue
               <ArrowRight className="w-4 h-4 ml-2" />
@@ -167,7 +193,7 @@ export function FinancialHelpModal({ open, onOpenChange }: FinancialHelpModalPro
             animate="center"
             exit="exit"
             transition={{ duration: 0.3 }}
-            className="text-center py-8 px-4"
+            className="text-center py-6 px-4"
           >
             <motion.div
               className="mx-auto mb-6"
@@ -175,8 +201,8 @@ export function FinancialHelpModal({ open, onOpenChange }: FinancialHelpModalPro
               animate={{ scale: 1 }}
               transition={{ type: "spring", duration: 0.6 }}
             >
-              <div className="p-4 bg-gradient-to-br from-[hsl(var(--primary))]/20 to-[#D4AF37]/20 rounded-full inline-block">
-                <Users className="w-12 h-12 text-[hsl(var(--primary))]" />
+              <div className="p-4 bg-gradient-to-br from-primary/20 to-[#D4AF37]/20 rounded-full inline-block border border-primary/30">
+                <Users className="w-10 h-10 text-primary" />
               </div>
             </motion.div>
 
@@ -196,41 +222,50 @@ export function FinancialHelpModal({ open, onOpenChange }: FinancialHelpModalPro
             </motion.h2>
 
             <motion.div
-              className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8 max-w-2xl mx-auto"
+              className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6 max-w-2xl mx-auto"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.3 }}
             >
-              <div className="bg-muted/50 rounded-xl p-4">
-                <DollarSign className="w-8 h-8 text-[hsl(var(--primary))] mx-auto mb-2" />
-                <h3 className="font-semibold mb-1">Sliding Scale</h3>
-                <p className="text-sm text-muted-foreground">Pay what you can afford</p>
+              <div className="bg-card/50 border border-border/50 rounded-xl p-4 text-left">
+                <div className="flex items-center gap-2 mb-2">
+                  <DollarSign className="w-6 h-6 text-primary" />
+                  <h3 className="font-semibold text-foreground">Sliding Scale</h3>
+                </div>
+                <p className="text-sm text-muted-foreground mb-2">Pay what you can afford based on your income level.</p>
+                <p className="text-xs text-primary font-medium">Sessions from $20-$80</p>
               </div>
-              <div className="bg-muted/50 rounded-xl p-4">
-                <Users className="w-8 h-8 text-[hsl(var(--primary))] mx-auto mb-2" />
-                <h3 className="font-semibold mb-1">Community Service</h3>
-                <p className="text-sm text-muted-foreground">Earn credits by giving back</p>
+              <div className="bg-card/50 border border-border/50 rounded-xl p-4 text-left">
+                <div className="flex items-center gap-2 mb-2">
+                  <Users className="w-6 h-6 text-[#D4AF37]" />
+                  <h3 className="font-semibold text-foreground">Community Service</h3>
+                </div>
+                <p className="text-sm text-muted-foreground mb-2">Earn therapy credits by volunteering in your community.</p>
+                <p className="text-xs text-[#D4AF37] font-medium">1 hour = $15 credit</p>
               </div>
-              <div className="bg-muted/50 rounded-xl p-4">
-                <HandHelping className="w-8 h-8 text-[hsl(var(--primary))] mx-auto mb-2" />
-                <h3 className="font-semibold mb-1">Payment Plans</h3>
-                <p className="text-sm text-muted-foreground">Flexible monthly options</p>
+              <div className="bg-card/50 border border-border/50 rounded-xl p-4 text-left">
+                <div className="flex items-center gap-2 mb-2">
+                  <HandHelping className="w-6 h-6 text-primary" />
+                  <h3 className="font-semibold text-foreground">Payment Plans</h3>
+                </div>
+                <p className="text-sm text-muted-foreground mb-2">Split your session costs into manageable payments.</p>
+                <p className="text-xs text-primary font-medium">0% interest plans</p>
               </div>
             </motion.div>
 
             <motion.p
-              className="text-muted-foreground max-w-lg mx-auto mb-8"
+              className="text-muted-foreground max-w-lg mx-auto mb-6 text-sm"
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ delay: 0.5 }}
             >
-              Our barter system allows you to contribute what you can and earn therapy credits through community service. Together, we'll find a way that works for you.
+              Our barter system allows you to contribute what you can and earn therapy credits through meaningful community involvement. Together, we'll find a path that works for your situation.
             </motion.p>
 
             <Button 
               onClick={() => setStep(4)}
               size="lg"
-              className="bg-gradient-to-r from-[hsl(var(--primary))] to-[#D4AF37] hover:opacity-90 font-semibold"
+              className="bg-gradient-to-r from-primary to-[#D4AF37] hover:opacity-90 font-semibold text-primary-foreground"
             >
               See How to Apply
               <ArrowRight className="w-4 h-4 ml-2" />
@@ -247,7 +282,7 @@ export function FinancialHelpModal({ open, onOpenChange }: FinancialHelpModalPro
             animate="center"
             exit="exit"
             transition={{ duration: 0.3 }}
-            className="text-center py-8 px-4"
+            className="text-center py-6 px-4"
           >
             <motion.div
               className="mx-auto mb-6"
@@ -255,8 +290,8 @@ export function FinancialHelpModal({ open, onOpenChange }: FinancialHelpModalPro
               animate={{ scale: 1 }}
               transition={{ type: "spring", duration: 0.6 }}
             >
-              <div className="p-4 bg-gradient-to-br from-green-500/20 to-[#D4AF37]/20 rounded-full inline-block">
-                <CheckCircle className="w-12 h-12 text-green-500" />
+              <div className="p-4 bg-gradient-to-br from-green-500/20 to-primary/20 rounded-full inline-block border border-green-500/30">
+                <CheckCircle className="w-10 h-10 text-green-500" />
               </div>
             </motion.div>
 
@@ -275,17 +310,37 @@ export function FinancialHelpModal({ open, onOpenChange }: FinancialHelpModalPro
               Ready to Take the Next Step?
             </motion.h2>
 
-            <motion.p
-              className="text-muted-foreground max-w-md mx-auto mb-8"
+            <motion.div
+              className="grid grid-cols-3 gap-3 max-w-md mx-auto mb-6"
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ delay: 0.3 }}
             >
-              Applications are reviewed within 2 business days. Our team is here to help you find the right path to care.
+              <div className="flex flex-col items-center gap-1 text-center">
+                <Shield className="w-5 h-5 text-primary" />
+                <p className="text-xs text-muted-foreground">100% Confidential</p>
+              </div>
+              <div className="flex flex-col items-center gap-1 text-center">
+                <Clock className="w-5 h-5 text-[#D4AF37]" />
+                <p className="text-xs text-muted-foreground">2-Day Review</p>
+              </div>
+              <div className="flex flex-col items-center gap-1 text-center">
+                <MessageCircle className="w-5 h-5 text-primary" />
+                <p className="text-xs text-muted-foreground">Personal Support</p>
+              </div>
+            </motion.div>
+
+            <motion.p
+              className="text-muted-foreground max-w-md mx-auto mb-6 text-sm"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 0.3 }}
+            >
+              Your application is reviewed by our care team within 2 business days. We'll work with you personally to find the best option for your situation.
             </motion.p>
 
             <motion.div
-              className="flex flex-col sm:flex-row gap-4 justify-center"
+              className="flex flex-col sm:flex-row gap-3 justify-center"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.4 }}
@@ -293,7 +348,7 @@ export function FinancialHelpModal({ open, onOpenChange }: FinancialHelpModalPro
               <Button 
                 onClick={handleApply}
                 size="lg"
-                className="bg-gradient-to-r from-[hsl(var(--primary))] to-[#D4AF37] hover:opacity-90 font-semibold"
+                className="bg-gradient-to-r from-primary to-[#D4AF37] hover:opacity-90 font-semibold text-primary-foreground"
               >
                 <Heart className="w-4 h-4 mr-2" />
                 Apply for Financial Assistance
@@ -302,7 +357,7 @@ export function FinancialHelpModal({ open, onOpenChange }: FinancialHelpModalPro
                 onClick={handleLearnMore}
                 variant="outline"
                 size="lg"
-                className="border-[hsl(var(--primary))]/50 hover:bg-[hsl(var(--primary))]/10"
+                className="border-primary/50 text-foreground hover:bg-primary/10"
               >
                 Learn More About Barter System
               </Button>
@@ -317,7 +372,7 @@ export function FinancialHelpModal({ open, onOpenChange }: FinancialHelpModalPro
               Not ready yet? That's okay.{" "}
               <button 
                 onClick={handleClose}
-                className="text-[hsl(var(--primary))] hover:underline"
+                className="text-primary hover:underline"
               >
                 You can always come back
               </button>
@@ -332,7 +387,7 @@ export function FinancialHelpModal({ open, onOpenChange }: FinancialHelpModalPro
 
   return (
     <Dialog open={open} onOpenChange={handleClose}>
-      <DialogContent className="sm:max-w-xl md:max-w-2xl p-0 overflow-hidden border-[hsl(var(--primary))]/20">
+      <DialogContent className="sm:max-w-xl md:max-w-2xl p-0 overflow-hidden border-primary/20 bg-background">
         <VisuallyHidden>
           <DialogTitle>Financial Assistance</DialogTitle>
         </VisuallyHidden>
@@ -344,7 +399,7 @@ export function FinancialHelpModal({ open, onOpenChange }: FinancialHelpModalPro
               key={s}
               className={`flex-1 h-1.5 rounded-full transition-colors duration-300 ${
                 s <= step 
-                  ? "bg-gradient-to-r from-[hsl(var(--primary))] to-[#D4AF37]" 
+                  ? "bg-gradient-to-r from-primary to-[#D4AF37]" 
                   : "bg-muted"
               }`}
             />

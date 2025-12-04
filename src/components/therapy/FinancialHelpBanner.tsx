@@ -22,20 +22,20 @@ export function FinancialHelpBanner({ variant = "default", className = "" }: Fin
           className={className}
         >
           <Card 
-            className="bg-gradient-to-r from-[hsl(var(--primary))]/10 via-[#D4AF37]/5 to-[hsl(var(--primary))]/10 border-[hsl(var(--primary))]/20 p-4 cursor-pointer hover:border-[hsl(var(--primary))]/40 transition-all group"
+            className="bg-gradient-to-r from-primary/10 via-[#D4AF37]/5 to-primary/10 border-primary/20 p-4 cursor-pointer hover:border-primary/40 transition-all group"
             onClick={() => setShowModal(true)}
           >
             <div className="flex items-center justify-between gap-3">
               <div className="flex items-center gap-3">
-                <div className="p-2 bg-[hsl(var(--primary))]/20 rounded-full">
-                  <Heart className="w-4 h-4 text-[hsl(var(--primary))]" />
+                <div className="p-2 bg-primary/20 rounded-full">
+                  <Heart className="w-4 h-4 text-primary" />
                 </div>
                 <div>
-                  <p className="font-medium text-sm">Financial Struggle? Let Us Help</p>
+                  <p className="font-medium text-sm text-foreground">Financial Struggle? Let Us Help</p>
                   <p className="text-xs text-muted-foreground">Everyone deserves quality care</p>
                 </div>
               </div>
-              <ArrowRight className="w-4 h-4 text-[hsl(var(--primary))] group-hover:translate-x-1 transition-transform" />
+              <ArrowRight className="w-4 h-4 text-primary group-hover:translate-x-1 transition-transform" />
             </div>
           </Card>
         </motion.div>
@@ -52,19 +52,19 @@ export function FinancialHelpBanner({ variant = "default", className = "" }: Fin
         transition={{ delay: 0.2 }}
         className={className}
       >
-        <Card className="relative overflow-hidden bg-gradient-to-br from-[hsl(var(--primary))]/10 via-[#D4AF37]/5 to-[hsl(var(--primary))]/10 border-[hsl(var(--primary))]/20 p-6 md:p-8">
+        <Card className="relative overflow-hidden bg-gradient-to-br from-primary/10 via-[#D4AF37]/5 to-primary/10 border-primary/20 p-6 md:p-8">
           {/* Decorative elements */}
-          <div className="absolute top-0 right-0 w-32 h-32 bg-[hsl(var(--primary))]/10 rounded-full blur-3xl" />
+          <div className="absolute top-0 right-0 w-32 h-32 bg-primary/10 rounded-full blur-3xl" />
           <div className="absolute bottom-0 left-0 w-24 h-24 bg-[#D4AF37]/10 rounded-full blur-2xl" />
           
           <div className="relative flex flex-col md:flex-row items-start md:items-center gap-6">
             <div className="flex-shrink-0">
               <motion.div 
-                className="p-4 bg-gradient-to-br from-[hsl(var(--primary))]/20 to-[#D4AF37]/20 rounded-full"
+                className="p-4 bg-gradient-to-br from-primary/20 to-[#D4AF37]/20 rounded-full border border-primary/30"
                 animate={{ scale: [1, 1.05, 1] }}
                 transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
               >
-                <Heart className="w-8 h-8 text-[hsl(var(--primary))]" />
+                <Heart className="w-8 h-8 text-primary" />
               </motion.div>
             </div>
             
@@ -89,7 +89,7 @@ export function FinancialHelpBanner({ variant = "default", className = "" }: Fin
             <div className="flex-shrink-0 w-full md:w-auto">
               <Button 
                 onClick={() => setShowModal(true)}
-                className="w-full md:w-auto bg-gradient-to-r from-[hsl(var(--primary))] to-[#D4AF37] hover:from-[hsl(var(--primary))]/90 hover:to-[#D4AF37]/90 text-primary-foreground font-semibold group"
+                className="w-full md:w-auto bg-gradient-to-r from-primary to-[#D4AF37] hover:opacity-90 text-primary-foreground font-semibold group"
                 size="lg"
               >
                 Learn How We Can Help
