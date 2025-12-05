@@ -91,19 +91,19 @@ const SiteFooter = () => {
             <h4 className="font-semibold text-white mb-4">Legal</h4>
             <ul className="space-y-2 text-sm">
               <li>
-                <a href="#" className="text-white/60 hover:text-[#D4A574] transition-colors">
+                <Link to="/privacy" className="text-white/60 hover:text-[#D4A574] transition-colors">
                   Privacy Policy
-                </a>
+                </Link>
               </li>
               <li>
-                <a href="#" className="text-white/60 hover:text-[#D4A574] transition-colors">
-                  Terms of Use
-                </a>
+                <Link to="/terms" className="text-white/60 hover:text-[#D4A574] transition-colors">
+                  Terms of Service
+                </Link>
               </li>
               <li>
-                <a href="#" className="text-white/60 hover:text-[#D4A574] transition-colors">
+                <Link to="/hipaa" className="text-white/60 hover:text-[#D4A574] transition-colors">
                   HIPAA Notice
-                </a>
+                </Link>
               </li>
             </ul>
           </div>

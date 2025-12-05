@@ -1,0 +1,35 @@
+# ThriveMT Robots.txt
+# https://thrive-mental.com
+
+User-agent: *
+Allow: /
+Allow: /home
+Allow: /therapy
+Allow: /coaching
+Allow: /pricing
+Allow: /about
+Allow: /contact
+Allow: /privacy
+Allow: /terms
+Allow: /hipaa
+Allow: /henry
+Allow: /demo
+Allow: /engagement
+Allow: /careers
+Allow: /investors
+Allow: /the-app
+
+# Disallow authenticated app routes
+Disallow: /app/
+Disallow: /app/*
+
+# Disallow admin and internal pages
+Disallow: /admin/
+Disallow: /debug
+Disallow: /api/
+
+# Sitemap location
+Sitemap: https://thrive-mental.com/sitemap.xml
+
+# Crawl-delay for respectful crawling
+Crawl-delay: 1

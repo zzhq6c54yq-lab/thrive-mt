@@ -56,7 +56,7 @@ const ContactSupport = () => {
       <div className="bg-gradient-to-r from-[#1a1a1f] to-[#212124] text-white py-12 relative">
         <div className="container px-4 max-w-6xl mx-auto">
           <div className="flex justify-between items-center mb-6">
-            <Link to="/" className="inline-flex items-center text-[#B87333] hover:text-[#B87333]/80 transition-colors">
+            <Link to="/app/dashboard" className="inline-flex items-center text-[#B87333] hover:text-[#B87333]/80 transition-colors">
               <ArrowLeft className="mr-2 h-4 w-4" />
               Back to Home
             </Link>
@@ -139,7 +139,7 @@ const ContactSupport = () => {
               <CardContent>
                 <p className="text-gray-600 mb-4">Available Monday - Friday, 9am - 5pm ET</p>
                 <Button variant="outline" className="w-full">
-                  1-800-555-1234
+                  1-800-THRIVE-1
                 </Button>
               </CardContent>
             </Card>
@@ -154,7 +154,7 @@ const ContactSupport = () => {
               <CardContent>
                 <p className="text-gray-600 mb-4">We typically respond within 24 hours</p>
                 <Button variant="outline" className="w-full">
-                  support@thrivemt.com
+                  support@thrive-mental.com
                 </Button>
               </CardContent>
             </Card>

@@ -195,6 +195,9 @@ import SiteInvestors from "@/pages/site/SiteInvestors";
 import SiteAbout from "@/pages/site/SiteAbout";
 import SiteContact from "@/pages/site/SiteContact";
 import SiteApp from "@/pages/site/SiteApp";
+import SitePrivacyPolicy from "@/pages/site/SitePrivacyPolicy";
+import SiteTermsOfService from "@/pages/site/SiteTermsOfService";
+import SiteHIPAANotice from "@/pages/site/SiteHIPAANotice";
 import "./App.css";
 
 function App() {
@@ -222,6 +225,9 @@ function App() {
             <Route path="/about" element={<SiteAbout />} />
             <Route path="/contact" element={<SiteContact />} />
             <Route path="/the-app" element={<SiteApp />} />
+            <Route path="/privacy" element={<SitePrivacyPolicy />} />
+            <Route path="/terms" element={<SiteTermsOfService />} />
+            <Route path="/hipaa" element={<SiteHIPAANotice />} />
           </Route>
 
           {/* App Routes - All Under /app Prefix */}
