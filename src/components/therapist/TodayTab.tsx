@@ -9,6 +9,7 @@ import { useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import SMSDialog from "@/components/communication/SMSDialog";
 
 interface TodayTabProps {
   upcomingAppointments: any[];
@@ -367,7 +368,7 @@ export default function TodayTab({
                       </Button>
                     </div>
                   ) : (
-                    <div className="flex gap-2">
+                    <div className="flex gap-2 flex-wrap">
                       <Button
                         size="sm"
                         variant="outline"
@@ -405,6 +406,21 @@ export default function TodayTab({
                         <Video className="h-3 w-3 mr-1" />
                         Video
                       </Button>
+                      <SMSDialog
+                        phoneNumber={message.phone_number || ""}
+                        clientId={message.client_id}
+                        clientName={message.client_name}
+                        trigger={
+                          <Button
+                            size="sm"
+                            variant="outline"
+                            className="border-white/20 text-white/70 hover:text-white hover:bg-white/5"
+                          >
+                            <MessageSquare className="h-3 w-3 mr-1" />
+                            SMS
+                          </Button>
+                        }
+                      />
                     </div>
                   )}
                 </div>

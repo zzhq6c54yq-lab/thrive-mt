@@ -17,3 +17,9 @@ verify_jwt = false
 
 [functions.coach-access]
 verify_jwt = false
+
+[functions.place-call]
+verify_jwt = true
+
+[functions.send-sms]
+verify_jwt = true

@@ -3021,6 +3021,48 @@ export type Database = {
           },
         ]
       }
+      phone_calls: {
+        Row: {
+          call_sid: string
+          client_id: string | null
+          created_at: string
+          direction: string | null
+          duration_seconds: number | null
+          ended_at: string | null
+          from_number: string
+          id: string
+          status: string
+          therapist_id: string | null
+          to_number: string
+        }
+        Insert: {
+          call_sid: string
+          client_id?: string | null
+          created_at?: string
+          direction?: string | null
+          duration_seconds?: number | null
+          ended_at?: string | null
+          from_number: string
+          id?: string
+          status?: string
+          therapist_id?: string | null
+          to_number: string
+        }
+        Update: {
+          call_sid?: string
+          client_id?: string | null
+          created_at?: string
+          direction?: string | null
+          duration_seconds?: number | null
+          ended_at?: string | null
+          from_number?: string
+          id?: string
+          status?: string
+          therapist_id?: string | null
+          to_number?: string
+        }
+        Relationships: []
+      }
       plan_generation_analytics: {
         Row: {
           ai_cost_usd: number | null
@@ -3782,6 +3824,48 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      sms_messages: {
+        Row: {
+          client_id: string | null
+          created_at: string
+          direction: string | null
+          from_number: string
+          id: string
+          message_body: string
+          message_sid: string
+          status: string
+          template_used: string | null
+          therapist_id: string | null
+          to_number: string
+        }
+        Insert: {
+          client_id?: string | null
+          created_at?: string
+          direction?: string | null
+          from_number: string
+          id?: string
+          message_body: string
+          message_sid: string
+          status?: string
+          template_used?: string | null
+          therapist_id?: string | null
+          to_number: string
+        }
+        Update: {
+          client_id?: string | null
+          created_at?: string
+          direction?: string | null
+          from_number?: string
+          id?: string
+          message_body?: string
+          message_sid?: string
+          status?: string
+          template_used?: string | null
+          therapist_id?: string | null
+          to_number?: string
+        }
+        Relationships: []
       }
       sms_preferences: {
         Row: {

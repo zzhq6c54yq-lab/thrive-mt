@@ -10,12 +10,14 @@ import { useToast } from '@/hooks/use-toast';
 import { format } from 'date-fns';
 import { motion } from 'framer-motion';
 import { Badge } from '@/components/ui/badge';
+import SMSDialog from '@/components/communication/SMSDialog';
 
 interface Client {
   id: string;
   user_id: string;
   name: string;
   avatar_url?: string;
+  phone_number?: string;
   unread_count: number;
   last_message?: string;
   last_message_time?: string;
@@ -341,8 +343,19 @@ export default function ClientsMessagesTab({ therapistId, preSelectedClientId }:
                     onClick={() => handleVideoCall(selectedClient.id)}
                   >
                     <Video className="w-4 h-4 mr-2" />
-                    Video Call
+                    Video
                   </Button>
+                  <SMSDialog
+                    phoneNumber={selectedClient.phone_number || ""}
+                    clientId={selectedClient.id}
+                    clientName={selectedClient.name}
+                    trigger={
+                      <Button variant="outline" size="sm" className="border-[#D4AF37]/40">
+                        <MessageSquare className="w-4 h-4 mr-2" />
+                        SMS
+                      </Button>
+                    }
+                  />
                   <Button variant="outline" size="sm" className="border-[#D4AF37]/40">
                     <User className="w-4 h-4 mr-2" />
                     Profile
