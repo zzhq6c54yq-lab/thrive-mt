@@ -257,6 +257,83 @@ export type Database = {
           },
         ]
       }
+      ai_session_summaries: {
+        Row: {
+          content: string
+          conversation_id: string | null
+          created_at: string | null
+          generated_at: string | null
+          id: string
+          key_topics: string[] | null
+          mood_trend: string | null
+          reviewed_at: string | null
+          reviewed_by: string | null
+          risk_flags: string[] | null
+          summary_type: string | null
+          therapist_id: string | null
+          user_id: string
+        }
+        Insert: {
+          content: string
+          conversation_id?: string | null
+          created_at?: string | null
+          generated_at?: string | null
+          id?: string
+          key_topics?: string[] | null
+          mood_trend?: string | null
+          reviewed_at?: string | null
+          reviewed_by?: string | null
+          risk_flags?: string[] | null
+          summary_type?: string | null
+          therapist_id?: string | null
+          user_id: string
+        }
+        Update: {
+          content?: string
+          conversation_id?: string | null
+          created_at?: string | null
+          generated_at?: string | null
+          id?: string
+          key_topics?: string[] | null
+          mood_trend?: string | null
+          reviewed_at?: string | null
+          reviewed_by?: string | null
+          risk_flags?: string[] | null
+          summary_type?: string | null
+          therapist_id?: string | null
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "ai_session_summaries_conversation_id_fkey"
+            columns: ["conversation_id"]
+            isOneToOne: false
+            referencedRelation: "henry_conversations"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "ai_session_summaries_reviewed_by_fkey"
+            columns: ["reviewed_by"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "ai_session_summaries_therapist_id_fkey"
+            columns: ["therapist_id"]
+            isOneToOne: false
+            referencedRelation: "therapists"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "ai_session_summaries_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       api_keys: {
         Row: {
           created_at: string | null
@@ -383,6 +460,70 @@ export type Database = {
           user_id?: string
         }
         Relationships: []
+      }
+      assignments: {
+        Row: {
+          assigned_at: string | null
+          created_at: string | null
+          ended_at: string | null
+          id: string
+          notes: string | null
+          organization_id: string | null
+          patient_id: string
+          provider_id: string
+          provider_type: string
+          status: string | null
+          updated_at: string | null
+        }
+        Insert: {
+          assigned_at?: string | null
+          created_at?: string | null
+          ended_at?: string | null
+          id?: string
+          notes?: string | null
+          organization_id?: string | null
+          patient_id: string
+          provider_id: string
+          provider_type: string
+          status?: string | null
+          updated_at?: string | null
+        }
+        Update: {
+          assigned_at?: string | null
+          created_at?: string | null
+          ended_at?: string | null
+          id?: string
+          notes?: string | null
+          organization_id?: string | null
+          patient_id?: string
+          provider_id?: string
+          provider_type?: string
+          status?: string | null
+          updated_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "assignments_organization_id_fkey"
+            columns: ["organization_id"]
+            isOneToOne: false
+            referencedRelation: "tenants"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "assignments_patient_id_fkey"
+            columns: ["patient_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "assignments_provider_id_fkey"
+            columns: ["provider_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       auth_user_audit: {
         Row: {
@@ -1887,6 +2028,44 @@ export type Database = {
         }
         Relationships: []
       }
+      data_retention_policies: {
+        Row: {
+          auto_purge: boolean | null
+          created_at: string | null
+          data_type: string
+          id: string
+          retention_days: number
+          tenant_id: string | null
+          updated_at: string | null
+        }
+        Insert: {
+          auto_purge?: boolean | null
+          created_at?: string | null
+          data_type: string
+          id?: string
+          retention_days?: number
+          tenant_id?: string | null
+          updated_at?: string | null
+        }
+        Update: {
+          auto_purge?: boolean | null
+          created_at?: string | null
+          data_type?: string
+          id?: string
+          retention_days?: number
+          tenant_id?: string | null
+          updated_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "data_retention_policies_tenant_id_fkey"
+            columns: ["tenant_id"]
+            isOneToOne: false
+            referencedRelation: "tenants"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       event_registrations: {
         Row: {
           created_at: string | null
@@ -2426,6 +2605,82 @@ export type Database = {
           },
         ]
       }
+      homework_tasks: {
+        Row: {
+          assigned_by: string
+          assigned_to: string
+          completed_at: string | null
+          completion_notes: string | null
+          created_at: string | null
+          description: string | null
+          due_date: string | null
+          id: string
+          organization_id: string | null
+          priority: string | null
+          resources: Json | null
+          status: string | null
+          task_type: string | null
+          title: string
+          updated_at: string | null
+        }
+        Insert: {
+          assigned_by: string
+          assigned_to: string
+          completed_at?: string | null
+          completion_notes?: string | null
+          created_at?: string | null
+          description?: string | null
+          due_date?: string | null
+          id?: string
+          organization_id?: string | null
+          priority?: string | null
+          resources?: Json | null
+          status?: string | null
+          task_type?: string | null
+          title: string
+          updated_at?: string | null
+        }
+        Update: {
+          assigned_by?: string
+          assigned_to?: string
+          completed_at?: string | null
+          completion_notes?: string | null
+          created_at?: string | null
+          description?: string | null
+          due_date?: string | null
+          id?: string
+          organization_id?: string | null
+          priority?: string | null
+          resources?: Json | null
+          status?: string | null
+          task_type?: string | null
+          title?: string
+          updated_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "homework_tasks_assigned_by_fkey"
+            columns: ["assigned_by"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "homework_tasks_assigned_to_fkey"
+            columns: ["assigned_to"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "homework_tasks_organization_id_fkey"
+            columns: ["organization_id"]
+            isOneToOne: false
+            referencedRelation: "tenants"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       insight_tokens: {
         Row: {
           created_at: string | null
@@ -2583,6 +2838,7 @@ export type Database = {
       journal_entries: {
         Row: {
           created_at: string | null
+          deleted_at: string | null
           id: string
           mood: string
           mood_score: number | null
@@ -2591,6 +2847,7 @@ export type Database = {
         }
         Insert: {
           created_at?: string | null
+          deleted_at?: string | null
           id?: string
           mood: string
           mood_score?: number | null
@@ -2599,6 +2856,7 @@ export type Database = {
         }
         Update: {
           created_at?: string | null
+          deleted_at?: string | null
           id?: string
           mood?: string
           mood_score?: number | null
@@ -3125,6 +3383,7 @@ export type Database = {
           assigned_therapist_id: string | null
           avatar_url: string | null
           created_at: string | null
+          deleted_at: string | null
           display_name: string | null
           email: string | null
           financial_aid_amount: number | null
@@ -3145,6 +3404,7 @@ export type Database = {
           assigned_therapist_id?: string | null
           avatar_url?: string | null
           created_at?: string | null
+          deleted_at?: string | null
           display_name?: string | null
           email?: string | null
           financial_aid_amount?: number | null
@@ -3165,6 +3425,7 @@ export type Database = {
           assigned_therapist_id?: string | null
           avatar_url?: string | null
           created_at?: string | null
+          deleted_at?: string | null
           display_name?: string | null
           email?: string | null
           financial_aid_amount?: number | null

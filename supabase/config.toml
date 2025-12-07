@@ -23,3 +23,12 @@ verify_jwt = true
 
 [functions.send-sms]
 verify_jwt = true
+
+[functions.generate-session-summary]
+verify_jwt = true
+
+[functions.export-user-data]
+verify_jwt = true
+
+[functions.purge-user-data]
+verify_jwt = true
