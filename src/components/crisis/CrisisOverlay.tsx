@@ -8,6 +8,13 @@ import { useUser } from '@/contexts/UserContext';
 import { supabase } from '@/integrations/supabase/client';
 import { Phone, Heart, Headphones, MessageCircle, Shield, AlertCircle, X } from 'lucide-react';
 import { useLocation } from 'react-router-dom';
+import { z } from 'zod';
+
+const crisisEventSchema = z.object({
+  user_id: z.string().uuid(),
+  event_type: z.string().min(1).max(100),
+  source: z.string().min(1).max(100)
+});
 
 const CrisisOverlay: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -31,11 +38,19 @@ const CrisisOverlay: React.FC = () => {
 
   const logCrisisEvent = async (eventType: string, source: string) => {
     if (user) {
-      await supabase.from('crisis_events').insert({
+      const eventData = {
         user_id: user.id,
         event_type: eventType,
         source: source
-      });
+      };
+      
+      const validationResult = crisisEventSchema.safeParse(eventData);
+      if (!validationResult.success) {
+        console.error('Invalid crisis event data:', validationResult.error);
+        return;
+      }
+      
+      await supabase.from('crisis_events').insert([eventData]);
     }
   };
 

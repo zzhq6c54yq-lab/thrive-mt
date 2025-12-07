@@ -1,8 +1,17 @@
 import { useState, useEffect, useCallback } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { useUser } from '@/contexts/UserContext';
+import { z } from 'zod';
 
 const DEFAULT_SECTION_ORDER = ['your-day', 'toolkit', 'progress'];
+
+const layoutPreferencesSchema = z.object({
+  user_id: z.string().uuid(),
+  section_order: z.array(z.string().min(1).max(100)).min(1).max(20),
+  is_custom: z.boolean(),
+  is_locked: z.boolean(),
+  learning_enabled: z.boolean()
+});
 
 export function useDashboardLayout() {
   const { user } = useUser();
@@ -37,13 +46,18 @@ export function useDashboardLayout() {
       setLearningEnabled(data.learning_enabled);
     } else {
       // Initialize default preferences
-      await supabase.from('dashboard_layout_preferences').insert({
+      const insertData = {
         user_id: user.id,
         section_order: DEFAULT_SECTION_ORDER,
         is_custom: false,
         is_locked: false,
         learning_enabled: true
-      });
+      };
+
+      const validationResult = layoutPreferencesSchema.safeParse(insertData);
+      if (validationResult.success) {
+        await supabase.from('dashboard_layout_preferences').insert([insertData as any]);
+      }
     }
     
     setLoading(false);

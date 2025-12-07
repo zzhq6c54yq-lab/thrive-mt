@@ -6,6 +6,14 @@ import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
 import type { ParentConnection } from "@/types/database-extensions";
 import { Users, UserPlus, Check, X } from "lucide-react";
+import { z } from "zod";
+
+const connectionRequestSchema = z.object({
+  requester_id: z.string().uuid(),
+  recipient_id: z.string().uuid(),
+  connection_type: z.enum(['support-friend', 'co-parent', 'family']),
+  status: z.enum(['pending', 'accepted', 'declined'])
+});
 
 const ConnectionManager: React.FC = () => {
   const [connections, setConnections] = useState<ParentConnection[]>([]);
@@ -133,12 +141,19 @@ const ConnectionManager: React.FC = () => {
       }
 
       // Create connection request
-      const { error } = await (supabase as any).from('parent_connections').insert({
+      const connectionData = {
         requester_id: user.id,
         recipient_id: recipientProfile.id,
-        connection_type: 'support-friend',
-        status: 'pending'
-      });
+        connection_type: 'support-friend' as const,
+        status: 'pending' as const
+      };
+
+      const validatedData = connectionRequestSchema.safeParse(connectionData);
+      if (!validatedData.success) {
+        throw new Error(`Validation failed: ${validatedData.error.message}`);
+      }
+
+      const { error } = await (supabase as any).from('parent_connections').insert(validatedData.data);
 
       if (error) throw error;
 

@@ -5,6 +5,13 @@ import { Button } from "@/components/ui/button";
 import { supabase } from "@/integrations/supabase/client";
 import { Send } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
+import { z } from "zod";
+
+const buddyMessageSchema = z.object({
+  match_id: z.string().uuid(),
+  sender_id: z.string().uuid(),
+  message: z.string().min(1).max(2000).trim()
+});
 
 interface BuddyChatProps {
   matchId: string;
@@ -60,11 +67,23 @@ const BuddyChat = ({ matchId, userId, buddyName }: BuddyChatProps) => {
   const sendMessage = async () => {
     if (!newMessage.trim() || !userId) return;
 
-    const { error } = await supabase.from("buddy_messages").insert({
+    const messageData = {
       match_id: matchId,
       sender_id: userId,
       message: newMessage.trim(),
-    });
+    };
+
+    const validationResult = buddyMessageSchema.safeParse(messageData);
+    if (!validationResult.success) {
+      toast({
+        title: "Error",
+        description: "Invalid message data",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    const { error } = await supabase.from("buddy_messages").insert([messageData]);
 
     if (error) {
       toast({
