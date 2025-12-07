@@ -8,7 +8,16 @@ import { Target } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import { supabase } from '@/integrations/supabase/client';
 import { useUser } from '@/contexts/UserContext';
-import { addDays, addWeeks, endOfWeek, endOfMonth } from 'date-fns';
+import { endOfWeek, endOfMonth } from 'date-fns';
+import { z } from 'zod';
+
+const goalSchema = z.object({
+  title: z.string().trim().min(1, 'Title is required').max(200, 'Title too long'),
+  description: z.string().trim().max(1000, 'Description too long').optional(),
+  target: z.number().min(1, 'Target must be at least 1').max(10000, 'Target too high'),
+  category: z.enum(['wellness', 'check-in', 'activity', 'journal', 'mood', 'personal', 'professional']),
+  goal_type: z.enum(['weekly', 'monthly']),
+});
 
 interface GoalCreationDialogProps {
   open: boolean;
@@ -43,10 +52,20 @@ export function GoalCreationDialog({ open, onOpenChange, goalType, onSuccess }: 
   const handleSave = async () => {
     if (!user) return;
 
-    if (!title.trim() || !target) {
+    // Validate input with Zod schema
+    const validationResult = goalSchema.safeParse({
+      title: title.trim(),
+      description: description.trim() || undefined,
+      target: parseFloat(target) || 0,
+      category,
+      goal_type: goalType,
+    });
+
+    if (!validationResult.success) {
+      const firstError = validationResult.error.errors[0];
       toast({
-        title: 'Error',
-        description: 'Please fill in the title and target',
+        title: 'Validation Error',
+        description: firstError?.message || 'Please check your input',
         variant: 'destructive',
       });
       return;
@@ -54,14 +73,16 @@ export function GoalCreationDialog({ open, onOpenChange, goalType, onSuccess }: 
 
     try {
       setSaving(true);
+      const validData = validationResult.data;
+      
       const { error } = await supabase.from('user_goals').insert({
         user_id: user.id,
-        title: title.trim(),
-        description: description.trim(),
-        target: parseFloat(target),
+        title: validData.title,
+        description: validData.description || '',
+        target: validData.target,
         current: 0,
-        goal_type: goalType,
-        category,
+        goal_type: validData.goal_type,
+        category: validData.category,
         deadline: getDeadline().toISOString(),
         completed: false,
       });
@@ -81,7 +102,6 @@ export function GoalCreationDialog({ open, onOpenChange, goalType, onSuccess }: 
       
       if (onSuccess) onSuccess();
     } catch (error) {
-      console.error('Error creating goal:', error);
       toast({
         title: 'Error',
         description: 'Failed to create goal',

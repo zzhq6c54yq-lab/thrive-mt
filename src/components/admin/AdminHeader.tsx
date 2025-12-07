@@ -13,8 +13,8 @@ const AdminHeader: React.FC = () => {
 
   const handleLogout = async () => {
     await logAction(AUDIT_ACTIONS.ADMIN_LOGOUT);
-    localStorage.removeItem('admin_session_token');
-    localStorage.removeItem('admin_session_expires');
+    sessionStorage.removeItem('admin_session_token');
+    sessionStorage.removeItem('admin_session_expires');
     await supabase.auth.signOut();
     toast.success('Logged out successfully');
     navigate('/app/auth');
