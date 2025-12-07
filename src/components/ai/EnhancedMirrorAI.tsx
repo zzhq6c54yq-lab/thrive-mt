@@ -9,6 +9,13 @@ import { Send, Bot, User, Heart, Brain, AlertTriangle, Lightbulb, History, Downl
 import { useToast } from '@/components/ui/use-toast';
 import { supabase } from '@/integrations/supabase/client';
 import { useUser } from '@/contexts/UserContext';
+import { z } from 'zod';
+
+const crisisEventSchema = z.object({
+  user_id: z.string().uuid(),
+  event_type: z.string().min(1).max(100),
+  source: z.string().min(1).max(100)
+});
 
 interface Message {
   id: string;
@@ -242,11 +249,17 @@ IMPORTANT: This user has shown concerning mood patterns. Be extra supportive and
         });
 
         // Log crisis event
-        await supabase.from('crisis_events').insert({
-          user_id: user?.id,
-          event_type: 'ai_chat_crisis',
-          source: 'mirror_ai'
-        });
+        if (user?.id) {
+          const eventData = {
+            user_id: user.id,
+            event_type: 'ai_chat_crisis',
+            source: 'mirror_ai'
+          };
+          const validationResult = crisisEventSchema.safeParse(eventData);
+          if (validationResult.success) {
+            await supabase.from('crisis_events').insert([eventData]);
+          }
+        }
 
         setIsLoading(false);
         return;

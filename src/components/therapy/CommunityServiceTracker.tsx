@@ -12,6 +12,16 @@ import { supabase } from "@/integrations/supabase/client";
 import { useUser } from "@/contexts/UserContext";
 import { useToast } from "@/hooks/use-toast";
 import { Skeleton } from "@/components/ui/skeleton";
+import { z } from "zod";
+
+const serviceHoursSchema = z.object({
+  user_id: z.string().uuid(),
+  hours_logged: z.number().min(0.5).max(24),
+  service_description: z.string().min(1).max(1000).trim(),
+  service_date: z.string().regex(/^\d{4}-\d{2}-\d{2}$/),
+  verified: z.boolean(),
+  credit_value: z.number().min(0)
+});
 
 export function CommunityServiceTracker() {
   const { user } = useUser();
@@ -43,16 +53,21 @@ export function CommunityServiceTracker() {
     mutationFn: async (data: { hours: number; description: string; date: string }) => {
       if (!user) throw new Error("Not authenticated");
 
-      const { error } = await supabase.from("community_service_hours").insert([
-        {
-          user_id: user.id,
-          hours_logged: data.hours,
-          service_description: data.description,
-          service_date: data.date,
-          verified: false,
-          credit_value: data.hours * 15, // Calculate at state minimum wage (~$15/hr)
-        },
-      ]);
+      const insertData = {
+        user_id: user.id,
+        hours_logged: data.hours,
+        service_description: data.description.trim(),
+        service_date: data.date,
+        verified: false,
+        credit_value: data.hours * 15, // Calculate at state minimum wage (~$15/hr)
+      };
+
+      const validationResult = serviceHoursSchema.safeParse(insertData);
+      if (!validationResult.success) {
+        throw new Error(`Validation failed: ${validationResult.error.message}`);
+      }
+
+      const { error } = await supabase.from("community_service_hours").insert([insertData]);
 
       if (error) throw error;
     },
