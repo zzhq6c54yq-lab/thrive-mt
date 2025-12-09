@@ -1,10 +1,29 @@
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
+import { z } from "https://deno.land/x/zod@v3.22.4/mod.ts";
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
   'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
 };
+
+// Zod schema for input validation
+const RequestSchema = z.object({
+  to: z.string()
+    .min(10, "Phone number must be at least 10 digits")
+    .max(20, "Phone number too long")
+    .regex(/^[\d\s\-\+\(\)]+$/, "Invalid phone number format"),
+  message: z.string().max(1600, "Message too long").optional(),
+  template: z.enum([
+    'appointment_reminder',
+    'wellness_checkin',
+    'session_confirmation',
+    'reschedule',
+    'follow_up'
+  ]).optional(),
+  templateData: z.record(z.string()).optional(),
+  clientId: z.string().uuid("Invalid client ID").optional(),
+});
 
 // SMS templates for common use cases
 const SMS_TEMPLATES: Record<string, string> = {
@@ -25,7 +44,10 @@ serve(async (req) => {
     // Verify JWT and get user
     const authHeader = req.headers.get('Authorization');
     if (!authHeader) {
-      throw new Error('Authorization header required');
+      return new Response(
+        JSON.stringify({ error: 'Authorization header required' }),
+        { status: 401, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+      );
     }
 
     const supabaseUrl = Deno.env.get('SUPABASE_URL')!;
@@ -37,14 +59,28 @@ serve(async (req) => {
     const { data: { user }, error: authError } = await supabase.auth.getUser(token);
     
     if (authError || !user) {
-      throw new Error('Unauthorized');
+      return new Response(
+        JSON.stringify({ error: 'Unauthorized' }),
+        { status: 401, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+      );
     }
 
-    const { to, message, template, templateData, clientId } = await req.json();
-
-    if (!to) {
-      throw new Error('Phone number is required');
+    const rawBody = await req.json();
+    
+    // Validate input with Zod
+    const parseResult = RequestSchema.safeParse(rawBody);
+    if (!parseResult.success) {
+      console.error('Validation error:', parseResult.error.errors);
+      return new Response(
+        JSON.stringify({ 
+          error: 'Invalid request',
+          details: parseResult.error.errors.map(e => e.message)
+        }),
+        { status: 400, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+      );
     }
+
+    const { to, message, template, templateData, clientId } = parseResult.data;
 
     // Build message from template or use custom message
     let finalMessage = message;
@@ -52,13 +88,16 @@ serve(async (req) => {
       finalMessage = SMS_TEMPLATES[template];
       if (templateData) {
         Object.entries(templateData).forEach(([key, value]) => {
-          finalMessage = finalMessage.replace(`{${key}}`, value as string);
+          finalMessage = finalMessage!.replace(`{${key}}`, value);
         });
       }
     }
 
     if (!finalMessage) {
-      throw new Error('Message content is required');
+      return new Response(
+        JSON.stringify({ error: 'Message content is required (either message or template)' }),
+        { status: 400, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+      );
     }
 
     // Get Twilio credentials

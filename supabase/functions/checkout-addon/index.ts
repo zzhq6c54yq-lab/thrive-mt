@@ -1,11 +1,20 @@
 import { serve } from "https://deno.land/std@0.190.0/http/server.ts";
 import Stripe from "https://esm.sh/stripe@14.21.0";
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2.45.0";
+import { z } from "https://deno.land/x/zod@v3.22.4/mod.ts";
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
   "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type",
 };
+
+// Zod schema for input validation
+const RequestSchema = z.object({
+  addOnId: z.string().min(1, "Add-on ID is required").max(100),
+  addOnTitle: z.string().min(1, "Add-on title is required").max(200),
+  selectedPlan: z.string().max(50).optional(),
+  billingCycle: z.enum(['monthly', 'yearly']).default('monthly'),
+});
 
 const logStep = (step: string, details?: any) => {
   const detailsStr = details ? ` - ${JSON.stringify(details)}` : '';
@@ -42,8 +51,22 @@ serve(async (req) => {
     if (!user?.email) throw new Error("User not authenticated or email not available");
     logStep("User authenticated", { userId: user.id, email: user.email });
 
-    // Get the add-on details from the request body
-    const { addOnId, addOnTitle, selectedPlan, billingCycle = 'monthly' } = await req.json();
+    const rawBody = await req.json();
+    
+    // Validate input with Zod
+    const parseResult = RequestSchema.safeParse(rawBody);
+    if (!parseResult.success) {
+      logStep("Validation error", parseResult.error.errors);
+      return new Response(
+        JSON.stringify({ 
+          error: 'Invalid request',
+          details: parseResult.error.errors.map(e => e.message)
+        }),
+        { status: 400, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+      );
+    }
+
+    const { addOnId, addOnTitle, selectedPlan, billingCycle } = parseResult.data;
     logStep("Request body parsed", { addOnId, addOnTitle, selectedPlan, billingCycle });
 
     // Calculate price based on selected plan

@@ -1,10 +1,17 @@
 import "https://deno.land/x/xhr@0.1.0/mod.ts";
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
+import { z } from "https://deno.land/x/zod@v3.22.4/mod.ts";
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
   'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
 };
+
+// Zod schema for input validation
+const RequestSchema = z.object({
+  message: z.string().min(1, "Message is required").max(5000, "Message too long"),
+  conversationContext: z.array(z.string()).max(100).optional(),
+});
 
 interface ChatMessage {
   role: 'system' | 'user' | 'assistant';
@@ -55,6 +62,8 @@ async function callMixtral(userMessage: string, conversationContext: string[] = 
   });
 
   if (!response.ok) {
+    const errorText = await response.text();
+    console.error('Together.xyz API error:', response.status, errorText);
     throw new Error(`Together.xyz API error: ${response.status}`);
   }
 
@@ -68,11 +77,24 @@ serve(async (req) => {
   }
 
   try {
-    const { message, conversationContext } = await req.json();
-
-    if (!message) {
-      throw new Error('No message provided');
+    const rawBody = await req.json();
+    
+    // Validate input with Zod
+    const parseResult = RequestSchema.safeParse(rawBody);
+    if (!parseResult.success) {
+      console.error('Validation error:', parseResult.error.errors);
+      return new Response(
+        JSON.stringify({ 
+          error: 'Invalid request',
+          details: parseResult.error.errors.map(e => e.message)
+        }),
+        { status: 400, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+      );
     }
+
+    const { message, conversationContext } = parseResult.data;
+
+    console.log('henry-ai-chat processing message:', message.substring(0, 100) + '...');
 
     const response = await callMixtral(message, conversationContext || []);
 

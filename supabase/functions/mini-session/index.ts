@@ -1,20 +1,24 @@
 import "https://deno.land/x/xhr@0.1.0/mod.ts";
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
+import { z } from "https://deno.land/x/zod@v3.22.4/mod.ts";
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
   'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
 };
 
-interface MiniSessionRequest {
-  focus: 'racing_thoughts' | 'conflict' | 'low_mood' | 'urge' | 'process_therapy';
-  mood?: number;
-  anxiety?: number;
-  energy?: number;
-  urge_level?: number;
-  user_text_primary?: string;
-  user_text_secondary?: string;
-}
+// Zod schema for input validation
+const RequestSchema = z.object({
+  focus: z.enum(['racing_thoughts', 'conflict', 'low_mood', 'urge', 'process_therapy']),
+  mood: z.number().min(1).max(10).optional(),
+  anxiety: z.number().min(1).max(10).optional(),
+  energy: z.number().min(1).max(10).optional(),
+  urge_level: z.number().min(1).max(10).optional(),
+  user_text_primary: z.string().max(2000).optional(),
+  user_text_secondary: z.string().max(2000).optional(),
+});
+
+type MiniSessionRequest = z.infer<typeof RequestSchema>;
 
 async function generateCoaching(request: MiniSessionRequest): Promise<{ coaching: string; summary: string }> {
   const openAIApiKey = Deno.env.get('OPENAI_API_KEY');
@@ -100,11 +104,24 @@ serve(async (req) => {
   }
 
   try {
-    const request: MiniSessionRequest = await req.json();
-
-    if (!request.focus) {
-      throw new Error('Focus area is required');
+    const rawBody = await req.json();
+    
+    // Validate input with Zod
+    const parseResult = RequestSchema.safeParse(rawBody);
+    if (!parseResult.success) {
+      console.error('Validation error:', parseResult.error.errors);
+      return new Response(
+        JSON.stringify({ 
+          error: 'Invalid request',
+          details: parseResult.error.errors.map(e => e.message)
+        }),
+        { status: 400, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+      );
     }
+
+    const request = parseResult.data;
+
+    console.log('mini-session processing:', request.focus);
 
     const result = await generateCoaching(request);
 

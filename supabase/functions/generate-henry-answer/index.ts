@@ -1,11 +1,19 @@
 import "https://deno.land/x/xhr@0.1.0/mod.ts";
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';
+import { z } from "https://deno.land/x/zod@v3.22.4/mod.ts";
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
   'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
 };
+
+// Zod schema for input validation
+const RequestSchema = z.object({
+  questionId: z.string().uuid("Invalid question ID"),
+  questionText: z.string().min(1, "Question text is required").max(2000),
+  category: z.string().min(1).max(100),
+});
 
 serve(async (req) => {
   if (req.method === 'OPTIONS') {
@@ -13,7 +21,22 @@ serve(async (req) => {
   }
 
   try {
-    const { questionId, questionText, category } = await req.json();
+    const rawBody = await req.json();
+    
+    // Validate input with Zod
+    const parseResult = RequestSchema.safeParse(rawBody);
+    if (!parseResult.success) {
+      console.error('Validation error:', parseResult.error.errors);
+      return new Response(
+        JSON.stringify({ 
+          error: 'Invalid request',
+          details: parseResult.error.errors.map(e => e.message)
+        }),
+        { status: 400, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+      );
+    }
+
+    const { questionId, questionText, category } = parseResult.data;
     const togetherApiKey = Deno.env.get('TOGETHER_API_KEY');
     
     if (!togetherApiKey) {
@@ -92,25 +115,15 @@ Write a heartfelt, editorial-style response that would appear in a mental health
 
     return new Response(
       JSON.stringify({ answer: answerData }),
-      { 
-        headers: { 
-          ...corsHeaders, 
-          'Content-Type': 'application/json' 
-        } 
-      }
+      { headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
     );
 
   } catch (error) {
     console.error('Error generating answer:', error);
     
     return new Response(
-      JSON.stringify({ 
-        error: error.message
-      }),
-      {
-        status: 500,
-        headers: { ...corsHeaders, 'Content-Type': 'application/json' },
-      }
+      JSON.stringify({ error: error.message }),
+      { status: 500, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
     );
   }
 });

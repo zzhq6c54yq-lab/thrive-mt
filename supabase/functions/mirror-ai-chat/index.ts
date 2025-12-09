@@ -1,17 +1,32 @@
 import "https://deno.land/x/xhr@0.1.0/mod.ts";
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
+import { z } from "https://deno.land/x/zod@v3.22.4/mod.ts";
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
   'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
 };
 
+// Zod schema for input validation
+const RequestSchema = z.object({
+  message: z.string().min(1, "Message is required").max(5000, "Message too long"),
+  systemPrompt: z.string().max(10000).optional(),
+  conversationContext: z.array(z.object({
+    role: z.enum(['user', 'assistant']),
+    content: z.string()
+  })).max(50).optional(),
+});
+
 interface ChatMessage {
   role: 'system' | 'user' | 'assistant';
   content: string;
 }
 
-async function callMirrorAI(userMessage: string, systemPrompt: string): Promise<string> {
+async function callMirrorAI(
+  userMessage: string, 
+  systemPrompt: string,
+  conversationContext: Array<{ role: 'user' | 'assistant'; content: string }> = []
+): Promise<string> {
   const lovableApiKey = Deno.env.get('LOVABLE_API_KEY');
   
   if (!lovableApiKey) {
@@ -19,9 +34,16 @@ async function callMirrorAI(userMessage: string, systemPrompt: string): Promise<
   }
 
   const messages: ChatMessage[] = [
-    { role: "system", content: systemPrompt },
-    { role: "user", content: userMessage }
+    { role: "system", content: systemPrompt }
   ];
+
+  // Add conversation context for continuity
+  for (const ctx of conversationContext) {
+    messages.push({ role: ctx.role, content: ctx.content });
+  }
+
+  // Add current user message
+  messages.push({ role: "user", content: userMessage });
 
   const response = await fetch("https://ai.gateway.lovable.dev/v1/chat/completions", {
     method: "POST",
@@ -54,11 +76,22 @@ serve(async (req) => {
   }
 
   try {
-    const { message, systemPrompt } = await req.json();
-
-    if (!message) {
-      throw new Error('No message provided');
+    const rawBody = await req.json();
+    
+    // Validate input with Zod
+    const parseResult = RequestSchema.safeParse(rawBody);
+    if (!parseResult.success) {
+      console.error('Validation error:', parseResult.error.errors);
+      return new Response(
+        JSON.stringify({ 
+          error: 'Invalid request',
+          details: parseResult.error.errors.map(e => e.message)
+        }),
+        { status: 400, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+      );
     }
+
+    const { message, systemPrompt, conversationContext } = parseResult.data;
 
     const defaultSystemPrompt = `You are MirrorAI, a trauma-informed mental health companion within ThriveMT. Your role is to help users process their emotions with deep compassion, validation, and clarity.
 
@@ -80,11 +113,12 @@ Remember:
 - Always end with something hopeful, empowering, or a gentle invitation to continue reflecting
 
 You are here to help them feel seen, heard, and supported as they navigate their inner world.`;
+
     const finalSystemPrompt = systemPrompt || defaultSystemPrompt;
 
     console.log('MirrorAI processing message:', message.substring(0, 100) + '...');
     
-    const response = await callMirrorAI(message, finalSystemPrompt);
+    const response = await callMirrorAI(message, finalSystemPrompt, conversationContext || []);
     
     console.log('MirrorAI response generated successfully');
 

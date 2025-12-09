@@ -1,11 +1,20 @@
 import { serve } from "https://deno.land/std@0.190.0/http/server.ts";
 import Stripe from "https://esm.sh/stripe@14.21.0";
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2.45.0";
+import { z } from "https://deno.land/x/zod@v3.22.4/mod.ts";
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
   "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type",
 };
+
+// Zod schema for input validation
+const RequestSchema = z.object({
+  planTitle: z.string().min(1, "Plan title is required").max(100),
+  billingCycle: z.enum(['monthly', 'yearly']).default('monthly'),
+  selectedAddOns: z.array(z.string()).max(20).default([]),
+  totalAmount: z.number().min(0).max(10000),
+});
 
 const logStep = (step: string, details?: any) => {
   const detailsStr = details ? ` - ${JSON.stringify(details)}` : '';
@@ -42,13 +51,27 @@ serve(async (req) => {
     if (!user?.email) throw new Error("User not authenticated or email not available");
     logStep("User authenticated", { userId: user.id, email: user.email });
 
-    // Get the plan details from the request body
-    const { planTitle, billingCycle = 'monthly', selectedAddOns = [], totalAmount } = await req.json();
+    const rawBody = await req.json();
+    
+    // Validate input with Zod
+    const parseResult = RequestSchema.safeParse(rawBody);
+    if (!parseResult.success) {
+      logStep("Validation error", parseResult.error.errors);
+      return new Response(
+        JSON.stringify({ 
+          error: 'Invalid request',
+          details: parseResult.error.errors.map(e => e.message)
+        }),
+        { status: 400, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+      );
+    }
+
+    const { planTitle, billingCycle, selectedAddOns, totalAmount } = parseResult.data;
     logStep("Request body parsed", { planTitle, billingCycle, selectedAddOns, totalAmount });
 
     // Calculate total amount (plan + add-ons)
     // Convert dollar amount to cents for Stripe
-    const amount = Math.round((totalAmount || 0) * 100);
+    const amount = Math.round(totalAmount * 100);
     logStep("Total amount calculated", { planTitle, billingCycle, selectedAddOns, totalAmountDollars: totalAmount, amountCents: amount });
 
     // For free plan, just update the database and return success
