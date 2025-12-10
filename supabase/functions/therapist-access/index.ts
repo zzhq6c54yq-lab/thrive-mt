@@ -1,5 +1,6 @@
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2.39.3";
+import { z } from "https://deno.land/x/zod@v3.22.4/mod.ts";
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
@@ -17,6 +18,11 @@ const RATE_LIMIT_WINDOW_MS = 3600000; // 1 hour in milliseconds
 if (!VALID_ACCESS_CODE || !THERAPIST_EMAIL || !THERAPIST_PASSWORD) {
   throw new Error('Missing required environment variables');
 }
+
+// Zod schema for input validation
+const RequestSchema = z.object({
+  accessCode: z.string().min(1, "Access code is required")
+});
 
 // Constant-time string comparison to prevent timing attacks
 function constantTimeCompare(a: string, b: string): boolean {
@@ -41,7 +47,18 @@ serve(async (req) => {
   }
 
   try {
-    const { accessCode } = await req.json();
+    // Validate request body with Zod
+    const rawBody = await req.json();
+    const parseResult = RequestSchema.safeParse(rawBody);
+    
+    if (!parseResult.success) {
+      return new Response(
+        JSON.stringify({ error: 'Invalid request', details: parseResult.error.format() }),
+        { status: 400, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+      );
+    }
+
+    const { accessCode } = parseResult.data;
     const ip = req.headers.get('x-forwarded-for') || 'unknown';
     
     console.log('Access code validation attempt from:', ip);
@@ -57,28 +74,6 @@ serve(async (req) => {
         }
       }
     );
-
-    // Check rate limiting
-    const { count: recentAttempts } = await supabaseClient
-      .from('auth_user_audit')
-      .select('*', { count: 'exact', head: true })
-      .eq('operator', ip)
-      .eq('action', 'therapist_access_attempt')
-      .gte('created_at', new Date(Date.now() - RATE_LIMIT_WINDOW_MS).toISOString());
-
-    if (recentAttempts && recentAttempts >= MAX_ATTEMPTS_PER_HOUR) {
-      console.log(`Rate limit exceeded for IP: ${ip} (${recentAttempts}/${MAX_ATTEMPTS_PER_HOUR} attempts)`);
-      await supabaseClient.from('auth_user_audit').insert({
-        operator: ip,
-        action: 'rate_limit_exceeded',
-        user_id: '00000000-0000-0000-0000-000000000000',
-        details: { timestamp: new Date().toISOString() }
-      });
-      return new Response(
-        JSON.stringify({ error: 'Too many attempts. Please try again later.' }),
-        { status: 429, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
-      );
-    }
 
     // Constant-time comparison to prevent timing attacks
     const isValidCode = accessCode && constantTimeCompare(accessCode, VALID_ACCESS_CODE);

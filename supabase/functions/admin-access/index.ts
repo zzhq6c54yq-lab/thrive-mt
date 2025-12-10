@@ -1,11 +1,17 @@
 // Admin Access Edge Function - Validates access code and auto-creates/signs in admin
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 import { createClient } from 'https://esm.sh/@supabase/supabase-js@2.75.0';
+import { z } from "https://deno.land/x/zod@v3.22.4/mod.ts";
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
   'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
 };
+
+// Zod schema for input validation
+const RequestSchema = z.object({
+  accessCode: z.string().min(8, "Access code must be at least 8 characters")
+});
 
 serve(async (req) => {
   if (req.method === 'OPTIONS') {
@@ -13,7 +19,18 @@ serve(async (req) => {
   }
 
   try {
-    const { accessCode } = await req.json();
+    // Validate request body with Zod
+    const rawBody = await req.json();
+    const parseResult = RequestSchema.safeParse(rawBody);
+    
+    if (!parseResult.success) {
+      return new Response(
+        JSON.stringify({ error: 'Invalid request', details: parseResult.error.format() }),
+        { status: 400, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+      );
+    }
+
+    const { accessCode } = parseResult.data;
     const ip = req.headers.get('x-forwarded-for') || 'unknown';
     const userAgent = req.headers.get('user-agent') || 'unknown';
 

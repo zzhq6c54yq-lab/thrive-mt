@@ -1,6 +1,7 @@
 import { serve } from "https://deno.land/std@0.190.0/http/server.ts";
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2.39.3";
 import { Resend } from "npm:resend@2.0.0";
+import { z } from "https://deno.land/x/zod@v3.22.4/mod.ts";
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
@@ -13,6 +14,9 @@ const RESEND_API_KEY = Deno.env.get('RESEND_API_KEY')!;
 const THERAPIST_EMAIL = Deno.env.get('THERAPIST_EMAIL')!;
 
 const resend = new Resend(RESEND_API_KEY);
+
+// Note: This endpoint uses IP-based rate limiting, no body validation needed
+// The IP is extracted from headers, not from user input
 
 // Rate limiting for reset requests
 const MAX_RESET_REQUESTS_PER_HOUR = 3;
