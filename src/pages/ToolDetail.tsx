@@ -42,7 +42,7 @@ const ToolDetail = () => {
           <p className="text-gray-700 mb-4">
             The requested tool could not be found. Please check the URL or return to the tools directory.
           </p>
-          <Button onClick={() => navigate("/mental-wellness-tools")}>
+          <Button onClick={() => navigate("/app/mental-wellness-tools")}>
             Back to Mental Wellness Tools
           </Button>
         </div>

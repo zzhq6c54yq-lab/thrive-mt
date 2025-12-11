@@ -213,7 +213,7 @@ const TransportStressAssessment: React.FC = () => {
   };
   
   const handleBackToPortal = () => {
-    navigate("/transport-portal", { 
+    navigate("/app/transport-portal", { 
       state: { 
         tab: "assessments",
         stayInPortal: true,
@@ -352,11 +352,11 @@ const TransportStressAssessment: React.FC = () => {
                   <Button 
                     variant="outline" 
                     className="h-auto p-4 flex flex-col items-center text-center border-blue-200 hover:border-blue-500 hover:bg-blue-50"
-                    onClick={() => navigate("/transport-practice/stress-management", {
+                    onClick={() => navigate("/app/transport-practice/stress-management", {
                       state: { 
                         stayInPortal: true,
                         preventTutorial: true,
-                        portalPath: "/transport-portal"
+                        portalPath: "/app/transport-portal"
                       }
                     })}
                   >
@@ -366,11 +366,11 @@ const TransportStressAssessment: React.FC = () => {
                   <Button 
                     variant="outline" 
                     className="h-auto p-4 flex flex-col items-center text-center border-blue-200 hover:border-blue-500 hover:bg-blue-50"
-                    onClick={() => navigate("/transport-workshops/stress-management", {
+                    onClick={() => navigate("/app/transport-workshops/stress-management", {
                       state: { 
                         stayInPortal: true,
                         preventTutorial: true,
-                        portalPath: "/transport-portal"
+                        portalPath: "/app/transport-portal"
                       }
                     })}
                   >

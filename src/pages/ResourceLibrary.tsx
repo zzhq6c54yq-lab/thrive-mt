@@ -309,7 +309,7 @@ const ResourceLibrary: React.FC = () => {
             <Button 
               variant="link" 
               className="text-white hover:text-[#6366f1] transition-colors p-0 flex items-center"
-              onClick={() => navigate("/home")}
+              onClick={() => navigate("/app/home")}
             >
               <ArrowLeft className="mr-2 h-4 w-4" />
               Back to Home

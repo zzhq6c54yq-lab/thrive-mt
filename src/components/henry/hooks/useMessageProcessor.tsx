@@ -98,10 +98,11 @@ export const useMessageProcessor = (
 
         if (conversations) {
           const { data: messages } = await supabase
-            .from('henry_messages_v2')
+            .from('henry_messages')
             .select('*')
             .eq('conversation_id', conversations.id)
-            .order('created_at', { ascending: true });
+            .order('created_at', { ascending: true })
+            .limit(20);
 
           if (messages && messages.length > 0) {
             const formatted = messages.map(m => ({
@@ -175,7 +176,7 @@ export const useMessageProcessor = (
           created_at: msg.timestamp.toISOString()
         }));
 
-        await supabase.from('henry_messages_v2').insert(messagesToInsert);
+        await supabase.from('henry_messages').insert(messagesToInsert);
       } catch (error) {
         console.error('[MessageProcessor] Failed to save to database:', error);
       }

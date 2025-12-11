@@ -40,7 +40,7 @@ const TherapistMatches = () => {
 
   // Redirect if no matches
   if (!matches || matches.length === 0) {
-    navigate("/therapist-questionnaire");
+    navigate("/app/therapist-questionnaire");
     return null;
   }
 
@@ -183,12 +183,12 @@ const TherapistMatches = () => {
           <p className="mb-6">Don't see a therapist that feels right for you?</p>
           <Button 
             variant="outline" 
-            onClick={() => navigate("/therapist-questionnaire")}
+            onClick={() => navigate("/app/therapist-questionnaire")}
             className="mr-4"
           >
             Retake Questionnaire
           </Button>
-          <Button onClick={() => navigate("/real-time-therapy")}>
+          <Button onClick={() => navigate("/app/real-time-therapy")}>
             Explore More Options
           </Button>
         </div>

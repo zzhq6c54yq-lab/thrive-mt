@@ -120,7 +120,7 @@ const FamilyLinkPage = () => {
                 
                 <div className="flex justify-end mt-4">
                   <Button
-                    onClick={() => navigate("/video-diary")}
+                    onClick={() => navigate("/app/video-diary")}
                     className="bg-indigo-600 hover:bg-indigo-700"
                   >
                     <Video className="mr-2 h-4 w-4" />

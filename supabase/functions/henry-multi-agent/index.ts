@@ -240,7 +240,7 @@ function selectModel(message: string, agentType: string): string {
 
 async function callAI(messages: Message[], agentPrompt: string, model: string): Promise<string> {
   const togetherApiKey = Deno.env.get('TOGETHER_API_KEY');
-  if (!togetherApiKey) throw new Error('TOGETHER_API_KEY not configured');
+  const lovableApiKey = Deno.env.get('LOVABLE_API_KEY');
   
   const baseHenryPrompt = `You are Henry, a kind, warm, and trauma-informed mental health companion in the ThriveMT wellness app. You speak like a caring friend - genuine, supportive, and never clinical or robotic.
 
@@ -254,26 +254,76 @@ Core principles:
 
 `;
 
-  const response = await fetch("https://api.together.xyz/v1/chat/completions", {
-    method: "POST",
-    headers: { "Authorization": `Bearer ${togetherApiKey}`, "Content-Type": "application/json" },
-    body: JSON.stringify({
-      model: model,
-      messages: [{ role: "system", content: baseHenryPrompt + agentPrompt }, ...messages],
-      max_tokens: 500,
-      temperature: 0.7,
-      top_p: 0.9,
-    })
-  });
+  const systemMessage = { role: "system", content: baseHenryPrompt + agentPrompt };
+  const formattedMessages = [systemMessage, ...messages];
   
-  if (!response.ok) {
-    const errorText = await response.text();
-    console.error('AI API error:', errorText);
-    throw new Error(`AI API error: ${response.status}`);
+  // Try Together AI first
+  if (togetherApiKey) {
+    try {
+      console.log('[Henry] Calling Together AI with model:', model);
+      const response = await fetch("https://api.together.xyz/v1/chat/completions", {
+        method: "POST",
+        headers: { "Authorization": `Bearer ${togetherApiKey}`, "Content-Type": "application/json" },
+        body: JSON.stringify({
+          model: model,
+          messages: formattedMessages,
+          max_tokens: 500,
+          temperature: 0.7,
+          top_p: 0.9,
+        })
+      });
+      
+      if (response.ok) {
+        const data = await response.json();
+        const content = data.choices?.[0]?.message?.content;
+        if (content) {
+          console.log('[Henry] Together AI response received successfully');
+          return content;
+        }
+      } else {
+        const errorText = await response.text();
+        console.error('[Henry] Together AI error:', response.status, errorText);
+      }
+    } catch (error) {
+      console.error('[Henry] Together AI failed:', error);
+    }
   }
   
-  const data = await response.json();
-  return data.choices?.[0]?.message?.content || "I'm sorry, I'm having trouble responding right now. Please try again.";
+  // Fallback to Lovable AI Gateway
+  if (lovableApiKey) {
+    try {
+      console.log('[Henry] Falling back to Lovable AI Gateway');
+      const response = await fetch("https://ai.gateway.lovable.dev/v1/chat/completions", {
+        method: "POST",
+        headers: { 
+          "Authorization": `Bearer ${lovableApiKey}`, 
+          "Content-Type": "application/json" 
+        },
+        body: JSON.stringify({
+          model: "google/gemini-2.5-flash",
+          messages: formattedMessages,
+        })
+      });
+      
+      if (response.ok) {
+        const data = await response.json();
+        const content = data.choices?.[0]?.message?.content;
+        if (content) {
+          console.log('[Henry] Lovable AI response received successfully');
+          return content;
+        }
+      } else {
+        const errorText = await response.text();
+        console.error('[Henry] Lovable AI error:', response.status, errorText);
+      }
+    } catch (error) {
+      console.error('[Henry] Lovable AI failed:', error);
+    }
+  }
+  
+  // If both fail, return a helpful fallback message
+  console.error('[Henry] All AI providers failed');
+  return "I'm here with you. While I'm experiencing some technical difficulties, please know that your wellbeing matters. If you're struggling, consider reaching out to a trusted friend, family member, or professional. You can also call 988 for the Suicide & Crisis Lifeline anytime.";
 }
 
 serve(async (req) => {
