@@ -66,7 +66,7 @@ const DearHenryAdmin: React.FC = () => {
         description: "You do not have permission to access the admin dashboard.",
         variant: "destructive" 
       });
-      navigate('/');
+      navigate('/app/dashboard');
       return;
     }
 

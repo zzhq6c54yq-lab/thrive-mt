@@ -136,7 +136,7 @@ const SubscriptionPlansPage: React.FC = () => {
           title: "Basic Plan Activated",
           description: "You now have access to basic features.",
         });
-        navigate("/");
+        navigate("/app/dashboard");
         return;
       }
 

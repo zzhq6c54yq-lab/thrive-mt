@@ -53,11 +53,11 @@ export default function TherapistReset() {
   };
 
   const handleGoToLogin = () => {
-    navigate('/');
+    navigate('/app/auth');
   };
 
   const handleRequestNewLink = () => {
-    navigate('/');
+    navigate('/app/auth');
   };
 
   return (

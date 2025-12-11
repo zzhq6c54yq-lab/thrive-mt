@@ -18,7 +18,7 @@ const NotFound = () => {
   }, [location.pathname]);
 
   const handleGoHome = () => {
-    navigate("/");
+    navigate("/app/dashboard");
   };
 
   const handleGoBack = () => {

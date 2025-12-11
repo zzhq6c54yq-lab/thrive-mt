@@ -34,7 +34,7 @@ const PaymentSuccessPage: React.FC = () => {
   }, [sessionId, checkSubscription, toast]);
 
   const handleGoHome = () => {
-    navigate("/");
+    navigate("/app/dashboard");
   };
 
   const handleManageSubscription = async () => {

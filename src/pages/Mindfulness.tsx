@@ -496,7 +496,7 @@ const Mindfulness = () => {
             <Button 
               variant="link" 
               className="text-white hover:text-[#c4b5fd] transition-colors p-0 flex items-center"
-              onClick={() => navigate("/")}
+              onClick={() => navigate("/app/dashboard")}
             >
               <ArrowLeft className="mr-2 h-4 w-4" />
               Back to Home

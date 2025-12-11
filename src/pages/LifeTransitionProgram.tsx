@@ -1,15 +1,17 @@
 import React from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
-import { useQuery } from '@tanstack/react-query';
+import { useParams, useNavigate, useLocation } from 'react-router-dom';
+import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
 import { useUser } from '@/contexts/UserContext';
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Progress } from '@/components/ui/progress';
-import { ArrowLeft, CheckCircle, Circle, Clock, BookOpen, Heart, Target } from 'lucide-react';
+import { ArrowLeft, CheckCircle, Circle, Clock, BookOpen, Heart, Target, Loader2 } from 'lucide-react';
 import { motion } from 'framer-motion';
+import { useToast } from '@/hooks/use-toast';
 
-const weeklyModules = {
+const weeklyModules: Record<string, Array<{ week: number; title: string; description: string }>> = {
+  // Database slug: 'divorce-recovery'
   'divorce-recovery': [
     { week: 1, title: 'Processing Your Emotions', description: 'Understanding and accepting the range of emotions you may experience.' },
     { week: 2, title: 'Building Your Support System', description: 'Identifying and strengthening your support network.' },
@@ -20,7 +22,8 @@ const weeklyModules = {
     { week: 7, title: 'Moving Forward', description: 'Creating a vision for your future and taking action.' },
     { week: 8, title: 'Celebrating Growth', description: 'Reflecting on progress and maintaining momentum.' },
   ],
-  'career-transition': [
+  // Database slug: 'job-loss' (Career Transition Support)
+  'job-loss': [
     { week: 1, title: 'Self-Assessment', description: 'Identifying your skills, values, and career goals.' },
     { week: 2, title: 'Exploring Options', description: 'Researching industries and opportunities.' },
     { week: 3, title: 'Building Your Brand', description: 'Resume, LinkedIn, and personal branding.' },
@@ -28,7 +31,8 @@ const weeklyModules = {
     { week: 5, title: 'Interview Preparation', description: 'Mastering the interview process.' },
     { week: 6, title: 'Negotiation Skills', description: 'Salary and benefits negotiation.' },
   ],
-  'grief-loss': [
+  // Database slug: 'grief-healing' (Grief & Loss Support)
+  'grief-healing': [
     { week: 1, title: 'Understanding Grief', description: 'Learning about the grief process.' },
     { week: 2, title: 'Honoring Your Feelings', description: 'Allowing yourself to feel without judgment.' },
     { week: 3, title: 'Memory and Legacy', description: 'Preserving memories and creating meaning.' },
@@ -36,6 +40,7 @@ const weeklyModules = {
     { week: 5, title: 'Finding Support', description: 'Connecting with others who understand.' },
     { week: 6, title: 'Moving Through Grief', description: 'Finding hope and healing.' },
   ],
+  // Database slug: 'new-parent'
   'new-parent': [
     { week: 1, title: 'Preparing for Change', description: 'Mental preparation for parenthood.' },
     { week: 2, title: 'Self-Care for Parents', description: 'Maintaining your wellbeing.' },
@@ -44,6 +49,7 @@ const weeklyModules = {
     { week: 5, title: 'Managing Stress', description: 'Coping with parenting pressures.' },
     { week: 6, title: 'Finding Your Village', description: 'Building your support community.' },
   ],
+  // Database slug: 'retirement'
   'retirement': [
     { week: 1, title: 'Identity Beyond Work', description: 'Exploring who you are outside of your career.' },
     { week: 2, title: 'Creating Purpose', description: 'Finding meaningful activities.' },
@@ -52,6 +58,7 @@ const weeklyModules = {
     { week: 5, title: 'Financial Peace', description: 'Managing retirement finances confidently.' },
     { week: 6, title: 'Embracing the Journey', description: 'Living your best retirement life.' },
   ],
+  // Database slug: 'chronic-illness'
   'chronic-illness': [
     { week: 1, title: 'Acceptance & Adjustment', description: 'Coming to terms with your diagnosis.' },
     { week: 2, title: 'Managing Energy', description: 'Pacing yourself and setting boundaries.' },
@@ -65,7 +72,13 @@ const weeklyModules = {
 const LifeTransitionProgram = () => {
   const { slug } = useParams();
   const navigate = useNavigate();
+  const location = useLocation();
   const { user } = useUser();
+  const { toast } = useToast();
+  const queryClient = useQueryClient();
+  
+  // Check if demo mode
+  const isDemoMode = location.state?.demoUser === true;
 
   const { data: program, isLoading } = useQuery({
     queryKey: ['life-transition-program', slug],
@@ -99,6 +112,55 @@ const LifeTransitionProgram = () => {
     enabled: !!user?.id && !!program?.id,
   });
 
+  // Enrollment mutation
+  const enrollMutation = useMutation({
+    mutationFn: async () => {
+      if (!user?.id) throw new Error("Please log in to enroll");
+      if (!program?.id) throw new Error("Program not found");
+
+      const { error } = await supabase
+        .from('user_transition_progress')
+        .insert({
+          user_id: user.id,
+          program_id: program.id,
+          current_week: 1,
+          notes: {},
+        });
+
+      if (error) throw error;
+    },
+    onSuccess: () => {
+      toast({
+        title: "Enrolled Successfully! 🎉",
+        description: `Your ${program?.title} journey begins now.`,
+      });
+      queryClient.invalidateQueries({ queryKey: ['transition-enrollment', slug] });
+      queryClient.invalidateQueries({ queryKey: ['transition-enrollments'] });
+    },
+    onError: (error: Error) => {
+      toast({
+        title: "Enrollment Failed",
+        description: error.message,
+        variant: "destructive",
+      });
+    },
+  });
+
+  const handleEnroll = () => {
+    if (isDemoMode) {
+      toast({
+        title: "Demo Mode",
+        description: "Create an account to enroll in programs and track your progress.",
+      });
+      return;
+    }
+    if (!user) {
+      navigate('/app/auth', { state: { returnTo: `/app/life-transitions/${slug}` } });
+      return;
+    }
+    enrollMutation.mutate();
+  };
+
   const modules = weeklyModules[slug as keyof typeof weeklyModules] || [];
   const currentWeek = enrollment?.current_week || 1;
   const progressPercent = (currentWeek / modules.length) * 100;
@@ -130,11 +192,11 @@ const LifeTransitionProgram = () => {
         {/* Back Button */}
         <Button
           variant="ghost"
-          onClick={() => navigate('/app/life-transitions')}
+          onClick={() => navigate('/app/dashboard')}
           className="text-gray-400 hover:text-white"
         >
           <ArrowLeft className="w-4 h-4 mr-2" />
-          Back to Life Transitions
+          Back to Dashboard
         </Button>
 
         {/* Program Header */}
@@ -258,9 +320,18 @@ const LifeTransitionProgram = () => {
             </p>
             <Button 
               size="lg"
+              onClick={handleEnroll}
+              disabled={enrollMutation.isPending}
               className="bg-gradient-to-r from-[#D4AF37] to-[#B87333] hover:from-[#E5C5A1] hover:to-[#D4AF37] text-black font-semibold"
             >
-              Enroll Now
+              {enrollMutation.isPending ? (
+                <>
+                  <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                  Enrolling...
+                </>
+              ) : (
+                'Enroll Now'
+              )}
             </Button>
           </Card>
         )}

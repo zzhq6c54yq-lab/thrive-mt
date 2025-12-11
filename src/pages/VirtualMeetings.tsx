@@ -179,7 +179,7 @@ const VirtualMeetings = () => {
   };
   
   const handleBack = () => {
-    navigate("/");
+    navigate("/app/dashboard");
   };
   
   const handleConfirmJoin = () => {

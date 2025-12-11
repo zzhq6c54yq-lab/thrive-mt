@@ -32,7 +32,7 @@ const ThriveButton: React.FC<ThriveButtonProps> = ({
       duration: 1500,
     });
     
-    navigate("/", { 
+    navigate("/app/dashboard", { 
       state: { 
         screenState: 'main',
         returnToMain: true,

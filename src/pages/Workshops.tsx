@@ -22,7 +22,7 @@ const Workshops = () => {
   const { toast } = useToast();
   
   const handleBack = () => {
-    navigate("/");
+    navigate("/app/dashboard");
   };
 
   const handleJoinWorkshop = (workshopId: string, workshopTitle: string) => {

@@ -54,7 +54,7 @@ const SubstanceAbuseSponsor = () => {
             <Button 
               variant="ghost" 
               className="text-white hover:text-emerald-200 hover:bg-white/10"
-              onClick={() => navigate("/home")}
+              onClick={() => navigate("/app/dashboard")}
             >
               <ArrowLeft className="mr-2 h-4 w-4" />
               Back to Home

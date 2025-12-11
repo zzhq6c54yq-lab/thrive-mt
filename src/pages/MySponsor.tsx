@@ -27,8 +27,7 @@ const MySponsor = () => {
   const [completedSteps, setCompletedSteps] = useState([1, 2]);
 
   const handleBackClick = () => {
-    // Fix navigation to go back to home instead of initial screen
-    navigate("/home");
+    navigate("/app/dashboard");
   };
 
   const handleMeetingSearch = () => {

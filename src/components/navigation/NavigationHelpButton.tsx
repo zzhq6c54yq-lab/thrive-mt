@@ -56,7 +56,7 @@ const NavigationHelpButton: React.FC = () => {
     
     // Always navigate to main screen with the 'main' screenState to avoid intro screens
     // Set a specific flag to prevent tutorials from showing
-    navigate("/", { 
+    navigate("/app/dashboard", { 
       state: { 
         screenState: 'main',
         preventTutorial: true 

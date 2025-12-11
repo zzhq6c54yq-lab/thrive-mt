@@ -173,9 +173,9 @@ const WellnessChallenges: React.FC = () => {
 
   const handleBack = () => {
     if (id) {
-      navigate("/wellness-challenges");
+      navigate("/app/wellness-challenges");
     } else {
-      navigate("/");
+      navigate("/app/dashboard");
     }
   };
 
