@@ -35,3 +35,6 @@ verify_jwt = true
 
 [functions.match-buddies]
 verify_jwt = true
+
+[functions.end-call]
+verify_jwt = true

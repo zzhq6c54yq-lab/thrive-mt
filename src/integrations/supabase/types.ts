@@ -3378,6 +3378,33 @@ export type Database = {
         }
         Relationships: []
       }
+      points_ledger: {
+        Row: {
+          change: number
+          created_at: string | null
+          id: string
+          metadata: Json | null
+          reason: string | null
+          user_id: string | null
+        }
+        Insert: {
+          change: number
+          created_at?: string | null
+          id?: string
+          metadata?: Json | null
+          reason?: string | null
+          user_id?: string | null
+        }
+        Update: {
+          change?: number
+          created_at?: string | null
+          id?: string
+          metadata?: Json | null
+          reason?: string | null
+          user_id?: string | null
+        }
+        Relationships: []
+      }
       profiles: {
         Row: {
           assigned_therapist_id: string | null
@@ -4237,6 +4264,36 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      storage_files: {
+        Row: {
+          bucket: string
+          created_at: string | null
+          id: string
+          mime_type: string | null
+          path: string
+          size: number | null
+          user_id: string | null
+        }
+        Insert: {
+          bucket: string
+          created_at?: string | null
+          id?: string
+          mime_type?: string | null
+          path: string
+          size?: number | null
+          user_id?: string | null
+        }
+        Update: {
+          bucket?: string
+          created_at?: string | null
+          id?: string
+          mime_type?: string | null
+          path?: string
+          size?: number | null
+          user_id?: string | null
+        }
+        Relationships: []
       }
       subscriptions: {
         Row: {

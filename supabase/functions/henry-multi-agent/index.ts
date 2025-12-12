@@ -238,6 +238,50 @@ function selectModel(message: string, agentType: string): string {
   return 'mistralai/Mixtral-8x7B-Instruct-v0.1';
 }
 
+// Retry with exponential backoff
+async function fetchWithRetry(
+  url: string, 
+  options: RequestInit, 
+  maxRetries = 3,
+  timeoutMs = 30000
+): Promise<Response> {
+  for (let attempt = 1; attempt <= maxRetries; attempt++) {
+    const controller = new AbortController();
+    const timeout = setTimeout(() => controller.abort(), timeoutMs);
+    
+    try {
+      const response = await fetch(url, { ...options, signal: controller.signal });
+      clearTimeout(timeout);
+      
+      if (response.ok || attempt === maxRetries) {
+        return response;
+      }
+      
+      // Retry on 5xx errors
+      if (response.status >= 500) {
+        console.log(`[Henry] Attempt ${attempt} failed with ${response.status}, retrying...`);
+        await new Promise(r => setTimeout(r, 1000 * Math.pow(2, attempt - 1)));
+        continue;
+      }
+      
+      return response;
+    } catch (error) {
+      clearTimeout(timeout);
+      
+      if (error.name === 'AbortError') {
+        console.error(`[Henry] Attempt ${attempt} timed out after ${timeoutMs}ms`);
+      } else {
+        console.error(`[Henry] Attempt ${attempt} failed:`, error.message);
+      }
+      
+      if (attempt === maxRetries) throw error;
+      await new Promise(r => setTimeout(r, 1000 * Math.pow(2, attempt - 1)));
+    }
+  }
+  
+  throw new Error('All retry attempts failed');
+}
+
 async function callAI(messages: Message[], agentPrompt: string, model: string): Promise<string> {
   const togetherApiKey = Deno.env.get('TOGETHER_API_KEY');
   const lovableApiKey = Deno.env.get('LOVABLE_API_KEY');
@@ -255,23 +299,31 @@ Core principles:
 `;
 
   const systemMessage = { role: "system", content: baseHenryPrompt + agentPrompt };
-  const formattedMessages = [systemMessage, ...messages];
   
-  // Try Together AI first
+  // Limit conversation history to last 10 messages to prevent token overflow
+  const recentMessages = messages.slice(-10);
+  const formattedMessages = [systemMessage, ...recentMessages];
+  
+  // Try Together AI first with retry logic
   if (togetherApiKey) {
     try {
       console.log('[Henry] Calling Together AI with model:', model);
-      const response = await fetch("https://api.together.xyz/v1/chat/completions", {
-        method: "POST",
-        headers: { "Authorization": `Bearer ${togetherApiKey}`, "Content-Type": "application/json" },
-        body: JSON.stringify({
-          model: model,
-          messages: formattedMessages,
-          max_tokens: 500,
-          temperature: 0.7,
-          top_p: 0.9,
-        })
-      });
+      const response = await fetchWithRetry(
+        "https://api.together.xyz/v1/chat/completions",
+        {
+          method: "POST",
+          headers: { "Authorization": `Bearer ${togetherApiKey}`, "Content-Type": "application/json" },
+          body: JSON.stringify({
+            model: model,
+            messages: formattedMessages,
+            max_tokens: 500,
+            temperature: 0.7,
+            top_p: 0.9,
+          })
+        },
+        3,
+        30000
+      );
       
       if (response.ok) {
         const data = await response.json();
@@ -285,25 +337,32 @@ Core principles:
         console.error('[Henry] Together AI error:', response.status, errorText);
       }
     } catch (error) {
-      console.error('[Henry] Together AI failed:', error);
+      console.error('[Henry] Together AI failed after retries:', error.message);
     }
+  } else {
+    console.warn('[Henry] TOGETHER_API_KEY not configured');
   }
   
-  // Fallback to Lovable AI Gateway
+  // Fallback to Lovable AI Gateway with retry logic
   if (lovableApiKey) {
     try {
       console.log('[Henry] Falling back to Lovable AI Gateway');
-      const response = await fetch("https://ai.gateway.lovable.dev/v1/chat/completions", {
-        method: "POST",
-        headers: { 
-          "Authorization": `Bearer ${lovableApiKey}`, 
-          "Content-Type": "application/json" 
+      const response = await fetchWithRetry(
+        "https://ai.gateway.lovable.dev/v1/chat/completions",
+        {
+          method: "POST",
+          headers: { 
+            "Authorization": `Bearer ${lovableApiKey}`, 
+            "Content-Type": "application/json" 
+          },
+          body: JSON.stringify({
+            model: "google/gemini-2.5-flash",
+            messages: formattedMessages,
+          })
         },
-        body: JSON.stringify({
-          model: "google/gemini-2.5-flash",
-          messages: formattedMessages,
-        })
-      });
+        3,
+        30000
+      );
       
       if (response.ok) {
         const data = await response.json();
@@ -317,12 +376,14 @@ Core principles:
         console.error('[Henry] Lovable AI error:', response.status, errorText);
       }
     } catch (error) {
-      console.error('[Henry] Lovable AI failed:', error);
+      console.error('[Henry] Lovable AI failed after retries:', error.message);
     }
+  } else {
+    console.warn('[Henry] LOVABLE_API_KEY not configured');
   }
   
   // If both fail, return a helpful fallback message
-  console.error('[Henry] All AI providers failed');
+  console.error('[Henry] All AI providers failed after retries');
   return "I'm here with you. While I'm experiencing some technical difficulties, please know that your wellbeing matters. If you're struggling, consider reaching out to a trusted friend, family member, or professional. You can also call 988 for the Suicide & Crisis Lifeline anytime.";
 }
 
