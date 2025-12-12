@@ -58,8 +58,7 @@ Deno.serve(async (req) => {
       source: provider,
       data_type: item.type,
       value: item.value,
-      unit: item.unit,
-      recorded_at: item.timestamp,
+      recorded_date: item.timestamp.split('T')[0], // Extract date portion
       synced_at: new Date().toISOString(),
     }));
 
