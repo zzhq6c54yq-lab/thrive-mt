@@ -10,7 +10,7 @@ const corsHeaders = {
 
 // Zod schema for input validation
 const RequestSchema = z.object({
-  accessCode: z.string().min(8, "Access code must be at least 8 characters")
+  accessCode: z.string().min(6, "Access code must be at least 6 characters")
 });
 
 serve(async (req) => {
