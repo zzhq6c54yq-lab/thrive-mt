@@ -2,6 +2,7 @@
 import React, { createContext, useContext, useEffect, useState } from 'react';
 import { User, Session } from '@supabase/supabase-js';
 import { supabase } from '@/integrations/supabase/client';
+import { CURRENT_TERMS_VERSION, needsReconsent as checkNeedsReconsent } from '@/lib/termsVersion';
 
 interface Profile {
   id: string;
@@ -33,8 +34,10 @@ interface UserContextType {
   profile: Profile | null;
   subscription: Subscription | null;
   loading: boolean;
+  needsReconsent: boolean;
   updateProfile: (updates: Partial<Profile>) => Promise<void>;
   checkSubscription: () => Promise<void>;
+  clearReconsentFlag: () => void;
 }
 
 const UserContext = createContext<UserContextType | null>(null);
@@ -45,6 +48,7 @@ export const UserProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const [profile, setProfile] = useState<Profile | null>(null);
   const [subscription, setSubscription] = useState<Subscription | null>(null);
   const [loading, setLoading] = useState(true);
+  const [needsReconsent, setNeedsReconsent] = useState(false);
 
   useEffect(() => {
     // Set up auth state listener
@@ -66,6 +70,10 @@ export const UserProvider: React.FC<{ children: React.ReactNode }> = ({ children
               console.error('[UserContext] Error fetching profile:', error);
             } else {
               setProfile(profileData);
+              // Check if user needs to re-consent to updated terms
+              if (profileData && checkNeedsReconsent(profileData.terms_version)) {
+                setNeedsReconsent(true);
+              }
             }
 
             // Only check subscription if onboarding is complete
@@ -142,8 +150,12 @@ export const UserProvider: React.FC<{ children: React.ReactNode }> = ({ children
     await checkSubscriptionStatus();
   };
 
+  const clearReconsentFlag = () => {
+    setNeedsReconsent(false);
+  };
+
   return (
-    <UserContext.Provider value={{ user, session, profile, subscription, loading, updateProfile, checkSubscription }}>
+    <UserContext.Provider value={{ user, session, profile, subscription, loading, needsReconsent, updateProfile, checkSubscription, clearReconsentFlag }}>
       {children}
     </UserContext.Provider>
   );

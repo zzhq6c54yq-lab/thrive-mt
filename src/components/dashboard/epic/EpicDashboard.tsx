@@ -5,6 +5,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { useTodayDashboard } from '@/hooks/useTodayDashboard';
 import { useDashboardState } from '@/hooks/useDashboardState';
 import { useUser } from '@/contexts/UserContext';
+import { supabase } from '@/integrations/supabase/client';
 import DashboardNavigation from './DashboardNavigation';
 import { StatusChips } from './StatusChips';
 import { NewYourDaySection } from './sections/NewYourDaySection';
@@ -21,6 +22,7 @@ import AIContextualHelper from './AIContextualHelper';
 import LayoutControls from './LayoutControls';
 import HenryDialog from '@/components/henry/HenryDialog';
 import IncomingCallModal from '@/components/client/IncomingCallModal';
+import TermsReconsentModal from '@/components/compliance/TermsReconsentModal';
 import { useKeyboardShortcuts } from '@/hooks/useKeyboardShortcuts';
 import EmpathyLoadingState from '@/components/shared/EmpathyLoadingState';
 import EmpathyErrorState from '@/components/shared/EmpathyErrorState';
@@ -46,7 +48,7 @@ interface EpicDashboardProps {
 
 export default function EpicDashboard({ demoMode = false }: EpicDashboardProps) {
   const navigate = useNavigate();
-  const { user, profile, loading: userLoading } = useUser();
+  const { user, profile, loading: userLoading, needsReconsent, clearReconsentFlag } = useUser();
   const { dashboardData, loading: dashboardLoading, refetch } = useTodayDashboard();
   
   // Provide fallback profile data for demo users
@@ -202,6 +204,18 @@ export default function EpicDashboard({ demoMode = false }: EpicDashboardProps) 
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-900 via-[#1a1a1a] to-gray-900 pb-24 relative overflow-hidden">
+      {/* Terms Re-consent Modal */}
+      {user && needsReconsent && !demoMode && (
+        <TermsReconsentModal
+          isOpen={needsReconsent}
+          userId={user.id}
+          onAccept={clearReconsentFlag}
+          onDecline={() => {
+            supabase.auth.signOut();
+            navigate('/app/auth');
+          }}
+        />
+      )}
       {/* Ambient background particles */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
         {Array.from({ length: 20 }).map((_, i) => (
