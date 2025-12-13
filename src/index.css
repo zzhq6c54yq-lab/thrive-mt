@@ -39,11 +39,39 @@
     --chart-5: 300 100% 60%;
     --radius: 1rem;
 
-    /* Bronze Theme Colors */
+    /* Bronze Theme Colors - ThriveMT Primary Palette */
     --bronze: 30 56% 46%;
     --bronze-dark: 30 60% 36%;
     --bronze-light: 35 50% 70%;
     --bronze-glow: 35 70% 55%;
+    
+    /* Extended Bronze Palette */
+    --bronze-50: 35 50% 95%;
+    --bronze-100: 35 50% 90%;
+    --bronze-200: 35 50% 80%;
+    --bronze-300: 35 50% 70%;
+    --bronze-400: 32 55% 58%;
+    --bronze-500: 30 56% 46%;
+    --bronze-600: 28 58% 38%;
+    --bronze-700: 26 60% 30%;
+    --bronze-800: 24 62% 22%;
+    --bronze-900: 22 64% 14%;
+    
+    /* Warm Amber Accents */
+    --amber-warm: 38 92% 50%;
+    --cream: 40 40% 94%;
+    --cream-dark: 38 25% 88%;
+    
+    /* Compassionate UI Colors */
+    --success-gentle: 145 60% 45%;
+    --warning-gentle: 38 90% 50%;
+    --error-gentle: 0 65% 55%;
+    
+    /* Portal Theming System */
+    --portal-accent: 30 56% 46%;
+    --portal-accent-light: 35 50% 70%;
+    --portal-accent-dark: 30 60% 36%;
+    --portal-glow: rgba(212, 175, 55, 0.3);
 
     /* Futuristic Studio Colors */
     --neon-cyan: 196 100% 50%;
