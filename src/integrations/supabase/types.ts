@@ -578,6 +578,45 @@ export type Database = {
           },
         ]
       }
+      audit_logs: {
+        Row: {
+          action: string
+          actor_role: string | null
+          created_at: string | null
+          id: string
+          ip_address: unknown
+          new_data: Json | null
+          old_data: Json | null
+          record_id: string | null
+          table_name: string
+          user_id: string | null
+        }
+        Insert: {
+          action: string
+          actor_role?: string | null
+          created_at?: string | null
+          id?: string
+          ip_address?: unknown
+          new_data?: Json | null
+          old_data?: Json | null
+          record_id?: string | null
+          table_name: string
+          user_id?: string | null
+        }
+        Update: {
+          action?: string
+          actor_role?: string | null
+          created_at?: string | null
+          id?: string
+          ip_address?: unknown
+          new_data?: Json | null
+          old_data?: Json | null
+          record_id?: string | null
+          table_name?: string
+          user_id?: string | null
+        }
+        Relationships: []
+      }
       auth_user_audit: {
         Row: {
           action: string
@@ -3628,6 +3667,7 @@ export type Database = {
         Row: {
           assigned_therapist_id: string | null
           avatar_url: string | null
+          consent_accepted_at: string | null
           created_at: string | null
           deleted_at: string | null
           display_name: string | null
@@ -3642,6 +3682,7 @@ export type Database = {
           primary_portal: string | null
           risk_level: string | null
           secondary_portal: string | null
+          terms_version: string | null
           time_preference_minutes: number | null
           updated_at: string | null
           user_type: string | null
@@ -3649,6 +3690,7 @@ export type Database = {
         Insert: {
           assigned_therapist_id?: string | null
           avatar_url?: string | null
+          consent_accepted_at?: string | null
           created_at?: string | null
           deleted_at?: string | null
           display_name?: string | null
@@ -3663,6 +3705,7 @@ export type Database = {
           primary_portal?: string | null
           risk_level?: string | null
           secondary_portal?: string | null
+          terms_version?: string | null
           time_preference_minutes?: number | null
           updated_at?: string | null
           user_type?: string | null
@@ -3670,6 +3713,7 @@ export type Database = {
         Update: {
           assigned_therapist_id?: string | null
           avatar_url?: string | null
+          consent_accepted_at?: string | null
           created_at?: string | null
           deleted_at?: string | null
           display_name?: string | null
@@ -3684,6 +3728,7 @@ export type Database = {
           primary_portal?: string | null
           risk_level?: string | null
           secondary_portal?: string | null
+          terms_version?: string | null
           time_preference_minutes?: number | null
           updated_at?: string | null
           user_type?: string | null

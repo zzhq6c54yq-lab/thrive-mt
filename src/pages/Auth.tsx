@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
-import { useNavigate, useSearchParams } from "react-router-dom";
+import { useNavigate, useSearchParams, Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { Checkbox } from "@/components/ui/checkbox";
 import { ArrowRight, Eye, EyeOff, Loader2, AlertTriangle } from "lucide-react";
 import { useCompassionateToast } from "@/hooks/useCompassionateToast";
 import {
@@ -31,6 +32,7 @@ const Auth: React.FC = () => {
   const [loading, setLoading] = useState(false);
   const [checkingSession, setCheckingSession] = useState(true);
   const [showGuestWarning, setShowGuestWarning] = useState(false);
+  const [consentAccepted, setConsentAccepted] = useState(false);
   
   const showLogoutMessage = searchParams.get("logged_out") === "true";
 
@@ -91,14 +93,42 @@ const Auth: React.FC = () => {
         if (error) throw error;
         showSuccess("Welcome back", "We're glad you're here.");
       } else if (mode === 'signup') {
-        const { error } = await supabase.auth.signUp({
+        if (!consentAccepted) {
+          toast({
+            title: "Please accept the terms",
+            description: "You need to agree to our Terms of Service and Privacy Policy to create an account.",
+            variant: "destructive",
+          });
+          setLoading(false);
+          return;
+        }
+        
+        const { error, data: signUpData } = await supabase.auth.signUp({
           email,
           password,
           options: {
             emailRedirectTo: `${window.location.origin}/app/dashboard`,
+            data: {
+              consent_accepted_at: new Date().toISOString(),
+              terms_version: '1.0',
+            },
           },
         });
         if (error) throw error;
+        
+        // Log consent acceptance
+        if (signUpData?.user) {
+          await supabase.from('auth_user_audit').insert({
+            user_id: signUpData.user.id,
+            action: 'CONSENT_ACCEPTED',
+            details: {
+              terms_version: '1.0',
+              privacy_policy_accepted: true,
+              timestamp: new Date().toISOString(),
+            },
+          });
+        }
+        
         toast({
           title: "You're almost there",
           description: "We've sent a confirmation email. Check your inbox to complete sign up.",
@@ -295,10 +325,32 @@ const Auth: React.FC = () => {
               </div>
             </div>
 
+            {mode === 'signup' && (
+              <div className="flex items-start space-x-3 p-3 rounded-lg bg-white/5 border border-white/10">
+                <Checkbox
+                  id="consent"
+                  checked={consentAccepted}
+                  onCheckedChange={(checked) => setConsentAccepted(checked === true)}
+                  className="mt-0.5 border-white/40 data-[state=checked]:bg-[#B87333] data-[state=checked]:border-[#B87333]"
+                />
+                <Label htmlFor="consent" className="text-sm text-white/70 leading-relaxed cursor-pointer">
+                  I have read and agree to the{' '}
+                  <Link to="/terms-of-service" className="text-[#B87333] hover:text-[#E5C5A1] underline" target="_blank">
+                    Terms of Service
+                  </Link>{' '}
+                  and{' '}
+                  <Link to="/privacy" className="text-[#B87333] hover:text-[#E5C5A1] underline" target="_blank">
+                    Privacy Policy
+                  </Link>
+                  . I consent to the processing of my mental health data as described.
+                </Label>
+              </div>
+            )}
+
             <Button 
               type="submit"
-              disabled={loading}
-              className="w-full bg-gradient-to-r from-[#B87333] to-[#E5C5A1] hover:opacity-90 text-white py-3"
+              disabled={loading || (mode === 'signup' && !consentAccepted)}
+              className="w-full bg-gradient-to-r from-[#B87333] to-[#E5C5A1] hover:opacity-90 text-white py-3 disabled:opacity-50"
             >
               {loading ? (
                 <Loader2 className="h-4 w-4 animate-spin" />

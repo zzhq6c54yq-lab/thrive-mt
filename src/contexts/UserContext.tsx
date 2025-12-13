@@ -15,6 +15,8 @@ interface Profile {
   secondary_portal: string | null;
   time_preference_minutes: number | null;
   is_therapist: boolean | null;
+  consent_accepted_at: string | null;
+  terms_version: string | null;
   created_at: string;
   updated_at: string;
 }

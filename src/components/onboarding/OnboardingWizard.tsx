@@ -1,5 +1,6 @@
 
 import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -8,13 +9,15 @@ import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { Checkbox } from '@/components/ui/checkbox';
 import { useUser } from '@/contexts/UserContext';
 import { useToast } from '@/hooks/use-toast';
-import { ArrowRight, ArrowLeft } from 'lucide-react';
+import { supabase } from '@/integrations/supabase/client';
+import { ArrowRight, ArrowLeft, Shield } from 'lucide-react';
 
 interface OnboardingData {
   fullName: string;
   userType: string;
   goals: string[];
   mentalHealthNeeds: string[];
+  consentAccepted: boolean;
 }
 
 const OnboardingWizard: React.FC<{ onComplete: () => void }> = ({ onComplete }) => {
@@ -23,7 +26,8 @@ const OnboardingWizard: React.FC<{ onComplete: () => void }> = ({ onComplete }) 
     fullName: '',
     userType: '',
     goals: [],
-    mentalHealthNeeds: []
+    mentalHealthNeeds: [],
+    consentAccepted: false
   });
   const { updateProfile } = useUser();
   const { toast } = useToast();
@@ -32,7 +36,8 @@ const OnboardingWizard: React.FC<{ onComplete: () => void }> = ({ onComplete }) 
     { title: "Welcome! Let's get to know you", component: StepPersonalInfo },
     { title: "How do you identify?", component: StepUserType },
     { title: "What are your wellness goals?", component: StepGoals },
-    { title: "What support are you looking for?", component: StepMentalHealthNeeds }
+    { title: "What support are you looking for?", component: StepMentalHealthNeeds },
+    { title: "Your Privacy & Consent", component: StepConsent }
   ];
 
   const handleNext = () => {
@@ -50,16 +55,43 @@ const OnboardingWizard: React.FC<{ onComplete: () => void }> = ({ onComplete }) 
   };
 
   const handleComplete = async () => {
+    if (!data.consentAccepted) {
+      toast({
+        title: "Please accept the terms",
+        description: "You need to agree to our Terms of Service and Privacy Policy to continue.",
+        variant: "destructive"
+      });
+      return;
+    }
+    
     try {
+      // Get current user for audit log
+      const { data: { user } } = await supabase.auth.getUser();
+      
+      // Log consent acceptance
+      if (user) {
+        await supabase.from('auth_user_audit').insert({
+          user_id: user.id,
+          action: 'CONSENT_ACCEPTED',
+          details: {
+            terms_version: '1.0',
+            privacy_policy_accepted: true,
+            timestamp: new Date().toISOString(),
+            source: 'onboarding',
+          },
+        });
+      }
+      
       await updateProfile({
         user_type: data.userType,
         goals: [...data.goals, ...data.mentalHealthNeeds],
-        onboarding_completed: true
+        onboarding_completed: true,
+        consent_accepted_at: new Date().toISOString(),
       });
       
       toast({
         title: "Welcome aboard!",
-        description: `Welcome to Omni Solus! Your personalized dashboard is ready.`,
+        description: `Welcome to ThriveMT! Your personalized dashboard is ready.`,
         variant: "success"
       });
       
@@ -246,6 +278,63 @@ const StepMentalHealthNeeds: React.FC<{
           </Label>
         </div>
       ))}
+    </div>
+  );
+};
+
+const StepConsent: React.FC<{
+  data: OnboardingData;
+  setData: (data: OnboardingData) => void;
+}> = ({ data, setData }) => {
+  return (
+    <div className="space-y-6">
+      <div className="flex items-center gap-3 p-4 bg-indigo-50 rounded-lg border border-indigo-200">
+        <Shield className="h-8 w-8 text-indigo-600 flex-shrink-0" />
+        <div>
+          <h3 className="font-semibold text-indigo-900">Your Privacy Matters</h3>
+          <p className="text-sm text-indigo-700">
+            We take your privacy seriously. Your mental health data is encrypted and protected.
+          </p>
+        </div>
+      </div>
+      
+      <div className="space-y-4 text-sm text-gray-600">
+        <p>Before we continue, please review and accept our policies:</p>
+        
+        <ul className="list-disc list-inside space-y-2 ml-2">
+          <li>Your data is encrypted and stored securely</li>
+          <li>We never share your personal information without consent</li>
+          <li>You can export or delete your data at any time</li>
+          <li>AI features are for support only, not medical advice</li>
+        </ul>
+      </div>
+
+      <div className="flex items-start space-x-3 p-4 rounded-lg bg-white border-2 border-indigo-200 hover:border-indigo-400 transition-colors">
+        <Checkbox
+          id="consent"
+          checked={data.consentAccepted}
+          onCheckedChange={(checked) => setData({ ...data, consentAccepted: checked === true })}
+          className="mt-0.5"
+        />
+        <Label htmlFor="consent" className="text-sm leading-relaxed cursor-pointer">
+          I have read and agree to the{' '}
+          <Link to="/terms-of-service" className="text-indigo-600 hover:text-indigo-800 underline" target="_blank">
+            Terms of Service
+          </Link>{' '}
+          and{' '}
+          <Link to="/privacy" className="text-indigo-600 hover:text-indigo-800 underline" target="_blank">
+            Privacy Policy
+          </Link>
+          . I consent to the processing of my mental health data as described in these policies.
+        </Label>
+      </div>
+      
+      {!data.consentAccepted && (
+        <p className="text-amber-600 text-sm flex items-center gap-2">
+          <Shield className="h-4 w-4" />
+          Please accept the terms above to complete your setup.
+        </p>
+      )}
     </div>
   );
 };
