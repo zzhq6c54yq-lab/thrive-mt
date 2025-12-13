@@ -4,11 +4,12 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { supabase } from '@/integrations/supabase/client';
-import { Shield, Lock, AlertTriangle, CheckCircle, FileText, Search, Database, FileCheck } from 'lucide-react';
+import { Shield, Lock, AlertTriangle, CheckCircle, FileText, Search, Database, FileCheck, ClipboardList } from 'lucide-react';
 import { toast } from 'sonner';
 import AuditLogsTab from './AuditLogsTab';
 import ConsentStatusTab from './ConsentStatusTab';
 import PHICoverageTab from './PHICoverageTab';
+import AuditChecklistTab from './AuditChecklistTab';
 
 interface ComplianceViolation {
   id: string;
@@ -118,22 +119,26 @@ const ComplianceDashboard: React.FC = () => {
     <div className="space-y-6">
       {/* Tabs Navigation */}
       <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-        <TabsList className="grid w-full grid-cols-4 bg-card/50 border border-border/50">
+        <TabsList className="grid w-full grid-cols-5 bg-card/50 border border-border/50">
           <TabsTrigger value="overview" className="flex items-center gap-2">
             <Shield className="w-4 h-4" />
-            Overview
+            <span className="hidden sm:inline">Overview</span>
+          </TabsTrigger>
+          <TabsTrigger value="checklist" className="flex items-center gap-2">
+            <ClipboardList className="w-4 h-4" />
+            <span className="hidden sm:inline">Checklist</span>
           </TabsTrigger>
           <TabsTrigger value="audit" className="flex items-center gap-2">
             <FileText className="w-4 h-4" />
-            Audit Trail
+            <span className="hidden sm:inline">Audit Trail</span>
           </TabsTrigger>
           <TabsTrigger value="consent" className="flex items-center gap-2">
             <FileCheck className="w-4 h-4" />
-            Consent
+            <span className="hidden sm:inline">Consent</span>
           </TabsTrigger>
           <TabsTrigger value="coverage" className="flex items-center gap-2">
             <Database className="w-4 h-4" />
-            PHI Coverage
+            <span className="hidden sm:inline">PHI Coverage</span>
           </TabsTrigger>
         </TabsList>
 
@@ -321,6 +326,11 @@ const ComplianceDashboard: React.FC = () => {
               </table>
             </div>
           </Card>
+        </TabsContent>
+
+        {/* Checklist Tab */}
+        <TabsContent value="checklist" className="mt-6">
+          <AuditChecklistTab />
         </TabsContent>
 
         {/* Audit Trail Tab */}
