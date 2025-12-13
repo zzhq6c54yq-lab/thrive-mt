@@ -578,6 +578,96 @@ export type Database = {
           },
         ]
       }
+      audit_checklist: {
+        Row: {
+          automation_type: string | null
+          backend_check: string | null
+          browser: string | null
+          category: string | null
+          created_at: string
+          device_type: string | null
+          error_details: Json | null
+          execution_time_ms: number | null
+          expected_outcome: string
+          failure_count: number | null
+          feature: string
+          frontend_check: string | null
+          id: string
+          is_regression: boolean | null
+          last_pass_at: string | null
+          module: string
+          notes: string | null
+          priority: string | null
+          related_function: string | null
+          related_table: string | null
+          row_number: number
+          scenario: string
+          status: string | null
+          subcategory: string | null
+          tested_at: string | null
+          tester: string | null
+          updated_at: string
+        }
+        Insert: {
+          automation_type?: string | null
+          backend_check?: string | null
+          browser?: string | null
+          category?: string | null
+          created_at?: string
+          device_type?: string | null
+          error_details?: Json | null
+          execution_time_ms?: number | null
+          expected_outcome: string
+          failure_count?: number | null
+          feature: string
+          frontend_check?: string | null
+          id?: string
+          is_regression?: boolean | null
+          last_pass_at?: string | null
+          module: string
+          notes?: string | null
+          priority?: string | null
+          related_function?: string | null
+          related_table?: string | null
+          row_number: number
+          scenario: string
+          status?: string | null
+          subcategory?: string | null
+          tested_at?: string | null
+          tester?: string | null
+          updated_at?: string
+        }
+        Update: {
+          automation_type?: string | null
+          backend_check?: string | null
+          browser?: string | null
+          category?: string | null
+          created_at?: string
+          device_type?: string | null
+          error_details?: Json | null
+          execution_time_ms?: number | null
+          expected_outcome?: string
+          failure_count?: number | null
+          feature?: string
+          frontend_check?: string | null
+          id?: string
+          is_regression?: boolean | null
+          last_pass_at?: string | null
+          module?: string
+          notes?: string | null
+          priority?: string | null
+          related_function?: string | null
+          related_table?: string | null
+          row_number?: number
+          scenario?: string
+          status?: string | null
+          subcategory?: string | null
+          tested_at?: string | null
+          tester?: string | null
+          updated_at?: string
+        }
+        Relationships: []
+      }
       audit_logs: {
         Row: {
           action: string
@@ -614,6 +704,114 @@ export type Database = {
           record_id?: string | null
           table_name?: string
           user_id?: string | null
+        }
+        Relationships: []
+      }
+      audit_run_results: {
+        Row: {
+          checklist_item_id: string
+          error_details: Json | null
+          error_message: string | null
+          execution_time_ms: number | null
+          id: string
+          logs: Json | null
+          run_id: string
+          screenshot_url: string | null
+          status: string
+          tested_at: string
+        }
+        Insert: {
+          checklist_item_id: string
+          error_details?: Json | null
+          error_message?: string | null
+          execution_time_ms?: number | null
+          id?: string
+          logs?: Json | null
+          run_id: string
+          screenshot_url?: string | null
+          status: string
+          tested_at?: string
+        }
+        Update: {
+          checklist_item_id?: string
+          error_details?: Json | null
+          error_message?: string | null
+          execution_time_ms?: number | null
+          id?: string
+          logs?: Json | null
+          run_id?: string
+          screenshot_url?: string | null
+          status?: string
+          tested_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "audit_run_results_checklist_item_id_fkey"
+            columns: ["checklist_item_id"]
+            isOneToOne: false
+            referencedRelation: "audit_checklist"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "audit_run_results_run_id_fkey"
+            columns: ["run_id"]
+            isOneToOne: false
+            referencedRelation: "audit_runs"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      audit_runs: {
+        Row: {
+          completed_at: string | null
+          created_at: string
+          failed_tests: number | null
+          filters: Json | null
+          id: string
+          manual_tests: number | null
+          notes: string | null
+          passed_tests: number | null
+          run_by: string | null
+          run_by_email: string | null
+          run_name: string
+          skipped_tests: number | null
+          started_at: string
+          status: string | null
+          total_tests: number | null
+        }
+        Insert: {
+          completed_at?: string | null
+          created_at?: string
+          failed_tests?: number | null
+          filters?: Json | null
+          id?: string
+          manual_tests?: number | null
+          notes?: string | null
+          passed_tests?: number | null
+          run_by?: string | null
+          run_by_email?: string | null
+          run_name: string
+          skipped_tests?: number | null
+          started_at?: string
+          status?: string | null
+          total_tests?: number | null
+        }
+        Update: {
+          completed_at?: string | null
+          created_at?: string
+          failed_tests?: number | null
+          filters?: Json | null
+          id?: string
+          manual_tests?: number | null
+          notes?: string | null
+          passed_tests?: number | null
+          run_by?: string | null
+          run_by_email?: string | null
+          run_name?: string
+          skipped_tests?: number | null
+          started_at?: string
+          status?: string | null
+          total_tests?: number | null
         }
         Relationships: []
       }
