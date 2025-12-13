@@ -378,7 +378,7 @@ const CinematicIntro: React.FC<CinematicIntroProps> = ({ onContinue, onSkipToMai
           <DialogHeader>
             <DialogTitle className="text-white">Admin Access</DialogTitle>
             <DialogDescription className="text-gray-400">
-              Enter your 4-digit admin code
+              Enter your 6-digit admin code
             </DialogDescription>
           </DialogHeader>
           
@@ -388,13 +388,13 @@ const CinematicIntro: React.FC<CinematicIntroProps> = ({ onContinue, onSkipToMai
               <Input
                 id="adminAccessCode"
                 type="password"
-                placeholder="••••"
+                placeholder="••••••"
                 value={accessCode}
                 onChange={(e) => setAccessCode(e.target.value)}
-                maxLength={4}
+                maxLength={6}
                 className="text-center text-2xl tracking-widest bg-gray-800/50 border-[#D4AF37]/30 text-white"
                 onKeyDown={(e) => {
-                  if (e.key === 'Enter' && accessCode.length === 4) {
+                  if (e.key === 'Enter' && accessCode.length === 6) {
                     handleAdminAccess();
                   }
                 }}
@@ -403,7 +403,7 @@ const CinematicIntro: React.FC<CinematicIntroProps> = ({ onContinue, onSkipToMai
             
             <Button
               onClick={handleAdminAccess}
-              disabled={loading || accessCode.length !== 4}
+              disabled={loading || accessCode.length !== 6}
               className="w-full bg-gradient-to-r from-[#B87333] to-[#D4AF37] hover:from-[#D4AF37] hover:to-[#B87333]"
             >
               {loading ? "Verifying..." : "Continue"}

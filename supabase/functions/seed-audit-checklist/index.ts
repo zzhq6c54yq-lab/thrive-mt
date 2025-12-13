@@ -208,7 +208,7 @@ const generateTestCases = () => {
   // ============================================
 
   // Admin Portal
-  addTest('Admin Portal', 'Login', 'Login with code 0002', 'Access granted to admin dashboard', 'Session created', 'Admin dashboard loads', 'automated', 'critical', 'Admin', 'Auth');
+  addTest('Admin Portal', 'Login', 'Login with admin access code', 'Access granted to admin dashboard', 'Session created', 'Admin dashboard loads', 'automated', 'critical', 'Admin', 'Auth');
   addTest('Admin Portal', 'Users Tab', 'View all users', 'User list displays', 'Query returns all users', 'Paginated user list with search', 'automated', 'high');
   addTest('Admin Portal', 'Users Tab', 'Search users by email', 'Filtered results shown', 'Query includes email filter', 'Results update dynamically', 'automated', 'medium');
   addTest('Admin Portal', 'Users Tab', 'Suspend user account', 'User suspended', 'User status updated', 'Suspended indicator shown', 'automated', 'high');
