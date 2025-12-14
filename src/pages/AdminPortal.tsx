@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { supabase } from '@/integrations/supabase/client';
 import { useUser } from '@/contexts/UserContext';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Users, Stethoscope, Activity, Settings, Shield, FileText, LayoutDashboard, BookOpen, CreditCard, Headphones, Brain, Megaphone, LineChart, Plug, Building } from 'lucide-react';
+import { Users, Stethoscope, Activity, Settings, Shield, FileText, LayoutDashboard, BookOpen, CreditCard, Headphones, Brain, Megaphone, LineChart, Plug, Building, Navigation, Monitor } from 'lucide-react';
 import AdminHeader from '@/components/admin/AdminHeader';
 import DashboardOverview from '@/components/admin/DashboardOverview';
 import UsersManagement from '@/components/admin/UsersManagement';
@@ -20,6 +20,8 @@ import MarketingHub from '@/components/admin/MarketingHub';
 import PredictiveAnalytics from '@/components/admin/PredictiveAnalytics';
 import IntegrationHub from '@/components/admin/IntegrationHub';
 import EnterpriseSettings from '@/components/admin/EnterpriseSettings';
+import NavigationHealthChecker from '@/components/admin/NavigationHealthChecker';
+import ProductionControlPanel from '@/components/admin/ProductionControlPanel';
 import { useAdminAudit } from '@/hooks/useAdminAudit';
 import { AUDIT_ACTIONS } from '@/constants/auditActions';
 import { toast } from 'sonner';
@@ -139,6 +141,14 @@ const AdminPortal: React.FC = () => {
               <Activity className="w-4 h-4" />
               <span className="hidden sm:inline">Operations</span>
             </TabsTrigger>
+            <TabsTrigger value="navigation" className="flex items-center gap-2 data-[state=active]:bg-[#B87333]/20 data-[state=active]:text-[#E5C5A1] data-[state=active]:border-[#B87333]/50">
+              <Navigation className="w-4 h-4" />
+              <span className="hidden sm:inline">Navigation</span>
+            </TabsTrigger>
+            <TabsTrigger value="production" className="flex items-center gap-2 data-[state=active]:bg-[#B87333]/20 data-[state=active]:text-[#E5C5A1] data-[state=active]:border-[#B87333]/50">
+              <Monitor className="w-4 h-4" />
+              <span className="hidden sm:inline">Production</span>
+            </TabsTrigger>
             <TabsTrigger value="audit" className="flex items-center gap-2 data-[state=active]:bg-[#B87333]/20 data-[state=active]:text-[#E5C5A1] data-[state=active]:border-[#B87333]/50">
               <FileText className="w-4 h-4" />
               <span className="hidden sm:inline">Audit</span>
@@ -200,6 +210,14 @@ const AdminPortal: React.FC = () => {
 
             <TabsContent value="operations" className="space-y-4">
               <OperationsAnalytics />
+            </TabsContent>
+
+            <TabsContent value="navigation" className="space-y-4">
+              <NavigationHealthChecker />
+            </TabsContent>
+
+            <TabsContent value="production" className="space-y-4">
+              <ProductionControlPanel />
             </TabsContent>
 
             <TabsContent value="audit" className="space-y-4">

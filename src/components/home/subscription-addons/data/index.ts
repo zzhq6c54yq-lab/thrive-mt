@@ -250,5 +250,26 @@ export const addOns: AddOn[] = [
     ],
     gradient: "from-pink-700 to-rose-900",
     borderColor: "#e11d48"
+  },
+  {
+    id: "single-parents",
+    title: "Single Parents Portal",
+    titleSpanish: "Portal de Padres Solteros",
+    description: "Comprehensive support for single parents balancing family responsibilities, co-parenting challenges, and personal wellbeing.",
+    descriptionSpanish: "Apoyo integral para padres solteros equilibrando responsabilidades familiares, desafíos de co-paternidad y bienestar personal.",
+    basePrice: 18.99,
+    imagePath: "https://images.unsplash.com/photo-1476703993599-0035a21b17a9?auto=format&fit=crop&w=500&q=80",
+    icon: Heart,
+    targetAudience: "Single parents, co-parents, sole caregivers, divorced parents",
+    features: [
+      "Parental burnout assessments",
+      "Co-parenting communication tools",
+      "Financial wellness resources",
+      "Parent Network connections",
+      "Work-life integration workshops",
+      "Self-compassion practices"
+    ],
+    gradient: "from-rose-600 to-pink-800",
+    borderColor: "#f43f5e"
   }
 ];

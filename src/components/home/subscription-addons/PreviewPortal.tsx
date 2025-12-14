@@ -198,7 +198,91 @@ const PreviewPortal: React.FC<PreviewPortalProps> = ({ addOn }) => {
           </div>
         );
 
-      // Add more specific portal previews for other add-ons
+      case 'single-parents':
+        return (
+          <div className="bg-gradient-to-br from-rose-900/20 to-pink-900/20 rounded-lg p-6">
+            <div className="flex items-center gap-3 mb-6">
+              <Heart className="h-8 w-8 text-rose-400" />
+              <h3 className="text-2xl font-bold text-white">
+                {isSpanish ? 'Portal de Padres Solteros' : 'Single Parents Portal'}
+              </h3>
+            </div>
+            
+            {/* Tab Navigation Preview */}
+            <div className="flex gap-2 mb-6 border-b border-white/10 pb-4 flex-wrap">
+              <div className="px-3 py-2 bg-rose-600/30 rounded-t-lg text-white text-sm font-medium">
+                {isSpanish ? 'Bienestar' : 'Wellness'}
+              </div>
+              <div className="px-3 py-2 text-white/60 text-sm">{isSpanish ? 'Herramientas' : 'Tools'}</div>
+              <div className="px-3 py-2 text-white/60 text-sm">{isSpanish ? 'Red de Padres' : 'Parent Network'}</div>
+              <div className="px-3 py-2 text-white/60 text-sm">{isSpanish ? 'Recursos' : 'Resources'}</div>
+            </div>
+
+            {/* Content Grid Preview */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 relative">
+              <Card className="bg-white/5 border-white/10 relative overflow-hidden">
+                <CardContent className="p-4">
+                  <div className="flex items-center gap-2 mb-2">
+                    <Heart className="h-5 w-5 text-rose-400" />
+                    <span className="text-white font-medium text-sm">
+                      {isSpanish ? 'Prevención de Agotamiento' : 'Burnout Prevention'}
+                    </span>
+                  </div>
+                  <p className="text-white/70 text-xs">
+                    {isSpanish ? 'Estrategias de autocuidado...' : 'Self-care strategies...'}
+                  </p>
+                </CardContent>
+                {commonElements.lockOverlay}
+              </Card>
+
+              <Card className="bg-white/5 border-white/10 relative overflow-hidden">
+                <CardContent className="p-4">
+                  <div className="flex items-center gap-2 mb-2">
+                    <Users className="h-5 w-5 text-rose-400" />
+                    <span className="text-white font-medium text-sm">
+                      {isSpanish ? 'Co-Paternidad' : 'Co-Parenting'}
+                    </span>
+                  </div>
+                  <p className="text-white/70 text-xs">
+                    {isSpanish ? 'Herramientas de comunicación...' : 'Communication tools...'}
+                  </p>
+                </CardContent>
+                {commonElements.lockOverlay}
+              </Card>
+
+              <Card className="bg-white/5 border-white/10 relative overflow-hidden">
+                <CardContent className="p-4">
+                  <div className="flex items-center gap-2 mb-2">
+                    <Calendar className="h-5 w-5 text-rose-400" />
+                    <span className="text-white font-medium text-sm">
+                      {isSpanish ? 'Equilibrio Trabajo-Vida' : 'Work-Life Balance'}
+                    </span>
+                  </div>
+                  <p className="text-white/70 text-xs">
+                    {isSpanish ? 'Talleres de integración...' : 'Integration workshops...'}
+                  </p>
+                </CardContent>
+                {commonElements.lockOverlay}
+              </Card>
+
+              <Card className="bg-white/5 border-white/10 relative overflow-hidden">
+                <CardContent className="p-4">
+                  <div className="flex items-center gap-2 mb-2">
+                    <Shield className="h-5 w-5 text-rose-400" />
+                    <span className="text-white font-medium text-sm">
+                      {isSpanish ? 'Bienestar Financiero' : 'Financial Wellness'}
+                    </span>
+                  </div>
+                  <p className="text-white/70 text-xs">
+                    {isSpanish ? 'Recursos de planificación...' : 'Planning resources...'}
+                  </p>
+                </CardContent>
+                {commonElements.lockOverlay}
+              </Card>
+            </div>
+          </div>
+        );
+
       default:
         return (
           <div className="bg-gradient-to-br from-gray-800/20 to-gray-900/20 rounded-lg p-6">
