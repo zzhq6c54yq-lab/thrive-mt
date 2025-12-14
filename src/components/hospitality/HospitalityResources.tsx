@@ -225,7 +225,7 @@ const HospitalityResources: React.FC = () => {
                 A quick mindfulness practice you can do during short breaks
               </p>
               <Button 
-                className="w-full bg-white hover:bg-gray-100 text-purple-600"
+                className="w-full bg-[#B87333] hover:bg-[#A0622D] text-white"
                 onClick={() => handleDownload("2-Minute Reset Audio Guide")}
               >
                 Start Practice
@@ -240,7 +240,7 @@ const HospitalityResources: React.FC = () => {
                 Quick stretches to relieve physical tension during shifts
               </p>
               <Button 
-                className="w-full bg-white hover:bg-gray-100 text-blue-600"
+                className="w-full bg-[#B87333] hover:bg-[#A0622D] text-white"
                 onClick={() => handleDownload("Staff Room Stretch Guide")}
               >
                 View Stretches
@@ -255,7 +255,7 @@ const HospitalityResources: React.FC = () => {
                 Techniques to calm your nervous system after difficult interactions
               </p>
               <Button 
-                className="w-full bg-white hover:bg-gray-100 text-orange-600"
+                className="w-full bg-[#B87333] hover:bg-[#A0622D] text-white"
                 onClick={() => handleDownload("Emotional Regulation Techniques")}
               >
                 Learn Techniques
