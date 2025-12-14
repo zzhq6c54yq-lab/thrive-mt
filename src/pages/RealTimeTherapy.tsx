@@ -584,7 +584,7 @@ const RealTimeTherapy = () => {
               className="space-y-8"
             >
               {/* Back button */}
-              <Link to="/dashboard" className="inline-flex items-center text-[#D4AF37] hover:text-[#E5C5A1] transition-colors">
+              <Link to="/app/dashboard" className="inline-flex items-center text-[#D4AF37] hover:text-[#E5C5A1] transition-colors">
                 <ArrowLeft className="mr-2 h-4 w-4" />
                 Back to Dashboard
               </Link>

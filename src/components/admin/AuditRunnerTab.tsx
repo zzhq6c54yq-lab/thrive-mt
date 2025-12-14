@@ -425,6 +425,39 @@ const AuditRunnerTab: React.FC = () => {
                     Export CSV
                   </Button>
                   <Button 
+                    variant="outline" 
+                    onClick={() => {
+                      const errorItems = items.filter(i => i.status === 'fail' || i.priority === 'critical');
+                      if (errorItems.length === 0) {
+                        toast.info('No errors or critical items found');
+                        return;
+                      }
+                      const headers = ['Row', 'Module', 'Feature', 'Scenario', 'Priority', 'Status', 'Notes'];
+                      const csvContent = [
+                        headers.join(','),
+                        ...errorItems.map(item => [
+                          item.row_number,
+                          `"${item.module}"`,
+                          `"${item.feature}"`,
+                          `"${item.scenario.replace(/"/g, '""')}"`,
+                          item.priority,
+                          item.status,
+                          `"${(item.notes || '').replace(/"/g, '""')}"`
+                        ].join(','))
+                      ].join('\n');
+                      const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+                      const link = document.createElement('a');
+                      link.href = URL.createObjectURL(blob);
+                      link.download = `thrivemt-ERRORS-${new Date().toISOString().split('T')[0]}.csv`;
+                      link.click();
+                      toast.success(`Exported ${errorItems.length} errors/critical items`);
+                    }}
+                    className="border-red-500/50 text-red-400 hover:bg-red-500/10"
+                  >
+                    <XCircle className="h-4 w-4 mr-2" />
+                    Download Errors
+                  </Button>
+                  <Button 
                     className="bg-green-600 hover:bg-green-700"
                     disabled={running || seeding}
                     onClick={runAllAutomatedTests}

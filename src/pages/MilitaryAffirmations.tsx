@@ -159,7 +159,7 @@ const MilitaryAffirmations = () => {
       <div className="bg-gradient-to-r from-[#0A1929] to-[#1A365D] py-12">
         <div className="container mx-auto px-4">
           <div className="flex justify-between items-center mb-6">
-            <Link to="/military-support" className="inline-flex items-center text-[#B87333] hover:text-[#B87333]/80 transition-colors">
+            <Link to="/app/military-support" className="inline-flex items-center text-[#B87333] hover:text-[#B87333]/80 transition-colors">
               <ArrowLeft className="mr-2 h-4 w-4" />
               Back to Military Support
             </Link>
@@ -371,7 +371,7 @@ const MilitaryAffirmations = () => {
           
           <div className="flex justify-center gap-4">
             <Link 
-              to="/military-support" 
+              to="/app/military-support" 
               className="text-[#B87333] hover:text-[#B87333]/80 transition-colors"
             >
               Military Support Home
