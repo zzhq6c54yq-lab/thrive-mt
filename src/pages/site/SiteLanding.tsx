@@ -15,14 +15,9 @@ const SiteLanding = () => {
         subtitle="Accessible therapy, premium coaching, and AI-powered wellness tools — designed to help you feel better and grow stronger."
       >
         <div className="flex flex-col sm:flex-row gap-4 justify-center">
-          <Link to="/app">
-            <Button size="lg" className="bg-gradient-to-r from-bronze-500 to-bronze-600 hover:from-bronze-600 hover:to-bronze-700 text-black font-semibold text-lg px-8">
-              Get Started
-            </Button>
-          </Link>
           <Link to="/demo">
-            <Button size="lg" variant="outline" className="border-bronze-500 text-bronze-400 hover:bg-bronze-500/10 text-lg px-8">
-              Try Live Demo
+            <Button size="lg" className="bg-gradient-to-r from-bronze-500 to-bronze-600 hover:from-bronze-600 hover:to-bronze-700 text-black font-semibold text-lg px-8">
+              Try the Demo
             </Button>
           </Link>
         </div>
@@ -177,15 +172,17 @@ const SiteLanding = () => {
       {/* CTA Section */}
       <section className="py-20 px-6">
         <div className="container mx-auto text-center max-w-3xl">
-          <h2 className="text-4xl font-bold mb-6 text-foreground">Ready to Get Started?</h2>
+          <h2 className="text-4xl font-bold mb-6 text-foreground">Ready to Explore?</h2>
           <p className="text-xl text-foreground/80 mb-8">
-            Join thousands who are already thriving with modern mental health support
+            Try our interactive demo or join the beta to be first in line when we launch
           </p>
-          <Link to="/app">
-            <Button size="lg" className="bg-gradient-to-r from-bronze-500 to-bronze-600 hover:from-bronze-600 hover:to-bronze-700 text-black font-semibold text-lg px-12">
-              Create Free Account
-            </Button>
-          </Link>
+          <div className="flex flex-col sm:flex-row gap-4 justify-center">
+            <Link to="/demo">
+              <Button size="lg" className="bg-gradient-to-r from-bronze-500 to-bronze-600 hover:from-bronze-600 hover:to-bronze-700 text-black font-semibold text-lg px-12">
+                Try the Demo
+              </Button>
+            </Link>
+          </div>
         </div>
       </section>
     </div>
