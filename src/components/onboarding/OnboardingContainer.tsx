@@ -1,6 +1,7 @@
 import React, { useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { useOnboardingFlow } from "@/hooks/useOnboardingFlow";
+import { useUser } from "@/contexts/UserContext";
 import IntroScreen from "@/components/home/IntroScreen";
 import MoodScreen from "@/components/home/MoodScreen";
 import MoodResponse from "@/components/home/MoodResponse";
@@ -13,9 +14,17 @@ import VisionBoard from "@/components/home/VisionBoard";
 const OnboardingContainer: React.FC = () => {
   const navigate = useNavigate();
   const location = useLocation();
+  const { user, profile, loading } = useUser();
   
   // Check if we're in demo mode
   const demoMode = location.state?.demoMode || new URLSearchParams(location.search).get('demo') === 'true';
+
+  // For authenticated users, check if onboarding is already completed in database
+  useEffect(() => {
+    if (!demoMode && !loading && user && profile?.onboarding_completed) {
+      navigate('/app/dashboard');
+    }
+  }, [demoMode, loading, user, profile, navigate]);
   
   const {
     currentStep,

@@ -15,6 +15,15 @@ const Index = () => {
     }
   }, [user, profile, loading, navigate]);
 
+  // Show loading state while checking user status
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-background flex items-center justify-center">
+        <div className="animate-pulse text-muted-foreground">Loading...</div>
+      </div>
+    );
+  }
+
   return (
     <div className="min-h-screen">
       <OnboardingContainer />

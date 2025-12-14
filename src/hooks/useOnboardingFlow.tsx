@@ -17,15 +17,35 @@ const initialState: OnboardingState = {
 export const useOnboardingFlow = (demoMode: boolean = false) => {
   const [state, setState] = useState<OnboardingState>(initialState);
 
-  // Initialize from localStorage - ALWAYS start from intro in preview mode
+  // Initialize onboarding state based on demo mode vs authenticated
   useEffect(() => {
-    // FORCE START FROM INTRO - Clear all stored progress to ensure fresh onboarding experience
-    localStorage.removeItem('hasCompletedOnboarding');
-    localStorage.removeItem(STORAGE_KEY);
-    
-    // Always start from the intro screen
-    setState({ ...initialState, currentStep: 'intro' });
-  }, []);
+    if (demoMode) {
+      // DEMO MODE: Always reset and start fresh every time
+      localStorage.removeItem('hasCompletedOnboarding');
+      localStorage.removeItem(STORAGE_KEY);
+      setState({ ...initialState, currentStep: 'intro' });
+    } else {
+      // AUTHENTICATED MODE: Check for existing progress or completed status
+      const hasCompleted = localStorage.getItem('hasCompletedOnboarding');
+      const savedProgress = localStorage.getItem(STORAGE_KEY);
+      
+      if (hasCompleted === 'true') {
+        // Already completed - mark as complete to trigger redirect
+        setState({ ...initialState, isOnboardingComplete: true, currentStep: 'completed' });
+      } else if (savedProgress) {
+        // Resume from saved progress
+        try {
+          const parsed = JSON.parse(savedProgress);
+          setState(parsed);
+        } catch {
+          setState({ ...initialState, currentStep: 'intro' });
+        }
+      } else {
+        // First time - start from intro
+        setState({ ...initialState, currentStep: 'intro' });
+      }
+    }
+  }, [demoMode]);
 
   // Save progress to localStorage
   const saveProgress = useCallback((newState: OnboardingState) => {
