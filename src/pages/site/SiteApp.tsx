@@ -293,18 +293,11 @@ const SiteApp = () => {
           {/* CTA Section */}
           <div className="text-center">
             <h3 className="text-3xl font-bold mb-6 text-foreground">Ready to start your journey?</h3>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Link to="/demo">
-                <Button size="lg" className="bg-gradient-to-r from-bronze-500 to-bronze-600 hover:from-bronze-600 hover:to-bronze-700 text-black font-semibold">
-                  Try Live Demo
-                </Button>
-              </Link>
-              <Link to="/app/auth">
-                <Button size="lg" variant="outline" className="border-bronze-500 text-bronze-400 hover:bg-bronze-500/10">
-                  Create Free Account
-                </Button>
-              </Link>
-            </div>
+            <Link to="/demo">
+              <Button size="lg" className="bg-gradient-to-r from-bronze-500 to-bronze-600 hover:from-bronze-600 hover:to-bronze-700 text-black font-semibold">
+                Try Live Demo
+              </Button>
+            </Link>
           </div>
 
         </div>
