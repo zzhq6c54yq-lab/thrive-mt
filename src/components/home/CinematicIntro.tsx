@@ -292,35 +292,39 @@ const CinematicIntro: React.FC<CinematicIntroProps> = ({ onContinue, onSkipToMai
                 </span>
               </Button>
               
-              <Button
-                variant="ghost"
-                size="sm"
-                onClick={() => setShowAccessCodeDialog(true)}
-                className="text-sm text-muted-foreground hover:text-foreground transition-colors font-light"
-              >
-                <Key className="mr-2 h-4 w-4" />
-                Therapist Portal
-              </Button>
-              
-              <Button
-                variant="ghost"
-                size="sm"
-                onClick={() => setShowCoachAccessDialog(true)}
-                className="text-sm text-muted-foreground hover:text-foreground transition-colors font-light"
-              >
-                <Key className="mr-2 h-4 w-4" />
-                Coach Portal
-              </Button>
-              
-              <Button
-                variant="ghost"
-                size="sm"
-                onClick={() => setAccessCodeDialogOpen(true)}
-                className="text-sm text-muted-foreground hover:text-foreground transition-colors font-light"
-              >
-                <Key className="mr-2 h-4 w-4" />
-                System Access
-              </Button>
+              {/* Unified Staff Access Menu */}
+              <div className="relative group">
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  className="text-sm text-muted-foreground hover:text-foreground transition-colors font-light"
+                >
+                  <Key className="mr-2 h-4 w-4" />
+                  Staff Access
+                </Button>
+                <div className="absolute top-full left-1/2 -translate-x-1/2 mt-2 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50">
+                  <div className="bg-gray-900/95 backdrop-blur-xl border border-[#D4AF37]/20 rounded-lg shadow-xl p-2 min-w-[160px]">
+                    <button
+                      onClick={() => setShowAccessCodeDialog(true)}
+                      className="w-full text-left px-3 py-2 text-sm text-gray-300 hover:text-white hover:bg-[#D4AF37]/10 rounded-md transition-colors"
+                    >
+                      Therapist Portal
+                    </button>
+                    <button
+                      onClick={() => setShowCoachAccessDialog(true)}
+                      className="w-full text-left px-3 py-2 text-sm text-gray-300 hover:text-white hover:bg-[#D4AF37]/10 rounded-md transition-colors"
+                    >
+                      Coach Portal
+                    </button>
+                    <button
+                      onClick={() => setAccessCodeDialogOpen(true)}
+                      className="w-full text-left px-3 py-2 text-sm text-gray-300 hover:text-white hover:bg-[#D4AF37]/10 rounded-md transition-colors"
+                    >
+                      Admin Access
+                    </button>
+                  </div>
+                </div>
+              </div>
             </motion.div>
 
           </motion.div>

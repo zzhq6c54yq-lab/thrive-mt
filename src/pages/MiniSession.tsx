@@ -232,6 +232,25 @@ const MiniSession: React.FC = () => {
               </HenrySpeech>
             </div>
 
+            {/* Grounding Moment */}
+            <motion.div
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.3 }}
+              className="bg-gradient-to-br from-blue-500/10 to-indigo-500/10 border border-blue-500/20 rounded-xl p-6 text-center"
+            >
+              <p className="text-sm text-muted-foreground mb-3">Before we dive in, let's ground ourselves:</p>
+              <p className="text-foreground font-medium mb-4">Take a slow breath in... hold... and release.</p>
+              <div className="flex justify-center gap-4 text-2xl">
+                <span>🌿</span>
+                <span>✨</span>
+                <span>🌊</span>
+              </div>
+              <p className="text-xs text-bronze-500 mt-3 italic">
+                "You showed up for yourself today. That already matters."
+              </p>
+            </motion.div>
+
             <div className="space-y-6 mt-8">
               <p className="text-center text-muted-foreground">How are you feeling right now? There's no wrong answer.</p>
               
@@ -500,6 +519,24 @@ const MiniSession: React.FC = () => {
         );
 
       case 4:
+        // Get affirmation based on focus area
+        const getAffirmation = () => {
+          switch (focus) {
+            case 'racing_thoughts':
+              return "Your mind is doing its best to protect you. It's okay to let it rest now.";
+            case 'conflict':
+              return "Your feelings are valid. Healing takes time, and you're already on your way.";
+            case 'low_mood':
+              return "Even on cloudy days, the sun is still there. So is your strength.";
+            case 'urge':
+              return "Every moment you choose differently is a victory. You are stronger than you know.";
+            case 'process_therapy':
+              return "Growth isn't always linear. Every insight is a step forward.";
+            default:
+              return "You matter. Your feelings matter. This moment matters.";
+          }
+        };
+
         return (
           <motion.div
             key="step4"
@@ -518,6 +555,17 @@ const MiniSession: React.FC = () => {
                 Henry's Thoughts for You
               </motion.h2>
             </div>
+
+            {/* Daily Affirmation */}
+            <motion.div
+              initial={{ opacity: 0, scale: 0.95 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ delay: 0.1 }}
+              className="bg-gradient-to-r from-[#D4AF37]/10 via-[#E5C5A1]/10 to-[#D4AF37]/10 border border-[#D4AF37]/30 rounded-xl p-4 text-center"
+            >
+              <p className="text-xs text-muted-foreground mb-1">Today's Affirmation</p>
+              <p className="text-foreground font-medium italic">"{getAffirmation()}"</p>
+            </motion.div>
 
             <motion.div
               initial={{ opacity: 0, y: 20 }}
@@ -554,6 +602,19 @@ const MiniSession: React.FC = () => {
               </motion.div>
             </motion.div>
 
+            {/* Reflection Prompt */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.6 }}
+              className="bg-emerald-500/10 border border-emerald-500/20 rounded-xl p-4"
+            >
+              <p className="text-sm font-medium text-emerald-400 mb-2">💭 Reflection Question</p>
+              <p className="text-sm text-foreground/80 italic">
+                What's one small thing you can do in the next hour to honor how you're feeling right now?
+              </p>
+            </motion.div>
+
             {summary && (
               <motion.div
                 initial={{ opacity: 0, y: 20 }}
@@ -576,7 +637,7 @@ const MiniSession: React.FC = () => {
               </Button>
               <Button 
                 variant="outline"
-                onClick={() => toast({ title: "Shared with your therapist" })}
+                onClick={() => toast({ title: "Shared with your therapist", description: "Your session has been shared securely." })}
                 className="border-bronze-500/30 hover:bg-bronze-500/10"
               >
                 <Share2 className="mr-2 w-4 h-4" /> Share with Therapist

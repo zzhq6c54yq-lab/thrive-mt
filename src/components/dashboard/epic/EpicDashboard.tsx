@@ -11,6 +11,7 @@ import { StatusChips } from './StatusChips';
 import { NewYourDaySection } from './sections/NewYourDaySection';
 import { MoodPulseWidget, StreakProtectorWidget, ProgressRingWidget, QuickNotesWidget } from './widgets/SmartWidgets';
 import HealthSyncWidget from './widgets/HealthSyncWidget';
+import EngagementMetricsWidget from './widgets/EngagementMetricsWidget';
 import MicroGoalsWidget from './widgets/MicroGoalsWidget';
 import ToolkitSection from './sections/ToolkitSection';
 import SpecializedProgramsSection from './sections/SpecializedProgramsSection';
@@ -438,6 +439,15 @@ export default function EpicDashboard({ demoMode = false }: EpicDashboardProps) 
           transition={{ delay: 0.5, duration: 0.6 }}
         >
           <MicroGoalsWidget />
+        </motion.div>
+
+        {/* Engagement Metrics Widget */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.52, duration: 0.6 }}
+        >
+          <EngagementMetricsWidget />
         </motion.div>
 
         {/* Health Sync Widget */}

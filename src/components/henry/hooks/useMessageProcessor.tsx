@@ -290,8 +290,16 @@ export const useMessageProcessor = (
           setProcessing(false);
         } catch (error) {
           console.error('Error getting AI response:', error);
+          
+          // Compassionate fallback responses
+          const fallbackResponses = [
+            "I hear you, and I appreciate you sharing that with me. I'm having a moment of pause, but please know your feelings are valid. Let's try again together.",
+            "Thank you for opening up. I'm experiencing a brief connection issue, but your wellbeing matters deeply. Would you like to try sharing that again?",
+            "Your words matter to me. Sometimes even I need a moment to process. Take a breath with me, and let's continue when you're ready."
+          ];
+          
           const fallbackMessage: Message = {
-            text: "I'm sorry, I'm having trouble responding right now. Please try again, or if this persists, consider reaching out to a mental health professional directly.",
+            text: fallbackResponses[Math.floor(Math.random() * fallbackResponses.length)],
             isUser: false,
             timestamp: new Date()
           };

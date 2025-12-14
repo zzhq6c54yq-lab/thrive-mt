@@ -8,6 +8,37 @@ export interface HenryResponse {
   intent: string;
 }
 
+// Compassionate fallback responses when AI is unavailable
+const FALLBACK_RESPONSES = [
+  "I hear you, and I want you to know that reaching out takes courage. While I'm having a moment of connection issues, please know that your feelings are valid. Take a breath with me, and let's try again in a moment.",
+  "Thank you for sharing that with me. I'm experiencing a brief pause right now, but your wellbeing matters. Would you like to try expressing that thought again? I'm here for you.",
+  "I appreciate you opening up. Sometimes even I need a moment to gather my thoughts. Let's take a gentle breath together, and then try again.",
+  "Your words matter to me. I'm having a small hiccup connecting right now, but please don't let that discourage you. What you're feeling is important.",
+  "I'm here with you, even if my response is delayed. In the meantime, try placing your hand on your heart and taking three slow breaths. I'll be right back with you."
+];
+
+async function retryWithBackoff<T>(
+  fn: () => Promise<T>,
+  maxRetries: number = 3,
+  baseDelay: number = 1000
+): Promise<T> {
+  let lastError: Error | null = null;
+  
+  for (let attempt = 0; attempt < maxRetries; attempt++) {
+    try {
+      return await fn();
+    } catch (error) {
+      lastError = error as Error;
+      if (attempt < maxRetries - 1) {
+        const delay = baseDelay * Math.pow(2, attempt);
+        await new Promise(resolve => setTimeout(resolve, delay));
+      }
+    }
+  }
+  
+  throw lastError;
+}
+
 export async function getHenryResponse(
   message: string,
   conversationId?: string
@@ -19,16 +50,20 @@ export async function getHenryResponse(
       throw new Error('User not authenticated');
     }
     
-    const { data, error } = await supabase.functions.invoke('henry-multi-agent', {
-      body: {
-        message,
-        conversationId
+    const data = await retryWithBackoff(async () => {
+      const { data, error } = await supabase.functions.invoke('henry-multi-agent', {
+        body: {
+          message,
+          conversationId
+        }
+      });
+      
+      if (error) {
+        throw error;
       }
-    });
-    
-    if (error) {
-      throw error;
-    }
+      
+      return data;
+    }, 3, 1000);
     
     return {
       response: data.response,
@@ -40,8 +75,11 @@ export async function getHenryResponse(
   } catch (error) {
     console.error('Error calling Henry multi-agent service:', error);
     
+    // Return a compassionate fallback response
+    const randomFallback = FALLBACK_RESPONSES[Math.floor(Math.random() * FALLBACK_RESPONSES.length)];
+    
     return {
-      response: "I'm experiencing some technical difficulties. Please try again, or if this persists, consider reaching out to a mental health professional directly.",
+      response: randomFallback,
       conversationId: conversationId || '',
       agentType: 'coaching',
       riskLevel: 'low',
