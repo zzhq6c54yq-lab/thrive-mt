@@ -109,10 +109,16 @@ const OnboardingWizard: React.FC<{ onComplete: () => void }> = ({ onComplete }) 
   const CurrentStepComponent = steps[step].component;
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-indigo-100 via-purple-50 to-blue-100 flex items-center justify-center p-4">
-      <Card className="w-full max-w-2xl shadow-2xl border-2 border-indigo-200">
+    <div className="min-h-screen bg-background flex items-center justify-center p-4">
+      {/* Background decorative elements */}
+      <div className="fixed inset-0 overflow-hidden pointer-events-none">
+        <div className="absolute top-0 left-0 w-96 h-96 bg-bronze/10 rounded-full blur-3xl opacity-70"></div>
+        <div className="absolute bottom-0 right-0 w-96 h-96 bg-bronze/10 rounded-full blur-3xl opacity-70"></div>
+      </div>
+      
+      <Card className="w-full max-w-2xl shadow-2xl border border-border bg-card/95 backdrop-blur-xl relative z-10">
         <CardHeader className="text-center">
-          <CardTitle className="text-2xl font-bold text-indigo-900">
+          <CardTitle className="text-2xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-[#B87333] to-[#E5C5A1]">
             {steps[step].title}
           </CardTitle>
           <div className="flex justify-center mt-4">
@@ -120,7 +126,7 @@ const OnboardingWizard: React.FC<{ onComplete: () => void }> = ({ onComplete }) 
               <div
                 key={index}
                 className={`h-2 w-8 mx-1 rounded-full transition-colors ${
-                  index <= step ? 'bg-indigo-500' : 'bg-gray-200'
+                  index <= step ? 'bg-gradient-to-r from-[#B87333] to-[#E5C5A1]' : 'bg-muted'
                 }`}
               />
             ))}
@@ -134,14 +140,14 @@ const OnboardingWizard: React.FC<{ onComplete: () => void }> = ({ onComplete }) 
               variant="outline"
               onClick={handleBack}
               disabled={step === 0}
-              className="flex items-center gap-2"
+              className="flex items-center gap-2 border-border text-foreground hover:bg-muted"
             >
               <ArrowLeft className="h-4 w-4" />
               Back
             </Button>
             <Button
               onClick={handleNext}
-              className="flex items-center gap-2 bg-indigo-600 hover:bg-indigo-700"
+              className="flex items-center gap-2 bg-gradient-to-r from-[#B87333] to-[#E5C5A1] hover:from-[#A0622D] hover:to-[#D4B48F] text-white"
             >
               {step === steps.length - 1 ? 'Complete Setup' : 'Next'}
               <ArrowRight className="h-4 w-4" />
@@ -187,13 +193,13 @@ const StepUserType: React.FC<{
       { value: 'golden_years', label: '🌅 Golden Years', desc: 'Senior adult (55+)' },
       { value: 'default', label: '👤 General User', desc: 'None of the above' }
     ].map((option) => (
-      <div key={option.value} className="flex items-center space-x-3 p-3 rounded-lg hover:bg-indigo-50">
+      <div key={option.value} className={`flex items-center space-x-3 p-3 rounded-lg transition-colors ${data.userType === option.value ? 'bg-[#B87333]/20 border border-[#B87333]/40' : 'hover:bg-muted border border-transparent'}`}>
         <RadioGroupItem value={option.value} id={option.value} />
         <div className="flex-1">
-          <Label htmlFor={option.value} className="text-base font-medium cursor-pointer">
+          <Label htmlFor={option.value} className="text-base font-medium cursor-pointer text-foreground">
             {option.label}
           </Label>
-          <p className="text-sm text-gray-600">{option.desc}</p>
+          <p className="text-sm text-muted-foreground">{option.desc}</p>
         </div>
       </div>
     ))}
@@ -224,15 +230,15 @@ const StepGoals: React.FC<{
 
   return (
     <div className="space-y-3">
-      <p className="text-gray-600 mb-4">Select all that apply to you:</p>
+      <p className="text-muted-foreground mb-4">Select all that apply to you:</p>
       {goals.map((goal) => (
-        <div key={goal} className="flex items-center space-x-3 p-2 rounded-lg hover:bg-indigo-50">
+        <div key={goal} className={`flex items-center space-x-3 p-2 rounded-lg transition-colors ${data.goals.includes(goal) ? 'bg-[#B87333]/20 border border-[#B87333]/40' : 'hover:bg-muted border border-transparent'}`}>
           <Checkbox
             id={goal}
             checked={data.goals.includes(goal)}
             onCheckedChange={() => toggleGoal(goal)}
           />
-          <Label htmlFor={goal} className="cursor-pointer flex-1">
+          <Label htmlFor={goal} className="cursor-pointer flex-1 text-foreground">
             {goal}
           </Label>
         </div>
@@ -265,15 +271,15 @@ const StepMentalHealthNeeds: React.FC<{
 
   return (
     <div className="space-y-3">
-      <p className="text-gray-600 mb-4">What kind of support are you looking for?</p>
+      <p className="text-muted-foreground mb-4">What kind of support are you looking for?</p>
       {needs.map((need) => (
-        <div key={need} className="flex items-center space-x-3 p-2 rounded-lg hover:bg-indigo-50">
+        <div key={need} className={`flex items-center space-x-3 p-2 rounded-lg transition-colors ${data.mentalHealthNeeds.includes(need) ? 'bg-[#B87333]/20 border border-[#B87333]/40' : 'hover:bg-muted border border-transparent'}`}>
           <Checkbox
             id={need}
             checked={data.mentalHealthNeeds.includes(need)}
             onCheckedChange={() => toggleNeed(need)}
           />
-          <Label htmlFor={need} className="cursor-pointer flex-1">
+          <Label htmlFor={need} className="cursor-pointer flex-1 text-foreground">
             {need}
           </Label>
         </div>
@@ -288,17 +294,17 @@ const StepConsent: React.FC<{
 }> = ({ data, setData }) => {
   return (
     <div className="space-y-6">
-      <div className="flex items-center gap-3 p-4 bg-indigo-50 rounded-lg border border-indigo-200">
-        <Shield className="h-8 w-8 text-indigo-600 flex-shrink-0" />
+      <div className="flex items-center gap-3 p-4 bg-[#B87333]/10 rounded-lg border border-[#B87333]/30">
+        <Shield className="h-8 w-8 text-[#B87333] flex-shrink-0" />
         <div>
-          <h3 className="font-semibold text-indigo-900">Your Privacy Matters</h3>
-          <p className="text-sm text-indigo-700">
+          <h3 className="font-semibold text-foreground">Your Privacy Matters</h3>
+          <p className="text-sm text-muted-foreground">
             We take your privacy seriously. Your mental health data is encrypted and protected.
           </p>
         </div>
       </div>
       
-      <div className="space-y-4 text-sm text-gray-600">
+      <div className="space-y-4 text-sm text-muted-foreground">
         <p>Before we continue, please review and accept our policies:</p>
         
         <ul className="list-disc list-inside space-y-2 ml-2">
@@ -309,20 +315,20 @@ const StepConsent: React.FC<{
         </ul>
       </div>
 
-      <div className="flex items-start space-x-3 p-4 rounded-lg bg-white border-2 border-indigo-200 hover:border-indigo-400 transition-colors">
+      <div className={`flex items-start space-x-3 p-4 rounded-lg transition-colors ${data.consentAccepted ? 'bg-[#B87333]/20 border-2 border-[#B87333]/50' : 'bg-muted/50 border-2 border-border hover:border-[#B87333]/40'}`}>
         <Checkbox
           id="consent"
           checked={data.consentAccepted}
           onCheckedChange={(checked) => setData({ ...data, consentAccepted: checked === true })}
           className="mt-0.5"
         />
-        <Label htmlFor="consent" className="text-sm leading-relaxed cursor-pointer">
+        <Label htmlFor="consent" className="text-sm leading-relaxed cursor-pointer text-foreground">
           I have read and agree to the{' '}
-          <Link to="/terms-of-service" className="text-indigo-600 hover:text-indigo-800 underline" target="_blank">
+          <Link to="/terms-of-service" className="text-[#B87333] hover:text-[#E5C5A1] underline" target="_blank">
             Terms of Service
           </Link>{' '}
           and{' '}
-          <Link to="/privacy" className="text-indigo-600 hover:text-indigo-800 underline" target="_blank">
+          <Link to="/privacy" className="text-[#B87333] hover:text-[#E5C5A1] underline" target="_blank">
             Privacy Policy
           </Link>
           . I consent to the processing of my mental health data as described in these policies.
@@ -330,7 +336,7 @@ const StepConsent: React.FC<{
       </div>
       
       {!data.consentAccepted && (
-        <p className="text-amber-600 text-sm flex items-center gap-2">
+        <p className="text-amber-500 text-sm flex items-center gap-2">
           <Shield className="h-4 w-4" />
           Please accept the terms above to complete your setup.
         </p>

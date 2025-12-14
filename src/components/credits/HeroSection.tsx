@@ -52,7 +52,7 @@ const HeroSection: React.FC<HeroSectionProps> = ({ credits, setActiveTab, onGetS
           <div className="flex flex-col sm:flex-row gap-4 mt-6">
             <Button 
               onClick={handleGetStarted}
-              className="bg-white hover:bg-gray-100 text-amber-600 font-semibold shadow-md"
+              className="bg-[#E5C5A1] hover:bg-[#D4B48F] text-[#1a1a1f] font-semibold shadow-md"
             >
               Get Started
               <ArrowRight className="h-4 w-4 ml-2" />
@@ -60,7 +60,7 @@ const HeroSection: React.FC<HeroSectionProps> = ({ credits, setActiveTab, onGetS
             <Button 
               variant="outline"
               onClick={handleUpgrade}
-              className="border-white border-2 text-white hover:bg-amber-600/30"
+              className="border-[#B87333] border-2 text-[#B87333] hover:bg-[#B87333]/20"
             >
               Upgrade Plan
             </Button>

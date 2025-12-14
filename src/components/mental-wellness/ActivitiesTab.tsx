@@ -42,44 +42,44 @@ const ActivitiesTab: React.FC<ActivitiesTabProps> = ({ onStartIcingGame, onToolS
 
   return (
     <div className="space-y-6">
-      <div className="bg-[#F8F9FA] rounded-lg p-6 mb-8">
-        <h2 className="text-2xl font-bold mb-4">Interactive Wellness Activities</h2>
-        <p className="text-gray-600 mb-6">
+      <div className="bg-card/50 backdrop-blur-sm border border-border rounded-lg p-6 mb-8">
+        <h2 className="text-2xl font-bold mb-4 text-foreground">Interactive Wellness Activities</h2>
+        <p className="text-muted-foreground mb-6">
           Engage with these interactive activities designed to boost your mental well-being through fun and creative exercises.
         </p>
         
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          <Card className="bg-white hover:shadow-md transition-all border-2 border-pink-100 hover:border-pink-300">
-            <CardHeader className="bg-gradient-to-r from-pink-50 to-white">
-              <div className="rounded-full bg-pink-100 w-10 h-10 flex items-center justify-center mb-2">
-                <PenTool className="h-5 w-5 text-pink-500" />
+          <Card className="bg-card/80 hover:bg-card border border-[#B87333]/20 hover:border-[#B87333]/50 transition-all hover:shadow-lg hover:shadow-[#B87333]/10">
+            <CardHeader className="bg-gradient-to-r from-[#B87333]/10 to-transparent">
+              <div className="rounded-full bg-[#B87333]/20 w-10 h-10 flex items-center justify-center mb-2">
+                <PenTool className="h-5 w-5 text-[#B87333]" />
               </div>
-              <CardTitle className="text-lg">Cake Decoration</CardTitle>
+              <CardTitle className="text-lg text-foreground">Cake Decoration</CardTitle>
               <CardDescription>A relaxing creative activity</CardDescription>
             </CardHeader>
             <CardContent className="pt-2">
-              <p className="text-sm text-gray-600 mb-4">
+              <p className="text-sm text-muted-foreground mb-4">
                 Practice mindfulness through the creative process of decorating a virtual cake. No pressure, just fun!
               </p>
               <Button 
                 onClick={onStartIcingGame} 
-                className="w-full bg-gradient-to-r from-pink-400 to-pink-600 hover:from-pink-500 hover:to-pink-700"
+                className="w-full bg-gradient-to-r from-[#B87333] to-[#E5C5A1] hover:from-[#A0622D] hover:to-[#D4B48F] text-white"
               >
                 Start Activity
               </Button>
             </CardContent>
           </Card>
           
-          <Card className="bg-white hover:shadow-md transition-all border-2 border-blue-100 hover:border-blue-300">
-            <CardHeader className="bg-gradient-to-r from-blue-50 to-white">
-              <div className="rounded-full bg-blue-100 w-10 h-10 flex items-center justify-center mb-2">
-                <Music className="h-5 w-5 text-blue-500" />
+          <Card className="bg-card/80 hover:bg-card border border-[#B87333]/20 hover:border-[#B87333]/50 transition-all hover:shadow-lg hover:shadow-[#B87333]/10">
+            <CardHeader className="bg-gradient-to-r from-[#B87333]/10 to-transparent">
+              <div className="rounded-full bg-[#B87333]/20 w-10 h-10 flex items-center justify-center mb-2">
+                <Music className="h-5 w-5 text-[#B87333]" />
               </div>
-              <CardTitle className="text-lg">Breathing Exercises</CardTitle>
+              <CardTitle className="text-lg text-foreground">Breathing Exercises</CardTitle>
               <CardDescription>Guided breathing techniques</CardDescription>
             </CardHeader>
             <CardContent className="pt-2">
-              <p className="text-sm text-gray-600 mb-4">
+              <p className="text-sm text-muted-foreground mb-4">
                 Follow along with our interactive breathing exercises to reduce stress and increase focus.
               </p>
               <Button 
@@ -90,23 +90,23 @@ const ActivitiesTab: React.FC<ActivitiesTabProps> = ({ onStartIcingGame, onToolS
                   });
                   onToolSelect("Meditation & Mindfulness");
                 }} 
-                className="w-full bg-gradient-to-r from-blue-400 to-blue-600 hover:from-blue-500 hover:to-blue-700"
+                className="w-full bg-gradient-to-r from-[#B87333] to-[#E5C5A1] hover:from-[#A0622D] hover:to-[#D4B48F] text-white"
               >
                 Start Breathing
               </Button>
             </CardContent>
           </Card>
           
-          <Card className="bg-white hover:shadow-md transition-all border-2 border-purple-100 hover:border-purple-300">
-            <CardHeader className="bg-gradient-to-r from-purple-50 to-white">
-              <div className="rounded-full bg-purple-100 w-10 h-10 flex items-center justify-center mb-2">
-                <BarChart className="h-5 w-5 text-purple-500" />
+          <Card className="bg-card/80 hover:bg-card border border-[#B87333]/20 hover:border-[#B87333]/50 transition-all hover:shadow-lg hover:shadow-[#B87333]/10">
+            <CardHeader className="bg-gradient-to-r from-[#B87333]/10 to-transparent">
+              <div className="rounded-full bg-[#B87333]/20 w-10 h-10 flex items-center justify-center mb-2">
+                <BarChart className="h-5 w-5 text-[#B87333]" />
               </div>
-              <CardTitle className="text-lg">Mood Tracker</CardTitle>
+              <CardTitle className="text-lg text-foreground">Mood Tracker</CardTitle>
               <CardDescription>Monitor your emotional state</CardDescription>
             </CardHeader>
             <CardContent className="pt-2">
-              <p className="text-sm text-gray-600 mb-4">
+              <p className="text-sm text-muted-foreground mb-4">
                 Track your mood over time to identify patterns and gain insights into your emotional wellbeing.
               </p>
               <Button 
@@ -117,7 +117,7 @@ const ActivitiesTab: React.FC<ActivitiesTabProps> = ({ onStartIcingGame, onToolS
                   });
                   onToolSelect("Mood Tracking");
                 }} 
-                className="w-full bg-gradient-to-r from-purple-400 to-purple-600 hover:from-purple-500 hover:to-purple-700"
+                className="w-full bg-gradient-to-r from-[#B87333] to-[#E5C5A1] hover:from-[#A0622D] hover:to-[#D4B48F] text-white"
               >
                 Track Mood
               </Button>

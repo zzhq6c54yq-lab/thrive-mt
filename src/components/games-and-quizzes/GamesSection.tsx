@@ -108,7 +108,7 @@ const GamesSection: React.FC<GamesSectionProps> = ({
             setDifficultyFilter("all");
             setTypeFilter("all");
           }}
-          className="bg-white hover:bg-gray-100 text-gray-800 font-semibold py-2 px-4 border border-gray-400 rounded shadow"
+          className="bg-muted hover:bg-muted/80 text-foreground font-semibold py-2 px-4 border border-border rounded shadow transition-colors"
         >
           Reset Filters
         </button>
