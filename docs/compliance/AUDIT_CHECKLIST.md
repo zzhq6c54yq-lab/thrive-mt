@@ -1,7 +1,7 @@
 # ThriveMT Audit Readiness Checklist
 
-**Last Updated:** December 13, 2024  
-**Status:** In Progress
+**Last Updated:** December 15, 2024  
+**Status:** Security RLS Tightened - Manual Action Required
 
 ---
 
@@ -64,7 +64,7 @@
 
 | Task | Status | Notes |
 |------|--------|-------|
-| Review audit findings | ✅ Complete | 1 warning (leaked password protection) |
+| Review audit findings | ✅ Complete | RLS tightened on 10+ tables Dec 15, 2024. 1 manual action: enable leaked password protection |
 | Create remediation timeline | ✅ Complete | See gap analysis in HIPAA doc |
 | Prepare audit package | ✅ Complete | All docs in `docs/compliance/` |
 
