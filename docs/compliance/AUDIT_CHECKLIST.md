@@ -1,7 +1,19 @@
 # ThriveMT Audit Readiness Checklist
 
-**Last Updated:** December 15, 2024  
-**Status:** E2E Tests Created - Ready for Execution
+**Last Updated:** December 15, 2025  
+**Status:** ✅ All Critical RLS Issues Fixed - Only Manual Action Remaining
+
+## Security Summary (Dec 15, 2025)
+- ✅ **profiles**: Users can only view own profile
+- ✅ **therapists**: Requires authentication
+- ✅ **coaches**: Requires authentication  
+- ✅ **henry_questions**: Restricted to authenticated + own questions
+- ✅ **whispers/replies**: Requires authentication
+- ✅ **support_wall**: Requires authentication
+- ✅ **community_groups**: Requires authentication
+- ✅ **therapists_directory**: View uses security_invoker
+- ✅ **henry_qa_feed**: View uses security_invoker
+- ⚠️ **Leaked Password Protection**: Enable in Supabase Dashboard → Auth → Settings
 
 ---
 
