@@ -99,10 +99,10 @@ const WelcomeHomeHero: React.FC<WelcomeHomeHeroProps> = ({
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.8, ease: [0.4, 0, 0.2, 1] }}
-      className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-[#D4AF37]/20 via-background/50 to-[#B8941F]/10 backdrop-blur-xl border border-[#D4AF37]/20 p-8 md:p-12 shadow-2xl mb-8"
+      className="relative overflow-hidden rounded-2xl md:rounded-3xl bg-gradient-to-br from-[#D4AF37]/20 via-background/50 to-[#B8941F]/10 backdrop-blur-xl border border-[#D4AF37]/20 p-5 md:p-8 lg:p-12 shadow-2xl mb-6 md:mb-8"
     >
-      {/* Ambient particles */}
-      <div className="absolute inset-0 overflow-hidden">
+      {/* Ambient particles - hidden on mobile for performance */}
+      <div className="absolute inset-0 overflow-hidden hidden md:block">
         {[...Array(15)].map((_, i) => (
           <motion.div
             key={i}
@@ -126,19 +126,19 @@ const WelcomeHomeHero: React.FC<WelcomeHomeHeroProps> = ({
         ))}
       </div>
 
-      <div className="relative z-10 flex flex-col md:flex-row items-start md:items-center justify-between gap-8">
+      <div className="relative z-10 flex flex-col md:flex-row items-start md:items-center justify-between gap-5 md:gap-8">
         {/* Left side: Greeting and insights */}
-        <div className="flex-1 space-y-4">
+        <div className="flex-1 space-y-3 md:space-y-4 min-w-0">
           {/* Main greeting */}
           <motion.div
             initial={{ opacity: 0, x: -20 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ delay: 0.2 }}
           >
-            <h1 className="text-4xl md:text-5xl font-light text-foreground mb-2 leading-tight">
+            <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-light text-foreground mb-1.5 md:mb-2 leading-tight">
               {greeting.main}
             </h1>
-            <p className="text-xl text-muted-foreground font-light">
+            <p className="text-base md:text-lg lg:text-xl text-muted-foreground font-light">
               {greeting.sub}
             </p>
           </motion.div>
@@ -148,9 +148,9 @@ const WelcomeHomeHero: React.FC<WelcomeHomeHeroProps> = ({
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 0.4 }}
-            className="flex items-center gap-2 text-sm text-muted-foreground/80"
+            className="flex items-center gap-2 text-xs md:text-sm text-muted-foreground/80"
           >
-            <Heart className="w-4 h-4 text-[#D4AF37]" />
+            <Heart className="w-3 h-3 md:w-4 md:h-4 text-[#D4AF37] flex-shrink-0" />
             <span className="font-light">{lastSeenMsg}</span>
           </motion.div>
 
@@ -160,10 +160,10 @@ const WelcomeHomeHero: React.FC<WelcomeHomeHeroProps> = ({
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ delay: 0.6 }}
-              className="flex items-center gap-3 p-3 rounded-xl bg-background/30 backdrop-blur-sm w-fit"
+              className="flex items-center gap-2 md:gap-3 p-2 md:p-3 rounded-lg md:rounded-xl bg-background/30 backdrop-blur-sm w-fit"
             >
-              <moodInfo.icon className="w-5 h-5 text-[#D4AF37]" />
-              <span className="text-sm font-light">{moodInfo.message}</span>
+              <moodInfo.icon className="w-4 h-4 md:w-5 md:h-5 text-[#D4AF37] flex-shrink-0" />
+              <span className="text-xs md:text-sm font-light">{moodInfo.message}</span>
             </motion.div>
           )}
 
@@ -173,9 +173,9 @@ const WelcomeHomeHero: React.FC<WelcomeHomeHeroProps> = ({
               initial={{ opacity: 0, scale: 0.9 }}
               animate={{ opacity: 1, scale: 1 }}
               transition={{ delay: 0.8 }}
-              className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-gradient-to-r from-[#D4AF37] to-[#B8941F] text-background text-sm font-light shadow-lg"
+              className="inline-flex items-center gap-1.5 md:gap-2 px-3 md:px-4 py-1.5 md:py-2 rounded-full bg-gradient-to-r from-[#D4AF37] to-[#B8941F] text-background text-xs md:text-sm font-light shadow-lg"
             >
-              <span className="text-lg">🔥</span>
+              <span className="text-base md:text-lg">🔥</span>
               <span>{checkInStreak} day streak - You're building something real</span>
             </motion.div>
           )}
@@ -186,7 +186,7 @@ const WelcomeHomeHero: React.FC<WelcomeHomeHeroProps> = ({
           initial={{ opacity: 0, scale: 0.8 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ delay: 0.3, duration: 0.6 }}
-          className="relative"
+          className="relative flex-shrink-0"
         >
           {/* Glow effect */}
           <motion.div
@@ -199,15 +199,15 @@ const WelcomeHomeHero: React.FC<WelcomeHomeHeroProps> = ({
               repeat: Infinity,
               ease: "easeInOut",
             }}
-            className="absolute inset-0 bg-[#D4AF37] rounded-full blur-2xl"
+            className="absolute inset-0 bg-[#D4AF37] rounded-full blur-2xl hidden md:block"
           />
           
           {/* Henry skull */}
-          <div className="relative w-32 h-32 rounded-full bg-gradient-to-br from-[#D4AF37] via-[#E5C5A1] to-[#B8941F] flex items-center justify-center shadow-2xl">
+          <div className="relative w-20 h-20 md:w-28 md:h-28 lg:w-32 lg:h-32 rounded-full bg-gradient-to-br from-[#D4AF37] via-[#E5C5A1] to-[#B8941F] flex items-center justify-center shadow-2xl">
             <img 
               src={THRIVE_LOGO} 
               alt="Henry"
-              className="w-24 h-24 object-contain"
+              className="w-16 h-16 md:w-20 md:h-20 lg:w-24 lg:h-24 object-contain"
             />
           </div>
         </motion.div>

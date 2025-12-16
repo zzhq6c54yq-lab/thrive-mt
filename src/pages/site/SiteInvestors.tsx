@@ -35,70 +35,70 @@ const SiteInvestors = () => {
         </div>
       </SiteHeroSection>
 
-      <div className="py-20 px-6">
+      <div className="py-12 md:py-20 px-4 md:px-6">
         <div className="container mx-auto max-w-6xl">
           {/* Market Snapshot */}
-          <div className="mb-16">
-            <h2 className="text-3xl font-bold text-center mb-8" style={{
+          <div className="mb-10 md:mb-16">
+            <h2 className="text-2xl md:text-3xl font-bold text-center mb-6 md:mb-8" style={{
               background: 'linear-gradient(135deg, #E8D4C0 0%, #D4A574 50%, #B87333 100%)',
               WebkitBackgroundClip: 'text',
               WebkitTextFillColor: 'transparent',
               backgroundClip: 'text',
             }}>Market Snapshot</h2>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-              <Card className="bg-black border-[#D4AF37]/20 p-6 text-center">
-                <TrendingUp className="w-10 h-10 text-bronze-400 mx-auto mb-4" />
-                <div className="text-3xl font-bold text-foreground mb-2">$68B</div>
-                <p className="text-foreground/60">Global mental health tech market</p>
+            <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 md:gap-6">
+              <Card className="bg-black border-[#D4AF37]/20 p-4 md:p-6 text-center">
+                <TrendingUp className="w-8 h-8 md:w-10 md:h-10 text-bronze-400 mx-auto mb-3 md:mb-4" />
+                <div className="text-2xl md:text-3xl font-bold text-foreground mb-1 md:mb-2">$68B</div>
+                <p className="text-foreground/60 text-xs md:text-sm">Global mental health tech market</p>
               </Card>
-              <Card className="bg-[#141921] border-bronze-500/20 p-6 text-center">
-                <Target className="w-10 h-10 text-bronze-400 mx-auto mb-4" />
-                <div className="text-3xl font-bold text-foreground mb-2">30%</div>
-                <p className="text-foreground/60">Year-over-year growth</p>
+              <Card className="bg-[#141921] border-bronze-500/20 p-4 md:p-6 text-center">
+                <Target className="w-8 h-8 md:w-10 md:h-10 text-bronze-400 mx-auto mb-3 md:mb-4" />
+                <div className="text-2xl md:text-3xl font-bold text-foreground mb-1 md:mb-2">30%</div>
+                <p className="text-foreground/60 text-xs md:text-sm">Year-over-year growth</p>
               </Card>
-              <Card className="bg-[#141921] border-bronze-500/20 p-6 text-center">
-                <Users className="w-10 h-10 text-bronze-400 mx-auto mb-4" />
-                <div className="text-3xl font-bold text-foreground mb-2">Rising</div>
-                <p className="text-foreground/60">Demand for accessible care</p>
+              <Card className="bg-[#141921] border-bronze-500/20 p-4 md:p-6 text-center">
+                <Users className="w-8 h-8 md:w-10 md:h-10 text-bronze-400 mx-auto mb-3 md:mb-4" />
+                <div className="text-2xl md:text-3xl font-bold text-foreground mb-1 md:mb-2">Rising</div>
+                <p className="text-foreground/60 text-xs md:text-sm">Demand for accessible care</p>
               </Card>
-              <Card className="bg-[#141921] border-bronze-500/20 p-6 text-center">
-                <Zap className="w-10 h-10 text-bronze-400 mx-auto mb-4" />
-                <div className="text-3xl font-bold text-foreground mb-2">Standard</div>
-                <p className="text-foreground/60">Telehealth is now mainstream</p>
+              <Card className="bg-[#141921] border-bronze-500/20 p-4 md:p-6 text-center">
+                <Zap className="w-8 h-8 md:w-10 md:h-10 text-bronze-400 mx-auto mb-3 md:mb-4" />
+                <div className="text-2xl md:text-3xl font-bold text-foreground mb-1 md:mb-2">Standard</div>
+                <p className="text-foreground/60 text-xs md:text-sm">Telehealth is now mainstream</p>
               </Card>
             </div>
           </div>
 
           {/* Competitive Advantage */}
-          <div className="mb-16">
-            <h2 className="text-3xl font-bold text-center mb-8" style={{
+          <div className="mb-10 md:mb-16">
+            <h2 className="text-2xl md:text-3xl font-bold text-center mb-6 md:mb-8" style={{
               background: 'linear-gradient(135deg, #E8D4C0 0%, #D4A574 50%, #B87333 100%)',
               WebkitBackgroundClip: 'text',
               WebkitTextFillColor: 'transparent',
               backgroundClip: 'text',
             }}>Our Advantage</h2>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-              <Card className="bg-black border-[#D4AF37]/20 p-6">
-                <h3 className="text-xl font-bold text-bronze-400 mb-4">Lower Cost, Higher Quality</h3>
-                <p className="text-foreground/80">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-8">
+              <Card className="bg-black border-[#D4AF37]/20 p-4 md:p-6">
+                <h3 className="text-lg md:text-xl font-bold text-bronze-400 mb-3 md:mb-4">Lower Cost, Higher Quality</h3>
+                <p className="text-foreground/80 text-sm md:text-base">
                   Lower session costs for clients while paying therapists more than competitors. Our 40% margin model ensures profitability while prioritizing quality care.
                 </p>
               </Card>
-              <Card className="bg-[#141921] border-bronze-500/20 p-6">
-                <h3 className="text-xl font-bold text-bronze-400 mb-4">Real-Time AI Companion</h3>
-                <p className="text-foreground/80">
+              <Card className="bg-[#141921] border-bronze-500/20 p-4 md:p-6">
+                <h3 className="text-lg md:text-xl font-bold text-bronze-400 mb-3 md:mb-4">Real-Time AI Companion</h3>
+                <p className="text-foreground/80 text-sm md:text-base">
                   AI-powered support between sessions reduces churn and increases engagement. Users stay connected to their care 24/7.
                 </p>
               </Card>
-              <Card className="bg-[#141921] border-bronze-500/20 p-6">
-                <h3 className="text-xl font-bold text-bronze-400 mb-4">Underserved Markets</h3>
-                <p className="text-foreground/80">
+              <Card className="bg-[#141921] border-bronze-500/20 p-4 md:p-6">
+                <h3 className="text-lg md:text-xl font-bold text-bronze-400 mb-3 md:mb-4">Underserved Markets</h3>
+                <p className="text-foreground/80 text-sm md:text-base">
                   Purpose-built programs for military, students, first responders, and other underserved populations. We go where competitors don't.
                 </p>
               </Card>
-              <Card className="bg-[#141921] border-bronze-500/20 p-6">
-                <h3 className="text-xl font-bold text-bronze-400 mb-4">Hybrid Model</h3>
-                <p className="text-foreground/80">
+              <Card className="bg-[#141921] border-bronze-500/20 p-4 md:p-6">
+                <h3 className="text-lg md:text-xl font-bold text-bronze-400 mb-3 md:mb-4">Hybrid Model</h3>
+                <p className="text-foreground/80 text-sm md:text-base">
                   Therapy + coaching + AI creates a complete care ecosystem. Multiple revenue streams from single users increase lifetime value.
                 </p>
               </Card>
@@ -106,28 +106,28 @@ const SiteInvestors = () => {
           </div>
 
           {/* Business Model */}
-          <div className="mb-16 bg-black border border-[#D4AF37]/20 rounded-lg p-8">
-            <h2 className="text-3xl font-bold text-center mb-8" style={{
+          <div className="mb-10 md:mb-16 bg-black border border-[#D4AF37]/20 rounded-lg p-5 md:p-8">
+            <h2 className="text-2xl md:text-3xl font-bold text-center mb-6 md:mb-8" style={{
               background: 'linear-gradient(135deg, #E8D4C0 0%, #D4A574 50%, #B87333 100%)',
               WebkitBackgroundClip: 'text',
               WebkitTextFillColor: 'transparent',
               backgroundClip: 'text',
             }}>Business Model</h2>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 md:gap-8">
               <div className="text-center">
-                <DollarSign className="w-12 h-12 text-bronze-400 mx-auto mb-4" />
-                <h3 className="text-xl font-bold text-foreground mb-2">Strong Margins</h3>
-                <p className="text-foreground/60">40% margin on all services</p>
+                <DollarSign className="w-10 h-10 md:w-12 md:h-12 text-bronze-400 mx-auto mb-3 md:mb-4" />
+                <h3 className="text-lg md:text-xl font-bold text-foreground mb-2">Strong Margins</h3>
+                <p className="text-foreground/60 text-sm md:text-base">40% margin on all services</p>
               </div>
               <div className="text-center">
-                <Users className="w-12 h-12 text-bronze-400 mx-auto mb-4" />
-                <h3 className="text-xl font-bold text-foreground mb-2">Subscription Bundles</h3>
-                <p className="text-foreground/60">Predictable recurring revenue</p>
+                <Users className="w-10 h-10 md:w-12 md:h-12 text-bronze-400 mx-auto mb-3 md:mb-4" />
+                <h3 className="text-lg md:text-xl font-bold text-foreground mb-2">Subscription Bundles</h3>
+                <p className="text-foreground/60 text-sm md:text-base">Predictable recurring revenue</p>
               </div>
               <div className="text-center">
-                <Shield className="w-12 h-12 text-bronze-400 mx-auto mb-4" />
-                <h3 className="text-xl font-bold text-foreground mb-2">Insurance + Self-Pay</h3>
-                <p className="text-foreground/60">Multiple revenue channels</p>
+                <Shield className="w-10 h-10 md:w-12 md:h-12 text-bronze-400 mx-auto mb-3 md:mb-4" />
+                <h3 className="text-lg md:text-xl font-bold text-foreground mb-2">Insurance + Self-Pay</h3>
+                <p className="text-foreground/60 text-sm md:text-base">Multiple revenue channels</p>
               </div>
             </div>
           </div>

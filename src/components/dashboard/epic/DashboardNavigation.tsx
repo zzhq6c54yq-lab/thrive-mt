@@ -68,32 +68,32 @@ export default function DashboardNavigation({ userName }: DashboardNavigationPro
       </AnimatePresence>
 
       <div className="sticky top-0 z-40 bg-gray-900/80 backdrop-blur-md border-b border-white/10">
-      <div className="container mx-auto max-w-7xl px-4">
-        <div className="flex items-center justify-between py-4">
-          {/* Logo & Greeting - modified to accept children for status chips */}
-          <div>
-            <div className="flex items-center gap-4 mb-1">
+      <div className="container mx-auto max-w-7xl px-3 md:px-4">
+        <div className="flex items-center justify-between py-3 md:py-4">
+          {/* Logo & Greeting */}
+          <div className="min-w-0 flex-shrink">
+            <div className="flex items-center gap-2 md:gap-4 mb-1">
               <div className="flex items-center gap-2">
                 {/* Use the actual bronze head logo */}
-                <div className="relative w-10 h-10">
+                <div className="relative w-8 h-8 md:w-10 md:h-10 flex-shrink-0">
                   <img 
                     src={THRIVE_LOGO} 
                     alt="ThriveMT Logo"
                     className="w-full h-full object-contain filter drop-shadow-[0_0_8px_rgba(184,115,51,0.6)]"
                   />
                 </div>
-                <span className="font-bold text-white text-xl hidden sm:inline">ThriveMT</span>
+                <span className="font-bold text-white text-lg md:text-xl hidden sm:inline">ThriveMT</span>
               </div>
-              <div className="hidden md:block text-sm text-gray-300">
+              <div className="hidden lg:block text-sm text-gray-300 truncate">
                 {demoUser ? 'Hello User' : `Welcome back, ${userName}`}
               </div>
             </div>
             {/* Status chips placeholder - will be rendered by parent */}
-            <div id="status-chips-container" className="ml-12" />
+            <div id="status-chips-container" className="ml-10 md:ml-12 hidden md:block" />
           </div>
 
           {/* Navigation Items */}
-          <nav className="flex items-center gap-2">
+          <nav className="flex items-center gap-1 md:gap-2 overflow-x-auto flex-shrink-0">
             <NotificationBell />
             
             {navItems.map((item) => {
@@ -107,12 +107,13 @@ export default function DashboardNavigation({ userName }: DashboardNavigationPro
                   size="sm"
                   onClick={() => navigate(item.path)}
                   className={cn(
-                    "text-gray-300 hover:text-white hover:bg-white/10 transition-colors",
+                    "text-gray-300 hover:text-white hover:bg-white/10 transition-colors px-2 md:px-3 min-w-[40px] md:min-w-0",
                     isActive && "bg-white/10 text-white"
                   )}
+                  aria-label={item.label}
                 >
-                  <Icon className="w-4 h-4 mr-2" />
-                  <span className="hidden sm:inline">{item.label}</span>
+                  <Icon className="w-4 h-4 md:mr-2 flex-shrink-0" />
+                  <span className="hidden md:inline text-sm">{item.label}</span>
                 </Button>
               );
             })}

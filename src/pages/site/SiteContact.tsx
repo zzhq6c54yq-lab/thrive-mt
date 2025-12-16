@@ -84,46 +84,46 @@ const SiteContact = () => {
         subtitle="Questions? Ideas? Just want to talk? Reach out."
       />
 
-      <div className="py-20 px-6">
+      <div className="py-12 md:py-20 px-4 md:px-6">
         <div className="container mx-auto max-w-6xl">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 md:gap-12">
             {/* Contact Info */}
-            <div className="space-y-8">
-              <Card className="bg-black border-[#D4AF37]/20 p-8">
-                <Mail className="w-10 h-10 text-bronze-400 mb-4" />
-                <h3 className="text-xl font-bold text-foreground mb-2">General Support</h3>
-                <a href="mailto:support@thrive-mental.com" className="text-bronze-400 hover:text-bronze-300">
+            <div className="space-y-4 md:space-y-8">
+              <Card className="bg-black border-[#D4AF37]/20 p-5 md:p-8">
+                <Mail className="w-8 h-8 md:w-10 md:h-10 text-bronze-400 mb-3 md:mb-4" />
+                <h3 className="text-lg md:text-xl font-bold text-foreground mb-2">General Support</h3>
+                <a href="mailto:support@thrive-mental.com" className="text-bronze-400 hover:text-bronze-300 text-sm md:text-base break-all">
                   support@thrive-mental.com
                 </a>
               </Card>
 
-              <Card className="bg-black border-[#D4AF37]/20 p-8">
-                <MessageSquare className="w-10 h-10 text-bronze-400 mb-4" />
-                <h3 className="text-xl font-bold text-foreground mb-2">Business Inquiries</h3>
-                <a href="mailto:business@thrive-mental.com" className="text-bronze-400 hover:text-bronze-300">
+              <Card className="bg-black border-[#D4AF37]/20 p-5 md:p-8">
+                <MessageSquare className="w-8 h-8 md:w-10 md:h-10 text-bronze-400 mb-3 md:mb-4" />
+                <h3 className="text-lg md:text-xl font-bold text-foreground mb-2">Business Inquiries</h3>
+                <a href="mailto:business@thrive-mental.com" className="text-bronze-400 hover:text-bronze-300 text-sm md:text-base break-all">
                   business@thrive-mental.com
                 </a>
               </Card>
 
-              <Card className="bg-black border-[#D4AF37]/20 p-8">
-                <Mail className="w-10 h-10 text-bronze-400 mb-4" />
-                <h3 className="text-xl font-bold text-foreground mb-2">Investor Relations</h3>
-                <a href="mailto:investor@thrive-mental.com" className="text-bronze-400 hover:text-bronze-300">
+              <Card className="bg-black border-[#D4AF37]/20 p-5 md:p-8">
+                <Mail className="w-8 h-8 md:w-10 md:h-10 text-bronze-400 mb-3 md:mb-4" />
+                <h3 className="text-lg md:text-xl font-bold text-foreground mb-2">Investor Relations</h3>
+                <a href="mailto:investor@thrive-mental.com" className="text-bronze-400 hover:text-bronze-300 text-sm md:text-base break-all">
                   investor@thrive-mental.com
                 </a>
               </Card>
 
-              <Card className="bg-[#141921] border-bronze-500/20 p-8">
-                <h3 className="text-xl font-bold text-foreground mb-4">Office Hours</h3>
-                <p className="text-foreground/80">Monday - Friday: 9am - 6pm MT</p>
-                <p className="text-foreground/80">Saturday - Sunday: Closed</p>
-                <p className="text-sm text-foreground/60 mt-4">Emergency support available 24/7 for active clients</p>
+              <Card className="bg-[#141921] border-bronze-500/20 p-5 md:p-8">
+                <h3 className="text-lg md:text-xl font-bold text-foreground mb-3 md:mb-4">Office Hours</h3>
+                <p className="text-foreground/80 text-sm md:text-base">Monday - Friday: 9am - 6pm MT</p>
+                <p className="text-foreground/80 text-sm md:text-base">Saturday - Sunday: Closed</p>
+                <p className="text-xs md:text-sm text-foreground/60 mt-3 md:mt-4">Emergency support available 24/7 for active clients</p>
               </Card>
             </div>
 
             {/* Contact Form */}
-            <Card className="bg-black border-[#D4AF37]/20 p-8">
-              <form onSubmit={handleSubmit} className="space-y-6">
+            <Card className="bg-black border-[#D4AF37]/20 p-5 md:p-8">
+              <form onSubmit={handleSubmit} className="space-y-4 md:space-y-6">
                 <div>
                   <label className="block text-sm font-medium text-foreground mb-2">Name *</label>
                   <Input
@@ -131,7 +131,7 @@ const SiteContact = () => {
                     onChange={(e) => setFormData({ ...formData, name: e.target.value })}
                     placeholder="Your name"
                     required
-                    className="bg-black border-[#D4AF37]/20"
+                    className="bg-black border-[#D4AF37]/20 text-sm md:text-base"
                     disabled={isSubmitting}
                   />
                 </div>
@@ -144,7 +144,7 @@ const SiteContact = () => {
                     onChange={(e) => setFormData({ ...formData, email: e.target.value })}
                     placeholder="your@email.com"
                     required
-                    className="bg-black border-[#D4AF37]/20"
+                    className="bg-black border-[#D4AF37]/20 text-sm md:text-base"
                     disabled={isSubmitting}
                   />
                 </div>
@@ -156,7 +156,7 @@ const SiteContact = () => {
                     onValueChange={(value) => setFormData({ ...formData, role: value })}
                     disabled={isSubmitting}
                   >
-                    <SelectTrigger className="bg-black border-[#D4AF37]/20">
+                    <SelectTrigger className="bg-black border-[#D4AF37]/20 text-sm md:text-base">
                       <SelectValue placeholder="Select your role" />
                     </SelectTrigger>
                     <SelectContent>
@@ -176,16 +176,16 @@ const SiteContact = () => {
                     value={formData.message}
                     onChange={(e) => setFormData({ ...formData, message: e.target.value })}
                     placeholder="Tell us how we can help..."
-                    rows={6}
+                    rows={5}
                     required
-                    className="bg-black border-[#D4AF37]/20"
+                    className="bg-black border-[#D4AF37]/20 text-sm md:text-base"
                     disabled={isSubmitting}
                   />
                 </div>
 
                 <Button 
                   type="submit" 
-                  className="w-full bg-gradient-to-r from-bronze-500 to-bronze-600 hover:from-bronze-600 hover:to-bronze-700 text-black font-semibold"
+                  className="w-full bg-gradient-to-r from-bronze-500 to-bronze-600 hover:from-bronze-600 hover:to-bronze-700 text-black font-semibold text-sm md:text-base"
                   disabled={isSubmitting}
                 >
                   {isSubmitting ? (
