@@ -48,9 +48,10 @@ const BetaSignup = () => {
     setIsSubmitting(true);
 
     try {
+      const normalizedEmail = email.toLowerCase().trim();
       const { error } = await supabase
         .from('beta_signups')
-        .insert({ email: email.toLowerCase().trim() });
+        .insert({ email: normalizedEmail });
 
       if (error) {
         // Check for duplicate email (unique constraint violation)
@@ -64,7 +65,17 @@ const BetaSignup = () => {
           throw error;
         }
       } else {
-        // Success - increment counter
+        // Success - send notification email to admin
+        try {
+          await supabase.functions.invoke('notify-beta-signup', {
+            body: { email: normalizedEmail }
+          });
+        } catch (notifyError) {
+          // Don't fail the signup if notification fails
+          console.error("Failed to send notification:", notifyError);
+        }
+        
+        // Increment counter and show success
         setIsSubmitted(true);
         setCurrentCount((prev) => (prev !== null ? prev + 1 : 1002));
         toast({

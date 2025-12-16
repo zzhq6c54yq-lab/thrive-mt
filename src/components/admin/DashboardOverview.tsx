@@ -119,24 +119,8 @@ const DashboardOverview: React.FC = () => {
         });
       });
 
-      // Failed payments (mock data for now, payment_transactions table in Phase 2)
-      const mockFailedPayments = [
-        {
-          id: 'mock-1',
-          created_at: new Date().toISOString(),
-          user_id: 'mock-user-1',
-        },
-      ];
-
-      mockFailedPayments.forEach((payment) => {
-        alertsList.push({
-          id: payment.id,
-          type: 'payment',
-          severity: 'medium',
-          message: `Payment failed for user ${payment.user_id?.slice(0, 8)}`,
-          timestamp: payment.created_at,
-        });
-      });
+      // Real failed payments - no mock data
+      // Payment alerts will be added when real payment_transactions table has data
 
       // Compliance violations
       const { data: violations } = await supabase
