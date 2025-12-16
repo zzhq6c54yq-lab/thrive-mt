@@ -1212,6 +1212,42 @@ export type Database = {
           },
         ]
       }
+      career_applications: {
+        Row: {
+          cover_letter: string | null
+          created_at: string | null
+          email: string
+          full_name: string
+          id: string
+          phone: string | null
+          position: string
+          resume_url: string | null
+          status: string | null
+        }
+        Insert: {
+          cover_letter?: string | null
+          created_at?: string | null
+          email: string
+          full_name: string
+          id?: string
+          phone?: string | null
+          position: string
+          resume_url?: string | null
+          status?: string | null
+        }
+        Update: {
+          cover_letter?: string | null
+          created_at?: string | null
+          email?: string
+          full_name?: string
+          id?: string
+          phone?: string | null
+          position?: string
+          resume_url?: string | null
+          status?: string | null
+        }
+        Relationships: []
+      }
       career_assessments: {
         Row: {
           completed_at: string | null
@@ -1807,6 +1843,36 @@ export type Database = {
           user_id?: string
           x_position?: number
           y_position?: number
+        }
+        Relationships: []
+      }
+      contact_submissions: {
+        Row: {
+          created_at: string | null
+          email: string
+          id: string
+          message: string
+          name: string
+          role: string | null
+          status: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          email: string
+          id?: string
+          message: string
+          name: string
+          role?: string | null
+          status?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          email?: string
+          id?: string
+          message?: string
+          name?: string
+          role?: string | null
+          status?: string | null
         }
         Relationships: []
       }
@@ -3239,6 +3305,45 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      investor_requests: {
+        Row: {
+          company: string | null
+          created_at: string | null
+          email: string
+          id: string
+          investment_range: string | null
+          meeting_reason: string | null
+          name: string
+          preferred_times: string | null
+          request_type: string
+          status: string | null
+        }
+        Insert: {
+          company?: string | null
+          created_at?: string | null
+          email: string
+          id?: string
+          investment_range?: string | null
+          meeting_reason?: string | null
+          name: string
+          preferred_times?: string | null
+          request_type: string
+          status?: string | null
+        }
+        Update: {
+          company?: string | null
+          created_at?: string | null
+          email?: string
+          id?: string
+          investment_range?: string | null
+          meeting_reason?: string | null
+          name?: string
+          preferred_times?: string | null
+          request_type?: string
+          status?: string | null
+        }
+        Relationships: []
       }
       journal_entries: {
         Row: {

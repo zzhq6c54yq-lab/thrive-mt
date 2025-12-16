@@ -1,10 +1,14 @@
+import { useState } from "react";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { DollarSign, Clock, Heart, TrendingUp, Shield, Users } from "lucide-react";
 import SiteHeroSection from "@/components/site/SiteHeroSection";
+import { CareerApplicationDialog } from "@/components/site/CareerApplicationDialog";
 
 const SiteCareers = () => {
+  const [applicationDialogOpen, setApplicationDialogOpen] = useState(false);
+
   return (
     <div className="bg-black">
       <SiteHeroSection
@@ -12,7 +16,11 @@ const SiteCareers = () => {
         subtitle="Help us build the future of mental health care."
       >
         <div className="flex flex-col sm:flex-row gap-4 justify-center mt-6">
-          <Button size="lg" className="bg-gradient-to-r from-bronze-500 to-bronze-600 hover:from-bronze-600 hover:to-bronze-700 text-black font-semibold">
+          <Button 
+            size="lg" 
+            className="bg-gradient-to-r from-bronze-500 to-bronze-600 hover:from-bronze-600 hover:to-bronze-700 text-black font-semibold"
+            onClick={() => setApplicationDialogOpen(true)}
+          >
             Apply Now
           </Button>
           <Link to="/contact">
@@ -112,7 +120,11 @@ const SiteCareers = () => {
               backgroundClip: 'text',
             }}>Ready to Join?</h2>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Button size="lg" className="bg-gradient-to-r from-bronze-500 to-bronze-600 hover:from-bronze-600 hover:to-bronze-700 text-black font-semibold">
+            <Button 
+              size="lg" 
+              className="bg-gradient-to-r from-bronze-500 to-bronze-600 hover:from-bronze-600 hover:to-bronze-700 text-black font-semibold"
+              onClick={() => setApplicationDialogOpen(true)}
+            >
               Apply Now
             </Button>
             <Link to="/contact">
@@ -124,6 +136,11 @@ const SiteCareers = () => {
         </div>
         </div>
       </div>
+
+      <CareerApplicationDialog 
+        open={applicationDialogOpen} 
+        onOpenChange={setApplicationDialogOpen} 
+      />
     </div>
   );
 };

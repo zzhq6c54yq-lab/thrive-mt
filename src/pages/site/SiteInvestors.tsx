@@ -1,10 +1,15 @@
-import { Link } from "react-router-dom";
+import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { TrendingUp, Target, Users, DollarSign, Zap, Shield } from "lucide-react";
 import SiteHeroSection from "@/components/site/SiteHeroSection";
+import { InvestorDeckRequestDialog } from "@/components/site/InvestorDeckRequestDialog";
+import { FounderMeetingDialog } from "@/components/site/FounderMeetingDialog";
 
 const SiteInvestors = () => {
+  const [deckDialogOpen, setDeckDialogOpen] = useState(false);
+  const [meetingDialogOpen, setMeetingDialogOpen] = useState(false);
+
   return (
     <div className="bg-black">
       <SiteHeroSection
@@ -12,14 +17,21 @@ const SiteInvestors = () => {
         subtitle="$68B market. 30% YoY growth. We're just getting started."
       >
         <div className="flex flex-col sm:flex-row gap-4 justify-center mt-6">
-          <Button size="lg" className="bg-gradient-to-r from-bronze-500 to-bronze-600 hover:from-bronze-600 hover:to-bronze-700 text-black font-semibold">
+          <Button 
+            size="lg" 
+            className="bg-gradient-to-r from-bronze-500 to-bronze-600 hover:from-bronze-600 hover:to-bronze-700 text-black font-semibold"
+            onClick={() => setDeckDialogOpen(true)}
+          >
             Request Investor Deck
           </Button>
-          <Link to="/contact">
-            <Button size="lg" variant="outline" className="border-bronze-500 text-bronze-400 hover:bg-bronze-500/10">
-              Book a Founder Meeting
-            </Button>
-          </Link>
+          <Button 
+            size="lg" 
+            variant="outline" 
+            className="border-bronze-500 text-bronze-400 hover:bg-bronze-500/10"
+            onClick={() => setMeetingDialogOpen(true)}
+          >
+            Book a Founder Meeting
+          </Button>
         </div>
       </SiteHeroSection>
 
@@ -121,6 +133,15 @@ const SiteInvestors = () => {
           </div>
         </div>
       </div>
+
+      <InvestorDeckRequestDialog 
+        open={deckDialogOpen} 
+        onOpenChange={setDeckDialogOpen} 
+      />
+      <FounderMeetingDialog 
+        open={meetingDialogOpen} 
+        onOpenChange={setMeetingDialogOpen} 
+      />
     </div>
   );
 };
