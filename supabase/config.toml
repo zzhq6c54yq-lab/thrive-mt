@@ -50,3 +50,6 @@ verify_jwt = false
 
 [functions.notify-beta-signup]
 verify_jwt = false
+
+[functions.smart-therapist-match]
+verify_jwt = false

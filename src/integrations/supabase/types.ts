@@ -2068,6 +2068,45 @@ export type Database = {
         }
         Relationships: []
       }
+      cpt_session_codes: {
+        Row: {
+          cpt_code: string
+          created_at: string | null
+          description: string | null
+          documentation_requirements: string | null
+          id: string
+          max_insurance_reimbursement: number
+          self_pay_rate_suggested: number
+          session_duration: number
+          session_type: string
+          telehealth_compatible: boolean | null
+        }
+        Insert: {
+          cpt_code: string
+          created_at?: string | null
+          description?: string | null
+          documentation_requirements?: string | null
+          id?: string
+          max_insurance_reimbursement: number
+          self_pay_rate_suggested: number
+          session_duration: number
+          session_type: string
+          telehealth_compatible?: boolean | null
+        }
+        Update: {
+          cpt_code?: string
+          created_at?: string | null
+          description?: string | null
+          documentation_requirements?: string | null
+          id?: string
+          max_insurance_reimbursement?: number
+          self_pay_rate_suggested?: number
+          session_duration?: number
+          session_type?: string
+          telehealth_compatible?: boolean | null
+        }
+        Relationships: []
+      }
       crisis_escalations: {
         Row: {
           assigned_to: string | null
@@ -4634,6 +4673,78 @@ export type Database = {
         }
         Relationships: []
       }
+      smart_match_requests: {
+        Row: {
+          concerns: string[] | null
+          created_at: string | null
+          id: string
+          insurance_provider: string | null
+          matched_therapist_id: string | null
+          platform_revenue: number | null
+          preferred_time: string | null
+          self_pay_allowed: boolean | null
+          session_duration: number
+          session_rate: number | null
+          session_type: string
+          state: string
+          status: string | null
+          therapist_payout: number | null
+          updated_at: string | null
+          user_id: string | null
+        }
+        Insert: {
+          concerns?: string[] | null
+          created_at?: string | null
+          id?: string
+          insurance_provider?: string | null
+          matched_therapist_id?: string | null
+          platform_revenue?: number | null
+          preferred_time?: string | null
+          self_pay_allowed?: boolean | null
+          session_duration: number
+          session_rate?: number | null
+          session_type: string
+          state: string
+          status?: string | null
+          therapist_payout?: number | null
+          updated_at?: string | null
+          user_id?: string | null
+        }
+        Update: {
+          concerns?: string[] | null
+          created_at?: string | null
+          id?: string
+          insurance_provider?: string | null
+          matched_therapist_id?: string | null
+          platform_revenue?: number | null
+          preferred_time?: string | null
+          self_pay_allowed?: boolean | null
+          session_duration?: number
+          session_rate?: number | null
+          session_type?: string
+          state?: string
+          status?: string | null
+          therapist_payout?: number | null
+          updated_at?: string | null
+          user_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "smart_match_requests_matched_therapist_id_fkey"
+            columns: ["matched_therapist_id"]
+            isOneToOne: false
+            referencedRelation: "therapists"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "smart_match_requests_matched_therapist_id_fkey"
+            columns: ["matched_therapist_id"]
+            isOneToOne: false
+            referencedRelation: "therapists_directory"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       sms_check_ins: {
         Row: {
           created_at: string | null
@@ -5893,23 +6004,32 @@ export type Database = {
       therapists: {
         Row: {
           approach: string | null
+          availability_schedule: Json | null
           background_check_status: string | null
           bio: string | null
           burnout_risk_score: number | null
+          caqh_verified: boolean | null
           created_at: string
           current_caseload: number | null
           experience_years: number | null
           hourly_rate: number
           id: string
           image_url: string | null
+          insurance_panels: string[] | null
           is_active: boolean | null
           license_expiry: string | null
           license_number: string | null
           match_score_factors: Json | null
           max_caseload: number | null
           name: string
+          npi_number: string | null
+          platform_percentage: number | null
           rating: number | null
+          self_pay_rate: number | null
+          session_types_offered: string[] | null
           specialties: string[]
+          states_licensed: string[] | null
+          therapist_percentage: number | null
           title: string
           total_reviews: number | null
           updated_at: string
@@ -5918,23 +6038,32 @@ export type Database = {
         }
         Insert: {
           approach?: string | null
+          availability_schedule?: Json | null
           background_check_status?: string | null
           bio?: string | null
           burnout_risk_score?: number | null
+          caqh_verified?: boolean | null
           created_at?: string
           current_caseload?: number | null
           experience_years?: number | null
           hourly_rate?: number
           id?: string
           image_url?: string | null
+          insurance_panels?: string[] | null
           is_active?: boolean | null
           license_expiry?: string | null
           license_number?: string | null
           match_score_factors?: Json | null
           max_caseload?: number | null
           name: string
+          npi_number?: string | null
+          platform_percentage?: number | null
           rating?: number | null
+          self_pay_rate?: number | null
+          session_types_offered?: string[] | null
           specialties?: string[]
+          states_licensed?: string[] | null
+          therapist_percentage?: number | null
           title: string
           total_reviews?: number | null
           updated_at?: string
@@ -5943,23 +6072,32 @@ export type Database = {
         }
         Update: {
           approach?: string | null
+          availability_schedule?: Json | null
           background_check_status?: string | null
           bio?: string | null
           burnout_risk_score?: number | null
+          caqh_verified?: boolean | null
           created_at?: string
           current_caseload?: number | null
           experience_years?: number | null
           hourly_rate?: number
           id?: string
           image_url?: string | null
+          insurance_panels?: string[] | null
           is_active?: boolean | null
           license_expiry?: string | null
           license_number?: string | null
           match_score_factors?: Json | null
           max_caseload?: number | null
           name?: string
+          npi_number?: string | null
+          platform_percentage?: number | null
           rating?: number | null
+          self_pay_rate?: number | null
+          session_types_offered?: string[] | null
           specialties?: string[]
+          states_licensed?: string[] | null
+          therapist_percentage?: number | null
           title?: string
           total_reviews?: number | null
           updated_at?: string
