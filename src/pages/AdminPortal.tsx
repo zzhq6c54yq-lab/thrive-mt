@@ -9,7 +9,7 @@ import DashboardOverview from '@/components/admin/DashboardOverview';
 import UsersManagement from '@/components/admin/UsersManagement';
 import TherapistsManagement from '@/components/admin/TherapistsManagement';
 import OperationsAnalytics from '@/components/admin/OperationsAnalytics';
-import ComplianceDashboard from '@/components/admin/ComplianceDashboard';
+import HIPAAComplianceTab from '@/components/admin/hipaa/HIPAAComplianceTab';
 import SystemSettings from '@/components/admin/SystemSettings';
 import AuditLogsViewer from '@/components/admin/AuditLogsViewer';
 import ContentManagement from '@/components/admin/ContentManagement';
@@ -210,7 +210,7 @@ const AdminPortal: React.FC = () => {
             </TabsContent>
 
             <TabsContent value="compliance" className="space-y-4">
-              <ComplianceDashboard />
+              <HIPAAComplianceTab />
             </TabsContent>
 
             <TabsContent value="operations" className="space-y-4">

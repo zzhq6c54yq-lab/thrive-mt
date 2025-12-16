@@ -3229,6 +3229,177 @@ export type Database = {
           },
         ]
       }
+      hipaa_audit_change_log: {
+        Row: {
+          affected_record_id: string | null
+          affected_table: string | null
+          change_description: string
+          created_at: string | null
+          editor_name: string
+          id: string
+          reason: string | null
+          user_id: string | null
+        }
+        Insert: {
+          affected_record_id?: string | null
+          affected_table?: string | null
+          change_description: string
+          created_at?: string | null
+          editor_name: string
+          id?: string
+          reason?: string | null
+          user_id?: string | null
+        }
+        Update: {
+          affected_record_id?: string | null
+          affected_table?: string | null
+          change_description?: string
+          created_at?: string | null
+          editor_name?: string
+          id?: string
+          reason?: string | null
+          user_id?: string | null
+        }
+        Relationships: []
+      }
+      hipaa_audit_reports: {
+        Row: {
+          content: Json | null
+          created_at: string | null
+          generated_by: string | null
+          generated_by_name: string | null
+          id: string
+          period_end: string | null
+          period_start: string | null
+          report_name: string
+          report_type: string
+          status: string | null
+          summary: Json | null
+        }
+        Insert: {
+          content?: Json | null
+          created_at?: string | null
+          generated_by?: string | null
+          generated_by_name?: string | null
+          id?: string
+          period_end?: string | null
+          period_start?: string | null
+          report_name: string
+          report_type: string
+          status?: string | null
+          summary?: Json | null
+        }
+        Update: {
+          content?: Json | null
+          created_at?: string | null
+          generated_by?: string | null
+          generated_by_name?: string | null
+          id?: string
+          period_end?: string | null
+          period_start?: string | null
+          report_name?: string
+          report_type?: string
+          status?: string | null
+          summary?: Json | null
+        }
+        Relationships: []
+      }
+      hipaa_risk_assessments: {
+        Row: {
+          created_at: string | null
+          evidence_required: string | null
+          framework: string
+          id: string
+          impact: string
+          likelihood: string
+          mitigation_plan: string | null
+          owner: string | null
+          risk_level: string
+          status: string | null
+          testing_procedures: string | null
+          threat_vulnerability: string
+          updated_at: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          evidence_required?: string | null
+          framework?: string
+          id?: string
+          impact?: string
+          likelihood?: string
+          mitigation_plan?: string | null
+          owner?: string | null
+          risk_level?: string
+          status?: string | null
+          testing_procedures?: string | null
+          threat_vulnerability: string
+          updated_at?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          evidence_required?: string | null
+          framework?: string
+          id?: string
+          impact?: string
+          likelihood?: string
+          mitigation_plan?: string | null
+          owner?: string | null
+          risk_level?: string
+          status?: string | null
+          testing_procedures?: string | null
+          threat_vulnerability?: string
+          updated_at?: string | null
+        }
+        Relationships: []
+      }
+      hipaa_soc2_master_checklist: {
+        Row: {
+          assigned_to: string | null
+          category: string
+          created_at: string | null
+          evidence_required: string | null
+          frequency: string | null
+          id: string
+          is_active: boolean | null
+          item: string
+          notes: string | null
+          required_addressable: string | null
+          risk_level: string | null
+          testing_procedures: string | null
+          updated_at: string | null
+        }
+        Insert: {
+          assigned_to?: string | null
+          category: string
+          created_at?: string | null
+          evidence_required?: string | null
+          frequency?: string | null
+          id?: string
+          is_active?: boolean | null
+          item: string
+          notes?: string | null
+          required_addressable?: string | null
+          risk_level?: string | null
+          testing_procedures?: string | null
+          updated_at?: string | null
+        }
+        Update: {
+          assigned_to?: string | null
+          category?: string
+          created_at?: string | null
+          evidence_required?: string | null
+          frequency?: string | null
+          id?: string
+          is_active?: boolean | null
+          item?: string
+          notes?: string | null
+          required_addressable?: string | null
+          risk_level?: string | null
+          testing_procedures?: string | null
+          updated_at?: string | null
+        }
+        Relationships: []
+      }
       homework_tasks: {
         Row: {
           assigned_by: string
@@ -4324,6 +4495,65 @@ export type Database = {
             columns: ["referrer_id"]
             isOneToOne: false
             referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      remediation_tracker: {
+        Row: {
+          assigned_to: string | null
+          category: string
+          closed_at: string | null
+          created_at: string | null
+          due_date: string | null
+          evidence_link: string | null
+          id: string
+          issue: string
+          notes: string | null
+          resolution_verification: string | null
+          risk_level: string
+          status: string | null
+          updated_at: string | null
+          weekly_audit_log_id: string | null
+        }
+        Insert: {
+          assigned_to?: string | null
+          category: string
+          closed_at?: string | null
+          created_at?: string | null
+          due_date?: string | null
+          evidence_link?: string | null
+          id?: string
+          issue: string
+          notes?: string | null
+          resolution_verification?: string | null
+          risk_level?: string
+          status?: string | null
+          updated_at?: string | null
+          weekly_audit_log_id?: string | null
+        }
+        Update: {
+          assigned_to?: string | null
+          category?: string
+          closed_at?: string | null
+          created_at?: string | null
+          due_date?: string | null
+          evidence_link?: string | null
+          id?: string
+          issue?: string
+          notes?: string | null
+          resolution_verification?: string | null
+          risk_level?: string
+          status?: string | null
+          updated_at?: string | null
+          weekly_audit_log_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "remediation_tracker_weekly_audit_log_id_fkey"
+            columns: ["weekly_audit_log_id"]
+            isOneToOne: false
+            referencedRelation: "weekly_audit_logs"
             referencedColumns: ["id"]
           },
         ]
@@ -7365,6 +7595,56 @@ export type Database = {
             columns: ["user_id"]
             isOneToOne: false
             referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      weekly_audit_logs: {
+        Row: {
+          category: string
+          checklist_item_id: string | null
+          completed_by: string
+          completed_by_id: string | null
+          created_at: string | null
+          evidence_link: string | null
+          id: string
+          item: string
+          notes: string | null
+          status: string
+          week_ending: string
+        }
+        Insert: {
+          category: string
+          checklist_item_id?: string | null
+          completed_by: string
+          completed_by_id?: string | null
+          created_at?: string | null
+          evidence_link?: string | null
+          id?: string
+          item: string
+          notes?: string | null
+          status?: string
+          week_ending: string
+        }
+        Update: {
+          category?: string
+          checklist_item_id?: string | null
+          completed_by?: string
+          completed_by_id?: string | null
+          created_at?: string | null
+          evidence_link?: string | null
+          id?: string
+          item?: string
+          notes?: string | null
+          status?: string
+          week_ending?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "weekly_audit_logs_checklist_item_id_fkey"
+            columns: ["checklist_item_id"]
+            isOneToOne: false
+            referencedRelation: "hipaa_soc2_master_checklist"
             referencedColumns: ["id"]
           },
         ]
