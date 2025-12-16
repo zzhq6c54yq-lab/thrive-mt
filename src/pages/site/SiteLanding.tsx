@@ -98,7 +98,7 @@ const SiteLanding = () => {
           <h2 className="text-4xl font-bold text-center mb-12 bg-gradient-to-r from-bronze-400 to-bronze-600 bg-clip-text text-transparent">
             Why People Choose ThriveMT
           </h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-6xl mx-auto">
+          <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-6 max-w-6xl mx-auto">
             {[
               { icon: Clock, text: "Fast access to therapists & coaches" },
               { icon: Heart, text: "Premium quality care with affordable options" },
@@ -152,7 +152,7 @@ const SiteLanding = () => {
             Featured Bundles
           </h2>
           <p className="text-center text-foreground/60 mb-12">Save money with our combined service packages</p>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-8">
             {bundles.hybrid.slice(0, 3).map((bundle, idx) => (
               <Card key={idx} className={`bg-black border-[#D4AF37]/20 p-8 ${bundle.popular ? 'ring-2 ring-[#D4AF37]' : ''}`}>
                 {bundle.popular && (

@@ -75,7 +75,7 @@ const SiteCareers = () => {
               WebkitTextFillColor: 'transparent',
               backgroundClip: 'text',
             }}>Compensation</h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8 max-w-4xl mx-auto">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 md:gap-8 max-w-4xl mx-auto">
             <div>
               <h3 className="text-xl md:text-2xl font-bold text-bronze-400 mb-3 md:mb-4">What You'll Earn</h3>
               <ul className="space-y-2 text-foreground/80 text-sm md:text-base">

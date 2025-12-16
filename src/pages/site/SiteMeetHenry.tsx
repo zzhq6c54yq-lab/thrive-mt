@@ -132,7 +132,7 @@ const SiteMeetHenry = () => {
             Henry combines advanced AI with evidence-based mental health practices to provide personalized support
           </p>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+          <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-4 gap-6">
             {features.map((feature, index) => (
               <motion.div
                 key={index}

@@ -80,7 +80,7 @@ const SiteEngagement = () => {
       {/* Features Grid */}
       <section className="py-20 px-6">
         <div className="container mx-auto max-w-6xl">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
             {features.map((feature, idx) => (
               <Card key={idx} className="bg-black border-bronze-500/20 p-8 hover:border-bronze-500/40 transition-all">
                 <feature.icon className="w-12 h-12 text-bronze-400 mb-4" />

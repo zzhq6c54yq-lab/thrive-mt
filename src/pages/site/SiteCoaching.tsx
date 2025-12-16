@@ -191,7 +191,7 @@ const SiteCoaching = () => {
               WebkitTextFillColor: 'transparent',
               backgroundClip: 'text',
             }}>Popular Monthly Bundles</h2>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6 max-w-4xl mx-auto">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 md:gap-6 max-w-4xl mx-auto">
               {/* Starter Bundle */}
               <Card className="bg-gradient-to-br from-bronze-500/20 to-bronze-600/10 border-2 border-bronze-300/30 p-5 md:p-8">
                 <h3 className="text-xl md:text-2xl font-bold text-bronze-400 mb-3 md:mb-4">⭐ Wellness Starter Bundle</h3>
@@ -243,7 +243,7 @@ const SiteCoaching = () => {
               WebkitTextFillColor: 'transparent',
               backgroundClip: 'text',
             }}>Types of Coaches</h2>
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
+            <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-4 md:gap-6">
               {[
                 { icon: Target, title: "Life & Mindset", desc: "Goal setting, motivation, personal growth" },
                 { icon: TrendingUp, title: "Accountability Coach", desc: "Stay on track with your commitments" },
@@ -269,7 +269,7 @@ const SiteCoaching = () => {
               WebkitTextFillColor: 'transparent',
               backgroundClip: 'text',
             }}>Coaching vs Therapy</h2>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8 max-w-4xl mx-auto">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 md:gap-8 max-w-4xl mx-auto">
               <div>
                 <h3 className="text-xl md:text-2xl font-bold text-bronze-400 mb-3 md:mb-4">Coaching is for:</h3>
                 <ul className="space-y-2 text-foreground/80 text-sm md:text-base">

@@ -60,7 +60,7 @@ const SiteAbout = () => {
               WebkitTextFillColor: 'transparent',
               backgroundClip: 'text',
             }}>Our Values</h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-8">
+          <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-4 md:gap-8">
             <Card className="bg-black border-[#D4AF37]/20 p-5 md:p-8">
               <Heart className="w-8 h-8 md:w-10 md:h-10 text-bronze-400 mb-3 md:mb-4" />
               <h3 className="text-lg md:text-xl font-bold text-foreground mb-2">Compassion</h3>
@@ -106,7 +106,7 @@ const SiteAbout = () => {
             Mental health doesn't start with an app. It starts with how we treat each other. Thrive MT was born because the way mental health is built today doesn't feel human enough. Most platforms lead with features or credentials. We lead with presence, kindness, and real connection before downloads.
           </p>
           
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-8">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 md:gap-8">
             <Card className="bg-[#141921] border-bronze-500/20 p-5 md:p-8">
               <Users className="w-8 h-8 md:w-10 md:h-10 text-bronze-400 mb-3 md:mb-4" />
               <h3 className="text-lg md:text-xl font-bold text-foreground mb-2 md:mb-3">Showing Up Where Others Don't</h3>

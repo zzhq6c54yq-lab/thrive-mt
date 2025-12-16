@@ -88,7 +88,7 @@ const SiteInvestors = () => {
               WebkitTextFillColor: 'transparent',
               backgroundClip: 'text',
             }}>Our Advantage</h2>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-8">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 md:gap-8">
               <Card className="bg-black border-[#D4AF37]/20 p-4 md:p-6">
                 <h3 className="text-lg md:text-xl font-bold text-bronze-400 mb-3 md:mb-4">Lower Cost, Higher Quality</h3>
                 <p className="text-foreground/80 text-sm md:text-base">

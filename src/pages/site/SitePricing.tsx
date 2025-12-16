@@ -133,7 +133,7 @@ const SitePricing = () => {
           {/* Add-Ons */}
           <section className="mb-10 md:mb-16">
             <h2 className="text-2xl md:text-3xl font-bold mb-6 md:mb-8 text-foreground">Add-Ons</h2>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 md:gap-6">
               {addOns.map((addon, idx) => (
                 <Card key={idx} className="bg-black border-[#D4AF37]/20 p-4 md:p-6">
                   <div className="flex justify-between items-start mb-2 gap-3">
@@ -149,7 +149,7 @@ const SitePricing = () => {
           {/* Group Sessions */}
           <section>
             <h2 className="text-2xl md:text-3xl font-bold mb-6 md:mb-8 text-foreground">Group Sessions</h2>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 md:gap-6">
               {groupSessions.map((session, idx) => (
                 <Card key={idx} className="bg-black border-[#D4AF37]/20 p-4 md:p-6">
                   <div className="flex justify-between items-start mb-2 gap-3">

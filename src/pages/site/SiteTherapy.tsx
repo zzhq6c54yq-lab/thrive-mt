@@ -108,7 +108,7 @@ const SiteTherapy = () => {
               WebkitTextFillColor: 'transparent',
               backgroundClip: 'text',
             }}>Our Specialties</h2>
-            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3 md:gap-4 max-w-4xl mx-auto">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 md:gap-4 max-w-4xl mx-auto">
               {["Anxiety", "Depression", "Trauma", "Military/Veteran Care", "Family & Relationships", "BPD & DBT", "Holistic Therapy", "Mindfulness"].map((specialty, idx) => (
                 <Card key={idx} className="bg-black border-[#D4AF37]/20 p-3 md:p-4 text-center min-h-[70px] md:min-h-[80px] flex flex-col items-center justify-center">
                   <Check className="w-5 h-5 md:w-6 md:h-6 text-bronze-400 mb-1.5 md:mb-2" />
