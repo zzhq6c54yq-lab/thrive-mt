@@ -1,8 +1,9 @@
 import { strategicComparisonData } from "@/data/investorOverviewContent";
+import { HorizontalScrollContainer } from "./HorizontalScrollContainer";
 
 export const StrategicComparisonChart = () => {
   return (
-    <div className="overflow-x-auto -mx-4 md:mx-0">
+    <HorizontalScrollContainer>
       <table className="w-full min-w-[700px] text-sm">
         <thead>
           <tr className="border-b border-bronze-500/30">
@@ -28,6 +29,6 @@ export const StrategicComparisonChart = () => {
           ))}
         </tbody>
       </table>
-    </div>
+    </HorizontalScrollContainer>
   );
 };

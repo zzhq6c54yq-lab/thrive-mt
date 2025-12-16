@@ -1,5 +1,6 @@
 import { Check, X } from "lucide-react";
 import { featureComparisonData, FeatureStatus } from "@/data/investorOverviewContent";
+import { HorizontalScrollContainer } from "./HorizontalScrollContainer";
 
 const StatusCell = ({ status }: { status: FeatureStatus }) => {
   if (status === "yes") {
@@ -31,7 +32,7 @@ const StatusCell = ({ status }: { status: FeatureStatus }) => {
 
 export const FeatureComparisonChart = () => {
   return (
-    <div className="overflow-x-auto -mx-4 md:mx-0">
+    <HorizontalScrollContainer>
       <table className="w-full min-w-[600px] text-sm">
         <thead>
           <tr className="border-b border-bronze-500/30">
@@ -69,6 +70,6 @@ export const FeatureComparisonChart = () => {
           ))}
         </tbody>
       </table>
-    </div>
+    </HorizontalScrollContainer>
   );
 };
