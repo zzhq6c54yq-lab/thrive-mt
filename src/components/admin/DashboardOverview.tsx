@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Card } from '@/components/ui/card';
 import { supabase } from '@/integrations/supabase/client';
 import { Users, Activity, DollarSign, AlertTriangle, Stethoscope, Clock } from 'lucide-react';
-import { AreaChart, Area, BarChart, Bar, PieChart, Pie, Cell, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Legend } from 'recharts';
+import { AreaChart, Area, BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
 
 interface DashboardMetrics {
   activeUsers: number;
@@ -21,6 +21,16 @@ interface AlertItem {
   timestamp: string;
 }
 
+interface UserGrowthData {
+  day: string;
+  users: number;
+}
+
+interface TherapistSessionData {
+  name: string;
+  sessions: number;
+}
+
 const DashboardOverview: React.FC = () => {
   const [metrics, setMetrics] = useState<DashboardMetrics>({
     activeUsers: 0,
@@ -31,11 +41,15 @@ const DashboardOverview: React.FC = () => {
     avgResponseTime: 0,
   });
   const [alerts, setAlerts] = useState<AlertItem[]>([]);
+  const [userGrowthData, setUserGrowthData] = useState<UserGrowthData[]>([]);
+  const [therapistData, setTherapistData] = useState<TherapistSessionData[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     fetchMetrics();
     fetchAlerts();
+    fetchUserGrowth();
+    fetchTherapistSessions();
   }, []);
 
   const fetchMetrics = async () => {
@@ -59,8 +73,14 @@ const DashboardOverview: React.FC = () => {
 
       const completionRate = bookings?.length ? ((sessions?.length || 0) / bookings.length) * 100 : 0;
 
-      // Revenue today (using mock data for now, payment_transactions table in Phase 2)
-      const revenue = 1847.50; // Mock revenue
+      // Revenue today from therapy_bookings (count paid sessions * avg rate)
+      const { count: paidBookingsCount } = await supabase
+        .from('therapy_bookings')
+        .select('*', { count: 'exact', head: true })
+        .eq('payment_status', 'paid')
+        .gte('created_at', new Date(new Date().setHours(0, 0, 0, 0)).toISOString());
+
+      const revenueToday = (paidBookingsCount || 0) * 90; // Avg session rate
 
       // Crisis events (open)
       const { count: crisisCount } = await supabase
@@ -79,21 +99,120 @@ const DashboardOverview: React.FC = () => {
             therapists.reduce((sum, t) => sum + (t.max_caseload || 30), 0)) * 100
         : 0;
 
-      // Avg response time (mock for now)
-      const avgResponseTime = 2.4;
+      // Calculate average response time from therapist_requests
+      const { data: requests } = await supabase
+        .from('therapist_requests')
+        .select('created_at, updated_at')
+        .eq('status', 'completed')
+        .order('created_at', { ascending: false })
+        .limit(50);
+
+      let avgResponseTime = 0;
+      if (requests && requests.length > 0) {
+        const totalHours = requests.reduce((sum, req) => {
+          const created = new Date(req.created_at).getTime();
+          const updated = new Date(req.updated_at).getTime();
+          return sum + (updated - created) / (1000 * 60 * 60);
+        }, 0);
+        avgResponseTime = Math.round((totalHours / requests.length) * 10) / 10;
+      }
 
       setMetrics({
         activeUsers: activeUsers || 0,
         sessionCompletionRate: Math.round(completionRate),
-        revenueToday: revenue,
+        revenueToday,
         crisisEvents: crisisCount || 0,
         therapistUtilization: Math.round(utilization),
-        avgResponseTime,
+        avgResponseTime: avgResponseTime || 0,
       });
     } catch (error) {
       console.error('Error fetching metrics:', error);
     } finally {
       setLoading(false);
+    }
+  };
+
+  const fetchUserGrowth = async () => {
+    try {
+      const fourWeeksAgo = new Date(Date.now() - 28 * 24 * 60 * 60 * 1000);
+      
+      const { data: profiles } = await supabase
+        .from('profiles')
+        .select('created_at')
+        .gte('created_at', fourWeeksAgo.toISOString())
+        .order('created_at', { ascending: true });
+
+      if (profiles) {
+        // Group by week
+        const weeks = [
+          { start: 21, end: 28, label: 'Week 1' },
+          { start: 14, end: 21, label: 'Week 2' },
+          { start: 7, end: 14, label: 'Week 3' },
+          { start: 0, end: 7, label: 'Week 4' },
+        ];
+
+        const weekData = weeks.map(week => {
+          const startDate = new Date(Date.now() - week.end * 24 * 60 * 60 * 1000);
+          const endDate = new Date(Date.now() - week.start * 24 * 60 * 60 * 1000);
+          
+          const count = profiles.filter(p => {
+            const created = new Date(p.created_at);
+            return created >= startDate && created < endDate;
+          }).length;
+
+          return { day: week.label, users: count };
+        });
+
+        // Accumulate to show growth
+        let cumulative = 0;
+        const cumulativeData = weekData.map(w => {
+          cumulative += w.users;
+          return { ...w, users: cumulative };
+        });
+
+        setUserGrowthData(cumulativeData);
+      }
+    } catch (error) {
+      console.error('Error fetching user growth:', error);
+    }
+  };
+
+  const fetchTherapistSessions = async () => {
+    try {
+      const oneWeekAgo = new Date(Date.now() - 7 * 24 * 60 * 60 * 1000);
+
+      // Get therapist names and their session counts
+      const { data: therapists } = await supabase
+        .from('therapists')
+        .select('id, name')
+        .eq('is_active', true)
+        .limit(5);
+
+      if (therapists) {
+        const sessionCounts = await Promise.all(
+          therapists.map(async (therapist) => {
+            const { count } = await supabase
+              .from('therapy_sessions')
+              .select('*', { count: 'exact', head: true })
+              .eq('therapist_id', therapist.id)
+              .gte('session_date', oneWeekAgo.toISOString());
+
+            return {
+              name: therapist.name.split(' ')[0] + ' ' + (therapist.name.split(' ')[1]?.[0] || '') + '.',
+              sessions: count || 0,
+            };
+          })
+        );
+
+        // Sort by sessions and take top 4
+        const sortedData = sessionCounts
+          .sort((a, b) => b.sessions - a.sessions)
+          .slice(0, 4);
+
+        setTherapistData(sortedData);
+      }
+    } catch (error) {
+      console.error('Error fetching therapist sessions:', error);
     }
   };
 
@@ -118,9 +237,6 @@ const DashboardOverview: React.FC = () => {
           timestamp: crisis.created_at,
         });
       });
-
-      // Real failed payments - no mock data
-      // Payment alerts will be added when real payment_transactions table has data
 
       // Compliance violations
       const { data: violations } = await supabase
@@ -215,7 +331,7 @@ const DashboardOverview: React.FC = () => {
             <div>
               <p className="text-gray-400 text-sm">Revenue Today</p>
               <p className="text-3xl font-bold text-white mt-2">${metrics.revenueToday.toFixed(2)}</p>
-              <p className="text-gray-400 text-sm mt-1">Completed transactions</p>
+              <p className="text-gray-400 text-sm mt-1">Paid bookings</p>
             </div>
             <DollarSign className="w-12 h-12 text-[#B87333]" />
           </div>
@@ -226,9 +342,11 @@ const DashboardOverview: React.FC = () => {
             <div>
               <p className="text-gray-400 text-sm">Crisis Events</p>
               <p className="text-3xl font-bold text-white mt-2">{metrics.crisisEvents}</p>
-              <p className="text-red-500 text-sm mt-1">Requires attention</p>
+              <p className={`text-sm mt-1 ${metrics.crisisEvents > 0 ? 'text-red-500' : 'text-green-500'}`}>
+                {metrics.crisisEvents > 0 ? 'Requires attention' : 'All clear'}
+              </p>
             </div>
-            <AlertTriangle className="w-12 h-12 text-red-500" />
+            <AlertTriangle className={`w-12 h-12 ${metrics.crisisEvents > 0 ? 'text-red-500' : 'text-green-500'}`} />
           </div>
         </Card>
 
@@ -261,11 +379,11 @@ const DashboardOverview: React.FC = () => {
           <h3 className="text-xl font-semibold text-white mb-4">User Growth Trend</h3>
           <div className="text-gray-400 text-sm mb-4">Last 30 days</div>
           <ResponsiveContainer width="100%" height={250}>
-            <AreaChart data={[
-              { day: 'Week 1', users: 245 },
-              { day: 'Week 2', users: 289 },
-              { day: 'Week 3', users: 312 },
-              { day: 'Week 4', users: 354 },
+            <AreaChart data={userGrowthData.length > 0 ? userGrowthData : [
+              { day: 'Week 1', users: 0 },
+              { day: 'Week 2', users: 0 },
+              { day: 'Week 3', users: 0 },
+              { day: 'Week 4', users: 0 },
             ]}>
               <CartesianGrid strokeDasharray="3 3" stroke="#374151" />
               <XAxis dataKey="day" stroke="#9CA3AF" />
@@ -283,11 +401,8 @@ const DashboardOverview: React.FC = () => {
           <h3 className="text-xl font-semibold text-white mb-4">Session Completion by Therapist</h3>
           <div className="text-gray-400 text-sm mb-4">Top performers this week</div>
           <ResponsiveContainer width="100%" height={250}>
-            <BarChart data={[
-              { name: 'Dr. Smith', sessions: 24 },
-              { name: 'Dr. Johnson', sessions: 21 },
-              { name: 'Dr. Williams', sessions: 19 },
-              { name: 'Dr. Brown', sessions: 18 },
+            <BarChart data={therapistData.length > 0 ? therapistData : [
+              { name: 'No data', sessions: 0 },
             ]}>
               <CartesianGrid strokeDasharray="3 3" stroke="#374151" />
               <XAxis dataKey="name" stroke="#9CA3AF" />

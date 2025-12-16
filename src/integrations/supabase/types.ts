@@ -104,6 +104,48 @@ export type Database = {
         }
         Relationships: []
       }
+      admin_broadcasts: {
+        Row: {
+          broadcast_type: string
+          created_at: string
+          created_by: string | null
+          expires_at: string | null
+          id: string
+          is_active: boolean
+          message: string
+          show_as_popup: boolean
+          target_audience: string
+          title: string
+          updated_at: string
+        }
+        Insert: {
+          broadcast_type?: string
+          created_at?: string
+          created_by?: string | null
+          expires_at?: string | null
+          id?: string
+          is_active?: boolean
+          message: string
+          show_as_popup?: boolean
+          target_audience?: string
+          title: string
+          updated_at?: string
+        }
+        Update: {
+          broadcast_type?: string
+          created_at?: string
+          created_by?: string | null
+          expires_at?: string | null
+          id?: string
+          is_active?: boolean
+          message?: string
+          show_as_popup?: boolean
+          target_audience?: string
+          title?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       admin_sessions: {
         Row: {
           created_at: string | null
@@ -134,6 +176,30 @@ export type Database = {
           session_token?: string
           user_agent?: string | null
           user_id?: string
+        }
+        Relationships: []
+      }
+      admin_settings: {
+        Row: {
+          id: string
+          setting_key: string
+          setting_value: Json
+          updated_at: string
+          updated_by: string | null
+        }
+        Insert: {
+          id?: string
+          setting_key: string
+          setting_value?: Json
+          updated_at?: string
+          updated_by?: string | null
+        }
+        Update: {
+          id?: string
+          setting_key?: string
+          setting_value?: Json
+          updated_at?: string
+          updated_by?: string | null
         }
         Relationships: []
       }
@@ -988,6 +1054,35 @@ export type Database = {
           user_id?: string
         }
         Relationships: []
+      }
+      broadcast_reads: {
+        Row: {
+          broadcast_id: string
+          id: string
+          read_at: string
+          user_id: string
+        }
+        Insert: {
+          broadcast_id: string
+          id?: string
+          read_at?: string
+          user_id: string
+        }
+        Update: {
+          broadcast_id?: string
+          id?: string
+          read_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "broadcast_reads_broadcast_id_fkey"
+            columns: ["broadcast_id"]
+            isOneToOne: false
+            referencedRelation: "admin_broadcasts"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       buddy_matches: {
         Row: {
@@ -4563,6 +4658,36 @@ export type Database = {
           metric_type?: string
           metric_value?: number
           recorded_at?: string | null
+        }
+        Relationships: []
+      }
+      platform_status: {
+        Row: {
+          created_at: string
+          ended_at: string | null
+          id: string
+          initiated_by: string | null
+          message: string | null
+          started_at: string
+          status_type: string
+        }
+        Insert: {
+          created_at?: string
+          ended_at?: string | null
+          id?: string
+          initiated_by?: string | null
+          message?: string | null
+          started_at?: string
+          status_type?: string
+        }
+        Update: {
+          created_at?: string
+          ended_at?: string | null
+          id?: string
+          initiated_by?: string | null
+          message?: string | null
+          started_at?: string
+          status_type?: string
         }
         Relationships: []
       }

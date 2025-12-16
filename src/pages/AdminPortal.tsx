@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { supabase } from '@/integrations/supabase/client';
 import { useUser } from '@/contexts/UserContext';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Users, Stethoscope, Activity, Settings, Shield, FileText, LayoutDashboard, BookOpen, CreditCard, Headphones, Brain, Megaphone, LineChart, Plug, Building, Navigation, Monitor, BarChart3 } from 'lucide-react';
+import { Users, Stethoscope, Activity, Settings, Shield, FileText, LayoutDashboard, BookOpen, CreditCard, Headphones, Brain, Megaphone, LineChart, Plug, Building, Navigation, Monitor, BarChart3, FlaskConical, Radio } from 'lucide-react';
 import AdminHeader from '@/components/admin/AdminHeader';
 import DashboardOverview from '@/components/admin/DashboardOverview';
 import UsersManagement from '@/components/admin/UsersManagement';
@@ -23,6 +23,8 @@ import EnterpriseSettings from '@/components/admin/EnterpriseSettings';
 import NavigationHealthChecker from '@/components/admin/NavigationHealthChecker';
 import ProductionControlPanel from '@/components/admin/ProductionControlPanel';
 import AdminEngagementMetrics from '@/components/admin/AdminEngagementMetrics';
+import AuditRunnerTab from '@/components/admin/AuditRunnerTab';
+import BroadcastManager from '@/components/admin/BroadcastManager';
 import { useAdminAudit } from '@/hooks/useAdminAudit';
 import { AUDIT_ACTIONS } from '@/constants/auditActions';
 import { toast } from 'sonner';
@@ -154,6 +156,14 @@ const AdminPortal: React.FC = () => {
               <BarChart3 className="w-4 h-4" />
               <span className="hidden sm:inline">Engagement</span>
             </TabsTrigger>
+            <TabsTrigger value="test-runner" className="flex items-center gap-2 data-[state=active]:bg-[#B87333]/20 data-[state=active]:text-[#E5C5A1] data-[state=active]:border-[#B87333]/50 px-3 py-1.5">
+              <FlaskConical className="w-4 h-4" />
+              <span className="hidden sm:inline">Test Runner</span>
+            </TabsTrigger>
+            <TabsTrigger value="broadcasts" className="flex items-center gap-2 data-[state=active]:bg-[#B87333]/20 data-[state=active]:text-[#E5C5A1] data-[state=active]:border-[#B87333]/50 px-3 py-1.5">
+              <Radio className="w-4 h-4" />
+              <span className="hidden sm:inline">Broadcasts</span>
+            </TabsTrigger>
             <TabsTrigger value="audit" className="flex items-center gap-2 data-[state=active]:bg-[#B87333]/20 data-[state=active]:text-[#E5C5A1] data-[state=active]:border-[#B87333]/50 px-3 py-1.5">
               <FileText className="w-4 h-4" />
               <span className="hidden sm:inline">Audit</span>
@@ -227,6 +237,14 @@ const AdminPortal: React.FC = () => {
 
             <TabsContent value="engagement" className="space-y-4">
               <AdminEngagementMetrics />
+            </TabsContent>
+
+            <TabsContent value="test-runner" className="space-y-4">
+              <AuditRunnerTab />
+            </TabsContent>
+
+            <TabsContent value="broadcasts" className="space-y-4">
+              <BroadcastManager />
             </TabsContent>
 
             <TabsContent value="audit" className="space-y-4">
