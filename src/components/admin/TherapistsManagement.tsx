@@ -103,7 +103,7 @@ const TherapistsManagement: React.FC = () => {
   };
 
   const handleViewTherapist = (therapist: Therapist) => {
-    logAction(AUDIT_ACTIONS.PROFILE_VIEWED, therapist.id, { name: therapist.name });
+    logAction(AUDIT_ACTIONS.THERAPIST_VIEWED, therapist.id, { name: therapist.name });
     toast({
       title: "Therapist Details",
       description: `Viewing ${therapist.name}`,

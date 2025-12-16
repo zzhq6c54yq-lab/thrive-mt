@@ -82,7 +82,7 @@ const UsersManagement: React.FC = () => {
   };
 
   const handleViewUser = (user: UserProfile) => {
-    logAction(AUDIT_ACTIONS.PROFILE_VIEWED, user.id, { email: user.email });
+    logAction(AUDIT_ACTIONS.USER_VIEWED, user.id, { email: user.email });
     toast({
       title: "User Details",
       description: `Viewing ${user.display_name || user.email}`,
