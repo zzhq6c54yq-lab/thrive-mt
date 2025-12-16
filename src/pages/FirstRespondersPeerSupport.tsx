@@ -3,14 +3,15 @@ import React from "react";
 import Page from "@/components/Page";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle, CardFooter } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Calendar, Users, MessageSquare, Video, Download, FileText } from "lucide-react";
+import { Calendar, Users, MessageSquare, Download, FileText } from "lucide-react";
 import PortalBackButton from "@/components/navigation/PortalBackButton";
 import ActionButton from "@/components/navigation/ActionButton";
 import { useToast } from "@/components/ui/use-toast";
-import { saveAs } from "file-saver";
+import { usePDFGenerator } from "@/hooks/usePDFGenerator";
 
 const FirstRespondersPeerSupport = () => {
   const { toast } = useToast();
+  const { downloadGuide } = usePDFGenerator();
   
   const supportGroups = [
     {
@@ -52,38 +53,109 @@ const FirstRespondersPeerSupport = () => {
     });
   };
 
-  // Handle resource download
-  const handleResourceDownload = (title) => {
-    try {
-      // Create a blob with text content to simulate PDF download
-      const blob = new Blob(
-        [
-          `# ${title}\n\n` +
-          `This is a simulated download of the ${title} resource.\n\n` +
-          `For First Responders use only.\n\n` +
-          `© ${new Date().getFullYear()} Thrive Mental Health Platform`
-        ], 
-        { type: "application/pdf" }
-      );
-      
-      // Use file-saver to trigger download
-      saveAs(blob, `${title.toLowerCase().replace(/\s+/g, '-')}.pdf`);
-      
-      // Show success toast
-      toast({
-        title: "Download Started",
-        description: `${title} is being downloaded.`,
-        duration: 3000,
+  // Handle resource download with real PDF generation
+  const handleResourceDownload = (resourceType: 'guide' | 'guidelines') => {
+    if (resourceType === 'guide') {
+      downloadGuide({
+        title: 'Peer Support Best Practices Guide',
+        description: 'A comprehensive guide to peer support for first responders. This resource covers essential skills, communication techniques, and self-care practices for those providing peer support.',
+        sections: [
+          {
+            title: 'Understanding Peer Support',
+            content: 'Peer support is a relationship where people with similar experiences help each other. In first responder contexts, this means connecting with colleagues who understand the unique challenges of emergency services.',
+            tips: [
+              'Active listening without judgment',
+              'Maintaining confidentiality',
+              'Knowing when to refer to professional help',
+              'Taking care of your own mental health'
+            ]
+          },
+          {
+            title: 'Communication Skills',
+            content: 'Effective peer support relies on strong communication. Learning to listen actively and respond with empathy creates a safe space for colleagues to share.',
+            tips: [
+              'Use open-ended questions',
+              'Reflect back what you hear',
+              'Avoid giving unsolicited advice',
+              'Normalize feelings and experiences',
+              'Be comfortable with silence'
+            ]
+          },
+          {
+            title: 'Recognizing Warning Signs',
+            content: 'As a peer supporter, knowing the signs of distress helps you identify when colleagues may need additional support.',
+            tips: [
+              'Changes in behavior or personality',
+              'Withdrawal from colleagues or activities',
+              'Increased irritability or anger',
+              'Sleep problems or fatigue',
+              'Increased substance use'
+            ]
+          },
+          {
+            title: 'Self-Care for Peer Supporters',
+            content: 'Supporting others can be emotionally demanding. Taking care of yourself ensures you can continue helping colleagues effectively.',
+            tips: [
+              'Set boundaries on availability',
+              'Debrief with supervisors regularly',
+              'Practice your own stress management',
+              'Connect with other peer supporters',
+              'Know your limits and take breaks'
+            ]
+          }
+        ],
+        includeWritingSpaces: true
       });
-    } catch (error) {
-      console.error("Download error:", error);
-      
-      // Show error toast
-      toast({
-        title: "Download Failed",
-        description: "There was an error downloading the resource. Please try again.",
-        variant: "destructive",
-        duration: 3000,
+    } else {
+      downloadGuide({
+        title: 'Peer Support Group Guidelines',
+        description: 'Guidelines for establishing and running effective peer support groups for first responders. Use this resource to create a supportive, safe environment for your colleagues.',
+        sections: [
+          {
+            title: 'Starting a Support Group',
+            content: 'Creating a peer support group requires planning and commitment. These guidelines help ensure your group meets the needs of members effectively.',
+            tips: [
+              'Identify a consistent meeting schedule',
+              'Choose a comfortable, private location',
+              'Establish clear group norms and expectations',
+              'Have at least two trained facilitators'
+            ]
+          },
+          {
+            title: 'Group Ground Rules',
+            content: 'Clear ground rules create psychological safety and help members feel comfortable sharing.',
+            tips: [
+              'What is shared in the group stays in the group',
+              'No interrupting when someone is speaking',
+              'Respect different perspectives and experiences',
+              'Attendance is voluntary - no pressure to share',
+              'No recording of sessions'
+            ]
+          },
+          {
+            title: 'Facilitator Responsibilities',
+            content: 'Facilitators guide discussions, maintain safety, and ensure everyone has opportunity to participate.',
+            tips: [
+              'Start and end on time',
+              'Check in with members at start of each session',
+              'Redirect conversations that become unproductive',
+              'Have crisis resources readily available',
+              'Follow up with members showing distress'
+            ]
+          },
+          {
+            title: 'Crisis Protocol',
+            content: 'Know how to respond if a group member reveals they are in crisis or danger.',
+            tips: [
+              'Have emergency contact numbers accessible',
+              'Know your department\'s EAP resources',
+              'Never leave a person in crisis alone',
+              'Document incidents appropriately',
+              'Debrief after crisis situations'
+            ]
+          }
+        ],
+        includeWritingSpaces: false
       });
     }
   };
@@ -105,7 +177,7 @@ const FirstRespondersPeerSupport = () => {
         <Button 
           variant="outline"
           className="border-red-500 text-red-300 hover:bg-red-900/50 flex items-center gap-2"
-          onClick={() => handleResourceDownload("Peer Support Best Practices Guide")}
+          onClick={() => handleResourceDownload('guide')}
         >
           <Download className="h-4 w-4" />
           Download Peer Support Guide
@@ -172,7 +244,7 @@ const FirstRespondersPeerSupport = () => {
           <Button 
             variant="outline"
             className="border-red-500 text-red-300 hover:bg-red-900/50 flex items-center gap-2"
-            onClick={() => handleResourceDownload("Peer Support Group Guidelines")}
+            onClick={() => handleResourceDownload('guidelines')}
           >
             <FileText className="h-4 w-4" />
             Download Guidelines
