@@ -5,8 +5,9 @@ import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
-import { CreditCard, DollarSign, TrendingUp, AlertCircle, Download, Users, Calendar } from "lucide-react";
-import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, PieChart, Pie, Cell, LineChart, Line } from "recharts";
+import { CreditCard, DollarSign, TrendingUp, AlertCircle, Users, Calendar } from "lucide-react";
+import { PieChart, Pie, Cell, ResponsiveContainer, Tooltip } from "recharts";
+import { CreatePromoCodeDialog } from "./modals";
 
 const BillingManagement = () => {
   const { toast } = useToast();
@@ -15,6 +16,10 @@ const BillingManagement = () => {
   const [payouts, setPayouts] = useState<any[]>([]);
   const [promoCodes, setPromoCodes] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
+  const [processingPayouts, setProcessingPayouts] = useState(false);
+
+  // Dialog states
+  const [createPromoOpen, setCreatePromoOpen] = useState(false);
 
   useEffect(() => {
     fetchBillingData();
@@ -44,17 +49,46 @@ const BillingManagement = () => {
     }
   };
 
+  const handleProcessPayouts = async () => {
+    setProcessingPayouts(true);
+    try {
+      // Update all pending payouts to "processing"
+      const pendingPayouts = payouts.filter(p => p.status === "pending");
+      
+      for (const payout of pendingPayouts) {
+        await supabase
+          .from("therapist_payouts")
+          .update({ status: "processing" })
+          .eq("id", payout.id);
+      }
+
+      toast({ 
+        title: "Payouts processing started",
+        description: `${pendingPayouts.length} payouts are being processed.`
+      });
+      fetchBillingData();
+    } catch (error) {
+      toast({
+        title: "Error processing payouts",
+        description: error instanceof Error ? error.message : "Unknown error",
+        variant: "destructive",
+      });
+    } finally {
+      setProcessingPayouts(false);
+    }
+  };
+
   const calculateMRR = () => {
     return subscriptions
       .filter((s) => s.status === "active" && s.billing_cycle === "monthly")
-      .reduce((sum, s) => sum + parseFloat(s.amount), 0);
+      .reduce((sum, s) => sum + parseFloat(s.amount || 0), 0);
   };
 
   const calculateARR = () => {
     const monthly = calculateMRR();
     const annual = subscriptions
       .filter((s) => s.status === "active" && s.billing_cycle === "annual")
-      .reduce((sum, s) => sum + parseFloat(s.amount), 0);
+      .reduce((sum, s) => sum + parseFloat(s.amount || 0), 0);
     return monthly * 12 + annual;
   };
 
@@ -98,6 +132,9 @@ const BillingManagement = () => {
 
   return (
     <div className="space-y-6">
+      {/* Dialogs */}
+      <CreatePromoCodeDialog open={createPromoOpen} onOpenChange={setCreatePromoOpen} onSuccess={fetchBillingData} />
+
       {/* Header */}
       <div>
         <h2 className="text-3xl font-bold text-foreground">Billing & Revenue</h2>
@@ -209,7 +246,7 @@ const BillingManagement = () => {
                         <div className="text-xs text-muted-foreground">{sub.billing_cycle}</div>
                       </div>
                       <div className="text-right space-y-1">
-                        <div className="text-sm font-bold">${parseFloat(sub.amount).toFixed(2)}</div>
+                        <div className="text-sm font-bold">${parseFloat(sub.amount || 0).toFixed(2)}</div>
                         <Badge className={getStatusColor(sub.status)}>{sub.status}</Badge>
                       </div>
                     </div>
@@ -240,7 +277,7 @@ const BillingManagement = () => {
                       </div>
                     </div>
                     <div className="text-right space-y-1">
-                      <div className="text-sm font-bold">${parseFloat(txn.amount).toFixed(2)}</div>
+                      <div className="text-sm font-bold">${parseFloat(txn.amount || 0).toFixed(2)}</div>
                       <Badge className={getStatusColor(txn.status)}>{txn.status}</Badge>
                     </div>
                   </div>
@@ -261,9 +298,13 @@ const BillingManagement = () => {
                   <CardTitle>Therapist Payouts</CardTitle>
                   <CardDescription>Manage therapist compensation</CardDescription>
                 </div>
-                <Button className="bg-[#B87333] hover:bg-[#A66329]">
+                <Button 
+                  className="bg-[#B87333] hover:bg-[#A66329]" 
+                  onClick={handleProcessPayouts}
+                  disabled={processingPayouts || payouts.filter(p => p.status === "pending").length === 0}
+                >
                   <Calendar className="h-4 w-4 mr-2" />
-                  Process Payouts
+                  {processingPayouts ? "Processing..." : "Process Payouts"}
                 </Button>
               </div>
             </CardHeader>
@@ -282,7 +323,7 @@ const BillingManagement = () => {
                       </div>
                     </div>
                     <div className="text-right space-y-1">
-                      <div className="text-sm font-bold">${parseFloat(payout.net_payout || payout.amount).toFixed(2)}</div>
+                      <div className="text-sm font-bold">${parseFloat(payout.net_payout || payout.amount || 0).toFixed(2)}</div>
                       <Badge className={getStatusColor(payout.status)}>{payout.status}</Badge>
                     </div>
                   </div>
@@ -303,7 +344,9 @@ const BillingManagement = () => {
                   <CardTitle>Promo Codes</CardTitle>
                   <CardDescription>Manage discount codes and promotions</CardDescription>
                 </div>
-                <Button className="bg-[#B87333] hover:bg-[#A66329]">Create Promo Code</Button>
+                <Button className="bg-[#B87333] hover:bg-[#A66329]" onClick={() => setCreatePromoOpen(true)}>
+                  Create Promo Code
+                </Button>
               </div>
             </CardHeader>
             <CardContent>
@@ -332,7 +375,12 @@ const BillingManagement = () => {
                   </div>
                 ))}
                 {promoCodes.length === 0 && (
-                  <div className="text-center text-muted-foreground py-8">No promo codes yet</div>
+                  <div className="text-center text-muted-foreground py-8">
+                    No promo codes yet
+                    <Button className="mt-4 block mx-auto bg-[#B87333] hover:bg-[#A66329]" onClick={() => setCreatePromoOpen(true)}>
+                      Create Promo Code
+                    </Button>
+                  </div>
                 )}
               </div>
             </CardContent>

@@ -12,10 +12,12 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table';
-import { Search, UserPlus, Mail, Calendar, Shield, Stethoscope } from 'lucide-react';
+import { Search, UserPlus, Mail, Calendar, Stethoscope, Eye } from 'lucide-react';
 import { format } from 'date-fns';
 import { useAdminAudit } from '@/hooks/useAdminAudit';
 import { AUDIT_ACTIONS } from '@/constants/auditActions';
+import { AddUserDialog } from './modals';
+import { useToast } from '@/hooks/use-toast';
 
 interface UserProfile {
   id: string;
@@ -28,12 +30,16 @@ interface UserProfile {
 }
 
 const UsersManagement: React.FC = () => {
+  const { toast } = useToast();
   const [users, setUsers] = useState<UserProfile[]>([]);
   const [loading, setLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState('');
   const [totalUsers, setTotalUsers] = useState(0);
   const [activeUsers, setActiveUsers] = useState(0);
   const { logAction } = useAdminAudit();
+
+  // Dialog state
+  const [addUserOpen, setAddUserOpen] = useState(false);
 
   useEffect(() => {
     fetchUsers();
@@ -75,6 +81,14 @@ const UsersManagement: React.FC = () => {
     }
   };
 
+  const handleViewUser = (user: UserProfile) => {
+    logAction(AUDIT_ACTIONS.PROFILE_VIEWED, user.id, { email: user.email });
+    toast({
+      title: "User Details",
+      description: `Viewing ${user.display_name || user.email}`,
+    });
+  };
+
   const filteredUsers = users.filter(user =>
     user.email?.toLowerCase().includes(searchQuery.toLowerCase()) ||
     user.display_name?.toLowerCase().includes(searchQuery.toLowerCase())
@@ -88,6 +102,9 @@ const UsersManagement: React.FC = () => {
 
   return (
     <div className="space-y-6">
+      {/* Dialog */}
+      <AddUserDialog open={addUserOpen} onOpenChange={setAddUserOpen} onSuccess={fetchUsers} />
+
       {/* Stats Cards */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
         <Card className="bg-slate-800/50 border-slate-700">
@@ -134,7 +151,7 @@ const UsersManagement: React.FC = () => {
                 Manage and monitor user accounts
               </CardDescription>
             </div>
-            <Button size="sm" className="bg-blue-600 hover:bg-blue-700">
+            <Button size="sm" className="bg-blue-600 hover:bg-blue-700" onClick={() => setAddUserOpen(true)}>
               <UserPlus className="w-4 h-4 mr-2" />
               Add User
             </Button>
@@ -208,7 +225,13 @@ const UsersManagement: React.FC = () => {
                       </div>
                     </TableCell>
                     <TableCell>
-                      <Button variant="ghost" size="sm" className="text-slate-400 hover:text-white">
+                      <Button 
+                        variant="ghost" 
+                        size="sm" 
+                        className="text-slate-400 hover:text-white"
+                        onClick={() => handleViewUser(user)}
+                      >
+                        <Eye className="w-4 h-4 mr-1" />
                         View
                       </Button>
                     </TableCell>

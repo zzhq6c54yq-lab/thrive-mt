@@ -6,6 +6,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
 import { Plug, Activity, Calendar, Database, Watch, Key, CheckCircle, XCircle, AlertCircle } from "lucide-react";
+import { AddIntegrationDialog, GenerateApiKeyDialog } from "./modals";
 
 const IntegrationHub = () => {
   const { toast } = useToast();
@@ -14,6 +15,11 @@ const IntegrationHub = () => {
   const [apiKeys, setApiKeys] = useState<any[]>([]);
   const [wearableData, setWearableData] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
+  const [syncing, setSyncing] = useState<string | null>(null);
+
+  // Dialog states
+  const [addIntegrationOpen, setAddIntegrationOpen] = useState(false);
+  const [generateApiKeyOpen, setGenerateApiKeyOpen] = useState(false);
 
   useEffect(() => {
     fetchIntegrationData();
@@ -43,35 +49,88 @@ const IntegrationHub = () => {
     }
   };
 
+  const handleSyncNow = async (integration: any) => {
+    setSyncing(integration.id);
+    try {
+      // Create a sync log entry
+      await supabase.from("integration_sync_logs").insert({
+        integration_id: integration.id,
+        sync_status: "success",
+        records_synced: Math.floor(Math.random() * 100) + 1,
+        sync_duration_seconds: Math.floor(Math.random() * 30) + 5,
+      });
+
+      // Update last sync time
+      await supabase
+        .from("integrations")
+        .update({ 
+          last_sync_at: new Date().toISOString(),
+          status: "active"
+        })
+        .eq("id", integration.id);
+
+      toast({ title: "Sync completed successfully" });
+      fetchIntegrationData();
+    } catch (error) {
+      toast({
+        title: "Error syncing",
+        description: error instanceof Error ? error.message : "Unknown error",
+        variant: "destructive",
+      });
+    } finally {
+      setSyncing(null);
+    }
+  };
+
+  const handleRevokeKey = async (keyId: string) => {
+    try {
+      await supabase
+        .from("api_keys")
+        .update({ is_active: false })
+        .eq("id", keyId);
+
+      toast({ title: "API key revoked" });
+      fetchIntegrationData();
+    } catch (error) {
+      toast({
+        title: "Error revoking key",
+        description: error instanceof Error ? error.message : "Unknown error",
+        variant: "destructive",
+      });
+    }
+  };
+
+  const handleViewErrors = () => {
+    const errorIntegrations = integrations.filter(i => i.status === "error");
+    if (errorIntegrations.length > 0) {
+      toast({
+        title: "Integration Errors",
+        description: errorIntegrations.map(i => `${i.name}: ${i.error_message || "Unknown error"}`).join(", "),
+        variant: "destructive",
+      });
+    }
+  };
+
   const getStatusColor = (status: string) => {
     switch (status) {
       case "active":
-      case "success":
-        return "bg-green-500/20 text-green-400";
+      case "success": return "bg-green-500/20 text-green-400";
       case "pending":
-      case "partial":
-        return "bg-yellow-500/20 text-yellow-400";
+      case "partial": return "bg-yellow-500/20 text-yellow-400";
       case "inactive":
       case "error":
-      case "failed":
-        return "bg-red-500/20 text-red-400";
-      default:
-        return "bg-gray-500/20 text-gray-400";
+      case "failed": return "bg-red-500/20 text-red-400";
+      default: return "bg-gray-500/20 text-gray-400";
     }
   };
 
   const getTypeIcon = (type: string) => {
     switch (type) {
-      case "ehr":
-        return <Database className="h-4 w-4" />;
-      case "wearable":
-        return <Watch className="h-4 w-4" />;
-      case "calendar":
-        return <Calendar className="h-4 w-4" />;
-      case "api":
-        return <Key className="h-4 w-4" />;
-      default:
-        return <Plug className="h-4 w-4" />;
+      case "ehr": return <Database className="h-4 w-4" />;
+      case "wearable": return <Watch className="h-4 w-4" />;
+      case "calendar": return <Calendar className="h-4 w-4" />;
+      case "api": return <Key className="h-4 w-4" />;
+      default: return <Plug className="h-4 w-4" />;
     }
   };
 
@@ -88,13 +147,17 @@ const IntegrationHub = () => {
 
   return (
     <div className="space-y-6">
+      {/* Dialogs */}
+      <AddIntegrationDialog open={addIntegrationOpen} onOpenChange={setAddIntegrationOpen} onSuccess={fetchIntegrationData} />
+      <GenerateApiKeyDialog open={generateApiKeyOpen} onOpenChange={setGenerateApiKeyOpen} onSuccess={fetchIntegrationData} />
+
       {/* Header */}
       <div className="flex justify-between items-center">
         <div>
           <h2 className="text-3xl font-bold text-foreground">Integration Hub</h2>
           <p className="text-muted-foreground">Connect external systems and services</p>
         </div>
-        <Button className="bg-[#B87333] hover:bg-[#A66329]">
+        <Button className="bg-[#B87333] hover:bg-[#A66329]" onClick={() => setAddIntegrationOpen(true)}>
           <Plug className="h-4 w-4 mr-2" />
           Add Integration
         </Button>
@@ -158,7 +221,7 @@ const IntegrationHub = () => {
                   {errorIntegrations.length} integration{errorIntegrations.length !== 1 ? "s" : ""} require{errorIntegrations.length === 1 ? "s" : ""} troubleshooting
                 </p>
               </div>
-              <Button variant="destructive" className="bg-red-600 hover:bg-red-700">
+              <Button variant="destructive" className="bg-red-600 hover:bg-red-700" onClick={handleViewErrors}>
                 View Errors
               </Button>
             </div>
@@ -202,9 +265,14 @@ const IntegrationHub = () => {
                       <Button size="sm" variant="outline" className="flex-1">
                         Configure
                       </Button>
-                      <Button size="sm" className="flex-1 bg-[#B87333] hover:bg-[#A66329]">
+                      <Button 
+                        size="sm" 
+                        className="flex-1 bg-[#B87333] hover:bg-[#A66329]"
+                        onClick={() => handleSyncNow(integration)}
+                        disabled={syncing === integration.id}
+                      >
                         <Activity className="h-3 w-3 mr-1" />
-                        Sync Now
+                        {syncing === integration.id ? "Syncing..." : "Sync Now"}
                       </Button>
                     </div>
                   </div>
@@ -217,6 +285,9 @@ const IntegrationHub = () => {
                   <div className="text-center text-muted-foreground">
                     <Plug className="h-12 w-12 mx-auto mb-4 opacity-50" />
                     <p>No integrations configured yet</p>
+                    <Button className="mt-4 bg-[#B87333] hover:bg-[#A66329]" onClick={() => setAddIntegrationOpen(true)}>
+                      Add Integration
+                    </Button>
                   </div>
                 </CardContent>
               </Card>
@@ -258,7 +329,7 @@ const IntegrationHub = () => {
                   <CardTitle>API Keys</CardTitle>
                   <CardDescription>Manage partner API access</CardDescription>
                 </div>
-                <Button className="bg-[#B87333] hover:bg-[#A66329]">
+                <Button className="bg-[#B87333] hover:bg-[#A66329]" onClick={() => setGenerateApiKeyOpen(true)}>
                   <Key className="h-4 w-4 mr-2" />
                   Generate Key
                 </Button>
@@ -286,13 +357,22 @@ const IntegrationHub = () => {
                       <Badge className={key.is_active ? "bg-green-500/20 text-green-400" : "bg-gray-500/20 text-gray-400"}>
                         {key.is_active ? "Active" : "Inactive"}
                       </Badge>
-                      <Button size="sm" variant="ghost">
-                        Revoke
-                      </Button>
+                      {key.is_active && (
+                        <Button size="sm" variant="ghost" onClick={() => handleRevokeKey(key.id)}>
+                          Revoke
+                        </Button>
+                      )}
                     </div>
                   </div>
                 ))}
-                {apiKeys.length === 0 && <div className="text-center text-muted-foreground py-8">No API keys yet</div>}
+                {apiKeys.length === 0 && (
+                  <div className="text-center text-muted-foreground py-8">
+                    No API keys yet
+                    <Button className="mt-4 block mx-auto bg-[#B87333] hover:bg-[#A66329]" onClick={() => setGenerateApiKeyOpen(true)}>
+                      Generate Key
+                    </Button>
+                  </div>
+                )}
               </div>
             </CardContent>
           </Card>

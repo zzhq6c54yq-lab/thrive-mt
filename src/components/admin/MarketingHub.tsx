@@ -6,7 +6,8 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
 import { Megaphone, Mail, Send, TrendingUp, Users, Gift, Target } from "lucide-react";
-import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, LineChart, Line } from "recharts";
+import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from "recharts";
+import { CreateCampaignDialog, CreateSegmentDialog, ViewCampaignDialog } from "./modals";
 
 const MarketingHub = () => {
   const { toast } = useToast();
@@ -15,6 +16,12 @@ const MarketingHub = () => {
   const [referrals, setReferrals] = useState<any[]>([]);
   const [analytics, setAnalytics] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
+
+  // Dialog states
+  const [createCampaignOpen, setCreateCampaignOpen] = useState(false);
+  const [createSegmentOpen, setCreateSegmentOpen] = useState(false);
+  const [viewCampaignOpen, setViewCampaignOpen] = useState(false);
+  const [selectedCampaign, setSelectedCampaign] = useState<any>(null);
 
   useEffect(() => {
     fetchMarketingData();
@@ -54,30 +61,26 @@ const MarketingHub = () => {
 
   const getStatusColor = (status: string) => {
     switch (status) {
-      case "sent":
-        return "bg-green-500/20 text-green-400";
-      case "sending":
-        return "bg-blue-500/20 text-blue-400";
-      case "scheduled":
-        return "bg-yellow-500/20 text-yellow-400";
-      case "draft":
-        return "bg-gray-500/20 text-gray-400";
-      case "cancelled":
-        return "bg-red-500/20 text-red-400";
-      default:
-        return "bg-gray-500/20 text-gray-400";
+      case "sent": return "bg-green-500/20 text-green-400";
+      case "sending": return "bg-blue-500/20 text-blue-400";
+      case "scheduled": return "bg-yellow-500/20 text-yellow-400";
+      case "draft": return "bg-gray-500/20 text-gray-400";
+      case "cancelled": return "bg-red-500/20 text-red-400";
+      default: return "bg-gray-500/20 text-gray-400";
     }
   };
 
   const getTypeIcon = (type: string) => {
     switch (type) {
-      case "email":
-        return <Mail className="h-4 w-4" />;
-      case "push":
-        return <Send className="h-4 w-4" />;
-      default:
-        return <Megaphone className="h-4 w-4" />;
+      case "email": return <Mail className="h-4 w-4" />;
+      case "push": return <Send className="h-4 w-4" />;
+      default: return <Megaphone className="h-4 w-4" />;
     }
+  };
+
+  const handleViewCampaign = (campaign: any) => {
+    setSelectedCampaign(campaign);
+    setViewCampaignOpen(true);
   };
 
   if (loading) {
@@ -90,13 +93,18 @@ const MarketingHub = () => {
 
   return (
     <div className="space-y-6">
+      {/* Dialogs */}
+      <CreateCampaignDialog open={createCampaignOpen} onOpenChange={setCreateCampaignOpen} onSuccess={fetchMarketingData} />
+      <CreateSegmentDialog open={createSegmentOpen} onOpenChange={setCreateSegmentOpen} onSuccess={fetchMarketingData} />
+      <ViewCampaignDialog open={viewCampaignOpen} onOpenChange={setViewCampaignOpen} campaign={selectedCampaign} onSuccess={fetchMarketingData} />
+
       {/* Header */}
       <div className="flex justify-between items-center">
         <div>
           <h2 className="text-3xl font-bold text-foreground">Marketing Hub</h2>
           <p className="text-muted-foreground">Manage campaigns, segments, and engagement</p>
         </div>
-        <Button className="bg-[#B87333] hover:bg-[#A66329]">
+        <Button className="bg-[#B87333] hover:bg-[#A66329]" onClick={() => setCreateCampaignOpen(true)}>
           <Send className="h-4 w-4 mr-2" />
           Create Campaign
         </Button>
@@ -166,9 +174,7 @@ const MarketingHub = () => {
                     <div className="space-y-2 flex-1">
                       <div className="flex items-center gap-2">
                         {getTypeIcon(campaign.type)}
-                        <Badge variant="outline" className="capitalize">
-                          {campaign.type}
-                        </Badge>
+                        <Badge variant="outline" className="capitalize">{campaign.type}</Badge>
                         <Badge className={getStatusColor(campaign.status)}>{campaign.status}</Badge>
                       </div>
                       <div>
@@ -183,10 +189,10 @@ const MarketingHub = () => {
                       </div>
                     </div>
                     <div className="flex gap-2">
-                      <Button size="sm" variant="ghost">
+                      <Button size="sm" variant="ghost" onClick={() => handleViewCampaign(campaign)}>
                         View
                       </Button>
-                      <Button size="sm" className="bg-[#B87333] hover:bg-[#A66329]">
+                      <Button size="sm" className="bg-[#B87333] hover:bg-[#A66329]" onClick={() => handleViewCampaign(campaign)}>
                         Edit
                       </Button>
                     </div>
@@ -201,6 +207,9 @@ const MarketingHub = () => {
                     <Megaphone className="h-12 w-12 mx-auto mb-4 opacity-50" />
                     <p>No campaigns yet</p>
                     <p className="text-sm mt-2">Create your first marketing campaign</p>
+                    <Button className="mt-4 bg-[#B87333] hover:bg-[#A66329]" onClick={() => setCreateCampaignOpen(true)}>
+                      Create Campaign
+                    </Button>
                   </div>
                 </CardContent>
               </Card>
@@ -216,7 +225,7 @@ const MarketingHub = () => {
                   <CardTitle>User Segments</CardTitle>
                   <CardDescription>Target groups for personalized campaigns</CardDescription>
                 </div>
-                <Button className="bg-[#B87333] hover:bg-[#A66329]">
+                <Button className="bg-[#B87333] hover:bg-[#A66329]" onClick={() => setCreateSegmentOpen(true)}>
                   <Users className="h-4 w-4 mr-2" />
                   Create Segment
                 </Button>
@@ -242,6 +251,9 @@ const MarketingHub = () => {
                 {segments.length === 0 && (
                   <div className="text-center text-muted-foreground py-8">
                     No segments created yet
+                    <Button className="mt-4 block mx-auto bg-[#B87333] hover:bg-[#A66329]" onClick={() => setCreateSegmentOpen(true)}>
+                      Create Segment
+                    </Button>
                   </div>
                 )}
               </div>

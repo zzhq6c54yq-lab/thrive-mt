@@ -6,8 +6,9 @@ import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
-import { BookOpen, Upload, FileText, Music, Video, Image, Search, Plus, Eye, Download, TrendingUp } from "lucide-react";
-import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, PieChart, Pie, Cell, LineChart, Line } from "recharts";
+import { BookOpen, Plus, FileText, Music, Video, Image, Search, Eye, Download, TrendingUp } from "lucide-react";
+import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from "recharts";
+import { UploadContentDialog } from "./modals";
 
 interface ContentItem {
   id: string;
@@ -29,6 +30,9 @@ const ContentManagement = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [filterStatus, setFilterStatus] = useState<string>("all");
   const [analytics, setAnalytics] = useState<any[]>([]);
+
+  // Dialog states
+  const [uploadContentOpen, setUploadContentOpen] = useState(false);
 
   useEffect(() => {
     fetchContent();
@@ -84,35 +88,59 @@ const ContentManagement = () => {
     }
   };
 
+  const handlePreview = (item: ContentItem) => {
+    toast({
+      title: "Preview",
+      description: `Previewing: ${item.title}`,
+    });
+  };
+
+  const handleEdit = async (item: ContentItem) => {
+    // For now, toggle status between draft and published
+    const newStatus = item.status === "published" ? "draft" : "published";
+    try {
+      const { error } = await supabase
+        .from("content_library")
+        .update({ 
+          status: newStatus,
+          published_at: newStatus === "published" ? new Date().toISOString() : null
+        })
+        .eq("id", item.id);
+
+      if (error) throw error;
+      
+      toast({
+        title: "Content updated",
+        description: `Status changed to ${newStatus}`,
+      });
+      fetchContent();
+    } catch (error) {
+      toast({
+        title: "Error updating content",
+        description: error instanceof Error ? error.message : "Unknown error",
+        variant: "destructive",
+      });
+    }
+  };
+
   const getTypeIcon = (type: string) => {
     switch (type) {
-      case "worksheet":
-        return <FileText className="h-4 w-4" />;
-      case "meditation":
-        return <Music className="h-4 w-4" />;
-      case "video":
-        return <Video className="h-4 w-4" />;
-      case "article":
-        return <BookOpen className="h-4 w-4" />;
-      case "infographic":
-        return <Image className="h-4 w-4" />;
-      default:
-        return <FileText className="h-4 w-4" />;
+      case "worksheet": return <FileText className="h-4 w-4" />;
+      case "meditation": return <Music className="h-4 w-4" />;
+      case "video": return <Video className="h-4 w-4" />;
+      case "article": return <BookOpen className="h-4 w-4" />;
+      case "infographic": return <Image className="h-4 w-4" />;
+      default: return <FileText className="h-4 w-4" />;
     }
   };
 
   const getStatusColor = (status: string) => {
     switch (status) {
-      case "published":
-        return "bg-green-500/20 text-green-400";
-      case "draft":
-        return "bg-gray-500/20 text-gray-400";
-      case "review":
-        return "bg-yellow-500/20 text-yellow-400";
-      case "archived":
-        return "bg-red-500/20 text-red-400";
-      default:
-        return "bg-gray-500/20 text-gray-400";
+      case "published": return "bg-green-500/20 text-green-400";
+      case "draft": return "bg-gray-500/20 text-gray-400";
+      case "review": return "bg-yellow-500/20 text-yellow-400";
+      case "archived": return "bg-red-500/20 text-red-400";
+      default: return "bg-gray-500/20 text-gray-400";
     }
   };
 
@@ -124,8 +152,6 @@ const ContentManagement = () => {
     return matchesSearch && matchesStatus;
   });
 
-  const COLORS = ["#B87333", "#E5C5A1", "#4A90E2", "#10B981"];
-
   if (loading) {
     return (
       <div className="flex items-center justify-center h-64">
@@ -136,13 +162,16 @@ const ContentManagement = () => {
 
   return (
     <div className="space-y-6">
+      {/* Dialogs */}
+      <UploadContentDialog open={uploadContentOpen} onOpenChange={setUploadContentOpen} onSuccess={fetchContent} />
+
       {/* Header */}
       <div className="flex justify-between items-center">
         <div>
           <h2 className="text-3xl font-bold text-foreground">Content Library</h2>
           <p className="text-muted-foreground">Manage therapeutic resources and materials</p>
         </div>
-        <Button className="bg-[#B87333] hover:bg-[#A66329]">
+        <Button className="bg-[#B87333] hover:bg-[#A66329]" onClick={() => setUploadContentOpen(true)}>
           <Plus className="h-4 w-4 mr-2" />
           Upload Content
         </Button>
@@ -218,13 +247,13 @@ const ContentManagement = () => {
                       </div>
                     )}
                     <div className="flex gap-2">
-                      <Button size="sm" variant="ghost" className="flex-1">
+                      <Button size="sm" variant="ghost" className="flex-1" onClick={() => handlePreview(item)}>
                         <Eye className="h-3 w-3 mr-1" />
                         Preview
                       </Button>
-                      <Button size="sm" variant="ghost" className="flex-1">
+                      <Button size="sm" variant="ghost" className="flex-1" onClick={() => handleEdit(item)}>
                         <Download className="h-3 w-3 mr-1" />
-                        Edit
+                        {item.status === "published" ? "Unpublish" : "Publish"}
                       </Button>
                     </div>
                   </div>
@@ -239,6 +268,9 @@ const ContentManagement = () => {
                 <div className="text-center text-muted-foreground">
                   <BookOpen className="h-12 w-12 mx-auto mb-4 opacity-50" />
                   <p>No content found matching your filters</p>
+                  <Button className="mt-4 bg-[#B87333] hover:bg-[#A66329]" onClick={() => setUploadContentOpen(true)}>
+                    Upload Content
+                  </Button>
                 </div>
               </CardContent>
             </Card>

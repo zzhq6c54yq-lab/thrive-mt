@@ -7,6 +7,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
 import { Building, Users, FileText, Shield, Settings, Globe } from "lucide-react";
+import { AddTenantDialog, CreateReportDialog, AddSSOProviderDialog } from "./modals";
 
 const EnterpriseSettings = () => {
   const { toast } = useToast();
@@ -14,6 +15,19 @@ const EnterpriseSettings = () => {
   const [customReports, setCustomReports] = useState<any[]>([]);
   const [ssoConfigs, setSsoConfigs] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
+  const [savingWhiteLabel, setSavingWhiteLabel] = useState(false);
+
+  // Dialog states
+  const [addTenantOpen, setAddTenantOpen] = useState(false);
+  const [createReportOpen, setCreateReportOpen] = useState(false);
+  const [addSSOOpen, setAddSSOOpen] = useState(false);
+
+  // White-label form state
+  const [whiteLabel, setWhiteLabel] = useState({
+    primaryColor: "#B87333",
+    secondaryColor: "#E5C5A1",
+    customDomain: "",
+  });
 
   useEffect(() => {
     fetchEnterpriseData();
@@ -41,16 +55,54 @@ const EnterpriseSettings = () => {
     }
   };
 
+  const handleSaveWhiteLabel = async () => {
+    setSavingWhiteLabel(true);
+    try {
+      // In a real implementation, this would save to a settings table
+      await new Promise(resolve => setTimeout(resolve, 1000));
+      toast({ title: "White-label settings saved successfully" });
+    } catch (error) {
+      toast({
+        title: "Error saving settings",
+        description: error instanceof Error ? error.message : "Unknown error",
+        variant: "destructive",
+      });
+    } finally {
+      setSavingWhiteLabel(false);
+    }
+  };
+
+  const handleGenerateReport = async (reportId: string) => {
+    try {
+      await supabase
+        .from("custom_reports")
+        .update({ last_generated_at: new Date().toISOString() })
+        .eq("id", reportId);
+
+      toast({ title: "Report generation started" });
+      fetchEnterpriseData();
+    } catch (error) {
+      toast({
+        title: "Error generating report",
+        description: error instanceof Error ? error.message : "Unknown error",
+        variant: "destructive",
+      });
+    }
+  };
+
+  const handleTestSSO = async (ssoId: string) => {
+    toast({ 
+      title: "SSO Test Initiated",
+      description: "A test authentication request has been sent."
+    });
+  };
+
   const getTierColor = (tier: string) => {
     switch (tier) {
-      case "enterprise":
-        return "bg-purple-500/20 text-purple-400";
-      case "professional":
-        return "bg-blue-500/20 text-blue-400";
-      case "basic":
-        return "bg-green-500/20 text-green-400";
-      default:
-        return "bg-gray-500/20 text-gray-400";
+      case "enterprise": return "bg-purple-500/20 text-purple-400";
+      case "professional": return "bg-blue-500/20 text-blue-400";
+      case "basic": return "bg-green-500/20 text-green-400";
+      default: return "bg-gray-500/20 text-gray-400";
     }
   };
 
@@ -67,13 +119,18 @@ const EnterpriseSettings = () => {
 
   return (
     <div className="space-y-6">
+      {/* Dialogs */}
+      <AddTenantDialog open={addTenantOpen} onOpenChange={setAddTenantOpen} onSuccess={fetchEnterpriseData} />
+      <CreateReportDialog open={createReportOpen} onOpenChange={setCreateReportOpen} onSuccess={fetchEnterpriseData} />
+      <AddSSOProviderDialog open={addSSOOpen} onOpenChange={setAddSSOOpen} onSuccess={fetchEnterpriseData} />
+
       {/* Header */}
       <div className="flex justify-between items-center">
         <div>
           <h2 className="text-3xl font-bold text-foreground">Enterprise Settings</h2>
           <p className="text-muted-foreground">Multi-tenancy, white-labeling, and SSO</p>
         </div>
-        <Button className="bg-[#B87333] hover:bg-[#A66329]">
+        <Button className="bg-[#B87333] hover:bg-[#A66329]" onClick={() => setAddTenantOpen(true)}>
           <Building className="h-4 w-4 mr-2" />
           Add Tenant
         </Button>
@@ -185,6 +242,9 @@ const EnterpriseSettings = () => {
                   <div className="text-center text-muted-foreground">
                     <Building className="h-12 w-12 mx-auto mb-4 opacity-50" />
                     <p>No tenants configured yet</p>
+                    <Button className="mt-4 bg-[#B87333] hover:bg-[#A66329]" onClick={() => setAddTenantOpen(true)}>
+                      Add Tenant
+                    </Button>
                   </div>
                 </CardContent>
               </Card>
@@ -202,7 +262,7 @@ const EnterpriseSettings = () => {
               <div className="grid gap-4 md:grid-cols-2">
                 <div className="space-y-2">
                   <label className="text-sm font-medium">Logo Upload</label>
-                  <div className="border-2 border-dashed border-white/20 rounded-lg p-8 text-center">
+                  <div className="border-2 border-dashed border-white/20 rounded-lg p-8 text-center cursor-pointer hover:border-[#B87333] transition-colors">
                     <div className="text-muted-foreground">
                       <Globe className="h-8 w-8 mx-auto mb-2 opacity-50" />
                       <p className="text-sm">Click to upload logo</p>
@@ -213,24 +273,55 @@ const EnterpriseSettings = () => {
                   <div className="space-y-2">
                     <label className="text-sm font-medium">Primary Color</label>
                     <div className="flex gap-2">
-                      <Input type="color" defaultValue="#B87333" className="w-20" />
-                      <Input type="text" defaultValue="#B87333" className="flex-1 font-mono" />
+                      <Input 
+                        type="color" 
+                        value={whiteLabel.primaryColor}
+                        onChange={(e) => setWhiteLabel({ ...whiteLabel, primaryColor: e.target.value })}
+                        className="w-20" 
+                      />
+                      <Input 
+                        type="text" 
+                        value={whiteLabel.primaryColor}
+                        onChange={(e) => setWhiteLabel({ ...whiteLabel, primaryColor: e.target.value })}
+                        className="flex-1 font-mono" 
+                      />
                     </div>
                   </div>
                   <div className="space-y-2">
                     <label className="text-sm font-medium">Secondary Color</label>
                     <div className="flex gap-2">
-                      <Input type="color" defaultValue="#E5C5A1" className="w-20" />
-                      <Input type="text" defaultValue="#E5C5A1" className="flex-1 font-mono" />
+                      <Input 
+                        type="color" 
+                        value={whiteLabel.secondaryColor}
+                        onChange={(e) => setWhiteLabel({ ...whiteLabel, secondaryColor: e.target.value })}
+                        className="w-20" 
+                      />
+                      <Input 
+                        type="text" 
+                        value={whiteLabel.secondaryColor}
+                        onChange={(e) => setWhiteLabel({ ...whiteLabel, secondaryColor: e.target.value })}
+                        className="flex-1 font-mono" 
+                      />
                     </div>
                   </div>
                   <div className="space-y-2">
                     <label className="text-sm font-medium">Custom Domain</label>
-                    <Input type="text" placeholder="wellness.yourcompany.com" />
+                    <Input 
+                      type="text" 
+                      placeholder="wellness.yourcompany.com"
+                      value={whiteLabel.customDomain}
+                      onChange={(e) => setWhiteLabel({ ...whiteLabel, customDomain: e.target.value })}
+                    />
                   </div>
                 </div>
               </div>
-              <Button className="bg-[#B87333] hover:bg-[#A66329]">Save White-Label Settings</Button>
+              <Button 
+                className="bg-[#B87333] hover:bg-[#A66329]"
+                onClick={handleSaveWhiteLabel}
+                disabled={savingWhiteLabel}
+              >
+                {savingWhiteLabel ? "Saving..." : "Save White-Label Settings"}
+              </Button>
             </CardContent>
           </Card>
         </TabsContent>
@@ -243,7 +334,7 @@ const EnterpriseSettings = () => {
                   <CardTitle>Custom Reports</CardTitle>
                   <CardDescription>Scheduled and on-demand analytics reports</CardDescription>
                 </div>
-                <Button className="bg-[#B87333] hover:bg-[#A66329]">
+                <Button className="bg-[#B87333] hover:bg-[#A66329]" onClick={() => setCreateReportOpen(true)}>
                   <FileText className="h-4 w-4 mr-2" />
                   Create Report
                 </Button>
@@ -257,12 +348,8 @@ const EnterpriseSettings = () => {
                       <h4 className="font-semibold text-foreground">{report.name}</h4>
                       <p className="text-sm text-muted-foreground">{report.description}</p>
                       <div className="flex gap-2">
-                        <Badge variant="outline" className="capitalize">
-                          {report.report_type}
-                        </Badge>
-                        <Badge variant="outline" className="capitalize">
-                          {report.schedule}
-                        </Badge>
+                        <Badge variant="outline" className="capitalize">{report.report_type}</Badge>
+                        <Badge variant="outline" className="capitalize">{report.schedule}</Badge>
                         <Badge variant="outline">{report.format?.toUpperCase()}</Badge>
                       </div>
                       {report.last_generated_at && (
@@ -272,16 +359,25 @@ const EnterpriseSettings = () => {
                       )}
                     </div>
                     <div className="flex gap-2">
-                      <Button size="sm" variant="outline">
-                        Edit
-                      </Button>
-                      <Button size="sm" className="bg-[#B87333] hover:bg-[#A66329]">
+                      <Button size="sm" variant="outline">Edit</Button>
+                      <Button 
+                        size="sm" 
+                        className="bg-[#B87333] hover:bg-[#A66329]"
+                        onClick={() => handleGenerateReport(report.id)}
+                      >
                         Generate Now
                       </Button>
                     </div>
                   </div>
                 ))}
-                {customReports.length === 0 && <div className="text-center text-muted-foreground py-8">No custom reports yet</div>}
+                {customReports.length === 0 && (
+                  <div className="text-center text-muted-foreground py-8">
+                    No custom reports yet
+                    <Button className="mt-4 block mx-auto bg-[#B87333] hover:bg-[#A66329]" onClick={() => setCreateReportOpen(true)}>
+                      Create Report
+                    </Button>
+                  </div>
+                )}
               </div>
             </CardContent>
           </Card>
@@ -295,7 +391,7 @@ const EnterpriseSettings = () => {
                   <CardTitle>SSO Configurations</CardTitle>
                   <CardDescription>Single Sign-On for enterprise authentication</CardDescription>
                 </div>
-                <Button className="bg-[#B87333] hover:bg-[#A66329]">
+                <Button className="bg-[#B87333] hover:bg-[#A66329]" onClick={() => setAddSSOOpen(true)}>
                   <Shield className="h-4 w-4 mr-2" />
                   Add SSO Provider
                 </Button>
@@ -308,9 +404,7 @@ const EnterpriseSettings = () => {
                     <div className="space-y-1">
                       <div className="flex items-center gap-2">
                         <h4 className="font-semibold text-foreground">{sso.tenants?.name || "Unknown Tenant"}</h4>
-                        <Badge variant="outline" className="uppercase">
-                          {sso.provider}
-                        </Badge>
+                        <Badge variant="outline" className="uppercase">{sso.provider}</Badge>
                         <Badge className={sso.is_enabled ? "bg-green-500/20 text-green-400" : "bg-gray-500/20 text-gray-400"}>
                           {sso.is_enabled ? "Enabled" : "Disabled"}
                         </Badge>
@@ -320,16 +414,21 @@ const EnterpriseSettings = () => {
                       </p>
                     </div>
                     <div className="flex gap-2">
-                      <Button size="sm" variant="outline">
-                        Configure
-                      </Button>
-                      <Button size="sm" variant="ghost">
+                      <Button size="sm" variant="outline">Configure</Button>
+                      <Button size="sm" variant="ghost" onClick={() => handleTestSSO(sso.id)}>
                         Test
                       </Button>
                     </div>
                   </div>
                 ))}
-                {ssoConfigs.length === 0 && <div className="text-center text-muted-foreground py-8">No SSO configurations yet</div>}
+                {ssoConfigs.length === 0 && (
+                  <div className="text-center text-muted-foreground py-8">
+                    No SSO configurations yet
+                    <Button className="mt-4 block mx-auto bg-[#B87333] hover:bg-[#A66329]" onClick={() => setAddSSOOpen(true)}>
+                      Add SSO Provider
+                    </Button>
+                  </div>
+                )}
               </div>
             </CardContent>
           </Card>

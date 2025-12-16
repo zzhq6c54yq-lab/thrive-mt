@@ -6,7 +6,8 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Input } from "@/components/ui/input";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
-import { Headphones, AlertTriangle, Clock, CheckCircle, Search, User, MessageSquare, Shield } from "lucide-react";
+import { Headphones, AlertTriangle, Clock, CheckCircle, Search, MessageSquare, Shield } from "lucide-react";
+import { CreateTemplateDialog, ViewTicketDialog } from "./modals";
 
 interface Ticket {
   id: string;
@@ -29,6 +30,11 @@ const SupportTicketing = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [filterStatus, setFilterStatus] = useState<string>("all");
   const [filterPriority, setFilterPriority] = useState<string>("all");
+
+  // Dialog states
+  const [createTemplateOpen, setCreateTemplateOpen] = useState(false);
+  const [viewTicketOpen, setViewTicketOpen] = useState(false);
+  const [selectedTicket, setSelectedTicket] = useState<Ticket | null>(null);
 
   useEffect(() => {
     fetchTickets();
@@ -65,45 +71,49 @@ const SupportTicketing = () => {
     }
   };
 
+  const handleViewTicket = (ticket: Ticket) => {
+    setSelectedTicket(ticket);
+    setViewTicketOpen(true);
+  };
+
+  const handleViewCrisisTickets = () => {
+    setFilterStatus("all");
+    setFilterPriority("all");
+    setSearchTerm("");
+    // Filter to only show crisis tickets
+    const crisisTickets = tickets.filter(t => t.is_crisis);
+    if (crisisTickets.length > 0) {
+      setSelectedTicket(crisisTickets[0]);
+      setViewTicketOpen(true);
+    }
+  };
+
   const getPriorityColor = (priority: string) => {
     switch (priority) {
-      case "urgent":
-        return "bg-red-500/20 text-red-400 border-red-500/50";
-      case "high":
-        return "bg-orange-500/20 text-orange-400 border-orange-500/50";
-      case "medium":
-        return "bg-yellow-500/20 text-yellow-400 border-yellow-500/50";
-      case "low":
-        return "bg-green-500/20 text-green-400 border-green-500/50";
-      default:
-        return "bg-gray-500/20 text-gray-400 border-gray-500/50";
+      case "urgent": return "bg-red-500/20 text-red-400 border-red-500/50";
+      case "high": return "bg-orange-500/20 text-orange-400 border-orange-500/50";
+      case "medium": return "bg-yellow-500/20 text-yellow-400 border-yellow-500/50";
+      case "low": return "bg-green-500/20 text-green-400 border-green-500/50";
+      default: return "bg-gray-500/20 text-gray-400 border-gray-500/50";
     }
   };
 
   const getStatusColor = (status: string) => {
     switch (status) {
       case "resolved":
-      case "closed":
-        return "bg-green-500/20 text-green-400";
-      case "in_progress":
-        return "bg-blue-500/20 text-blue-400";
-      case "waiting_user":
-        return "bg-yellow-500/20 text-yellow-400";
-      case "open":
-        return "bg-gray-500/20 text-gray-400";
-      default:
-        return "bg-gray-500/20 text-gray-400";
+      case "closed": return "bg-green-500/20 text-green-400";
+      case "in_progress": return "bg-blue-500/20 text-blue-400";
+      case "waiting_user": return "bg-yellow-500/20 text-yellow-400";
+      case "open": return "bg-gray-500/20 text-gray-400";
+      default: return "bg-gray-500/20 text-gray-400";
     }
   };
 
   const getCategoryIcon = (category: string) => {
     switch (category) {
-      case "crisis":
-        return <AlertTriangle className="h-4 w-4 text-red-400" />;
-      case "clinical":
-        return <Shield className="h-4 w-4 text-blue-400" />;
-      default:
-        return <MessageSquare className="h-4 w-4" />;
+      case "crisis": return <AlertTriangle className="h-4 w-4 text-red-400" />;
+      case "clinical": return <Shield className="h-4 w-4 text-blue-400" />;
+      default: return <MessageSquare className="h-4 w-4" />;
     }
   };
 
@@ -144,6 +154,10 @@ const SupportTicketing = () => {
 
   return (
     <div className="space-y-6">
+      {/* Dialogs */}
+      <CreateTemplateDialog open={createTemplateOpen} onOpenChange={setCreateTemplateOpen} onSuccess={fetchTemplates} />
+      <ViewTicketDialog open={viewTicketOpen} onOpenChange={setViewTicketOpen} ticket={selectedTicket} onSuccess={fetchTickets} />
+
       {/* Header */}
       <div>
         <h2 className="text-3xl font-bold text-foreground">Support Ticketing</h2>
@@ -215,7 +229,7 @@ const SupportTicketing = () => {
                   {crisisTickets.length} ticket{crisisTickets.length !== 1 ? "s" : ""} require immediate clinical attention
                 </p>
               </div>
-              <Button variant="destructive" className="bg-red-600 hover:bg-red-700">
+              <Button variant="destructive" className="bg-red-600 hover:bg-red-700" onClick={handleViewCrisisTickets}>
                 View Crisis Tickets
               </Button>
             </div>
@@ -295,10 +309,10 @@ const SupportTicketing = () => {
                       </div>
                     </div>
                     <div className="flex gap-2">
-                      <Button size="sm" variant="ghost">
+                      <Button size="sm" variant="ghost" onClick={() => handleViewTicket(ticket)}>
                         View
                       </Button>
-                      <Button size="sm" className="bg-[#B87333] hover:bg-[#A66329]">
+                      <Button size="sm" className="bg-[#B87333] hover:bg-[#A66329]" onClick={() => handleViewTicket(ticket)}>
                         Respond
                       </Button>
                     </div>
@@ -327,7 +341,9 @@ const SupportTicketing = () => {
                   <CardTitle>Response Templates</CardTitle>
                   <CardDescription>Pre-written responses for common inquiries</CardDescription>
                 </div>
-                <Button className="bg-[#B87333] hover:bg-[#A66329]">Create Template</Button>
+                <Button className="bg-[#B87333] hover:bg-[#A66329]" onClick={() => setCreateTemplateOpen(true)}>
+                  Create Template
+                </Button>
               </div>
             </CardHeader>
             <CardContent>
@@ -347,7 +363,12 @@ const SupportTicketing = () => {
                   </div>
                 ))}
                 {templates.length === 0 && (
-                  <div className="text-center text-muted-foreground py-8">No templates yet</div>
+                  <div className="text-center text-muted-foreground py-8">
+                    No templates yet
+                    <Button className="mt-4 block mx-auto bg-[#B87333] hover:bg-[#A66329]" onClick={() => setCreateTemplateOpen(true)}>
+                      Create Template
+                    </Button>
+                  </div>
                 )}
               </div>
             </CardContent>

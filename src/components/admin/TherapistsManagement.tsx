@@ -12,10 +12,11 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table';
-import { Search, Stethoscope, DollarSign, Star, Calendar, Users } from 'lucide-react';
-import { format } from 'date-fns';
+import { Search, Stethoscope, DollarSign, Star, Eye } from 'lucide-react';
 import { useAdminAudit } from '@/hooks/useAdminAudit';
 import { AUDIT_ACTIONS } from '@/constants/auditActions';
+import { AddTherapistDialog } from './modals';
+import { useToast } from '@/hooks/use-toast';
 
 interface Therapist {
   id: string;
@@ -31,6 +32,7 @@ interface Therapist {
 }
 
 const TherapistsManagement: React.FC = () => {
+  const { toast } = useToast();
   const [therapists, setTherapists] = useState<Therapist[]>([]);
   const [loading, setLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState('');
@@ -41,6 +43,9 @@ const TherapistsManagement: React.FC = () => {
     avgRating: 0
   });
   const { logAction } = useAdminAudit();
+
+  // Dialog state
+  const [addTherapistOpen, setAddTherapistOpen] = useState(false);
 
   useEffect(() => {
     fetchTherapists();
@@ -97,6 +102,14 @@ const TherapistsManagement: React.FC = () => {
     }
   };
 
+  const handleViewTherapist = (therapist: Therapist) => {
+    logAction(AUDIT_ACTIONS.PROFILE_VIEWED, therapist.id, { name: therapist.name });
+    toast({
+      title: "Therapist Details",
+      description: `Viewing ${therapist.name}`,
+    });
+  };
+
   const filteredTherapists = therapists.filter(therapist =>
     therapist.name?.toLowerCase().includes(searchQuery.toLowerCase()) ||
     therapist.title?.toLowerCase().includes(searchQuery.toLowerCase()) ||
@@ -111,6 +124,9 @@ const TherapistsManagement: React.FC = () => {
 
   return (
     <div className="space-y-6">
+      {/* Dialog */}
+      <AddTherapistDialog open={addTherapistOpen} onOpenChange={setAddTherapistOpen} onSuccess={fetchTherapists} />
+
       {/* Stats Cards */}
       <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
         <Card className="bg-slate-800/50 border-slate-700">
@@ -163,7 +179,7 @@ const TherapistsManagement: React.FC = () => {
                 Manage therapist profiles and availability
               </CardDescription>
             </div>
-            <Button size="sm" className="bg-blue-600 hover:bg-blue-700">
+            <Button size="sm" className="bg-blue-600 hover:bg-blue-700" onClick={() => setAddTherapistOpen(true)}>
               <Stethoscope className="w-4 h-4 mr-2" />
               Add Therapist
             </Button>
@@ -210,12 +226,12 @@ const TherapistsManagement: React.FC = () => {
                     </TableCell>
                     <TableCell>
                       <div className="flex flex-wrap gap-1">
-                        {therapist.specialties.slice(0, 2).map((specialty, idx) => (
+                        {therapist.specialties?.slice(0, 2).map((specialty, idx) => (
                           <Badge key={idx} variant="outline" className="text-xs text-slate-300 border-slate-600">
                             {specialty}
                           </Badge>
                         ))}
-                        {therapist.specialties.length > 2 && (
+                        {therapist.specialties?.length > 2 && (
                           <Badge variant="outline" className="text-xs text-slate-400 border-slate-600">
                             +{therapist.specialties.length - 2}
                           </Badge>
@@ -249,7 +265,13 @@ const TherapistsManagement: React.FC = () => {
                       )}
                     </TableCell>
                     <TableCell>
-                      <Button variant="ghost" size="sm" className="text-slate-400 hover:text-white">
+                      <Button 
+                        variant="ghost" 
+                        size="sm" 
+                        className="text-slate-400 hover:text-white"
+                        onClick={() => handleViewTherapist(therapist)}
+                      >
+                        <Eye className="w-4 h-4 mr-1" />
                         View
                       </Button>
                     </TableCell>

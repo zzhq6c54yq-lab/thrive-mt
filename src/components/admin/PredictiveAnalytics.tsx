@@ -5,8 +5,8 @@ import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
-import { LineChart, TrendingUp, Users, AlertTriangle, Target, DollarSign } from "lucide-react";
-import { LineChart as RechartsLine, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, BarChart, Bar, PieChart, Pie, Cell } from "recharts";
+import { LineChart, TrendingUp, Users, AlertTriangle, Target, DollarSign, Send } from "lucide-react";
+import { LineChart as RechartsLine, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from "recharts";
 
 const PredictiveAnalytics = () => {
   const { toast } = useToast();
@@ -15,6 +15,8 @@ const PredictiveAnalytics = () => {
   const [sessionAnalytics, setSessionAnalytics] = useState<any[]>([]);
   const [revenueForecasts, setRevenueForecasts] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
+  const [sendingCampaign, setSendingCampaign] = useState(false);
+  const [sendingIntervention, setSendingIntervention] = useState<string | null>(null);
 
   useEffect(() => {
     fetchAnalyticsData();
@@ -44,6 +46,66 @@ const PredictiveAnalytics = () => {
     }
   };
 
+  const handleSendReengagementCampaign = async () => {
+    setSendingCampaign(true);
+    try {
+      const highRiskUsers = churnPredictions.filter((p) => p.risk_level === "high");
+      
+      // Create a marketing campaign for re-engagement
+      await supabase.from("marketing_campaigns").insert({
+        name: `Re-engagement Campaign - ${new Date().toLocaleDateString()}`,
+        subject: "We miss you! Come back and continue your wellness journey",
+        content: "We noticed you haven't been active lately. Your wellness journey is important to us...",
+        type: "email",
+        status: "sending",
+        target_user_count: highRiskUsers.length,
+      });
+
+      // Mark all as having received intervention
+      for (const prediction of highRiskUsers) {
+        await supabase
+          .from("churn_predictions")
+          .update({ intervention_sent: true })
+          .eq("id", prediction.id);
+      }
+
+      toast({ 
+        title: "Campaign sent",
+        description: `Re-engagement campaign sent to ${highRiskUsers.length} high-risk users.`
+      });
+      fetchAnalyticsData();
+    } catch (error) {
+      toast({
+        title: "Error sending campaign",
+        description: error instanceof Error ? error.message : "Unknown error",
+        variant: "destructive",
+      });
+    } finally {
+      setSendingCampaign(false);
+    }
+  };
+
+  const handleSendIntervention = async (predictionId: string) => {
+    setSendingIntervention(predictionId);
+    try {
+      await supabase
+        .from("churn_predictions")
+        .update({ intervention_sent: true })
+        .eq("id", predictionId);
+
+      toast({ title: "Intervention sent successfully" });
+      fetchAnalyticsData();
+    } catch (error) {
+      toast({
+        title: "Error sending intervention",
+        description: error instanceof Error ? error.message : "Unknown error",
+        variant: "destructive",
+      });
+    } finally {
+      setSendingIntervention(null);
+    }
+  };
+
   const highRiskUsers = churnPredictions.filter((p) => p.risk_level === "high");
   const mediumRiskUsers = churnPredictions.filter((p) => p.risk_level === "medium");
 
@@ -52,18 +114,12 @@ const PredictiveAnalytics = () => {
 
   const getRiskColor = (level: string) => {
     switch (level) {
-      case "high":
-        return "bg-red-500/20 text-red-400";
-      case "medium":
-        return "bg-yellow-500/20 text-yellow-400";
-      case "low":
-        return "bg-green-500/20 text-green-400";
-      default:
-        return "bg-gray-500/20 text-gray-400";
+      case "high": return "bg-red-500/20 text-red-400";
+      case "medium": return "bg-yellow-500/20 text-yellow-400";
+      case "low": return "bg-green-500/20 text-green-400";
+      default: return "bg-gray-500/20 text-gray-400";
     }
   };
-
-  const COLORS = ["#B87333", "#4A90E2", "#10B981", "#F59E0B"];
 
   if (loading) {
     return (
@@ -148,8 +204,14 @@ const PredictiveAnalytics = () => {
                       {highRiskUsers.length} user{highRiskUsers.length !== 1 ? "s are" : " is"} at high risk of churning
                     </p>
                   </div>
-                  <Button variant="destructive" className="bg-red-600 hover:bg-red-700">
-                    Send Re-engagement Campaign
+                  <Button 
+                    variant="destructive" 
+                    className="bg-red-600 hover:bg-red-700"
+                    onClick={handleSendReengagementCampaign}
+                    disabled={sendingCampaign}
+                  >
+                    <Send className="h-4 w-4 mr-2" />
+                    {sendingCampaign ? "Sending..." : "Send Re-engagement Campaign"}
                   </Button>
                 </div>
               </CardContent>
@@ -178,12 +240,18 @@ const PredictiveAnalytics = () => {
                       )}
                     </div>
                     <div>
-                      {!prediction.intervention_sent && (
-                        <Button size="sm" variant="outline">
-                          Send Intervention
+                      {!prediction.intervention_sent ? (
+                        <Button 
+                          size="sm" 
+                          variant="outline"
+                          onClick={() => handleSendIntervention(prediction.id)}
+                          disabled={sendingIntervention === prediction.id}
+                        >
+                          {sendingIntervention === prediction.id ? "Sending..." : "Send Intervention"}
                         </Button>
+                      ) : (
+                        <Badge className="bg-blue-500/20 text-blue-400">Sent</Badge>
                       )}
-                      {prediction.intervention_sent && <Badge className="bg-blue-500/20 text-blue-400">Sent</Badge>}
                     </div>
                   </div>
                 ))}
