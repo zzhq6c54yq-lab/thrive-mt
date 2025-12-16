@@ -6,6 +6,7 @@ import SiteHeroSection from "@/components/site/SiteHeroSection";
 import { InvestorDeckRequestDialog } from "@/components/site/InvestorDeckRequestDialog";
 import { FounderMeetingDialog } from "@/components/site/FounderMeetingDialog";
 import { SEOHead } from "@/components/seo";
+import { InvestorOverviewSection } from "@/components/site/InvestorOverviewSection";
 
 const SiteInvestors = () => {
   const [deckDialogOpen, setDeckDialogOpen] = useState(false);
@@ -44,6 +45,9 @@ const SiteInvestors = () => {
 
       <div className="py-12 md:py-20 px-4 md:px-6">
         <div className="container mx-auto max-w-6xl">
+          {/* Investor Overview Section */}
+          <InvestorOverviewSection />
+
           {/* Market Snapshot */}
           <div className="mb-10 md:mb-16">
             <h2 className="text-2xl md:text-3xl font-bold text-center mb-6 md:mb-8" style={{
