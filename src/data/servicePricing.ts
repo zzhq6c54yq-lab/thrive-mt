@@ -2,18 +2,18 @@
 
 export const therapyPricing = {
   selfPay: [
-    { service: "Individual Therapy", duration: "30 min", price: 35, description: "A focused session for quick check-ins, addressing specific concerns, or building on previous work. Ideal for maintenance or brief interventions." },
-    { service: "Individual Therapy", duration: "45 min", price: 52, description: "Our most popular format. Enough time to explore emotions deeply, process experiences, and develop personalized coping strategies." },
-    { service: "Individual Therapy", duration: "60 min", price: 70, description: "Extended session for complex issues, trauma processing, or intensive therapeutic work requiring more time and depth." },
-    { service: "Couples Therapy", duration: "60 min", price: 92, description: "Work on communication, conflict resolution, intimacy, and relationship dynamics with your partner in a safe, guided environment." },
-    { service: "Family Therapy", duration: "60 min", price: 100, description: "Address family dynamics, improve communication between family members, and work through shared challenges together." },
+    { service: "Individual Therapy", duration: "30 min", price: 65, description: "A focused session for quick check-ins, addressing specific concerns, or building on previous work. Ideal for maintenance or brief interventions." },
+    { service: "Individual Therapy", duration: "45 min", price: 90, description: "Our most popular format. Enough time to explore emotions deeply, process experiences, and develop personalized coping strategies." },
+    { service: "Individual Therapy", duration: "60 min", price: 110, description: "Extended session for complex issues, trauma processing, or intensive therapeutic work requiring more time and depth." },
+    { service: "Couples Therapy", duration: "60 min", price: 140, description: "Work on communication, conflict resolution, intimacy, and relationship dynamics with your partner in a safe, guided environment." },
+    { service: "Family Therapy", duration: "60 min", price: 150, description: "Address family dynamics, improve communication between family members, and work through shared challenges together." },
   ],
   insurance: [
-    { service: "Individual Therapy", duration: "30 min", price: 110, description: "A focused session for quick check-ins, addressing specific concerns, or building on previous work. Ideal for maintenance or brief interventions." },
-    { service: "Individual Therapy", duration: "45 min", price: 160, description: "Our most popular format. Enough time to explore emotions deeply, process experiences, and develop personalized coping strategies." },
-    { service: "Individual Therapy", duration: "60 min", price: 220, description: "Extended session for complex issues, trauma processing, or intensive therapeutic work requiring more time and depth." },
-    { service: "Couples Therapy", duration: "60 min", price: 240, description: "Work on communication, conflict resolution, intimacy, and relationship dynamics with your partner in a safe, guided environment." },
-    { service: "Family Therapy", duration: "60 min", price: 260, description: "Address family dynamics, improve communication between family members, and work through shared challenges together." },
+    { service: "Individual Therapy", duration: "30 min", price: 130, description: "A focused session for quick check-ins, addressing specific concerns, or building on previous work. Ideal for maintenance or brief interventions." },
+    { service: "Individual Therapy", duration: "45 min", price: 165, description: "Our most popular format. Enough time to explore emotions deeply, process experiences, and develop personalized coping strategies." },
+    { service: "Individual Therapy", duration: "60 min", price: 200, description: "Extended session for complex issues, trauma processing, or intensive therapeutic work requiring more time and depth." },
+    { service: "Couples Therapy", duration: "60 min", price: 230, description: "Work on communication, conflict resolution, intimacy, and relationship dynamics with your partner in a safe, guided environment." },
+    { service: "Family Therapy", duration: "60 min", price: 250, description: "Address family dynamics, improve communication between family members, and work through shared challenges together." },
   ]
 };
 

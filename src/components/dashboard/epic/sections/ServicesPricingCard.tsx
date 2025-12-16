@@ -40,7 +40,7 @@ const ServicesPricingCard: React.FC = () => {
             <div className="space-y-2">
               <div className="flex items-center justify-between bg-[#1a2332] px-3 py-2 rounded-lg border border-bronze-300/10">
                 <span className="text-sm text-muted-foreground">Individual Therapy</span>
-                <span className="text-bronze-300 font-semibold">from $35</span>
+                <span className="text-bronze-300 font-semibold">from $65</span>
               </div>
               <div className="flex items-center justify-between bg-[#1a2332] px-3 py-2 rounded-lg border border-bronze-300/10">
                 <span className="text-sm text-muted-foreground">Mental Wellness Coaching</span>

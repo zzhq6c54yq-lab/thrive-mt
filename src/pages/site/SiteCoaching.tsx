@@ -83,9 +83,9 @@ const SiteCoaching = () => {
                   'Reduce stress & feel more grounded',
                   'Build healthy routines & habits',
                   'Improve motivation & productivity',
-                  'Navigate breakups, transitions & life stress',
-                  'Strengthen communication & relationships',
-                  'Manage overwhelm, burnout, & emotional blocks',
+                  'Navigate breakups, transitions, and life stress',
+                  'Strengthen communication and relationships',
+                  'Manage overwhelm, burnout, and emotional blocks',
                   'Set clear goals & stay accountable',
                   'Create structure and balance in your life',
                   'Grow confidence, clarity, and emotional resilience'

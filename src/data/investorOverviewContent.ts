@@ -19,7 +19,7 @@ export const investorOverviewSections: InvestorSection[] = [
 
 From daily emotional grounding and AI companionship to clinical assessments, therapy access, and institutional programs, Thrive MT unifies human connection, data, and compliance into a single system.
 
-Built with HIPAA- and SOC2-compliant infrastructure, proprietary audit systems, and deep engagement tracking, Thrive MT replaces fragmented mental health tools with one cohesive operating layer designed for real outcomes, real scale, and real accountability.`
+Built with HIPAA and SOC2 compliant infrastructure, proprietary audit systems, and deep engagement tracking, Thrive MT replaces fragmented mental health tools with one cohesive operating layer designed for real outcomes, real scale, and real accountability.`
   },
   {
     id: "vision",
@@ -30,9 +30,9 @@ Built with HIPAA- and SOC2-compliant infrastructure, proprietary audit systems, 
 
 While the industry remains fragmented across wellness apps, therapy marketplaces, and enterprise benefits platforms, Thrive MT consolidates the ecosystem into one compliant, measurable, and scalable platform.
 
-By capturing longitudinal emotional data, real-time engagement behavior, clinical outcomes, institutional program performance, and reimbursement pathways within a single system, Thrive MT positions itself as the system of record for mental health.
+By capturing longitudinal emotional data, real time engagement behavior, clinical outcomes, institutional program performance, and reimbursement pathways within a single system, Thrive MT positions itself as the system of record for mental health.
 
-This enables rapid scaling through high-value institutional contracts, insurance reimbursement via group NPI structures, and enterprise deployments across government, unions, universities, and large employers.
+This enables rapid scaling through high value institutional contracts, insurance reimbursement via group NPI structures, and enterprise deployments across government, unions, universities, and large employers.
 
 The result is a platform that compounds value through data depth, regulatory readiness, and network effects, supporting a $1B valuation through ownership of the infrastructure mental health depends on.`
   },
@@ -41,15 +41,15 @@ The result is a platform that compounds value through data depth, regulatory rea
     title: "Revenue Path to $1B",
     subtitle: "Financial strategy",
     icon: DollarSign,
-    content: `Thrive MT's path to a $1B valuation within five years is driven by institutional scale, recurring revenue, and compounding infrastructure value rather than consumer-only monetization.
+    content: `Thrive MT's path to a $1B valuation within five years is driven by institutional scale, recurring revenue, and compounding infrastructure value rather than consumer only monetization.
 
-The platform is structurally designed to secure high-value contracts with government entities, unions, universities, and large employers, each capable of generating $2M to $5M in annual recurring revenue. Reaching 20 to 30 such institutional contracts places Thrive MT in the $40M to $150M ARR range.
+The platform is structurally designed to secure high value contracts with government entities, unions, universities, and large employers, each capable of generating $2M to $5M in annual recurring revenue. Reaching 20 to 30 such institutional contracts places Thrive MT in the $40M to $150M ARR range.
 
-Using conservative health-tech valuation multiples of 8x to 12x ARR for compliant, infrastructure-driven platforms, this alone supports a $320M to $1.8B valuation range.
+Using conservative health tech valuation multiples of 8x to 12x ARR for compliant, infrastructure driven platforms, this alone supports a $320M to $1.8B valuation range.
 
-In parallel, insurance reimbursement enabled by group NPI pathways introduces scalable, non-linear revenue through covered therapy, coaching, and hybrid care models. As utilization increases across institutional cohorts, revenue grows without proportional increases in acquisition costs.
+In parallel, insurance reimbursement enabled by group NPI pathways introduces scalable, nonlinear revenue through covered therapy, coaching, and hybrid care models. As utilization increases across institutional cohorts, revenue grows without proportional increases in acquisition costs.
 
-Layered on top of this is optional individual-market monetization, premium programs for specialized populations, and data-informed program licensing, all built on the same core platform.
+Layered on top of this is optional individual market monetization, premium programs for specialized populations, and data informed program licensing, all built on the same core platform.
 
 Because Thrive MT captures longitudinal engagement, outcomes, and institutional performance data, each new contract increases platform value, defensibility, and pricing power. The result is a revenue model that compounds over time through predictable, recurring, and diversified income streams.`
   },
@@ -64,7 +64,7 @@ Consumer wellness apps like Calm and Headspace are optimized for content engagem
 
 Therapy marketplaces such as BetterHelp and Talkspace are structured around session volume rather than ecosystem ownership and lack the infrastructure to measure engagement before and after care, integrate institutional programs, or operate as a system of record.
 
-Enterprise platforms like Lyra and Spring Health face the opposite problem. While they have scale, they are burdened by legacy systems, slow iteration cycles, and limited real-time insight into user behavior. Their platforms aggregate utilization data but do not capture the full emotional, behavioral, and engagement journey at the individual level.
+Enterprise platforms like Lyra and Spring Health face the opposite problem. While they have scale, they are burdened by legacy systems, slow iteration cycles, and limited real time insight into user behavior. Their platforms aggregate utilization data but do not capture the full emotional, behavioral, and engagement journey at the individual level.
 
 Thrive MT was built natively to unify these layers from day one, combining individual experience, clinical tools, AI support, institutional oversight, and compliance infrastructure into a single system.
 
@@ -73,7 +73,7 @@ As Thrive MT accumulates longitudinal data, engagement intelligence, institution
   {
     id: "competitive-comparison",
     title: "Direct Competitive Comparison",
-    subtitle: "Feature-by-feature analysis",
+    subtitle: "Feature by feature analysis",
     icon: BarChart3,
     hasCharts: true,
     content: "" // Content rendered as charts
@@ -103,9 +103,9 @@ export const strategicComparisonData = [
   {
     category: "Scope of Care",
     thrive: "Full ecosystem including AI, therapy, coaching, programs, and institutions",
-    calm: "Content-based wellness",
-    betterhelp: "Session-based therapy",
-    lyra: "Employer-sponsored care"
+    calm: "Content based wellness",
+    betterhelp: "Session based therapy",
+    lyra: "Employer sponsored care"
   },
   {
     category: "Longitudinal Data",
@@ -116,7 +116,7 @@ export const strategicComparisonData = [
   },
   {
     category: "Engagement Tracking",
-    thrive: "Real-time, multi-layer engagement metrics audit",
+    thrive: "Real time, multi layer engagement metrics audit",
     calm: "Time spent and content views",
     betterhelp: "Appointment and message activity",
     lyra: "Utilization rates"
@@ -125,7 +125,7 @@ export const strategicComparisonData = [
     category: "Compliance Infrastructure",
     thrive: "Native HIPAA and SOC2 with automated audits",
     calm: "Limited clinical compliance",
-    betterhelp: "HIPAA-focused with limited SOC2 depth",
+    betterhelp: "HIPAA focused with limited SOC2 depth",
     lyra: "HIPAA and SOC2 built on legacy systems"
   },
   {
@@ -133,11 +133,11 @@ export const strategicComparisonData = [
     thrive: "5,000+ point automated audit and failure prevention",
     calm: "None",
     betterhelp: "None",
-    lyra: "Internal and non-transparent"
+    lyra: "Internal and nontransparent"
   },
   {
     category: "AI Integration",
-    thrive: "Daily AI companion plus AI-led clinical workshops",
+    thrive: "Daily AI companion plus AI led clinical workshops",
     calm: "Guided content only",
     betterhelp: "Limited triage or chat",
     lyra: "Minimal AI personalization"
@@ -145,9 +145,9 @@ export const strategicComparisonData = [
   {
     category: "Institutional Readiness",
     thrive: "Built for DoD, unions, universities, and enterprises",
-    calm: "Consumer-only",
+    calm: "Consumer only",
     betterhelp: "Limited institutional fit",
-    lyra: "Enterprise-only"
+    lyra: "Enterprise only"
   },
   {
     category: "Insurance Reimbursement",
@@ -219,7 +219,7 @@ export const featureComparisonData: FeatureRow[] = [
     simplepractice: "no"
   },
   {
-    capability: "Crisis-aware interface",
+    capability: "Crisis aware interface",
     thrive: "yes",
     calm: "no",
     betterhelp: "limited",
@@ -235,7 +235,7 @@ export const featureComparisonData: FeatureRow[] = [
     simplepractice: "no"
   },
   {
-    capability: "Multi-role portals",
+    capability: "Multi role portals",
     thrive: "yes",
     calm: "no",
     betterhelp: "no",

@@ -19,7 +19,7 @@ const SiteLanding = () => {
       {/* Hero Section */}
       <SiteHeroSection
         title="Modern Mental Health for Real Life"
-        subtitle="Accessible therapy, premium coaching, and AI-powered wellness tools — designed to help you feel better and grow stronger."
+        subtitle="Accessible therapy, premium coaching, and AI powered wellness tools. Designed to help you feel better and grow stronger."
       >
         <div className="flex flex-col sm:flex-row gap-4 justify-center">
           <Link to="/demo">

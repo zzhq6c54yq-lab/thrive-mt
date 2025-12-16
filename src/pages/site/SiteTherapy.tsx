@@ -19,7 +19,7 @@ const SiteTherapy = () => {
       {/* Hero */}
       <SiteHeroSection
         title="Healing Starts with Being Heard"
-        subtitle="Licensed therapists who actually listen — because you deserve to be understood."
+        subtitle="Licensed therapists who actually listen. Because you deserve to be understood."
         accentColor="lavender"
       >
         <div className="flex flex-col sm:flex-row gap-4 justify-center mt-6">
@@ -95,7 +95,7 @@ const SiteTherapy = () => {
               We accept most major insurance plans. Your therapist is paid the same high rate, ensuring quality care.
             </p>
             <div className="text-center">
-              <div className="text-xl md:text-2xl font-bold text-bronze-400 mb-2">Insurance Rate: $110-$220 per session</div>
+              <div className="text-xl md:text-2xl font-bold text-bronze-400 mb-2">Insurance Rate: $130 to $200 per session</div>
               <p className="text-sm md:text-base text-foreground/60">You pay only your copay or deductible</p>
             </div>
           </div>

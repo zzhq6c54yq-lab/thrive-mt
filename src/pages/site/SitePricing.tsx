@@ -12,7 +12,7 @@ const SitePricing = () => {
     <main className="bg-black">
       <SEOHead 
         title="Therapy & Coaching Pricing"
-        description="Transparent pricing for online therapy and wellness coaching. Self-pay from $80/session, insurance accepted. Sliding scale and financial assistance available."
+        description="Transparent pricing for online therapy and wellness coaching. Self pay from $65 per session, insurance accepted. Sliding scale and financial assistance available."
         keywords="therapy pricing, coaching cost, mental health pricing, affordable therapy, insurance therapy, sliding scale therapy, therapy cost, counseling rates"
         canonicalUrl="https://thrive-mental.com/pricing"
       />

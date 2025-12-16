@@ -47,7 +47,7 @@ const SiteAbout = () => {
               backgroundClip: 'text',
             }}>Our Vision</h2>
             <p className="text-base md:text-xl text-foreground/80 max-w-2xl mx-auto leading-relaxed">
-              A world where high-quality emotional support is available anytime, anywhere — where getting help is as easy as opening an app.
+              A world where high quality emotional support is available anytime, anywhere. Where getting help is as easy as opening an app.
             </p>
           </Card>
         </div>
