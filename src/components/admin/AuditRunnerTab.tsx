@@ -424,39 +424,7 @@ const AuditRunnerTab: React.FC = () => {
                     <Download className="h-4 w-4 mr-2" />
                     Export CSV
                   </Button>
-                  <Button 
-                    variant="outline" 
-                    onClick={() => {
-                      const errorItems = items.filter(i => i.status === 'fail' || i.priority === 'critical');
-                      if (errorItems.length === 0) {
-                        toast.info('No errors or critical items found');
-                        return;
-                      }
-                      const headers = ['Row', 'Module', 'Feature', 'Scenario', 'Priority', 'Status', 'Notes'];
-                      const csvContent = [
-                        headers.join(','),
-                        ...errorItems.map(item => [
-                          item.row_number,
-                          `"${item.module}"`,
-                          `"${item.feature}"`,
-                          `"${item.scenario.replace(/"/g, '""')}"`,
-                          item.priority,
-                          item.status,
-                          `"${(item.notes || '').replace(/"/g, '""')}"`
-                        ].join(','))
-                      ].join('\n');
-                      const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
-                      const link = document.createElement('a');
-                      link.href = URL.createObjectURL(blob);
-                      link.download = `thrivemt-ERRORS-${new Date().toISOString().split('T')[0]}.csv`;
-                      link.click();
-                      toast.success(`Exported ${errorItems.length} errors/critical items`);
-                    }}
-                    className="border-red-500/50 text-red-400 hover:bg-red-500/10"
-                  >
-                    <XCircle className="h-4 w-4 mr-2" />
-                    Download Errors
-                  </Button>
+                  {/* Download Errors button moved to prominent banner below filters */}
                   <Button 
                     className="bg-green-600 hover:bg-green-700"
                     disabled={running || seeding}
@@ -541,6 +509,39 @@ const AuditRunnerTab: React.FC = () => {
               </SelectContent>
             </Select>
           </div>
+
+          {/* Prominent Download Errors Banner - Only shows when there are failed or critical tests */}
+          {(stats.failed > 0 || stats.critical > 0) && (
+            <button
+              onClick={() => {
+                const errorItems = items.filter(i => i.status === 'fail' || i.priority === 'critical');
+                const headers = ['Row', 'Module', 'Feature', 'Scenario', 'Priority', 'Status', 'Notes'];
+                const csvContent = [
+                  headers.join(','),
+                  ...errorItems.map(item => [
+                    item.row_number,
+                    `"${item.module}"`,
+                    `"${item.feature}"`,
+                    `"${item.scenario.replace(/"/g, '""')}"`,
+                    item.priority,
+                    item.status,
+                    `"${(item.notes || '').replace(/"/g, '""')}"`
+                  ].join(','))
+                ].join('\n');
+                const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+                const link = document.createElement('a');
+                link.href = URL.createObjectURL(blob);
+                link.download = `thrivemt-ERRORS-${new Date().toISOString().split('T')[0]}.csv`;
+                link.click();
+                toast.success(`Exported ${errorItems.length} errors/critical items`);
+              }}
+              className="w-full bg-red-500 hover:bg-red-600 text-black font-bold text-lg py-4 px-6 rounded-lg mb-6 flex items-center justify-center gap-3 transition-colors cursor-pointer"
+            >
+              <AlertCircle className="h-6 w-6" />
+              DOWNLOAD ERRORS ({stats.failed} Failed + {stats.critical} Critical)
+              <Download className="h-6 w-6" />
+            </button>
+          )}
 
           {/* Results Table */}
           <div className="text-sm text-muted-foreground mb-2">
