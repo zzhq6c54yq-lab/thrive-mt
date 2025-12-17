@@ -2,6 +2,8 @@ export type OnboardingStep =
   | 'intro' 
   | 'mood' 
   | 'moodResponse' 
+  | 'breathing'
+  | 'hipaaNotice'
   | 'register' 
   | 'subscription' 
   | 'subscriptionAddOns' 

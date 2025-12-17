@@ -71,8 +71,8 @@ export const useOnboardingFlow = (demoMode: boolean = false) => {
   }, [saveProgress]);
 
   const nextStep = useCallback(() => {
-    // Simplified demo flow: intro -> mood -> moodResponse -> completed
-    const demoStepOrder: OnboardingStep[] = ['intro', 'mood', 'moodResponse', 'completed'];
+    // Demo flow: intro -> mood -> moodResponse -> breathing -> hipaaNotice -> completed
+    const demoStepOrder: OnboardingStep[] = ['intro', 'mood', 'moodResponse', 'breathing', 'hipaaNotice', 'completed'];
     
     // Full flow for normal onboarding
     const fullStepOrder: OnboardingStep[] = [

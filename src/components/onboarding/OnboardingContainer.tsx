@@ -10,6 +10,8 @@ import SubscriptionScreen from "@/components/home/SubscriptionScreen";
 import SubscriptionAddOns from "@/components/home/SubscriptionAddOns";
 import CheckoutScreen from "@/components/home/CheckoutScreen";
 import VisionBoard from "@/components/home/VisionBoard";
+import DemoBreathingStep from "@/components/onboarding/DemoBreathingStep";
+import DemoHIPAANotice from "@/components/demo/DemoHIPAANotice";
 
 const OnboardingContainer: React.FC = () => {
   const navigate = useNavigate();
@@ -190,6 +192,12 @@ const OnboardingContainer: React.FC = () => {
           onSkip={completeOnboarding}
         />
       );
+
+    case 'breathing':
+      return <DemoBreathingStep onComplete={nextStep} />;
+
+    case 'hipaaNotice':
+      return <DemoHIPAANotice onContinue={nextStep} />;
       
     default:
       return <IntroScreen onContinue={nextStep} />;
