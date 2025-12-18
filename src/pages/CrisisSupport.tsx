@@ -1,24 +1,49 @@
 
 import React from "react";
-import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { ArrowLeft, Phone, MessageSquare, Hospital, Clock, AlertTriangle } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import HomeButton from "@/components/HomeButton";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle, CardFooter } from "@/components/ui/card";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { motion } from "framer-motion";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 
 const CrisisSupport = () => {
+  const navigate = useNavigate();
+
+  const handleCall988 = () => {
+    window.location.href = 'tel:988';
+  };
+
+  const handleTextCrisisLine = () => {
+    window.location.href = 'sms:741741?body=HOME';
+  };
+
+  const handleFindER = () => {
+    window.open('https://www.google.com/maps/search/emergency+room+near+me', '_blank');
+  };
+
+  const handleFindCrisisCenters = () => {
+    window.open('https://www.google.com/maps/search/mental+health+crisis+center+near+me', '_blank');
+  };
+
+  const handleFindMobileCrisis = () => {
+    window.open('https://www.google.com/search?q=mobile+crisis+unit+near+me', '_blank');
+  };
+
   return (
     <div className="min-h-screen bg-gradient-to-b from-[#f8f9fa] to-[#eef1f5]">
       <div className="bg-gradient-to-r from-[#1a1a1f] to-[#212124] text-white py-12 relative">
         <div className="container px-4 max-w-6xl mx-auto">
           <div className="flex justify-between items-center mb-6">
-            <Link to="/" className="inline-flex items-center text-red-400 hover:text-red-300 transition-colors">
+            <button 
+              onClick={() => navigate('/app/dashboard')}
+              className="inline-flex items-center text-red-400 hover:text-red-300 transition-colors"
+            >
               <ArrowLeft className="mr-2 h-4 w-4" />
-              Back to Home
-            </Link>
+              Back to Dashboard
+            </button>
             <HomeButton />
           </div>
           
@@ -58,12 +83,17 @@ const CrisisSupport = () => {
                   </p>
                   <div className="flex flex-wrap gap-2">
                     <Button 
+                      onClick={() => navigate('/app/dashboard')}
                       className="bg-gradient-to-r from-[#D4AF37] to-[#B8941F] hover:from-[#E5C5A1] hover:to-[#D4AF37] text-black font-semibold"
                     >
                       <MessageSquare className="h-4 w-4 mr-2" />
                       Talk to Henry Now
                     </Button>
-                    <Button variant="outline" className="border-[#D4AF37]/40">
+                    <Button 
+                      onClick={() => navigate('/app/real-time-therapy')}
+                      variant="outline" 
+                      className="border-[#D4AF37]/40"
+                    >
                       <Phone className="h-4 w-4 mr-2" />
                       Connect to Therapist
                     </Button>
@@ -96,7 +126,7 @@ const CrisisSupport = () => {
                 <div className="p-4 border rounded-lg">
                   <h3 className="font-medium mb-1">National Suicide Prevention Lifeline</h3>
                   <p className="text-gray-700 mb-2">Free and confidential support for people in distress.</p>
-                  <Button variant="outline" className="w-full">
+                  <Button onClick={handleCall988} variant="outline" className="w-full">
                     <Phone className="mr-2 h-4 w-4" />
                     988 or 1-800-273-8255
                   </Button>
@@ -105,7 +135,7 @@ const CrisisSupport = () => {
                 <div className="p-4 border rounded-lg">
                   <h3 className="font-medium mb-1">Crisis Text Line</h3>
                   <p className="text-gray-700 mb-2">Text-based crisis support available 24/7.</p>
-                  <Button variant="outline" className="w-full">
+                  <Button onClick={handleTextCrisisLine} variant="outline" className="w-full">
                     <MessageSquare className="mr-2 h-4 w-4" />
                     Text HOME to 741741
                   </Button>
@@ -114,7 +144,7 @@ const CrisisSupport = () => {
                 <div className="p-4 border rounded-lg">
                   <h3 className="font-medium mb-1">Veterans Crisis Line</h3>
                   <p className="text-gray-700 mb-2">Support for veterans and their loved ones.</p>
-                  <Button variant="outline" className="w-full">
+                  <Button onClick={handleCall988} variant="outline" className="w-full">
                     <Phone className="mr-2 h-4 w-4" />
                     988 then press 1
                   </Button>
@@ -138,7 +168,7 @@ const CrisisSupport = () => {
                   <p className="text-gray-700 mb-3">
                     For immediate life-threatening situations, go to your nearest emergency room or call 911.
                   </p>
-                  <Button className="w-full">Find Nearest ER</Button>
+                  <Button onClick={handleFindER} className="w-full">Find Nearest ER</Button>
                 </div>
                 
                 <div>
@@ -146,7 +176,7 @@ const CrisisSupport = () => {
                   <p className="text-gray-700 mb-3">
                     Walk-in crisis centers can provide immediate assessment and support.
                   </p>
-                  <Button className="w-full">Find Crisis Centers</Button>
+                  <Button onClick={handleFindCrisisCenters} className="w-full">Find Crisis Centers</Button>
                 </div>
                 
                 <div>
@@ -154,7 +184,7 @@ const CrisisSupport = () => {
                   <p className="text-gray-700 mb-3">
                     Teams that can come to your location to provide emergency mental health services.
                   </p>
-                  <Button className="w-full">Find Mobile Crisis Units</Button>
+                  <Button onClick={handleFindMobileCrisis} className="w-full">Find Mobile Crisis Units</Button>
                 </div>
               </div>
             </CardContent>
@@ -176,7 +206,7 @@ const CrisisSupport = () => {
                 <p className="text-gray-700 mb-3">
                   Create a plan to help you navigate moments of crisis. Include warning signs, coping strategies, and emergency contacts.
                 </p>
-                <Button className="w-full">Create Safety Plan</Button>
+                <Button onClick={() => navigate('/app/journaling')} className="w-full">Create Safety Plan</Button>
               </div>
               
               <div className="p-4 border rounded-lg">
@@ -184,7 +214,7 @@ const CrisisSupport = () => {
                 <p className="text-gray-700 mb-3">
                   Identify friends, family members, or professionals who can support you during difficult times.
                 </p>
-                <Button className="w-full">Build Support Network</Button>
+                <Button onClick={() => navigate('/app/support-circle')} className="w-full">Build Support Network</Button>
               </div>
             </div>
           </CardContent>
@@ -196,11 +226,11 @@ const CrisisSupport = () => {
             Our trained crisis counselors are available to help you navigate difficult situations.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Button size="lg" className="bg-red-600 hover:bg-red-700">
+            <Button onClick={handleCall988} size="lg" className="bg-red-600 hover:bg-red-700">
               <Phone className="mr-2 h-5 w-5" />
               Call Now
             </Button>
-            <Button size="lg" variant="outline">
+            <Button onClick={handleTextCrisisLine} size="lg" variant="outline">
               <MessageSquare className="mr-2 h-5 w-5" />
               Text Chat
             </Button>
