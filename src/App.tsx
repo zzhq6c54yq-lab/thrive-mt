@@ -1,5 +1,4 @@
-import { Routes, Route, Navigate, useLocation } from "react-router-dom";
-import { lazy, useEffect } from "react";
+import { Routes, Route, Navigate } from "react-router-dom";
 import ErrorBoundary from "./components/ErrorBoundary";
 import RouteLoadingWrapper from "./components/RouteLoadingWrapper";
 import Index from "./pages/Index";
@@ -14,8 +13,6 @@ import ConfirmEmail from "./pages/ConfirmEmail";
 import ResendConfirmationPage from "./pages/ResendConfirmationPage";
 import DearHenry from "./pages/DearHenry";
 import DearHenryAdmin from "./pages/DearHenryAdmin";
-import RedirectToAppDomain from "./components/RedirectToAppDomain";
-import { isMarketingDomain, isAppDomain, isDevelopment } from "./lib/domainConfig";
 import Dashboard from "./pages/Dashboard";
 import OnboardingPage from "./pages/OnboardingPage";
 import JournalPage from "./pages/JournalPage";
@@ -184,69 +181,19 @@ import EngagementMetricsDashboard from "./pages/EngagementMetricsDashboard";
 import { Toaster } from "@/components/ui/toaster";
 import { UserProvider } from "@/contexts/UserContext";
 import FloatingHenryAssistant from "@/components/henry/FloatingHenryAssistant";
-import SiteLayout from "@/components/site/SiteLayout";
-import SiteEntry from "@/pages/site/SiteEntry";
-import SiteLanding from "@/pages/site/SiteLanding";
-import SiteTherapy from "@/pages/site/SiteTherapy";
-import SiteCoaching from "@/pages/site/SiteCoaching";
-import SiteMeetHenry from "@/pages/site/SiteMeetHenry";
-import SitePricing from "@/pages/site/SitePricing";
-import SiteDemo from "@/pages/site/SiteDemo";
-import SiteEngagement from "@/pages/site/SiteEngagement";
-import SiteCareers from "@/pages/site/SiteCareers";
-import SiteInvestors from "@/pages/site/SiteInvestors";
-import SiteAbout from "@/pages/site/SiteAbout";
-import SiteContact from "@/pages/site/SiteContact";
-import SiteApp from "@/pages/site/SiteApp";
-import SitePrivacyPolicy from "@/pages/site/SitePrivacyPolicy";
-import SiteTermsOfService from "@/pages/site/SiteTermsOfService";
-import SiteHIPAANotice from "@/pages/site/SiteHIPAANotice";
 import "./App.css";
 
 function App() {
-  const showMarketing = isMarketingDomain() || isDevelopment();
-  const showApp = !isMarketingDomain() || isDevelopment();
-
   return (
     <ErrorBoundary>
       <UserProvider>
         <RouteLoadingWrapper>
           <div className="min-h-screen bg-gradient-to-br from-gray-900 via-gray-800 to-blue-900">
-            {/* Global Floating Henry Assistant - only show on app domain or in dev */}
-            {showApp && <FloatingHenryAssistant />}
+            <FloatingHenryAssistant />
             
             <Routes>
-              {/* Marketing Website Routes - Only on .com domain (or dev) */}
-              {showMarketing && (
-                <Route element={<SiteLayout />}>
-                  <Route path="/" element={<SiteEntry />} />
-                  <Route path="/home" element={<SiteLanding />} />
-                  <Route path="/therapy" element={<SiteTherapy />} />
-                  <Route path="/coaching" element={<SiteCoaching />} />
-                  <Route path="/henry" element={<SiteMeetHenry />} />
-                  <Route path="/pricing" element={<SitePricing />} />
-                  <Route path="/demo" element={<SiteDemo />} />
-                  <Route path="/engagement" element={<SiteEngagement />} />
-                  <Route path="/careers" element={<SiteCareers />} />
-                  <Route path="/investors" element={<SiteInvestors />} />
-                  <Route path="/about" element={<SiteAbout />} />
-                  <Route path="/contact" element={<SiteContact />} />
-                  <Route path="/the-app" element={<SiteApp />} />
-                  <Route path="/privacy" element={<SitePrivacyPolicy />} />
-                  <Route path="/terms" element={<SiteTermsOfService />} />
-                  <Route path="/hipaa" element={<SiteHIPAANotice />} />
-                </Route>
-              )}
-
-              {/* On .app domain only - redirect root to /app */}
-              {isAppDomain() && (
-                <Route path="/" element={<Navigate to="/app" replace />} />
-              )}
-
-              {/* On .com domain - redirect /app/* to .app domain */}
-              {isMarketingDomain() && !isDevelopment() && (
-                <Route path="/app/*" element={<RedirectToAppDomain />} />
-              )}
+              {/* Root redirects to app */}
+              <Route path="/" element={<Navigate to="/app" replace />} />
 
               {/* App Routes - Available on .app domain and in dev */}
           <Route path="/app" element={<Index />} />
