@@ -142,9 +142,9 @@ const DemoBreathingStep: React.FC<DemoBreathingStepProps> = ({ onComplete }) => 
       <motion.button
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
-        transition={{ delay: 2 }}
+        transition={{ delay: 0.5 }}
         onClick={onComplete}
-        className="mt-8 text-white/40 text-sm hover:text-white/60 transition-colors"
+        className="mt-8 py-3 px-6 min-h-[44px] text-white/70 text-base underline hover:text-white transition-colors"
       >
         Skip breathing exercise
       </motion.button>

@@ -7,7 +7,7 @@ import { ScrollArea } from '@/components/ui/scroll-area';
 import { useUser } from '@/contexts/UserContext';
 import { supabase } from '@/integrations/supabase/client';
 import { Phone, Heart, Headphones, MessageCircle, Shield, AlertCircle, X } from 'lucide-react';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { z } from 'zod';
 
 const crisisEventSchema = z.object({
@@ -22,6 +22,7 @@ const CrisisOverlay: React.FC = () => {
   const [hasCompletedOnboarding, setHasCompletedOnboarding] = useState(false);
   const { user, profile } = useUser();
   const location = useLocation();
+  const navigate = useNavigate();
 
   // Check onboarding completion status
   useEffect(() => {
@@ -195,6 +196,11 @@ const CrisisOverlay: React.FC = () => {
                       Binaural beats for relaxation
                     </p>
                     <Button 
+                      onClick={() => {
+                        logCrisisEvent('calming_sounds', 'crisis_overlay');
+                        navigate('/app/mental-wellness-tools/binaural');
+                        setIsOpen(false);
+                      }}
                       className="w-full bg-gradient-to-r from-purple-700 to-purple-800 hover:from-purple-600 hover:to-purple-700 text-yellow-100 font-bold py-2 border border-yellow-500 hover:border-yellow-400 transition-all duration-200"
                     >
                       PLAY SOUNDS
