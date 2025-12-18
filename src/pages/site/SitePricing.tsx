@@ -6,8 +6,11 @@ import SiteHeroSection from "@/components/site/SiteHeroSection";
 import PricingCalculator from "@/components/site/PricingCalculator";
 import InsuranceChecker from "@/components/site/InsuranceChecker";
 import { SEOHead } from "@/components/seo";
+import { getAppUrl, isDevelopment } from "@/lib/domainConfig";
 
 const SitePricing = () => {
+  const getStartedUrl = getAppUrl('/app');
+  
   return (
     <main className="bg-black">
       <SEOHead 
@@ -20,11 +23,19 @@ const SitePricing = () => {
         title="Invest in Your Wellbeing"
         subtitle="Premium care, transparent pricing, real results."
       >
-        <Link to="/app">
-          <Button size="lg" className="bg-gradient-to-r from-bronze-500 to-bronze-600 hover:from-bronze-600 hover:to-bronze-700 text-black font-semibold mt-6">
-            Get Started Today
-          </Button>
-        </Link>
+        {isDevelopment() ? (
+          <Link to="/app">
+            <Button size="lg" className="bg-gradient-to-r from-bronze-500 to-bronze-600 hover:from-bronze-600 hover:to-bronze-700 text-black font-semibold mt-6">
+              Get Started Today
+            </Button>
+          </Link>
+        ) : (
+          <a href={getStartedUrl}>
+            <Button size="lg" className="bg-gradient-to-r from-bronze-500 to-bronze-600 hover:from-bronze-600 hover:to-bronze-700 text-black font-semibold mt-6">
+              Get Started Today
+            </Button>
+          </a>
+        )}
       </SiteHeroSection>
 
       <div className="py-12 md:py-20 px-4 md:px-6">
@@ -120,11 +131,19 @@ const SitePricing = () => {
                   <div className="text-xl md:text-2xl font-bold text-bronze-400 mb-4 md:mb-6">
                     ${bundle.price}{(bundle as any).period || ''}
                   </div>
-                <Link to="/app">
-                  <Button className="w-full bg-bronze-500 hover:bg-bronze-600 text-black font-semibold whitespace-nowrap px-4 text-sm md:text-base">
-                    Get Started
-                  </Button>
-                </Link>
+                {isDevelopment() ? (
+                  <Link to="/app">
+                    <Button className="w-full bg-bronze-500 hover:bg-bronze-600 text-black font-semibold whitespace-nowrap px-4 text-sm md:text-base">
+                      Get Started
+                    </Button>
+                  </Link>
+                ) : (
+                  <a href={getStartedUrl}>
+                    <Button className="w-full bg-bronze-500 hover:bg-bronze-600 text-black font-semibold whitespace-nowrap px-4 text-sm md:text-base">
+                      Get Started
+                    </Button>
+                  </a>
+                )}
                 </Card>
               ))}
             </div>

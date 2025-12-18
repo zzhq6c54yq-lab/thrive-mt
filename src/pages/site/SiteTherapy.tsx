@@ -6,8 +6,11 @@ import { therapyPricing } from "@/data/servicePricing";
 import SiteHeroSection from "@/components/site/SiteHeroSection";
 import { FinancialHelpBanner } from "@/components/therapy/FinancialHelpBanner";
 import { SEOHead } from "@/components/seo";
+import { getAppUrl, isDevelopment } from "@/lib/domainConfig";
 
 const SiteTherapy = () => {
+  const bookTherapyUrl = getAppUrl('/app');
+  
   return (
     <main className="bg-black">
       <SEOHead 
@@ -23,11 +26,19 @@ const SiteTherapy = () => {
         accentColor="lavender"
       >
         <div className="flex flex-col sm:flex-row gap-4 justify-center mt-6">
-          <Link to="/app">
-            <Button size="lg" className="bg-gradient-to-r from-bronze-500 to-bronze-600 hover:from-bronze-600 hover:to-bronze-700 text-black font-semibold">
-              Book Therapy
-            </Button>
-          </Link>
+          {isDevelopment() ? (
+            <Link to="/app">
+              <Button size="lg" className="bg-gradient-to-r from-bronze-500 to-bronze-600 hover:from-bronze-600 hover:to-bronze-700 text-black font-semibold">
+                Book Therapy
+              </Button>
+            </Link>
+          ) : (
+            <a href={bookTherapyUrl}>
+              <Button size="lg" className="bg-gradient-to-r from-bronze-500 to-bronze-600 hover:from-bronze-600 hover:to-bronze-700 text-black font-semibold">
+                Book Therapy
+              </Button>
+            </a>
+          )}
           <Link to="/pricing">
             <Button size="lg" variant="outline" className="border-bronze-500 text-bronze-400 hover:bg-bronze-500/10">
               View All Pricing

@@ -1,5 +1,5 @@
-import { Routes, Route, Navigate } from "react-router-dom";
-import { lazy } from "react";
+import { Routes, Route, Navigate, useLocation } from "react-router-dom";
+import { lazy, useEffect } from "react";
 import ErrorBoundary from "./components/ErrorBoundary";
 import RouteLoadingWrapper from "./components/RouteLoadingWrapper";
 import Index from "./pages/Index";
@@ -14,6 +14,8 @@ import ConfirmEmail from "./pages/ConfirmEmail";
 import ResendConfirmationPage from "./pages/ResendConfirmationPage";
 import DearHenry from "./pages/DearHenry";
 import DearHenryAdmin from "./pages/DearHenryAdmin";
+import RedirectToAppDomain from "./components/RedirectToAppDomain";
+import { isMarketingDomain, isAppDomain, isDevelopment } from "./lib/domainConfig";
 import Dashboard from "./pages/Dashboard";
 import OnboardingPage from "./pages/OnboardingPage";
 import JournalPage from "./pages/JournalPage";
@@ -202,36 +204,51 @@ import SiteHIPAANotice from "@/pages/site/SiteHIPAANotice";
 import "./App.css";
 
 function App() {
+  const showMarketing = isMarketingDomain() || isDevelopment();
+  const showApp = !isMarketingDomain() || isDevelopment();
+
   return (
     <ErrorBoundary>
       <UserProvider>
         <RouteLoadingWrapper>
           <div className="min-h-screen bg-gradient-to-br from-gray-900 via-gray-800 to-blue-900">
-            {/* Global Floating Henry Assistant */}
-            <FloatingHenryAssistant />
+            {/* Global Floating Henry Assistant - only show on app domain or in dev */}
+            {showApp && <FloatingHenryAssistant />}
             
             <Routes>
-          {/* Marketing Website Routes - Root Level */}
-          <Route element={<SiteLayout />}>
-            <Route path="/" element={<SiteEntry />} />
-            <Route path="/home" element={<SiteLanding />} />
-            <Route path="/therapy" element={<SiteTherapy />} />
-            <Route path="/coaching" element={<SiteCoaching />} />
-            <Route path="/henry" element={<SiteMeetHenry />} />
-            <Route path="/pricing" element={<SitePricing />} />
-            <Route path="/demo" element={<SiteDemo />} />
-            <Route path="/engagement" element={<SiteEngagement />} />
-            <Route path="/careers" element={<SiteCareers />} />
-            <Route path="/investors" element={<SiteInvestors />} />
-            <Route path="/about" element={<SiteAbout />} />
-            <Route path="/contact" element={<SiteContact />} />
-            <Route path="/the-app" element={<SiteApp />} />
-            <Route path="/privacy" element={<SitePrivacyPolicy />} />
-            <Route path="/terms" element={<SiteTermsOfService />} />
-            <Route path="/hipaa" element={<SiteHIPAANotice />} />
-          </Route>
+              {/* Marketing Website Routes - Only on .com domain (or dev) */}
+              {showMarketing && (
+                <Route element={<SiteLayout />}>
+                  <Route path="/" element={<SiteEntry />} />
+                  <Route path="/home" element={<SiteLanding />} />
+                  <Route path="/therapy" element={<SiteTherapy />} />
+                  <Route path="/coaching" element={<SiteCoaching />} />
+                  <Route path="/henry" element={<SiteMeetHenry />} />
+                  <Route path="/pricing" element={<SitePricing />} />
+                  <Route path="/demo" element={<SiteDemo />} />
+                  <Route path="/engagement" element={<SiteEngagement />} />
+                  <Route path="/careers" element={<SiteCareers />} />
+                  <Route path="/investors" element={<SiteInvestors />} />
+                  <Route path="/about" element={<SiteAbout />} />
+                  <Route path="/contact" element={<SiteContact />} />
+                  <Route path="/the-app" element={<SiteApp />} />
+                  <Route path="/privacy" element={<SitePrivacyPolicy />} />
+                  <Route path="/terms" element={<SiteTermsOfService />} />
+                  <Route path="/hipaa" element={<SiteHIPAANotice />} />
+                </Route>
+              )}
 
-          {/* App Routes - All Under /app Prefix */}
+              {/* On .app domain only - redirect root to /app */}
+              {isAppDomain() && (
+                <Route path="/" element={<Navigate to="/app" replace />} />
+              )}
+
+              {/* On .com domain - redirect /app/* to .app domain */}
+              {isMarketingDomain() && !isDevelopment() && (
+                <Route path="/app/*" element={<RedirectToAppDomain />} />
+              )}
+
+              {/* App Routes - Available on .app domain and in dev */}
           <Route path="/app" element={<Index />} />
           <Route path="/app/auth" element={<Auth />} />
           <Route path="/app/auth/confirm" element={<ConfirmEmail />} />
