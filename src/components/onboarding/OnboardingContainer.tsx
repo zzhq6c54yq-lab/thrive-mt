@@ -10,23 +10,18 @@ import SubscriptionScreen from "@/components/home/SubscriptionScreen";
 import SubscriptionAddOns from "@/components/home/SubscriptionAddOns";
 import CheckoutScreen from "@/components/home/CheckoutScreen";
 import VisionBoard from "@/components/home/VisionBoard";
-import DemoBreathingStep from "@/components/onboarding/DemoBreathingStep";
-import DemoHIPAANotice from "@/components/demo/DemoHIPAANotice";
 
 const OnboardingContainer: React.FC = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const { user, profile, loading } = useUser();
-  
-  // Check if we're in demo mode
-  const demoMode = location.state?.demoMode || new URLSearchParams(location.search).get('demo') === 'true';
 
   // For authenticated users, check if onboarding is already completed in database
   useEffect(() => {
-    if (!demoMode && !loading && user && profile?.onboarding_completed) {
+    if (!loading && user && profile?.onboarding_completed) {
       navigate('/app/dashboard');
     }
-  }, [demoMode, loading, user, profile, navigate]);
+  }, [loading, user, profile, navigate]);
   
   const {
     currentStep,
@@ -51,7 +46,7 @@ const OnboardingContainer: React.FC = () => {
     toggleQuality,
     toggleGoal,
     completeOnboarding,
-  } = useOnboardingFlow(demoMode);
+  } = useOnboardingFlow();
 
   // Check for navigation state from ThriveButton or other sources
   useEffect(() => {
@@ -102,14 +97,9 @@ const OnboardingContainer: React.FC = () => {
   // Redirect to dashboard after onboarding completion
   useEffect(() => {
     if (isOnboardingComplete || currentStep === 'completed') {
-      // In demo mode, pass demoUser flag to dashboard
-      if (demoMode) {
-        navigate('/app/dashboard', { state: { demoUser: true } });
-      } else {
-        navigate('/app/dashboard');
-      }
+      navigate('/app/dashboard');
     }
-  }, [isOnboardingComplete, currentStep, navigate, demoMode]);
+  }, [isOnboardingComplete, currentStep, navigate]);
 
   // Show loading message while redirecting
   if (isOnboardingComplete || currentStep === 'completed') {
@@ -192,12 +182,6 @@ const OnboardingContainer: React.FC = () => {
           onSkip={completeOnboarding}
         />
       );
-
-    case 'breathing':
-      return <DemoBreathingStep onComplete={nextStep} />;
-
-    case 'hipaaNotice':
-      return <DemoHIPAANotice onContinue={nextStep} />;
       
     default:
       return <IntroScreen onContinue={nextStep} />;
