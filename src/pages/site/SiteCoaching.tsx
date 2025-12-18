@@ -5,8 +5,11 @@ import { Target, TrendingUp, Heart, Briefcase, Users, Sparkles, Brain, MessageCi
 import { coachingPricing } from "@/data/servicePricing";
 import SiteHeroSection from "@/components/site/SiteHeroSection";
 import { SEOHead } from "@/components/seo";
+import { getAppUrl, isDevelopment } from "@/lib/domainConfig";
 
 const SiteCoaching = () => {
+  const bookCoachUrl = getAppUrl('/app');
+  
   return (
     <main className="bg-black">
       <SEOHead 
@@ -22,11 +25,19 @@ const SiteCoaching = () => {
         accentColor="teal"
       >
         <div className="flex flex-col sm:flex-row gap-4 justify-center mt-6">
-          <Link to="/app">
-            <Button size="lg" className="bg-gradient-to-r from-bronze-500 to-bronze-600 hover:from-bronze-600 hover:to-bronze-700 text-black font-semibold">
-              Book a Coach
-            </Button>
-          </Link>
+          {isDevelopment() ? (
+            <Link to="/app">
+              <Button size="lg" className="bg-gradient-to-r from-bronze-500 to-bronze-600 hover:from-bronze-600 hover:to-bronze-700 text-black font-semibold">
+                Book a Coach
+              </Button>
+            </Link>
+          ) : (
+            <a href={bookCoachUrl}>
+              <Button size="lg" className="bg-gradient-to-r from-bronze-500 to-bronze-600 hover:from-bronze-600 hover:to-bronze-700 text-black font-semibold">
+                Book a Coach
+              </Button>
+            </a>
+          )}
           <Link to="/pricing">
             <Button size="lg" variant="outline" className="border-bronze-500 text-bronze-400 hover:bg-bronze-500/10">
               View All Pricing
@@ -295,11 +306,19 @@ const SiteCoaching = () => {
 
           {/* CTA */}
           <div className="text-center">
-            <Link to="/">
-              <Button size="lg" className="bg-gradient-to-r from-bronze-500 to-bronze-600 hover:from-bronze-600 hover:to-bronze-700 text-black font-semibold text-sm md:text-base">
-                Get Started with a Coach
-              </Button>
-            </Link>
+            {isDevelopment() ? (
+              <Link to="/app">
+                <Button size="lg" className="bg-gradient-to-r from-bronze-500 to-bronze-600 hover:from-bronze-600 hover:to-bronze-700 text-black font-semibold text-sm md:text-base">
+                  Get Started with a Coach
+                </Button>
+              </Link>
+            ) : (
+              <a href={bookCoachUrl}>
+                <Button size="lg" className="bg-gradient-to-r from-bronze-500 to-bronze-600 hover:from-bronze-600 hover:to-bronze-700 text-black font-semibold text-sm md:text-base">
+                  Get Started with a Coach
+                </Button>
+              </a>
+            )}
           </div>
         </div>
       </div>
