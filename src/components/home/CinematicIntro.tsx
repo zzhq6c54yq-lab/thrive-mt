@@ -156,7 +156,7 @@ const CinematicIntro: React.FC<CinematicIntroProps> = ({ onContinue, onSkipToMai
   };
 
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center bg-[#000000] overflow-hidden relative">
+    <div className="min-h-screen flex flex-col items-center justify-center bg-gradient-to-b from-[#1a1a1a] via-[#252525] to-[#1a1a1a] overflow-hidden relative">
       {/* Animated particle field */}
       <div className="absolute inset-0 overflow-hidden">
         {Array.from({ length: 30 }).map((_, i) => (
