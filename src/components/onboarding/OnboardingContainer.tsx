@@ -104,7 +104,7 @@ const OnboardingContainer: React.FC = () => {
   // Show loading message while redirecting
   if (isOnboardingComplete || currentStep === 'completed') {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-gray-900 via-gray-800 to-blue-900 flex items-center justify-center">
+      <div className="min-h-screen bg-gradient-to-b from-[#1a1a1a] via-[#252525] to-[#1a1a1a] flex items-center justify-center">
         <div className="text-white text-xl">Redirecting to your dashboard...</div>
       </div>
     );
