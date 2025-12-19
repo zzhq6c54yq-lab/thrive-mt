@@ -156,7 +156,7 @@ const CinematicIntro: React.FC<CinematicIntroProps> = ({ onContinue, onSkipToMai
   };
 
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center bg-gradient-to-b from-[#1a1a1a] via-[#252525] to-[#1a1a1a] overflow-hidden relative">
+    <div className="min-h-screen flex flex-col items-center justify-center bg-black overflow-hidden relative">
       {/* Animated particle field */}
       <div className="absolute inset-0 overflow-hidden">
         {Array.from({ length: 30 }).map((_, i) => (
@@ -458,6 +458,21 @@ const CinematicIntro: React.FC<CinematicIntroProps> = ({ onContinue, onSkipToMai
           </div>
         </DialogContent>
       </Dialog>
+
+      {/* Bottom branding text */}
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ delay: 2, duration: 0.8 }}
+        className="absolute bottom-8 left-0 right-0 text-center px-4"
+      >
+        <p className="text-white font-semibold text-lg md:text-xl mb-1">
+          Expert Mental Health Counseling & Therapy Services
+        </p>
+        <p className="text-[#D4AF37] text-sm md:text-base">
+          thrive-mental.app
+        </p>
+      </motion.div>
     </div>
   );
 };
