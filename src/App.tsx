@@ -189,7 +189,7 @@ function App() {
     <ErrorBoundary>
       <UserProvider>
         <RouteLoadingWrapper>
-          <div className="min-h-screen flex flex-col bg-gradient-to-b from-[#1a1a1a] via-[#252525] to-[#1a1a1a]">
+          <div className="min-h-screen flex flex-col bg-black">
             <FloatingHenryAssistant />
             
             <div className="flex-grow">
