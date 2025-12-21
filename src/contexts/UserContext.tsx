@@ -26,6 +26,9 @@ interface Subscription {
   subscribed: boolean;
   subscription_tier: string | null;
   subscription_end: string | null;
+  billing_cycle?: string | null;
+  amount?: number | null;
+  status?: string | null;
 }
 
 interface UserContextType {

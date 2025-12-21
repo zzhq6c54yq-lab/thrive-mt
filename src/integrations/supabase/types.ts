@@ -4737,6 +4737,7 @@ export type Database = {
           primary_portal: string | null
           risk_level: string | null
           secondary_portal: string | null
+          stripe_customer_id: string | null
           terms_version: string | null
           time_preference_minutes: number | null
           updated_at: string | null
@@ -4760,6 +4761,7 @@ export type Database = {
           primary_portal?: string | null
           risk_level?: string | null
           secondary_portal?: string | null
+          stripe_customer_id?: string | null
           terms_version?: string | null
           time_preference_minutes?: number | null
           updated_at?: string | null
@@ -4783,6 +4785,7 @@ export type Database = {
           primary_portal?: string | null
           risk_level?: string | null
           secondary_portal?: string | null
+          stripe_customer_id?: string | null
           terms_version?: string | null
           time_preference_minutes?: number | null
           updated_at?: string | null
