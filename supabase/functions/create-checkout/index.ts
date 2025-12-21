@@ -8,12 +8,24 @@ const corsHeaders = {
   "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type",
 };
 
+// Pricing configuration (in cents)
+const PLAN_PRICING = {
+  Basic: { monthly: 0, yearly: 0 },
+  Gold: { monthly: 500, yearly: 4800 }, // $5/month, $48/year (20% off)
+  Platinum: { monthly: 1000, yearly: 9600 }, // $10/month, $96/year (20% off)
+};
+
+const ADDON_PRICING = {
+  Basic: 300, // $3/month per add-on
+  Gold: 200,  // $2/month per add-on
+  Platinum: 100, // $1/month per add-on
+};
+
 // Zod schema for input validation
 const RequestSchema = z.object({
-  planTitle: z.string().min(1, "Plan title is required").max(100),
+  planTitle: z.enum(['Basic', 'Gold', 'Platinum']),
   billingCycle: z.enum(['monthly', 'yearly']).default('monthly'),
   selectedAddOns: z.array(z.string()).max(20).default([]),
-  totalAmount: z.number().min(0).max(10000),
 });
 
 const logStep = (step: string, details?: any) => {
@@ -33,7 +45,6 @@ serve(async (req) => {
     if (!stripeKey) throw new Error("STRIPE_SECRET_KEY is not set");
     logStep("Stripe key verified");
 
-    // Create Supabase client using the service role key
     const supabaseClient = createClient(
       Deno.env.get("SUPABASE_URL") ?? "",
       Deno.env.get("SUPABASE_SERVICE_ROLE_KEY") ?? "",
@@ -66,24 +77,52 @@ serve(async (req) => {
       );
     }
 
-    const { planTitle, billingCycle, selectedAddOns, totalAmount } = parseResult.data;
-    logStep("Request body parsed", { planTitle, billingCycle, selectedAddOns, totalAmount });
+    const { planTitle, billingCycle, selectedAddOns } = parseResult.data;
+    logStep("Request body parsed", { planTitle, billingCycle, selectedAddOns });
 
-    // Calculate total amount (plan + add-ons)
-    // Convert dollar amount to cents for Stripe
-    const amount = Math.round(totalAmount * 100);
-    logStep("Total amount calculated", { planTitle, billingCycle, selectedAddOns, totalAmountDollars: totalAmount, amountCents: amount });
+    // Calculate total amount
+    const planPricing = PLAN_PRICING[planTitle];
+    const basePriceCents = billingCycle === 'yearly' ? planPricing.yearly : planPricing.monthly;
+    
+    // Calculate add-on pricing
+    const addonPricePerUnit = ADDON_PRICING[planTitle];
+    const addonsTotalCents = selectedAddOns.length * addonPricePerUnit * (billingCycle === 'yearly' ? 12 : 1);
+    
+    const totalAmountCents = basePriceCents + addonsTotalCents;
+    const totalAmountDollars = totalAmountCents / 100;
 
-    // For free plan, just update the database and return success
-    if (amount === 0) {
-      await supabaseClient.from("subscribers").upsert({
-        email: user.email,
-        user_id: user.id,
-        subscribed: true,
-        subscription_tier: planTitle,
-        subscription_end: null, // Free plan doesn't expire
-        updated_at: new Date().toISOString(),
-      }, { onConflict: 'email' });
+    logStep("Amount calculated", { 
+      planTitle, 
+      billingCycle, 
+      basePriceCents, 
+      addonsTotalCents, 
+      totalAmountCents,
+      totalAmountDollars
+    });
+
+    // For free plan with no add-ons, just create/update subscription and return success
+    if (totalAmountCents === 0) {
+      const { error: subError } = await supabaseClient
+        .from("subscriptions")
+        .upsert({
+          user_id: user.id,
+          plan_tier: planTitle,
+          status: "active",
+          billing_cycle: billingCycle,
+          amount: 0,
+          currency: "USD",
+          payment_method: "free",
+          started_at: new Date().toISOString(),
+          updated_at: new Date().toISOString(),
+        }, { 
+          onConflict: "user_id",
+          ignoreDuplicates: false
+        });
+
+      if (subError) {
+        logStep("ERROR: Failed to create free subscription", { error: subError });
+        throw new Error("Failed to activate free plan");
+      }
 
       logStep("Free plan activated");
       return new Response(JSON.stringify({ success: true, message: "Free plan activated" }), {
@@ -96,11 +135,24 @@ serve(async (req) => {
     
     // Check if customer exists
     const customers = await stripe.customers.list({ email: user.email, limit: 1 });
-    let customerId;
+    let customerId: string | undefined;
     if (customers.data.length > 0) {
       customerId = customers.data[0].id;
       logStep("Existing customer found", { customerId });
+      
+      // Update profile with Stripe customer ID
+      await supabaseClient
+        .from("profiles")
+        .update({ stripe_customer_id: customerId })
+        .eq("id", user.id);
     }
+
+    // Build product description
+    const addonsText = selectedAddOns.length > 0 
+      ? ` + ${selectedAddOns.length} add-on${selectedAddOns.length > 1 ? 's' : ''}`
+      : '';
+    const productName = `ThriveMT ${planTitle} Plan${addonsText}`;
+    const productDescription = `${billingCycle === 'yearly' ? 'Annual' : 'Monthly'} subscription - ${planTitle} tier mental wellness access${addonsText}`;
 
     // Create checkout session
     const session = await stripe.checkout.sessions.create({
@@ -111,14 +163,10 @@ serve(async (req) => {
           price_data: {
             currency: "usd",
             product_data: { 
-              name: selectedAddOns.length > 0 
-                ? `${planTitle} Plan + ${selectedAddOns.length} Add-ons`
-                : `${planTitle} Plan`,
-              description: selectedAddOns.length > 0
-                ? `ThriveMT ${planTitle} subscription with ${selectedAddOns.length} specialized add-ons - ${billingCycle} billing`
-                : `ThriveMT ${planTitle} subscription - ${billingCycle} billing`
+              name: productName,
+              description: productDescription,
             },
-            unit_amount: amount,
+            unit_amount: totalAmountCents,
             recurring: { interval: billingCycle === 'yearly' ? 'year' : 'month' },
           },
           quantity: 1,
@@ -126,12 +174,13 @@ serve(async (req) => {
       ],
       mode: "subscription",
       success_url: `${req.headers.get("origin")}/payment-success?session_id={CHECKOUT_SESSION_ID}`,
-      cancel_url: `${req.headers.get("origin")}/`,
+      cancel_url: `${req.headers.get("origin")}/subscription-plans`,
       metadata: {
         user_id: user.id,
         plan_title: planTitle,
         billing_cycle: billingCycle,
-        selected_addons: JSON.stringify(selectedAddOns)
+        selected_addons: JSON.stringify(selectedAddOns),
+        total_amount_cents: totalAmountCents.toString(),
       }
     });
 

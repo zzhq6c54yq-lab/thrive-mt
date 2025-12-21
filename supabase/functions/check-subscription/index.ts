@@ -24,7 +24,6 @@ serve(async (req) => {
     if (!stripeKey) throw new Error("STRIPE_SECRET_KEY is not set");
     logStep("Stripe key verified");
 
-    // Use the service role key to perform writes (upsert) in Supabase
     const supabaseClient = createClient(
       Deno.env.get("SUPABASE_URL") ?? "",
       Deno.env.get("SUPABASE_SERVICE_ROLE_KEY") ?? "",
@@ -42,24 +41,63 @@ serve(async (req) => {
     if (!user?.email) throw new Error("User not authenticated or email not available");
     logStep("User authenticated", { userId: user.id, email: user.email });
 
+    // First, check if user has a subscription in the database
+    const { data: existingSub } = await supabaseClient
+      .from("subscriptions")
+      .select("*")
+      .eq("user_id", user.id)
+      .single();
+
+    if (existingSub && existingSub.status === "active") {
+      logStep("Found active subscription in database", { 
+        tier: existingSub.plan_tier, 
+        nextBilling: existingSub.next_billing_date 
+      });
+      
+      return new Response(JSON.stringify({
+        subscribed: true,
+        subscription_tier: existingSub.plan_tier,
+        subscription_end: existingSub.next_billing_date,
+        billing_cycle: existingSub.billing_cycle,
+        amount: existingSub.amount,
+        status: existingSub.status,
+      }), {
+        headers: { ...corsHeaders, "Content-Type": "application/json" },
+        status: 200,
+      });
+    }
+
+    // If no active subscription in DB, check Stripe
     const stripe = new Stripe(stripeKey, { apiVersion: "2023-10-16" });
     const customers = await stripe.customers.list({ email: user.email, limit: 1 });
     
     if (customers.data.length === 0) {
-      logStep("No customer found, updating unsubscribed state");
-      await supabaseClient.from("subscribers").upsert({
-        email: user.email,
-        user_id: user.id,
-        stripe_customer_id: null,
-        subscribed: true, // Default to Basic (free) plan
-        subscription_tier: "Basic",
-        subscription_end: null,
-        updated_at: new Date().toISOString(),
-      }, { onConflict: 'email' });
+      logStep("No Stripe customer found, returning Basic tier");
+      
+      // Ensure user has a Basic subscription in DB
+      await supabaseClient
+        .from("subscriptions")
+        .upsert({
+          user_id: user.id,
+          plan_tier: "Basic",
+          status: "active",
+          billing_cycle: "monthly",
+          amount: 0,
+          currency: "USD",
+          payment_method: "free",
+          updated_at: new Date().toISOString(),
+        }, { 
+          onConflict: "user_id",
+          ignoreDuplicates: false
+        });
+
       return new Response(JSON.stringify({ 
         subscribed: true, 
         subscription_tier: "Basic", 
-        subscription_end: null 
+        subscription_end: null,
+        billing_cycle: "monthly",
+        amount: 0,
+        status: "active",
       }), {
         headers: { ...corsHeaders, "Content-Type": "application/json" },
         status: 200,
@@ -69,55 +107,107 @@ serve(async (req) => {
     const customerId = customers.data[0].id;
     logStep("Found Stripe customer", { customerId });
 
+    // Update profile with Stripe customer ID
+    await supabaseClient
+      .from("profiles")
+      .update({ stripe_customer_id: customerId })
+      .eq("id", user.id);
+
     const subscriptions = await stripe.subscriptions.list({
       customer: customerId,
       status: "active",
       limit: 1,
     });
-    const hasActiveSub = subscriptions.data.length > 0;
-    let subscriptionTier = "Basic"; // Default to free plan
-    let subscriptionEnd = null;
+    
+    if (subscriptions.data.length === 0) {
+      logStep("No active Stripe subscription, returning Basic tier");
+      
+      // Update DB to reflect Basic tier
+      await supabaseClient
+        .from("subscriptions")
+        .upsert({
+          user_id: user.id,
+          plan_tier: "Basic",
+          status: "active",
+          billing_cycle: "monthly",
+          amount: 0,
+          currency: "USD",
+          payment_method: "free",
+          updated_at: new Date().toISOString(),
+        }, { 
+          onConflict: "user_id",
+          ignoreDuplicates: false
+        });
 
-    if (hasActiveSub) {
-      const subscription = subscriptions.data[0];
-      subscriptionEnd = new Date(subscription.current_period_end * 1000).toISOString();
-      logStep("Active subscription found", { subscriptionId: subscription.id, endDate: subscriptionEnd });
-      
-      // Determine subscription tier from price
-      const priceId = subscription.items.data[0].price.id;
-      const price = await stripe.prices.retrieve(priceId);
-      const amount = price.unit_amount || 0;
-      
-      if (amount >= 900 && amount <= 1100) { // Around $10
-        subscriptionTier = "Platinum";
-      } else if (amount >= 400 && amount <= 600) { // Around $5
-        subscriptionTier = "Gold";
-      } else if (amount >= 4000 && amount <= 5000) { // Around $48 yearly
-        subscriptionTier = "Gold";
-      } else if (amount >= 9000 && amount <= 10000) { // Around $96 yearly
-        subscriptionTier = "Platinum";
-      }
-      
-      logStep("Determined subscription tier", { priceId, amount, subscriptionTier });
-    } else {
-      logStep("No active subscription found, defaulting to Basic");
+      return new Response(JSON.stringify({ 
+        subscribed: true, 
+        subscription_tier: "Basic", 
+        subscription_end: null,
+        billing_cycle: "monthly",
+        amount: 0,
+        status: "active",
+      }), {
+        headers: { ...corsHeaders, "Content-Type": "application/json" },
+        status: 200,
+      });
     }
 
-    await supabaseClient.from("subscribers").upsert({
-      email: user.email,
-      user_id: user.id,
-      stripe_customer_id: customerId,
-      subscribed: true, // Always true, tier determines level
-      subscription_tier: subscriptionTier,
-      subscription_end: subscriptionEnd,
-      updated_at: new Date().toISOString(),
-    }, { onConflict: 'email' });
+    // Has active Stripe subscription
+    const subscription = subscriptions.data[0];
+    const subscriptionEnd = new Date(subscription.current_period_end * 1000).toISOString();
+    const item = subscription.items.data[0];
+    const priceAmount = item.price.unit_amount || 0;
+    const interval = item.price.recurring?.interval;
+    
+    // Determine tier based on price
+    let subscriptionTier = "Basic";
+    if (priceAmount >= 900 && priceAmount <= 1500) {
+      subscriptionTier = "Platinum"; // ~$10 monthly
+    } else if (priceAmount >= 9000 && priceAmount <= 12000) {
+      subscriptionTier = "Platinum"; // ~$96 yearly + add-ons
+    } else if (priceAmount >= 400 && priceAmount <= 800) {
+      subscriptionTier = "Gold"; // ~$5 monthly
+    } else if (priceAmount >= 4500 && priceAmount <= 6000) {
+      subscriptionTier = "Gold"; // ~$48 yearly + add-ons
+    } else if (priceAmount > 1500) {
+      subscriptionTier = "Platinum"; // Higher amounts with add-ons
+    } else if (priceAmount > 0) {
+      subscriptionTier = "Gold"; // Any paid amount
+    }
+    
+    logStep("Determined subscription tier", { priceAmount, interval, subscriptionTier });
 
-    logStep("Updated database with subscription info", { subscribed: true, subscriptionTier });
+    // Sync to database
+    const { error: syncError } = await supabaseClient
+      .from("subscriptions")
+      .upsert({
+        user_id: user.id,
+        plan_tier: subscriptionTier,
+        status: "active",
+        billing_cycle: interval === "year" ? "yearly" : "monthly",
+        amount: priceAmount / 100,
+        currency: "USD",
+        stripe_subscription_id: subscription.id,
+        next_billing_date: subscriptionEnd.split('T')[0],
+        payment_method: "stripe",
+        updated_at: new Date().toISOString(),
+      }, { 
+        onConflict: "user_id",
+        ignoreDuplicates: false
+      });
+
+    if (syncError) {
+      logStep("ERROR: Failed to sync subscription to DB", { error: syncError });
+    }
+
+    logStep("Returning subscription info", { subscribed: true, subscriptionTier });
     return new Response(JSON.stringify({
       subscribed: true,
       subscription_tier: subscriptionTier,
-      subscription_end: subscriptionEnd
+      subscription_end: subscriptionEnd,
+      billing_cycle: interval === "year" ? "yearly" : "monthly",
+      amount: priceAmount / 100,
+      status: "active",
     }), {
       headers: { ...corsHeaders, "Content-Type": "application/json" },
       status: 200,

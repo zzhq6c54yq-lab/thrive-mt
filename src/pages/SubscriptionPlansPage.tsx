@@ -129,8 +129,21 @@ const SubscriptionPlansPage: React.FC = () => {
     setLoading(selectedPlan);
     
     try {
-      // For Basic plan, just update status locally
+      // For Basic plan, just activate and navigate
       if (selectedPlanData?.title === "Basic") {
+        const { error } = await supabase.functions.invoke('create-checkout', {
+          body: { 
+            planTitle: "Basic",
+            billingCycle: billingCycle,
+            selectedAddOns: [],
+          },
+          headers: {
+            Authorization: `Bearer ${session.access_token}`,
+          },
+        });
+
+        if (error) throw error;
+
         await checkSubscription();
         toast({
           title: "Basic Plan Activated",
@@ -144,7 +157,8 @@ const SubscriptionPlansPage: React.FC = () => {
       const { data, error } = await supabase.functions.invoke('create-checkout', {
         body: { 
           planTitle: selectedPlanData?.title,
-          billingCycle: billingCycle
+          billingCycle: billingCycle,
+          selectedAddOns: [],
         },
         headers: {
           Authorization: `Bearer ${session.access_token}`,
@@ -156,12 +170,16 @@ const SubscriptionPlansPage: React.FC = () => {
       }
 
       if (data?.url) {
-        // Open Stripe checkout in a new tab
-        window.open(data.url, '_blank');
+        // Redirect to Stripe checkout
+        window.location.href = data.url;
+      } else if (data?.success) {
+        // Free plan was activated
+        await checkSubscription();
         toast({
-          title: "Redirecting to Payment",
-          description: "A new tab will open with the secure payment form.",
+          title: "Plan Activated",
+          description: "Your subscription is now active.",
         });
+        navigate("/app/dashboard");
       }
     } catch (error) {
       console.error('Subscription error:', error);

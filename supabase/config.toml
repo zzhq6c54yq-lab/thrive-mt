@@ -1,5 +1,8 @@
 project_id = "daghobrbxgkgmflkcnyh"
 
+[functions.stripe-webhook]
+verify_jwt = false
+
 [functions.therapist-access]
 verify_jwt = false
 
