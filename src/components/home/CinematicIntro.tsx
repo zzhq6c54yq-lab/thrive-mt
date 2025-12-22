@@ -262,7 +262,7 @@ const CinematicIntro: React.FC<CinematicIntroProps> = ({ onContinue, onSkipToMai
                 <ArrowRight className="ml-2 h-4 w-4" />
               </Button>
               
-              {/* Staff Access Menu */}
+              {/* Staff Access Menu - Opens upward */}
               <div className="relative group mt-4">
                 <Button
                   variant="ghost"
@@ -272,13 +272,13 @@ const CinematicIntro: React.FC<CinematicIntroProps> = ({ onContinue, onSkipToMai
                   <Key className="mr-2 h-3 w-3" />
                   Staff Access
                 </Button>
-                <div className="absolute top-full left-1/2 -translate-x-1/2 mt-2 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50">
+                <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50">
                   <div className="bg-gray-900/95 backdrop-blur-xl border border-[#D4AF37]/20 rounded-lg shadow-xl p-2 min-w-[160px]">
                     <button
-                      onClick={() => setShowAccessCodeDialog(true)}
+                      onClick={() => setAccessCodeDialogOpen(true)}
                       className="w-full text-left px-3 py-2 text-sm text-gray-300 hover:text-white hover:bg-[#D4AF37]/10 rounded-md transition-colors"
                     >
-                      Therapist Portal
+                      Admin Access
                     </button>
                     <button
                       onClick={() => setShowCoachAccessDialog(true)}
@@ -287,10 +287,10 @@ const CinematicIntro: React.FC<CinematicIntroProps> = ({ onContinue, onSkipToMai
                       Coach Portal
                     </button>
                     <button
-                      onClick={() => setAccessCodeDialogOpen(true)}
+                      onClick={() => setShowAccessCodeDialog(true)}
                       className="w-full text-left px-3 py-2 text-sm text-gray-300 hover:text-white hover:bg-[#D4AF37]/10 rounded-md transition-colors"
                     >
-                      Admin Access
+                      Therapist Portal
                     </button>
                   </div>
                 </div>
