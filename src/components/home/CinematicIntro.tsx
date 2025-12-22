@@ -157,45 +157,10 @@ const CinematicIntro: React.FC<CinematicIntroProps> = ({ onContinue, onSkipToMai
 
   return (
     <div className="min-h-screen flex flex-col items-center justify-center bg-black overflow-hidden relative">
-      {/* Animated particle field */}
-      <div className="absolute inset-0 overflow-hidden">
-        {Array.from({ length: 30 }).map((_, i) => (
-          <motion.div
-            key={i}
-            className="absolute w-1 h-1 bg-[#D4AF37]/30 rounded-full"
-            initial={{
-              x: Math.random() * window.innerWidth,
-              y: Math.random() * window.innerHeight,
-              opacity: 0,
-            }}
-            animate={{
-              y: [null, Math.random() * window.innerHeight],
-              opacity: [0, 0.6, 0],
-            }}
-            transition={{
-              duration: 8 + Math.random() * 4,
-              repeat: Infinity,
-              delay: Math.random() * 5,
-            }}
-          />
-        ))}
+      {/* Subtle background glow */}
+      <div className="absolute inset-0 pointer-events-none">
+        <div className="absolute top-1/3 left-1/2 -translate-x-1/2 w-[500px] h-[500px] bg-[#D4AF37]/10 rounded-full blur-[120px]" />
       </div>
-
-      {/* Breathing glow */}
-      <motion.div
-        className="absolute inset-0 pointer-events-none"
-        animate={{
-          opacity: [0.1, 0.2, 0.1],
-        }}
-        transition={{
-          duration: 4,
-          repeat: Infinity,
-          ease: "easeInOut",
-        }}
-      >
-        <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-[#D4AF37]/20 rounded-full blur-3xl" />
-        <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-rose-500/10 rounded-full blur-3xl" />
-      </motion.div>
 
       <AnimatePresence>
         {showContent && (
@@ -209,23 +174,18 @@ const CinematicIntro: React.FC<CinematicIntroProps> = ({ onContinue, onSkipToMai
             <motion.p
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
-              transition={{ delay: 0.5, duration: 0.8 }}
+              transition={{ delay: 0.3, duration: 0.8 }}
               className="text-gray-400 text-lg mb-8"
             >
               {greeting}
             </motion.p>
 
-            {/* Logo with breathing animation */}
+            {/* Logo */}
             <motion.div
-              className="mb-8"
-              animate={{
-                scale: [1, 1.02, 1],
-              }}
-              transition={{
-                duration: 4,
-                repeat: Infinity,
-                ease: "easeInOut",
-              }}
+              className="mb-6"
+              initial={{ opacity: 0, scale: 0.9 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ delay: 0.5, duration: 0.8 }}
             >
               <img 
                 src={THRIVE_LOGO} 
@@ -234,30 +194,30 @@ const CinematicIntro: React.FC<CinematicIntroProps> = ({ onContinue, onSkipToMai
               />
             </motion.div>
 
-            {/* Main title with text glow */}
+            {/* Main title */}
             <motion.h1
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.8, duration: 0.8 }}
-              className="text-6xl md:text-8xl mb-8 font-bold"
+              transition={{ delay: 0.6, duration: 0.8 }}
+              className="text-5xl md:text-7xl mb-6 font-bold"
             >
               <span className="text-white">Thrive</span>
               <span 
                 className="gradient-heading ml-2" 
                 style={{ 
-                  textShadow: '0 0 20px rgba(184, 115, 51, 0.8), 0 0 40px rgba(184, 115, 51, 0.4)' 
+                  textShadow: '0 0 20px rgba(184, 115, 51, 0.6)' 
                 }}
               >
                 MT
               </span>
             </motion.h1>
 
-            {/* Tagline - Heart-centered invitation */}
+            {/* Tagline */}
             <motion.p
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
-              transition={{ delay: 1.2, duration: 0.8 }}
-              className="text-xl md:text-2xl text-muted-foreground mb-12 leading-relaxed font-light"
+              transition={{ delay: 0.8, duration: 0.8 }}
+              className="text-lg md:text-xl text-muted-foreground mb-10 font-light"
             >
               {selectedLanguage === 'Español' 
                 ? "Un santuario para sanar, crecer y ser tú mismo" 
@@ -268,38 +228,48 @@ const CinematicIntro: React.FC<CinematicIntroProps> = ({ onContinue, onSkipToMai
                     : "A sanctuary to heal, grow, and be yourself"}
             </motion.p>
 
-            {/* CTA with shimmer effect */}
+            {/* Action buttons */}
             <motion.div
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 1.6, duration: 0.8 }}
-              className="flex flex-col items-center gap-4"
+              transition={{ delay: 1, duration: 0.8 }}
+              className="flex flex-col items-center gap-3"
             >
+              {/* Sign In Button */}
               <Button 
-                className="group relative overflow-hidden bg-gradient-to-r from-[#B87333] via-[#D4AF37] to-[#B87333] hover:from-[#D4AF37] hover:via-[#E5C5A1] hover:to-[#D4AF37] text-background font-light text-lg px-8 py-6 rounded-xl shadow-2xl hover:shadow-[#D4AF37]/50 transition-all duration-500 hover:scale-105"
+                variant="outline"
+                className="w-64 border-[#D4AF37]/50 text-[#D4AF37] hover:bg-[#D4AF37]/10 hover:border-[#D4AF37] font-light text-base py-5 rounded-xl transition-all duration-300"
+                onClick={() => navigate("/auth")}
+              >
+                Sign In
+              </Button>
+
+              {/* Create Account Button */}
+              <Button 
+                className="w-64 bg-gradient-to-r from-[#B87333] via-[#D4AF37] to-[#B87333] hover:from-[#D4AF37] hover:via-[#E5C5A1] hover:to-[#D4AF37] text-background font-light text-base py-5 rounded-xl shadow-lg hover:shadow-[#D4AF37]/30 transition-all duration-300"
+                onClick={() => navigate("/auth?mode=signup")}
+              >
+                Create Account
+              </Button>
+
+              {/* Continue as Guest */}
+              <Button 
+                variant="ghost"
+                className="w-64 text-gray-400 hover:text-white hover:bg-white/5 font-light text-sm py-4"
                 onClick={onContinue}
               >
-                <span className="absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent transform -skew-x-12 translate-x-full group-hover:translate-x-[-200%] transition-transform duration-1000"></span>
-                <span className="relative flex items-center gap-2 font-light">
-                  {selectedLanguage === 'Español' 
-                    ? "Comienza tu sanación" 
-                    : selectedLanguage === 'Português'
-                      ? "Comece sua cura"
-                      : selectedLanguage === 'Filipino'
-                        ? "Simulan ang iyong paghilom"
-                        : "Begin healing"}
-                  <ArrowRight className="ml-2 h-5 w-5 transition-transform group-hover:translate-x-1" />
-                </span>
+                Continue as Guest
+                <ArrowRight className="ml-2 h-4 w-4" />
               </Button>
               
-              {/* Unified Staff Access Menu */}
-              <div className="relative group">
+              {/* Staff Access Menu */}
+              <div className="relative group mt-4">
                 <Button
                   variant="ghost"
                   size="sm"
-                  className="text-sm text-muted-foreground hover:text-foreground transition-colors font-light"
+                  className="text-xs text-muted-foreground/60 hover:text-muted-foreground transition-colors font-light"
                 >
-                  <Key className="mr-2 h-4 w-4" />
+                  <Key className="mr-2 h-3 w-3" />
                   Staff Access
                 </Button>
                 <div className="absolute top-full left-1/2 -translate-x-1/2 mt-2 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50">
@@ -326,24 +296,22 @@ const CinematicIntro: React.FC<CinematicIntroProps> = ({ onContinue, onSkipToMai
                 </div>
               </div>
             </motion.div>
-
           </motion.div>
         )}
       </AnimatePresence>
 
-      {/* Access code dialogs */}
+      {/* Therapist Access Dialog */}
       <Dialog open={showAccessCodeDialog} onOpenChange={(open) => {
         setShowAccessCodeDialog(open);
         if (!open) setAccessCode("");
       }}>
         <DialogContent className="sm:max-w-md bg-gray-900/95 backdrop-blur-xl border-[#D4AF37]/30">
           <DialogHeader>
-            <DialogTitle className="text-white">Staff Access</DialogTitle>
+            <DialogTitle className="text-white">Therapist Access</DialogTitle>
             <DialogDescription className="text-gray-400">
               Enter your 4-digit access code
             </DialogDescription>
           </DialogHeader>
-          
           <div className="space-y-4 py-4">
             <div className="space-y-2">
               <Label htmlFor="accessCode" className="text-gray-300">Access Code</Label>
@@ -362,7 +330,6 @@ const CinematicIntro: React.FC<CinematicIntroProps> = ({ onContinue, onSkipToMai
                 }}
               />
             </div>
-            
             <Button
               onClick={handleTherapistAccess}
               disabled={loading || accessCode.length !== 4}
@@ -374,6 +341,7 @@ const CinematicIntro: React.FC<CinematicIntroProps> = ({ onContinue, onSkipToMai
         </DialogContent>
       </Dialog>
 
+      {/* Admin Access Dialog */}
       <Dialog open={accessCodeDialogOpen} onOpenChange={(open) => {
         setAccessCodeDialogOpen(open);
         if (!open) setAccessCode("");
@@ -385,7 +353,6 @@ const CinematicIntro: React.FC<CinematicIntroProps> = ({ onContinue, onSkipToMai
               Enter your 6-digit admin code
             </DialogDescription>
           </DialogHeader>
-          
           <div className="space-y-4 py-4">
             <div className="space-y-2">
               <Label htmlFor="adminAccessCode" className="text-gray-300">Access Code</Label>
@@ -404,7 +371,6 @@ const CinematicIntro: React.FC<CinematicIntroProps> = ({ onContinue, onSkipToMai
                 }}
               />
             </div>
-            
             <Button
               onClick={handleAdminAccess}
               disabled={loading || accessCode.length !== 6}
@@ -423,12 +389,11 @@ const CinematicIntro: React.FC<CinematicIntroProps> = ({ onContinue, onSkipToMai
       }}>
         <DialogContent className="sm:max-w-md bg-gray-900/95 backdrop-blur-xl border-teal-500/30">
           <DialogHeader>
-            <DialogTitle className="text-white">Coach Access 👋</DialogTitle>
+            <DialogTitle className="text-white">Coach Access</DialogTitle>
             <DialogDescription className="text-gray-400">
               Enter your access code to get started
             </DialogDescription>
           </DialogHeader>
-          
           <div className="space-y-4 py-4">
             <div className="space-y-2">
               <Label htmlFor="coachAccessCode" className="text-gray-300">Access Code</Label>
@@ -447,32 +412,16 @@ const CinematicIntro: React.FC<CinematicIntroProps> = ({ onContinue, onSkipToMai
                 }}
               />
             </div>
-            
             <Button
               onClick={handleCoachAccess}
               disabled={loading || coachAccessCode.length !== 4}
               className="w-full bg-gradient-to-r from-teal-500 to-teal-600 hover:from-teal-600 hover:to-teal-500"
             >
-              {loading ? "Let's go..." : "Let's do this!"}
+              {loading ? "Verifying..." : "Continue"}
             </Button>
           </div>
         </DialogContent>
       </Dialog>
-
-      {/* Bottom branding text */}
-      <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ delay: 2, duration: 0.8 }}
-        className="absolute bottom-8 left-0 right-0 text-center px-4"
-      >
-        <p className="text-white font-semibold text-lg md:text-xl mb-1">
-          Expert Mental Health Counseling & Therapy Services
-        </p>
-        <p className="text-[#D4AF37] text-sm md:text-base">
-          thrive-mental.app
-        </p>
-      </motion.div>
     </div>
   );
 };
