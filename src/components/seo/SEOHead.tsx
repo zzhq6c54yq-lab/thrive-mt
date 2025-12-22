@@ -15,7 +15,7 @@ const defaultMeta = {
   title: 'Expert Mental Health Counseling & Therapy Services | ThriveMT',
   description: 'Find compassionate and effective online and in-person therapy services for anxiety, stress, and well-being. Start your personalized journey to mental wellness today with ThriveMT.',
   keywords: 'online therapy, mental health counseling, anxiety treatment, stress management, wellness coaching, licensed therapists, mental health services, CBT therapy, telehealth therapy, mental wellness',
-  ogImage: 'https://thrive-mental.com/og-image-black.png?v=3',
+  ogImage: 'https://thrive-mental.com/og-image-v3.png',
   siteUrl: 'https://thrive-mental.com',
 };
 
