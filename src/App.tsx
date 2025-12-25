@@ -348,6 +348,7 @@ function App() {
             <Route path="/app/coach/:coachId" element={<CoachProfile />} />
             
             <Route path="/app/admin" element={<AdminPortal />} />
+            <Route path="/app/admin-portal" element={<AdminPortal />} />
             <Route path="/app/engagement-metrics" element={<EngagementMetricsDashboard />} />
             
             <Route path="/app/holistic-wellness" element={<HolisticWellness />} />
