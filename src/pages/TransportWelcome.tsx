@@ -17,10 +17,10 @@ const TransportWelcome: React.FC = () => {
         "Community support from peers who understand the transportation industry's unique demands",
         "Practical workshops on preventing burnout and maintaining work-life balance in a mobile workplace"
       ]}
-      color="blue-500"
-      gradientFrom="blue-400"
-      gradientTo="blue-600"
-      borderColor="#3B82F6"
+      color="#3b82f6"
+      gradientFrom="from-blue-400"
+      gradientTo="to-blue-600"
+      borderColor="border-blue-500/30"
       portalPath="/transport-portal"
       icon={<Truck className="h-12 w-12 text-white" />}
       coverImage="https://images.unsplash.com/photo-1576267423048-15c0040fec78?auto=format&fit=crop&w=1280&q=80"

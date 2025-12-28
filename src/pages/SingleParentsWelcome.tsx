@@ -22,7 +22,7 @@ const SingleParentsWelcome: React.FC = () => {
       gradientTo="to-pink-800"
       borderColor="border-rose-500/30"
       portalPath="/single-parents-portal"
-      icon={Heart as any}
+      icon={<Heart className="h-12 w-12 text-white" />}
       coverImage="https://images.unsplash.com/photo-1476703993599-0035a21b17a9?auto=format&fit=crop&w=1200&q=80"
       motivationalMessage="You're doing an incredible job. This portal is here to support you every step of the way."
     />
