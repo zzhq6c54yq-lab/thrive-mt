@@ -155,7 +155,21 @@ export const useOnboardingFlow = () => {
     // Update profile with onboarding completion and selected preferences
     try {
       const { supabase } = await import("@/integrations/supabase/client");
-      const { data: { user } } = await supabase.auth.getUser();
+      
+      // First check the session
+      const { data: { session }, error: sessionError } = await supabase.auth.getSession();
+      
+      if (sessionError || !session) {
+        console.error('No active session during onboarding completion:', sessionError);
+        // Clear the localStorage since user is not authenticated
+        localStorage.removeItem('hasCompletedOnboarding');
+        localStorage.removeItem(STORAGE_KEY);
+        // Redirect to auth
+        window.location.href = '/app/auth';
+        return;
+      }
+      
+      const user = session.user;
       
       if (user) {
         const { error } = await supabase
@@ -168,14 +182,23 @@ export const useOnboardingFlow = () => {
           .eq('id', user.id);
           
         if (error) {
-          // Error updating profile
+          console.error('Error updating profile during onboarding:', error);
+          // Still proceed but log the error
         }
+        
+        // Successfully updated, now mark as complete
+        goToStep('completed');
+      } else {
+        // No user, redirect to auth
+        console.error('No user found during onboarding completion');
+        window.location.href = '/app/auth';
+        return;
       }
     } catch (error) {
-      // Error during profile update
+      console.error('Error during onboarding completion:', error);
+      // If there's an error, still try to complete locally
+      goToStep('completed');
     }
-    
-    goToStep('completed');
   }, [goToStep, state.selectedGoals, state.selectedQualities]);
 
   const resetOnboarding = useCallback(() => {
