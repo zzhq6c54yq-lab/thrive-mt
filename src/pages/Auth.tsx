@@ -195,7 +195,7 @@ const Auth: React.FC = () => {
 
   const handleGuestContinue = () => {
     setShowGuestWarning(false);
-    navigate("/app/dashboard");
+    navigate("/app/dashboard", { state: { demoUser: true } });
   };
 
   if (checkingSession) {
