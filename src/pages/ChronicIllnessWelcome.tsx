@@ -1,149 +1,192 @@
-
 import React from "react";
 import { useNavigate } from "react-router-dom";
-import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent } from "@/components/ui/card";
-import { Stethoscope, Heart, Brain, ArrowRight } from "lucide-react";
-import SpecializedProgramWelcome from "@/components/specialized-programs/SpecializedProgramWelcome";
-import NavigationBar from "@/components/navigation/NavigationBar";
+import { Stethoscope, Heart, Users, Sparkles, ArrowRight, Star } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
+import HomeButton from "@/components/HomeButton";
 
 const ChronicIllnessWelcome: React.FC = () => {
+  const [screenState, setScreenState] = React.useState<'welcome' | 'what-to-expect'>('welcome');
   const navigate = useNavigate();
   const { toast } = useToast();
 
   const handleContinue = () => {
-    toast({
-      title: "Welcome to Chronic Illness Support",
-      description: "Loading your personalized resources...",
-      duration: 1500,
-    });
-    navigate("/app/chronic-illness-portal", { 
-      state: { 
-        stayInPortal: true,
-        preventTutorial: true
-      }
-    });
-  };
-
-  const features = [
-    {
-      icon: <Stethoscope className="h-6 w-6 text-purple-500" />,
-      title: "Specialized Resources",
-      description: "Access resources tailored specifically to managing chronic health conditions."
-    },
-    {
-      icon: <Heart className="h-6 w-6 text-purple-500" />,
-      title: "Emotional Support",
-      description: "Tools to help manage the emotional aspects of living with chronic illness."
-    },
-    {
-      icon: <Brain className="h-6 w-6 text-purple-500" />,
-      title: "Community Connection",
-      description: "Connect with others who understand your chronic illness journey."
-    }
-  ];
-
-  // Animation variants
-  const containerVariants = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: {
-        staggerChildren: 0.2
-      }
-    }
-  };
-
-  const itemVariants = {
-    hidden: { y: 20, opacity: 0 },
-    visible: {
-      y: 0,
-      opacity: 1,
-      transition: {
-        duration: 0.5
-      }
+    if (screenState === 'welcome') {
+      setScreenState('what-to-expect');
+      window.scrollTo(0, 0);
+    } else {
+      toast({
+        title: "Entering Chronic Illness Portal",
+        description: "Taking you to the Chronic Illness Support portal",
+        duration: 2000,
+      });
+      
+      setTimeout(() => {
+        navigate("/app/chronic-illness-portal", { 
+          state: { 
+            fromWelcome: true,
+            preventTutorial: true,
+            returnToMain: true 
+          }
+        });
+      }, 500);
     }
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-[#f5ecfd] to-[#e5deff] dark:from-[#4b1b6e] dark:to-[#36205e]">
-      <NavigationBar showBackButton={true} title="Chronic Illness Support" />
+    <div className="min-h-screen text-white py-8 px-4 relative">
+      {/* Soft healing purple/slate calming background */}
+      <div className="fixed inset-0 -z-10 bg-gradient-to-b from-[#1c1a20] via-[#22202a] to-[#282432]">
+        {/* Subtle purple accent shapes */}
+        <div className="absolute inset-0 overflow-hidden opacity-10">
+          <div className="absolute top-[10%] left-[15%] w-48 h-48 rounded-full bg-purple-500/30 blur-3xl"></div>
+          <div className="absolute top-[50%] right-[12%] w-64 h-64 rounded-full bg-violet-500/20 blur-3xl"></div>
+          <div className="absolute bottom-[15%] left-[30%] w-56 h-56 rounded-full bg-purple-600/20 blur-3xl"></div>
+        </div>
+      </div>
       
-      <div className="container mx-auto px-4 pt-24 pb-20">
-        <SpecializedProgramWelcome 
-          title="Chronic Illness Support"
-          description="Our specialized chronic illness support provides tools, resources, and community to help you maintain emotional well-being while managing long-term health conditions."
-          whatToExpect={[
-            "Specialized mental health resources tailored for those with chronic conditions",
-            "Tools for managing the emotional aspects of chronic illness",
-            "Community support from others with similar experiences",
-            "Access to professionals who understand chronic illness",
-            "Mindfulness and relaxation techniques adapted for chronic pain and fatigue",
-            "Resources for caregivers and family members"
-          ]}
-          color="purple-600"
-          gradientFrom="purple-600"
-          gradientTo="purple-400"
-          borderColor="#8B5CF6"
-          portalPath="/chronic-illness-portal"
-          icon={<Stethoscope className="h-12 w-12 text-white" />}
-          coverImage="https://images.unsplash.com/photo-1584308666744-24d5c474f2ae?auto=format&fit=crop&w=1280&q=80"
-          motivationalMessage="Your chronic condition may be part of your life's journey, but it doesn't define who you are. With the right support and tools, you can thrive despite the challenges."
-        />
+      <div className={`max-w-5xl mx-auto bg-[#00000040] backdrop-blur-md rounded-2xl p-8 shadow-xl border border-purple-900/30 relative overflow-hidden ${screenState === 'welcome' ? 'min-h-[75vh]' : 'min-h-screen'}`}>
+        <div className="absolute top-4 right-4 z-20">
+          <HomeButton />
+        </div>
         
-        <motion.div 
-          className="mt-16 space-y-10"
-          variants={containerVariants}
-          initial="hidden"
-          animate="visible"
-        >
-          {/* Key Features Section */}
-          <motion.section variants={itemVariants} className="text-center">
-            <h2 className="text-2xl font-bold text-purple-800 dark:text-purple-200 mb-10">How We Support Your Journey</h2>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-              {features.map((feature, index) => (
-                <Card key={index} className="bg-white/80 dark:bg-gray-800/50 backdrop-blur-sm border-purple-200 dark:border-purple-800/40 hover:shadow-lg transition-shadow">
-                  <CardContent className="p-6 flex flex-col items-center text-center">
-                    <div className="mb-4 p-3 bg-purple-100 dark:bg-purple-900/30 rounded-full">
-                      {feature.icon}
-                    </div>
-                    <h3 className="text-lg font-semibold text-purple-800 dark:text-purple-200 mb-2">{feature.title}</h3>
-                    <p className="text-purple-700 dark:text-purple-300">{feature.description}</p>
-                  </CardContent>
-                </Card>
-              ))}
+        {/* Decorative elements */}
+        <div className="absolute top-0 right-0 w-64 h-64 opacity-10">
+          <div className="relative w-full h-full">
+            <div className="absolute top-10 left-10 w-16 h-16">
+              <Heart className="w-full h-full text-purple-300" />
             </div>
-          </motion.section>
-          
-          {/* Testimonials Section */}
-          <motion.section variants={itemVariants}>
-            <h2 className="text-2xl font-bold text-purple-800 dark:text-purple-200 mb-6 text-center">From Our Community</h2>
-            <div className="bg-white/80 dark:bg-gray-800/50 backdrop-blur-sm rounded-xl p-6 border border-purple-200 dark:border-purple-800/40">
-              <blockquote className="text-purple-700 dark:text-purple-300 italic text-center text-lg">
-                "Finding mental health support that truly understands the unique challenges of chronic illness has been life-changing. The resources here have helped me develop coping strategies I use every day."
-                <footer className="mt-4 text-purple-600 dark:text-purple-400 font-medium">
-                  — Jamie, living with fibromyalgia
-                </footer>
-              </blockquote>
+            <div className="absolute bottom-16 right-10 w-12 h-12">
+              <Stethoscope className="w-full h-full text-purple-400" />
             </div>
-          </motion.section>
-          
-          {/* Getting Started Section */}
-          <motion.section variants={itemVariants} className="text-center">
-            <h2 className="text-2xl font-bold text-purple-800 dark:text-purple-200 mb-4">Ready to Get Started?</h2>
-            <p className="text-purple-700 dark:text-purple-300 mb-8 max-w-2xl mx-auto">
-              Our specialized portal provides resources, community support, and tools specifically designed for managing mental health alongside chronic physical conditions.
-            </p>
-            <Button 
-              onClick={handleContinue} 
-              className="bg-purple-600 hover:bg-purple-700 text-white px-8 py-6 text-lg rounded-xl"
-            >
-              Enter the Chronic Illness Portal <ArrowRight className="ml-2 h-5 w-5" />
-            </Button>
-          </motion.section>
-        </motion.div>
+          </div>
+        </div>
+        
+        <div className={`flex flex-col items-center justify-center text-center px-4 ${screenState === 'welcome' ? 'min-h-[65vh] animate-page-enter' : 'min-h-[85vh] animate-slide-in-right'}`}>
+          {screenState === 'welcome' ? (
+            <>
+              <div className="relative mb-6">
+                <div className="absolute inset-0 bg-purple-500/20 rounded-full blur-xl"></div>
+                <div className="relative p-5 rounded-full bg-gradient-to-br from-purple-600 to-violet-800 border-2 border-purple-400/30 shadow-lg">
+                  <Stethoscope className="h-12 w-12 text-purple-200" />
+                </div>
+              </div>
+              
+              <div className="mb-2 flex items-center justify-center gap-3">
+                <Star className="h-5 w-5 text-purple-400" />
+                <Heart className="h-5 w-5 text-purple-300" />
+                <Star className="h-5 w-5 text-purple-400" />
+              </div>
+              
+              <h1 className="text-4xl md:text-5xl font-bold mb-6 bg-clip-text text-transparent bg-gradient-to-r from-purple-400 via-violet-300 to-purple-400 tracking-tight">
+                Chronic Illness Support
+              </h1>
+              
+              <div className="max-w-2xl mb-8">
+                <p className="text-xl mb-4 text-white font-medium">
+                  Welcome to a space designed with deep understanding of life with chronic conditions.
+                </p>
+                
+                <p className="text-lg text-purple-200/90 mb-6">
+                  Living with a chronic illness means navigating not just physical challenges, but emotional 
+                  ones too—the grief of lost abilities, the frustration of invisible symptoms, the exhaustion 
+                  of constantly advocating for yourself. Your chronic condition may be part of your life's 
+                  journey, but it doesn't define who you are. This portal provides specialized support to 
+                  help you thrive despite the challenges.
+                </p>
+                
+                <div className="flex flex-wrap justify-center gap-3 mb-6">
+                  <div className="flex items-center gap-2 bg-purple-900/30 px-3 py-1 rounded-full">
+                    <Heart className="h-4 w-4 text-purple-300" />
+                    <span className="text-sm text-purple-200">Emotional Support</span>
+                  </div>
+                  <div className="flex items-center gap-2 bg-purple-900/30 px-3 py-1 rounded-full">
+                    <Users className="h-4 w-4 text-purple-300" />
+                    <span className="text-sm text-purple-200">Community Connection</span>
+                  </div>
+                  <div className="flex items-center gap-2 bg-purple-900/30 px-3 py-1 rounded-full">
+                    <Stethoscope className="h-4 w-4 text-purple-300" />
+                    <span className="text-sm text-purple-200">Specialized Resources</span>
+                  </div>
+                </div>
+              </div>
+              
+              <Button 
+                onClick={handleContinue}
+                className="bg-purple-600 hover:bg-purple-700 text-white text-lg px-8 py-6 h-auto transition-all duration-300 transform hover:scale-105 shadow-[0_0_15px_rgba(0,0,0,0.3)] flex items-center gap-2"
+              >
+                Continue <ArrowRight className="h-5 w-5" />
+              </Button>
+            </>
+          ) : (
+            <>
+              <div className="mb-2 flex items-center justify-center gap-3">
+                <Star className="h-5 w-5 text-purple-400" />
+                <Heart className="h-5 w-5 text-purple-300" />
+                <Star className="h-5 w-5 text-purple-400" />
+              </div>
+              
+              <h1 className="text-4xl md:text-5xl font-bold mb-8 bg-clip-text text-transparent bg-gradient-to-r from-purple-400 via-violet-300 to-purple-400 tracking-tight">
+                What You'll Find Here
+              </h1>
+              
+              <div className="max-w-3xl mb-10">
+                <div className="bg-gradient-to-r from-purple-900/40 to-violet-800/40 backdrop-blur-sm rounded-xl p-6 border border-purple-700/30 mb-8">
+                  <ul className="space-y-5 text-left">
+                    <li className="flex items-start rounded-lg p-3 bg-purple-900/20 backdrop-blur-sm">
+                      <div className="p-1 rounded-full bg-purple-700/30 mr-3 mt-1">
+                        <div className="w-3 h-3 rounded-full bg-purple-500"></div>
+                      </div>
+                      <span className="text-lg text-white">Specialized mental health resources tailored for those managing long-term health conditions</span>
+                    </li>
+                    
+                    <li className="flex items-start rounded-lg p-3 bg-purple-900/20 backdrop-blur-sm">
+                      <div className="p-1 rounded-full bg-purple-700/30 mr-3 mt-1">
+                        <div className="w-3 h-3 rounded-full bg-purple-500"></div>
+                      </div>
+                      <span className="text-lg text-white">Tools for managing the emotional aspects of chronic illness—grief, frustration, anxiety, and hope</span>
+                    </li>
+                    
+                    <li className="flex items-start rounded-lg p-3 bg-purple-900/20 backdrop-blur-sm">
+                      <div className="p-1 rounded-full bg-purple-700/30 mr-3 mt-1">
+                        <div className="w-3 h-3 rounded-full bg-purple-500"></div>
+                      </div>
+                      <span className="text-lg text-white">Community support from others who truly understand the daily realities of living with chronic conditions</span>
+                    </li>
+                    
+                    <li className="flex items-start rounded-lg p-3 bg-purple-900/20 backdrop-blur-sm">
+                      <div className="p-1 rounded-full bg-purple-700/30 mr-3 mt-1">
+                        <div className="w-3 h-3 rounded-full bg-purple-500"></div>
+                      </div>
+                      <span className="text-lg text-white">Access to professionals who specialize in the intersection of chronic illness and mental health</span>
+                    </li>
+                    
+                    <li className="flex items-start rounded-lg p-3 bg-purple-900/20 backdrop-blur-sm">
+                      <div className="p-1 rounded-full bg-purple-700/30 mr-3 mt-1">
+                        <div className="w-3 h-3 rounded-full bg-purple-500"></div>
+                      </div>
+                      <span className="text-lg text-white">Mindfulness and relaxation techniques adapted for chronic pain, fatigue, and limited mobility</span>
+                    </li>
+                    
+                    <li className="flex items-start rounded-lg p-3 bg-purple-900/20 backdrop-blur-sm">
+                      <div className="p-1 rounded-full bg-purple-700/30 mr-3 mt-1">
+                        <div className="w-3 h-3 rounded-full bg-purple-500"></div>
+                      </div>
+                      <span className="text-lg text-white">Resources for caregivers and family members to better understand and support you</span>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+              
+              <Button 
+                onClick={handleContinue}
+                className="bg-purple-600 hover:bg-purple-700 text-white text-lg px-8 py-6 h-auto transition-all duration-300 transform hover:scale-105 shadow-[0_0_15px_rgba(0,0,0,0.3)] flex items-center gap-2 group"
+              >
+                Enter Portal <Sparkles className="h-5 w-5 ml-2 group-hover:animate-pulse" />
+              </Button>
+            </>
+          )}
+        </div>
       </div>
     </div>
   );

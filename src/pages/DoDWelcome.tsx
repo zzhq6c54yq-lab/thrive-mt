@@ -1,4 +1,3 @@
-
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
@@ -60,7 +59,7 @@ const DoDWelcome: React.FC = () => {
         </div>
       </div>
       
-      <div className="max-w-5xl mx-auto bg-[#00000040] backdrop-blur-md rounded-2xl p-8 shadow-xl border border-blue-900/30 relative overflow-hidden">
+      <div className={`max-w-5xl mx-auto bg-[#00000040] backdrop-blur-md rounded-2xl p-8 shadow-xl border border-blue-900/30 relative overflow-hidden ${screenState === 'welcome' ? 'min-h-[75vh]' : 'min-h-screen'}`}>
         <div className="absolute top-4 right-4 z-20">
           <HomeButton />
         </div>
@@ -82,7 +81,7 @@ const DoDWelcome: React.FC = () => {
           </div>
         </div>
         
-        <div className="flex flex-col items-center justify-center min-h-[70vh] text-center px-4 animate-fade-in">
+        <div className={`flex flex-col items-center justify-center text-center px-4 ${screenState === 'welcome' ? 'min-h-[65vh] animate-page-enter' : 'min-h-[85vh] animate-slide-in-right'}`}>
           {screenState === 'welcome' ? (
             <>
               <div className="relative mb-6">
