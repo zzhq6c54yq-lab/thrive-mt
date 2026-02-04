@@ -355,7 +355,7 @@ function App() {
             <Route path="/app/badges" element={<BadgesPage />} />
             
             <Route path="/app/life-transitions" element={<LifeTransitions />} />
-            <Route path="/app/life-transitions/program/:programId" element={<LifeTransitionProgram />} />
+            <Route path="/app/life-transitions/:slug" element={<LifeTransitionProgram />} />
             <Route path="/app/support-circle" element={<SupportCircle />} />
             <Route path="/app/buddy-system" element={<BuddySystem />} />
             <Route path="/app/binaural-beats" element={<BinauralBeats />} />
