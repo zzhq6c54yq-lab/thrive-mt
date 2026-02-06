@@ -2,9 +2,10 @@
 import React, { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
-import { Check, Sparkles, Heart, Brain, Target, Star, Lightbulb, ArrowRight, Smile, Users, Zap } from "lucide-react";
+import { Check, Sparkles, Heart, Brain, Target, Star, Lightbulb, ArrowRight, Smile, Users, Zap, Info, X } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { useToast } from "@/hooks/use-toast";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
 
 interface VisionBoardProps {
   selectedQualities: string[];
@@ -30,6 +31,7 @@ const VisionBoard: React.FC<VisionBoardProps> = ({
   const [showInspirationMsg, setShowInspirationMsg] = useState(false);
   const [inspirationMessages, setInspirationMessages] = useState<string[]>([]);
   const [isProcessing, setIsProcessing] = useState(false);
+  const [infoItem, setInfoItem] = useState<{ id: string; label: string; icon: any; description: string; detail: string } | null>(null);
   const navigate = useNavigate();
   const { toast } = useToast();
   
@@ -89,67 +91,78 @@ const VisionBoard: React.FC<VisionBoardProps> = ({
       id: "peaceful", 
       label: isSpanish ? "Tranquilo" : "Peaceful", 
       icon: "🕊️", 
-      description: isSpanish ? "Encontrar calma interior en medio de las tormentas de la vida" : "Finding inner calm amidst life's storms" 
+      description: isSpanish ? "Encontrar calma interior en medio de las tormentas de la vida" : "Finding inner calm amidst life's storms",
+      detail: isSpanish ? "Accede a meditaciones guiadas, ejercicios de respiración y técnicas de relajación diseñadas para cultivar la paz interior. Incluye sesiones de mindfulness y herramientas para manejar momentos de estrés." : "Access guided meditations, breathing exercises, and relaxation techniques designed to cultivate inner peace. Includes mindfulness sessions and tools for managing stressful moments."
     },
     { 
       id: "mindful", 
       label: isSpanish ? "Consciente" : "Mindful", 
       icon: "🧠", 
-      description: isSpanish ? "Presente en cada momento, consciente de tus pensamientos" : "Present in each moment, aware of your thoughts" 
+      description: isSpanish ? "Presente en cada momento, consciente de tus pensamientos" : "Present in each moment, aware of your thoughts",
+      detail: isSpanish ? "Desarrolla la atención plena con ejercicios diarios de mindfulness, diario de pensamientos y prácticas de conciencia corporal. Aprende a observar tus pensamientos sin juicio." : "Develop mindfulness with daily awareness exercises, thought journaling, and body scan practices. Learn to observe your thoughts without judgment and stay grounded in the present."
     },
     { 
       id: "resilient", 
       label: isSpanish ? "Resiliente" : "Resilient", 
       icon: "🌱", 
-      description: isSpanish ? "Recuperándote más fuerte después de los desafíos" : "Bouncing back stronger from challenges" 
+      description: isSpanish ? "Recuperándote más fuerte después de los desafíos" : "Bouncing back stronger from challenges",
+      detail: isSpanish ? "Fortalece tu capacidad de recuperación con herramientas de resiliencia emocional, estrategias de afrontamiento y ejercicios de crecimiento post-adversidad." : "Strengthen your bounce-back ability with emotional resilience tools, coping strategies, and post-adversity growth exercises. Build the mental muscle to face life's challenges."
     },
     { 
       id: "grateful", 
       label: isSpanish ? "Agradecido" : "Grateful", 
       icon: "🙏", 
-      description: isSpanish ? "Apreciando los regalos en tu vida" : "Appreciating the gifts in your life" 
+      description: isSpanish ? "Apreciando los regalos en tu vida" : "Appreciating the gifts in your life",
+      detail: isSpanish ? "Cultiva la gratitud con un diario de agradecimiento diario, reflexiones guiadas y ejercicios para reconocer las bendiciones en tu vida cotidiana." : "Cultivate gratitude with a daily gratitude journal, guided reflections, and exercises to recognize the blessings in your everyday life."
     },
     { 
       id: "balanced", 
       label: isSpanish ? "Equilibrado" : "Balanced", 
       icon: "⚖️", 
-      description: isSpanish ? "Encontrando armonía en todas las dimensiones de la vida" : "Finding harmony in all life dimensions" 
+      description: isSpanish ? "Encontrando armonía en todas las dimensiones de la vida" : "Finding harmony in all life dimensions",
+      detail: isSpanish ? "Encuentra equilibrio entre trabajo, relaciones, salud y crecimiento personal con herramientas de planificación holística y autoevaluación de bienestar." : "Find balance between work, relationships, health, and personal growth with holistic planning tools and wellness self-assessments."
     },
     { 
       id: "creative", 
       label: isSpanish ? "Creativo" : "Creative", 
       icon: "🎨", 
-      description: isSpanish ? "Expresándote de maneras únicas" : "Expressing yourself in unique ways" 
+      description: isSpanish ? "Expresándote de maneras únicas" : "Expressing yourself in unique ways",
+      detail: isSpanish ? "Explora la terapia artística, escritura creativa, música terapéutica y otras formas de expresión creativa como herramientas de sanación emocional." : "Explore art therapy, creative writing, therapeutic music, and other forms of creative expression as emotional healing tools."
     },
     { 
       id: "empathetic", 
       label: isSpanish ? "Empático" : "Empathetic", 
       icon: "💗", 
-      description: isSpanish ? "Comprendiendo a otros con compasión" : "Understanding others with compassion" 
+      description: isSpanish ? "Comprendiendo a otros con compasión" : "Understanding others with compassion",
+      detail: isSpanish ? "Desarrolla habilidades de empatía y comunicación compasiva con ejercicios de escucha activa, perspectiva y conexión emocional profunda." : "Develop empathy and compassionate communication skills with active listening exercises, perspective-taking, and deep emotional connection practices."
     },
     { 
       id: "focused", 
       label: isSpanish ? "Enfocado" : "Focused", 
       icon: <Target className="w-6 h-6 text-[#D4AF37]" />, 
-      description: isSpanish ? "Dirigiendo tu energía con intención" : "Directing your energy with intention" 
+      description: isSpanish ? "Dirigiendo tu energía con intención" : "Directing your energy with intention",
+      detail: isSpanish ? "Mejora tu concentración y claridad mental con técnicas de enfoque, gestión de distracciones y ejercicios de establecimiento de intenciones diarias." : "Improve your concentration and mental clarity with focus techniques, distraction management, and daily intention-setting exercises."
     },
     { 
       id: "present", 
       label: isSpanish ? "Presente" : "Present", 
       icon: "⏱️", 
-      description: isSpanish ? "Completamente involucrado en el aquí y ahora" : "Fully engaged in the here and now" 
+      description: isSpanish ? "Completamente involucrado en el aquí y ahora" : "Fully engaged in the here and now",
+      detail: isSpanish ? "Practica el estar completamente presente con ejercicios de conexión sensorial, meditaciones de anclaje y técnicas para disfrutar cada momento." : "Practice being fully present with sensory grounding exercises, anchoring meditations, and techniques for savoring each moment."
     },
     { 
       id: "joyful", 
       label: isSpanish ? "Alegre" : "Joyful", 
       icon: <Smile className="w-6 h-6 text-[#D4AF37]" />, 
-      description: isSpanish ? "Encontrando deleite en los momentos cotidianos" : "Finding delight in everyday moments" 
+      description: isSpanish ? "Encontrando deleite en los momentos cotidianos" : "Finding delight in everyday moments",
+      detail: isSpanish ? "Redescubre la alegría con actividades de bienestar positivo, ejercicios de savoring y prácticas para cultivar momentos de felicidad genuina." : "Rediscover joy with positive wellness activities, savoring exercises, and practices for cultivating genuine moments of happiness."
     },
     { 
       id: "energetic", 
       label: isSpanish ? "Energético" : "Energetic", 
       icon: "⚡", 
-      description: isSpanish ? "Viviendo con vibración y entusiasmo" : "Living with vibrance and enthusiasm" 
+      description: isSpanish ? "Viviendo con vibración y entusiasmo" : "Living with vibrance and enthusiasm",
+      detail: isSpanish ? "Aumenta tu energía vital con rutinas de bienestar físico-mental, ejercicios de activación y estrategias para mantener la vitalidad durante todo el día." : "Boost your vital energy with physical-mental wellness routines, activation exercises, and strategies for maintaining vitality throughout the day."
     }
   ];
 
@@ -159,73 +172,85 @@ const VisionBoard: React.FC<VisionBoardProps> = ({
       id: "reducing-anxiety", 
       label: isSpanish ? "Reducir Ansiedad" : "Reducing Anxiety", 
       icon: "🌈", 
-      description: isSpanish ? "Encontrar paz cuando la preocupación se instala" : "Finding peace when worry creeps in" 
+      description: isSpanish ? "Encontrar paz cuando la preocupación se instala" : "Finding peace when worry creeps in",
+      detail: isSpanish ? "Herramientas especializadas para manejar la ansiedad incluyendo técnicas CBT, ejercicios de exposición gradual, respiración 4-7-8 y seguimiento de disparadores de ansiedad." : "Specialized anxiety management tools including CBT techniques, gradual exposure exercises, 4-7-8 breathing, and anxiety trigger tracking."
     },
     { 
       id: "managing-stress", 
       label: isSpanish ? "Manejar el Estrés" : "Managing Stress", 
       icon: "🌊", 
-      description: isSpanish ? "Fluyendo con los puntos de presión de la vida" : "Flowing with life's pressure points" 
+      description: isSpanish ? "Fluyendo con los puntos de presión de la vida" : "Flowing with life's pressure points",
+      detail: isSpanish ? "Estrategias probadas de manejo del estrés incluyendo relajación muscular progresiva, gestión del tiempo, establecimiento de límites y técnicas de descompresión." : "Proven stress management strategies including progressive muscle relaxation, time management, boundary setting, and decompression techniques."
     },
     { 
       id: "improving-sleep", 
       label: isSpanish ? "Mejorar el Sueño" : "Improving Sleep", 
       icon: "💤", 
-      description: isSpanish ? "Noches de descanso para días con energía" : "Restful nights for energized days" 
+      description: isSpanish ? "Noches de descanso para días con energía" : "Restful nights for energized days",
+      detail: isSpanish ? "Mejora tu higiene del sueño con meditaciones para dormir, sonidos binaurales, rutinas nocturnas guiadas y seguimiento de patrones de sueño." : "Improve your sleep hygiene with sleep meditations, binaural sounds, guided nighttime routines, and sleep pattern tracking."
     },
     { 
       id: "emotional-regulation", 
       label: isSpanish ? "Regulación Emocional" : "Emotional Regulation", 
       icon: "🎭", 
-      description: isSpanish ? "Dominar tus respuestas emocionales" : "Mastering your emotional responses" 
+      description: isSpanish ? "Dominar tus respuestas emocionales" : "Mastering your emotional responses",
+      detail: isSpanish ? "Aprende a identificar, entender y regular tus emociones con herramientas DBT, rueda de emociones y técnicas de regulación en el momento." : "Learn to identify, understand, and regulate your emotions with DBT tools, emotion wheels, and in-the-moment regulation techniques."
     },
     { 
       id: "better-relationships", 
       label: isSpanish ? "Mejores Relaciones" : "Better Relationships", 
       icon: <Users className="w-6 h-6 text-[#D4AF37]" />, 
-      description: isSpanish ? "Nutriendo conexiones que importan" : "Nurturing connections that matter" 
+      description: isSpanish ? "Nutriendo conexiones que importan" : "Nurturing connections that matter",
+      detail: isSpanish ? "Fortalece tus relaciones con herramientas de comunicación efectiva, resolución de conflictos, ejercicios de vinculación y apoyo de la comunidad Thrive." : "Strengthen your relationships with effective communication tools, conflict resolution, bonding exercises, and Thrive community support."
     },
     { 
       id: "work-life-balance", 
       label: isSpanish ? "Equilibrio Trabajo-Vida" : "Work-Life Balance", 
       icon: "⚖️", 
-      description: isSpanish ? "Armonía entre ambición y bienestar" : "Harmony between ambition and wellbeing" 
+      description: isSpanish ? "Armonía entre ambición y bienestar" : "Harmony between ambition and wellbeing",
+      detail: isSpanish ? "Encuentra el equilibrio con herramientas de gestión de energía, establecimiento de límites laborales, técnicas de desconexión digital y planificación de autocuidado." : "Find balance with energy management tools, work boundary setting, digital disconnect techniques, and self-care planning."
     },
     { 
       id: "finding-purpose", 
       label: isSpanish ? "Encontrar Propósito" : "Finding Purpose", 
       icon: "🧭", 
-      description: isSpanish ? "Descubriendo lo que hace cantar a tu alma" : "Discovering what makes your soul sing" 
+      description: isSpanish ? "Descubriendo lo que hace cantar a tu alma" : "Discovering what makes your soul sing",
+      detail: isSpanish ? "Explora tu propósito de vida con evaluaciones de valores, ejercicios de visión, coaching de carrera y herramientas de descubrimiento personal." : "Explore your life purpose with values assessments, vision exercises, career coaching, and personal discovery tools."
     },
     { 
       id: "building-confidence", 
       label: isSpanish ? "Construir Confianza" : "Building Confidence", 
       icon: <Zap className="w-6 h-6 text-[#D4AF37]" />, 
-      description: isSpanish ? "Fortaleciendo tu autoconfianza" : "Strengthening your self-belief" 
+      description: isSpanish ? "Fortaleciendo tu autoconfianza" : "Strengthening your self-belief",
+      detail: isSpanish ? "Construye confianza duradera con afirmaciones personalizadas, desafíos de zona de confort, seguimiento de logros y ejercicios de autocompasión." : "Build lasting confidence with personalized affirmations, comfort zone challenges, achievement tracking, and self-compassion exercises."
     },
     { 
       id: "setting-boundaries", 
       label: isSpanish ? "Establecer Límites" : "Setting Boundaries", 
       icon: "🛡️", 
-      description: isSpanish ? "Protegiendo tu energía y valores" : "Protecting your energy and values" 
+      description: isSpanish ? "Protegiendo tu energía y valores" : "Protecting your energy and values",
+      detail: isSpanish ? "Aprende a establecer y mantener límites saludables con guías de comunicación asertiva, ejercicios de identificación de necesidades y práctica de decir no." : "Learn to set and maintain healthy boundaries with assertive communication guides, needs identification exercises, and practice saying no."
     },
     { 
       id: "career-growth", 
       label: isSpanish ? "Crecimiento Profesional" : "Career Growth", 
       icon: "📈", 
-      description: isSpanish ? "Avanzando en tu viaje profesional" : "Advancing your professional journey" 
+      description: isSpanish ? "Avanzando en tu viaje profesional" : "Advancing your professional journey",
+      detail: isSpanish ? "Impulsa tu carrera con coaching profesional, evaluaciones de fortalezas, planificación de desarrollo y herramientas para manejar el estrés laboral." : "Boost your career with professional coaching, strengths assessments, development planning, and tools for managing workplace stress."
     },
     { 
       id: "health-wellness", 
       label: isSpanish ? "Salud y Bienestar" : "Health & Wellness", 
       icon: "🌿", 
-      description: isSpanish ? "Nutriendo tu cuerpo y mente" : "Nurturing your body and mind" 
+      description: isSpanish ? "Nutriendo tu cuerpo y mente" : "Nurturing your body and mind",
+      detail: isSpanish ? "Cuida tu bienestar integral con seguimiento de hábitos saludables, rutinas de ejercicio consciente, nutrición mindful y conexión cuerpo-mente." : "Care for your whole wellness with healthy habit tracking, mindful exercise routines, mindful nutrition, and body-mind connection practices."
     },
     { 
       id: "overcoming-trauma", 
       label: isSpanish ? "Superar Trauma" : "Overcoming Trauma", 
       icon: "🌄", 
-      description: isSpanish ? "Sanando heridas pasadas para el crecimiento futuro" : "Healing past wounds for future growth" 
+      description: isSpanish ? "Sanando heridas pasadas para el crecimiento futuro" : "Healing past wounds for future growth",
+      detail: isSpanish ? "Recursos de sanación del trauma incluyendo técnicas de estabilización, ejercicios de procesamiento guiado, conexión con terapeutas especializados y herramientas de crecimiento post-traumático." : "Trauma healing resources including stabilization techniques, guided processing exercises, connection with specialized therapists, and post-traumatic growth tools."
     }
   ];
 
@@ -397,6 +422,18 @@ const VisionBoard: React.FC<VisionBoardProps> = ({
                   onClick={() => handleToggle(quality.id, 'quality')}
                   className={getCardClasses(quality.id, selectedQualities)}
                 >
+                  {/* Info button */}
+                  <button
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      setInfoItem({ ...quality, detail: quality.detail });
+                    }}
+                    className="absolute top-1 left-1 p-1 rounded-full bg-white/10 hover:bg-white/20 transition-colors z-10"
+                    aria-label={`Info about ${quality.label}`}
+                  >
+                    <Info className="h-3.5 w-3.5 text-white/60 hover:text-white" />
+                  </button>
+                  
                   <div className="text-center">
                     <div className="text-4xl mb-2">{quality.icon}</div>
                     <h3 className={`text-lg font-medium mb-1 ${
@@ -427,6 +464,18 @@ const VisionBoard: React.FC<VisionBoardProps> = ({
                   onClick={() => handleToggle(goal.id, 'goal')}
                   className={getCardClasses(goal.id, selectedGoals)}
                 >
+                  {/* Info button */}
+                  <button
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      setInfoItem({ ...goal, detail: goal.detail });
+                    }}
+                    className="absolute top-1 left-1 p-1 rounded-full bg-white/10 hover:bg-white/20 transition-colors z-10"
+                    aria-label={`Info about ${goal.label}`}
+                  >
+                    <Info className="h-3.5 w-3.5 text-white/60 hover:text-white" />
+                  </button>
+
                   <div className="text-center">
                     <div className="text-4xl mb-2">{goal.icon}</div>
                     <h3 className={`text-lg font-medium mb-1 ${
@@ -498,6 +547,38 @@ const VisionBoard: React.FC<VisionBoardProps> = ({
           </div>
         </div>
       </div>
+
+      {/* Info Dialog - Welcome Portal */}
+      <Dialog open={!!infoItem} onOpenChange={(open) => !open && setInfoItem(null)}>
+        <DialogContent className="sm:max-w-md bg-gradient-to-b from-[#1a1a2e] to-[#16213e] border-[#B87333]/30 text-white">
+          <DialogHeader>
+            <DialogTitle className="flex items-center gap-3 text-xl">
+              <span className="text-3xl">{infoItem?.icon}</span>
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#B87333] to-[#E5C5A1]">
+                {infoItem?.label}
+              </span>
+            </DialogTitle>
+            <DialogDescription className="text-white/70 text-base pt-2">
+              {infoItem?.description}
+            </DialogDescription>
+          </DialogHeader>
+          <div className="space-y-4 pt-2">
+            <div className="bg-white/5 backdrop-blur-sm rounded-lg p-4 border border-white/10">
+              <h4 className="text-sm font-semibold text-[#E5C5A1] mb-2 flex items-center gap-2">
+                <Sparkles className="h-4 w-4" />
+                {isSpanish ? "Lo que incluye tu experiencia" : "What your experience includes"}
+              </h4>
+              <p className="text-sm text-white/80 leading-relaxed">{infoItem?.detail}</p>
+            </div>
+            <Button
+              onClick={() => setInfoItem(null)}
+              className="w-full bg-gradient-to-r from-[#B87333] to-[#E5C5A1] hover:from-[#A56625] hover:to-[#D4B48F]"
+            >
+              {isSpanish ? "Entendido" : "Got it"}
+            </Button>
+          </div>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 };
