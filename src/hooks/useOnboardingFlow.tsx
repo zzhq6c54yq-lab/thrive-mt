@@ -181,12 +181,9 @@ export const useOnboardingFlow = () => {
       }
       
       if (!session) {
-        console.error('No active session after waiting during onboarding completion');
-        // Clear the localStorage since user is not authenticated
-        localStorage.removeItem('hasCompletedOnboarding');
-        localStorage.removeItem(STORAGE_KEY);
-        // Redirect to auth
-        window.location.href = '/app/auth';
+        console.log('No active session - completing onboarding as guest user');
+        // Guest user: complete onboarding locally and go to dashboard
+        goToStep('completed');
         return;
       }
       
