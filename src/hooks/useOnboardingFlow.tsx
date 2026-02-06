@@ -156,11 +156,32 @@ export const useOnboardingFlow = () => {
     try {
       const { supabase } = await import("@/integrations/supabase/client");
       
-      // First check the session
-      const { data: { session }, error: sessionError } = await supabase.auth.getSession();
+      // Wait for auth state to settle - sometimes after sign-up the session isn't immediately available
+      let session = null;
+      let attempts = 0;
+      const maxAttempts = 5;
       
-      if (sessionError || !session) {
-        console.error('No active session during onboarding completion:', sessionError);
+      while (!session && attempts < maxAttempts) {
+        const { data, error: sessionError } = await supabase.auth.getSession();
+        
+        if (sessionError) {
+          console.error('Session error during onboarding:', sessionError);
+          attempts++;
+          await new Promise(resolve => setTimeout(resolve, 500));
+          continue;
+        }
+        
+        session = data.session;
+        
+        if (!session) {
+          attempts++;
+          console.log(`Waiting for session... attempt ${attempts}/${maxAttempts}`);
+          await new Promise(resolve => setTimeout(resolve, 500));
+        }
+      }
+      
+      if (!session) {
+        console.error('No active session after waiting during onboarding completion');
         // Clear the localStorage since user is not authenticated
         localStorage.removeItem('hasCompletedOnboarding');
         localStorage.removeItem(STORAGE_KEY);
