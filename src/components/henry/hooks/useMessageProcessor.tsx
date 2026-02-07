@@ -85,7 +85,21 @@ export const useMessageProcessor = (
     const loadConversation = async () => {
       try {
         const { data: { user } } = await supabase.auth.getUser();
-        if (!user) return;
+        if (!user) {
+          // Guest user - load from localStorage only
+          const saved = localStorage.getItem(STORAGE_KEY);
+          if (saved) {
+            try {
+              const parsed = JSON.parse(saved);
+              if (Array.isArray(parsed) && parsed.length > 0) {
+                setConversationContext(parsed);
+              }
+            } catch (e) {
+              console.error('[MessageProcessor] Failed to parse localStorage:', e);
+            }
+          }
+          return;
+        }
 
         // Load from database
         const { data: conversations } = await supabase

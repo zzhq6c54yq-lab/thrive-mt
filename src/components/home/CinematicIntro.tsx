@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Button } from "@/components/ui/button";
-import { ArrowRight, Key } from "lucide-react";
+import { ArrowRight, Key, Shield } from "lucide-react";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -162,6 +162,46 @@ const CinematicIntro: React.FC<CinematicIntroProps> = ({ onContinue, onSkipToMai
         <div className="absolute top-1/3 left-1/2 -translate-x-1/2 w-[500px] h-[500px] bg-[#D4AF37]/10 rounded-full blur-[120px]" />
       </div>
 
+      {/* Floating glowing orbs */}
+      <div className="absolute inset-0 pointer-events-none overflow-hidden">
+        <motion.div
+          className="absolute w-3 h-3 rounded-full bg-[#D4AF37]/60"
+          style={{ top: '25%', left: '20%', filter: 'blur(1px)', boxShadow: '0 0 12px 4px rgba(212,175,55,0.4)' }}
+          animate={{ y: [0, -20, 0], x: [0, 10, 0], opacity: [0.4, 0.8, 0.4] }}
+          transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }}
+        />
+        <motion.div
+          className="absolute w-2 h-2 rounded-full bg-[#B87333]/70"
+          style={{ top: '40%', right: '18%', filter: 'blur(1px)', boxShadow: '0 0 10px 3px rgba(184,115,51,0.4)' }}
+          animate={{ y: [0, 15, 0], x: [0, -8, 0], opacity: [0.3, 0.7, 0.3] }}
+          transition={{ duration: 4, repeat: Infinity, ease: "easeInOut", delay: 1 }}
+        />
+        <motion.div
+          className="absolute w-2.5 h-2.5 rounded-full bg-white/50"
+          style={{ top: '55%', left: '30%', filter: 'blur(1px)', boxShadow: '0 0 8px 3px rgba(255,255,255,0.3)' }}
+          animate={{ y: [0, -12, 0], x: [0, 6, 0], opacity: [0.2, 0.6, 0.2] }}
+          transition={{ duration: 6, repeat: Infinity, ease: "easeInOut", delay: 2 }}
+        />
+        <motion.div
+          className="absolute w-2 h-2 rounded-full bg-[#D4AF37]/50"
+          style={{ top: '35%', right: '30%', filter: 'blur(1px)', boxShadow: '0 0 10px 3px rgba(212,175,55,0.3)' }}
+          animate={{ y: [0, 18, 0], x: [0, -12, 0], opacity: [0.3, 0.65, 0.3] }}
+          transition={{ duration: 7, repeat: Infinity, ease: "easeInOut", delay: 0.5 }}
+        />
+        <motion.div
+          className="absolute w-1.5 h-1.5 rounded-full bg-[#E5C5A1]/60"
+          style={{ top: '60%', right: '25%', filter: 'blur(0.5px)', boxShadow: '0 0 8px 2px rgba(229,197,161,0.3)' }}
+          animate={{ y: [0, -10, 0], x: [0, 8, 0], opacity: [0.25, 0.55, 0.25] }}
+          transition={{ duration: 5.5, repeat: Infinity, ease: "easeInOut", delay: 3 }}
+        />
+        <motion.div
+          className="absolute w-1.5 h-1.5 rounded-full bg-white/40"
+          style={{ top: '45%', left: '15%', filter: 'blur(0.5px)', boxShadow: '0 0 6px 2px rgba(255,255,255,0.2)' }}
+          animate={{ y: [0, 14, 0], x: [0, -6, 0], opacity: [0.2, 0.5, 0.2] }}
+          transition={{ duration: 4.5, repeat: Infinity, ease: "easeInOut", delay: 1.5 }}
+        />
+      </div>
+
       <AnimatePresence>
         {showContent && (
           <motion.div
@@ -170,16 +210,6 @@ const CinematicIntro: React.FC<CinematicIntroProps> = ({ onContinue, onSkipToMai
             transition={{ duration: 1.2, ease: "easeOut" }}
             className="text-center max-w-2xl mx-auto px-4 z-10"
           >
-            {/* Time-aware greeting */}
-            <motion.p
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ delay: 0.3, duration: 0.8 }}
-              className="text-gray-400 text-lg mb-8"
-            >
-              {greeting}
-            </motion.p>
-
             {/* Logo */}
             <motion.div
               className="mb-6"
@@ -190,7 +220,7 @@ const CinematicIntro: React.FC<CinematicIntroProps> = ({ onContinue, onSkipToMai
               <img 
                 src={THRIVE_LOGO} 
                 alt="ThriveMT"
-                className="w-24 md:w-32 mx-auto drop-shadow-[0_0_30px_rgba(184,115,51,0.4)]"
+                className="w-28 md:w-36 mx-auto drop-shadow-[0_0_30px_rgba(184,115,51,0.4)]"
               />
             </motion.div>
 
@@ -199,17 +229,28 @@ const CinematicIntro: React.FC<CinematicIntroProps> = ({ onContinue, onSkipToMai
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.6, duration: 0.8 }}
-              className="text-5xl md:text-7xl mb-6 font-bold"
+              className="text-5xl md:text-7xl mb-4 font-bold"
             >
               <span className="text-white">Thrive</span>
-              <span 
-                className="gradient-heading ml-2" 
+              <motion.span 
+                className="ml-2 inline-block" 
                 style={{ 
-                  textShadow: '0 0 20px rgba(184, 115, 51, 0.6)' 
+                  background: 'linear-gradient(135deg, #D4AF37, #E5C5A1, #D4AF37)',
+                  WebkitBackgroundClip: 'text',
+                  WebkitTextFillColor: 'transparent',
+                  filter: 'drop-shadow(0 0 20px rgba(212,175,55,0.7)) drop-shadow(0 0 40px rgba(212,175,55,0.4))',
                 }}
+                animate={{
+                  filter: [
+                    'drop-shadow(0 0 20px rgba(212,175,55,0.7)) drop-shadow(0 0 40px rgba(212,175,55,0.4))',
+                    'drop-shadow(0 0 30px rgba(212,175,55,0.9)) drop-shadow(0 0 60px rgba(212,175,55,0.6))',
+                    'drop-shadow(0 0 20px rgba(212,175,55,0.7)) drop-shadow(0 0 40px rgba(212,175,55,0.4))',
+                  ]
+                }}
+                transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
               >
                 MT
-              </span>
+              </motion.span>
             </motion.h1>
 
             {/* Tagline */}
@@ -217,15 +258,9 @@ const CinematicIntro: React.FC<CinematicIntroProps> = ({ onContinue, onSkipToMai
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ delay: 0.8, duration: 0.8 }}
-              className="text-lg md:text-xl text-muted-foreground mb-10 font-light"
+              className="text-xl md:text-2xl text-white/80 mb-10 font-semibold tracking-wide"
             >
-              {selectedLanguage === 'Español' 
-                ? "Un santuario para sanar, crecer y ser tú mismo" 
-                : selectedLanguage === 'Português'
-                  ? "Um santuário para curar, crescer e ser você mesmo"
-                  : selectedLanguage === 'Filipino'
-                    ? "Isang santuwaryo upang maghilom, lumaki, at maging totoo"
-                    : "A sanctuary to heal, grow, and be yourself"}
+              Build the Best You
             </motion.p>
 
             {/* Action buttons */}
@@ -239,7 +274,7 @@ const CinematicIntro: React.FC<CinematicIntroProps> = ({ onContinue, onSkipToMai
               <Button 
                 variant="outline"
                 className="w-64 border-[#D4AF37]/50 text-[#D4AF37] hover:bg-[#D4AF37]/10 hover:border-[#D4AF37] font-light text-base py-5 rounded-xl transition-all duration-300"
-                onClick={() => navigate("/auth")}
+                onClick={() => navigate("/app/auth")}
               >
                 Sign In
               </Button>
@@ -247,7 +282,7 @@ const CinematicIntro: React.FC<CinematicIntroProps> = ({ onContinue, onSkipToMai
               {/* Create Account Button */}
               <Button 
                 className="w-64 bg-gradient-to-r from-[#B87333] via-[#D4AF37] to-[#B87333] hover:from-[#D4AF37] hover:via-[#E5C5A1] hover:to-[#D4AF37] text-background font-light text-base py-5 rounded-xl shadow-lg hover:shadow-[#D4AF37]/30 transition-all duration-300"
-                onClick={() => navigate("/auth?mode=signup")}
+                onClick={() => navigate("/app/auth?mode=signup")}
               >
                 Create Account
               </Button>
@@ -422,6 +457,19 @@ const CinematicIntro: React.FC<CinematicIntroProps> = ({ onContinue, onSkipToMai
           </div>
         </DialogContent>
       </Dialog>
+
+      {/* Bottom HIPAA & compliance badge */}
+      <div className="absolute bottom-6 left-0 right-0 z-10 flex flex-col items-center gap-2">
+        <div className="flex items-center gap-2 text-white/30 text-xs">
+          <Shield className="h-3.5 w-3.5" />
+          <span>HIPAA Compliant</span>
+          <span className="mx-1">•</span>
+          <span>256-bit Encrypted</span>
+        </div>
+        <p className="text-white/20 text-[10px]">
+          thrive-mental.app
+        </p>
+      </div>
     </div>
   );
 };

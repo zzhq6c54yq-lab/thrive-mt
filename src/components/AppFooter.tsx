@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { Heart } from "lucide-react";
+import { Heart, Shield } from "lucide-react";
 
 const AppFooter = () => {
   const currentYear = new Date().getFullYear();
@@ -31,23 +31,29 @@ const AppFooter = () => {
               Contact Support
             </Link>
             <Link 
-              to="/app/privacy-policy" 
+              to="/app/privacy-security" 
               className="text-white/50 hover:text-[#c9a86c] transition-colors"
             >
               Privacy Policy
             </Link>
             <Link 
-              to="/app/terms" 
+              to="/app/terms-of-service" 
               className="text-white/50 hover:text-[#c9a86c] transition-colors"
             >
               Terms
             </Link>
           </nav>
 
-          {/* Copyright */}
-          <p className="text-white/30 text-xs">
-            © {currentYear} Thrive MT. All rights reserved.
-          </p>
+          {/* HIPAA & Copyright */}
+          <div className="flex flex-col items-center md:items-end gap-1">
+            <div className="flex items-center gap-1.5 text-white/30 text-[10px]">
+              <Shield className="h-3 w-3" />
+              <span>HIPAA Compliant</span>
+            </div>
+            <p className="text-white/30 text-xs">
+              © {currentYear} Thrive MT. All rights reserved.
+            </p>
+          </div>
         </div>
       </div>
     </footer>
