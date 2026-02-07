@@ -5,7 +5,7 @@ import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { 
   Dumbbell, Heart, CheckSquare, Lock, CheckCircle, 
-  ChevronDown, ChevronUp, ArrowLeft, Sparkles 
+  ChevronDown, ChevronUp, ArrowLeft, Sparkles, BookOpen, PenLine, Clock
 } from 'lucide-react';
 import { DayContent, WeekContent } from '@/data/lifeTransitionDailyContent';
 import { celebrateGoalCompletion } from '@/utils/animations';
@@ -127,6 +127,12 @@ const DayContentView: React.FC<DayContentViewProps> = ({
                       className="overflow-hidden"
                     >
                       <div className="px-4 pb-4 space-y-4 border-t border-white/5 pt-4">
+                        {/* Estimated Time */}
+                        <div className="flex items-center gap-2 text-xs text-gray-400 mb-1">
+                          <Clock className="w-3.5 h-3.5" />
+                          <span>Estimated time: ~30 minutes</span>
+                        </div>
+
                         {/* Exercise */}
                         <div className="bg-blue-500/10 rounded-lg p-4 border border-blue-500/20">
                           <div className="flex items-center gap-2 mb-2">
@@ -146,6 +152,49 @@ const DayContentView: React.FC<DayContentViewProps> = ({
                             ))}
                           </ol>
                         </div>
+
+                        {/* Deep Dive */}
+                        {day.deepDive && (
+                          <div className="bg-indigo-500/10 rounded-lg p-4 border border-indigo-500/20">
+                            <div className="flex items-center gap-2 mb-2">
+                              <BookOpen className="w-5 h-5 text-indigo-400" />
+                              <h5 className="font-semibold text-indigo-300">Deep Dive: {day.deepDive.name}</h5>
+                              <Badge variant="outline" className="text-indigo-300 border-indigo-400/30 text-xs ml-auto">
+                                {day.deepDive.duration}
+                              </Badge>
+                            </div>
+                            <p className="text-sm text-gray-300 mb-3">{day.deepDive.description}</p>
+                            <ol className="space-y-1.5">
+                              {day.deepDive.steps.map((step, i) => (
+                                <li key={i} className="text-sm text-gray-400 flex items-start gap-2">
+                                  <span className="text-indigo-400 font-mono text-xs mt-0.5">{i + 1}.</span>
+                                  {step}
+                                </li>
+                              ))}
+                            </ol>
+                          </div>
+                        )}
+
+                        {/* Guided Reflection */}
+                        {day.reflection && (
+                          <div className="bg-teal-500/10 rounded-lg p-4 border border-teal-500/20">
+                            <div className="flex items-center gap-2 mb-2">
+                              <PenLine className="w-5 h-5 text-teal-400" />
+                              <h5 className="font-semibold text-teal-300">Reflection: {day.reflection.name}</h5>
+                              <Badge variant="outline" className="text-teal-300 border-teal-400/30 text-xs ml-auto">
+                                {day.reflection.duration}
+                              </Badge>
+                            </div>
+                            <ul className="space-y-3">
+                              {day.reflection.prompts.map((prompt, i) => (
+                                <li key={i} className="text-sm text-gray-300 flex items-start gap-2">
+                                  <span className="text-teal-400 mt-0.5 flex-shrink-0">•</span>
+                                  <span className="italic">{prompt}</span>
+                                </li>
+                              ))}
+                            </ul>
+                          </div>
+                        )}
 
                         {/* Encouragement */}
                         <div className="bg-amber-500/10 rounded-lg p-4 border border-amber-500/20">

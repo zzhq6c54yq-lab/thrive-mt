@@ -15,6 +15,17 @@ export interface DayContent {
     name: string;
     description: string;
   };
+  reflection?: {
+    name: string;
+    duration: string;
+    prompts: string[];
+  };
+  deepDive?: {
+    name: string;
+    duration: string;
+    description: string;
+    steps: string[];
+  };
 }
 
 export interface WeekContent {
@@ -47,7 +58,7 @@ const createDay = (
   task: { name: taskName, description: taskDesc },
 });
 
-export const programContent: Record<string, ProgramContent> = {
+const rawProgramContent: Record<string, ProgramContent> = {
   'grief-healing': {
     slug: 'grief-healing',
     weeks: [
@@ -322,33 +333,43 @@ export const programContent: Record<string, ProgramContent> = {
 // Helper to generate daily content for programs with less detailed content
 function generateGenericProgram(programName: string, weeks: { title: string; desc: string }[]): WeekContent[] {
   const exercises = [
-    { name: 'Mindful Breathing', duration: '5 min', steps: ['Find a quiet spot', 'Inhale for 4 counts', 'Hold for 4 counts', 'Exhale for 6 counts', 'Repeat 5 times'] },
-    { name: 'Body Scan Meditation', duration: '7 min', steps: ['Lie down comfortably', 'Scan from toes to head', 'Notice sensations', 'Release tension', 'Rest in awareness'] },
-    { name: 'Gratitude Practice', duration: '5 min', steps: ['List 3 things you\'re grateful for', 'Feel the gratitude in your body', 'Share one with someone', 'Write in a journal', 'Carry the feeling forward'] },
-    { name: 'Gentle Stretching', duration: '10 min', steps: ['Neck rolls', 'Shoulder shrugs', 'Side stretches', 'Forward fold', 'Deep breathing'] },
-    { name: 'Walking Meditation', duration: '10 min', steps: ['Walk slowly outdoors', 'Feel each step', 'Notice nature around you', 'Breathe with your steps', 'End with stillness'] },
-    { name: 'Journaling', duration: '10 min', steps: ['Set a timer', 'Write without stopping', 'Don\'t edit or judge', 'Let thoughts flow', 'Read back with compassion'] },
-    { name: 'Progressive Relaxation', duration: '10 min', steps: ['Tense each muscle group', 'Hold for 5 seconds', 'Release completely', 'Notice the difference', 'Move through whole body'] },
+    { name: 'Mindful Breathing', duration: '10 min', steps: ['Find a quiet, comfortable space and set a timer for 10 minutes', 'Close your eyes and take 3 deep, slow breaths to settle in', 'Inhale for 4 counts, hold for 4, exhale for 6—repeat 10 times', 'Notice any thoughts arising without judgment, returning focus to breath', 'Scan your body for tension and send each exhale to release it', 'For the remaining time, breathe naturally while observing your inner state', 'End by placing a hand on your heart and setting an intention for the day'] },
+    { name: 'Body Scan Meditation', duration: '12 min', steps: ['Lie down or sit comfortably. Close your eyes and take 5 deep breaths', 'Starting at the crown of your head, notice any sensations—pressure, warmth, tingling', 'Move attention slowly through your face, jaw (release clenching), neck, and shoulders', 'Scan down through your arms to your fingertips, noticing temperature and tension', 'Continue through your chest and belly—observe your breathing from this vantage point', 'Move through your hips, legs, and all the way to your toes', 'Return awareness to your whole body as one integrated system. Rest here for 2 minutes'] },
+    { name: 'Gratitude & Meaning Practice', duration: '10 min', steps: ['Set a timer and begin by writing 5 things you\'re genuinely grateful for today', 'For each one, write WHY it matters to you—go deeper than the surface', 'Identify one person who contributed to your gratitude today', 'Write them a short mental or physical thank-you note', 'Reflect: How does this gratitude connect to the person you\'re becoming?', 'Close your eyes, hold the warmth of gratitude in your chest for 1 minute', 'Carry one gratitude intention into the rest of your day'] },
+    { name: 'Gentle Movement & Stretching', duration: '12 min', steps: ['Stand with feet hip-width apart. Take 3 centering breaths', 'Slow neck rolls—5 each direction, feeling each vertebra', 'Shoulder shrugs—hold 10 seconds at the top, release with an exhale', 'Side body stretches—reach overhead and lean, hold 20 seconds each side', 'Forward fold—let your head hang, bend knees slightly, hold 30 seconds', 'Gentle spinal twists—seated or standing, hold 15 seconds each side', 'End in mountain pose or seated stillness for 2 minutes of integration'] },
+    { name: 'Walking Meditation', duration: '15 min', steps: ['Choose a quiet path or even a room where you can walk slowly', 'Begin by standing still, feeling your weight on the earth through your feet', 'Walk at half your normal speed, feeling the heel-to-toe roll of each step', 'Count 10 steps, then pause. Notice 3 things you see around you', 'Resume walking. For the next 10 steps, focus entirely on sounds', 'Walk 10 more steps focusing on the feeling of air on your skin', 'Continue alternating senses for the remaining time. End standing still for 1 minute'] },
+    { name: 'Expressive Journaling', duration: '15 min', steps: ['Set a timer for 15 minutes and gather your writing materials', 'Write your current emotional state in one sentence at the top', 'Begin writing freely—no editing, no crossing out, no judgment', 'If you get stuck, write "I\'m stuck because..." and keep going', 'Halfway through, pause and read what you\'ve written. Notice themes', 'Continue writing, this time responding to what emerged', 'End by circling one insight and writing one action step based on it'] },
+    { name: 'Progressive Muscle Relaxation', duration: '12 min', steps: ['Lie down or sit comfortably. Close your eyes and take 5 deep breaths', 'Tense your feet tightly for 7 seconds, then release completely. Notice the difference', 'Move to calves, thighs, glutes—tensing each for 7 seconds, then fully releasing', 'Tense your stomach, chest, and back muscles. Hold, then melt', 'Make fists, tense your arms and shoulders. Hold, then let everything go', 'Scrunch your entire face tightly. Hold, then release with a sigh', 'Lie in complete relaxation for 3 minutes, scanning for any remaining tension'] },
   ];
 
   const encouragements = [
-    'Every step forward, no matter how small, is progress worth celebrating.',
-    'You are doing something incredibly brave by showing up for yourself today.',
-    'Healing isn\'t linear. Give yourself grace on the difficult days.',
-    'You have survived 100% of your worst days. That\'s an incredible track record.',
-    'The fact that you\'re here, doing this work, shows tremendous strength.',
-    'Be gentle with yourself. You\'re doing the best you can, and that is enough.',
-    'Growth happens in the moments you choose to keep going despite the difficulty.',
+    'Every step forward, no matter how small, is progress worth celebrating. You chose to show up today—that matters enormously.',
+    'You are doing something incredibly brave by showing up for yourself today. Most people never take this step.',
+    'Healing isn\'t linear. Give yourself grace on the difficult days. They are part of the journey, not a departure from it.',
+    'You have survived 100% of your worst days. That\'s an incredible track record of resilience.',
+    'The fact that you\'re here, doing this work, shows tremendous strength. Many people wish they could do what you\'re doing right now.',
+    'Be gentle with yourself. You\'re doing the best you can with what you have, and that is always enough.',
+    'Growth happens in the quiet moments when you choose to keep going despite the difficulty. This is one of those moments.',
   ];
 
-  const taskTypes = [
-    { prefix: 'Reflect on', suffix: 'Write your thoughts in a journal.' },
-    { prefix: 'Practice', suffix: 'Notice how it feels and what you learn.' },
-    { prefix: 'Connect with', suffix: 'Reach out to someone who cares about you.' },
-    { prefix: 'Create a plan for', suffix: 'Write specific, achievable steps.' },
-    { prefix: 'Try something new:', suffix: 'Step outside your comfort zone, even slightly.' },
-    { prefix: 'Celebrate', suffix: 'Acknowledge your progress, no matter how small.' },
-    { prefix: 'Set a boundary around', suffix: 'Protect your energy and healing space.' },
+  const reflectionPromptSets = [
+    ['What does this week\'s theme mean to you personally? Write freely for 5 minutes.', 'How has your relationship with this topic changed over time?', 'What would your life look like if you fully embraced this week\'s lesson?', 'Write a letter to yourself from one year in the future, looking back on this moment.'],
+    ['What emotions came up during today\'s exercise? Name each one without judgment.', 'What resistance did you notice? What might it be protecting you from?', 'Describe a moment from today where you felt genuinely present.', 'What would you tell a friend going through the same experience?'],
+    ['How does today\'s practice connect to a pattern in your life?', 'What is one belief about yourself that this work is challenging?', 'Write about a time you showed resilience in a similar situation.', 'What small victory can you celebrate from today, even if it seems insignificant?'],
+    ['What part of today\'s lesson do you want to carry forward permanently?', 'How might applying today\'s insights improve one specific relationship?', 'Write about the gap between where you are and where you want to be. What bridges it?', 'If today were the first day of a new chapter, what would the opening paragraph say?'],
+    ['What surprised you about today\'s practice? What did you expect vs. what happened?', 'Who in your life would benefit from hearing about your experience today?', 'What is one fear that this week\'s work is helping you face?', 'Describe your emotional landscape right now using a weather metaphor.'],
+    ['How has your perspective on this topic shifted since the beginning of this program?', 'What tools or insights from today will you reach for during difficult moments?', 'Write about what self-compassion looks like for you at this stage of your journey.', 'What are you most proud of accomplishing this week?'],
+    ['Looking back at this week, what was the most meaningful moment?', 'What would you like to remember most from this week\'s work?', 'How has your inner dialogue changed since beginning this program?', 'Set three intentions for the coming week that honor your growth.'],
+  ];
+
+  const deepDiveActivities = [
+    { name: 'Values Clarification', steps: ['Write down 10 values that matter to you (e.g., authenticity, connection, growth, peace)', 'Rank them from most to least important in your current life', 'For your top 3, write a specific example of how you\'ve honored each this week', 'For your top 3, write one way you could honor them MORE deeply', 'Identify any conflicts between your values—which ones create tension?', 'Create a "values compass" statement: "I am guided by... because..."', 'Commit to one value-aligned action for tomorrow'] },
+    { name: 'Emotional Mapping', steps: ['Draw a simple timeline of your past 24 hours', 'Above the line, note positive emotions at the times they occurred', 'Below the line, note challenging emotions at the times they occurred', 'Look for patterns: What triggered shifts? What sustained good feelings?', 'Identify your emotional "default"—where do you spend most of your time?', 'Choose one challenging emotion and write what it\'s trying to tell you', 'Design one "emotional reset" technique you\'ll try when overwhelmed'] },
+    { name: 'Future Self Dialogue', steps: ['Close your eyes and imagine yourself 5 years from now, thriving', 'What does your future self look like? Where are they? Who is with them?', 'Write a conversation between your current self and future self', 'Ask your future self: "What should I focus on right now?"', 'Ask: "What should I let go of?"', 'Ask: "What gave you the strength to get where you are?"', 'Write one insight from this dialogue as a reminder on your phone'] },
+    { name: 'Boundary Exploration', steps: ['List 5 situations where you feel your energy being drained', 'For each, identify what boundary is being crossed', 'Write the ideal boundary statement for each: "I need... because..."', 'Practice saying one boundary statement out loud 3 times', 'Identify what fears come up when you think about setting boundaries', 'Write a counter-thought for each fear', 'Choose one boundary to honor this week and plan specifically how'] },
+    { name: 'Strength Mining', steps: ['Write about 3 difficult situations you navigated in the past year', 'For each, identify what personal strengths helped you cope', 'Ask yourself: Are these strengths I recognize and value in myself?', 'Write about a strength someone else sees in you that you dismiss', 'How might owning this strength change how you approach current challenges?', 'Create a "strength statement" you can read when self-doubt creeps in', 'Share one strength discovery with someone you trust today'] },
+    { name: 'Compassion Practice', steps: ['Think of someone you care about who is struggling right now', 'Write what you would say to comfort and encourage them', 'Now read those same words back to yourself—slowly and deliberately', 'Notice any resistance to receiving your own compassion. Name it', 'Write: "I deserve the same kindness I give to others because..."', 'Place your hand on your heart and repeat your compassion statement 3 times', 'Commit to speaking to yourself with compassion for the rest of today'] },
+    { name: 'Integration & Synthesis', steps: ['Review your notes and reflections from this week', 'Identify the 3 most important insights or breakthroughs', 'For each insight, write a specific action step to integrate it into daily life', 'Create a "Weekly Wisdom" summary in one paragraph', 'Identify what still feels unresolved—write it down without trying to solve it', 'Set 3 specific, measurable intentions for next week', 'End by writing one thing you want to celebrate about your effort this week'] },
   ];
 
   return weeks.map((week, weekIndex) => ({
@@ -358,7 +379,9 @@ function generateGenericProgram(programName: string, weeks: { title: string; des
     days: Array.from({ length: 7 }, (_, dayIndex) => {
       const exercise = exercises[(weekIndex * 7 + dayIndex) % exercises.length];
       const dayTitles = ['Foundation', 'Deepening', 'Practice', 'Integration', 'Connection', 'Growth', 'Reflection'];
-      
+      const reflectionPrompts = reflectionPromptSets[dayIndex % reflectionPromptSets.length];
+      const deepDive = deepDiveActivities[dayIndex % deepDiveActivities.length];
+
       return {
         day: dayIndex + 1,
         title: `${dayTitles[dayIndex]}: ${week.title}`,
@@ -370,12 +393,73 @@ function generateGenericProgram(programName: string, weeks: { title: string; des
         },
         encouragement: encouragements[(weekIndex * 7 + dayIndex) % encouragements.length],
         task: {
-          name: `${taskTypes[dayIndex % taskTypes.length].prefix} ${week.title.toLowerCase()}`,
-          description: taskTypes[dayIndex % taskTypes.length].suffix,
+          name: `Daily Practice: ${week.title}`,
+          description: `Spend 5-10 minutes applying today\'s lesson to ${week.title.toLowerCase()}. Write one key takeaway and one action step you will take in the next 24 hours.`,
+        },
+        reflection: {
+          name: 'Guided Reflection',
+          duration: '10 min',
+          prompts: reflectionPrompts,
+        },
+        deepDive: {
+          name: deepDive.name,
+          duration: '10 min',
+          description: `A deeper exploration connecting ${week.title.toLowerCase()} with self-awareness and personal growth.`,
+          steps: deepDive.steps,
         },
       };
     }),
   }));
 }
 
-export default programContent;
+// Enrich every day in every program with reflection and deepDive if not already present
+function enrichDay(day: DayContent, weekTitle: string): DayContent {
+  if (day.reflection && day.deepDive) return day;
+
+  const reflectionPromptsByTheme: string[] = [
+    `Sit quietly for a moment after completing today's exercise ("${day.exercise.name}"). What emotions, memories, or insights surfaced? Write freely for 5 minutes without editing.`,
+    `How does today's theme of "${day.title}" connect to patterns in your life? Are there recurring feelings or situations this brings up?`,
+    `Imagine explaining today's experience to someone who deeply cares about you. What would you want them to understand about where you are right now?`,
+    `What is one thing you discovered about yourself through today's practice that you didn't expect? How might this change how you move through tomorrow?`,
+  ];
+
+  const deepDiveSteps: string[] = [
+    `Find a comfortable, quiet space and set a timer for 10 minutes`,
+    `Begin by rereading or recalling the core of today's exercise: "${day.exercise.description}"`,
+    `Close your eyes and take 5 slow breaths. With each exhale, release one worry or distraction`,
+    `Visualize yourself fully embodying today's lesson—what does that look like in your daily life? Be specific about one situation`,
+    `Notice any resistance, doubt, or fear that arises. Instead of pushing it away, write it down and ask: "What are you trying to protect me from?"`,
+    `Write a specific, actionable commitment related to today's theme. Start with: "Tomorrow I will..."`,
+    `Read your commitment aloud, take 3 more deep breaths, and close by placing your hand over your heart for 30 seconds`,
+  ];
+
+  return {
+    ...day,
+    reflection: day.reflection || {
+      name: 'Guided Reflection',
+      duration: '10 min',
+      prompts: reflectionPromptsByTheme,
+    },
+    deepDive: day.deepDive || {
+      name: `Deep Dive: ${weekTitle}`,
+      duration: '10 min',
+      description: `A deeper, contemplative practice building on today's exercise to strengthen understanding of ${weekTitle.toLowerCase()}.`,
+      steps: deepDiveSteps,
+    },
+  };
+}
+
+// Apply enrichment to all programs
+const enrichedProgramContent: Record<string, ProgramContent> = {};
+for (const [key, program] of Object.entries(rawProgramContent)) {
+  enrichedProgramContent[key] = {
+    ...program,
+    weeks: program.weeks.map(week => ({
+      ...week,
+      days: week.days.map(day => enrichDay(day, week.title)),
+    })),
+  };
+}
+
+export const programContent = enrichedProgramContent;
+export default enrichedProgramContent;
