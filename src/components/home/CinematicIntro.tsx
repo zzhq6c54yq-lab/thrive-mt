@@ -9,6 +9,7 @@ import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
 import { useNavigate } from "react-router-dom";
 import { THRIVE_LOGO } from "@/constants/branding";
+import AtomOrbs from "@/components/ui/AtomOrbs";
 
 interface CinematicIntroProps {
   onContinue: () => void;
@@ -170,70 +171,21 @@ const CinematicIntro: React.FC<CinematicIntroProps> = ({ onContinue, onSkipToMai
             transition={{ duration: 1.2, ease: "easeOut" }}
             className="text-center max-w-2xl mx-auto px-4 z-10"
           >
-            {/* Logo with orbs around it */}
+            {/* Logo with atom orbs */}
             <motion.div
               className="mb-6 relative inline-block"
               initial={{ opacity: 0, scale: 0.9 }}
               animate={{ opacity: 1, scale: 1 }}
               transition={{ delay: 0.5, duration: 0.8 }}
             >
-            {/* Atom-orbit rings around the logo */}
-              {/* Orbit ring 1 - horizontal ellipse */}
-              <div className="absolute inset-[-30%] pointer-events-none">
-                <motion.div
-                  className="absolute w-4 h-4 rounded-full"
-                  style={{ 
-                    background: 'radial-gradient(circle, #D4AF37, #D4AF37cc)',
-                    boxShadow: '0 0 16px 6px rgba(212,175,55,0.7), 0 0 30px 10px rgba(212,175,55,0.3)',
-                    top: '50%', left: '50%',
-                  }}
-                  animate={{
-                    x: [60, 0, -60, 0, 60],
-                    y: [0, -25, 0, 25, 0],
-                  }}
-                  transition={{ duration: 4, repeat: Infinity, ease: "linear" }}
+              <div className="relative w-36 md:w-44 h-36 md:h-44 mx-auto flex items-center justify-center">
+                <AtomOrbs size={176} />
+                <img 
+                  src={THRIVE_LOGO} 
+                  alt="ThriveMT"
+                  className="w-28 md:w-36 relative z-10 drop-shadow-[0_0_30px_rgba(184,115,51,0.4)]"
                 />
               </div>
-
-              {/* Orbit ring 2 - tilted ellipse */}
-              <div className="absolute inset-[-30%] pointer-events-none">
-                <motion.div
-                  className="absolute w-3 h-3 rounded-full"
-                  style={{ 
-                    background: 'radial-gradient(circle, #E5C5A1, #E5C5A1cc)',
-                    boxShadow: '0 0 14px 5px rgba(229,197,161,0.7), 0 0 25px 8px rgba(229,197,161,0.3)',
-                    top: '50%', left: '50%',
-                  }}
-                  animate={{
-                    x: [0, -50, 0, 50, 0],
-                    y: [-55, 0, 55, 0, -55],
-                  }}
-                  transition={{ duration: 5, repeat: Infinity, ease: "linear", delay: 0.5 }}
-                />
-              </div>
-
-              {/* Orbit ring 3 - reverse tilted */}
-              <div className="absolute inset-[-30%] pointer-events-none">
-                <motion.div
-                  className="absolute w-3.5 h-3.5 rounded-full"
-                  style={{ 
-                    background: 'radial-gradient(circle, #fff, #ffffffcc)',
-                    boxShadow: '0 0 12px 4px rgba(255,255,255,0.6), 0 0 24px 8px rgba(255,255,255,0.2)',
-                    top: '50%', left: '50%',
-                  }}
-                  animate={{
-                    x: [45, -30, -45, 30, 45],
-                    y: [30, -45, -30, 45, 30],
-                  }}
-                  transition={{ duration: 6, repeat: Infinity, ease: "linear", delay: 1 }}
-                />
-              </div>
-
-              <img 
-                src={THRIVE_LOGO} 
-                alt="ThriveMT"
-                className="w-28 md:w-36 mx-auto drop-shadow-[0_0_30px_rgba(184,115,51,0.4)]"
-              />
             </motion.div>
 
             {/* Main title */}
