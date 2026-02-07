@@ -97,6 +97,8 @@ import SubscriptionPlansPage from "./pages/SubscriptionPlansPage";
 import PaymentSuccessPage from "./pages/PaymentSuccessPage";
 import FinancialAssistance from "./pages/FinancialAssistance";
 import ContactSupport from "./pages/ContactSupport";
+import PrivacySecurity from "./pages/PrivacySecurity";
+import TermsOfService from "./pages/TermsOfService";
 import GuidedPractice from "./pages/GuidedPractice";
 import VideoRecordPage from "./pages/VideoRecordPage";
 import VideoLibraryPage from "./pages/VideoLibraryPage";
@@ -262,6 +264,8 @@ function App() {
             <Route path="/app/financial-assistance" element={<FinancialAssistance />} />
             <Route path="/app/barter-application" element={<BarterApplicationPage />} />
             <Route path="/app/contact" element={<ContactSupport />} />
+            <Route path="/app/privacy-security" element={<PrivacySecurity />} />
+            <Route path="/app/terms-of-service" element={<TermsOfService />} />
             
             <Route path="/app/alternative-therapies" element={<AlternativeTherapies />} />
             <Route path="/app/alternative-therapies/detail/:therapyId" element={<AlternativeTherapyDetail />} />

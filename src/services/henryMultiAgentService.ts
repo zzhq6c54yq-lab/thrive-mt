@@ -47,7 +47,31 @@ export async function getHenryResponse(
     const { data: { user } } = await supabase.auth.getUser();
     
     if (!user) {
-      throw new Error('User not authenticated');
+      // For guest users, use the simpler henry-ai-chat function (no auth required)
+      try {
+        const { data, error } = await supabase.functions.invoke('henry-ai-chat', {
+          body: { message }
+        });
+        
+        if (error) throw error;
+        
+        return {
+          response: data?.response || FALLBACK_RESPONSES[Math.floor(Math.random() * FALLBACK_RESPONSES.length)],
+          conversationId: '',
+          agentType: 'coaching',
+          riskLevel: 'low',
+          intent: 'general'
+        };
+      } catch (guestError) {
+        console.error('Guest Henry AI error:', guestError);
+        return {
+          response: FALLBACK_RESPONSES[Math.floor(Math.random() * FALLBACK_RESPONSES.length)],
+          conversationId: '',
+          agentType: 'coaching',
+          riskLevel: 'low',
+          intent: 'general'
+        };
+      }
     }
     
     const data = await retryWithBackoff(async () => {
