@@ -1,5 +1,6 @@
 import { useState, useEffect, useCallback } from "react";
 import { OnboardingStep, OnboardingState, MoodType } from "@/types/onboarding";
+import { supabase } from "@/integrations/supabase/client";
 
 const STORAGE_KEY = 'thriveOnboardingProgress';
 
@@ -154,7 +155,6 @@ export const useOnboardingFlow = () => {
   const completeOnboarding = useCallback(async () => {
     // Update profile with onboarding completion and selected preferences
     try {
-      const { supabase } = await import("@/integrations/supabase/client");
       
       // Wait for auth state to settle - sometimes after sign-up the session isn't immediately available
       let session = null;
