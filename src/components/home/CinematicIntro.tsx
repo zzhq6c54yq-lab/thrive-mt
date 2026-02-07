@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Button } from "@/components/ui/button";
-import { ArrowRight, Key, Shield } from "lucide-react";
+import { ArrowRight, Key } from "lucide-react";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -158,9 +158,9 @@ const CinematicIntro: React.FC<CinematicIntroProps> = ({ onContinue, onSkipToMai
 
   return (
     <div className="min-h-screen flex flex-col items-center justify-center bg-black overflow-hidden relative">
-      {/* Subtle background glow */}
+      {/* Subtle background glow - tight around logo area */}
       <div className="absolute inset-0 pointer-events-none">
-        <div className="absolute top-1/3 left-1/2 -translate-x-1/2 w-[500px] h-[500px] bg-[#D4AF37]/10 rounded-full blur-[120px]" />
+        <div className="absolute top-1/3 left-1/2 -translate-x-1/2 w-[200px] h-[200px] bg-[#D4AF37]/8 rounded-full blur-[80px]" />
       </div>
 
       <AnimatePresence>
@@ -388,7 +388,7 @@ const CinematicIntro: React.FC<CinematicIntroProps> = ({ onContinue, onSkipToMai
         </DialogContent>
       </Dialog>
 
-      {/* Bottom: Staff Access + HIPAA badge */}
+      {/* Bottom: Staff Access */}
       <div className="absolute bottom-4 left-0 right-0 z-10 flex flex-col items-center gap-3">
         {/* Staff Access Menu - Opens upward */}
         <div className="relative group">
@@ -423,16 +423,6 @@ const CinematicIntro: React.FC<CinematicIntroProps> = ({ onContinue, onSkipToMai
             </div>
           </div>
         </div>
-
-        <div className="flex items-center gap-2 text-white/30 text-xs">
-          <Shield className="h-3.5 w-3.5" />
-          <span>HIPAA Compliant</span>
-          <span className="mx-1">•</span>
-          <span>256-bit Encrypted</span>
-        </div>
-        <p className="text-white/20 text-[10px]">
-          thrive-mental.app
-        </p>
       </div>
     </div>
   );
