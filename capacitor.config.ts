@@ -9,28 +9,18 @@ const config: CapacitorConfig = {
     cleartext: true
   },
   plugins: {
-    // Health plugin configuration
     CapacitorHealth: {
-      // iOS HealthKit data types to request
+      // iOS: HealthKit data types to read
       readTypes: [
-        'stepCount',
-        'sleepAnalysis', 
+        'steps',
+        'sleep',
         'heartRate',
-        'activeEnergyBurned',
-        'distanceWalkingRunning',
-        'weight',
-        'height'
+        'calories',
+        'distance',
+        'weight'
       ],
-      // Android Google Fit data types
-      androidReadTypes: [
-        'com.google.step_count.delta',
-        'com.google.sleep.segment',
-        'com.google.heart_rate.bpm',
-        'com.google.calories.expended',
-        'com.google.distance.delta',
-        'com.google.weight',
-        'com.google.height'
-      ]
+      // Android: Health Connect permission rationale
+      androidPermissionRationale: 'ThriveMT needs access to your health data to track your wellness journey and provide personalized insights.'
     }
   }
 };
