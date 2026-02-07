@@ -53,29 +53,29 @@ const AtomOrbs: React.FC<AtomOrbsProps> = ({ size = 128, className = '' }) => {
         }
 
         .atom-orb-gold {
-          width: 12px; height: 12px;
-          background: radial-gradient(circle, #D4AF37 0%, #B87333 60%, transparent 100%);
-          box-shadow: 0 0 12px 5px rgba(212, 175, 55, 0.6), 0 0 24px 10px rgba(184, 115, 51, 0.3);
+          width: 28px; height: 28px;
+          background: radial-gradient(circle, #D4AF37 0%, #B87333 50%, rgba(184, 115, 51, 0.2) 80%, transparent 100%);
+          box-shadow: 0 0 20px 10px rgba(212, 175, 55, 0.7), 0 0 40px 20px rgba(184, 115, 51, 0.35), 0 0 60px 30px rgba(212, 175, 55, 0.15);
         }
         .atom-orb-white {
-          width: 10px; height: 10px;
-          background: radial-gradient(circle, #ffffff 0%, rgba(255,255,255,0.6) 50%, transparent 100%);
-          box-shadow: 0 0 10px 4px rgba(255, 255, 255, 0.5), 0 0 20px 8px rgba(255, 255, 255, 0.2);
+          width: 24px; height: 24px;
+          background: radial-gradient(circle, #ffffff 0%, rgba(255,255,255,0.7) 40%, rgba(255,255,255,0.2) 70%, transparent 100%);
+          box-shadow: 0 0 18px 8px rgba(255, 255, 255, 0.6), 0 0 36px 16px rgba(255, 255, 255, 0.25), 0 0 50px 24px rgba(255, 255, 255, 0.1);
         }
         .atom-orb-bronze {
-          width: 10px; height: 10px;
-          background: radial-gradient(circle, #E5C5A1 0%, #B87333 60%, transparent 100%);
-          box-shadow: 0 0 10px 5px rgba(229, 197, 161, 0.5), 0 0 20px 8px rgba(184, 115, 51, 0.25);
+          width: 22px; height: 22px;
+          background: radial-gradient(circle, #E5C5A1 0%, #B87333 50%, rgba(184, 115, 51, 0.2) 80%, transparent 100%);
+          box-shadow: 0 0 16px 8px rgba(229, 197, 161, 0.6), 0 0 32px 14px rgba(184, 115, 51, 0.3), 0 0 48px 20px rgba(229, 197, 161, 0.1);
         }
         .atom-orb-gold-sm {
-          width: 8px; height: 8px;
-          background: radial-gradient(circle, #D4AF37 0%, rgba(212, 175, 55, 0.4) 60%, transparent 100%);
-          box-shadow: 0 0 8px 4px rgba(212, 175, 55, 0.5);
+          width: 18px; height: 18px;
+          background: radial-gradient(circle, #D4AF37 0%, rgba(212, 175, 55, 0.5) 50%, rgba(212, 175, 55, 0.1) 80%, transparent 100%);
+          box-shadow: 0 0 14px 7px rgba(212, 175, 55, 0.6), 0 0 28px 12px rgba(212, 175, 55, 0.25);
         }
         .atom-orb-white-sm {
-          width: 7px; height: 7px;
-          background: radial-gradient(circle, #fff 0%, rgba(255,255,255,0.4) 60%, transparent 100%);
-          box-shadow: 0 0 8px 3px rgba(255, 255, 255, 0.4);
+          width: 16px; height: 16px;
+          background: radial-gradient(circle, #fff 0%, rgba(255,255,255,0.5) 50%, rgba(255,255,255,0.1) 80%, transparent 100%);
+          box-shadow: 0 0 12px 6px rgba(255, 255, 255, 0.5), 0 0 24px 10px rgba(255, 255, 255, 0.2);
         }
 
         /* Smooth elliptical orbits at different tilts */
@@ -101,11 +101,11 @@ const AtomOrbs: React.FC<AtomOrbsProps> = ({ size = 128, className = '' }) => {
         }
 
         /* Position orbs at the edge of orbit */
-        .atom-orbit-1 .atom-orb { top: -6px; left: calc(50% - 6px); }
-        .atom-orbit-2 .atom-orb { top: -5px; left: calc(50% - 5px); }
-        .atom-orbit-3 .atom-orb { top: -5px; left: calc(50% - 5px); }
-        .atom-orbit-4 .atom-orb { top: -4px; left: calc(50% - 4px); }
-        .atom-orbit-5 .atom-orb { top: -3.5px; left: calc(50% - 3.5px); }
+        .atom-orbit-1 .atom-orb { top: -14px; left: calc(50% - 14px); }
+        .atom-orbit-2 .atom-orb { top: -12px; left: calc(50% - 12px); }
+        .atom-orbit-3 .atom-orb { top: -11px; left: calc(50% - 11px); }
+        .atom-orbit-4 .atom-orb { top: -9px; left: calc(50% - 9px); }
+        .atom-orbit-5 .atom-orb { top: -8px; left: calc(50% - 8px); }
       `}</style>
     </div>
   );
