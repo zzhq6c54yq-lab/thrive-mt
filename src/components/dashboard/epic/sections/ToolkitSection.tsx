@@ -13,7 +13,8 @@ import {
   Palette,
   Search,
   Briefcase,
-  Dumbbell
+  Dumbbell,
+  Shield
 } from 'lucide-react';
 import { useLayoutTracking } from '@/hooks/useLayoutTracking';
 import { useUser } from '@/contexts/UserContext';
@@ -66,6 +67,7 @@ export default function ToolkitSection({ userGoals }: ToolkitSectionProps) {
     { name: 'Sleep Tracker', path: '/app/sleep-tracker', description: 'Monitor your sleep patterns', icon: Activity, imageUrl: 'https://images.unsplash.com/photo-1541781774459-bb2af2f05b55?w=500&q=80' },
     { name: 'Alternative Therapies', path: '/app/alternative-therapies', description: 'Explore holistic options', icon: Heart, imageUrl: 'https://images.unsplash.com/photo-1545205597-3d9d02c29597?w=500&q=80' },
     { name: 'Wellness Challenges', path: '/app/wellness-challenges', description: 'Physical wellness goals', icon: Dumbbell, imageUrl: 'https://images.unsplash.com/photo-1517836357463-d25dfeac3438?w=500&q=80' },
+    { name: 'My Recovery Sponsor', path: '/app/substance-abuse-sponsor', description: 'NA/AA-style recovery support & sobriety tracking', icon: Shield, imageUrl: 'https://images.unsplash.com/photo-1529156069898-49953e39b3ac?w=500&q=80' },
   ];
 
   const filteredTools = allTools.filter(tool =>
