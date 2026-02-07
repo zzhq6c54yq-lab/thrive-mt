@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useParams, useNavigate, useLocation } from 'react-router-dom';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
@@ -6,68 +6,11 @@ import { useUser } from '@/contexts/UserContext';
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Progress } from '@/components/ui/progress';
-import { ArrowLeft, CheckCircle, Circle, Clock, BookOpen, Heart, Target, Loader2 } from 'lucide-react';
+import { ArrowLeft, CheckCircle, Circle, Clock, BookOpen, Heart, Target, Loader2, Lock, ChevronRight } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { useToast } from '@/hooks/use-toast';
-
-const weeklyModules: Record<string, Array<{ week: number; title: string; description: string }>> = {
-  // Database slug: 'divorce-recovery'
-  'divorce-recovery': [
-    { week: 1, title: 'Processing Your Emotions', description: 'Understanding and accepting the range of emotions you may experience.' },
-    { week: 2, title: 'Building Your Support System', description: 'Identifying and strengthening your support network.' },
-    { week: 3, title: 'Self-Care Foundations', description: 'Establishing healthy routines and self-care practices.' },
-    { week: 4, title: 'Co-Parenting Strategies', description: 'Effective communication and co-parenting techniques.' },
-    { week: 5, title: 'Financial Independence', description: 'Managing finances and building financial stability.' },
-    { week: 6, title: 'Rediscovering Yourself', description: 'Exploring your identity and personal goals.' },
-    { week: 7, title: 'Moving Forward', description: 'Creating a vision for your future and taking action.' },
-    { week: 8, title: 'Celebrating Growth', description: 'Reflecting on progress and maintaining momentum.' },
-  ],
-  // Database slug: 'job-loss' (Career Transition Support)
-  'job-loss': [
-    { week: 1, title: 'Self-Assessment', description: 'Identifying your skills, values, and career goals.' },
-    { week: 2, title: 'Exploring Options', description: 'Researching industries and opportunities.' },
-    { week: 3, title: 'Building Your Brand', description: 'Resume, LinkedIn, and personal branding.' },
-    { week: 4, title: 'Networking Strategies', description: 'Building professional connections.' },
-    { week: 5, title: 'Interview Preparation', description: 'Mastering the interview process.' },
-    { week: 6, title: 'Negotiation Skills', description: 'Salary and benefits negotiation.' },
-  ],
-  // Database slug: 'grief-healing' (Grief & Loss Support)
-  'grief-healing': [
-    { week: 1, title: 'Understanding Grief', description: 'Learning about the grief process.' },
-    { week: 2, title: 'Honoring Your Feelings', description: 'Allowing yourself to feel without judgment.' },
-    { week: 3, title: 'Memory and Legacy', description: 'Preserving memories and creating meaning.' },
-    { week: 4, title: 'Daily Coping', description: 'Managing daily life while grieving.' },
-    { week: 5, title: 'Finding Support', description: 'Connecting with others who understand.' },
-    { week: 6, title: 'Moving Through Grief', description: 'Finding hope and healing.' },
-  ],
-  // Database slug: 'new-parent'
-  'new-parent': [
-    { week: 1, title: 'Preparing for Change', description: 'Mental preparation for parenthood.' },
-    { week: 2, title: 'Self-Care for Parents', description: 'Maintaining your wellbeing.' },
-    { week: 3, title: 'Partner Communication', description: 'Strengthening your relationship.' },
-    { week: 4, title: 'Building Routines', description: 'Creating sustainable daily patterns.' },
-    { week: 5, title: 'Managing Stress', description: 'Coping with parenting pressures.' },
-    { week: 6, title: 'Finding Your Village', description: 'Building your support community.' },
-  ],
-  // Database slug: 'retirement'
-  'retirement': [
-    { week: 1, title: 'Identity Beyond Work', description: 'Exploring who you are outside of your career.' },
-    { week: 2, title: 'Creating Purpose', description: 'Finding meaningful activities.' },
-    { week: 3, title: 'Social Connections', description: 'Maintaining and building relationships.' },
-    { week: 4, title: 'Health & Wellness', description: 'Prioritizing physical and mental health.' },
-    { week: 5, title: 'Financial Peace', description: 'Managing retirement finances confidently.' },
-    { week: 6, title: 'Embracing the Journey', description: 'Living your best retirement life.' },
-  ],
-  // Database slug: 'chronic-illness'
-  'chronic-illness': [
-    { week: 1, title: 'Acceptance & Adjustment', description: 'Coming to terms with your diagnosis.' },
-    { week: 2, title: 'Managing Energy', description: 'Pacing yourself and setting boundaries.' },
-    { week: 3, title: 'Communication', description: 'Talking to loved ones and healthcare providers.' },
-    { week: 4, title: 'Mental Wellness', description: 'Addressing anxiety and depression.' },
-    { week: 5, title: 'Building Support', description: 'Finding community and resources.' },
-    { week: 6, title: 'Living Fully', description: 'Finding joy and purpose.' },
-  ],
-};
+import { programContent } from '@/data/lifeTransitionDailyContent';
+import DayContentView from '@/components/transitions/DayContentView';
 
 const LifeTransitionProgram = () => {
   const { slug } = useParams();
@@ -76,9 +19,12 @@ const LifeTransitionProgram = () => {
   const { user } = useUser();
   const { toast } = useToast();
   const queryClient = useQueryClient();
-  
-  // Check if demo mode
+  const [selectedWeek, setSelectedWeek] = useState<number | null>(null);
+
   const isDemoMode = location.state?.demoUser === true;
+
+  const content = programContent[slug as string];
+  const totalWeeks = content?.weeks?.length || 6;
 
   const { data: program, isLoading } = useQuery({
     queryKey: ['life-transition-program', slug],
@@ -88,7 +34,6 @@ const LifeTransitionProgram = () => {
         .select('*')
         .eq('slug', slug)
         .single();
-      
       if (error) throw error;
       return data;
     },
@@ -98,60 +43,80 @@ const LifeTransitionProgram = () => {
     queryKey: ['transition-enrollment', slug, user?.id],
     queryFn: async () => {
       if (!user?.id || !program?.id) return null;
-      
       const { data, error } = await supabase
         .from('user_transition_progress')
         .select('*')
         .eq('user_id', user.id)
         .eq('program_id', program.id)
         .single();
-      
       if (error && error.code !== 'PGRST116') throw error;
       return data;
     },
     enabled: !!user?.id && !!program?.id,
   });
 
-  // Enrollment mutation
   const enrollMutation = useMutation({
     mutationFn: async () => {
       if (!user?.id) throw new Error("Please log in to enroll");
       if (!program?.id) throw new Error("Program not found");
-
       const { error } = await supabase
         .from('user_transition_progress')
         .insert({
           user_id: user.id,
           program_id: program.id,
           current_week: 1,
-          notes: {},
+          notes: { completedDays: {} },
         });
-
       if (error) throw error;
     },
     onSuccess: () => {
-      toast({
-        title: "Enrolled Successfully! 🎉",
-        description: `Your ${program?.title} journey begins now.`,
-      });
+      toast({ title: "Enrolled Successfully! 🎉", description: `Your ${program?.title} journey begins now.` });
       queryClient.invalidateQueries({ queryKey: ['transition-enrollment', slug] });
       queryClient.invalidateQueries({ queryKey: ['transition-enrollments'] });
     },
     onError: (error: Error) => {
-      toast({
-        title: "Enrollment Failed",
-        description: error.message,
-        variant: "destructive",
-      });
+      toast({ title: "Enrollment Failed", description: error.message, variant: "destructive" });
+    },
+  });
+
+  const updateProgressMutation = useMutation({
+    mutationFn: async ({ weekNum, dayNum }: { weekNum: number; dayNum: number }) => {
+      if (!enrollment?.id) return;
+      
+      const currentNotes = (enrollment.notes as any) || { completedDays: {} };
+      const completedDays = currentNotes.completedDays || {};
+      const weekKey = `week_${weekNum}`;
+      const weekDays = completedDays[weekKey] || [];
+      
+      if (!weekDays.includes(dayNum)) {
+        weekDays.push(dayNum);
+      }
+      completedDays[weekKey] = weekDays;
+
+      // Auto-advance to next week if all 7 days completed
+      let newCurrentWeek = enrollment.current_week || 1;
+      if (weekDays.length === 7 && weekNum === newCurrentWeek && weekNum < totalWeeks) {
+        newCurrentWeek = weekNum + 1;
+      }
+
+      const { error } = await supabase
+        .from('user_transition_progress')
+        .update({ 
+          notes: { completedDays },
+          current_week: newCurrentWeek,
+        })
+        .eq('id', enrollment.id);
+      if (error) throw error;
+    },
+    onSuccess: () => {
+      toast({ title: "Day completed! 🎉", description: "Keep up the amazing work!" });
+      queryClient.invalidateQueries({ queryKey: ['transition-enrollment', slug] });
     },
   });
 
   const handleEnroll = () => {
     if (isDemoMode) {
-      toast({
-        title: "Demo Mode",
-        description: "Create an account to enroll in programs and track your progress.",
-      });
+      toast({ title: "Demo Mode", description: "Create an account to enroll in programs." });
       return;
     }
     if (!user) {
@@ -161,14 +126,40 @@ const LifeTransitionProgram = () => {
     enrollMutation.mutate();
   };
 
-  const modules = weeklyModules[slug as keyof typeof weeklyModules] || [];
-  const currentWeek = enrollment?.current_week || 1;
-  const progressPercent = (currentWeek / modules.length) * 100;
+  const getCompletedDaysForWeek = (weekNum: number): number[] => {
+    const notes = (enrollment?.notes as any) || {};
+    return notes.completedDays?.[`week_${weekNum}`] || [];
+  };
+
+  const getCurrentDayForWeek = (weekNum: number): number => {
+    const completed = getCompletedDaysForWeek(weekNum);
+    if (completed.length === 0) return 1;
+    const maxCompleted = Math.max(...completed);
+    return maxCompleted < 7 ? maxCompleted + 1 : 7;
+  };
+
+  const isWeekAccessible = (weekNum: number): boolean => {
+    if (!enrollment) return false;
+    if (weekNum === 1) return true;
+    // Previous week must have all 7 days completed
+    const prevWeekDays = getCompletedDaysForWeek(weekNum - 1);
+    return prevWeekDays.length >= 7;
+  };
+
+  const isWeekCompleted = (weekNum: number): boolean => {
+    return getCompletedDaysForWeek(weekNum).length >= 7;
+  };
+
+  const totalCompletedDays = content?.weeks?.reduce((sum, week) => {
+    return sum + getCompletedDaysForWeek(week.week).length;
+  }, 0) || 0;
+  const totalDays = totalWeeks * 7;
+  const progressPercent = enrollment ? (totalCompletedDays / totalDays) * 100 : 0;
 
   if (isLoading) {
     return (
       <div className="min-h-screen bg-[#000000] flex items-center justify-center">
-        <div className="text-white">Loading program...</div>
+        <Loader2 className="w-8 h-8 animate-spin text-[#D4AF37]" />
       </div>
     );
   }
@@ -178,12 +169,30 @@ const LifeTransitionProgram = () => {
       <div className="min-h-screen bg-[#000000] p-6">
         <div className="max-w-4xl mx-auto text-center">
           <h1 className="text-2xl text-white mb-4">Program not found</h1>
-          <Button onClick={() => navigate('/app/life-transitions')}>
-            Browse Programs
-          </Button>
+          <Button onClick={() => navigate('/app/life-transitions')}>Browse Programs</Button>
         </div>
       </div>
     );
+  }
+
+  // Day view for a selected week
+  if (selectedWeek !== null && content) {
+    const week = content.weeks.find(w => w.week === selectedWeek);
+    if (week) {
+      return (
+        <div className="min-h-screen bg-[#000000] p-6">
+          <div className="max-w-4xl mx-auto">
+            <DayContentView
+              week={week}
+              completedDays={getCompletedDaysForWeek(selectedWeek)}
+              currentDay={getCurrentDayForWeek(selectedWeek)}
+              onCompleteDay={(weekNum, dayNum) => updateProgressMutation.mutate({ weekNum, dayNum })}
+              onBack={() => setSelectedWeek(null)}
+            />
+          </div>
+        </div>
+      );
+    }
   }
 
   return (
@@ -209,19 +218,17 @@ const LifeTransitionProgram = () => {
             />
             <div className="absolute inset-0 bg-gradient-to-t from-black via-black/70 to-transparent" />
           </div>
-          
           <div className="relative p-8 pt-32">
             <h1 className="text-4xl font-bold text-white mb-2">{program.title}</h1>
             <p className="text-gray-300 text-lg mb-4">{program.description}</p>
-            
             <div className="flex items-center gap-4 text-sm text-gray-400">
               <span className="flex items-center gap-1">
                 <Clock className="w-4 h-4" />
-                {program.duration_weeks} weeks
+                {totalWeeks} weeks
               </span>
               <span className="flex items-center gap-1">
                 <BookOpen className="w-4 h-4" />
-                {modules.length} modules
+                {totalDays} daily lessons
               </span>
             </div>
           </div>
@@ -236,73 +243,91 @@ const LifeTransitionProgram = () => {
             </div>
             <Progress value={progressPercent} className="h-2" />
             <p className="text-sm text-gray-400 mt-2">
-              Week {currentWeek} of {modules.length}
+              {totalCompletedDays} of {totalDays} days completed • Week {enrollment.current_week || 1} of {totalWeeks}
             </p>
           </Card>
         )}
 
-        {/* Modules */}
+        {/* Weekly Modules */}
         <div className="space-y-4">
           <h2 className="text-2xl font-bold text-white flex items-center gap-2">
             <Target className="w-6 h-6 text-[#D4AF37]" />
-            Weekly Modules
+            Weekly Program
           </h2>
           
-          {modules.map((module, index) => {
-            const isCompleted = enrollment && module.week < currentWeek;
-            const isCurrent = enrollment && module.week === currentWeek;
-            const isLocked = enrollment && module.week > currentWeek;
-            
+          {(content?.weeks || []).map((week, index) => {
+            const accessible = enrollment ? isWeekAccessible(week.week) : false;
+            const completed = enrollment ? isWeekCompleted(week.week) : false;
+            const isCurrent = enrollment && week.week === (enrollment.current_week || 1);
+            const completedDays = getCompletedDaysForWeek(week.week);
+
             return (
               <motion.div
-                key={module.week}
+                key={week.week}
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: index * 0.05 }}
               >
-                <Card className={`p-6 transition-all ${
-                  isCurrent 
-                    ? 'bg-[#D4AF37]/20 border-[#D4AF37]' 
-                    : isCompleted 
-                      ? 'bg-green-900/20 border-green-500/30' 
-                      : 'bg-gray-900/50 border-gray-700/50'
-                }`}>
-                  <div className="flex items-start gap-4">
-                    <div className={`flex-shrink-0 w-10 h-10 rounded-full flex items-center justify-center ${
-                      isCompleted 
+                <Card 
+                  className={`p-6 transition-all cursor-pointer ${
+                    !enrollment
+                      ? 'bg-gray-900/50 border-gray-700/50'
+                      : completed 
+                        ? 'bg-green-900/20 border-green-500/30 hover:border-green-500/50' 
+                        : isCurrent 
+                          ? 'bg-[#D4AF37]/20 border-[#D4AF37] hover:bg-[#D4AF37]/25' 
+                          : accessible
+                            ? 'bg-gray-900/50 border-gray-700/50 hover:border-gray-600/50'
+                            : 'bg-gray-900/30 border-gray-800/30 opacity-60'
+                  }`}
+                  onClick={() => accessible && setSelectedWeek(week.week)}
+                >
+                  <div className="flex items-center gap-4">
+                    <div className={`flex-shrink-0 w-12 h-12 rounded-full flex items-center justify-center ${
+                      completed 
                         ? 'bg-green-500' 
                         : isCurrent 
                           ? 'bg-[#D4AF37]' 
-                          : 'bg-gray-700'
+                          : accessible
+                            ? 'bg-gray-700'
+                            : 'bg-gray-800'
                     }`}>
-                      {isCompleted ? (
-                        <CheckCircle className="w-5 h-5 text-white" />
+                      {completed ? (
+                        <CheckCircle className="w-6 h-6 text-white" />
+                      ) : !accessible && enrollment ? (
+                        <Lock className="w-5 h-5 text-gray-500" />
                       ) : (
-                        <span className="text-white font-bold">{module.week}</span>
+                        <span className="text-white font-bold">{week.week}</span>
                       )}
                     </div>
                     
                     <div className="flex-1">
                       <h3 className={`font-semibold text-lg ${
-                        isLocked ? 'text-gray-500' : 'text-white'
+                        !accessible && enrollment ? 'text-gray-500' : 'text-white'
                       }`}>
-                        {module.title}
+                        Week {week.week}: {week.title}
                       </h3>
                       <p className={`text-sm ${
-                        isLocked ? 'text-gray-600' : 'text-gray-400'
+                        !accessible && enrollment ? 'text-gray-600' : 'text-gray-400'
                       }`}>
-                        {module.description}
+                        {week.description}
                       </p>
-                      
-                      {isCurrent && (
-                        <Button 
-                          size="sm" 
-                          className="mt-3 bg-[#D4AF37] hover:bg-[#B87333] text-black"
-                        >
-                          Continue Module
-                        </Button>
+                      {enrollment && accessible && (
+                        <div className="flex items-center gap-2 mt-2">
+                          <div className="flex-1 bg-gray-800 rounded-full h-1.5">
+                            <div 
+                              className="bg-[#D4AF37] h-1.5 rounded-full transition-all"
+                              style={{ width: `${(completedDays.length / 7) * 100}%` }}
+                            />
+                          </div>
+                          <span className="text-xs text-gray-400">{completedDays.length}/7</span>
+                        </div>
                       )}
                     </div>
+
+                    {accessible && (
+                      <ChevronRight className="w-5 h-5 text-gray-400" />
+                    )}
                   </div>
                 </Card>
               </motion.div>
@@ -316,7 +341,7 @@ const LifeTransitionProgram = () => {
             <Heart className="w-12 h-12 text-[#D4AF37] mx-auto mb-4" />
             <h3 className="text-2xl font-bold text-white mb-2">Ready to Begin?</h3>
             <p className="text-gray-400 mb-6">
-              Start your {program.title.toLowerCase()} journey today.
+              Start your {totalWeeks}-week journey with daily exercises, encouragement, and actionable tasks.
             </p>
             <Button 
               size="lg"
@@ -325,12 +350,9 @@ const LifeTransitionProgram = () => {
               className="bg-gradient-to-r from-[#D4AF37] to-[#B87333] hover:from-[#E5C5A1] hover:to-[#D4AF37] text-black font-semibold"
             >
               {enrollMutation.isPending ? (
-                <>
-                  <Loader2 className="w-4 h-4 mr-2 animate-spin" />
-                  Enrolling...
-                </>
+                <><Loader2 className="w-4 h-4 mr-2 animate-spin" />Enrolling...</>
               ) : (
-                'Enroll Now'
+                'Enroll Now — Free'
               )}
             </Button>
           </Card>
