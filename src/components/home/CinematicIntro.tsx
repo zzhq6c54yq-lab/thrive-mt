@@ -162,46 +162,6 @@ const CinematicIntro: React.FC<CinematicIntroProps> = ({ onContinue, onSkipToMai
         <div className="absolute top-1/3 left-1/2 -translate-x-1/2 w-[500px] h-[500px] bg-[#D4AF37]/10 rounded-full blur-[120px]" />
       </div>
 
-      {/* Floating glowing orbs */}
-      <div className="absolute inset-0 pointer-events-none overflow-hidden">
-        <motion.div
-          className="absolute w-3 h-3 rounded-full bg-[#D4AF37]/60"
-          style={{ top: '25%', left: '20%', filter: 'blur(1px)', boxShadow: '0 0 12px 4px rgba(212,175,55,0.4)' }}
-          animate={{ y: [0, -20, 0], x: [0, 10, 0], opacity: [0.4, 0.8, 0.4] }}
-          transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }}
-        />
-        <motion.div
-          className="absolute w-2 h-2 rounded-full bg-[#B87333]/70"
-          style={{ top: '40%', right: '18%', filter: 'blur(1px)', boxShadow: '0 0 10px 3px rgba(184,115,51,0.4)' }}
-          animate={{ y: [0, 15, 0], x: [0, -8, 0], opacity: [0.3, 0.7, 0.3] }}
-          transition={{ duration: 4, repeat: Infinity, ease: "easeInOut", delay: 1 }}
-        />
-        <motion.div
-          className="absolute w-2.5 h-2.5 rounded-full bg-white/50"
-          style={{ top: '55%', left: '30%', filter: 'blur(1px)', boxShadow: '0 0 8px 3px rgba(255,255,255,0.3)' }}
-          animate={{ y: [0, -12, 0], x: [0, 6, 0], opacity: [0.2, 0.6, 0.2] }}
-          transition={{ duration: 6, repeat: Infinity, ease: "easeInOut", delay: 2 }}
-        />
-        <motion.div
-          className="absolute w-2 h-2 rounded-full bg-[#D4AF37]/50"
-          style={{ top: '35%', right: '30%', filter: 'blur(1px)', boxShadow: '0 0 10px 3px rgba(212,175,55,0.3)' }}
-          animate={{ y: [0, 18, 0], x: [0, -12, 0], opacity: [0.3, 0.65, 0.3] }}
-          transition={{ duration: 7, repeat: Infinity, ease: "easeInOut", delay: 0.5 }}
-        />
-        <motion.div
-          className="absolute w-1.5 h-1.5 rounded-full bg-[#E5C5A1]/60"
-          style={{ top: '60%', right: '25%', filter: 'blur(0.5px)', boxShadow: '0 0 8px 2px rgba(229,197,161,0.3)' }}
-          animate={{ y: [0, -10, 0], x: [0, 8, 0], opacity: [0.25, 0.55, 0.25] }}
-          transition={{ duration: 5.5, repeat: Infinity, ease: "easeInOut", delay: 3 }}
-        />
-        <motion.div
-          className="absolute w-1.5 h-1.5 rounded-full bg-white/40"
-          style={{ top: '45%', left: '15%', filter: 'blur(0.5px)', boxShadow: '0 0 6px 2px rgba(255,255,255,0.2)' }}
-          animate={{ y: [0, 14, 0], x: [0, -6, 0], opacity: [0.2, 0.5, 0.2] }}
-          transition={{ duration: 4.5, repeat: Infinity, ease: "easeInOut", delay: 1.5 }}
-        />
-      </div>
-
       <AnimatePresence>
         {showContent && (
           <motion.div
@@ -210,13 +170,51 @@ const CinematicIntro: React.FC<CinematicIntroProps> = ({ onContinue, onSkipToMai
             transition={{ duration: 1.2, ease: "easeOut" }}
             className="text-center max-w-2xl mx-auto px-4 z-10"
           >
-            {/* Logo */}
+            {/* Logo with orbs around it */}
             <motion.div
-              className="mb-6"
+              className="mb-6 relative inline-block"
               initial={{ opacity: 0, scale: 0.9 }}
               animate={{ opacity: 1, scale: 1 }}
               transition={{ delay: 0.5, duration: 0.8 }}
             >
+              {/* Orbs positioned around the logo */}
+              <motion.div
+                className="absolute w-3 h-3 rounded-full bg-[#D4AF37]/60"
+                style={{ top: '-8%', left: '15%', filter: 'blur(1px)', boxShadow: '0 0 12px 4px rgba(212,175,55,0.4)' }}
+                animate={{ y: [0, -8, 0], x: [0, 5, 0], opacity: [0.4, 0.8, 0.4] }}
+                transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }}
+              />
+              <motion.div
+                className="absolute w-2 h-2 rounded-full bg-[#B87333]/70"
+                style={{ top: '20%', right: '-10%', filter: 'blur(1px)', boxShadow: '0 0 10px 3px rgba(184,115,51,0.4)' }}
+                animate={{ y: [0, 6, 0], x: [0, -4, 0], opacity: [0.3, 0.7, 0.3] }}
+                transition={{ duration: 4, repeat: Infinity, ease: "easeInOut", delay: 1 }}
+              />
+              <motion.div
+                className="absolute w-2.5 h-2.5 rounded-full bg-white/50"
+                style={{ bottom: '10%', left: '-5%', filter: 'blur(1px)', boxShadow: '0 0 8px 3px rgba(255,255,255,0.3)' }}
+                animate={{ y: [0, -6, 0], x: [0, 4, 0], opacity: [0.2, 0.6, 0.2] }}
+                transition={{ duration: 6, repeat: Infinity, ease: "easeInOut", delay: 2 }}
+              />
+              <motion.div
+                className="absolute w-2 h-2 rounded-full bg-[#D4AF37]/50"
+                style={{ top: '10%', right: '5%', filter: 'blur(1px)', boxShadow: '0 0 10px 3px rgba(212,175,55,0.3)' }}
+                animate={{ y: [0, 8, 0], x: [0, -6, 0], opacity: [0.3, 0.65, 0.3] }}
+                transition={{ duration: 7, repeat: Infinity, ease: "easeInOut", delay: 0.5 }}
+              />
+              <motion.div
+                className="absolute w-1.5 h-1.5 rounded-full bg-[#E5C5A1]/60"
+                style={{ bottom: '25%', right: '-8%', filter: 'blur(0.5px)', boxShadow: '0 0 8px 2px rgba(229,197,161,0.3)' }}
+                animate={{ y: [0, -5, 0], x: [0, 4, 0], opacity: [0.25, 0.55, 0.25] }}
+                transition={{ duration: 5.5, repeat: Infinity, ease: "easeInOut", delay: 3 }}
+              />
+              <motion.div
+                className="absolute w-1.5 h-1.5 rounded-full bg-white/40"
+                style={{ top: '40%', left: '-8%', filter: 'blur(0.5px)', boxShadow: '0 0 6px 2px rgba(255,255,255,0.2)' }}
+                animate={{ y: [0, 7, 0], x: [0, -3, 0], opacity: [0.2, 0.5, 0.2] }}
+                transition={{ duration: 4.5, repeat: Infinity, ease: "easeInOut", delay: 1.5 }}
+              />
+
               <img 
                 src={THRIVE_LOGO} 
                 alt="ThriveMT"
@@ -296,40 +294,6 @@ const CinematicIntro: React.FC<CinematicIntroProps> = ({ onContinue, onSkipToMai
                 Continue as Guest
                 <ArrowRight className="ml-2 h-4 w-4" />
               </Button>
-              
-              {/* Staff Access Menu - Opens upward */}
-              <div className="relative group mt-4">
-                <Button
-                  variant="ghost"
-                  size="sm"
-                  className="text-xs text-muted-foreground/60 hover:text-muted-foreground transition-colors font-light"
-                >
-                  <Key className="mr-2 h-3 w-3" />
-                  Staff Access
-                </Button>
-                <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50">
-                  <div className="bg-gray-900/95 backdrop-blur-xl border border-[#D4AF37]/20 rounded-lg shadow-xl p-2 min-w-[160px]">
-                    <button
-                      onClick={() => setAccessCodeDialogOpen(true)}
-                      className="w-full text-left px-3 py-2 text-sm text-gray-300 hover:text-white hover:bg-[#D4AF37]/10 rounded-md transition-colors"
-                    >
-                      Admin Access
-                    </button>
-                    <button
-                      onClick={() => setShowCoachAccessDialog(true)}
-                      className="w-full text-left px-3 py-2 text-sm text-gray-300 hover:text-white hover:bg-[#D4AF37]/10 rounded-md transition-colors"
-                    >
-                      Coach Portal
-                    </button>
-                    <button
-                      onClick={() => setShowAccessCodeDialog(true)}
-                      className="w-full text-left px-3 py-2 text-sm text-gray-300 hover:text-white hover:bg-[#D4AF37]/10 rounded-md transition-colors"
-                    >
-                      Therapist Portal
-                    </button>
-                  </div>
-                </div>
-              </div>
             </motion.div>
           </motion.div>
         )}
@@ -458,8 +422,42 @@ const CinematicIntro: React.FC<CinematicIntroProps> = ({ onContinue, onSkipToMai
         </DialogContent>
       </Dialog>
 
-      {/* Bottom HIPAA & compliance badge */}
-      <div className="absolute bottom-6 left-0 right-0 z-10 flex flex-col items-center gap-2">
+      {/* Bottom: Staff Access + HIPAA badge */}
+      <div className="absolute bottom-4 left-0 right-0 z-10 flex flex-col items-center gap-3">
+        {/* Staff Access Menu - Opens upward */}
+        <div className="relative group">
+          <Button
+            variant="ghost"
+            size="sm"
+            className="text-xs text-white/30 hover:text-white/60 transition-colors font-light"
+          >
+            <Key className="mr-2 h-3 w-3" />
+            Staff Access
+          </Button>
+          <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50">
+            <div className="bg-gray-900/95 backdrop-blur-xl border border-[#D4AF37]/20 rounded-lg shadow-xl p-2 min-w-[160px]">
+              <button
+                onClick={() => setAccessCodeDialogOpen(true)}
+                className="w-full text-left px-3 py-2 text-sm text-gray-300 hover:text-white hover:bg-[#D4AF37]/10 rounded-md transition-colors"
+              >
+                Admin Access
+              </button>
+              <button
+                onClick={() => setShowCoachAccessDialog(true)}
+                className="w-full text-left px-3 py-2 text-sm text-gray-300 hover:text-white hover:bg-[#D4AF37]/10 rounded-md transition-colors"
+              >
+                Coach Portal
+              </button>
+              <button
+                onClick={() => setShowAccessCodeDialog(true)}
+                className="w-full text-left px-3 py-2 text-sm text-gray-300 hover:text-white hover:bg-[#D4AF37]/10 rounded-md transition-colors"
+              >
+                Therapist Portal
+              </button>
+            </div>
+          </div>
+        </div>
+
         <div className="flex items-center gap-2 text-white/30 text-xs">
           <Shield className="h-3.5 w-3.5" />
           <span>HIPAA Compliant</span>
