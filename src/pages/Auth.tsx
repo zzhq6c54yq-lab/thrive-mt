@@ -7,6 +7,7 @@ import { Label } from "@/components/ui/label";
 import { Checkbox } from "@/components/ui/checkbox";
 import { ArrowRight, Eye, EyeOff, Loader2, AlertTriangle } from "lucide-react";
 import { useCompassionateToast } from "@/hooks/useCompassionateToast";
+import AtomOrbs from "@/components/ui/AtomOrbs";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -199,22 +200,25 @@ const Auth: React.FC = () => {
   };
 
   if (checkingSession) {
-    return (
-      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-gray-900 via-[#1a1a1a] to-gray-900">
-        <Loader2 className="h-8 w-8 animate-spin text-[#B87333]" />
-      </div>
-    );
+  return (
+    <div className="min-h-screen flex items-center justify-center bg-black">
+      <Loader2 className="h-8 w-8 animate-spin text-[#B87333]" />
+    </div>
+  );
   }
 
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center p-4 bg-gradient-to-br from-gray-900 via-[#1a1a1a] to-gray-900">
+    <div className="min-h-screen flex flex-col items-center justify-center p-4 bg-black">
       <div className="w-full max-w-md space-y-8">
         <div className="text-center space-y-4">
-          <img 
-            src="/lovable-uploads/f2c6ac08-6331-4884-950d-7f94d68ff15f.png"
-            alt="ThriveMT Logo"
-            className="h-24 w-24 mx-auto object-contain filter drop-shadow-[0_0_12px_rgba(184,115,51,0.6)]"
-          />
+          <div className="relative mx-auto w-32 h-32 flex items-center justify-center">
+            <AtomOrbs size={128} />
+            <img 
+              src="/lovable-uploads/f2c6ac08-6331-4884-950d-7f94d68ff15f.png"
+              alt="ThriveMT Logo"
+              className="h-20 w-20 object-contain relative z-10 filter drop-shadow-[0_0_12px_rgba(184,115,51,0.6)]"
+            />
+          </div>
           
           <div className="space-y-2">
             <h1 className="text-4xl font-bold text-white">
