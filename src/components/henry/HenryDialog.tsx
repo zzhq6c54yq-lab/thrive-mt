@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import { Dialog, DialogContent } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
-import { X, Send, Mic, ArrowUp, ArrowDown, UserPlus } from "lucide-react";
+import { X, Send, Mic, ArrowDown, UserPlus } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import HenryHeader from "./components/HenryHeader";
 import MessageList from "@/components/shared/MessageList";
@@ -161,6 +161,7 @@ const HenryDialog: React.FC<HenryDialogProps> = ({
   return (
     <Dialog open={isOpen} onOpenChange={onOpenChange}>
       <DialogContent 
+        showCloseButton={false}
         className="max-w-2xl h-[85vh] bg-gradient-to-br from-gray-900/95 via-[#1a1a1a]/95 to-gray-900/95 border-[#D4AF37]/20 p-0 flex flex-col overflow-hidden backdrop-blur-xl"
         style={{
           boxShadow: '0 0 50px rgba(212, 175, 55, 0.15)'
@@ -170,15 +171,8 @@ const HenryDialog: React.FC<HenryDialogProps> = ({
           <HenryHeader onClose={() => onOpenChange(false)} />
         </div>
 
-        <div className="absolute right-4 top-16 z-40 flex flex-col gap-2">
-          <Button
-            variant="ghost"
-            size="icon"
-            onClick={handleScrollUp}
-            className="rounded-full bg-white/5 hover:bg-white/10 text-white/70 hover:text-white transition-all"
-          >
-            <ArrowUp className="h-4 w-4" />
-          </Button>
+        {/* Single scroll control */}
+        <div className="absolute right-4 top-16 z-40">
           <Button
             variant="ghost"
             size="icon"

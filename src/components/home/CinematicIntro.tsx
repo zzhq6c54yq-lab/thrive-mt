@@ -177,43 +177,57 @@ const CinematicIntro: React.FC<CinematicIntroProps> = ({ onContinue, onSkipToMai
               animate={{ opacity: 1, scale: 1 }}
               transition={{ delay: 0.5, duration: 0.8 }}
             >
-              {/* Orbs positioned around the logo */}
-              <motion.div
-                className="absolute w-3 h-3 rounded-full bg-[#D4AF37]/60"
-                style={{ top: '-8%', left: '15%', filter: 'blur(1px)', boxShadow: '0 0 12px 4px rgba(212,175,55,0.4)' }}
-                animate={{ y: [0, -8, 0], x: [0, 5, 0], opacity: [0.4, 0.8, 0.4] }}
-                transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }}
-              />
-              <motion.div
-                className="absolute w-2 h-2 rounded-full bg-[#B87333]/70"
-                style={{ top: '20%', right: '-10%', filter: 'blur(1px)', boxShadow: '0 0 10px 3px rgba(184,115,51,0.4)' }}
-                animate={{ y: [0, 6, 0], x: [0, -4, 0], opacity: [0.3, 0.7, 0.3] }}
-                transition={{ duration: 4, repeat: Infinity, ease: "easeInOut", delay: 1 }}
-              />
-              <motion.div
-                className="absolute w-2.5 h-2.5 rounded-full bg-white/50"
-                style={{ bottom: '10%', left: '-5%', filter: 'blur(1px)', boxShadow: '0 0 8px 3px rgba(255,255,255,0.3)' }}
-                animate={{ y: [0, -6, 0], x: [0, 4, 0], opacity: [0.2, 0.6, 0.2] }}
-                transition={{ duration: 6, repeat: Infinity, ease: "easeInOut", delay: 2 }}
-              />
-              <motion.div
-                className="absolute w-2 h-2 rounded-full bg-[#D4AF37]/50"
-                style={{ top: '10%', right: '5%', filter: 'blur(1px)', boxShadow: '0 0 10px 3px rgba(212,175,55,0.3)' }}
-                animate={{ y: [0, 8, 0], x: [0, -6, 0], opacity: [0.3, 0.65, 0.3] }}
-                transition={{ duration: 7, repeat: Infinity, ease: "easeInOut", delay: 0.5 }}
-              />
-              <motion.div
-                className="absolute w-1.5 h-1.5 rounded-full bg-[#E5C5A1]/60"
-                style={{ bottom: '25%', right: '-8%', filter: 'blur(0.5px)', boxShadow: '0 0 8px 2px rgba(229,197,161,0.3)' }}
-                animate={{ y: [0, -5, 0], x: [0, 4, 0], opacity: [0.25, 0.55, 0.25] }}
-                transition={{ duration: 5.5, repeat: Infinity, ease: "easeInOut", delay: 3 }}
-              />
-              <motion.div
-                className="absolute w-1.5 h-1.5 rounded-full bg-white/40"
-                style={{ top: '40%', left: '-8%', filter: 'blur(0.5px)', boxShadow: '0 0 6px 2px rgba(255,255,255,0.2)' }}
-                animate={{ y: [0, 7, 0], x: [0, -3, 0], opacity: [0.2, 0.5, 0.2] }}
-                transition={{ duration: 4.5, repeat: Infinity, ease: "easeInOut", delay: 1.5 }}
-              />
+            {/* Atom-orbit rings around the logo */}
+              {/* Orbit ring 1 - horizontal ellipse */}
+              <div className="absolute inset-[-30%] pointer-events-none">
+                <motion.div
+                  className="absolute w-4 h-4 rounded-full"
+                  style={{ 
+                    background: 'radial-gradient(circle, #D4AF37, #D4AF37cc)',
+                    boxShadow: '0 0 16px 6px rgba(212,175,55,0.7), 0 0 30px 10px rgba(212,175,55,0.3)',
+                    top: '50%', left: '50%',
+                  }}
+                  animate={{
+                    x: [60, 0, -60, 0, 60],
+                    y: [0, -25, 0, 25, 0],
+                  }}
+                  transition={{ duration: 4, repeat: Infinity, ease: "linear" }}
+                />
+              </div>
+
+              {/* Orbit ring 2 - tilted ellipse */}
+              <div className="absolute inset-[-30%] pointer-events-none">
+                <motion.div
+                  className="absolute w-3 h-3 rounded-full"
+                  style={{ 
+                    background: 'radial-gradient(circle, #E5C5A1, #E5C5A1cc)',
+                    boxShadow: '0 0 14px 5px rgba(229,197,161,0.7), 0 0 25px 8px rgba(229,197,161,0.3)',
+                    top: '50%', left: '50%',
+                  }}
+                  animate={{
+                    x: [0, -50, 0, 50, 0],
+                    y: [-55, 0, 55, 0, -55],
+                  }}
+                  transition={{ duration: 5, repeat: Infinity, ease: "linear", delay: 0.5 }}
+                />
+              </div>
+
+              {/* Orbit ring 3 - reverse tilted */}
+              <div className="absolute inset-[-30%] pointer-events-none">
+                <motion.div
+                  className="absolute w-3.5 h-3.5 rounded-full"
+                  style={{ 
+                    background: 'radial-gradient(circle, #fff, #ffffffcc)',
+                    boxShadow: '0 0 12px 4px rgba(255,255,255,0.6), 0 0 24px 8px rgba(255,255,255,0.2)',
+                    top: '50%', left: '50%',
+                  }}
+                  animate={{
+                    x: [45, -30, -45, 30, 45],
+                    y: [30, -45, -30, 45, 30],
+                  }}
+                  transition={{ duration: 6, repeat: Infinity, ease: "linear", delay: 1 }}
+                />
+              </div>
 
               <img 
                 src={THRIVE_LOGO} 
