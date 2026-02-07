@@ -1,18 +1,17 @@
 /**
- * Health Service for Apple Health & Google Fit Integration
+ * Health Service for Apple Health & Google Health Connect Integration
  * 
- * This service provides a unified API for accessing health data from
- * native platforms (iOS HealthKit, Android Google Fit) when running
- * as a native mobile app via Capacitor.
+ * Uses @capgo/capacitor-health plugin for unified access to:
+ * - Apple HealthKit (iOS)
+ * - Health Connect (Android)
  * 
- * IMPORTANT: Health data access ONLY works when the app is running as
- * a native mobile app. In web browsers, this service falls back to
- * mock data or gracefully degrades.
+ * On web, gracefully degrades with mock data for demo purposes.
  */
 
 import { Capacitor } from '@capacitor/core';
+import type { HealthDataType as PluginHealthDataType } from '@capgo/capacitor-health';
 
-// Health data types we support
+// Our app's health data types
 export type HealthDataType = 
   | 'steps'
   | 'sleep'
@@ -36,6 +35,27 @@ export interface HealthSyncResult {
   error?: string;
 }
 
+// Map our app types to the plugin's HealthDataType
+const PLUGIN_TYPE_MAP: Record<HealthDataType, PluginHealthDataType | null> = {
+  steps: 'steps',
+  sleep: 'sleep',
+  heart_rate: 'heartRate',
+  active_calories: 'calories',
+  distance: 'distance',
+  weight: 'weight',
+  height: null, // Not supported by plugin
+};
+
+const UNIT_MAP: Record<HealthDataType, string> = {
+  steps: 'count',
+  sleep: 'hours',
+  heart_rate: 'bpm',
+  active_calories: 'kcal',
+  distance: 'km',
+  weight: 'kg',
+  height: 'cm',
+};
+
 // Platform detection
 export const isNativePlatform = (): boolean => {
   return Capacitor.isNativePlatform();
@@ -48,19 +68,26 @@ export const getPlatform = (): 'ios' | 'android' | 'web' => {
   return 'web';
 };
 
+// Lazily load the plugin only on native platforms
+const getHealthPlugin = async () => {
+  if (!isNativePlatform()) return null;
+  try {
+    const mod = await import('@capgo/capacitor-health');
+    return mod.Health;
+  } catch (error) {
+    console.error('Failed to load Capacitor Health plugin:', error);
+    return null;
+  }
+};
+
 // Check if health data is available on this platform
 export const isHealthAvailable = async (): Promise<boolean> => {
-  const platform = getPlatform();
-  
-  if (platform === 'web') {
-    return false; // Health APIs not available on web
-  }
-  
+  const plugin = await getHealthPlugin();
+  if (!plugin) return false;
+
   try {
-    // On native platforms, check if HealthKit/Google Fit is available
-    // This requires the actual Capacitor health plugin to be installed
-    // For now, return true on native platforms
-    return platform === 'ios' || platform === 'android';
+    const result = await plugin.isAvailable();
+    return result.available;
   } catch (error) {
     console.error('Error checking health availability:', error);
     return false;
@@ -69,26 +96,20 @@ export const isHealthAvailable = async (): Promise<boolean> => {
 
 // Request health permissions from the user
 export const requestHealthPermissions = async (): Promise<boolean> => {
-  const platform = getPlatform();
-  
-  if (platform === 'web') {
-    console.warn('Health permissions not available on web platform');
+  const plugin = await getHealthPlugin();
+  if (!plugin) {
+    console.warn('Health plugin not available on this platform');
     return false;
   }
-  
+
   try {
-    // On iOS: This would trigger HealthKit permission dialog
-    // On Android: This would trigger Google Fit OAuth flow
-    
-    // When using a real Capacitor health plugin, this would be:
-    // const { CapacitorHealth } = await import('@some-health-plugin');
-    // const result = await CapacitorHealth.requestAuthorization({
-    //   read: ['stepCount', 'sleepAnalysis', 'heartRate', ...],
-    // });
-    // return result.granted;
-    
-    // For now, simulate success on native platforms
-    console.log(`Requesting health permissions on ${platform}...`);
+    const readTypes: PluginHealthDataType[] = ['steps', 'sleep', 'heartRate', 'calories', 'distance', 'weight'];
+
+    await plugin.requestAuthorization({
+      read: readTypes,
+      write: [],
+    });
+
     return true;
   } catch (error) {
     console.error('Error requesting health permissions:', error);
@@ -102,34 +123,53 @@ export const fetchHealthData = async (
   startDate: Date,
   endDate: Date
 ): Promise<HealthSyncResult> => {
-  const platform = getPlatform();
-  
-  if (platform === 'web') {
-    // Return mock data for web platform (demo purposes)
+  const plugin = await getHealthPlugin();
+
+  // Web fallback: return mock data
+  if (!plugin) {
     return {
       success: true,
       data: generateMockHealthData(types, startDate, endDate),
     };
   }
-  
+
   try {
-    // On native platforms, this would query HealthKit/Google Fit
-    // const { CapacitorHealth } = await import('@some-health-plugin');
-    // const data = await CapacitorHealth.queryData({
-    //   types: types.map(mapToNativeType),
-    //   startDate: startDate.toISOString(),
-    //   endDate: endDate.toISOString(),
-    // });
-    
-    // For now, return mock data but flag it as from native
-    console.log(`Fetching health data on ${platform} from ${startDate} to ${endDate}`);
-    
-    const mockData = generateMockHealthData(types, startDate, endDate);
-    mockData.forEach(d => d.source = platform === 'ios' ? 'Apple Health' : 'Google Fit');
-    
+    const allData: HealthDataPoint[] = [];
+    const platform = getPlatform();
+    const sourceName = platform === 'ios' ? 'Apple Health' : 'Health Connect';
+
+    for (const type of types) {
+      const pluginType = PLUGIN_TYPE_MAP[type];
+      if (!pluginType) continue;
+
+      try {
+        const result = await plugin.queryAggregated({
+          dataType: pluginType,
+          startDate: startDate.toISOString(),
+          endDate: endDate.toISOString(),
+          bucket: 'day',
+        });
+
+        if (result?.samples) {
+          for (const sample of result.samples) {
+            allData.push({
+              type,
+              value: sample.value ?? 0,
+              unit: UNIT_MAP[type],
+              timestamp: sample.startDate,
+              source: sourceName,
+            });
+          }
+        }
+      } catch (typeError) {
+        // Some data types may not be available; continue with others
+        console.warn(`Could not fetch ${type} data:`, typeError);
+      }
+    }
+
     return {
       success: true,
-      data: mockData,
+      data: allData,
     };
   } catch (error: any) {
     console.error('Error fetching health data:', error);
@@ -141,7 +181,7 @@ export const fetchHealthData = async (
   }
 };
 
-// Generate mock health data for demo/web
+// Generate mock health data for web demo
 const generateMockHealthData = (
   types: HealthDataType[],
   startDate: Date,
@@ -149,91 +189,95 @@ const generateMockHealthData = (
 ): HealthDataPoint[] => {
   const data: HealthDataPoint[] = [];
   const days = Math.ceil((endDate.getTime() - startDate.getTime()) / (1000 * 60 * 60 * 24));
-  
+
   for (let i = 0; i < days; i++) {
     const date = new Date(startDate);
     date.setDate(date.getDate() + i);
-    
+
     types.forEach(type => {
       data.push(generateMockDataPoint(type, date));
     });
   }
-  
+
   return data;
 };
 
 const generateMockDataPoint = (type: HealthDataType, date: Date): HealthDataPoint => {
   const timestamp = date.toISOString();
-  
-  switch (type) {
-    case 'steps':
-      return {
-        type: 'steps',
-        value: Math.floor(5000 + Math.random() * 10000),
-        unit: 'count',
-        timestamp,
-        source: 'Mock Data',
-      };
-    case 'sleep':
-      return {
-        type: 'sleep',
-        value: 5 + Math.random() * 4, // 5-9 hours
-        unit: 'hours',
-        timestamp,
-        source: 'Mock Data',
-      };
-    case 'heart_rate':
-      return {
-        type: 'heart_rate',
-        value: Math.floor(60 + Math.random() * 40), // 60-100 bpm
-        unit: 'bpm',
-        timestamp,
-        source: 'Mock Data',
-      };
-    case 'active_calories':
-      return {
-        type: 'active_calories',
-        value: Math.floor(200 + Math.random() * 500),
-        unit: 'kcal',
-        timestamp,
-        source: 'Mock Data',
-      };
-    case 'distance':
-      return {
-        type: 'distance',
-        value: Math.round((2 + Math.random() * 8) * 10) / 10, // 2-10 km
-        unit: 'km',
-        timestamp,
-        source: 'Mock Data',
-      };
-    case 'weight':
-      return {
-        type: 'weight',
-        value: 70 + Math.random() * 2 - 1, // slight variation
-        unit: 'kg',
-        timestamp,
-        source: 'Mock Data',
-      };
-    case 'height':
-      return {
-        type: 'height',
-        value: 170,
-        unit: 'cm',
-        timestamp,
-        source: 'Mock Data',
-      };
-    default:
-      return {
-        type,
-        value: 0,
-        unit: 'unknown',
-        timestamp,
-        source: 'Mock Data',
-      };
-  }
+
+  const generators: Record<HealthDataType, () => HealthDataPoint> = {
+    steps: () => ({
+      type: 'steps', value: Math.floor(5000 + Math.random() * 10000),
+      unit: 'count', timestamp, source: 'Demo Data',
+    }),
+    sleep: () => ({
+      type: 'sleep', value: Math.round((5 + Math.random() * 4) * 10) / 10,
+      unit: 'hours', timestamp, source: 'Demo Data',
+    }),
+    heart_rate: () => ({
+      type: 'heart_rate', value: Math.floor(60 + Math.random() * 40),
+      unit: 'bpm', timestamp, source: 'Demo Data',
+    }),
+    active_calories: () => ({
+      type: 'active_calories', value: Math.floor(200 + Math.random() * 500),
+      unit: 'kcal', timestamp, source: 'Demo Data',
+    }),
+    distance: () => ({
+      type: 'distance', value: Math.round((2 + Math.random() * 8) * 10) / 10,
+      unit: 'km', timestamp, source: 'Demo Data',
+    }),
+    weight: () => ({
+      type: 'weight', value: Math.round((70 + Math.random() * 2 - 1) * 10) / 10,
+      unit: 'kg', timestamp, source: 'Demo Data',
+    }),
+    height: () => ({
+      type: 'height', value: 170,
+      unit: 'cm', timestamp, source: 'Demo Data',
+    }),
+  };
+
+  return generators[type]();
 };
 
-// Map our types to native platform types
+// Provider-specific sync functions
+export const syncFromAppleHealth = async (days: number = 7): Promise<HealthSyncResult> => {
+  const endDate = new Date();
+  const startDate = new Date();
+  startDate.setDate(startDate.getDate() - days);
+
+  return fetchHealthData(
+    ['steps', 'sleep', 'heart_rate', 'active_calories', 'distance'],
+    startDate,
+    endDate
+  );
+};
+
+export const syncFromGoogleFit = async (days: number = 7): Promise<HealthSyncResult> => {
+  const endDate = new Date();
+  const startDate = new Date();
+  startDate.setDate(startDate.getDate() - days);
+
+  return fetchHealthData(
+    ['steps', 'sleep', 'heart_rate', 'active_calories', 'distance'],
+    startDate,
+    endDate
+  );
+};
+
+export const syncFromFitbit = async (days: number = 7): Promise<HealthSyncResult> => {
+  // Fitbit uses OAuth REST API — not available via native health plugins
+  const endDate = new Date();
+  const startDate = new Date();
+  startDate.setDate(startDate.getDate() - days);
+
+  return fetchHealthData(
+    ['steps', 'sleep', 'heart_rate'],
+    startDate,
+    endDate
+  );
+};
+
+// Apple HealthKit type mapping (for reference)
 export const mapToAppleHealthType = (type: HealthDataType): string => {
   const mapping: Record<HealthDataType, string> = {
     steps: 'HKQuantityTypeIdentifierStepCount',
@@ -247,6 +291,7 @@ export const mapToAppleHealthType = (type: HealthDataType): string => {
   return mapping[type] || type;
 };
 
+// Google Health Connect type mapping (for reference)
 export const mapToGoogleFitType = (type: HealthDataType): string => {
   const mapping: Record<HealthDataType, string> = {
     steps: 'com.google.step_count.delta',
@@ -258,43 +303,4 @@ export const mapToGoogleFitType = (type: HealthDataType): string => {
     height: 'com.google.height',
   };
   return mapping[type] || type;
-};
-
-// Provider-specific sync
-export const syncFromAppleHealth = async (days: number = 7): Promise<HealthSyncResult> => {
-  const endDate = new Date();
-  const startDate = new Date();
-  startDate.setDate(startDate.getDate() - days);
-  
-  return fetchHealthData(
-    ['steps', 'sleep', 'heart_rate', 'active_calories', 'distance'],
-    startDate,
-    endDate
-  );
-};
-
-export const syncFromGoogleFit = async (days: number = 7): Promise<HealthSyncResult> => {
-  const endDate = new Date();
-  const startDate = new Date();
-  startDate.setDate(startDate.getDate() - days);
-  
-  return fetchHealthData(
-    ['steps', 'sleep', 'heart_rate', 'active_calories', 'distance'],
-    startDate,
-    endDate
-  );
-};
-
-export const syncFromFitbit = async (days: number = 7): Promise<HealthSyncResult> => {
-  // Fitbit uses OAuth REST API, not native health stores
-  // This would require separate Fitbit API integration
-  const endDate = new Date();
-  const startDate = new Date();
-  startDate.setDate(startDate.getDate() - days);
-  
-  return fetchHealthData(
-    ['steps', 'sleep', 'heart_rate'],
-    startDate,
-    endDate
-  );
 };
