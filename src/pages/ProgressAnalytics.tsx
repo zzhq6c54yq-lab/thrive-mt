@@ -2,7 +2,7 @@
 import React, { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useNavigate } from "react-router-dom";
-import { ArrowLeft, LineChart, BarChart, PieChart, Calendar, Download, TrendingUp, Search, Share2, FileText, Loader2, X } from "lucide-react";
+import { ArrowLeft, LineChart, BarChart, PieChart, Calendar, Download, TrendingUp, Search, Share2, FileText, Loader2, X, ClipboardList } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import HomeButton from "@/components/HomeButton";
@@ -12,14 +12,19 @@ import { LineChart as RechartsLineChart, Line, BarChart as RechartsBarChart, Bar
 import { useAnalyticsData } from "@/hooks/useAnalyticsData";
 import HenryInsightCard from "@/components/henry/HenryInsightCard";
 import { useToast } from "@/hooks/use-toast";
+import { useUser } from "@/contexts/UserContext";
 import jsPDF from "jspdf";
+import { generateComprehensiveReport } from "@/lib/comprehensiveReportGenerator";
+import { fetchComprehensiveReportData } from "@/hooks/useComprehensiveReportData";
 
 const ProgressAnalytics = () => {
   const navigate = useNavigate();
   const { toast } = useToast();
+  const { user, profile } = useUser();
   const { moodData, activityData, wellnessData } = useAnalyticsData();
   const [activeAnalysis, setActiveAnalysis] = useState<string | null>(null);
   const [isGenerating, setIsGenerating] = useState(false);
+  const [isGeneratingComprehensive, setIsGeneratingComprehensive] = useState(false);
 
   const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042', '#8884D8'];
 
@@ -174,6 +179,37 @@ const ProgressAnalytics = () => {
       generateReportPDF('Comprehensive Progress Report');
       setIsGenerating(false);
     }, 800);
+  };
+
+  const handleGenerateComprehensiveReport = async () => {
+    if (!user) {
+      toast({
+        title: "Sign In Required",
+        description: "Please sign in to generate your comprehensive report.",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    setIsGeneratingComprehensive(true);
+    try {
+      const userName = profile?.display_name || user.email?.split('@')[0] || 'User';
+      const reportData = await fetchComprehensiveReportData(user.id, userName);
+      generateComprehensiveReport(reportData);
+      toast({
+        title: "Comprehensive Report Generated! 📋",
+        description: "Your full clinician-ready report with quick summary has been downloaded.",
+      });
+    } catch (error) {
+      console.error('Comprehensive report error:', error);
+      toast({
+        title: "Report Generation Failed",
+        description: "Unable to generate the comprehensive report. Please try again.",
+        variant: "destructive",
+      });
+    } finally {
+      setIsGeneratingComprehensive(false);
+    }
   };
 
   const handleManageSharing = () => {
@@ -663,11 +699,70 @@ const ProgressAnalytics = () => {
           </TabsContent>
           
           <TabsContent value="reports" className="space-y-6">
+            {/* Comprehensive Clinician Report - Featured */}
+            <Card className="border-2 border-[#D4AF37]/50 bg-gradient-to-br from-[#D4AF37]/5 to-transparent">
+              <CardHeader>
+                <div className="flex items-center gap-3">
+                  <div className="p-3 rounded-xl bg-[#D4AF37]/20">
+                    <ClipboardList className="h-6 w-6 text-[#D4AF37]" />
+                  </div>
+                  <div>
+                    <CardTitle className="text-xl">Full Comprehensive Report</CardTitle>
+                    <CardDescription>
+                      Clinician-ready PDF with quick 60-second summary + full detailed analysis
+                    </CardDescription>
+                  </div>
+                </div>
+              </CardHeader>
+              <CardContent>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+                  <div className="p-4 bg-background/50 rounded-xl border">
+                    <h4 className="font-semibold text-[#D4AF37] mb-2">📋 Page 1: Quick Clinician Summary</h4>
+                    <p className="text-sm text-muted-foreground">
+                      Key metrics, mood trend, engagement snapshot, risk flags, and top recommendations — all scannable in under 60 seconds.
+                    </p>
+                  </div>
+                  <div className="p-4 bg-background/50 rounded-xl border">
+                    <h4 className="font-semibold text-[#D4AF37] mb-2">📊 Pages 2+: Full Detailed Report</h4>
+                    <p className="text-sm text-muted-foreground">
+                      Mood analysis, activity breakdown, journal themes, assessments, breathing & binaural sessions, goals, AI companion usage, coaching, and personalized recommendations.
+                    </p>
+                  </div>
+                </div>
+                <div className="flex flex-wrap gap-2 mb-4">
+                  <Badge variant="outline" className="text-xs border-[#D4AF37]/30 text-[#D4AF37]">Mood Tracking</Badge>
+                  <Badge variant="outline" className="text-xs border-[#D4AF37]/30 text-[#D4AF37]">Activities</Badge>
+                  <Badge variant="outline" className="text-xs border-[#D4AF37]/30 text-[#D4AF37]">Journal Entries</Badge>
+                  <Badge variant="outline" className="text-xs border-[#D4AF37]/30 text-[#D4AF37]">Assessments</Badge>
+                  <Badge variant="outline" className="text-xs border-[#D4AF37]/30 text-[#D4AF37]">Breathing</Badge>
+                  <Badge variant="outline" className="text-xs border-[#D4AF37]/30 text-[#D4AF37]">Binaural</Badge>
+                  <Badge variant="outline" className="text-xs border-[#D4AF37]/30 text-[#D4AF37]">Goals</Badge>
+                  <Badge variant="outline" className="text-xs border-[#D4AF37]/30 text-[#D4AF37]">Coaching</Badge>
+                  <Badge variant="outline" className="text-xs border-[#D4AF37]/30 text-[#D4AF37]">AI Companion</Badge>
+                  <Badge variant="outline" className="text-xs border-[#D4AF37]/30 text-[#D4AF37]">Risk Flags</Badge>
+                </div>
+              </CardContent>
+              <CardFooter>
+                <Button 
+                  className="w-full bg-[#D4AF37] hover:bg-[#B87333] text-black font-semibold py-6 text-base" 
+                  onClick={handleGenerateComprehensiveReport}
+                  disabled={isGeneratingComprehensive}
+                >
+                  {isGeneratingComprehensive ? (
+                    <><Loader2 className="w-5 h-5 mr-2 animate-spin" />Generating Comprehensive Report...</>
+                  ) : (
+                    <><ClipboardList className="w-5 h-5 mr-2" />Generate Full Comprehensive Report</>
+                  )}
+                </Button>
+              </CardFooter>
+            </Card>
+
+            {/* Individual quick reports */}
             <Card>
               <CardHeader>
-                <CardTitle>Generated Reports</CardTitle>
+                <CardTitle>Quick Reports</CardTitle>
                 <CardDescription>
-                  Detailed reports of your mental health progress
+                  Individual report types for specific data categories
                 </CardDescription>
               </CardHeader>
               <CardContent>
@@ -730,13 +825,14 @@ const ProgressAnalytics = () => {
               <CardFooter>
                 <Button 
                   className="w-full" 
+                  variant="outline"
                   onClick={handleGenerateNewReport}
                   disabled={isGenerating}
                 >
                   {isGenerating ? (
                     <><Loader2 className="w-4 h-4 mr-2 animate-spin" />Generating...</>
                   ) : (
-                    <><FileText className="w-4 h-4 mr-2" />Generate New Report</>
+                    <><FileText className="w-4 h-4 mr-2" />Generate Quick Overview Report</>
                   )}
                 </Button>
               </CardFooter>
