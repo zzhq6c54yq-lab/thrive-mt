@@ -50,6 +50,22 @@ const ResourcesTab: React.FC = () => {
       icon: <Headphones className="h-5 w-5 text-secondary" />,
       duration: "6 episodes",
       color: "bg-secondary/10"
+    },
+    {
+      title: "Trauma-Informed Self-Care",
+      description: "Understanding trauma responses and developing a personalized self-care routine for healing.",
+      type: "Guide",
+      icon: <Heart className="h-5 w-5 text-destructive" />,
+      duration: "20 min read",
+      color: "bg-destructive/10"
+    },
+    {
+      title: "Emotional Intelligence Mastery",
+      description: "Develop skills to recognize, understand, and manage your emotions and those of others effectively.",
+      type: "Article",
+      icon: <BookOpen className="h-5 w-5 text-primary" />,
+      duration: "12 min read",
+      color: "bg-primary/10"
     }
   ];
 

@@ -89,6 +89,27 @@ const SelfCareTab: React.FC = () => {
       icon: <Dumbbell className="h-5 w-5 text-primary" />,
       estimatedTime: "15-30 min",
       path: "/mental-wellness-tools/exercise"
+    },
+    {
+      title: "Progressive Muscle Relaxation",
+      description: "Systematic tension-release technique to reduce physical stress and promote deep calm.",
+      icon: <Leaf className="h-5 w-5 text-accent" />,
+      estimatedTime: "10-15 min",
+      path: "/mental-wellness-tools/breathing"
+    },
+    {
+      title: "Emotion Regulation Toolkit",
+      description: "Learn DBT-inspired skills to manage intense emotions and reduce emotional reactivity.",
+      icon: <Heart className="h-5 w-5 text-primary" />,
+      estimatedTime: "10-20 min",
+      path: "/mental-wellness-tools/reframing"
+    },
+    {
+      title: "Visualization & Imagery",
+      description: "Guided mental imagery exercises for stress relief, confidence building, and inner peace.",
+      icon: <Sparkles className="h-5 w-5 text-secondary" />,
+      estimatedTime: "8-12 min",
+      path: "/mental-wellness-tools/meditation"
     }
   ];
 
