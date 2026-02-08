@@ -80,6 +80,18 @@ const MentalWellnessTools: React.FC = () => {
       description: "Write down three specific things you're grateful for right now.",
       icon: <Heart className="h-5 w-5 text-red-500" />,
       category: "Well-being"
+    },
+    {
+      title: "Body Scan",
+      description: "Starting from your toes, slowly bring awareness to each body part, releasing tension as you go.",
+      icon: <Activity className="h-5 w-5 text-teal-500" />,
+      category: "Body Awareness"
+    },
+    {
+      title: "Grounding Exercise",
+      description: "Name 5 things you see, 4 you touch, 3 you hear, 2 you smell, and 1 you taste.",
+      icon: <Leaf className="h-5 w-5 text-emerald-500" />,
+      category: "Anxiety Relief"
     }
   ];
   
@@ -90,7 +102,8 @@ const MentalWellnessTools: React.FC = () => {
       icon: <Leaf className="h-6 w-6 text-green-500" />,
       action: () => navigate("/app/mental-wellness-tools/breathing"),
       color: "from-green-50 to-emerald-50 border-green-100",
-      iconBg: "bg-green-100"
+      iconBg: "bg-green-100",
+      coverImage: "https://images.unsplash.com/photo-1506126613408-eca07ce68773?auto=format&fit=crop&w=800&q=80"
     },
     {
       title: "Thought Reframing",
@@ -98,7 +111,8 @@ const MentalWellnessTools: React.FC = () => {
       icon: <Brain className="h-6 w-6 text-purple-500" />,
       action: () => navigate("/app/mental-wellness-tools/reframing"),
       color: "from-purple-50 to-violet-50 border-purple-100",
-      iconBg: "bg-purple-100"
+      iconBg: "bg-purple-100",
+      coverImage: "https://images.unsplash.com/photo-1499209974431-9dddcece7f88?auto=format&fit=crop&w=800&q=80"
     },
     {
       title: "Quick Mood Boost",
@@ -106,7 +120,8 @@ const MentalWellnessTools: React.FC = () => {
       icon: <Smile className="h-6 w-6 text-yellow-500" />,
       action: () => navigate("/app/mental-wellness-tools/mood-boost"),
       color: "from-yellow-50 to-amber-50 border-yellow-100",
-      iconBg: "bg-yellow-100"
+      iconBg: "bg-yellow-100",
+      coverImage: "https://images.unsplash.com/photo-1543807535-eceef0bc6599?auto=format&fit=crop&w=800&q=80"
     },
     {
       title: "Stress Relief Games",
@@ -114,7 +129,26 @@ const MentalWellnessTools: React.FC = () => {
       icon: <Puzzle className="h-6 w-6 text-blue-500" />,
       action: () => navigate("/app/games-and-quizzes"),
       color: "from-blue-50 to-sky-50 border-blue-100",
-      iconBg: "bg-blue-100"
+      iconBg: "bg-blue-100",
+      coverImage: "https://images.unsplash.com/photo-1511512578047-dfb367046420?auto=format&fit=crop&w=800&q=80"
+    },
+    {
+      title: "Guided Meditation",
+      description: "Find inner peace with guided mindfulness sessions",
+      icon: <Sparkles className="h-6 w-6 text-teal-500" />,
+      action: () => navigate("/app/mental-wellness-tools/meditation"),
+      color: "from-teal-50 to-cyan-50 border-teal-100",
+      iconBg: "bg-teal-100",
+      coverImage: "https://images.unsplash.com/photo-1508672019048-805c876b67e2?auto=format&fit=crop&w=800&q=80"
+    },
+    {
+      title: "Sleep Improvement",
+      description: "Better sleep techniques and bedtime wind-down routines",
+      icon: <Brain className="h-6 w-6 text-indigo-500" />,
+      action: () => navigate("/app/mental-wellness-tools/sleep"),
+      color: "from-indigo-50 to-violet-50 border-indigo-100",
+      iconBg: "bg-indigo-100",
+      coverImage: "https://images.unsplash.com/photo-1520206183501-b80df61043c2?auto=format&fit=crop&w=800&q=80"
     }
   ];
   
@@ -123,19 +157,36 @@ const MentalWellnessTools: React.FC = () => {
       title: "Mental Health Tracking",
       description: "Monitor moods, symptoms, and progress over time with visual charts and insights",
       icon: <BarChart4 className="h-6 w-6 text-[#9b87f5]" />,
-      path: "/app/progress-reports"
+      path: "/app/progress-reports",
+      coverImage: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=800&q=80"
     },
     {
       title: "Therapy Integration",
       description: "Tools to support your therapy work between sessions",
       icon: <Clipboard className="h-6 w-6 text-blue-500" />,
-      path: "/app/mental-wellness-tools/therapy-support"
+      path: "/app/mental-wellness-tools/therapy-support",
+      coverImage: "https://images.unsplash.com/photo-1573497491208-6b1acb260507?auto=format&fit=crop&w=800&q=80"
     },
     {
       title: "Journal Prompts",
       description: "Guided journaling exercises for reflection and growth",
       icon: <FileText className="h-6 w-6 text-amber-500" />,
-      path: "/app/journaling"
+      path: "/app/journaling",
+      coverImage: "https://images.unsplash.com/photo-1455390582262-044cdead277a?auto=format&fit=crop&w=800&q=80"
+    },
+    {
+      title: "Art Therapy Studio",
+      description: "Express emotions through creative art exercises and guided activities",
+      icon: <Heart className="h-6 w-6 text-rose-500" />,
+      path: "/app/art-therapy",
+      coverImage: "https://images.unsplash.com/photo-1513475382585-d06e58bcb0e0?auto=format&fit=crop&w=800&q=80"
+    },
+    {
+      title: "Community Support",
+      description: "Connect with others on similar journeys in a safe, supportive space",
+      icon: <Check className="h-6 w-6 text-emerald-500" />,
+      path: "/app/community-support",
+      coverImage: "https://images.unsplash.com/photo-1529156069898-49953e39b3ac?auto=format&fit=crop&w=800&q=80"
     }
   ];
 
@@ -303,27 +354,40 @@ const MentalWellnessTools: React.FC = () => {
             </Button>
           </div>
           
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
             {quickTools.map((tool, index) => (
               <motion.button
                 key={index}
                 onClick={tool.action}
-                className="group relative p-6 rounded-2xl glass-morphism border-2 border-border/50 text-left h-full transition-all hover:shadow-2xl hover:border-primary/30 flex flex-col overflow-hidden"
+                className="group relative rounded-2xl glass-morphism border-2 border-border/50 text-left h-full transition-all hover:shadow-2xl hover:border-primary/30 flex flex-col overflow-hidden"
                 whileHover={{ y: -8, scale: 1.02 }}
                 whileTap={{ scale: 0.98 }}
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.3, delay: 0.05 * index }}
               >
-                <div className="absolute inset-0 bg-gradient-to-br from-primary/5 to-secondary/5 opacity-0 group-hover:opacity-100 transition-opacity -z-10" />
+                {/* Cover Image */}
+                {'coverImage' in tool && tool.coverImage && (
+                  <div className="relative h-28 overflow-hidden">
+                    <img
+                      src={tool.coverImage}
+                      alt={tool.title}
+                      className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+                      loading="lazy"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-background via-background/30 to-transparent" />
+                    <div className="absolute top-3 left-3 p-2 rounded-lg bg-black/30 backdrop-blur-sm">
+                      {tool.icon}
+                    </div>
+                  </div>
+                )}
                 
-                <div className="p-3 rounded-xl bg-gradient-to-br from-primary/10 to-secondary/10 border border-primary/20 w-fit mb-4 group-hover:scale-110 transition-transform">
-                  {tool.icon}
-                </div>
-                <h3 className="font-semibold text-lg mb-2 text-foreground">{tool.title}</h3>
-                <p className="text-sm text-muted-foreground flex-grow leading-relaxed">{tool.description}</p>
-                <div className="flex justify-end mt-4">
-                  <ArrowRight className="h-5 w-5 text-muted-foreground group-hover:text-primary group-hover:translate-x-1 transition-all" />
+                <div className="p-5 flex flex-col flex-grow">
+                  <h3 className="font-semibold text-lg mb-2 text-foreground">{tool.title}</h3>
+                  <p className="text-sm text-muted-foreground flex-grow leading-relaxed">{tool.description}</p>
+                  <div className="flex justify-end mt-4">
+                    <ArrowRight className="h-5 w-5 text-muted-foreground group-hover:text-primary group-hover:translate-x-1 transition-all" />
+                  </div>
                 </div>
               </motion.button>
             ))}
@@ -342,7 +406,7 @@ const MentalWellnessTools: React.FC = () => {
             Featured Resources
           </h2>
           
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {featureCards.map((feature, index) => (
               <motion.div
                 key={index}
@@ -353,20 +417,27 @@ const MentalWellnessTools: React.FC = () => {
                 transition={{ duration: 0.3, delay: 0.1 * index }}
                 onClick={() => navigate(feature.path)}
               >
-                <div className="h-1.5 bg-gradient-to-r from-primary via-secondary to-accent"></div>
-                <div className="p-6">
-                  <div className="flex items-start gap-4">
-                    <div className="p-3 rounded-xl bg-gradient-to-br from-primary/10 to-secondary/10 border border-primary/20 group-hover:scale-110 transition-transform">
+                {/* Cover Image */}
+                {'coverImage' in feature && feature.coverImage && (
+                  <div className="relative h-32 overflow-hidden">
+                    <img
+                      src={feature.coverImage}
+                      alt={feature.title}
+                      className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+                      loading="lazy"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-background via-background/20 to-transparent" />
+                    <div className="absolute top-3 left-3 p-2 rounded-lg bg-black/30 backdrop-blur-sm">
                       {feature.icon}
                     </div>
-                    <div className="flex-1">
-                      <h3 className="font-semibold text-xl mb-2 group-hover:text-primary transition-colors">{feature.title}</h3>
-                      <p className="text-sm text-muted-foreground leading-relaxed mb-4">{feature.description}</p>
-                      <div className="flex items-center text-primary font-medium text-sm group-hover:gap-2 gap-1 transition-all">
-                        <span>Explore</span>
-                        <ChevronRight className="h-4 w-4 group-hover:translate-x-1 transition-transform" />
-                      </div>
-                    </div>
+                  </div>
+                )}
+                <div className="p-5">
+                  <h3 className="font-semibold text-lg mb-2 group-hover:text-primary transition-colors">{feature.title}</h3>
+                  <p className="text-sm text-muted-foreground leading-relaxed mb-3">{feature.description}</p>
+                  <div className="flex items-center text-primary font-medium text-sm group-hover:gap-2 gap-1 transition-all">
+                    <span>Explore</span>
+                    <ChevronRight className="h-4 w-4 group-hover:translate-x-1 transition-transform" />
                   </div>
                 </div>
               </motion.div>

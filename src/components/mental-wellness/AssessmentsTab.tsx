@@ -55,6 +55,24 @@ const AssessmentsTab: React.FC = () => {
       questions: 5,
       type: "WHO-5",
       color: "from-secondary/10 to-secondary/5"
+    },
+    {
+      title: "Burnout Assessment",
+      description: "Measure emotional exhaustion, depersonalization, and personal accomplishment levels.",
+      icon: <TrendingUp className="h-6 w-6 text-primary" />,
+      duration: "5-7 min",
+      questions: 12,
+      type: "MBI",
+      color: "from-primary/10 to-primary/5"
+    },
+    {
+      title: "Sleep Quality Index",
+      description: "Pittsburgh Sleep Quality Index to evaluate your sleep habits and identify issues.",
+      icon: <Clock className="h-6 w-6 text-secondary" />,
+      duration: "3-5 min",
+      questions: 9,
+      type: "PSQI",
+      color: "from-secondary/10 to-secondary/5"
     }
   ];
 
