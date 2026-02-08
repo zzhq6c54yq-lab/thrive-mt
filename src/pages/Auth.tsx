@@ -7,7 +7,7 @@ import { Label } from "@/components/ui/label";
 import { Checkbox } from "@/components/ui/checkbox";
 import { ArrowRight, Eye, EyeOff, Loader2, AlertTriangle } from "lucide-react";
 import { useCompassionateToast } from "@/hooks/useCompassionateToast";
-import AtomOrbs from "@/components/ui/AtomOrbs";
+
 import {
   AlertDialog,
   AlertDialogAction,
@@ -212,7 +212,7 @@ const Auth: React.FC = () => {
       <div className="w-full max-w-md space-y-8">
         <div className="text-center space-y-4">
           <div className="relative mx-auto w-32 h-32 flex items-center justify-center">
-            <AtomOrbs size={128} />
+            
             <img 
               src="/lovable-uploads/f2c6ac08-6331-4884-950d-7f94d68ff15f.png"
               alt="ThriveMT Logo"

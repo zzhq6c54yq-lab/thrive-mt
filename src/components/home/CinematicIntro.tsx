@@ -9,7 +9,7 @@ import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
 import { useNavigate } from "react-router-dom";
 import { THRIVE_LOGO } from "@/constants/branding";
-import AtomOrbs from "@/components/ui/AtomOrbs";
+
 
 interface CinematicIntroProps {
   onContinue: () => void;
@@ -179,7 +179,7 @@ const CinematicIntro: React.FC<CinematicIntroProps> = ({ onContinue, onSkipToMai
               transition={{ delay: 0.5, duration: 0.8 }}
             >
               <div className="relative w-36 md:w-44 h-36 md:h-44 mx-auto flex items-center justify-center">
-                <AtomOrbs size={176} />
+                
                 <img 
                   src={THRIVE_LOGO} 
                   alt="ThriveMT"
