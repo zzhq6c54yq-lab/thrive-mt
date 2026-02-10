@@ -13,17 +13,26 @@ export const useBuddyMatch = (userId: string | undefined) => {
       
       const { data, error } = await supabase
         .from("buddy_matches")
-        .select(`
-          *,
-          user_1:profiles!buddy_matches_user_1_id_fkey(id, display_name, avatar_url),
-          user_2:profiles!buddy_matches_user_2_id_fkey(id, display_name, avatar_url)
-        `)
+        .select("*")
         .or(`user_1_id.eq.${userId},user_2_id.eq.${userId}`)
         .eq("status", "active")
         .maybeSingle();
 
       if (error) throw error;
-      return data;
+      if (!data) return null;
+
+      // Fetch buddy profile separately since there are no FK constraints
+      const buddyId = data.user_1_id === userId ? data.user_2_id : data.user_1_id;
+      const { data: buddyProfile } = await supabase
+        .from("profiles")
+        .select("id, display_name, avatar_url")
+        .eq("id", buddyId)
+        .maybeSingle();
+
+      return {
+        ...data,
+        buddy_profile: buddyProfile,
+      };
     },
     enabled: !!userId,
   });
@@ -64,9 +73,7 @@ export const useBuddyMatch = (userId: string | undefined) => {
 
   const getBuddyProfile = () => {
     if (!currentMatch || !userId) return null;
-    return currentMatch.user_1_id === userId 
-      ? currentMatch.user_2 
-      : currentMatch.user_1;
+    return currentMatch.buddy_profile;
   };
 
   return {
