@@ -11,12 +11,12 @@ import { useNavigate } from "react-router-dom";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 const BuddySystem = () => {
-  const { user } = useUser();
+  const { user, loading: authLoading } = useUser();
   const { currentMatch, isLoading } = useBuddyMatch(user?.id);
   const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState("find-buddy");
 
-  if (isLoading) {
+  if (authLoading || (isLoading && !!user?.id)) {
     return (
       <div className="min-h-screen bg-[#000000] flex items-center justify-center">
         <div className="text-white">Loading buddy system...</div>
