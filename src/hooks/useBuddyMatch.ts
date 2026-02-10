@@ -20,9 +20,9 @@ export const useBuddyMatch = (userId: string | undefined) => {
         `)
         .or(`user_1_id.eq.${userId},user_2_id.eq.${userId}`)
         .eq("status", "active")
-        .single();
+        .maybeSingle();
 
-      if (error && error.code !== "PGRST116") throw error;
+      if (error) throw error;
       return data;
     },
     enabled: !!userId,
