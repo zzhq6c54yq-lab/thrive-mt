@@ -50,6 +50,7 @@ const EducatorsAssessments: React.FC = () => {
       icon: Users,
       category: "Workplace Dynamics",
       recommended: false,
+      path: "/educators-assessments/collegial-relationships"
     },
     {
       id: "selfcare-habits",
@@ -59,6 +60,7 @@ const EducatorsAssessments: React.FC = () => {
       icon: Heart,
       category: "Self-Care",
       recommended: false,
+      path: "/educators-assessments/selfcare-habits"
     }
   ];
 

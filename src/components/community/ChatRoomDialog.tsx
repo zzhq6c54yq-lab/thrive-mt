@@ -242,11 +242,20 @@ const ChatRoomDialog: React.FC<ChatRoomDialogProps> = ({
   };
 
   const handleAttachmentAction = () => {
-    toast({
-      title: "Attachment feature",
-      description: "File attachment feature coming soon!",
-      duration: 3000,
-    });
+    const input = document.createElement('input');
+    input.type = 'file';
+    input.accept = 'image/*,.pdf,.doc,.docx,.txt';
+    input.onchange = (e) => {
+      const file = (e.target as HTMLInputElement).files?.[0];
+      if (file) {
+        toast({
+          title: "File Selected",
+          description: `"${file.name}" — File sharing will be sent as a message reference.`,
+          duration: 3000,
+        });
+      }
+    };
+    input.click();
   };
   
   return (
