@@ -7463,6 +7463,68 @@ export type Database = {
         }
         Relationships: []
       }
+      user_health_metrics: {
+        Row: {
+          active_calories: number | null
+          created_at: string
+          distance_km: number | null
+          heart_rate_avg: number | null
+          heart_rate_max: number | null
+          heart_rate_min: number | null
+          id: string
+          metric_date: string
+          sleep_duration_hours: number | null
+          sleep_stages: Json | null
+          source: string
+          steps: number | null
+          synced_at: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          active_calories?: number | null
+          created_at?: string
+          distance_km?: number | null
+          heart_rate_avg?: number | null
+          heart_rate_max?: number | null
+          heart_rate_min?: number | null
+          id?: string
+          metric_date: string
+          sleep_duration_hours?: number | null
+          sleep_stages?: Json | null
+          source?: string
+          steps?: number | null
+          synced_at?: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          active_calories?: number | null
+          created_at?: string
+          distance_km?: number | null
+          heart_rate_avg?: number | null
+          heart_rate_max?: number | null
+          heart_rate_min?: number | null
+          id?: string
+          metric_date?: string
+          sleep_duration_hours?: number | null
+          sleep_stages?: Json | null
+          source?: string
+          steps?: number | null
+          synced_at?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "user_health_metrics_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       user_insights: {
         Row: {
           confidence_score: number | null

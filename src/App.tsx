@@ -20,6 +20,7 @@ import CommunitySupport from "./pages/CommunitySupport";
 import Debug from "./pages/Debug";
 import PersonalizedContent from "./pages/PersonalizedContent";
 import SleepTracker from "./pages/SleepTracker";
+import SleepInsights from "./pages/SleepInsights";
 import MusicTherapy from "./pages/MusicTherapy";
 import ArtTherapy from "./pages/ArtTherapy";
 import Home from "./pages/Home";
@@ -375,6 +376,7 @@ function App() {
             <Route path="/app/workshops/:workshopId" element={<WorkshopDetail />} />
             
             <Route path="/app/sleep-tracker" element={<SleepTracker />} />
+            <Route path="/app/sleep-insights" element={<SleepInsights />} />
             <Route path="/app/music-therapy" element={<MusicTherapy />} />
             <Route path="/app/meditation" element={<MeditationStudio />} />
             <Route path="/app/aa-sponsor" element={<AASponsor />} />
