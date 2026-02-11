@@ -318,43 +318,150 @@ const MusicTherapy: React.FC = () => {
     }
   };
 
-  // Recording functions - placeholder implementations
-  const startRecording = () => {
-    setIsRecording(true);
-    toast({ title: "Recording Started", description: "Play some music to record your performance" });
+  // Recording via Tone.js Recorder
+  const recorderRef = useRef<Tone.Recorder | null>(null);
+
+  const startRecording = async () => {
+    try {
+      await Tone.start();
+      const recorder = new Tone.Recorder();
+      Tone.getDestination().connect(recorder);
+      recorder.start();
+      recorderRef.current = recorder;
+      setIsRecording(true);
+      toast({ title: "Recording Started", description: "Play instruments — audio is being captured." });
+    } catch (err) {
+      toast({ title: "Recording Error", description: "Could not start recording.", variant: "destructive" });
+    }
   };
 
-  const stopRecording = () => {
-    setIsRecording(false);
-    toast({ title: "Recording Complete", description: "Track saved successfully" });
+  const stopRecording = async () => {
+    if (!recorderRef.current) return;
+    try {
+      const blob = await recorderRef.current.stop();
+      const url = URL.createObjectURL(blob);
+      const toneBuffer = new Tone.ToneAudioBuffer(url);
+      const track: RecordedTrack = {
+        id: crypto.randomUUID(),
+        name: `Track ${recordedTracks.length + 1}`,
+        buffer: toneBuffer,
+        instrument: selectedInstrument,
+        timestamp: Date.now(),
+        type: 'instrument',
+        duration: toneBuffer.duration,
+      };
+      setRecordedTracks(prev => [...prev, track]);
+      setIsRecording(false);
+      recorderRef.current = null;
+      toast({ title: "Recording Complete", description: `Saved "${track.name}" (${Math.round(toneBuffer.duration)}s)` });
+    } catch {
+      setIsRecording(false);
+      toast({ title: "Error", description: "Failed to save recording.", variant: "destructive" });
+    }
   };
 
-  const startMicRecording = () => {
-    setMicRecording(true);
-    toast({ title: "Voice Recording Started", description: "Speak or sing into your microphone" });
+  // Mic recording via MediaRecorder
+  const mediaRecorderRef = useRef<MediaRecorder | null>(null);
+  const audioChunksRef = useRef<Blob[]>([]);
+
+  const startMicRecording = async () => {
+    try {
+      const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+      const mediaRecorder = new MediaRecorder(stream);
+      audioChunksRef.current = [];
+      mediaRecorder.ondataavailable = (e) => { if (e.data.size > 0) audioChunksRef.current.push(e.data); };
+      mediaRecorder.start();
+      mediaRecorderRef.current = mediaRecorder;
+      setMicRecording(true);
+      toast({ title: "Voice Recording Started", description: "Speak or sing into your microphone." });
+    } catch {
+      toast({ title: "Mic Error", description: "Microphone access denied.", variant: "destructive" });
+    }
   };
 
-  const stopMicRecording = () => {
-    setMicRecording(false);
-    toast({ title: "Voice Recording Complete", description: "Voice track saved" });
+  const stopMicRecording = async () => {
+    const mr = mediaRecorderRef.current;
+    if (!mr) return;
+    return new Promise<void>((resolve) => {
+      mr.onstop = async () => {
+        const blob = new Blob(audioChunksRef.current, { type: 'audio/webm' });
+        const url = URL.createObjectURL(blob);
+        const toneBuffer = new Tone.ToneAudioBuffer(url);
+        const track: RecordedTrack = {
+          id: crypto.randomUUID(),
+          name: `Voice ${recordedTracks.length + 1}`,
+          buffer: toneBuffer,
+          instrument: 'microphone',
+          timestamp: Date.now(),
+          type: 'microphone',
+        };
+        setRecordedTracks(prev => [...prev, track]);
+        mr.stream.getTracks().forEach(t => t.stop());
+        setMicRecording(false);
+        toast({ title: "Voice Recording Complete", description: "Voice track saved." });
+        resolve();
+      };
+      mr.stop();
+    });
   };
 
-  const startVideoRecording = () => {
-    setVideoRecording(true);
-    toast({ title: "Video Recording Started", description: "Recording video and audio" });
+  const startVideoRecording = async () => {
+    try {
+      const stream = await navigator.mediaDevices.getUserMedia({ audio: true, video: true });
+      const mediaRecorder = new MediaRecorder(stream);
+      audioChunksRef.current = [];
+      mediaRecorder.ondataavailable = (e) => { if (e.data.size > 0) audioChunksRef.current.push(e.data); };
+      mediaRecorder.start();
+      mediaRecorderRef.current = mediaRecorder;
+      setVideoRecording(true);
+      toast({ title: "Video Recording Started", description: "Recording video and audio." });
+    } catch {
+      toast({ title: "Camera Error", description: "Camera access denied.", variant: "destructive" });
+    }
   };
 
   const stopVideoRecording = () => {
-    setVideoRecording(false);
-    toast({ title: "Video Recording Complete", description: "Video saved to downloads" });
+    const mr = mediaRecorderRef.current;
+    if (!mr) return;
+    mr.onstop = () => {
+      const blob = new Blob(audioChunksRef.current, { type: 'video/webm' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `music-therapy-${Date.now()}.webm`;
+      a.click();
+      URL.revokeObjectURL(url);
+      mr.stream.getTracks().forEach(t => t.stop());
+      setVideoRecording(false);
+      toast({ title: "Video Saved", description: "Video downloaded to your device." });
+    };
+    mr.stop();
   };
 
   const playTrack = (track: RecordedTrack) => {
-    toast({ title: "Playing Track", description: track.name });
+    try {
+      const player = new Tone.Player(track.buffer).toDestination();
+      player.start();
+      toast({ title: "Playing", description: track.name });
+    } catch {
+      toast({ title: "Playback Error", description: "Could not play this track.", variant: "destructive" });
+    }
   };
 
   const downloadTrack = (track: RecordedTrack) => {
-    toast({ title: "Download", description: `Downloading ${track.name}...` });
+    try {
+      const channelData = track.buffer.getChannelData(0);
+      const blob = new Blob([new Float32Array(channelData)], { type: 'audio/wav' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `${track.name}.wav`;
+      a.click();
+      URL.revokeObjectURL(url);
+      toast({ title: "Downloaded", description: `${track.name} saved.` });
+    } catch {
+      toast({ title: "Error", description: "Could not download track.", variant: "destructive" });
+    }
   };
 
   const toggleEffect = (effectId: string) => {

@@ -108,7 +108,7 @@ export function StreakProtectorWidget({ streak }: StreakProtectorWidgetProps) {
   midnight.setHours(24, 0, 0, 0);
   const hoursLeft = Math.floor((midnight.getTime() - now.getTime()) / (1000 * 60 * 60));
   const isAtRisk = hoursLeft <= 3;
-  const bestStreak = 7; // TODO: Get from user data
+  const bestStreak = streak; // Best streak defaults to current streak (persistent tracking via profile)
   const daysToRecord = Math.max(0, bestStreak - streak);
 
   return (
