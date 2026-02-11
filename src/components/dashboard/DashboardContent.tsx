@@ -17,7 +17,7 @@ import {
 import { Calendar, HelpCircle, ChevronUp, ChevronDown, Sparkles, Award, Users, Heart } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { Button } from "@/components/ui/button";
-import PlaceholderMiniGame from "@/components/dashboard/PlaceholderMiniGame";
+// PlaceholderMiniGame removed - all features are now functional
 import DashboardMiniGamesGrid from "@/components/dashboard/DashboardMiniGamesGrid";
 import FeatureOfTheQuarter from "@/components/dashboard/FeatureOfTheQuarter";
 
