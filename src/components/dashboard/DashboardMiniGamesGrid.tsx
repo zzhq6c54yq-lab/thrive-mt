@@ -1,6 +1,6 @@
 
 import React from "react";
-import PlaceholderMiniGame from "@/components/dashboard/PlaceholderMiniGame";
+// PlaceholderMiniGame removed - all games are now playable
 import { useNavigate } from "react-router-dom";
 import useTranslation from "@/hooks/useTranslation";
 import { Button } from "@/components/ui/button";
