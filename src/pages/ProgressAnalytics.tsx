@@ -1,6 +1,5 @@
 
 import React, { useState } from "react";
-import { saveAs } from "file-saver";
 import { motion, AnimatePresence } from "framer-motion";
 import { useNavigate } from "react-router-dom";
 import { ArrowLeft, LineChart, BarChart, PieChart, Calendar, Download, TrendingUp, Search, Share2, FileText, Loader2, X, ClipboardList, Eye } from "lucide-react";
@@ -166,8 +165,7 @@ const ProgressAnalytics = () => {
     doc.text('It is not a medical diagnosis. Please consult a healthcare professional for clinical guidance.', 20, 285);
 
     const filename = `thrivemt-${reportType.toLowerCase().replace(/\s+/g, '-')}-${now.toISOString().split('T')[0]}.pdf`;
-    const blob = doc.output('blob');
-    saveAs(blob, filename);
+    doc.output('dataurlnewwindow');
     
     toast({
       title: "PDF Generated Successfully",

@@ -1,5 +1,4 @@
 import { jsPDF } from 'jspdf';
-import { saveAs } from 'file-saver';
 
 const BRAND = {
   bronze: '#B87333',
@@ -765,25 +764,6 @@ export function generateComprehensiveReport(data: ComprehensiveReportData, mode:
     );
   }
 
-  // Output based on mode
-  const dateStr = data.reportDate.toISOString().split('T')[0];
-  const filename = `ThriveMT_Comprehensive_Report_${data.userName.replace(/\s+/g, '_')}_${dateStr}.pdf`;
-  const blob = doc.output('blob');
-
-  if (mode === 'view') {
-    // Use data URI approach which works better in sandboxed iframes
-    const dataUri = doc.output('datauristring');
-    const newWindow = window.open('', '_blank');
-    if (newWindow) {
-      newWindow.document.write(`<html><head><title>${filename}</title></head><body style="margin:0"><iframe src="${dataUri}" style="width:100%;height:100%;border:none;"></iframe></body></html>`);
-      newWindow.document.close();
-    } else {
-      // Fallback: trigger download instead
-      saveAs(blob, filename);
-    }
-    return;
-  }
-
-  // Use file-saver for reliable downloads across all environments
-  saveAs(blob, filename);
+  // Output PDF directly - dataurlnewwindow bypasses iframe sandbox restrictions
+  doc.output('dataurlnewwindow');
 }
