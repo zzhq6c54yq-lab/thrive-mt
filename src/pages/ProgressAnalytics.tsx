@@ -2,7 +2,7 @@
 import React, { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useNavigate } from "react-router-dom";
-import { ArrowLeft, LineChart, BarChart, PieChart, Calendar, Download, TrendingUp, Search, Share2, FileText, Loader2, X, ClipboardList } from "lucide-react";
+import { ArrowLeft, LineChart, BarChart, PieChart, Calendar, Download, TrendingUp, Search, Share2, FileText, Loader2, X, ClipboardList, Eye } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import HomeButton from "@/components/HomeButton";
@@ -181,7 +181,7 @@ const ProgressAnalytics = () => {
     }, 800);
   };
 
-  const handleGenerateComprehensiveReport = async () => {
+  const handleGenerateComprehensiveReport = async (mode: 'download' | 'view' = 'download') => {
     if (!user) {
       toast({
         title: "Sign In Required",
@@ -195,10 +195,12 @@ const ProgressAnalytics = () => {
     try {
       const userName = profile?.display_name || user.email?.split('@')[0] || 'User';
       const reportData = await fetchComprehensiveReportData(user.id, userName);
-      generateComprehensiveReport(reportData);
+      generateComprehensiveReport(reportData, mode);
       toast({
-        title: "Comprehensive Report Generated! 📋",
-        description: "Your full clinician-ready report with quick summary has been downloaded.",
+        title: mode === 'view' ? "Report Opened! 📋" : "Report Downloaded! 📋",
+        description: mode === 'view' 
+          ? "Your comprehensive report has been opened in a new tab."
+          : "Your full clinician-ready PDF report has been saved.",
       });
     } catch (error) {
       console.error('Comprehensive report error:', error);
@@ -742,16 +744,28 @@ const ProgressAnalytics = () => {
                   <Badge variant="outline" className="text-xs border-[#D4AF37]/30 text-[#D4AF37]">Risk Flags</Badge>
                 </div>
               </CardContent>
-              <CardFooter>
+              <CardFooter className="flex gap-3">
                 <Button 
-                  className="w-full bg-[#D4AF37] hover:bg-[#B87333] text-black font-semibold py-6 text-base" 
-                  onClick={handleGenerateComprehensiveReport}
+                  className="flex-1 bg-[#D4AF37] hover:bg-[#B87333] text-black font-semibold py-6 text-base" 
+                  onClick={() => handleGenerateComprehensiveReport('download')}
                   disabled={isGeneratingComprehensive}
                 >
                   {isGeneratingComprehensive ? (
-                    <><Loader2 className="w-5 h-5 mr-2 animate-spin" />Generating Comprehensive Report...</>
+                    <><Loader2 className="w-5 h-5 mr-2 animate-spin" />Generating...</>
                   ) : (
-                    <><ClipboardList className="w-5 h-5 mr-2" />Generate Full Comprehensive Report</>
+                    <><Download className="w-5 h-5 mr-2" />Download PDF</>
+                  )}
+                </Button>
+                <Button 
+                  variant="outline"
+                  className="flex-1 border-[#D4AF37] text-[#D4AF37] hover:bg-[#D4AF37]/10 font-semibold py-6 text-base" 
+                  onClick={() => handleGenerateComprehensiveReport('view')}
+                  disabled={isGeneratingComprehensive}
+                >
+                  {isGeneratingComprehensive ? (
+                    <><Loader2 className="w-5 h-5 mr-2 animate-spin" />Loading...</>
+                  ) : (
+                    <><Eye className="w-5 h-5 mr-2" />View Report</>
                   )}
                 </Button>
               </CardFooter>

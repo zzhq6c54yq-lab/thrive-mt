@@ -117,7 +117,7 @@ export interface ComprehensiveReportData {
   avgSleepHours?: number | null;
 }
 
-export function generateComprehensiveReport(data: ComprehensiveReportData) {
+export function generateComprehensiveReport(data: ComprehensiveReportData, mode: 'download' | 'view' = 'download') {
   const doc = new jsPDF();
   const pw = 210; // page width
   const ml = 15; // margin left
@@ -764,7 +764,16 @@ export function generateComprehensiveReport(data: ComprehensiveReportData) {
     );
   }
 
-  // Save
+  // Output based on mode
   const dateStr = data.reportDate.toISOString().split('T')[0];
-  doc.save(`ThriveMT_Comprehensive_Report_${data.userName.replace(/\s+/g, '_')}_${dateStr}.pdf`);
+  const filename = `ThriveMT_Comprehensive_Report_${data.userName.replace(/\s+/g, '_')}_${dateStr}.pdf`;
+
+  if (mode === 'view') {
+    const blob = doc.output('blob');
+    const url = URL.createObjectURL(blob);
+    window.open(url, '_blank');
+    return;
+  }
+
+  doc.save(filename);
 }
