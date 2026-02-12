@@ -1,35 +1,19 @@
 import { supabase } from '@/integrations/supabase/client';
 import { ComprehensiveReportData } from '@/lib/comprehensiveReportGenerator';
 
+// Helper to safely unwrap PromiseSettledResult
+function unwrap(result: PromiseSettledResult<any>): { data: any[] | null; error: any } {
+  if (result.status === 'fulfilled') return result.value;
+  console.warn('Query rejected:', result.reason);
+  return { data: null, error: result.reason };
+}
+
 export async function fetchComprehensiveReportData(userId: string, userName: string): Promise<ComprehensiveReportData> {
   const now = new Date();
   const thirtyDaysAgo = new Date(now.getTime() - 30 * 24 * 60 * 60 * 1000);
 
-  // Fetch all data sources in parallel (21 queries)
-  const [
-    moodRes,
-    journalRes,
-    activitiesRes,
-    assessmentRes,
-    breathingRes,
-    binauralRes,
-    goalsRes,
-    badgesRes,
-    henryConvRes,
-    coachingRes,
-    therapyReqRes,
-    wellnessRes,
-    streakRes,
-    // New data sources
-    aiSummariesRes,
-    miniSessionsRes,
-    toolkitRes,
-    meditationRes,
-    musicRes,
-    eventRegRes,
-    gratitudeRes,
-    sleepRes,
-  ] = await Promise.all([
+  // Fetch all data sources in parallel — allSettled so one failure doesn't kill everything
+  const settled = await Promise.allSettled([
     // 1. Mood (daily_check_ins)
     supabase
       .from('daily_check_ins')
@@ -125,7 +109,7 @@ export async function fetchComprehensiveReportData(userId: string, userName: str
       .order('created_at', { ascending: false })
       .limit(90),
 
-    // 14. AI Session Summaries (Henry conversation summaries with topics & risk flags)
+    // 14. AI Session Summaries
     supabase
       .from('ai_session_summaries')
       .select('content, key_topics, risk_flags, mood_trend, summary_type, created_at')
@@ -133,7 +117,7 @@ export async function fetchComprehensiveReportData(userId: string, userName: str
       .gte('created_at', thirtyDaysAgo.toISOString())
       .order('created_at', { ascending: false }),
 
-    // 15. Mini Sessions (Between-Session Companion)
+    // 15. Mini Sessions
     supabase
       .from('mini_sessions' as any)
       .select('focus, mood, anxiety, energy, urge_level, summary, coaching, created_at')
@@ -161,7 +145,7 @@ export async function fetchComprehensiveReportData(userId: string, userName: str
       .eq('user_id', userId)
       .gte('created_at', thirtyDaysAgo.toISOString()),
 
-    // 19. Event registrations (workshops)
+    // 19. Event registrations
     supabase
       .from('event_registrations' as any)
       .select('event_title, event_type, status, created_at')
@@ -183,6 +167,28 @@ export async function fetchComprehensiveReportData(userId: string, userName: str
       .gte('created_at', thirtyDaysAgo.toISOString()),
   ]);
 
+  // Unwrap all results safely
+  const moodRes = unwrap(settled[0] as any);
+  const journalRes = unwrap(settled[1] as any);
+  const activitiesRes = unwrap(settled[2] as any);
+  const assessmentRes = unwrap(settled[3] as any);
+  const breathingRes = unwrap(settled[4] as any);
+  const binauralRes = unwrap(settled[5] as any);
+  const goalsRes = unwrap(settled[6] as any);
+  const badgesRes = unwrap(settled[7] as any);
+  const henryConvRes = unwrap(settled[8] as any);
+  const coachingRes = unwrap(settled[9] as any);
+  const therapyReqRes = unwrap(settled[10] as any);
+  const wellnessRes = unwrap(settled[11] as any);
+  const streakRes = unwrap(settled[12] as any);
+  const aiSummariesRes = unwrap(settled[13] as any);
+  const miniSessionsRes = unwrap(settled[14] as any);
+  const toolkitRes = unwrap(settled[15] as any);
+  const meditationRes = unwrap(settled[16] as any);
+  const musicRes = unwrap(settled[17] as any);
+  const eventRegRes = unwrap(settled[18] as any);
+  const gratitudeRes = unwrap(settled[19] as any);
+  const sleepRes = unwrap(settled[20] as any);
   // ─── PROCESS MOOD DATA ───
   const moodEntries = moodRes.data || [];
   const moodScores = moodEntries.map(m => ({
