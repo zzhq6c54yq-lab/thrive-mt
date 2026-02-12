@@ -15,6 +15,16 @@ function unwrap(result: PromiseSettledResult<any>): { data: any[] | null; error:
   return { data: value.data || [], error: null };
 }
 
+// Query labels for dynamic unwrapping (avoids brittle hardcoded indices)
+const QUERY_LABELS = [
+  'mood', 'journal', 'activities', 'assessment', 'breathing', 'binaural', 'goals', 'badges',
+  'henryConv', 'coaching', 'therapyReq', 'aiSummaries', 'miniSessions', 'toolkit', 'meditation',
+  'music', 'eventReg', 'gratitude', 'sleep'
+] as const;
+
+// Est. average messages per Henry conversation — make configurable if needed
+const AVG_MSGS_PER_HENRY_CONVO = 6;
+
 export async function fetchComprehensiveReportData(userId: string, userName: string): Promise<ComprehensiveReportData> {
   try {
   const now = new Date();
@@ -162,31 +172,18 @@ export async function fetchComprehensiveReportData(userId: string, userName: str
       .gte('created_at', thirtyDaysAgo.toISOString()),
   ]);
 
-  // Unwrap all results safely (19 queries — dropped duplicate streak & unused wellness)
-  const moodRes = unwrap(settled[0]);
-  const journalRes = unwrap(settled[1]);
-  const activitiesRes = unwrap(settled[2]);
-  const assessmentRes = unwrap(settled[3]);
-  const breathingRes = unwrap(settled[4]);
-  const binauralRes = unwrap(settled[5]);
-  const goalsRes = unwrap(settled[6]);
-  const badgesRes = unwrap(settled[7]);
-  const henryConvRes = unwrap(settled[8]);
-  const coachingRes = unwrap(settled[9]);
-  const therapyReqRes = unwrap(settled[10]);
-  const aiSummariesRes = unwrap(settled[11]);
-  const miniSessionsRes = unwrap(settled[12]);
-  const toolkitRes = unwrap(settled[13]);
-  const meditationRes = unwrap(settled[14]);
-  const musicRes = unwrap(settled[15]);
-  const eventRegRes = unwrap(settled[16]);
-  const gratitudeRes = unwrap(settled[17]);
-  const sleepRes = unwrap(settled[18]);
+  // Dynamic unwrap with labels (safer than hardcoded indices)
+  const resMap: Record<string, any[]> = {};
+  settled.forEach((result, i) => {
+    const label = QUERY_LABELS[i] || `query_${i}`;
+    resMap[label] = unwrap(result).data || [];
+  });
+  const getRes = (label: string) => resMap[label] || [];
 
   // ─── PROCESS MOOD DATA ───
-  const moodEntries = moodRes.data || [];
+  const moodEntries = getRes('mood');
   const moodScores = moodEntries.map(m => ({
-    date: new Date(m.created_at).toLocaleDateString('en-US', { month: 'short', day: 'numeric' }),
+    date: new Date(m.created_at || now).toLocaleDateString('en-US', { month: 'short', day: 'numeric' }),
     score: m.mood_score || 0,
   }));
   const avgMood = moodScores.length > 0
@@ -208,7 +205,7 @@ export async function fetchComprehensiveReportData(userId: string, userName: str
   const lowEntry = moodScores.length > 0 ? moodScores.reduce((a, b) => a.score < b.score ? a : b) : null;
 
   // ─── PROCESS ACTIVITIES ───
-  const activities = activitiesRes.data || [];
+  const activities = getRes('activities');
   const activityMap: Record<string, { count: number; minutes: number }> = {};
   activities.forEach(a => {
     const type = a.activity_type || 'Other';
@@ -227,7 +224,7 @@ export async function fetchComprehensiveReportData(userId: string, userName: str
     : 'N/A';
 
   // ─── PROCESS JOURNAL ───
-  const journals = journalRes.data || [];
+  const journals = getRes('journal');
   const moodCounts: Record<string, number> = {};
   journals.forEach(j => {
     if (j.mood) {
@@ -290,40 +287,40 @@ export async function fetchComprehensiveReportData(userId: string, userName: str
   });
 
   // ─── PROCESS ASSESSMENTS ───
-  const assessmentsCompleted = (assessmentRes.data || []).map(a => ({
+  const assessmentsCompleted = getRes('assessment').map(a => ({
     type: a.assessment_type,
     score: a.score,
     severity: a.severity || 'N/A',
-    date: new Date(a.created_at!).toLocaleDateString('en-US', { month: 'short', day: 'numeric' }),
+    date: new Date(a.created_at || now).toLocaleDateString('en-US', { month: 'short', day: 'numeric' }),
   }));
 
   // ─── PROCESS BREATHING / BINAURAL ───
-  const breathingData = breathingRes.data || [];
+  const breathingData = getRes('breathing');
   const breathingTotalMinutes = Math.round(breathingData.reduce((s, b) => s + (b.duration_seconds || 0), 0) / 60);
-  const binauralData = binauralRes.data || [];
+  const binauralData = getRes('binaural');
   const binauralTotalMinutes = binauralData.reduce((s, b) => s + (b.duration_minutes || 0), 0);
 
   // ─── PROCESS GOALS ───
-  const goals = goalsRes.data || [];
+  const goals = getRes('goals');
   const goalsCompleted = goals.filter(g => g.completed === true).length;
   const goalCompletionRate = goals.length > 0 ? Math.round((goalsCompleted / goals.length) * 100) : 0;
 
   // ─── PROCESS BADGES ───
-  const badgesEarned = (badgesRes.data || []).map((b) => ({
+  const badgesEarned = getRes('badges').map((b) => ({
     title: b.badge_id || 'Achievement',
-    date: new Date(b.earned_at || Date.now()).toLocaleDateString('en-US', { month: 'short', day: 'numeric' }),
+    date: new Date(b.earned_at || now).toLocaleDateString('en-US', { month: 'short', day: 'numeric' }),
   }));
 
   // ─── PROCESS HENRY CONVERSATIONS ───
-  const henryConversations = henryConvRes.data?.length || 0;
-  const henryMessages = henryConversations * 6;
+  const henryConversations = getRes('henryConv').length;
+  const henryMessages = henryConversations * AVG_MSGS_PER_HENRY_CONVO;
 
   // ─── PROCESS COACHING / THERAPY ───
-  const coachingSessions = coachingRes.data?.length || 0;
-  const therapyRequests = therapyReqRes.data?.length || 0;
+  const coachingSessions = getRes('coaching').length;
+  const therapyRequests = getRes('therapyReq').length;
 
   // ─── CALCULATE STREAKS (reuse moodEntries, TZ-safe) ───
-  const streakDates = moodEntries.map(d => new Date(d.created_at).toISOString().split('T')[0]);
+  const streakDates = moodEntries.map(d => new Date(d.created_at || now).toISOString().split('T')[0]);
   const uniqueDates = [...new Set(streakDates)];
   let currentStreak = 0;
   let longestStreak = 0;
@@ -355,14 +352,26 @@ export async function fetchComprehensiveReportData(userId: string, userName: str
   }
 
   // ─── PROCESS AI SESSION SUMMARIES ───
-  const aiSummaries = (aiSummariesRes.data || []) as any[];
-  const henryConversationSummaries = aiSummaries.map(s => ({
-    content: s.content || '',
-    keyTopics: (typeof s.key_topics === 'string' ? JSON.parse(s.key_topics) : (s.key_topics || [])) as string[],
-    riskFlags: (typeof s.risk_flags === 'string' ? JSON.parse(s.risk_flags) : (s.risk_flags || [])) as string[],
-    moodTrend: s.mood_trend || null,
-    date: new Date(s.created_at || Date.now()).toLocaleDateString('en-US', { month: 'short', day: 'numeric' }),
-  }));
+  const aiSummaries = getRes('aiSummaries');
+  const henryConversationSummaries = aiSummaries.map(s => {
+    let keyTopics: string[] = [];
+    let riskFlagsArr: string[] = [];
+    try {
+      keyTopics = typeof s.key_topics === 'string' ? JSON.parse(s.key_topics) : (s.key_topics || []);
+      if (!Array.isArray(keyTopics)) keyTopics = [];
+    } catch { keyTopics = []; }
+    try {
+      riskFlagsArr = typeof s.risk_flags === 'string' ? JSON.parse(s.risk_flags) : (s.risk_flags || []);
+      if (!Array.isArray(riskFlagsArr)) riskFlagsArr = [];
+    } catch { riskFlagsArr = []; }
+    return {
+      content: s.content || '',
+      keyTopics,
+      riskFlags: riskFlagsArr,
+      moodTrend: s.mood_trend || null,
+      date: new Date(s.created_at || now).toLocaleDateString('en-US', { month: 'short', day: 'numeric' }),
+    };
+  });
 
   // Aggregate key topics across all summaries
   const allKeyTopics: Record<string, number> = {};
@@ -385,7 +394,7 @@ export async function fetchComprehensiveReportData(userId: string, userName: str
   });
 
   // ─── PROCESS MINI SESSIONS ───
-  const miniSessions = (miniSessionsRes.data || []) as any[];
+  const miniSessions = getRes('miniSessions') as any[];
   const miniSessionCount = miniSessions.length;
   const miniMoods = miniSessions.filter(m => m.mood != null).map(m => m.mood as number);
   const miniAnxiety = miniSessions.filter(m => m.anxiety != null).map(m => m.anxiety as number);
@@ -405,7 +414,7 @@ export async function fetchComprehensiveReportData(userId: string, userName: str
     .map(([area, count]) => ({ area, count }));
 
   // ─── PROCESS TOOLKIT INTERACTIONS ───
-  const toolkitData = (toolkitRes.data || []) as any[];
+  const toolkitData = getRes('toolkit') as any[];
   const toolkitCounts: Record<string, number> = {};
   toolkitData.forEach(t => {
     const key = t.category || t.tool_name || 'Unknown';
@@ -416,12 +425,12 @@ export async function fetchComprehensiveReportData(userId: string, userName: str
     .map(([name, count]) => ({ name, count }));
 
   // ─── PROCESS MEDITATION SESSIONS ───
-  const meditationData = (meditationRes.data || []) as any[];
+  const meditationData = getRes('meditation') as any[];
   const meditationSessions = meditationData.length;
   const meditationTotalMinutes = meditationData.reduce((s, m) => s + (m.duration_minutes || 0), 0);
 
   // ─── PROCESS MUSIC THERAPY ───
-  const musicData = (musicRes.data || []) as any[];
+  const musicData = getRes('music') as any[];
   const musicTherapySessions = musicData.length;
   const musicTotalMinutes = Math.round(musicData.reduce((s, m) => s + (m.duration_seconds || 0), 0) / 60);
   const musicMoodChanges = musicData
@@ -429,7 +438,7 @@ export async function fetchComprehensiveReportData(userId: string, userName: str
     .map(m => ({ before: m.mood_before, after: m.mood_after }));
 
   // ─── PROCESS EVENT REGISTRATIONS ───
-  const eventData = (eventRegRes.data || []) as any[];
+  const eventData = getRes('eventReg') as any[];
   const workshopRegistrations = eventData.map(e => ({
     title: e.event_title || 'Untitled Event',
     type: e.event_type || 'workshop',
@@ -437,14 +446,14 @@ export async function fetchComprehensiveReportData(userId: string, userName: str
   }));
 
   // ─── PROCESS GRATITUDE ENTRIES ───
-  const gratitudeEntryCount = (gratitudeRes.data || []).length;
+  const gratitudeEntryCount = getRes('gratitude').length;
 
   // ─── PROCESS SLEEP TRACKER ───
-  const sleepData = (sleepRes.data || []) as any[];
+  const sleepData = getRes('sleep') as any[];
   const sleepEntries = sleepData.map(s => ({
     quality: s.sleep_quality as number | null,
     hours: s.hours_slept as number | null,
-    date: new Date(s.created_at).toLocaleDateString('en-US', { month: 'short', day: 'numeric' }),
+    date: new Date(s.created_at || now).toLocaleDateString('en-US', { month: 'short', day: 'numeric' }),
   }));
   const sleepQualities = sleepEntries.filter(s => s.quality != null).map(s => s.quality!);
   const sleepHours = sleepEntries.filter(s => s.hours != null).map(s => s.hours!);
