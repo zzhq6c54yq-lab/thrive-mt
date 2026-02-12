@@ -165,7 +165,7 @@ const ProgressAnalytics = () => {
     doc.text('It is not a medical diagnosis. Please consult a healthcare professional for clinical guidance.', 20, 285);
 
     const filename = `thrivemt-${reportType.toLowerCase().replace(/\s+/g, '-')}-${now.toISOString().split('T')[0]}.pdf`;
-    doc.output('dataurlnewwindow');
+    doc.save(filename);
     
     toast({
       title: "PDF Generated Successfully",

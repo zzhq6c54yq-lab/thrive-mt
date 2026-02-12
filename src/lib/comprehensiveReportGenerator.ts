@@ -764,6 +764,8 @@ export function generateComprehensiveReport(data: ComprehensiveReportData, mode:
     );
   }
 
-  // Output PDF directly - dataurlnewwindow bypasses iframe sandbox restrictions
-  doc.output('dataurlnewwindow');
+  // Output PDF
+  const dateStr = data.reportDate.toISOString().split('T')[0];
+  const filename = `ThriveMT_Comprehensive_Report_${data.userName.replace(/\s+/g, '_')}_${dateStr}.pdf`;
+  doc.save(filename);
 }
