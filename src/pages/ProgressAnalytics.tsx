@@ -16,6 +16,7 @@ import { useUser } from "@/contexts/UserContext";
 import jsPDF from "jspdf";
 import { generateComprehensiveReport } from "@/lib/comprehensiveReportGenerator";
 import { fetchComprehensiveReportData } from "@/hooks/useComprehensiveReportData";
+import { buildScenario1, buildScenario2, buildScenario3 } from "@/data/demoReportScenarios";
 
 const ProgressAnalytics = () => {
   const navigate = useNavigate();
@@ -28,6 +29,7 @@ const ProgressAnalytics = () => {
   const [isViewingReport, setIsViewingReport] = useState(false);
   const [reportViewUrl, setReportViewUrl] = useState<string | null>(null);
   const [reportViewFilename, setReportViewFilename] = useState<string>('');
+  const [generatingScenario, setGeneratingScenario] = useState<number | null>(null);
 
   const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042', '#8884D8'];
 
@@ -237,6 +239,34 @@ const ProgressAnalytics = () => {
       setIsViewingReport(false);
     }
   };
+
+  const handleGenerateScenario = useCallback((scenarioNum: 1 | 2 | 3, mode: 'download' | 'view' = 'download') => {
+    const userName = profile?.display_name || user?.email?.split('@')[0] || 'Damien';
+    setGeneratingScenario(scenarioNum);
+    try {
+      const builders = { 1: buildScenario1, 2: buildScenario2, 3: buildScenario3 };
+      const data = builders[scenarioNum](userName);
+      const result = generateComprehensiveReport(data, mode);
+      if (mode === 'view' && result) {
+        setReportViewUrl(result.blobUrl);
+        setReportViewFilename(result.filename);
+      } else if (result) {
+        const link = document.createElement('a');
+        link.href = result.blobUrl;
+        link.download = result.filename.replace('Clinical_Report', `Scenario_${scenarioNum}_Report`);
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+        setTimeout(() => URL.revokeObjectURL(result.blobUrl), 1000);
+        toast({ title: `Scenario ${scenarioNum} Report Downloaded`, description: `${scenarioNum === 1 ? 'Good' : scenarioNum === 2 ? 'Moderate' : 'Bad'} scenario report saved.` });
+      }
+    } catch (error) {
+      console.error(`Scenario ${scenarioNum} error:`, error);
+      toast({ title: 'Generation Failed', description: 'Unable to generate scenario report.', variant: 'destructive' });
+    } finally {
+      setGeneratingScenario(null);
+    }
+  }, [profile, user, toast]);
 
   const handleManageSharing = () => {
     toast({
@@ -793,6 +823,87 @@ const ProgressAnalytics = () => {
                   )}
                 </Button>
               </CardFooter>
+            </Card>
+
+            {/* Demo Scenario Reports */}
+            <Card className="border border-[#B87333]/30 bg-gradient-to-br from-[#B87333]/5 to-transparent">
+              <CardHeader>
+                <div className="flex items-center gap-3">
+                  <div className="p-3 rounded-xl bg-[#B87333]/20">
+                    <FileText className="h-6 w-6 text-[#B87333]" />
+                  </div>
+                  <div>
+                    <CardTitle className="text-lg">Demo Scenario Reports</CardTitle>
+                    <CardDescription>
+                      Three simulated clinical reports showcasing Good, Moderate, and Bad patient scenarios — fully populated with data across every section for print review.
+                    </CardDescription>
+                  </div>
+                </div>
+              </CardHeader>
+              <CardContent className="space-y-3">
+                {/* Scenario 1 — Good */}
+                <div className="p-4 rounded-xl border border-green-500/30 bg-green-500/5 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                  <div className="flex-1">
+                    <h4 className="font-semibold text-green-400 flex items-center gap-2">
+                      <span className="w-3 h-3 rounded-full bg-green-500" />
+                      Scenario 1 — Good (Thriving Patient)
+                    </h4>
+                    <p className="text-xs text-muted-foreground mt-1">
+                      PHQ-9: 3 · GAD-7: 4 · PCL-5: 12 · AUDIT-C: 1 · Resilience: 87/100 · 28-day streak · No risk flags
+                    </p>
+                  </div>
+                  <div className="flex gap-2">
+                    <Button size="sm" className="bg-green-600 hover:bg-green-700 text-white" onClick={() => handleGenerateScenario(1, 'download')} disabled={generatingScenario !== null}>
+                      {generatingScenario === 1 ? <Loader2 className="w-4 h-4 animate-spin" /> : <><Download className="w-4 h-4 mr-1" />PDF</>}
+                    </Button>
+                    <Button size="sm" variant="outline" className="border-green-500/40 text-green-400 hover:bg-green-500/10" onClick={() => handleGenerateScenario(1, 'view')} disabled={generatingScenario !== null}>
+                      <Eye className="w-4 h-4 mr-1" />View
+                    </Button>
+                  </div>
+                </div>
+
+                {/* Scenario 2 — Moderate */}
+                <div className="p-4 rounded-xl border border-amber-500/30 bg-amber-500/5 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                  <div className="flex-1">
+                    <h4 className="font-semibold text-amber-400 flex items-center gap-2">
+                      <span className="w-3 h-3 rounded-full bg-amber-500" />
+                      Scenario 2 — Moderate (Progressing with Concerns)
+                    </h4>
+                    <p className="text-xs text-muted-foreground mt-1">
+                      PHQ-9: 12 · GAD-7: 10 · PCL-5: 35 · AUDIT-C: 3 · Resilience: 52/100 · Indirect HRS flags · SDOH flags
+                    </p>
+                  </div>
+                  <div className="flex gap-2">
+                    <Button size="sm" className="bg-amber-600 hover:bg-amber-700 text-white" onClick={() => handleGenerateScenario(2, 'download')} disabled={generatingScenario !== null}>
+                      {generatingScenario === 2 ? <Loader2 className="w-4 h-4 animate-spin" /> : <><Download className="w-4 h-4 mr-1" />PDF</>}
+                    </Button>
+                    <Button size="sm" variant="outline" className="border-amber-500/40 text-amber-400 hover:bg-amber-500/10" onClick={() => handleGenerateScenario(2, 'view')} disabled={generatingScenario !== null}>
+                      <Eye className="w-4 h-4 mr-1" />View
+                    </Button>
+                  </div>
+                </div>
+
+                {/* Scenario 3 — Bad */}
+                <div className="p-4 rounded-xl border border-red-500/30 bg-red-500/5 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                  <div className="flex-1">
+                    <h4 className="font-semibold text-red-400 flex items-center gap-2">
+                      <span className="w-3 h-3 rounded-full bg-red-500" />
+                      Scenario 3 — Bad (High-Risk, Declining)
+                    </h4>
+                    <p className="text-xs text-muted-foreground mt-1">
+                      PHQ-9: 22 · GAD-7: 18 · PCL-5: 58 · AUDIT-C: 8 · Resilience: 18/100 · HRS ELEVATED · Multiple SDOH crises
+                    </p>
+                  </div>
+                  <div className="flex gap-2">
+                    <Button size="sm" className="bg-red-600 hover:bg-red-700 text-white" onClick={() => handleGenerateScenario(3, 'download')} disabled={generatingScenario !== null}>
+                      {generatingScenario === 3 ? <Loader2 className="w-4 h-4 animate-spin" /> : <><Download className="w-4 h-4 mr-1" />PDF</>}
+                    </Button>
+                    <Button size="sm" variant="outline" className="border-red-500/40 text-red-400 hover:bg-red-500/10" onClick={() => handleGenerateScenario(3, 'view')} disabled={generatingScenario !== null}>
+                      <Eye className="w-4 h-4 mr-1" />View
+                    </Button>
+                  </div>
+                </div>
+              </CardContent>
             </Card>
 
             {/* Individual quick reports */}
