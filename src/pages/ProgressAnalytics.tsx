@@ -168,8 +168,8 @@ const ProgressAnalytics = () => {
     doc.save(filename);
     
     toast({
-      title: "Report Downloaded! 📄",
-      description: `Your ${reportType} has been saved as a PDF.`,
+      title: "PDF Generated Successfully",
+      description: `Your ${reportType} download has started. Check your browser's download bar.`,
     });
   };
 
@@ -201,10 +201,10 @@ const ProgressAnalytics = () => {
       generateComprehensiveReport(reportData, mode);
       console.log('[Report] PDF generated successfully');
       toast({
-        title: mode === 'view' ? "Report Opened! 📋" : "Report Downloaded! 📋",
+        title: mode === 'view' ? "Report Generated" : "PDF Ready — Download Starting...",
         description: mode === 'view' 
-          ? "Your comprehensive report has been opened in a new tab."
-          : "Your full clinician-ready PDF report has been saved.",
+          ? "Your comprehensive report is opening in a new tab."
+          : "Your report has been generated. Check your browser's download bar.",
       });
     } catch (error) {
       console.error('[Report] Comprehensive report error:', error);
