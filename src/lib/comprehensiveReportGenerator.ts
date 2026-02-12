@@ -764,8 +764,16 @@ export function generateComprehensiveReport(data: ComprehensiveReportData, mode:
     );
   }
 
-  // Output PDF
+  // Output PDF based on mode
   const dateStr = data.reportDate.toISOString().split('T')[0];
   const filename = `ThriveMT_Comprehensive_Report_${data.userName.replace(/\s+/g, '_')}_${dateStr}.pdf`;
-  doc.save(filename);
+
+  if (mode === 'view') {
+    // Open in a new tab as a viewable PDF
+    const blob = doc.output('blob');
+    const blobUrl = URL.createObjectURL(blob);
+    window.open(blobUrl, '_blank');
+  } else {
+    doc.save(filename);
+  }
 }

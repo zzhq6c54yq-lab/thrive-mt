@@ -25,6 +25,7 @@ const ProgressAnalytics = () => {
   const [activeAnalysis, setActiveAnalysis] = useState<string | null>(null);
   const [isGenerating, setIsGenerating] = useState(false);
   const [isGeneratingComprehensive, setIsGeneratingComprehensive] = useState(false);
+  const [isViewingReport, setIsViewingReport] = useState(false);
 
   const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042', '#8884D8'];
 
@@ -191,7 +192,11 @@ const ProgressAnalytics = () => {
       return;
     }
 
-    setIsGeneratingComprehensive(true);
+    if (mode === 'download') {
+      setIsGeneratingComprehensive(true);
+    } else {
+      setIsViewingReport(true);
+    }
     console.log('[Report] Starting report generation, mode:', mode, 'userId:', user.id);
     try {
       const userName = profile?.display_name || user.email?.split('@')[0] || 'User';
@@ -201,7 +206,7 @@ const ProgressAnalytics = () => {
       generateComprehensiveReport(reportData, mode);
       console.log('[Report] PDF generated successfully');
       toast({
-        title: mode === 'view' ? "Report Generated" : "PDF Ready — Download Starting...",
+        title: mode === 'view' ? "Report Ready" : "PDF Ready — Download Starting...",
         description: mode === 'view' 
           ? "Your comprehensive report is opening in a new tab."
           : "Your report has been generated. Check your browser's download bar.",
@@ -215,6 +220,7 @@ const ProgressAnalytics = () => {
       });
     } finally {
       setIsGeneratingComprehensive(false);
+      setIsViewingReport(false);
     }
   };
 
@@ -752,7 +758,7 @@ const ProgressAnalytics = () => {
                 <Button 
                   className="flex-1 bg-[#D4AF37] hover:bg-[#B87333] text-black font-semibold py-6 text-base" 
                   onClick={() => handleGenerateComprehensiveReport('download')}
-                  disabled={isGeneratingComprehensive}
+                  disabled={isGeneratingComprehensive || isViewingReport}
                 >
                   {isGeneratingComprehensive ? (
                     <><Loader2 className="w-5 h-5 mr-2 animate-spin" />Generating...</>
@@ -764,10 +770,10 @@ const ProgressAnalytics = () => {
                   variant="outline"
                   className="flex-1 border-[#D4AF37] text-[#D4AF37] hover:bg-[#D4AF37]/10 font-semibold py-6 text-base" 
                   onClick={() => handleGenerateComprehensiveReport('view')}
-                  disabled={isGeneratingComprehensive}
+                  disabled={isGeneratingComprehensive || isViewingReport}
                 >
-                  {isGeneratingComprehensive ? (
-                    <><Loader2 className="w-5 h-5 mr-2 animate-spin" />Loading...</>
+                  {isViewingReport ? (
+                    <><Loader2 className="w-5 h-5 mr-2 animate-spin" />Opening...</>
                   ) : (
                     <><Eye className="w-5 h-5 mr-2" />View Report</>
                   )}
