@@ -16,6 +16,7 @@ function unwrap(result: PromiseSettledResult<any>): { data: any[] | null; error:
 }
 
 export async function fetchComprehensiveReportData(userId: string, userName: string): Promise<ComprehensiveReportData> {
+  try {
   const now = new Date();
   const thirtyDaysAgo = new Date(now.getTime() - 30 * 24 * 60 * 60 * 1000);
 
@@ -35,14 +36,16 @@ export async function fetchComprehensiveReportData(userId: string, userName: str
       .select('id, mood, notes, created_at')
       .eq('user_id', userId)
       .gte('created_at', thirtyDaysAgo.toISOString())
-      .order('created_at', { ascending: true }),
+      .order('created_at', { ascending: true })
+      .limit(50),
 
     // 3. User activities
     supabase
       .from('user_activities')
       .select('activity_type, duration_minutes, completed_at')
       .eq('user_id', userId)
-      .gte('completed_at', thirtyDaysAgo.toISOString()),
+      .gte('completed_at', thirtyDaysAgo.toISOString())
+      .limit(50),
 
     // 4. Assessment results
     supabase
@@ -546,7 +549,7 @@ export async function fetchComprehensiveReportData(userId: string, userName: str
   // ─── TOTAL POINTS ───
   const totalPoints = activities.length * 10 + badgesEarned.length * 50 + journals.length * 15 + breathingData.length * 5 + binauralData.length * 5 + miniSessionCount * 10 + meditationSessions * 10 + gratitudeEntryCount * 5;
 
-  return {
+  const result: ComprehensiveReportData = {
     userName,
     reportDate: now,
     dateRange: { start: thirtyDaysAgo, end: now },
@@ -603,4 +606,11 @@ export async function fetchComprehensiveReportData(userId: string, userName: str
     avgSleepQuality,
     avgSleepHours,
   };
+
+  console.log('Report generated successfully:', { userId, totalFields: Object.keys(result).length });
+  return result;
+  } catch (error: any) {
+    console.error('Report fetch failed:', error);
+    throw new Error(`Failed to generate report: ${error?.message || 'Unknown error'}`);
+  }
 }
