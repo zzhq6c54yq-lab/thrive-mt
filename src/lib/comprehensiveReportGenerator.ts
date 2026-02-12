@@ -147,6 +147,13 @@ export interface ComprehensiveReportData {
     engagementScore: number;
     overallReadiness: number;
   };
+
+  // HRS (High-Risk Suicide) Safety Assessment
+  hrsFlags?: {
+    directWarnings: { term: string; context: string }[];
+    indirectWarnings: { category: string; term: string; context: string }[];
+    riskLevel: 'none' | 'indirect-only' | 'elevated';
+  };
 }
 
 export function generateComprehensiveReport(data: ComprehensiveReportData, mode: 'download' | 'view' = 'download') {
@@ -395,7 +402,7 @@ export function generateComprehensiveReport(data: ComprehensiveReportData, mode:
     y += 18;
   }
 
-  // ─── STABILITY RISK (SDOH TRIAGE) ───
+  // ─── ACORN SOCIAL TRIAGE (SDOH) ───
   if (data.sdohFlags.length > 0) {
     checkPage(30);
     const highPriority = data.sdohFlags.filter(f => f.priority === 'high');
@@ -411,7 +418,7 @@ export function generateComprehensiveReport(data: ComprehensiveReportData, mode:
     doc.setFontSize(9);
     doc.setFont('helvetica', 'bold');
     doc.setTextColor(BRAND.red);
-    doc.text('🚨  STABILITY RISK — Social Determinant Flags', ml + 4, y);
+    doc.text('🚨  ACORN SOCIAL TRIAGE — Social Determinant Flags', ml + 4, y);
     y += 6;
     doc.setFont('helvetica', 'normal');
     doc.setFontSize(8);
@@ -442,6 +449,78 @@ export function generateComprehensiveReport(data: ComprehensiveReportData, mode:
       });
     }
     y += 4;
+  }
+
+  // ─── HRS (HIGH-RISK SUICIDE) SAFETY ASSESSMENT ───
+  const hrs = data.hrsFlags;
+  if (hrs && hrs.riskLevel !== 'none') {
+    checkPage(40);
+    const isElevated = hrs.riskLevel === 'elevated';
+    const borderColor = isElevated ? BRAND.red : BRAND.amber;
+    const bgColor = isElevated ? '#FFCDD2' : '#FFF3E0';
+    const totalItems = hrs.directWarnings.length + hrs.indirectWarnings.length;
+    const hrsBoxH = 16 + totalItems * 6 + (isElevated ? 10 : 0) + 8;
+
+    doc.setFillColor(bgColor);
+    doc.roundedRect(ml, y, cw, hrsBoxH, 2, 2, 'F');
+    doc.setDrawColor(borderColor);
+    doc.setLineWidth(1);
+    doc.roundedRect(ml, y, cw, hrsBoxH, 2, 2, 'S');
+    y += 7;
+    doc.setFontSize(9);
+    doc.setFont('helvetica', 'bold');
+    doc.setTextColor(borderColor);
+    doc.text(isElevated ? '🆘  HRS SAFETY ASSESSMENT — ELEVATED RISK' : '⚠  HRS SAFETY ASSESSMENT — Indirect Warning Signs', ml + 4, y);
+    y += 6;
+
+    if (hrs.directWarnings.length > 0) {
+      doc.setTextColor(BRAND.red);
+      doc.setFont('helvetica', 'bold');
+      doc.text('DIRECT WARNING SIGNS:', ml + 6, y);
+      y += 5;
+      doc.setFont('helvetica', 'normal');
+      doc.setFontSize(8);
+      doc.setTextColor(BRAND.darkGray);
+      hrs.directWarnings.forEach(w => {
+        doc.text(`▸ "${w.term}" — ${w.context}`, ml + 8, y);
+        y += 6;
+      });
+    }
+
+    if (hrs.indirectWarnings.length > 0) {
+      doc.setTextColor(BRAND.amber);
+      doc.setFont('helvetica', 'bold');
+      doc.setFontSize(8);
+      doc.text('INDIRECT / LIFESPACE CHANGES:', ml + 6, y);
+      y += 5;
+      doc.setFont('helvetica', 'normal');
+      doc.setTextColor(BRAND.darkGray);
+      const categories = [...new Set(hrs.indirectWarnings.map(w => w.category))];
+      categories.forEach(cat => {
+        const items = hrs.indirectWarnings.filter(w => w.category === cat);
+        doc.text(`▸ ${cat}: ${items.map(i => `"${i.term}"`).join(', ')}`, ml + 8, y);
+        y += 6;
+      });
+    }
+
+    if (isElevated) {
+      y += 2;
+      doc.setFontSize(7);
+      doc.setFont('helvetica', 'bold');
+      doc.setTextColor(BRAND.red);
+      doc.text('ACTION: These indicators may warrant a High-Risk for Suicide Patient Record Flag (HRS-PRF) review.', ml + 6, y);
+      y += 6;
+    }
+    y += 4;
+  } else if (hrs && hrs.riskLevel === 'none') {
+    checkPage(14);
+    doc.setFillColor('#E8F5E9');
+    doc.roundedRect(ml, y, cw, 14, 2, 2, 'F');
+    doc.setFontSize(9);
+    doc.setFont('helvetica', 'bold');
+    doc.setTextColor(BRAND.green);
+    doc.text('✓  HRS Safety Assessment: No direct or indirect suicide warning signs detected', ml + 4, y + 9);
+    y += 18;
   }
 
   // ─── CLINICAL MBC SCORES ───
@@ -578,33 +657,38 @@ export function generateComprehensiveReport(data: ComprehensiveReportData, mode:
   });
   y += 6;
 
-  // ─── SUGGESTED EHR ENTRY ───
-  checkPage(35);
+  // ─── SUGGESTED EHR ENTRY (PGHD Standard) ───
+  checkPage(42);
   doc.setFillColor('#E3F2FD');
-  doc.roundedRect(ml, y, cw, 35, 2, 2, 'F');
+  doc.roundedRect(ml, y, cw, 42, 2, 2, 'F');
   doc.setDrawColor(BRAND.blue);
   doc.setLineWidth(0.5);
-  doc.roundedRect(ml, y, cw, 35, 2, 2, 'S');
+  doc.roundedRect(ml, y, cw, 42, 2, 2, 'S');
   y += 6;
   doc.setFontSize(9);
   doc.setFont('helvetica', 'bold');
   doc.setTextColor(BRAND.blue);
-  doc.text('📋  SUGGESTED EHR ENTRY  (Copy/Paste)', ml + 4, y);
+  doc.text('📋  EHR-READY PROGRESS NOTE  (PGHD — Copy/Paste)', ml + 4, y);
   y += 5;
   doc.setFont('helvetica', 'normal');
   doc.setFontSize(8);
   doc.setTextColor(BRAND.darkGray);
   const ehrLines = doc.splitTextToSize(data.suggestedEHRNote, cw - 10);
   doc.text(ehrLines, ml + 5, y);
-  y += ehrLines.length * 4 + 8;
+  y += ehrLines.length * 4 + 4;
+  doc.setFontSize(6);
+  doc.setFont('helvetica', 'italic');
+  doc.setTextColor(BRAND.lightGray);
+  doc.text('Note: PGHD is stored in a secure database. It becomes part of the permanent medical record only when a provider adds it to the EHR.', ml + 5, y);
+  y += 8;
 
   // ─── DISCLAIMER ───
   doc.setFontSize(7);
   doc.setFont('helvetica', 'italic');
   doc.setTextColor(BRAND.lightGray);
-  const disclaimer = 'This summary is generated by ThriveMT for informational and wellness tracking purposes only. It does not constitute a clinical diagnosis. Please use clinical judgment in combination with this data.';
+  const disclaimer = 'This summary is generated by ThriveMT for informational and wellness tracking purposes only. It does not constitute a clinical diagnosis. Patient-Generated Health Data (PGHD) should be reviewed and validated by a licensed clinician before incorporation into the medical record.';
   const discLines = doc.splitTextToSize(disclaimer, cw);
-  doc.text(discLines, ml, 272);
+  doc.text(discLines, ml, 270);
 
   // ══════════════════════════════════════════════
   // PAGE 2+: FULL COMPREHENSIVE REPORT
@@ -859,10 +943,11 @@ export function generateComprehensiveReport(data: ComprehensiveReportData, mode:
     bodyText('No significant risk flags identified during this reporting period.');
   }
 
-  // SDOH Stability Risk in detailed section
+  // ACORN Social Triage in detailed section
   if (data.sdohFlags.length > 0) {
     checkPage(20);
-    bodyText('Social Determinant of Health (SDOH) flags detected in journal entries:');
+    bodyText('ACORN Social Triage — Social Determinant of Health (SDOH) flags detected in journal entries:');
+    bodyText('Domains screened: Housing Stability, Food Insecurity, Financial Resource Strain (per VA ACORN framework).');
     const highFlags = data.sdohFlags.filter(f => f.priority === 'high');
     const modFlags = data.sdohFlags.filter(f => f.priority === 'moderate');
     if (highFlags.length > 0) {
@@ -872,6 +957,32 @@ export function generateComprehensiveReport(data: ComprehensiveReportData, mode:
     if (modFlags.length > 0) {
       bodyText('MODERATE:');
       modFlags.forEach(f => bullet(`${f.keyword} — "${f.context}"`, 5));
+    }
+    y += 3;
+  }
+
+  // HRS Safety Assessment in detailed section
+  if (data.hrsFlags) {
+    checkPage(20);
+    const hrs = data.hrsFlags;
+    if (hrs.riskLevel === 'elevated') {
+      bodyText('⚠ HIGH-RISK SUICIDE (HRS) — ELEVATED WARNING SIGNS DETECTED:');
+      bodyText('Direct Warning Signs (suicidal ideation or access to lethal means):');
+      hrs.directWarnings.forEach(w => bullet(`"${w.term}" — ${w.context}`, 5));
+      if (hrs.indirectWarnings.length > 0) {
+        bodyText('Indirect Warning Signs (lifespace changes):');
+        const cats = [...new Set(hrs.indirectWarnings.map(w => w.category))];
+        cats.forEach(cat => bullet(`${cat}: ${hrs.indirectWarnings.filter(w => w.category === cat).map(i => `"${i.term}"`).join(', ')}`, 5));
+      }
+      bodyText('ACTION: These indicators may warrant review for a High-Risk for Suicide Patient Record Flag (HRS-PRF).');
+    } else if (hrs.riskLevel === 'indirect-only') {
+      bodyText('HRS Safety Assessment — Indirect warning signs detected:');
+      bodyText('Monitoring for "lifespace" changes including insomnia, hopelessness, and shame themes in journal entries:');
+      const cats = [...new Set(hrs.indirectWarnings.map(w => w.category))];
+      cats.forEach(cat => bullet(`${cat}: ${hrs.indirectWarnings.filter(w => w.category === cat).map(i => `"${i.term}"`).join(', ')}`, 5));
+      bodyText('Recommendation: Monitor closely. These indirect indicators can precede escalation.');
+    } else {
+      bodyText('HRS Safety Assessment: No direct or indirect suicide warning signs detected in journal entries or AI conversations.');
     }
     y += 3;
   }
@@ -921,10 +1032,10 @@ export function generateComprehensiveReport(data: ComprehensiveReportData, mode:
 
   // ─── SECTION 15: MISSION READINESS & RESILIENCE ───
   checkPage(40);
-  sectionTitle('15. Mission Readiness & Resilience');
+  sectionTitle('15. Mission Readiness & Resilience (Holistic Health Approach)');
 
   if (data.performanceTriad) {
-    bodyText('The Performance Triad (Sleep, Activity, Engagement) assesses Total Force Fitness readiness:');
+    bodyText('The Performance Triad (Sleep, Activity, Engagement) assesses Total Force Fitness readiness per the DoD Holistic Health Approach:');
     const pt = data.performanceTriad;
     bullet(`Sleep Score: ${pt.sleepScore}% — ${pt.sleepScore >= 70 ? 'Mission Ready' : pt.sleepScore >= 40 ? 'Needs Attention' : 'Below Standard'}`, 3);
     bullet(`Activity Score: ${pt.activityScore}% — ${pt.activityScore >= 70 ? 'Mission Ready' : pt.activityScore >= 40 ? 'Needs Attention' : 'Below Standard'}`, 3);
@@ -932,6 +1043,14 @@ export function generateComprehensiveReport(data: ComprehensiveReportData, mode:
     bullet(`Overall Readiness: ${pt.overallReadiness}%`, 3);
     y += 3;
   }
+
+  // 2026 Standards: Body Composition & Cardiorespiratory
+  checkPage(20);
+  bodyText('2026 DoD Performance Standards (Additional Categories):');
+  bullet('Body Composition (Waist-to-Height Ratio): Not yet tracked. Integration with wearable biometrics planned.', 3);
+  bullet('Cardiorespiratory Trends: Not yet tracked. Future integration with fitness device VO2 max data planned.', 3);
+  bodyText('Note: As of February 2026, these scores are included in official officer and enlisted performance briefs.');
+  y += 3;
 
   if (data.resilienceIndex != null) {
     bodyText(`Resilience Index: ${data.resilienceIndex}/100`);
@@ -972,7 +1091,7 @@ export function generateComprehensiveReport(data: ComprehensiveReportData, mode:
       { align: 'center' }
     );
     doc.text(
-      'For personal wellness tracking only. Not a clinical diagnosis. Consult a healthcare professional for medical guidance.',
+      'PGHD Report — Not a clinical diagnosis. Data becomes part of the permanent medical record only when a provider adds it to the EHR.',
       pw / 2,
       294,
       { align: 'center' }
