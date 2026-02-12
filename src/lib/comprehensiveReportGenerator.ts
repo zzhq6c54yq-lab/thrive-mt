@@ -115,6 +115,38 @@ export interface ComprehensiveReportData {
   sleepEntries?: { quality: number | null; hours: number | null; date: string }[];
   avgSleepQuality?: number | null;
   avgSleepHours?: number | null;
+
+  // ─── VA/DoD CLINICAL ENHANCEMENTS ───
+
+  // Validated MBC Outcome Measures (PHQ-9, GAD-7, PCL-5, AUDIT-C)
+  mbcScores?: {
+    phq9?: { score: number; severity: string; date: string }[];
+    gad7?: { score: number; severity: string; date: string }[];
+    pcl5?: { score: number; severity: string; date: string }[];
+    auditC?: { score: number; severity: string; date: string }[];
+  };
+  latestMBC?: {
+    phq9?: { score: number; severity: string; date: string } | null;
+    gad7?: { score: number; severity: string; date: string } | null;
+    pcl5?: { score: number; severity: string; date: string } | null;
+    auditC?: { score: number; severity: string; date: string } | null;
+  };
+
+  // Longitudinal assessments (up to 12 months)
+  longitudinalAssessments?: { type: string; score: number; date: string }[];
+
+  // Resilience Index (0-100)
+  resilienceIndex?: number;
+  resilienceFactors?: { factor: string; score: number; max: number }[];
+
+  // Sleep-Activity Correlation
+  sleepActivityCorrelation?: string;
+  performanceTriad?: {
+    sleepScore: number;
+    activityScore: number;
+    engagementScore: number;
+    overallReadiness: number;
+  };
 }
 
 export function generateComprehensiveReport(data: ComprehensiveReportData, mode: 'download' | 'view' = 'download') {
@@ -410,6 +442,121 @@ export function generateComprehensiveReport(data: ComprehensiveReportData, mode:
       });
     }
     y += 4;
+  }
+
+  // ─── CLINICAL MBC SCORES ───
+  const mbc = data.latestMBC;
+  const hasMBC = mbc && (mbc.phq9 || mbc.gad7 || mbc.pcl5 || mbc.auditC);
+  if (hasMBC) {
+    checkPage(40);
+    doc.setFillColor('#F3E8FD');
+    doc.roundedRect(ml, y, cw, 38, 2, 2, 'F');
+    doc.setDrawColor('#7B1FA2');
+    doc.setLineWidth(0.5);
+    doc.roundedRect(ml, y, cw, 38, 2, 2, 'S');
+    y += 7;
+    doc.setFontSize(9);
+    doc.setFont('helvetica', 'bold');
+    doc.setTextColor('#7B1FA2');
+    doc.text('📊  MEASUREMENT-BASED CARE (MBC) SCORES', ml + 4, y);
+    y += 7;
+
+    const mbcItems = [
+      { label: 'PHQ-9', data: mbc!.phq9, color: BRAND.blue },
+      { label: 'GAD-7', data: mbc!.gad7, color: BRAND.amber },
+      { label: 'PCL-5', data: mbc!.pcl5, color: BRAND.red },
+      { label: 'AUDIT-C', data: mbc!.auditC, color: BRAND.bronze },
+    ];
+    const mbcBoxW = (cw - 16) / 4;
+    let mx = ml + 2;
+    mbcItems.forEach(item => {
+      if (item.data) {
+        doc.setFillColor(BRAND.bgGray);
+        doc.roundedRect(mx, y, mbcBoxW, 20, 2, 2, 'F');
+        doc.setFontSize(14);
+        doc.setFont('helvetica', 'bold');
+        doc.setTextColor(item.color);
+        doc.text(`${item.data.score}`, mx + mbcBoxW / 2, y + 9, { align: 'center' });
+        doc.setFontSize(6);
+        doc.setFont('helvetica', 'normal');
+        doc.setTextColor(BRAND.medGray);
+        doc.text(`${item.label}`, mx + mbcBoxW / 2, y + 14, { align: 'center' });
+        doc.text(`${item.data.severity}`, mx + mbcBoxW / 2, y + 18, { align: 'center' });
+      } else {
+        doc.setFillColor(BRAND.bgGray);
+        doc.roundedRect(mx, y, mbcBoxW, 20, 2, 2, 'F');
+        doc.setFontSize(10);
+        doc.setFont('helvetica', 'normal');
+        doc.setTextColor(BRAND.lightGray);
+        doc.text('—', mx + mbcBoxW / 2, y + 10, { align: 'center' });
+        doc.setFontSize(6);
+        doc.text(item.label, mx + mbcBoxW / 2, y + 16, { align: 'center' });
+      }
+      mx += mbcBoxW + 4;
+    });
+    y += 26;
+  }
+
+  // ─── READINESS & PERFORMANCE TRIAD ───
+  if (data.performanceTriad) {
+    checkPage(35);
+    doc.setFillColor('#E8F5E9');
+    doc.roundedRect(ml, y, cw, 32, 2, 2, 'F');
+    doc.setDrawColor(BRAND.green);
+    doc.setLineWidth(0.5);
+    doc.roundedRect(ml, y, cw, 32, 2, 2, 'S');
+    y += 7;
+    doc.setFontSize(9);
+    doc.setFont('helvetica', 'bold');
+    doc.setTextColor(BRAND.green);
+    doc.text('🎖  MISSION READINESS — Performance Triad', ml + 4, y);
+    y += 7;
+
+    const pt = data.performanceTriad;
+    const triadBoxW = (cw - 20) / 4;
+    let tx = ml + 2;
+    const triadItems = [
+      { label: 'Sleep', score: pt.sleepScore },
+      { label: 'Activity', score: pt.activityScore },
+      { label: 'Engagement', score: pt.engagementScore },
+      { label: 'Readiness', score: pt.overallReadiness },
+    ];
+    triadItems.forEach((item, idx) => {
+      doc.setFillColor(BRAND.white);
+      doc.roundedRect(tx, y, triadBoxW, 16, 2, 2, 'F');
+      const sc = item.score;
+      doc.setFontSize(12);
+      doc.setFont('helvetica', 'bold');
+      doc.setTextColor(sc >= 70 ? BRAND.green : sc >= 40 ? BRAND.amber : BRAND.red);
+      doc.text(`${sc}%`, tx + triadBoxW / 2, y + 7, { align: 'center' });
+      doc.setFontSize(6);
+      doc.setFont('helvetica', 'normal');
+      doc.setTextColor(BRAND.medGray);
+      doc.text(item.label, tx + triadBoxW / 2, y + 13, { align: 'center' });
+      tx += triadBoxW + 5;
+    });
+    y += 22;
+  }
+
+  // ─── RESILIENCE INDEX ───
+  if (data.resilienceIndex != null) {
+    checkPage(18);
+    doc.setFillColor(BRAND.bgGray);
+    doc.roundedRect(ml, y, cw, 14, 2, 2, 'F');
+    doc.setFontSize(9);
+    doc.setFont('helvetica', 'bold');
+    doc.setTextColor(BRAND.bronze);
+    doc.text(`Resilience Index: ${data.resilienceIndex}/100`, ml + 4, y + 6);
+    // Draw bar
+    const barX = ml + 60;
+    const barW = cw - 68;
+    doc.setFillColor('#E0E0E0');
+    doc.roundedRect(barX, y + 3, barW, 7, 2, 2, 'F');
+    const fillW = (data.resilienceIndex / 100) * barW;
+    const riColor = data.resilienceIndex >= 70 ? BRAND.green : data.resilienceIndex >= 40 ? BRAND.amber : BRAND.red;
+    doc.setFillColor(riColor);
+    doc.roundedRect(barX, y + 3, fillW, 7, 2, 2, 'F');
+    y += 18;
   }
 
   // ─── TOP RECOMMENDATIONS ───
@@ -732,6 +879,74 @@ export function generateComprehensiveReport(data: ComprehensiveReportData, mode:
   bodyText('Personalized recommendations:');
   data.recommendations.forEach(rec => bullet(rec, 3));
   y += 5;
+
+  // ─── SECTION 14: VALIDATED OUTCOME MEASURES (MBC) ───
+  checkPage(40);
+  sectionTitle('14. Validated Outcome Measures (MBC)');
+  const mbcData = data.mbcScores;
+  if (mbcData && (mbcData.phq9?.length || mbcData.gad7?.length || mbcData.pcl5?.length || mbcData.auditC?.length)) {
+    bodyText('Measurement-Based Care (MBC) scores are the VA/DoD standard for tracking treatment effectiveness. The "Big Four" validated instruments are tracked below.');
+
+    const mbcSections = [
+      { label: 'PHQ-9 (Depression)', scores: mbcData.phq9 || [], benchmark: 'A drop of ≥5 points indicates clinically meaningful improvement.' },
+      { label: 'GAD-7 (Anxiety)', scores: mbcData.gad7 || [], benchmark: 'A drop of ≥4 points indicates clinically meaningful improvement.' },
+      { label: 'PCL-5 (PTSD)', scores: mbcData.pcl5 || [], benchmark: 'A drop of 10-15 points is the VA benchmark for clinically meaningful improvement.' },
+      { label: 'AUDIT-C (Alcohol)', scores: mbcData.auditC || [], benchmark: 'Scores ≥4 (men) or ≥3 (women) indicate hazardous drinking.' },
+    ];
+
+    mbcSections.forEach(section => {
+      if (section.scores.length > 0) {
+        checkPage(25);
+        bodyText(`${section.label}:`);
+        // Show trend as text-based sparkline
+        const trendLine = section.scores.map(s => `${s.date}: ${s.score} (${s.severity})`).join('  →  ');
+        bullet(trendLine, 3);
+        bullet(section.benchmark, 5);
+
+        // Show change if multiple scores
+        if (section.scores.length >= 2) {
+          const first = section.scores[0].score;
+          const last = section.scores[section.scores.length - 1].score;
+          const change = last - first;
+          const changeText = change < 0 ? `↓ ${Math.abs(change)} point improvement` : change > 0 ? `↑ ${change} point increase` : '→ No change';
+          bullet(`Longitudinal change: ${changeText}`, 5);
+        }
+        y += 2;
+      }
+    });
+  } else {
+    bodyText('No validated MBC assessments (PHQ-9, GAD-7, PCL-5, AUDIT-C) completed during reporting period. These are the VA/DoD standard for Measurement-Based Care tracking.');
+    bodyText('Recommendation: Integrate periodic PHQ-9 and GAD-7 screenings to establish clinical baselines.');
+  }
+
+  // ─── SECTION 15: MISSION READINESS & RESILIENCE ───
+  checkPage(40);
+  sectionTitle('15. Mission Readiness & Resilience');
+
+  if (data.performanceTriad) {
+    bodyText('The Performance Triad (Sleep, Activity, Engagement) assesses Total Force Fitness readiness:');
+    const pt = data.performanceTriad;
+    bullet(`Sleep Score: ${pt.sleepScore}% — ${pt.sleepScore >= 70 ? 'Mission Ready' : pt.sleepScore >= 40 ? 'Needs Attention' : 'Below Standard'}`, 3);
+    bullet(`Activity Score: ${pt.activityScore}% — ${pt.activityScore >= 70 ? 'Mission Ready' : pt.activityScore >= 40 ? 'Needs Attention' : 'Below Standard'}`, 3);
+    bullet(`Engagement Score: ${pt.engagementScore}% — ${pt.engagementScore >= 70 ? 'Mission Ready' : pt.engagementScore >= 40 ? 'Needs Attention' : 'Below Standard'}`, 3);
+    bullet(`Overall Readiness: ${pt.overallReadiness}%`, 3);
+    y += 3;
+  }
+
+  if (data.resilienceIndex != null) {
+    bodyText(`Resilience Index: ${data.resilienceIndex}/100`);
+    if (data.resilienceFactors && data.resilienceFactors.length > 0) {
+      bodyText('Factor breakdown:');
+      data.resilienceFactors.forEach(f => {
+        bullet(`${f.factor}: ${f.score}/${f.max}`, 3);
+      });
+    }
+    y += 3;
+  }
+
+  if (data.sleepActivityCorrelation) {
+    bodyText(`Sleep-Activity Correlation: ${data.sleepActivityCorrelation}`);
+  }
 
   // ─── CLOSING ───
   checkPage(30);
