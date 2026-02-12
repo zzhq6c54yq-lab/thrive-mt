@@ -1,4 +1,5 @@
 import { jsPDF } from 'jspdf';
+import { saveAs } from 'file-saver';
 
 const BRAND = {
   bronze: '#B87333',
@@ -768,19 +769,21 @@ export function generateComprehensiveReport(data: ComprehensiveReportData, mode:
   const dateStr = data.reportDate.toISOString().split('T')[0];
   const filename = `ThriveMT_Comprehensive_Report_${data.userName.replace(/\s+/g, '_')}_${dateStr}.pdf`;
   const blob = doc.output('blob');
-  const blobUrl = URL.createObjectURL(blob);
 
   if (mode === 'view') {
-    window.open(blobUrl, '_blank');
+    // Use data URI approach which works better in sandboxed iframes
+    const dataUri = doc.output('datauristring');
+    const newWindow = window.open('', '_blank');
+    if (newWindow) {
+      newWindow.document.write(`<html><head><title>${filename}</title></head><body style="margin:0"><iframe src="${dataUri}" style="width:100%;height:100%;border:none;"></iframe></body></html>`);
+      newWindow.document.close();
+    } else {
+      // Fallback: trigger download instead
+      saveAs(blob, filename);
+    }
     return;
   }
 
-  // Use anchor click for reliable download (works in iframes & mobile)
-  const link = document.createElement('a');
-  link.href = blobUrl;
-  link.download = filename;
-  document.body.appendChild(link);
-  link.click();
-  document.body.removeChild(link);
-  setTimeout(() => URL.revokeObjectURL(blobUrl), 1000);
+  // Use file-saver for reliable downloads across all environments
+  saveAs(blob, filename);
 }
