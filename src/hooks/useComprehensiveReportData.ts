@@ -96,9 +96,9 @@ export async function fetchComprehensiveReportData(userId: string, userName: str
     // 9. Henry conversations
     supabase
       .from('henry_conversations')
-      .select('id, created_at')
+      .select('id, started_at')
       .eq('user_id', userId)
-      .gte('created_at', thirtyDaysAgo.toISOString()),
+      .gte('started_at', thirtyDaysAgo.toISOString()),
 
     // 10. Coaching sessions
     supabase
@@ -132,14 +132,14 @@ export async function fetchComprehensiveReportData(userId: string, userName: str
     // 14. Toolkit category interactions
     supabase
       .from('toolkit_category_interactions' as any)
-      .select('category, tool_name, created_at')
+      .select('category_id, tool_name, created_at')
       .eq('user_id', userId)
       .gte('created_at', thirtyDaysAgo.toISOString()),
 
     // 15. Meditation sessions
     supabase
       .from('meditation_sessions' as any)
-      .select('duration_minutes, meditation_type, created_at')
+      .select('duration_seconds, meditation_type, created_at')
       .eq('user_id', userId)
       .gte('created_at', thirtyDaysAgo.toISOString()),
 
@@ -153,7 +153,7 @@ export async function fetchComprehensiveReportData(userId: string, userName: str
     // 17. Event registrations
     supabase
       .from('event_registrations' as any)
-      .select('event_title, event_type, status, created_at')
+      .select('event_title, event_type, created_at')
       .eq('user_id', userId)
       .gte('created_at', thirtyDaysAgo.toISOString()),
 
@@ -167,7 +167,7 @@ export async function fetchComprehensiveReportData(userId: string, userName: str
     // 19. Sleep tracker entries
     supabase
       .from('sleep_tracker_entries' as any)
-      .select('sleep_quality, hours_slept, bedtime, wake_time, created_at')
+      .select('quality, duration, bed_time, wake_time, created_at')
       .eq('user_id', userId)
       .gte('created_at', thirtyDaysAgo.toISOString()),
   ]);
@@ -417,7 +417,7 @@ export async function fetchComprehensiveReportData(userId: string, userName: str
   const toolkitData = getRes('toolkit') as any[];
   const toolkitCounts: Record<string, number> = {};
   toolkitData.forEach(t => {
-    const key = t.category || t.tool_name || 'Unknown';
+    const key = t.category_id || t.tool_name || 'Unknown';
     toolkitCounts[key] = (toolkitCounts[key] || 0) + 1;
   });
   const toolkitInteractions = Object.entries(toolkitCounts)
@@ -427,7 +427,7 @@ export async function fetchComprehensiveReportData(userId: string, userName: str
   // ─── PROCESS MEDITATION SESSIONS ───
   const meditationData = getRes('meditation') as any[];
   const meditationSessions = meditationData.length;
-  const meditationTotalMinutes = meditationData.reduce((s, m) => s + (m.duration_minutes || 0), 0);
+  const meditationTotalMinutes = Math.round(meditationData.reduce((s, m) => s + (m.duration_seconds || 0), 0) / 60);
 
   // ─── PROCESS MUSIC THERAPY ───
   const musicData = getRes('music') as any[];
@@ -442,7 +442,7 @@ export async function fetchComprehensiveReportData(userId: string, userName: str
   const workshopRegistrations = eventData.map(e => ({
     title: e.event_title || 'Untitled Event',
     type: e.event_type || 'workshop',
-    status: e.status || 'registered',
+    status: 'registered',
   }));
 
   // ─── PROCESS GRATITUDE ENTRIES ───
@@ -451,8 +451,8 @@ export async function fetchComprehensiveReportData(userId: string, userName: str
   // ─── PROCESS SLEEP TRACKER ───
   const sleepData = getRes('sleep') as any[];
   const sleepEntries = sleepData.map(s => ({
-    quality: s.sleep_quality as number | null,
-    hours: s.hours_slept as number | null,
+    quality: s.quality as number | null,
+    hours: s.duration as number | null,
     date: new Date(s.created_at || now).toLocaleDateString('en-US', { month: 'short', day: 'numeric' }),
   }));
   const sleepQualities = sleepEntries.filter(s => s.quality != null).map(s => s.quality!);

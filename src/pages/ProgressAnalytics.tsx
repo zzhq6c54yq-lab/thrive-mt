@@ -211,7 +211,15 @@ const ProgressAnalytics = () => {
       if (mode === 'view' && result) {
         setReportViewUrl(result.blobUrl);
         setReportViewFilename(result.filename);
-      } else {
+      } else if (result) {
+        // Programmatic download via hidden <a> — works on mobile Safari
+        const link = document.createElement('a');
+        link.href = result.blobUrl;
+        link.download = result.filename;
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+        setTimeout(() => URL.revokeObjectURL(result.blobUrl), 1000);
         toast({
           title: "PDF Ready — Download Starting...",
           description: "Your report has been generated. Check your browser's download bar.",
