@@ -923,12 +923,33 @@ const ProgressAnalytics = () => {
                 </Button>
               </div>
             </div>
-            {/* PDF Embed */}
-            <iframe
-              src={reportViewUrl}
-              className="flex-1 w-full"
-              title="Report Preview"
-            />
+            {/* PDF Embed — with mobile fallback */}
+            <div className="flex-1 w-full relative">
+              <iframe
+                src={reportViewUrl}
+                className="w-full h-full absolute inset-0 hidden sm:block"
+                title="Report Preview"
+              />
+              {/* Mobile fallback: iOS Safari can't render PDFs in iframes */}
+              <div className="flex sm:hidden flex-col items-center justify-center h-full gap-4 p-6 text-center">
+                <FileText className="w-16 h-16 text-muted-foreground" />
+                <p className="text-sm text-muted-foreground">
+                  PDF preview isn't supported on mobile browsers. Tap <strong>Save</strong> to download and view the report.
+                </p>
+                <Button
+                  className="bg-[#D4AF37] hover:bg-[#B87333] text-black"
+                  onClick={() => {
+                    const a = document.createElement('a');
+                    a.href = reportViewUrl;
+                    a.download = reportViewFilename;
+                    a.click();
+                  }}
+                >
+                  <Download className="w-4 h-4 mr-2" />
+                  Save Report
+                </Button>
+              </div>
+            </div>
           </div>
         </div>
       )}
