@@ -767,13 +767,20 @@ export function generateComprehensiveReport(data: ComprehensiveReportData, mode:
   // Output based on mode
   const dateStr = data.reportDate.toISOString().split('T')[0];
   const filename = `ThriveMT_Comprehensive_Report_${data.userName.replace(/\s+/g, '_')}_${dateStr}.pdf`;
+  const blob = doc.output('blob');
+  const blobUrl = URL.createObjectURL(blob);
 
   if (mode === 'view') {
-    const blob = doc.output('blob');
-    const url = URL.createObjectURL(blob);
-    window.open(url, '_blank');
+    window.open(blobUrl, '_blank');
     return;
   }
 
-  doc.save(filename);
+  // Use anchor click for reliable download (works in iframes & mobile)
+  const link = document.createElement('a');
+  link.href = blobUrl;
+  link.download = filename;
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
+  setTimeout(() => URL.revokeObjectURL(blobUrl), 1000);
 }

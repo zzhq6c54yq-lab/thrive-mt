@@ -192,10 +192,14 @@ const ProgressAnalytics = () => {
     }
 
     setIsGeneratingComprehensive(true);
+    console.log('[Report] Starting report generation, mode:', mode, 'userId:', user.id);
     try {
       const userName = profile?.display_name || user.email?.split('@')[0] || 'User';
+      console.log('[Report] Fetching data for:', userName);
       const reportData = await fetchComprehensiveReportData(user.id, userName);
+      console.log('[Report] Data fetched successfully, generating PDF...');
       generateComprehensiveReport(reportData, mode);
+      console.log('[Report] PDF generated successfully');
       toast({
         title: mode === 'view' ? "Report Opened! 📋" : "Report Downloaded! 📋",
         description: mode === 'view' 
@@ -203,10 +207,10 @@ const ProgressAnalytics = () => {
           : "Your full clinician-ready PDF report has been saved.",
       });
     } catch (error) {
-      console.error('Comprehensive report error:', error);
+      console.error('[Report] Comprehensive report error:', error);
       toast({
         title: "Report Generation Failed",
-        description: "Unable to generate the comprehensive report. Please try again.",
+        description: error instanceof Error ? error.message : "Unable to generate the comprehensive report. Please try again.",
         variant: "destructive",
       });
     } finally {
