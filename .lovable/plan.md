@@ -1,45 +1,44 @@
 
+## Fix Comprehensive Report: Column Mismatches and Mobile Download
 
-# Fix Report Download UX and Toast Timing
+### Problem Identified
 
-## The Actual Problem
+The console logs reveal **5 Supabase queries are failing** because the code references column names that don't exist in the actual database tables. While `allSettled` prevents crashes, significant data is silently lost. Additionally, `doc.save()` from jsPDF doesn't reliably trigger downloads on mobile Safari.
 
-The PDF generation and download ARE working (confirmed by console logs and browser download dialog). However, the toast notification says **"Report Downloaded!"** the instant the button is clicked -- before the browser even shows the download confirmation. This makes the entire feature feel like a placeholder that does nothing.
+### Root Cause: Wrong Column Names
 
-## Changes
+| Table | Code Uses | Actual Column |
+|-------|-----------|---------------|
+| `henry_conversations` | `created_at` | `started_at` |
+| `toolkit_category_interactions` | `category` | `category_id` |
+| `meditation_sessions` | `duration_minutes` | `duration_seconds` |
+| `event_registrations` | `status` | *(column doesn't exist -- remove from select)* |
+| `sleep_tracker_entries` | `sleep_quality, hours_slept, bedtime` | `quality, duration, bed_time` |
 
-### 1. Fix Toast Messages (ProgressAnalytics.tsx)
+### Plan
 
-- Change "Report Downloaded!" to **"PDF Ready -- Download Starting..."** for download mode
-- Change the description to something like "Your report has been generated. Check your browser's download bar."
-- For view mode, change to **"Report Generated"** with "Opening in a new tab..."
+**File: `src/hooks/useComprehensiveReportData.ts`**
 
-### 2. Add a Brief Visual Feedback Flow
+1. Fix query #9 (henry_conversations): change `created_at` to `started_at` in both `.select()` and `.gte()`
+2. Fix query #14 (toolkit_category_interactions): change `category` to `category_id` in `.select()`
+3. Fix query #15 (meditation_sessions): change `duration_minutes` to `duration_seconds` in `.select()`
+4. Fix query #17 (event_registrations): remove `status` from `.select()`
+5. Fix query #19 (sleep_tracker_entries): change `sleep_quality` to `quality`, `hours_slept` to `duration`, `bedtime` to `bed_time`
+6. Update all downstream processing that references these old column names (e.g., `m.duration_minutes` becomes `m.duration_seconds`, `s.sleep_quality` becomes `s.quality`, etc.)
+7. Fix meditation total minutes calculation: convert `duration_seconds / 60` instead of summing `duration_minutes`
 
-- Show a generating state with the spinner (already exists)
-- After generation completes, show a more accurate toast that tells the user to check their downloads
-- This makes it clear the system did real work (fetched data, built PDF) and the download is now in the browser's hands
+**File: `src/lib/comprehensiveReportGenerator.ts`**
 
-### 3. Update Quick Reports Too
+8. Replace `doc.save(filename)` in download mode with a blob-based approach (same pattern as view mode but auto-triggering download via a programmatic `<a>` click). This fixes mobile Safari silently ignoring `doc.save()`.
 
-The Quick Reports (Monthly Progress Summary, Therapy Session Insights, Wellness Activity Impact) also show "Report Downloaded!" immediately via `generateReportPDF()`. Update those toast messages to match.
+**File: `src/pages/ProgressAnalytics.tsx`**
 
-## Technical Details
+9. Update download handler to use the blob-based return from the generator (both modes now return `{ blobUrl, filename }`). For download mode, programmatically click a link and revoke the URL after.
 
-### File: src/pages/ProgressAnalytics.tsx
+### Technical Details
 
-**In `handleGenerateComprehensiveReport`** (around line 203):
-- Change toast title from `"Report Downloaded! [emoji]"` to `"PDF Generated Successfully"`
-- Change description to `"Your download should begin automatically. Check your browser's download bar."`
-- For view mode: `"Report opened in a new tab."`
+The generator function signature stays the same but both modes return `{ blobUrl, filename }`. The page component handles the difference:
+- **Download**: creates a hidden `<a>` tag, clicks it, revokes the blob URL
+- **View**: sets state to show the modal popup (existing behavior)
 
-**In `generateReportPDF`** (around line 170):
-- Change toast title from `"Report Downloaded! [emoji]"` to `"PDF Generated"`
-- Change description to `"Your [reportType] download has started. Check your downloads."`
-
-These are small text changes but they completely fix the user perception that the feature is a placeholder.
-
-## Files to Modify
-
-1. `src/pages/ProgressAnalytics.tsx` -- Update toast messages in both `handleGenerateComprehensiveReport` and `generateReportPDF` functions
-
+This is a targeted fix -- no new dependencies, no schema changes, no new features. Just correcting the column names to match the actual database and ensuring downloads work on mobile.
