@@ -1,11 +1,18 @@
 import { supabase } from '@/integrations/supabase/client';
 import { ComprehensiveReportData } from '@/lib/comprehensiveReportGenerator';
 
-// Helper to safely unwrap PromiseSettledResult
+// Helper to safely unwrap PromiseSettledResult + check Supabase .error
 function unwrap(result: PromiseSettledResult<any>): { data: any[] | null; error: any } {
-  if (result.status === 'fulfilled') return result.value;
-  console.warn('Query rejected:', result.reason);
-  return { data: null, error: result.reason };
+  if (result.status === 'rejected') {
+    console.warn('Query rejected:', result.reason);
+    return { data: null, error: result.reason };
+  }
+  const value = result.value;
+  if (value.error) {
+    console.warn('Supabase query error:', value.error);
+    return { data: null, error: value.error };
+  }
+  return { data: value.data || [], error: null };
 }
 
 export async function fetchComprehensiveReportData(userId: string, userName: string): Promise<ComprehensiveReportData> {
@@ -94,22 +101,7 @@ export async function fetchComprehensiveReportData(userId: string, userName: str
       .eq('user_id', userId)
       .gte('created_at', thirtyDaysAgo.toISOString()),
 
-    // 12. Wellness metrics
-    supabase
-      .from('wellness_metrics')
-      .select('metric_type, metric_value, recorded_at')
-      .eq('user_id', userId)
-      .gte('recorded_at', thirtyDaysAgo.toISOString()),
-
-    // 13. Streak data
-    supabase
-      .from('daily_check_ins')
-      .select('created_at')
-      .eq('user_id', userId)
-      .order('created_at', { ascending: false })
-      .limit(90),
-
-    // 14. AI Session Summaries
+    // 12. AI Session Summaries
     supabase
       .from('ai_session_summaries')
       .select('content, key_topics, risk_flags, mood_trend, summary_type, created_at')
@@ -117,49 +109,49 @@ export async function fetchComprehensiveReportData(userId: string, userName: str
       .gte('created_at', thirtyDaysAgo.toISOString())
       .order('created_at', { ascending: false }),
 
-    // 15. Mini Sessions
+    // 13. Mini Sessions
     supabase
       .from('mini_sessions' as any)
       .select('focus, mood, anxiety, energy, urge_level, summary, coaching, created_at')
       .eq('user_id', userId)
       .gte('created_at', thirtyDaysAgo.toISOString()),
 
-    // 16. Toolkit category interactions
+    // 14. Toolkit category interactions
     supabase
       .from('toolkit_category_interactions' as any)
       .select('category, tool_name, created_at')
       .eq('user_id', userId)
       .gte('created_at', thirtyDaysAgo.toISOString()),
 
-    // 17. Meditation sessions
+    // 15. Meditation sessions
     supabase
       .from('meditation_sessions' as any)
       .select('duration_minutes, meditation_type, created_at')
       .eq('user_id', userId)
       .gte('created_at', thirtyDaysAgo.toISOString()),
 
-    // 18. Music therapy recordings
+    // 16. Music therapy recordings
     supabase
       .from('music_therapy_recordings')
       .select('duration_seconds, mood_before, mood_after, instrument, created_at')
       .eq('user_id', userId)
       .gte('created_at', thirtyDaysAgo.toISOString()),
 
-    // 19. Event registrations
+    // 17. Event registrations
     supabase
       .from('event_registrations' as any)
       .select('event_title, event_type, status, created_at')
       .eq('user_id', userId)
       .gte('created_at', thirtyDaysAgo.toISOString()),
 
-    // 20. Gratitude entries
+    // 18. Gratitude entries
     supabase
       .from('gratitude_entries' as any)
       .select('id, created_at')
       .eq('user_id', userId)
       .gte('created_at', thirtyDaysAgo.toISOString()),
 
-    // 21. Sleep tracker entries
+    // 19. Sleep tracker entries
     supabase
       .from('sleep_tracker_entries' as any)
       .select('sleep_quality, hours_slept, bedtime, wake_time, created_at')
@@ -167,33 +159,32 @@ export async function fetchComprehensiveReportData(userId: string, userName: str
       .gte('created_at', thirtyDaysAgo.toISOString()),
   ]);
 
-  // Unwrap all results safely
-  const moodRes = unwrap(settled[0] as any);
-  const journalRes = unwrap(settled[1] as any);
-  const activitiesRes = unwrap(settled[2] as any);
-  const assessmentRes = unwrap(settled[3] as any);
-  const breathingRes = unwrap(settled[4] as any);
-  const binauralRes = unwrap(settled[5] as any);
-  const goalsRes = unwrap(settled[6] as any);
-  const badgesRes = unwrap(settled[7] as any);
-  const henryConvRes = unwrap(settled[8] as any);
-  const coachingRes = unwrap(settled[9] as any);
-  const therapyReqRes = unwrap(settled[10] as any);
-  const wellnessRes = unwrap(settled[11] as any);
-  const streakRes = unwrap(settled[12] as any);
-  const aiSummariesRes = unwrap(settled[13] as any);
-  const miniSessionsRes = unwrap(settled[14] as any);
-  const toolkitRes = unwrap(settled[15] as any);
-  const meditationRes = unwrap(settled[16] as any);
-  const musicRes = unwrap(settled[17] as any);
-  const eventRegRes = unwrap(settled[18] as any);
-  const gratitudeRes = unwrap(settled[19] as any);
-  const sleepRes = unwrap(settled[20] as any);
+  // Unwrap all results safely (19 queries — dropped duplicate streak & unused wellness)
+  const moodRes = unwrap(settled[0]);
+  const journalRes = unwrap(settled[1]);
+  const activitiesRes = unwrap(settled[2]);
+  const assessmentRes = unwrap(settled[3]);
+  const breathingRes = unwrap(settled[4]);
+  const binauralRes = unwrap(settled[5]);
+  const goalsRes = unwrap(settled[6]);
+  const badgesRes = unwrap(settled[7]);
+  const henryConvRes = unwrap(settled[8]);
+  const coachingRes = unwrap(settled[9]);
+  const therapyReqRes = unwrap(settled[10]);
+  const aiSummariesRes = unwrap(settled[11]);
+  const miniSessionsRes = unwrap(settled[12]);
+  const toolkitRes = unwrap(settled[13]);
+  const meditationRes = unwrap(settled[14]);
+  const musicRes = unwrap(settled[15]);
+  const eventRegRes = unwrap(settled[16]);
+  const gratitudeRes = unwrap(settled[17]);
+  const sleepRes = unwrap(settled[18]);
+
   // ─── PROCESS MOOD DATA ───
   const moodEntries = moodRes.data || [];
   const moodScores = moodEntries.map(m => ({
     date: new Date(m.created_at).toLocaleDateString('en-US', { month: 'short', day: 'numeric' }),
-    score: m.mood_score,
+    score: m.mood_score || 0,
   }));
   const avgMood = moodScores.length > 0
     ? moodScores.reduce((s, m) => s + m.score, 0) / moodScores.length
@@ -328,37 +319,46 @@ export async function fetchComprehensiveReportData(userId: string, userName: str
   const coachingSessions = coachingRes.data?.length || 0;
   const therapyRequests = therapyReqRes.data?.length || 0;
 
-  // ─── CALCULATE STREAKS ───
-  const streakDates = (streakRes.data || []).map(d => new Date(d.created_at).toDateString());
+  // ─── CALCULATE STREAKS (reuse moodEntries, TZ-safe) ───
+  const streakDates = moodEntries.map(d => new Date(d.created_at).toISOString().split('T')[0]);
   const uniqueDates = [...new Set(streakDates)];
   let currentStreak = 0;
   let longestStreak = 0;
   let tempStreak = 0;
-  const today = new Date();
 
+  // Current streak: consecutive from today backward
   for (let i = 0; i < 90; i++) {
-    const checkDate = new Date(today);
-    checkDate.setDate(today.getDate() - i);
-    if (uniqueDates.includes(checkDate.toDateString())) {
+    const checkDate = new Date(now.getTime() - i * 24 * 60 * 60 * 1000);
+    const checkStr = checkDate.toISOString().split('T')[0];
+    if (uniqueDates.includes(checkStr)) {
       tempStreak++;
-      if (tempStreak > currentStreak && i < tempStreak) {
-        currentStreak = tempStreak;
-      }
     } else {
-      if (tempStreak > longestStreak) longestStreak = tempStreak;
+      break;
+    }
+  }
+  currentStreak = tempStreak;
+
+  // Longest streak: full scan
+  tempStreak = 0;
+  for (let i = 0; i < 90; i++) {
+    const checkDate = new Date(now.getTime() - i * 24 * 60 * 60 * 1000);
+    const checkStr = checkDate.toISOString().split('T')[0];
+    if (uniqueDates.includes(checkStr)) {
+      tempStreak++;
+      longestStreak = Math.max(longestStreak, tempStreak);
+    } else {
       tempStreak = 0;
     }
   }
-  if (tempStreak > longestStreak) longestStreak = tempStreak;
 
   // ─── PROCESS AI SESSION SUMMARIES ───
   const aiSummaries = (aiSummariesRes.data || []) as any[];
   const henryConversationSummaries = aiSummaries.map(s => ({
     content: s.content || '',
-    keyTopics: (s.key_topics || []) as string[],
-    riskFlags: (s.risk_flags || []) as string[],
+    keyTopics: (typeof s.key_topics === 'string' ? JSON.parse(s.key_topics) : (s.key_topics || [])) as string[],
+    riskFlags: (typeof s.risk_flags === 'string' ? JSON.parse(s.risk_flags) : (s.risk_flags || [])) as string[],
     moodTrend: s.mood_trend || null,
-    date: new Date(s.created_at).toLocaleDateString('en-US', { month: 'short', day: 'numeric' }),
+    date: new Date(s.created_at || Date.now()).toLocaleDateString('en-US', { month: 'short', day: 'numeric' }),
   }));
 
   // Aggregate key topics across all summaries
