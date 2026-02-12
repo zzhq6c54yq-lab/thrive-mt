@@ -244,42 +244,129 @@ export async function fetchComprehensiveReportData(userId: string, userName: str
     .slice(0, 5)
     .map(([mood]) => mood);
 
-  // ─── SDOH KEYWORD SCAN ───
+  // ─── SDOH KEYWORD SCAN (ACORN Framework) ───
   const sdohKeywords: { term: string; category: string; priority: 'high' | 'moderate' }[] = [
-    { term: 'eviction', category: 'Housing', priority: 'high' },
-    { term: 'evicted', category: 'Housing', priority: 'high' },
-    { term: 'homeless', category: 'Housing', priority: 'high' },
-    { term: 'shelter', category: 'Housing', priority: 'high' },
-    { term: 'housing', category: 'Housing', priority: 'moderate' },
-    { term: 'rent', category: 'Housing', priority: 'moderate' },
-    { term: 'notice to quit', category: 'Housing', priority: 'high' },
-    { term: 'sleeping in car', category: 'Housing', priority: 'high' },
-    { term: 'couch surfing', category: 'Housing', priority: 'high' },
-    { term: 'doubled up', category: 'Housing', priority: 'high' },
-    { term: 'utility shutoff', category: 'Financial', priority: 'high' },
-    { term: 'bills', category: 'Financial', priority: 'high' },
-    { term: 'debt', category: 'Financial', priority: 'high' },
-    { term: 'afford', category: 'Financial', priority: 'moderate' },
-    { term: 'money', category: 'Financial', priority: 'moderate' },
-    { term: 'broke', category: 'Financial', priority: 'high' },
-    { term: 'food', category: 'Food Security', priority: 'high' },
-    { term: 'hungry', category: 'Food Security', priority: 'high' },
-    { term: 'meal', category: 'Food Security', priority: 'moderate' },
-    { term: 'starving', category: 'Food Security', priority: 'high' },
-    { term: 'food bank', category: 'Food Security', priority: 'high' },
-    { term: 'utilities', category: 'Financial', priority: 'high' },
-    { term: 'electricity', category: 'Financial', priority: 'moderate' },
+    // Housing Stability (ACORN Domain)
+    { term: 'eviction', category: 'Housing Stability', priority: 'high' },
+    { term: 'evicted', category: 'Housing Stability', priority: 'high' },
+    { term: 'homeless', category: 'Housing Stability', priority: 'high' },
+    { term: 'shelter', category: 'Housing Stability', priority: 'high' },
+    { term: 'housing', category: 'Housing Stability', priority: 'moderate' },
+    { term: 'rent', category: 'Housing Stability', priority: 'moderate' },
+    { term: 'notice to quit', category: 'Housing Stability', priority: 'high' },
+    { term: 'sleeping in car', category: 'Housing Stability', priority: 'high' },
+    { term: 'couch surfing', category: 'Housing Stability', priority: 'high' },
+    { term: 'doubled up', category: 'Housing Stability', priority: 'high' },
+    { term: 'without a place to stay', category: 'Housing Stability', priority: 'high' },
+    // Food Insecurity (ACORN Domain)
+    { term: 'food', category: 'Food Insecurity', priority: 'high' },
+    { term: 'hungry', category: 'Food Insecurity', priority: 'high' },
+    { term: 'meal', category: 'Food Insecurity', priority: 'moderate' },
+    { term: 'starving', category: 'Food Insecurity', priority: 'high' },
+    { term: 'food bank', category: 'Food Insecurity', priority: 'high' },
+    { term: 'food run out', category: 'Food Insecurity', priority: 'high' },
+    // Financial Resource Strain (ACORN Domain)
+    { term: 'utility shutoff', category: 'Financial Strain', priority: 'high' },
+    { term: 'bills', category: 'Financial Strain', priority: 'high' },
+    { term: 'debt', category: 'Financial Strain', priority: 'high' },
+    { term: 'afford', category: 'Financial Strain', priority: 'moderate' },
+    { term: 'money', category: 'Financial Strain', priority: 'moderate' },
+    { term: 'broke', category: 'Financial Strain', priority: 'high' },
+    { term: 'utilities', category: 'Financial Strain', priority: 'high' },
+    { term: 'electricity', category: 'Financial Strain', priority: 'moderate' },
+    { term: 'electric', category: 'Financial Strain', priority: 'moderate' },
+    { term: 'gas bill', category: 'Financial Strain', priority: 'high' },
+    { term: 'water bill', category: 'Financial Strain', priority: 'high' },
+    // Employment
     { term: 'unemployed', category: 'Employment', priority: 'high' },
     { term: 'fired', category: 'Employment', priority: 'high' },
     { term: 'laid off', category: 'Employment', priority: 'high' },
     { term: 'job loss', category: 'Employment', priority: 'high' },
     { term: 'can\'t work', category: 'Employment', priority: 'high' },
+    // Access to Care
     { term: 'disability', category: 'Access', priority: 'moderate' },
     { term: 'insurance', category: 'Access', priority: 'moderate' },
     { term: 'transportation', category: 'Access', priority: 'moderate' },
     { term: 'va benefits', category: 'Access', priority: 'moderate' },
     { term: 'service connected', category: 'Access', priority: 'moderate' },
   ];
+
+  // ─── HRS (HIGH-RISK SUICIDE) WARNING SIGN SCAN ───
+  const hrsDirectKeywords = [
+    'suicide', 'suicidal', 'kill myself', 'end my life', 'end it all',
+    'don\'t want to live', 'better off dead', 'want to die', 'no reason to live',
+    'gun', 'firearm', 'weapon', 'pills', 'overdose', 'lethal means',
+    'plan to die', 'goodbye letter', 'final note',
+  ];
+  const hrsIndirectKeywords = [
+    { term: 'hopeless', category: 'Hopelessness' },
+    { term: 'hopelessness', category: 'Hopelessness' },
+    { term: 'no hope', category: 'Hopelessness' },
+    { term: 'pointless', category: 'Hopelessness' },
+    { term: 'worthless', category: 'Worthlessness' },
+    { term: 'burden', category: 'Burdensomeness' },
+    { term: 'shame', category: 'Shame' },
+    { term: 'ashamed', category: 'Shame' },
+    { term: 'humiliated', category: 'Shame' },
+    { term: 'insomnia', category: 'Sleep Disruption' },
+    { term: 'can\'t sleep', category: 'Sleep Disruption' },
+    { term: 'nightmares', category: 'Sleep Disruption' },
+    { term: 'isolated', category: 'Social Withdrawal' },
+    { term: 'alone', category: 'Social Withdrawal' },
+    { term: 'withdrawn', category: 'Social Withdrawal' },
+    { term: 'no one cares', category: 'Social Withdrawal' },
+    { term: 'giving away', category: 'Lifespace Change' },
+    { term: 'settling affairs', category: 'Lifespace Change' },
+    { term: 'saying goodbye', category: 'Lifespace Change' },
+    { term: 'trapped', category: 'Entrapment' },
+    { term: 'no way out', category: 'Entrapment' },
+    { term: 'rage', category: 'Agitation' },
+    { term: 'reckless', category: 'Agitation' },
+  ];
+
+  const hrsFlags: {
+    directWarnings: { term: string; context: string }[];
+    indirectWarnings: { category: string; term: string; context: string }[];
+    riskLevel: 'none' | 'indirect-only' | 'elevated';
+  } = { directWarnings: [], indirectWarnings: [], riskLevel: 'none' };
+
+  const seenHrsDirect = new Set<string>();
+  const seenHrsIndirect = new Set<string>();
+
+  journals.forEach(j => {
+    const text = (j.notes || '').toLowerCase();
+    // Direct warning signs
+    hrsDirectKeywords.forEach(kw => {
+      if (text.includes(kw) && !seenHrsDirect.has(kw)) {
+        seenHrsDirect.add(kw);
+        const idx = text.indexOf(kw);
+        const start = Math.max(0, idx - 30);
+        const end = Math.min(text.length, idx + kw.length + 30);
+        const snippet = (j.notes || '').substring(start, end).replace(/\n/g, ' ').trim();
+        hrsFlags.directWarnings.push({
+          term: kw,
+          context: snippet.length < (j.notes || '').length ? `...${snippet}...` : snippet,
+        });
+      }
+    });
+    // Indirect warning signs (lifespace changes)
+    hrsIndirectKeywords.forEach(kw => {
+      if (text.includes(kw.term) && !seenHrsIndirect.has(kw.term)) {
+        seenHrsIndirect.add(kw.term);
+        const idx = text.indexOf(kw.term);
+        const start = Math.max(0, idx - 30);
+        const end = Math.min(text.length, idx + kw.term.length + 30);
+        const snippet = (j.notes || '').substring(start, end).replace(/\n/g, ' ').trim();
+        hrsFlags.indirectWarnings.push({
+          category: kw.category,
+          term: kw.term,
+          context: snippet.length < (j.notes || '').length ? `...${snippet}...` : snippet,
+        });
+      }
+    });
+  });
+
+  // NOTE: AI risk flag scan and hrsFlags.riskLevel are computed after aiRiskFlags is populated (see below)
 
   const sdohFlags: { keyword: string; context: string; priority: 'high' | 'moderate' }[] = [];
   const seenCategories = new Set<string>();
@@ -408,7 +495,18 @@ export async function fetchComprehensiveReportData(userId: string, userName: str
     });
   });
 
-  // ─── PROCESS MINI SESSIONS ───
+  // ─── DEFERRED: HRS AI Risk Flag Scan & Risk Level ───
+  aiRiskFlags.forEach(flag => {
+    const lower = flag.toLowerCase();
+    if (['suicid', 'self-harm', 'self harm', 'lethal', 'kill'].some(k => lower.includes(k))) {
+      if (!seenHrsDirect.has(flag)) {
+        seenHrsDirect.add(flag);
+        hrsFlags.directWarnings.push({ term: flag, context: `AI-detected: ${flag}` });
+      }
+    }
+  });
+  hrsFlags.riskLevel = hrsFlags.directWarnings.length > 0 ? 'elevated' : hrsFlags.indirectWarnings.length > 0 ? 'indirect-only' : 'none';
+
   const miniSessions = getRes('miniSessions') as any[];
   const miniSessionCount = miniSessions.length;
   const miniMoods = miniSessions.filter(m => m.mood != null).map(m => m.mood as number);
@@ -624,6 +722,13 @@ export async function fetchComprehensiveReportData(userId: string, userName: str
     riskFlags.push(`Very low average sleep duration (${avgSleepHours.toFixed(1)} hrs/night)`);
   }
 
+  // HRS-specific risk flags
+  if (hrsFlags.riskLevel === 'elevated') {
+    riskFlags.push('⚠ HRS ELEVATED: Direct suicide warning signs detected — immediate safety assessment recommended');
+  } else if (hrsFlags.riskLevel === 'indirect-only') {
+    riskFlags.push(`HRS MONITOR: Indirect warning signs detected (${[...new Set(hrsFlags.indirectWarnings.map(w => w.category))].join(', ')})`);
+  }
+
   // ─── GENERATE RECOMMENDATIONS ───
   const recommendations: string[] = [];
   if (moodTrend === 'declining') {
@@ -673,30 +778,24 @@ export async function fetchComprehensiveReportData(userId: string, userName: str
     recommendations.push('Maintain consistent daily check-ins for accurate progress tracking');
   }
 
-  // ─── GENERATE SUGGESTED EHR NOTE (Enhanced with MBC) ───
-  const moodSummary = avgMood > 0 ? `avg mood ${avgMood.toFixed(1)}/10 (${moodTrend})` : 'no mood data recorded';
+  // ─── GENERATE SUGGESTED EHR NOTE (PGHD Standard Template) ───
   const totalInteractions = activities.length + journals.length + breathingData.length + miniSessionCount + meditationSessions + musicTherapySessions;
-  const engagementSummary = totalInteractions > 0
-    ? `${totalInteractions} wellness interactions logged`
-    : 'minimal platform engagement';
   const mbcSummary = [
     latestMBC.phq9 ? `PHQ-9: ${latestMBC.phq9.score}` : null,
     latestMBC.gad7 ? `GAD-7: ${latestMBC.gad7.score}` : null,
     latestMBC.pcl5 ? `PCL-5: ${latestMBC.pcl5.score}` : null,
     latestMBC.auditC ? `AUDIT-C: ${latestMBC.auditC.score}` : null,
   ].filter(Boolean).join(', ');
-  const mbcNote = mbcSummary ? ` MBC: ${mbcSummary}.` : '';
-  const henryThemeSummary = henryTopThemes.length > 0
-    ? ` Key conversation themes: ${henryTopThemes.slice(0, 3).join(', ')}.`
-    : '';
-  const toolkitSummary = toolkitInteractions.length > 0
-    ? ` Toolkit categories used: ${toolkitInteractions.slice(0, 3).map(t => t.name).join(', ')}.`
-    : '';
-  const sdohSummary = sdohFlags.filter(f => f.priority === 'high').length > 0
-    ? ` SDOH flags present (${[...new Set(sdohFlags.filter(f => f.priority === 'high').map(f => f.keyword.split(':')[0]))].join(', ')}).`
-    : ' No acute housing or safety risks detected.';
-  const riskSummary = riskFlags.length > 0 ? ` ${riskFlags.length} attention item(s) flagged.` : ' No risk flags.';
-  const suggestedEHRNote = `Veteran engaged with ThriveMT for ${engagementDays}/30 days.${mbcNote} ${moodSummary}, ${engagementSummary}.${riskSummary}${sdohSummary}${henryThemeSummary}${toolkitSummary} ${moodTrend === 'declining' ? 'Recommend clinical follow-up.' : 'Clinician review complete.'}`.trim();
+  const mbcNote = mbcSummary ? ` MBC Measures (${mbcSummary}) ${moodTrend === 'declining' ? 'trending unfavorably' : 'stable'}.` : ' MBC Measures: Not yet completed.';
+  const acornSummary = sdohFlags.filter(f => f.priority === 'high').length > 0
+    ? ` ACORN Social Triage: Flags present (${[...new Set(sdohFlags.filter(f => f.priority === 'high').map(f => f.keyword.split(':')[0]))].join(', ')}).`
+    : ' ACORN Social Triage: No acute housing or food risks.';
+  const hrsSummary = hrsFlags.riskLevel === 'elevated'
+    ? ' HRS WARNING SIGNS DETECTED — immediate safety assessment recommended.'
+    : hrsFlags.riskLevel === 'indirect-only'
+    ? ` Indirect HRS indicators noted (${[...new Set(hrsFlags.indirectWarnings.map(w => w.category))].slice(0, 3).join(', ')}). Monitor closely.`
+    : ' No HRS warning signs detected.';
+  const suggestedEHRNote = `Patient-Generated Health Data (PGHD) reviewed. Patient engaged with ThriveMT for ${engagementDays}/30 days (${totalInteractions} interactions).${mbcNote}${acornSummary}${hrsSummary} Shared clinical decision-making informed by PGHD.${moodTrend === 'declining' ? ' Recommend clinical follow-up.' : ' Clinician review complete.'}`.trim();
 
   // ─── TOTAL POINTS ───
   const totalPoints = activities.length * 10 + badgesEarned.length * 50 + journals.length * 15 + breathingData.length * 5 + binauralData.length * 5 + miniSessionCount * 10 + meditationSessions * 10 + gratitudeEntryCount * 5;
@@ -765,6 +864,7 @@ export async function fetchComprehensiveReportData(userId: string, userName: str
     resilienceFactors,
     sleepActivityCorrelation,
     performanceTriad,
+    hrsFlags,
   };
 
   console.log('Report generated successfully:', { userId, totalFields: Object.keys(result).length });
