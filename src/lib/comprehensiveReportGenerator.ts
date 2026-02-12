@@ -78,6 +78,43 @@ export interface ComprehensiveReportData {
 
   // Suggested EHR entry
   suggestedEHRNote: string;
+
+  // ─── NEW EXPANDED DATA ───
+
+  // Henry AI Conversation Summaries
+  henryConversationSummaries?: { content: string; keyTopics: string[]; riskFlags: string[]; moodTrend: string | null; date: string }[];
+  henryTopThemes?: string[];
+  aiRiskFlags?: string[];
+
+  // Between-Session Companion (Mini Sessions)
+  miniSessionCount?: number;
+  avgMiniMood?: number | null;
+  avgMiniAnxiety?: number | null;
+  avgMiniEnergy?: number | null;
+  miniFocusAreas?: { area: string; count: number }[];
+
+  // Toolkit Interactions
+  toolkitInteractions?: { name: string; count: number }[];
+
+  // Meditation
+  meditationSessions?: number;
+  meditationTotalMinutes?: number;
+
+  // Music Therapy
+  musicTherapySessions?: number;
+  musicTotalMinutes?: number;
+  musicMoodChanges?: { before: string; after: string }[];
+
+  // Workshop / Event Registrations
+  workshopRegistrations?: { title: string; type: string; status: string }[];
+
+  // Gratitude
+  gratitudeEntryCount?: number;
+
+  // Sleep
+  sleepEntries?: { quality: number | null; hours: number | null; date: string }[];
+  avgSleepQuality?: number | null;
+  avgSleepHours?: number | null;
 }
 
 export function generateComprehensiveReport(data: ComprehensiveReportData) {
@@ -89,7 +126,6 @@ export function generateComprehensiveReport(data: ComprehensiveReportData) {
   let y = 0;
 
   const fmt = (d: Date) => d.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
-  const fmtShort = (d: Date) => d.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
 
   // ─── HELPER FUNCTIONS ───
   function checkPage(needed: number) {
@@ -100,11 +136,9 @@ export function generateComprehensiveReport(data: ComprehensiveReportData) {
   }
 
   function drawHeader(isClinicianPage = false) {
-    // Bronze top bar
     doc.setFillColor(BRAND.bronze);
     doc.rect(0, 0, pw, 8, 'F');
 
-    // ThriveMT branding
     doc.setFontSize(20);
     doc.setFont('helvetica', 'bold');
     doc.setTextColor(BRAND.bronze);
@@ -113,7 +147,6 @@ export function generateComprehensiveReport(data: ComprehensiveReportData) {
     doc.setTextColor(BRAND.lightBronze);
     doc.text('MT', ml + 40, 20);
 
-    // Classification label
     if (isClinicianPage) {
       doc.setFillColor(BRAND.bronze);
       doc.roundedRect(pw - mr - 55, 12, 55, 10, 2, 2, 'F');
@@ -140,17 +173,6 @@ export function generateComprehensiveReport(data: ComprehensiveReportData) {
     doc.setLineWidth(0.3);
     doc.line(ml, y, ml + cw, y);
     y += 6;
-  }
-
-  function keyValue(label: string, value: string, x: number, yPos: number) {
-    doc.setFontSize(8);
-    doc.setFont('helvetica', 'normal');
-    doc.setTextColor(BRAND.lightGray);
-    doc.text(label, x, yPos);
-    doc.setFontSize(12);
-    doc.setFont('helvetica', 'bold');
-    doc.setTextColor(BRAND.black);
-    doc.text(value, x, yPos + 6);
   }
 
   function statBox(label: string, value: string, x: number, yPos: number, w: number, color?: string) {
@@ -198,12 +220,15 @@ export function generateComprehensiveReport(data: ComprehensiveReportData) {
     return BRAND.blue;
   }
 
+  const halfW = (cw - 4) / 2;
+  const box3W = (cw - 8) / 3;
+  const box4W = (cw - 12) / 4;
+
   // ══════════════════════════════════════════════
-  // PAGE 1: CLINICIAN QUICK SUMMARY (60-second read)
+  // PAGE 1: CLINICIAN QUICK SUMMARY
   // ══════════════════════════════════════════════
   drawHeader(true);
 
-  // Title
   doc.setFontSize(18);
   doc.setFont('helvetica', 'bold');
   doc.setTextColor(BRAND.black);
@@ -240,7 +265,6 @@ export function generateComprehensiveReport(data: ComprehensiveReportData) {
   doc.text(`Low Day: ${data.moodLowDay}`, ml + 115, y);
   y += 6;
 
-  // Mini sparkline (text-based mood scores)
   if (data.moodScores.length > 0) {
     const last7 = data.moodScores.slice(-7);
     const sparkText = last7.map(m => m.score.toFixed(0)).join('  →  ');
@@ -251,10 +275,9 @@ export function generateComprehensiveReport(data: ComprehensiveReportData) {
   y += 14;
 
   // ─── ENGAGEMENT SNAPSHOT ───
-  const halfW = (cw - 4) / 2;
   doc.setFillColor(BRAND.bgGray);
-  doc.roundedRect(ml, y, halfW, 35, 2, 2, 'F');
-  doc.roundedRect(ml + halfW + 4, y, halfW, 35, 2, 2, 'F');
+  doc.roundedRect(ml, y, halfW, 42, 2, 2, 'F');
+  doc.roundedRect(ml + halfW + 4, y, halfW, 42, 2, 2, 'F');
 
   // Left box - Tools Used
   doc.setFontSize(9);
@@ -266,30 +289,56 @@ export function generateComprehensiveReport(data: ComprehensiveReportData) {
   doc.setTextColor(BRAND.darkGray);
   doc.text(`Journal Entries: ${data.journalEntryCount}`, ml + 4, y + 14);
   doc.text(`Breathing Sessions: ${data.breathingSessions}`, ml + 4, y + 20);
-  doc.text(`Binaural Sessions: ${data.binauralSessions}`, ml + 4, y + 26);
-  doc.text(`AI Companion Chats: ${data.henryConversations}`, ml + 4, y + 32);
+  doc.text(`AI Companion Chats: ${data.henryConversations}`, ml + 4, y + 26);
+  doc.text(`Mini Sessions: ${data.miniSessionCount || 0}`, ml + 4, y + 32);
+  doc.text(`Meditation: ${data.meditationSessions || 0}  |  Music: ${data.musicTherapySessions || 0}`, ml + 4, y + 38);
 
   // Right box - Goals & Progress
   doc.setFontSize(9);
   doc.setFont('helvetica', 'bold');
   doc.setTextColor(BRAND.bronze);
-  doc.text('Goals & Assessments', ml + halfW + 8, y + 7);
+  doc.text('Goals & Participation', ml + halfW + 8, y + 7);
   doc.setFont('helvetica', 'normal');
   doc.setFontSize(8);
   doc.setTextColor(BRAND.darkGray);
-  doc.text(`Goals Set: ${data.goalsSet}  |  Completed: ${data.goalsCompleted}  (${data.goalCompletionRate}%)`, ml + halfW + 8, y + 14);
-  doc.text(`Assessments Taken: ${data.assessmentsCompleted.length}`, ml + halfW + 8, y + 20);
-  doc.text(`Coaching Sessions: ${data.coachingSessions}`, ml + halfW + 8, y + 26);
-  doc.text(`Therapy Requests: ${data.therapyRequests}`, ml + halfW + 8, y + 32);
-  y += 40;
+  doc.text(`Goals: ${data.goalsSet} set, ${data.goalsCompleted} done (${data.goalCompletionRate}%)`, ml + halfW + 8, y + 14);
+  doc.text(`Assessments: ${data.assessmentsCompleted.length}`, ml + halfW + 8, y + 20);
+  doc.text(`Workshops: ${(data.workshopRegistrations || []).length}`, ml + halfW + 8, y + 26);
+  doc.text(`Gratitude Entries: ${data.gratitudeEntryCount || 0}`, ml + halfW + 8, y + 32);
+  doc.text(`Sleep Tracked: ${(data.sleepEntries || []).length} nights`, ml + halfW + 8, y + 38);
+  y += 47;
+
+  // ─── HENRY CONVERSATION THEMES ───
+  if ((data.henryTopThemes || []).length > 0) {
+    checkPage(18);
+    doc.setFillColor('#F3E5F5');
+    const themesH = 8 + Math.min(data.henryTopThemes!.length, 3) * 5 + 2;
+    doc.roundedRect(ml, y, cw, themesH, 2, 2, 'F');
+    y += 6;
+    doc.setFontSize(9);
+    doc.setFont('helvetica', 'bold');
+    doc.setTextColor('#7B1FA2');
+    doc.text('🧠  HENRY AI — Key Conversation Themes', ml + 4, y);
+    y += 5;
+    doc.setFont('helvetica', 'normal');
+    doc.setFontSize(8);
+    doc.setTextColor(BRAND.darkGray);
+    data.henryTopThemes!.slice(0, 3).forEach(theme => {
+      doc.text(`• ${theme}`, ml + 6, y);
+      y += 5;
+    });
+    y += 3;
+  }
 
   // ─── RISK FLAGS ───
-  if (data.riskFlags.length > 0) {
+  const allRiskFlags = data.riskFlags;
+  if (allRiskFlags.length > 0) {
+    checkPage(20);
     doc.setFillColor('#FFF3E0');
-    doc.roundedRect(ml, y, cw, 6 + data.riskFlags.length * 5 + 4, 2, 2, 'F');
+    doc.roundedRect(ml, y, cw, 6 + allRiskFlags.length * 5 + 4, 2, 2, 'F');
     doc.setDrawColor(BRAND.amber);
     doc.setLineWidth(0.5);
-    doc.roundedRect(ml, y, cw, 6 + data.riskFlags.length * 5 + 4, 2, 2, 'S');
+    doc.roundedRect(ml, y, cw, 6 + allRiskFlags.length * 5 + 4, 2, 2, 'S');
     y += 6;
     doc.setFontSize(9);
     doc.setFont('helvetica', 'bold');
@@ -299,7 +348,7 @@ export function generateComprehensiveReport(data: ComprehensiveReportData) {
     doc.setFont('helvetica', 'normal');
     doc.setFontSize(8);
     doc.setTextColor(BRAND.darkGray);
-    data.riskFlags.forEach(flag => {
+    allRiskFlags.forEach(flag => {
       doc.text(`• ${flag}`, ml + 6, y);
       y += 5;
     });
@@ -320,7 +369,7 @@ export function generateComprehensiveReport(data: ComprehensiveReportData) {
     const highPriority = data.sdohFlags.filter(f => f.priority === 'high');
     const moderate = data.sdohFlags.filter(f => f.priority === 'moderate');
     const sdohBoxH = 8 + (highPriority.length + moderate.length) * 6 + 6;
-    
+
     doc.setFillColor('#FFEBEE');
     doc.roundedRect(ml, y, cw, sdohBoxH, 2, 2, 'F');
     doc.setDrawColor(BRAND.red);
@@ -385,10 +434,10 @@ export function generateComprehensiveReport(data: ComprehensiveReportData) {
   // ─── SUGGESTED EHR ENTRY ───
   checkPage(35);
   doc.setFillColor('#E3F2FD');
-  doc.roundedRect(ml, y, cw, 30, 2, 2, 'F');
+  doc.roundedRect(ml, y, cw, 35, 2, 2, 'F');
   doc.setDrawColor(BRAND.blue);
   doc.setLineWidth(0.5);
-  doc.roundedRect(ml, y, cw, 30, 2, 2, 'S');
+  doc.roundedRect(ml, y, cw, 35, 2, 2, 'S');
   y += 6;
   doc.setFontSize(9);
   doc.setFont('helvetica', 'bold');
@@ -428,7 +477,6 @@ export function generateComprehensiveReport(data: ComprehensiveReportData) {
 
   // ─── SECTION 1: MOOD ANALYSIS ───
   sectionTitle('1. Mood Analysis');
-  const box3W = (cw - 8) / 3;
   statBox('Average', `${data.avgMood.toFixed(1)}/10`, ml, y, box3W, trendColor(data.moodTrend));
   statBox('Trend', `${trendArrow(data.moodTrend)} ${data.moodTrend}`, ml + box3W + 4, y, box3W, trendColor(data.moodTrend));
   statBox('Data Points', `${data.moodScores.length}`, ml + (box3W + 4) * 2, y, box3W);
@@ -447,7 +495,6 @@ export function generateComprehensiveReport(data: ComprehensiveReportData) {
 
   // ─── SECTION 2: ACTIVITY & ENGAGEMENT ───
   sectionTitle('2. Activity & Engagement');
-  const box4W = (cw - 12) / 4;
   statBox('Total Activities', `${data.totalActivities}`, ml, y, box4W);
   statBox('Wellness Min', `${data.totalWellnessMinutes}`, ml + box4W + 4, y, box4W);
   statBox('Most Used', data.mostUsedTool || 'N/A', ml + (box4W + 4) * 2, y, box4W);
@@ -512,18 +559,150 @@ export function generateComprehensiveReport(data: ComprehensiveReportData) {
     y += 3;
   }
 
-  // ─── SECTION 7: AI COMPANION & COACHING ───
+  // ─── SECTION 7: HENRY AI COMPANION (ENHANCED) ───
   checkPage(40);
-  sectionTitle('7. Support & Coaching');
-  statBox('AI Companion Chats', `${data.henryConversations}`, ml, y, box3W);
-  statBox('Coaching Sessions', `${data.coachingSessions}`, ml + box3W + 4, y, box3W);
+  sectionTitle('7. Henry AI Companion');
+  statBox('Conversations', `${data.henryConversations}`, ml, y, box3W);
+  statBox('Summaries', `${(data.henryConversationSummaries || []).length}`, ml + box3W + 4, y, box3W);
+  statBox('AI Risk Flags', `${(data.aiRiskFlags || []).length}`, ml + (box3W + 4) * 2, y, box3W, (data.aiRiskFlags || []).length > 0 ? BRAND.red : BRAND.green);
+  y += 28;
+
+  bodyText(`The user engaged in ${data.henryConversations} AI companion conversations with approximately ${data.henryMessages} total messages exchanged.`);
+
+  if ((data.henryTopThemes || []).length > 0) {
+    bodyText('Key topics discussed across conversations:');
+    data.henryTopThemes!.forEach(theme => bullet(theme, 3));
+    y += 3;
+  }
+
+  if ((data.henryConversationSummaries || []).length > 0) {
+    bodyText('Conversation summaries:');
+    data.henryConversationSummaries!.slice(0, 5).forEach(s => {
+      const summary = s.content.length > 150 ? s.content.substring(0, 150) + '...' : s.content;
+      bullet(`${s.date}: ${summary}`, 3);
+      if (s.moodTrend) {
+        bullet(`Mood trend: ${s.moodTrend}`, 8);
+      }
+    });
+    y += 3;
+  }
+
+  if ((data.aiRiskFlags || []).length > 0) {
+    bodyText('AI-detected risk flags from conversations:');
+    data.aiRiskFlags!.forEach(flag => bullet(flag, 3));
+    y += 3;
+  }
+
+  // ─── SECTION 8: BETWEEN-SESSION COMPANION ───
+  checkPage(40);
+  sectionTitle('8. Between-Session Companion (Mini Sessions)');
+  const miniCount = data.miniSessionCount || 0;
+  statBox('Sessions', `${miniCount}`, ml, y, box4W);
+  statBox('Avg Mood', data.avgMiniMood != null ? `${data.avgMiniMood.toFixed(1)}` : 'N/A', ml + box4W + 4, y, box4W, data.avgMiniMood != null && data.avgMiniMood < 4 ? BRAND.red : BRAND.bronze);
+  statBox('Avg Anxiety', data.avgMiniAnxiety != null ? `${data.avgMiniAnxiety.toFixed(1)}` : 'N/A', ml + (box4W + 4) * 2, y, box4W, data.avgMiniAnxiety != null && data.avgMiniAnxiety > 7 ? BRAND.red : BRAND.bronze);
+  statBox('Avg Energy', data.avgMiniEnergy != null ? `${data.avgMiniEnergy.toFixed(1)}` : 'N/A', ml + (box4W + 4) * 3, y, box4W);
+  y += 28;
+
+  if (miniCount > 0) {
+    bodyText(`${miniCount} between-session check-ins completed. These provide insight into the user's state between formal therapy sessions.`);
+    if ((data.miniFocusAreas || []).length > 0) {
+      bodyText('Focus areas addressed:');
+      data.miniFocusAreas!.forEach(f => {
+        const label = f.area.replace(/_/g, ' ').replace(/\b\w/g, c => c.toUpperCase());
+        bullet(`${label}: ${f.count} session(s)`, 3);
+      });
+      y += 3;
+    }
+  } else {
+    bodyText('No between-session companion check-ins recorded. This tool helps users process emotions between therapy appointments.');
+  }
+
+  // ─── SECTION 9: TOOLKIT & WORKSHOP ENGAGEMENT ───
+  checkPage(40);
+  sectionTitle('9. Toolkit & Workshop Engagement');
+  const tkCount = (data.toolkitInteractions || []).length;
+  const wsCount = (data.workshopRegistrations || []).length;
+  statBox('Toolkit Categories', `${tkCount}`, ml, y, halfW);
+  statBox('Workshops Joined', `${wsCount}`, ml + halfW + 4, y, halfW);
+  y += 28;
+
+  if (tkCount > 0) {
+    bodyText('Toolkit categories used:');
+    data.toolkitInteractions!.forEach(t => bullet(`${t.name}: ${t.count} interaction(s)`, 3));
+    y += 3;
+  } else {
+    bodyText('No toolkit interactions recorded. The wellness toolkit offers diverse coping strategies.');
+  }
+
+  if (wsCount > 0) {
+    bodyText('Workshop/event registrations:');
+    data.workshopRegistrations!.forEach(w => bullet(`${w.title} (${w.type}) — ${w.status}`, 3));
+    y += 3;
+  } else {
+    bodyText('No workshop or event registrations. Group events provide valuable community support.');
+  }
+
+  // ─── SECTION 10: MEDITATION & MUSIC THERAPY ───
+  checkPage(40);
+  sectionTitle('10. Meditation & Music Therapy');
+  statBox('Meditation Sessions', `${data.meditationSessions || 0}`, ml, y, box3W);
+  statBox('Meditation Min', `${data.meditationTotalMinutes || 0}`, ml + box3W + 4, y, box3W);
+  statBox('Music Sessions', `${data.musicTherapySessions || 0}`, ml + (box3W + 4) * 2, y, box3W);
+  y += 28;
+
+  if ((data.meditationSessions || 0) > 0) {
+    bodyText(`${data.meditationSessions} meditation session(s) completed, totaling ${data.meditationTotalMinutes} minutes of practice.`);
+  } else {
+    bodyText('No meditation sessions recorded. Even brief daily meditation can significantly improve emotional regulation.');
+  }
+
+  if ((data.musicTherapySessions || 0) > 0) {
+    bodyText(`${data.musicTherapySessions} music therapy recording(s) created, totaling ${data.musicTotalMinutes || 0} minutes.`);
+    if ((data.musicMoodChanges || []).length > 0) {
+      bodyText('Mood changes from music therapy:');
+      data.musicMoodChanges!.slice(0, 5).forEach(m => bullet(`Before: ${m.before} → After: ${m.after}`, 3));
+      y += 3;
+    }
+  }
+
+  // ─── SECTION 11: HOLISTIC WELLNESS ───
+  checkPage(40);
+  sectionTitle('11. Holistic Wellness');
+  statBox('Gratitude Entries', `${data.gratitudeEntryCount || 0}`, ml, y, box3W);
+  statBox('Sleep Tracked', `${(data.sleepEntries || []).length}`, ml + box3W + 4, y, box3W);
+  statBox('Avg Sleep Hrs', data.avgSleepHours != null ? `${data.avgSleepHours.toFixed(1)}` : 'N/A', ml + (box3W + 4) * 2, y, box3W, data.avgSleepHours != null && data.avgSleepHours < 6 ? BRAND.red : BRAND.green);
+  y += 28;
+
+  if ((data.gratitudeEntryCount || 0) > 0) {
+    bodyText(`${data.gratitudeEntryCount} gratitude entries logged. Regular gratitude practice is linked to improved mood and life satisfaction.`);
+  } else {
+    bodyText('No gratitude entries recorded. Starting a daily gratitude practice can positively shift perspective over time.');
+  }
+
+  if ((data.sleepEntries || []).length > 0) {
+    bodyText(`Sleep tracking: ${(data.sleepEntries || []).length} nights logged.`);
+    if (data.avgSleepQuality != null) {
+      bodyText(`Average sleep quality: ${data.avgSleepQuality.toFixed(1)}/10${data.avgSleepQuality < 5 ? ' — below optimal, may need intervention' : ''}.`);
+    }
+    if (data.avgSleepHours != null) {
+      bodyText(`Average sleep duration: ${data.avgSleepHours.toFixed(1)} hours/night${data.avgSleepHours < 6 ? ' — significantly below recommended 7-9 hours' : ''}.`);
+    }
+  } else {
+    bodyText('No sleep data recorded. Sleep tracking helps identify patterns that affect mood and daily functioning.');
+  }
+
+  // ─── SECTION 12: COACHING & SUPPORT ───
+  checkPage(40);
+  sectionTitle('12. Coaching & Support');
+  statBox('Coaching Sessions', `${data.coachingSessions}`, ml, y, box3W);
+  statBox('Therapy Requests', `${data.therapyRequests}`, ml + box3W + 4, y, box3W);
   statBox('Total Points', `${data.totalPoints}`, ml + (box3W + 4) * 2, y, box3W);
   y += 28;
-  bodyText(`The user engaged in ${data.henryConversations} AI companion conversations with approximately ${data.henryMessages} total messages exchanged. ${data.coachingSessions} coaching sessions were attended. ${data.therapyRequests} therapy-related requests were submitted.`);
+  bodyText(`${data.coachingSessions} coaching sessions attended. ${data.therapyRequests} therapy-related requests were submitted.`);
 
-  // ─── SECTION 8: RISK FLAGS & RECOMMENDATIONS ───
+  // ─── SECTION 13: RISK ASSESSMENT & RECOMMENDATIONS ───
   checkPage(40);
-  sectionTitle('8. Risk Assessment & Recommendations');
+  sectionTitle('13. Risk Assessment & Recommendations');
 
   if (data.riskFlags.length > 0) {
     bodyText('Identified attention items:');

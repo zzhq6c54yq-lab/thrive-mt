@@ -5,7 +5,7 @@ export async function fetchComprehensiveReportData(userId: string, userName: str
   const now = new Date();
   const thirtyDaysAgo = new Date(now.getTime() - 30 * 24 * 60 * 60 * 1000);
 
-  // Fetch all data sources in parallel
+  // Fetch all data sources in parallel (21 queries)
   const [
     moodRes,
     journalRes,
@@ -20,6 +20,15 @@ export async function fetchComprehensiveReportData(userId: string, userName: str
     therapyReqRes,
     wellnessRes,
     streakRes,
+    // New data sources
+    aiSummariesRes,
+    miniSessionsRes,
+    toolkitRes,
+    meditationRes,
+    musicRes,
+    eventRegRes,
+    gratitudeRes,
+    sleepRes,
   ] = await Promise.all([
     // 1. Mood (daily_check_ins)
     supabase
@@ -29,7 +38,7 @@ export async function fetchComprehensiveReportData(userId: string, userName: str
       .gte('created_at', thirtyDaysAgo.toISOString())
       .order('created_at', { ascending: true }),
 
-    // 2. Journal entries (schema: id, mood, mood_score, notes, created_at)
+    // 2. Journal entries
     supabase
       .from('journal_entries')
       .select('id, mood, notes, created_at')
@@ -66,7 +75,7 @@ export async function fetchComprehensiveReportData(userId: string, userName: str
       .eq('user_id', userId)
       .gte('created_at', thirtyDaysAgo.toISOString()),
 
-    // 7. Goals (schema: id, title, completed, goal_type, current, target)
+    // 7. Goals
     supabase
       .from('user_goals')
       .select('id, title, completed, created_at')
@@ -108,13 +117,70 @@ export async function fetchComprehensiveReportData(userId: string, userName: str
       .eq('user_id', userId)
       .gte('recorded_at', thirtyDaysAgo.toISOString()),
 
-    // 13. Streak data (all check-ins for streak calc)
+    // 13. Streak data
     supabase
       .from('daily_check_ins')
       .select('created_at')
       .eq('user_id', userId)
       .order('created_at', { ascending: false })
       .limit(90),
+
+    // 14. AI Session Summaries (Henry conversation summaries with topics & risk flags)
+    supabase
+      .from('ai_session_summaries')
+      .select('content, key_topics, risk_flags, mood_trend, summary_type, created_at')
+      .eq('user_id', userId)
+      .gte('created_at', thirtyDaysAgo.toISOString())
+      .order('created_at', { ascending: false }),
+
+    // 15. Mini Sessions (Between-Session Companion)
+    supabase
+      .from('mini_sessions' as any)
+      .select('focus, mood, anxiety, energy, urge_level, summary, coaching, created_at')
+      .eq('user_id', userId)
+      .gte('created_at', thirtyDaysAgo.toISOString()),
+
+    // 16. Toolkit category interactions
+    supabase
+      .from('toolkit_category_interactions' as any)
+      .select('category, tool_name, created_at')
+      .eq('user_id', userId)
+      .gte('created_at', thirtyDaysAgo.toISOString()),
+
+    // 17. Meditation sessions
+    supabase
+      .from('meditation_sessions' as any)
+      .select('duration_minutes, meditation_type, created_at')
+      .eq('user_id', userId)
+      .gte('created_at', thirtyDaysAgo.toISOString()),
+
+    // 18. Music therapy recordings
+    supabase
+      .from('music_therapy_recordings')
+      .select('duration_seconds, mood_before, mood_after, instrument, created_at')
+      .eq('user_id', userId)
+      .gte('created_at', thirtyDaysAgo.toISOString()),
+
+    // 19. Event registrations (workshops)
+    supabase
+      .from('event_registrations' as any)
+      .select('event_title, event_type, status, created_at')
+      .eq('user_id', userId)
+      .gte('created_at', thirtyDaysAgo.toISOString()),
+
+    // 20. Gratitude entries
+    supabase
+      .from('gratitude_entries' as any)
+      .select('id, created_at')
+      .eq('user_id', userId)
+      .gte('created_at', thirtyDaysAgo.toISOString()),
+
+    // 21. Sleep tracker entries
+    supabase
+      .from('sleep_tracker_entries' as any)
+      .select('sleep_quality, hours_slept, bedtime, wake_time, created_at')
+      .eq('user_id', userId)
+      .gte('created_at', thirtyDaysAgo.toISOString()),
   ]);
 
   // ─── PROCESS MOOD DATA ───
@@ -162,7 +228,6 @@ export async function fetchComprehensiveReportData(userId: string, userName: str
 
   // ─── PROCESS JOURNAL ───
   const journals = journalRes.data || [];
-  // Extract themes from mood field
   const moodCounts: Record<string, number> = {};
   journals.forEach(j => {
     if (j.mood) {
@@ -211,7 +276,6 @@ export async function fetchComprehensiveReportData(userId: string, userName: str
     sdohKeywords.forEach(kw => {
       if (text.includes(kw.term) && !seenCategories.has(kw.category + kw.term)) {
         seenCategories.add(kw.category + kw.term);
-        // Extract a snippet around the keyword for context
         const idx = text.indexOf(kw.term);
         const start = Math.max(0, idx - 30);
         const end = Math.min(text.length, idx + kw.term.length + 30);
@@ -281,6 +345,103 @@ export async function fetchComprehensiveReportData(userId: string, userName: str
   }
   if (tempStreak > longestStreak) longestStreak = tempStreak;
 
+  // ─── PROCESS AI SESSION SUMMARIES ───
+  const aiSummaries = (aiSummariesRes.data || []) as any[];
+  const henryConversationSummaries = aiSummaries.map(s => ({
+    content: s.content || '',
+    keyTopics: (s.key_topics || []) as string[],
+    riskFlags: (s.risk_flags || []) as string[],
+    moodTrend: s.mood_trend || null,
+    date: new Date(s.created_at).toLocaleDateString('en-US', { month: 'short', day: 'numeric' }),
+  }));
+
+  // Aggregate key topics across all summaries
+  const allKeyTopics: Record<string, number> = {};
+  henryConversationSummaries.forEach(s => {
+    s.keyTopics.forEach(t => {
+      allKeyTopics[t] = (allKeyTopics[t] || 0) + 1;
+    });
+  });
+  const henryTopThemes = Object.entries(allKeyTopics)
+    .sort((a, b) => b[1] - a[1])
+    .slice(0, 5)
+    .map(([topic]) => topic);
+
+  // Aggregate AI-detected risk flags
+  const aiRiskFlags: string[] = [];
+  henryConversationSummaries.forEach(s => {
+    s.riskFlags.forEach(flag => {
+      if (!aiRiskFlags.includes(flag)) aiRiskFlags.push(flag);
+    });
+  });
+
+  // ─── PROCESS MINI SESSIONS ───
+  const miniSessions = (miniSessionsRes.data || []) as any[];
+  const miniSessionCount = miniSessions.length;
+  const miniMoods = miniSessions.filter(m => m.mood != null).map(m => m.mood as number);
+  const miniAnxiety = miniSessions.filter(m => m.anxiety != null).map(m => m.anxiety as number);
+  const miniEnergy = miniSessions.filter(m => m.energy != null).map(m => m.energy as number);
+  const avgMiniMood = miniMoods.length > 0 ? miniMoods.reduce((s, v) => s + v, 0) / miniMoods.length : null;
+  const avgMiniAnxiety = miniAnxiety.length > 0 ? miniAnxiety.reduce((s, v) => s + v, 0) / miniAnxiety.length : null;
+  const avgMiniEnergy = miniEnergy.length > 0 ? miniEnergy.reduce((s, v) => s + v, 0) / miniEnergy.length : null;
+
+  // Focus area distribution
+  const focusCounts: Record<string, number> = {};
+  miniSessions.forEach(m => {
+    const focus = m.focus || 'other';
+    focusCounts[focus] = (focusCounts[focus] || 0) + 1;
+  });
+  const miniFocusAreas = Object.entries(focusCounts)
+    .sort((a, b) => b[1] - a[1])
+    .map(([area, count]) => ({ area, count }));
+
+  // ─── PROCESS TOOLKIT INTERACTIONS ───
+  const toolkitData = (toolkitRes.data || []) as any[];
+  const toolkitCounts: Record<string, number> = {};
+  toolkitData.forEach(t => {
+    const key = t.category || t.tool_name || 'Unknown';
+    toolkitCounts[key] = (toolkitCounts[key] || 0) + 1;
+  });
+  const toolkitInteractions = Object.entries(toolkitCounts)
+    .sort((a, b) => b[1] - a[1])
+    .map(([name, count]) => ({ name, count }));
+
+  // ─── PROCESS MEDITATION SESSIONS ───
+  const meditationData = (meditationRes.data || []) as any[];
+  const meditationSessions = meditationData.length;
+  const meditationTotalMinutes = meditationData.reduce((s, m) => s + (m.duration_minutes || 0), 0);
+
+  // ─── PROCESS MUSIC THERAPY ───
+  const musicData = (musicRes.data || []) as any[];
+  const musicTherapySessions = musicData.length;
+  const musicTotalMinutes = Math.round(musicData.reduce((s, m) => s + (m.duration_seconds || 0), 0) / 60);
+  const musicMoodChanges = musicData
+    .filter(m => m.mood_before && m.mood_after)
+    .map(m => ({ before: m.mood_before, after: m.mood_after }));
+
+  // ─── PROCESS EVENT REGISTRATIONS ───
+  const eventData = (eventRegRes.data || []) as any[];
+  const workshopRegistrations = eventData.map(e => ({
+    title: e.event_title || 'Untitled Event',
+    type: e.event_type || 'workshop',
+    status: e.status || 'registered',
+  }));
+
+  // ─── PROCESS GRATITUDE ENTRIES ───
+  const gratitudeEntryCount = (gratitudeRes.data || []).length;
+
+  // ─── PROCESS SLEEP TRACKER ───
+  const sleepData = (sleepRes.data || []) as any[];
+  const sleepEntries = sleepData.map(s => ({
+    quality: s.sleep_quality as number | null,
+    hours: s.hours_slept as number | null,
+    date: new Date(s.created_at).toLocaleDateString('en-US', { month: 'short', day: 'numeric' }),
+  }));
+  const sleepQualities = sleepEntries.filter(s => s.quality != null).map(s => s.quality!);
+  const sleepHours = sleepEntries.filter(s => s.hours != null).map(s => s.hours!);
+  const avgSleepQuality = sleepQualities.length > 0 ? sleepQualities.reduce((s, v) => s + v, 0) / sleepQualities.length : null;
+  const avgSleepHours = sleepHours.length > 0 ? sleepHours.reduce((s, v) => s + v, 0) / sleepHours.length : null;
+
   // ─── GENERATE RISK FLAGS ───
   const riskFlags: string[] = [];
   if (avgMood > 0 && avgMood < 4) riskFlags.push(`Low average mood score (${avgMood.toFixed(1)}/10) — consider clinical follow-up`);
@@ -288,6 +449,26 @@ export async function fetchComprehensiveReportData(userId: string, userName: str
   if (moodScores.some(m => m.score <= 2)) riskFlags.push('One or more mood entries at critically low levels (≤2/10)');
   if (journals.length === 0 && activities.length === 0) riskFlags.push('No engagement with wellness tools in the past 30 days');
   if (currentStreak === 0 && moodScores.length > 3) riskFlags.push('Broken daily check-in streak — re-engagement support recommended');
+
+  // New risk flags from AI summaries
+  if (aiRiskFlags.length > 0) {
+    aiRiskFlags.forEach(flag => {
+      riskFlags.push(`AI-detected: ${flag}`);
+    });
+  }
+
+  // Mini session risk patterns
+  if (avgMiniMood !== null && avgMiniMood < 3 && avgMiniAnxiety !== null && avgMiniAnxiety > 7) {
+    riskFlags.push('Between-Session Companion shows pattern of low mood + high anxiety — clinical attention recommended');
+  }
+
+  // Sleep quality risk
+  if (avgSleepQuality !== null && avgSleepQuality < 3) {
+    riskFlags.push(`Consistently poor sleep quality (avg ${avgSleepQuality.toFixed(1)}/10) — may require intervention`);
+  }
+  if (avgSleepHours !== null && avgSleepHours < 5) {
+    riskFlags.push(`Very low average sleep duration (${avgSleepHours.toFixed(1)} hrs/night)`);
+  }
 
   // ─── GENERATE RECOMMENDATIONS ───
   const recommendations: string[] = [];
@@ -315,6 +496,24 @@ export async function fetchComprehensiveReportData(userId: string, userName: str
   if (activitiesByType.length > 3) {
     recommendations.push('Great tool variety — maintain diverse wellness practices for resilience');
   }
+
+  // New recommendations from expanded data
+  if (toolkitInteractions.length === 0) {
+    recommendations.push('Explore the Wellness Toolkit — diverse coping tools can strengthen resilience');
+  }
+  if (workshopRegistrations.length === 0) {
+    recommendations.push('Consider joining a workshop or group event for community support');
+  }
+  if (meditationSessions === 0) {
+    recommendations.push('Try guided meditation — even 5 minutes daily can improve emotional regulation');
+  }
+  if (avgSleepQuality !== null && avgSleepQuality < 5) {
+    recommendations.push('Focus on sleep hygiene — poor sleep directly impacts mood and anxiety');
+  }
+  if (gratitudeEntryCount === 0) {
+    recommendations.push('Start a gratitude practice — 3 items daily can shift perspective over time');
+  }
+
   if (recommendations.length < 2) {
     recommendations.push('Explore new wellness tools to discover what resonates most');
     recommendations.push('Maintain consistent daily check-ins for accurate progress tracking');
@@ -322,17 +521,24 @@ export async function fetchComprehensiveReportData(userId: string, userName: str
 
   // ─── GENERATE SUGGESTED EHR NOTE ───
   const moodSummary = avgMood > 0 ? `avg mood ${avgMood.toFixed(1)}/10 (${moodTrend})` : 'no mood data recorded';
-  const engagementSummary = activities.length + journals.length + breathingData.length > 0
-    ? `${activities.length + journals.length + breathingData.length} wellness interactions logged`
+  const totalInteractions = activities.length + journals.length + breathingData.length + miniSessionCount + meditationSessions + musicTherapySessions;
+  const engagementSummary = totalInteractions > 0
+    ? `${totalInteractions} wellness interactions logged`
     : 'minimal platform engagement';
+  const henryThemeSummary = henryTopThemes.length > 0
+    ? ` Key conversation themes: ${henryTopThemes.slice(0, 3).join(', ')}.`
+    : '';
+  const toolkitSummary = toolkitInteractions.length > 0
+    ? ` Toolkit categories used: ${toolkitInteractions.slice(0, 3).map(t => t.name).join(', ')}.`
+    : '';
   const sdohSummary = sdohFlags.filter(f => f.priority === 'high').length > 0
     ? ` SDOH flags present (${[...new Set(sdohFlags.filter(f => f.priority === 'high').map(f => f.keyword.split(':')[0]))].join(', ')}).`
     : '';
   const riskSummary = riskFlags.length > 0 ? ` ${riskFlags.length} attention item(s) flagged.` : ' No risk flags.';
-  const suggestedEHRNote = `Patient engaged with ThriveMT digital wellness platform over 30-day period: ${moodSummary}, ${engagementSummary}.${riskSummary}${sdohSummary} ${moodTrend === 'declining' ? 'Recommend clinical follow-up.' : 'Continue current care plan.'}`.trim();
+  const suggestedEHRNote = `Patient engaged with ThriveMT digital wellness platform over 30-day period: ${moodSummary}, ${engagementSummary}.${riskSummary}${henryThemeSummary}${toolkitSummary}${sdohSummary} ${moodTrend === 'declining' ? 'Recommend clinical follow-up.' : 'Continue current care plan.'}`.trim();
 
   // ─── TOTAL POINTS ───
-  const totalPoints = activities.length * 10 + badgesEarned.length * 50 + journals.length * 15 + breathingData.length * 5 + binauralData.length * 5;
+  const totalPoints = activities.length * 10 + badgesEarned.length * 50 + journals.length * 15 + breathingData.length * 5 + binauralData.length * 5 + miniSessionCount * 10 + meditationSessions * 10 + gratitudeEntryCount * 5;
 
   return {
     userName,
@@ -370,5 +576,25 @@ export async function fetchComprehensiveReportData(userId: string, userName: str
     recommendations,
     sdohFlags,
     suggestedEHRNote,
+    // New expanded data
+    henryConversationSummaries,
+    henryTopThemes,
+    aiRiskFlags,
+    miniSessionCount,
+    avgMiniMood,
+    avgMiniAnxiety,
+    avgMiniEnergy,
+    miniFocusAreas,
+    toolkitInteractions,
+    meditationSessions,
+    meditationTotalMinutes,
+    musicTherapySessions,
+    musicTotalMinutes,
+    musicMoodChanges,
+    workshopRegistrations,
+    gratitudeEntryCount,
+    sleepEntries,
+    avgSleepQuality,
+    avgSleepHours,
   };
 }
