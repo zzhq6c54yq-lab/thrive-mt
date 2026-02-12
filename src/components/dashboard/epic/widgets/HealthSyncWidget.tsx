@@ -311,7 +311,7 @@ const HealthSyncWidget: React.FC = () => {
                     size="sm"
                     variant="outline"
                     onClick={() => handleConnect(provider.id)}
-                    disabled={syncing === provider.id || !available}
+                    disabled={syncing === provider.id}
                   >
                     {syncing === provider.id ? (
                       <Loader2 className="w-4 h-4 animate-spin" />
