@@ -174,6 +174,57 @@ export async function fetchComprehensiveReportData(userId: string, userName: str
     .slice(0, 5)
     .map(([mood]) => mood);
 
+  // ─── SDOH KEYWORD SCAN ───
+  const sdohKeywords: { term: string; category: string; priority: 'high' | 'moderate' }[] = [
+    { term: 'eviction', category: 'Housing', priority: 'high' },
+    { term: 'evicted', category: 'Housing', priority: 'high' },
+    { term: 'homeless', category: 'Housing', priority: 'high' },
+    { term: 'shelter', category: 'Housing', priority: 'high' },
+    { term: 'housing', category: 'Housing', priority: 'moderate' },
+    { term: 'rent', category: 'Housing', priority: 'moderate' },
+    { term: 'bills', category: 'Financial', priority: 'high' },
+    { term: 'debt', category: 'Financial', priority: 'high' },
+    { term: 'afford', category: 'Financial', priority: 'moderate' },
+    { term: 'money', category: 'Financial', priority: 'moderate' },
+    { term: 'broke', category: 'Financial', priority: 'high' },
+    { term: 'food', category: 'Food Security', priority: 'high' },
+    { term: 'hungry', category: 'Food Security', priority: 'high' },
+    { term: 'meal', category: 'Food Security', priority: 'moderate' },
+    { term: 'starving', category: 'Food Security', priority: 'high' },
+    { term: 'food bank', category: 'Food Security', priority: 'high' },
+    { term: 'utilities', category: 'Financial', priority: 'high' },
+    { term: 'electricity', category: 'Financial', priority: 'moderate' },
+    { term: 'unemployed', category: 'Employment', priority: 'high' },
+    { term: 'fired', category: 'Employment', priority: 'high' },
+    { term: 'laid off', category: 'Employment', priority: 'high' },
+    { term: 'job loss', category: 'Employment', priority: 'high' },
+    { term: 'can\'t work', category: 'Employment', priority: 'high' },
+    { term: 'disability', category: 'Access', priority: 'moderate' },
+    { term: 'insurance', category: 'Access', priority: 'moderate' },
+    { term: 'transportation', category: 'Access', priority: 'moderate' },
+  ];
+
+  const sdohFlags: { keyword: string; context: string; priority: 'high' | 'moderate' }[] = [];
+  const seenCategories = new Set<string>();
+  journals.forEach(j => {
+    const text = (j.notes || '').toLowerCase();
+    sdohKeywords.forEach(kw => {
+      if (text.includes(kw.term) && !seenCategories.has(kw.category + kw.term)) {
+        seenCategories.add(kw.category + kw.term);
+        // Extract a snippet around the keyword for context
+        const idx = text.indexOf(kw.term);
+        const start = Math.max(0, idx - 30);
+        const end = Math.min(text.length, idx + kw.term.length + 30);
+        const snippet = (j.notes || '').substring(start, end).replace(/\n/g, ' ').trim();
+        sdohFlags.push({
+          keyword: `${kw.category}: "${kw.term}"`,
+          context: snippet.length < (j.notes || '').length ? `...${snippet}...` : snippet,
+          priority: kw.priority,
+        });
+      }
+    });
+  });
+
   // ─── PROCESS ASSESSMENTS ───
   const assessmentsCompleted = (assessmentRes.data || []).map(a => ({
     type: a.assessment_type,
@@ -269,6 +320,17 @@ export async function fetchComprehensiveReportData(userId: string, userName: str
     recommendations.push('Maintain consistent daily check-ins for accurate progress tracking');
   }
 
+  // ─── GENERATE SUGGESTED EHR NOTE ───
+  const moodSummary = avgMood > 0 ? `avg mood ${avgMood.toFixed(1)}/10 (${moodTrend})` : 'no mood data recorded';
+  const engagementSummary = activities.length + journals.length + breathingData.length > 0
+    ? `${activities.length + journals.length + breathingData.length} wellness interactions logged`
+    : 'minimal platform engagement';
+  const sdohSummary = sdohFlags.filter(f => f.priority === 'high').length > 0
+    ? ` SDOH flags present (${[...new Set(sdohFlags.filter(f => f.priority === 'high').map(f => f.keyword.split(':')[0]))].join(', ')}).`
+    : '';
+  const riskSummary = riskFlags.length > 0 ? ` ${riskFlags.length} attention item(s) flagged.` : ' No risk flags.';
+  const suggestedEHRNote = `Patient engaged with ThriveMT digital wellness platform over 30-day period: ${moodSummary}, ${engagementSummary}.${riskSummary}${sdohSummary} ${moodTrend === 'declining' ? 'Recommend clinical follow-up.' : 'Continue current care plan.'}`.trim();
+
   // ─── TOTAL POINTS ───
   const totalPoints = activities.length * 10 + badgesEarned.length * 50 + journals.length * 15 + breathingData.length * 5 + binauralData.length * 5;
 
@@ -306,5 +368,7 @@ export async function fetchComprehensiveReportData(userId: string, userName: str
     totalPoints,
     riskFlags,
     recommendations,
+    sdohFlags,
+    suggestedEHRNote,
   };
 }

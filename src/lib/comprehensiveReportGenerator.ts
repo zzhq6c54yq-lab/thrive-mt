@@ -72,6 +72,12 @@ export interface ComprehensiveReportData {
   // Risk flags (for clinician)
   riskFlags: string[];
   recommendations: string[];
+
+  // SDOH / Stability Risk
+  sdohFlags: { keyword: string; context: string; priority: 'high' | 'moderate' }[];
+
+  // Suggested EHR entry
+  suggestedEHRNote: string;
 }
 
 export function generateComprehensiveReport(data: ComprehensiveReportData) {
@@ -308,6 +314,55 @@ export function generateComprehensiveReport(data: ComprehensiveReportData) {
     y += 18;
   }
 
+  // ─── STABILITY RISK (SDOH TRIAGE) ───
+  if (data.sdohFlags.length > 0) {
+    checkPage(30);
+    const highPriority = data.sdohFlags.filter(f => f.priority === 'high');
+    const moderate = data.sdohFlags.filter(f => f.priority === 'moderate');
+    const sdohBoxH = 8 + (highPriority.length + moderate.length) * 6 + 6;
+    
+    doc.setFillColor('#FFEBEE');
+    doc.roundedRect(ml, y, cw, sdohBoxH, 2, 2, 'F');
+    doc.setDrawColor(BRAND.red);
+    doc.setLineWidth(0.8);
+    doc.roundedRect(ml, y, cw, sdohBoxH, 2, 2, 'S');
+    y += 7;
+    doc.setFontSize(9);
+    doc.setFont('helvetica', 'bold');
+    doc.setTextColor(BRAND.red);
+    doc.text('🚨  STABILITY RISK — Social Determinant Flags', ml + 4, y);
+    y += 6;
+    doc.setFont('helvetica', 'normal');
+    doc.setFontSize(8);
+
+    if (highPriority.length > 0) {
+      doc.setTextColor(BRAND.red);
+      doc.setFont('helvetica', 'bold');
+      doc.text('HIGH PRIORITY TRIAGE:', ml + 6, y);
+      y += 5;
+      doc.setFont('helvetica', 'normal');
+      doc.setTextColor(BRAND.darkGray);
+      highPriority.forEach(flag => {
+        doc.text(`▸ ${flag.keyword}  —  "${flag.context}"`, ml + 8, y);
+        y += 6;
+      });
+    }
+
+    if (moderate.length > 0) {
+      doc.setTextColor(BRAND.amber);
+      doc.setFont('helvetica', 'bold');
+      doc.text('MODERATE:', ml + 6, y);
+      y += 5;
+      doc.setFont('helvetica', 'normal');
+      doc.setTextColor(BRAND.darkGray);
+      moderate.forEach(flag => {
+        doc.text(`▸ ${flag.keyword}  —  "${flag.context}"`, ml + 8, y);
+        y += 6;
+      });
+    }
+    y += 4;
+  }
+
   // ─── TOP RECOMMENDATIONS ───
   checkPage(25);
   doc.setFillColor(BRAND.bgGray);
@@ -326,6 +381,26 @@ export function generateComprehensiveReport(data: ComprehensiveReportData) {
     y += 5;
   });
   y += 6;
+
+  // ─── SUGGESTED EHR ENTRY ───
+  checkPage(35);
+  doc.setFillColor('#E3F2FD');
+  doc.roundedRect(ml, y, cw, 30, 2, 2, 'F');
+  doc.setDrawColor(BRAND.blue);
+  doc.setLineWidth(0.5);
+  doc.roundedRect(ml, y, cw, 30, 2, 2, 'S');
+  y += 6;
+  doc.setFontSize(9);
+  doc.setFont('helvetica', 'bold');
+  doc.setTextColor(BRAND.blue);
+  doc.text('📋  SUGGESTED EHR ENTRY  (Copy/Paste)', ml + 4, y);
+  y += 5;
+  doc.setFont('helvetica', 'normal');
+  doc.setFontSize(8);
+  doc.setTextColor(BRAND.darkGray);
+  const ehrLines = doc.splitTextToSize(data.suggestedEHRNote, cw - 10);
+  doc.text(ehrLines, ml + 5, y);
+  y += ehrLines.length * 4 + 8;
 
   // ─── DISCLAIMER ───
   doc.setFontSize(7);
@@ -456,6 +531,23 @@ export function generateComprehensiveReport(data: ComprehensiveReportData) {
     y += 3;
   } else {
     bodyText('No significant risk flags identified during this reporting period.');
+  }
+
+  // SDOH Stability Risk in detailed section
+  if (data.sdohFlags.length > 0) {
+    checkPage(20);
+    bodyText('Social Determinant of Health (SDOH) flags detected in journal entries:');
+    const highFlags = data.sdohFlags.filter(f => f.priority === 'high');
+    const modFlags = data.sdohFlags.filter(f => f.priority === 'moderate');
+    if (highFlags.length > 0) {
+      bodyText('HIGH PRIORITY:');
+      highFlags.forEach(f => bullet(`${f.keyword} — "${f.context}"`, 5));
+    }
+    if (modFlags.length > 0) {
+      bodyText('MODERATE:');
+      modFlags.forEach(f => bullet(`${f.keyword} — "${f.context}"`, 5));
+    }
+    y += 3;
   }
 
   bodyText('Personalized recommendations:');
