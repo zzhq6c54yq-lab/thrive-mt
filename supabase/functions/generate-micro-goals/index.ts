@@ -7,7 +7,7 @@ const corsHeaders = {
   'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
 };
 
-const openAIApiKey = Deno.env.get('OPENAI_API_KEY');
+const LOVABLE_API_KEY = Deno.env.get('LOVABLE_API_KEY');
 
 // Zod schema for optional input validation
 const RequestSchema = z.object({
@@ -116,15 +116,19 @@ Return ONLY a valid JSON array of 5 micro-goals in this exact format:
 
 Categories must be one of: breathwork, physical, mindfulness, movement, connection`;
 
-    // Call OpenAI API
-    const response = await fetch('https://api.openai.com/v1/chat/completions', {
+    if (!LOVABLE_API_KEY) {
+      throw new Error('LOVABLE_API_KEY not configured');
+    }
+
+    // Call Lovable AI Gateway
+    const response = await fetch('https://ai.gateway.lovable.dev/v1/chat/completions', {
       method: 'POST',
       headers: {
-        'Authorization': `Bearer ${openAIApiKey}`,
+        'Authorization': `Bearer ${LOVABLE_API_KEY}`,
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        model: 'gpt-4o-mini',
+        model: 'google/gemini-2.5-flash',
         messages: [
           { role: 'system', content: 'You are a compassionate mental wellness assistant that generates personalized micro-goals. Always respond with valid JSON only.' },
           { role: 'user', content: contextPrompt }
@@ -136,8 +140,22 @@ Categories must be one of: breathwork, physical, mindfulness, movement, connecti
 
     if (!response.ok) {
       const errorData = await response.text();
-      console.error('OpenAI API error:', errorData);
-      throw new Error(`OpenAI API error: ${response.status}`);
+      console.error('Lovable AI Gateway error:', response.status, errorData);
+      
+      if (response.status === 429) {
+        return new Response(
+          JSON.stringify({ error: 'Rate limit exceeded. Please try again in a moment.' }),
+          { status: 429, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+        );
+      }
+      if (response.status === 402) {
+        return new Response(
+          JSON.stringify({ error: 'AI credits depleted. Please contact support.' }),
+          { status: 402, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+        );
+      }
+      
+      throw new Error(`AI Gateway error: ${response.status}`);
     }
 
     const data = await response.json();
