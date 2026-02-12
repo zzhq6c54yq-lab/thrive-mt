@@ -769,11 +769,12 @@ export function generateComprehensiveReport(data: ComprehensiveReportData, mode:
   const filename = `ThriveMT_Comprehensive_Report_${data.userName.replace(/\s+/g, '_')}_${dateStr}.pdf`;
 
   if (mode === 'view') {
-    // Open in a new tab as a viewable PDF
+    // Return blob URL for embedding in a dialog
     const blob = doc.output('blob');
     const blobUrl = URL.createObjectURL(blob);
-    window.open(blobUrl, '_blank');
+    return { blobUrl, filename };
   } else {
     doc.save(filename);
+    return null;
   }
 }

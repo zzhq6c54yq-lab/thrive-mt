@@ -1,5 +1,5 @@
 
-import React, { useState } from "react";
+import React, { useState, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useNavigate } from "react-router-dom";
 import { ArrowLeft, LineChart, BarChart, PieChart, Calendar, Download, TrendingUp, Search, Share2, FileText, Loader2, X, ClipboardList, Eye } from "lucide-react";
@@ -26,6 +26,8 @@ const ProgressAnalytics = () => {
   const [isGenerating, setIsGenerating] = useState(false);
   const [isGeneratingComprehensive, setIsGeneratingComprehensive] = useState(false);
   const [isViewingReport, setIsViewingReport] = useState(false);
+  const [reportViewUrl, setReportViewUrl] = useState<string | null>(null);
+  const [reportViewFilename, setReportViewFilename] = useState<string>('');
 
   const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042', '#8884D8'];
 
@@ -203,14 +205,18 @@ const ProgressAnalytics = () => {
       console.log('[Report] Fetching data for:', userName);
       const reportData = await fetchComprehensiveReportData(user.id, userName);
       console.log('[Report] Data fetched successfully, generating PDF...');
-      generateComprehensiveReport(reportData, mode);
+      const result = generateComprehensiveReport(reportData, mode);
       console.log('[Report] PDF generated successfully');
-      toast({
-        title: mode === 'view' ? "Report Ready" : "PDF Ready — Download Starting...",
-        description: mode === 'view' 
-          ? "Your comprehensive report is opening in a new tab."
-          : "Your report has been generated. Check your browser's download bar.",
-      });
+      
+      if (mode === 'view' && result) {
+        setReportViewUrl(result.blobUrl);
+        setReportViewFilename(result.filename);
+      } else {
+        toast({
+          title: "PDF Ready — Download Starting...",
+          description: "Your report has been generated. Check your browser's download bar.",
+        });
+      }
     } catch (error) {
       console.error('[Report] Comprehensive report error:', error);
       toast({
@@ -883,6 +889,49 @@ const ProgressAnalytics = () => {
           </TabsContent>
         </Tabs>
       </div>
+
+      {/* PDF Viewer Modal */}
+      {reportViewUrl && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 backdrop-blur-sm">
+          <div className="relative w-[95vw] h-[90vh] max-w-5xl bg-background rounded-xl shadow-2xl border border-border flex flex-col overflow-hidden">
+            {/* Header */}
+            <div className="flex items-center justify-between px-4 py-3 border-b border-border bg-muted/50">
+              <h3 className="text-sm font-semibold text-foreground truncate">{reportViewFilename}</h3>
+              <div className="flex items-center gap-2">
+                <Button
+                  size="sm"
+                  className="bg-[#D4AF37] hover:bg-[#B87333] text-black"
+                  onClick={() => {
+                    const a = document.createElement('a');
+                    a.href = reportViewUrl;
+                    a.download = reportViewFilename;
+                    a.click();
+                  }}
+                >
+                  <Download className="w-4 h-4 mr-1.5" />
+                  Save
+                </Button>
+                <Button
+                  size="sm"
+                  variant="ghost"
+                  onClick={() => {
+                    URL.revokeObjectURL(reportViewUrl);
+                    setReportViewUrl(null);
+                  }}
+                >
+                  <X className="w-4 h-4" />
+                </Button>
+              </div>
+            </div>
+            {/* PDF Embed */}
+            <iframe
+              src={reportViewUrl}
+              className="flex-1 w-full"
+              title="Report Preview"
+            />
+          </div>
+        </div>
+      )}
     </div>
   );
 };
