@@ -11,6 +11,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { LineChart as RechartsLineChart, Line, BarChart as RechartsBarChart, Bar, PieChart as RechartsPieChart, Pie, Cell, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 import { useAnalyticsData } from "@/hooks/useAnalyticsData";
 import HenryInsightCard from "@/components/henry/HenryInsightCard";
+import WeeklyComparisonWidget from "@/components/progress/WeeklyComparisonWidget";
 import { useToast } from "@/hooks/use-toast";
 import { useUser } from "@/contexts/UserContext";
 import jsPDF from "jspdf";
@@ -474,6 +475,8 @@ const ProgressAnalytics = () => {
           </TabsContent>
           
           <TabsContent value="trends" className="space-y-6">
+            {/* Real-time this week vs last week comparison */}
+            <WeeklyComparisonWidget />
             <Card>
               <CardHeader>
                 <CardTitle>Long-Term Progress</CardTitle>
