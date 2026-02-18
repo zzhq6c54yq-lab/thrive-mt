@@ -7650,6 +7650,8 @@ export type Database = {
       user_streaks: {
         Row: {
           current_streak: number | null
+          freeze_credits: number
+          freeze_used_week_of: string | null
           id: string
           last_activity_date: string | null
           longest_streak: number | null
@@ -7659,6 +7661,8 @@ export type Database = {
         }
         Insert: {
           current_streak?: number | null
+          freeze_credits?: number
+          freeze_used_week_of?: string | null
           id?: string
           last_activity_date?: string | null
           longest_streak?: number | null
@@ -7668,6 +7672,8 @@ export type Database = {
         }
         Update: {
           current_streak?: number | null
+          freeze_credits?: number
+          freeze_used_week_of?: string | null
           id?: string
           last_activity_date?: string | null
           longest_streak?: number | null
