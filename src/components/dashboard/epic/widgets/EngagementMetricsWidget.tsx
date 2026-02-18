@@ -91,32 +91,15 @@ const EngagementMetricsWidget: React.FC = () => {
           messageCount = 0;
         }
 
-        // Calculate streak from check-ins
-        const { data: streakData } = await supabase
-          .from('daily_check_ins')
-          .select('created_at')
+        // Read streak from user_streaks table (single source of truth)
+        const { data: streakRow } = await supabase
+          .from('user_streaks')
+          .select('current_streak')
           .eq('user_id', user.id)
-          .order('created_at', { ascending: false })
-          .limit(30);
+          .eq('streak_type', 'check_in')
+          .maybeSingle();
 
-        let streak = 0;
-        if (streakData && streakData.length > 0) {
-          const dates = streakData.map(d => new Date(d.created_at).toDateString());
-          const uniqueDates = [...new Set(dates)];
-          const today = new Date().toDateString();
-          
-          if (uniqueDates[0] === today) {
-            streak = 1;
-            for (let i = 1; i < uniqueDates.length; i++) {
-              const expectedDate = new Date(now.getTime() - i * 24 * 60 * 60 * 1000).toDateString();
-              if (uniqueDates[i] === expectedDate) {
-                streak++;
-              } else {
-                break;
-              }
-            }
-          }
-        }
+        const streak = streakRow?.current_streak || 0;
 
         setStats({
           checkInsThisWeek: checkInCount || 0,

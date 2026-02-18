@@ -22,7 +22,7 @@ const ProgressAnalytics = () => {
   const navigate = useNavigate();
   const { toast } = useToast();
   const { user, profile } = useUser();
-  const { moodData, activityData, wellnessData } = useAnalyticsData();
+  const { moodData, activityData, wellnessData, trendsData } = useAnalyticsData();
   const [activeAnalysis, setActiveAnalysis] = useState<string | null>(null);
   const [isGenerating, setIsGenerating] = useState(false);
   const [isGeneratingComprehensive, setIsGeneratingComprehensive] = useState(false);
@@ -313,15 +313,27 @@ const ProgressAnalytics = () => {
       </div>
 
       <div className="container px-4 py-12 max-w-6xl mx-auto">
-        {/* Henry Insight Card */}
-        <HenryInsightCard 
-          insight="I've noticed your mood improved by 125% over the past 8 weeks! On days you meditated, your mood was 40% higher. You're making real progress - keep going!"
+        {/* Henry Insight Card — real mood data */}
+        <HenryInsightCard
+          insight={
+            trendsData?.hasData
+              ? trendsData.moodChangePercent !== null
+                ? `Your mood ${trendsData.moodChangePercent >= 0 ? 'improved' : 'changed'} by ${Math.abs(trendsData.moodChangePercent)}% compared to last month. You've been active ${trendsData.daysActive} days this month — keep showing up for yourself!`
+                : `You've checked in ${trendsData.daysActive} days this month. Every check-in builds the foundation for lasting change.`
+              : "Start your first check-in today to begin tracking your wellness journey. Your data will appear here as you engage with the platform."
+          }
           metric={{
-            label: "Mood Improvement",
-            value: "+125%",
-            trend: "up"
+            label: trendsData?.moodChangePercent !== null ? "Mood Change" : "Days Active",
+            value: trendsData?.moodChangePercent !== null
+              ? `${trendsData.moodChangePercent! >= 0 ? '+' : ''}${trendsData.moodChangePercent}%`
+              : `${trendsData?.daysActive ?? 0}`,
+            trend: (trendsData?.moodChangePercent ?? 0) >= 0 ? "up" : "down"
           }}
-          encouragement="Your consistency is paying off. We're so proud of how far you've come. 💪"
+          encouragement={
+            trendsData?.hasData
+              ? "Your consistency is what makes the difference. We're proud of your journey. 💪"
+              : "Every journey begins with a single step. Your wellness story starts now."
+          }
           className="mb-8"
         />
         
@@ -360,13 +372,19 @@ const ProgressAnalytics = () => {
                       </RechartsLineChart>
                     </ResponsiveContainer>
                   </div>
-                  {moodData.length > 0 && (
+                  {moodData.length > 0 ? (
                     <div className="mt-4 p-4 bg-gradient-to-r from-[#D4AF37]/10 to-[#E5C5A1]/5 rounded-lg border border-[#D4AF37]/30">
                       <p className="text-sm font-semibold text-[#D4AF37] mb-2">✨ Your Progress Insight</p>
                       <p className="text-sm text-muted-foreground">
-                        Your mood improved by <span className="font-bold text-[#D4AF37]">125%</span> over the past 8 weeks. 
-                        On days you meditated, your mood was <span className="font-bold text-[#D4AF37]">40% higher</span>.
+                        {trendsData?.moodChangePercent !== null && trendsData?.moodChangePercent !== undefined
+                          ? `Your mood ${trendsData.moodChangePercent >= 0 ? 'improved' : 'changed'} by ${Math.abs(trendsData.moodChangePercent)}% vs last month. Keep building this momentum!`
+                          : `You have ${moodData.length} mood data point${moodData.length !== 1 ? 's' : ''} recorded. Keep checking in to reveal your trends.`
+                        }
                       </p>
+                    </div>
+                  ) : (
+                    <div className="mt-4 p-4 rounded-lg border border-dashed border-muted text-center">
+                      <p className="text-sm text-muted-foreground">Complete a daily check-in to start tracking your mood trends.</p>
                     </div>
                   )}
                 </CardContent>
@@ -471,26 +489,50 @@ const ProgressAnalytics = () => {
                   <Button variant="outline" size="sm">Last Year</Button>
                   <Button variant="outline" size="sm">Custom Range</Button>
                 </div>
-                <div className="p-8 bg-gradient-to-br from-[#D4AF37]/10 to-[#E5C5A1]/5 rounded-xl border border-[#D4AF37]/30">
-                  <h3 className="text-lg font-semibold text-[#D4AF37] mb-4">Your Journey</h3>
-                  <p className="text-muted-foreground mb-4">
-                    Every step forward matters. Select a time period above to explore your detailed progress trends and celebrate how far you've come.
-                  </p>
-                  <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-6">
-                    <div className="bg-background/50 p-4 rounded-lg border border-[#D4AF37]/20">
-                      <p className="text-2xl font-bold text-[#D4AF37]">28</p>
-                      <p className="text-sm text-muted-foreground">Days Active</p>
-                    </div>
-                    <div className="bg-background/50 p-4 rounded-lg border border-[#D4AF37]/20">
-                      <p className="text-2xl font-bold text-[#D4AF37]">12</p>
-                      <p className="text-sm text-muted-foreground">Tools Explored</p>
-                    </div>
-                    <div className="bg-background/50 p-4 rounded-lg border border-[#D4AF37]/20">
-                      <p className="text-2xl font-bold text-[#D4AF37]">350</p>
-                      <p className="text-sm text-muted-foreground">Minutes Invested</p>
+
+                {trendsData?.hasData ? (
+                  <div className="p-8 bg-gradient-to-br from-[#D4AF37]/10 to-[#E5C5A1]/5 rounded-xl border border-[#D4AF37]/30">
+                    <h3 className="text-lg font-semibold text-[#D4AF37] mb-4">Your Journey — Last 30 Days</h3>
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-2">
+                      <div className="bg-background/50 p-4 rounded-lg border border-[#D4AF37]/20">
+                        <p className="text-2xl font-bold text-[#D4AF37]">{trendsData.daysActive}</p>
+                        <p className="text-sm text-muted-foreground">Days Active</p>
+                        {trendsData.daysActiveDelta !== 0 && (
+                          <p className={`text-xs mt-1 font-medium ${trendsData.daysActiveDelta > 0 ? 'text-green-400' : 'text-red-400'}`}>
+                            {trendsData.daysActiveDelta > 0 ? '↑' : '↓'} {Math.abs(trendsData.daysActiveDelta)} vs last month
+                          </p>
+                        )}
+                      </div>
+                      <div className="bg-background/50 p-4 rounded-lg border border-[#D4AF37]/20">
+                        <p className="text-2xl font-bold text-[#D4AF37]">
+                          {trendsData.avgMoodThis !== null ? `${trendsData.avgMoodThis}/5` : '—'}
+                        </p>
+                        <p className="text-sm text-muted-foreground">Avg Mood Score</p>
+                        {trendsData.moodChangePercent !== null && (
+                          <p className={`text-xs mt-1 font-medium ${trendsData.moodChangePercent >= 0 ? 'text-green-400' : 'text-red-400'}`}>
+                            {trendsData.moodChangePercent >= 0 ? '↑' : '↓'} {Math.abs(trendsData.moodChangePercent)}% vs last month
+                          </p>
+                        )}
+                      </div>
+                      <div className="bg-background/50 p-4 rounded-lg border border-[#D4AF37]/20">
+                        <p className="text-2xl font-bold text-[#D4AF37]">{trendsData.totalMinutes}</p>
+                        <p className="text-sm text-muted-foreground">Minutes Invested</p>
+                        <p className="text-xs mt-1 text-muted-foreground">Breathing + Binaural sessions</p>
+                      </div>
                     </div>
                   </div>
-                </div>
+                ) : (
+                  <div className="p-8 bg-gradient-to-br from-[#D4AF37]/5 to-transparent rounded-xl border border-[#D4AF37]/20 text-center">
+                    <p className="text-2xl mb-2">📊</p>
+                    <h3 className="text-lg font-semibold text-foreground mb-2">No Data Yet</h3>
+                    <p className="text-muted-foreground text-sm max-w-sm mx-auto">
+                      Complete your first daily check-in to start tracking your progress trends. Your real stats will appear here as you engage with the platform.
+                    </p>
+                    <Button className="mt-4" variant="outline" onClick={() => navigate('/app/dashboard')}>
+                      Start a Check-In
+                    </Button>
+                  </div>
+                )}
               </CardContent>
             </Card>
             
@@ -564,55 +606,56 @@ const ProgressAnalytics = () => {
                         <div className="space-y-4">
                           <h4 className="font-semibold text-[#D4AF37]">This Month vs. Last Month</h4>
                           <div className="space-y-3">
-                            <div className="flex justify-between items-center p-3 bg-green-500/10 rounded-lg border border-green-500/20">
+                            <div className={`flex justify-between items-center p-3 rounded-lg border ${trendsData?.moodChangePercent !== null && trendsData?.moodChangePercent !== undefined ? (trendsData.moodChangePercent >= 0 ? 'bg-green-500/10 border-green-500/20' : 'bg-red-500/10 border-red-500/20') : 'bg-muted/20 border-border'}`}>
                               <span className="text-sm">Average Mood</span>
-                              <span className="text-green-400 font-semibold">↑ +18%</span>
+                              <span className={`font-semibold ${trendsData?.moodChangePercent !== null && trendsData?.moodChangePercent !== undefined ? (trendsData.moodChangePercent >= 0 ? 'text-green-400' : 'text-red-400') : 'text-muted-foreground'}`}>
+                                {trendsData?.moodChangePercent !== null && trendsData?.moodChangePercent !== undefined
+                                  ? `${trendsData.moodChangePercent >= 0 ? '↑ +' : '↓ '}${trendsData.moodChangePercent}%`
+                                  : '— No data yet'}
+                              </span>
                             </div>
-                            <div className="flex justify-between items-center p-3 bg-green-500/10 rounded-lg border border-green-500/20">
+                            <div className={`flex justify-between items-center p-3 rounded-lg border ${trendsData?.totalMinutes > 0 ? 'bg-green-500/10 border-green-500/20' : 'bg-muted/20 border-border'}`}>
                               <span className="text-sm">Wellness Minutes</span>
-                              <span className="text-green-400 font-semibold">↑ +45 min/week</span>
+                              <span className={`font-semibold ${trendsData?.totalMinutes > 0 ? 'text-green-400' : 'text-muted-foreground'}`}>
+                                {trendsData?.totalMinutes != null ? `${trendsData.totalMinutes} min total` : '— No data yet'}
+                              </span>
                             </div>
-                            <div className="flex justify-between items-center p-3 bg-blue-500/10 rounded-lg border border-blue-500/20">
+                            <div className={`flex justify-between items-center p-3 rounded-lg border ${(trendsData?.daysActiveDelta ?? 0) !== 0 ? ((trendsData?.daysActiveDelta ?? 0) > 0 ? 'bg-green-500/10 border-green-500/20' : 'bg-amber-500/10 border-amber-500/20') : 'bg-blue-500/10 border-blue-500/20'}`}>
                               <span className="text-sm">Check-in Consistency</span>
-                              <span className="text-blue-400 font-semibold">= Stable</span>
-                            </div>
-                            <div className="flex justify-between items-center p-3 bg-green-500/10 rounded-lg border border-green-500/20">
-                              <span className="text-sm">Tools Used</span>
-                              <span className="text-green-400 font-semibold">↑ +3 new</span>
+                              <span className={`font-semibold ${(trendsData?.daysActiveDelta ?? 0) > 0 ? 'text-green-400' : (trendsData?.daysActiveDelta ?? 0) < 0 ? 'text-amber-400' : 'text-blue-400'}`}>
+                                {trendsData?.daysActive != null
+                                  ? (trendsData.daysActiveDelta > 0 ? `↑ +${trendsData.daysActiveDelta} days` : trendsData.daysActiveDelta < 0 ? `↓ ${trendsData.daysActiveDelta} days` : '= Stable')
+                                  : '— No data yet'}
+                              </span>
                             </div>
                           </div>
                         </div>
                         <div className="space-y-4">
-                          <h4 className="font-semibold text-[#D4AF37]">Goal Progress</h4>
-                          <div className="space-y-3">
-                            <div className="p-3 bg-background/50 rounded-lg border">
-                              <div className="flex justify-between mb-1">
-                                <span className="text-sm">Daily Check-ins</span>
-                                <span className="text-sm text-[#D4AF37]">75%</span>
+                          <h4 className="font-semibold text-[#D4AF37]">Check-In Progress</h4>
+                          {trendsData?.hasData ? (
+                            <div className="space-y-3">
+                              <div className="p-3 bg-background/50 rounded-lg border">
+                                <div className="flex justify-between mb-1">
+                                  <span className="text-sm">Days Active (30-day)</span>
+                                  <span className="text-sm text-[#D4AF37]">{Math.round(Math.min((trendsData.daysActive / 30) * 100, 100))}%</span>
+                                </div>
+                                <div className="w-full bg-muted rounded-full h-2">
+                                  <div className="bg-[#D4AF37] h-2 rounded-full" style={{ width: `${Math.min((trendsData.daysActive / 30) * 100, 100)}%` }} />
+                                </div>
                               </div>
-                              <div className="w-full bg-gray-800 rounded-full h-2">
-                                <div className="bg-[#D4AF37] h-2 rounded-full" style={{ width: '75%' }} />
-                              </div>
-                            </div>
-                            <div className="p-3 bg-background/50 rounded-lg border">
-                              <div className="flex justify-between mb-1">
-                                <span className="text-sm">Weekly Meditation</span>
-                                <span className="text-sm text-[#D4AF37]">60%</span>
-                              </div>
-                              <div className="w-full bg-gray-800 rounded-full h-2">
-                                <div className="bg-[#D4AF37] h-2 rounded-full" style={{ width: '60%' }} />
-                              </div>
-                            </div>
-                            <div className="p-3 bg-background/50 rounded-lg border">
-                              <div className="flex justify-between mb-1">
-                                <span className="text-sm">Journaling</span>
-                                <span className="text-sm text-[#D4AF37]">40%</span>
-                              </div>
-                              <div className="w-full bg-gray-800 rounded-full h-2">
-                                <div className="bg-[#D4AF37] h-2 rounded-full" style={{ width: '40%' }} />
+                              <div className="p-3 bg-background/50 rounded-lg border">
+                                <div className="flex justify-between mb-1">
+                                  <span className="text-sm">Mood Data Points</span>
+                                  <span className="text-sm text-[#D4AF37]">{moodData.length} recorded</span>
+                                </div>
+                                <div className="w-full bg-muted rounded-full h-2">
+                                  <div className="bg-[#D4AF37] h-2 rounded-full" style={{ width: `${Math.min((moodData.length / 30) * 100, 100)}%` }} />
+                                </div>
                               </div>
                             </div>
-                          </div>
+                          ) : (
+                            <p className="text-sm text-muted-foreground p-3 border rounded-lg border-dashed">Complete check-ins to see your goal progress here.</p>
+                          )}
                         </div>
                       </div>
                     </CardContent>

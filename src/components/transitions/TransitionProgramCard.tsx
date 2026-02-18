@@ -12,16 +12,14 @@ interface TransitionProgramCardProps {
   userId?: string;
 }
 
-// Default cover images for programs without one
+// Default cover images keyed by actual DB slugs
 const defaultCovers: Record<string, string> = {
-  "navigating-divorce": "https://images.unsplash.com/photo-1516589178581-6cd7833ae3b2?w=800&q=80",
-  "job-loss-recovery": "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=800&q=80",
-  "new-parent-journey": "https://images.unsplash.com/photo-1492725764893-90b379c2b6e7?w=800&q=80",
-  "empty-nest-transition": "https://images.unsplash.com/photo-1516627145497-ae6968895b40?w=800&q=80",
-  "grief-and-loss": "https://images.unsplash.com/photo-1474552226712-ac0f0961a954?w=800&q=80",
-  "retirement-preparation": "https://images.unsplash.com/photo-1447752875215-b2761acb3c5d?w=800&q=80",
-  "major-relocation": "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=800&q=80",
-  "health-diagnosis": "https://images.unsplash.com/photo-1576091160550-2173dba999ef?w=800&q=80",
+  "divorce-recovery": "https://images.unsplash.com/photo-1516589178581-6cd7833ae3b2?w=800&q=80",
+  "job-loss": "https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?w=800&q=80",
+  "new-parent": "https://images.unsplash.com/photo-1491013516836-7db643ee125a?w=800&q=80",
+  "grief-healing": "https://images.unsplash.com/photo-1516589178581-6cd7833ae3b2?w=800&q=80",
+  "retirement": "https://images.unsplash.com/photo-1447069387593-a5de0862481e?w=800&q=80",
+  "chronic-illness": "https://images.unsplash.com/photo-1576091160550-2173dba999ef?w=800&q=80",
 };
 
 const TransitionProgramCard = ({ program, icon: Icon, isEnrolled, currentWeek, userId }: TransitionProgramCardProps) => {

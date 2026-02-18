@@ -54,17 +54,20 @@ export default function QuickCheckIn({ onCheckInComplete }: { onCheckInComplete?
         .maybeSingle();
 
       if (existingStreak) {
-        const yesterday = new Date(Date.now() - 86400000).toISOString().split('T')[0];
-        const newStreak = existingStreak.last_activity_date === yesterday 
-          ? existingStreak.current_streak + 1 
-          : 1;
+        // Only update if this is a NEW day — never reset on same-day re-check-in
+        if (existingStreak.last_activity_date !== today) {
+          const yesterday = new Date(Date.now() - 86400000).toISOString().split('T')[0];
+          const newStreak = existingStreak.last_activity_date === yesterday
+            ? existingStreak.current_streak + 1
+            : 1;
 
-        await supabase.from('user_streaks').update({
-          current_streak: newStreak,
-          longest_streak: Math.max(newStreak, existingStreak.longest_streak),
-          last_activity_date: today,
-          updated_at: new Date().toISOString()
-        }).eq('id', existingStreak.id);
+          await supabase.from('user_streaks').update({
+            current_streak: newStreak,
+            longest_streak: Math.max(newStreak, existingStreak.longest_streak),
+            last_activity_date: today,
+            updated_at: new Date().toISOString()
+          }).eq('id', existingStreak.id);
+        }
       } else {
         await supabase.from('user_streaks').insert({
           user_id: user.id,
