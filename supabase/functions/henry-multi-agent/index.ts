@@ -521,7 +521,7 @@ serve(async (req) => {
   } catch (error) {
     console.error('Error in henry-multi-agent function:', error);
     return new Response(JSON.stringify({ 
-      error: error.message, 
+      error: 'An unexpected error occurred', 
       response: "I'm experiencing some technical difficulties. Please try again, or if you're in crisis, please call 988." 
     }), { 
       status: 500, 

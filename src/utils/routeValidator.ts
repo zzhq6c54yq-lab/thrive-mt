@@ -17,91 +17,166 @@ export interface RouteHealthReport {
   routes: RouteStatus[];
 }
 
-// All expected app routes (authenticated)
+// All expected app routes (authenticated) — synced with App.tsx
 export const APP_ROUTES = [
   '/app/dashboard',
   '/app/auth',
-  '/app/profile',
-  '/app/therapy-booking',
-  '/app/mental-wellness',
-  '/app/community',
+  '/app/onboarding',
+  '/app/home',
   '/app/messages',
-  '/app/progress',
-  '/app/vision-board',
-  '/app/veterans-portal',
-  '/app/therapist-portal',
-  '/app/coach-portal',
-  '/app/admin-portal',
-  '/app/single-parents-portal',
-  '/app/college-portal',
-  '/app/golden-years-portal',
-  '/app/first-responders-portal',
-  '/app/cancer-support-portal',
-  '/app/chronic-illness-portal',
-  '/app/educators-portal',
-  '/app/law-enforcement-portal',
-  '/app/hospitality-portal',
-  '/app/transportation-portal',
-  '/app/small-business-portal',
-  '/app/adolescent-portal',
-  '/app/client-video-session',
-  '/app/video-session',
-  '/app/breathing-exercise',
-  '/app/meditation-studio',
-  '/app/binaural-beats',
-  '/app/art-therapy',
-  '/app/music-therapy',
-  '/app/video-diary',
-  '/app/games-quizzes',
-  '/app/sleep-tracker',
+  '/app/journal',
   '/app/journaling',
-  '/app/dear-henry',
-  '/app/mini-session',
-  '/app/workshops',
-  '/app/assessments',
-  '/app/goals',
-  '/app/life-transitions',
-  '/app/buddy-system',
+  '/app/debug',
+  '/app/support-wall',
+  '/app/gratitude',
+  '/app/community',
   '/app/community-groups',
-  '/app/support-circle',
-  '/app/success-stories',
-  '/app/barter-system',
-  '/app/financial-assistance',
-  '/app/request-therapist',
-  '/app/real-time-therapy',
-  '/app/family-support',
+  '/app/community-support',
+  '/app/personalized-content',
+  '/app/progress-reports',
   '/app/progress-analytics',
+  '/app/progress-dashboard',
+  '/app/weekly-goals',
+  '/app/monthly-goals',
+  '/app/mental-wellness',
+  '/app/mental-wellness-tools',
+  '/app/mental-wellness-assessments',
+  '/app/family-resources',
+  '/app/games-and-quizzes',
+  '/app/mental-health-games',
+  '/app/cosmic-games',
+  '/app/small-business-portal',
+  '/app/small-business-welcome',
+  '/app/small-business-selection',
+  '/app/small-business-experience',
+  '/app/employee-welcome',
+  '/app/employee-dashboard',
+  '/app/employee-readiness',
+  '/app/unburdened',
+  '/app/all-features',
+  '/app/crisis-support',
+  '/app/crisis-resources',
   '/app/rewards',
-  '/app/settings',
-  '/app/notifications',
-  '/app/care-hub',
-  '/app/therapy-support',
-  '/app/wellness-toolkit',
+  '/app/badges',
+  '/app/learn-more',
+  '/app/co-pay',
+  '/app/copay-credits',
+  '/app/virtual-meetings',
+  '/app/barter-system',
+  '/app/barter-application',
+  '/app/subscription-plans',
+  '/app/payment-success',
+  '/app/financial-assistance',
+  '/app/contact',
+  '/app/privacy-security',
+  '/app/terms-of-service',
+  '/app/alternative-therapies',
+  '/app/department-of-defense',
+  '/app/dod-welcome',
+  '/app/dod-portal',
+  '/app/college-welcome',
+  '/app/college-portal',
+  '/app/adolescent-welcome',
+  '/app/adolescent-portal',
+  '/app/adolescent-selection',
+  '/app/golden-years-welcome',
+  '/app/golden-years-portal',
+  '/app/golden-years-journal',
+  '/app/golden-years-planning',
+  '/app/golden-years-memory',
+  '/app/golden-years-guide',
+  '/app/golden-years-transitions',
+  '/app/golden-years-community',
+  '/app/golden-years-family',
+  '/app/golden-years-wellness',
+  '/app/golden-years-calendar',
+  '/app/military-support',
+  '/app/military-resources',
+  '/app/user-lead',
+  '/app/first-responders-welcome',
+  '/app/first-responders-portal',
+  '/app/first-responders-resources',
+  '/app/first-responders-peer-support',
+  '/app/first-responders-critical-support',
+  '/app/first-responders-stress-management',
+  '/app/law-enforcement-welcome',
+  '/app/law-enforcement-portal',
+  '/app/educators-welcome',
+  '/app/educators-portal',
+  '/app/educators-burnout-assessment',
+  '/app/educators-classroom-stress-assessment',
+  '/app/educators-work-life-balance-assessment',
+  '/app/hospitality-welcome',
+  '/app/hospitality-portal',
+  '/app/hospitality-stress-assessment',
+  '/app/hospitality-burnout-assessment',
+  '/app/hospitality-work-life-balance-assessment',
+  '/app/transport-welcome',
+  '/app/transport-portal',
+  '/app/transport-stress-assessment',
+  '/app/transport-burnout-assessment',
+  '/app/transport-work-life-balance-assessment',
+  '/app/single-parents-welcome',
+  '/app/single-parents-portal',
+  '/app/chronic-illness-welcome',
+  '/app/chronic-illness-portal',
+  '/app/cancer-support-welcome',
+  '/app/cancer-support-portal',
+  '/app/real-time-therapy',
+  '/app/therapist-admin',
+  '/app/therapist-portal',
+  '/app/therapist-dashboard',
+  '/app/coach-dashboard',
+  '/app/therapist-video-session',
+  '/app/client-video-session',
+  '/app/signature-moments',
+  '/app/therapist-reset',
+  '/app/coach-intro',
+  '/app/coach-questionnaire',
+  '/app/coach-matches',
+  '/app/admin',
+  '/app/admin-portal',
+  '/app/engagement-metrics',
+  '/app/holistic-wellness',
+  '/app/life-transitions',
+  '/app/support-circle',
+  '/app/buddy-system',
+  '/app/binaural-beats',
+  '/app/mindfulness-sleep',
+  '/app/video-diary',
+  '/app/video-record',
+  '/app/video-library',
+  '/app/resource-library',
+  '/app/wellness-challenges',
+  '/app/my-sponsor',
+  '/app/workshops',
+  '/app/sleep-tracker',
+  '/app/sleep-insights',
+  '/app/music-therapy',
+  '/app/meditation',
+  '/app/aa-sponsor',
+  '/app/substance-abuse-sponsor',
+  '/app/career-coaching',
+  '/app/memorial-garden',
+  '/app/grief-resources',
+  '/app/legacy-builder',
+  '/app/mini-session',
+  '/app/mini-session-history',
+  '/app/generative-video',
+  '/app/mirror-ai',
+  '/app/enhanced-mirror-ai',
+  '/app/recommendations',
+  '/app/enhanced-audio-therapy',
+  '/app/art-therapy',
+  '/app/dear-henry',
+  '/app/dear-henry-admin',
+  '/app/all-workshops',
+  '/app/ai-workshop-studio',
 ];
 
-// All expected marketing routes (public)
+// Marketing routes (public) — served from root
 export const MARKETING_ROUTES = [
   '/',
-  '/home',
-  '/therapy',
-  '/coaching',
-  '/pricing',
-  '/about',
-  '/contact',
-  '/privacy-policy',
-  '/terms-of-service',
-  '/hipaa-notice',
-  '/demo',
-  '/henry',
-  '/careers',
-  '/press',
-  '/blog',
-  '/faq',
-  '/site',
-  '/site/home',
-  '/site/therapy',
-  '/site/coaching',
-  '/site/pricing',
 ];
 
 // Portal routes (specialized authenticated portals)
@@ -128,11 +203,9 @@ export function getAdminRoutes(): string[] {
 
 export function validateRoutePattern(route: string): RouteStatus {
   const isAppRoute = route.startsWith('/app');
-  const isMarketingRoute = MARKETING_ROUTES.includes(route) || route === '/' || route.startsWith('/site');
+  const isMarketingRoute = MARKETING_ROUTES.includes(route) || route === '/';
   
-  // Check if authenticated route has /app prefix
   if (!isAppRoute && !isMarketingRoute) {
-    // Check if it looks like an app route without prefix
     const potentialAppRoutes = ['dashboard', 'profile', 'portal', 'therapy', 'wellness', 'session'];
     const mightBeAppRoute = potentialAppRoutes.some(keyword => route.includes(keyword));
     
@@ -146,13 +219,11 @@ export function validateRoutePattern(route: string): RouteStatus {
     }
   }
 
-  // Determine category
   let category: 'app' | 'marketing' | 'portal' | 'admin' = 'app';
   if (isMarketingRoute) category = 'marketing';
   else if (route.includes('-portal')) category = 'portal';
   else if (route.includes('admin')) category = 'admin';
 
-  // Check if route exists in known routes
   const allKnownRoutes = [...APP_ROUTES, ...MARKETING_ROUTES];
   const isKnown = allKnownRoutes.some(known => route.startsWith(known));
 
@@ -173,12 +244,9 @@ export function validateRoutePattern(route: string): RouteStatus {
 }
 
 export function checkAppPrefix(route: string): boolean {
-  // Marketing routes don't need /app prefix
-  if (MARKETING_ROUTES.includes(route) || route === '/' || route.startsWith('/site')) {
+  if (MARKETING_ROUTES.includes(route) || route === '/') {
     return true;
   }
-  
-  // All other routes should have /app prefix
   return route.startsWith('/app');
 }
 
