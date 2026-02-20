@@ -7220,6 +7220,47 @@ export type Database = {
         }
         Relationships: []
       }
+      transition_worksheet_responses: {
+        Row: {
+          completed_at: string
+          created_at: string
+          day_number: number
+          id: string
+          program_id: string
+          responses: Json
+          user_id: string
+          week_number: number
+        }
+        Insert: {
+          completed_at?: string
+          created_at?: string
+          day_number: number
+          id?: string
+          program_id: string
+          responses?: Json
+          user_id: string
+          week_number: number
+        }
+        Update: {
+          completed_at?: string
+          created_at?: string
+          day_number?: number
+          id?: string
+          program_id?: string
+          responses?: Json
+          user_id?: string
+          week_number?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "transition_worksheet_responses_program_id_fkey"
+            columns: ["program_id"]
+            isOneToOne: false
+            referencedRelation: "life_transition_programs"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       user_activities: {
         Row: {
           activity_name: string

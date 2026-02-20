@@ -9,26 +9,63 @@ import {
 } from 'lucide-react';
 import { DayContent, WeekContent } from '@/data/lifeTransitionDailyContent';
 import { celebrateGoalCompletion } from '@/utils/animations';
+import WorksheetForm from './WorksheetForm';
+import TimeLockCountdown from './TimeLockCountdown';
+
+interface CompletionTimestamp {
+  weekNum: number;
+  dayNum: number;
+  completedAt: string; // ISO string
+}
 
 interface DayContentViewProps {
   week: WeekContent;
   completedDays: number[];
   currentDay: number;
-  onCompleteDay: (weekNum: number, dayNum: number) => void;
+  onCompleteDay: (weekNum: number, dayNum: number, worksheetResponses?: Record<string, any>) => void;
   onBack: () => void;
+  completionTimestamps?: CompletionTimestamp[];
 }
 
+const TWELVE_HOURS_MS = 12 * 60 * 60 * 1000;
+
 const DayContentView: React.FC<DayContentViewProps> = ({ 
-  week, completedDays, currentDay, onCompleteDay, onBack 
+  week, completedDays, currentDay, onCompleteDay, onBack, completionTimestamps = []
 }) => {
   const [expandedDay, setExpandedDay] = useState<number | null>(currentDay);
+  const [worksheetCompleted, setWorksheetCompleted] = useState<Record<number, Record<string, any>>>({});
+
+  const getCompletionTime = (dayNum: number): Date | null => {
+    const ts = completionTimestamps.find(t => t.weekNum === week.week && t.dayNum === dayNum);
+    return ts ? new Date(ts.completedAt) : null;
+  };
+
+  const isTimeLocked = (dayNum: number): { locked: boolean; unlockTime?: Date } => {
+    if (dayNum === 1) return { locked: false };
+    const prevCompletionTime = getCompletionTime(dayNum - 1);
+    if (!prevCompletionTime) return { locked: false };
+    
+    const unlockTime = new Date(prevCompletionTime.getTime() + TWELVE_HOURS_MS);
+    const now = new Date();
+    if (now < unlockTime) {
+      return { locked: true, unlockTime };
+    }
+    return { locked: false };
+  };
 
   const isDayAccessible = (dayNum: number) => {
     if (dayNum === 1) return true;
-    return completedDays.includes(dayNum - 1);
+    if (!completedDays.includes(dayNum - 1)) return false;
+    const lock = isTimeLocked(dayNum);
+    return !lock.locked;
   };
 
   const isDayCompleted = (dayNum: number) => completedDays.includes(dayNum);
+
+  const isDayTimeLocked = (dayNum: number) => {
+    if (!completedDays.includes(dayNum - 1)) return false;
+    return isTimeLocked(dayNum).locked;
+  };
 
   return (
     <div className="space-y-4">
@@ -57,6 +94,8 @@ const DayContentView: React.FC<DayContentViewProps> = ({
           const completed = isDayCompleted(day.day);
           const isExpanded = expandedDay === day.day;
           const isCurrent = day.day === currentDay && !completed;
+          const timeLocked = isDayTimeLocked(day.day);
+          const lockInfo = isTimeLocked(day.day);
 
           return (
             <motion.div
@@ -68,29 +107,35 @@ const DayContentView: React.FC<DayContentViewProps> = ({
               <Card className={`overflow-hidden transition-all ${
                 completed 
                   ? 'bg-green-900/20 border-green-500/30' 
-                  : isCurrent 
-                    ? 'bg-[#D4AF37]/10 border-[#D4AF37]/50' 
-                    : accessible 
-                      ? 'bg-gray-900/50 border-gray-700/50 hover:border-gray-600/50' 
-                      : 'bg-gray-900/30 border-gray-800/30 opacity-60'
+                  : timeLocked
+                    ? 'bg-amber-900/10 border-amber-500/30'
+                    : isCurrent 
+                      ? 'bg-[#D4AF37]/10 border-[#D4AF37]/50' 
+                      : accessible 
+                        ? 'bg-gray-900/50 border-gray-700/50 hover:border-gray-600/50' 
+                        : 'bg-gray-900/30 border-gray-800/30 opacity-60'
               }`}>
                 {/* Day Header */}
                 <button
                   className="w-full p-4 flex items-center gap-3 text-left"
-                  onClick={() => accessible && setExpandedDay(isExpanded ? null : day.day)}
-                  disabled={!accessible}
+                  onClick={() => (accessible || timeLocked) && setExpandedDay(isExpanded ? null : day.day)}
+                  disabled={!accessible && !timeLocked}
                 >
                   <div className={`flex-shrink-0 w-9 h-9 rounded-full flex items-center justify-center ${
                     completed 
                       ? 'bg-green-500' 
-                      : isCurrent 
-                        ? 'bg-[#D4AF37]' 
-                        : accessible 
-                          ? 'bg-gray-700' 
-                          : 'bg-gray-800'
+                      : timeLocked
+                        ? 'bg-amber-600'
+                        : isCurrent 
+                          ? 'bg-[#D4AF37]' 
+                          : accessible 
+                            ? 'bg-gray-700' 
+                            : 'bg-gray-800'
                   }`}>
                     {completed ? (
                       <CheckCircle className="w-5 h-5 text-white" />
+                    ) : timeLocked ? (
+                      <Clock className="w-4 h-4 text-white" />
                     ) : !accessible ? (
                       <Lock className="w-4 h-4 text-gray-500" />
                     ) : (
@@ -100,16 +145,19 @@ const DayContentView: React.FC<DayContentViewProps> = ({
 
                   <div className="flex-1 min-w-0">
                     <h4 className={`font-medium ${
-                      !accessible ? 'text-gray-600' : 'text-white'
+                      !accessible && !timeLocked ? 'text-gray-600' : 'text-white'
                     }`}>
                       Day {day.day}: {day.title}
                     </h4>
-                    {isCurrent && (
+                    {isCurrent && !timeLocked && (
                       <span className="text-xs text-[#D4AF37]">Today's focus</span>
+                    )}
+                    {timeLocked && (
+                      <span className="text-xs text-amber-400">Reflection period</span>
                     )}
                   </div>
 
-                  {accessible && (
+                  {(accessible || timeLocked) && (
                     isExpanded 
                       ? <ChevronUp className="w-5 h-5 text-gray-400" />
                       : <ChevronDown className="w-5 h-5 text-gray-400" />
@@ -118,7 +166,7 @@ const DayContentView: React.FC<DayContentViewProps> = ({
 
                 {/* Expanded Content */}
                 <AnimatePresence>
-                  {isExpanded && accessible && (
+                  {isExpanded && (accessible || timeLocked) && (
                     <motion.div
                       initial={{ height: 0, opacity: 0 }}
                       animate={{ height: 'auto', opacity: 1 }}
@@ -126,115 +174,133 @@ const DayContentView: React.FC<DayContentViewProps> = ({
                       transition={{ duration: 0.3 }}
                       className="overflow-hidden"
                     >
-                      <div className="px-4 pb-4 space-y-4 border-t border-white/5 pt-4">
-                        {/* Estimated Time */}
-                        <div className="flex items-center gap-2 text-xs text-gray-400 mb-1">
-                          <Clock className="w-3.5 h-3.5" />
-                          <span>Estimated time: ~30 minutes</span>
+                      {timeLocked && lockInfo.unlockTime ? (
+                        <div className="px-4 pb-4 border-t border-white/5 pt-4">
+                          <TimeLockCountdown unlockTime={lockInfo.unlockTime} />
                         </div>
-
-                        {/* Exercise */}
-                        <div className="bg-blue-500/10 rounded-lg p-4 border border-blue-500/20">
-                          <div className="flex items-center gap-2 mb-2">
-                            <Dumbbell className="w-5 h-5 text-blue-400" />
-                            <h5 className="font-semibold text-blue-300">Exercise: {day.exercise.name}</h5>
-                            <Badge variant="outline" className="text-blue-300 border-blue-400/30 text-xs ml-auto">
-                              {day.exercise.duration}
-                            </Badge>
+                      ) : (
+                        <div className="px-4 pb-4 space-y-4 border-t border-white/5 pt-4">
+                          {/* Estimated Time */}
+                          <div className="flex items-center gap-2 text-xs text-gray-400 mb-1">
+                            <Clock className="w-3.5 h-3.5" />
+                            <span>Estimated time: ~30 minutes</span>
                           </div>
-                          <p className="text-sm text-gray-300 mb-3">{day.exercise.description}</p>
-                          <ol className="space-y-1.5">
-                            {day.exercise.steps.map((step, i) => (
-                              <li key={i} className="text-sm text-gray-400 flex items-start gap-2">
-                                <span className="text-blue-400 font-mono text-xs mt-0.5">{i + 1}.</span>
-                                {step}
-                              </li>
-                            ))}
-                          </ol>
-                        </div>
 
-                        {/* Deep Dive */}
-                        {day.deepDive && (
-                          <div className="bg-indigo-500/10 rounded-lg p-4 border border-indigo-500/20">
+                          {/* Exercise */}
+                          <div className="bg-blue-500/10 rounded-lg p-4 border border-blue-500/20">
                             <div className="flex items-center gap-2 mb-2">
-                              <BookOpen className="w-5 h-5 text-indigo-400" />
-                              <h5 className="font-semibold text-indigo-300">Deep Dive: {day.deepDive.name}</h5>
-                              <Badge variant="outline" className="text-indigo-300 border-indigo-400/30 text-xs ml-auto">
-                                {day.deepDive.duration}
+                              <Dumbbell className="w-5 h-5 text-blue-400" />
+                              <h5 className="font-semibold text-blue-300">Exercise: {day.exercise.name}</h5>
+                              <Badge variant="outline" className="text-blue-300 border-blue-400/30 text-xs ml-auto">
+                                {day.exercise.duration}
                               </Badge>
                             </div>
-                            <p className="text-sm text-gray-300 mb-3">{day.deepDive.description}</p>
+                            <p className="text-sm text-gray-300 mb-3">{day.exercise.description}</p>
                             <ol className="space-y-1.5">
-                              {day.deepDive.steps.map((step, i) => (
+                              {day.exercise.steps.map((step, i) => (
                                 <li key={i} className="text-sm text-gray-400 flex items-start gap-2">
-                                  <span className="text-indigo-400 font-mono text-xs mt-0.5">{i + 1}.</span>
+                                  <span className="text-blue-400 font-mono text-xs mt-0.5">{i + 1}.</span>
                                   {step}
                                 </li>
                               ))}
                             </ol>
                           </div>
-                        )}
 
-                        {/* Guided Reflection */}
-                        {day.reflection && (
-                          <div className="bg-teal-500/10 rounded-lg p-4 border border-teal-500/20">
-                            <div className="flex items-center gap-2 mb-2">
-                              <PenLine className="w-5 h-5 text-teal-400" />
-                              <h5 className="font-semibold text-teal-300">Reflection: {day.reflection.name}</h5>
-                              <Badge variant="outline" className="text-teal-300 border-teal-400/30 text-xs ml-auto">
-                                {day.reflection.duration}
-                              </Badge>
+                          {/* Deep Dive */}
+                          {day.deepDive && (
+                            <div className="bg-indigo-500/10 rounded-lg p-4 border border-indigo-500/20">
+                              <div className="flex items-center gap-2 mb-2">
+                                <BookOpen className="w-5 h-5 text-indigo-400" />
+                                <h5 className="font-semibold text-indigo-300">Deep Dive: {day.deepDive.name}</h5>
+                                <Badge variant="outline" className="text-indigo-300 border-indigo-400/30 text-xs ml-auto">
+                                  {day.deepDive.duration}
+                                </Badge>
+                              </div>
+                              <p className="text-sm text-gray-300 mb-3">{day.deepDive.description}</p>
+                              <ol className="space-y-1.5">
+                                {day.deepDive.steps.map((step, i) => (
+                                  <li key={i} className="text-sm text-gray-400 flex items-start gap-2">
+                                    <span className="text-indigo-400 font-mono text-xs mt-0.5">{i + 1}.</span>
+                                    {step}
+                                  </li>
+                                ))}
+                              </ol>
                             </div>
-                            <ul className="space-y-3">
-                              {day.reflection.prompts.map((prompt, i) => (
-                                <li key={i} className="text-sm text-gray-300 flex items-start gap-2">
-                                  <span className="text-teal-400 mt-0.5 flex-shrink-0">•</span>
-                                  <span className="italic">{prompt}</span>
-                                </li>
-                              ))}
-                            </ul>
-                          </div>
-                        )}
+                          )}
 
-                        {/* Encouragement */}
-                        <div className="bg-amber-500/10 rounded-lg p-4 border border-amber-500/20">
-                          <div className="flex items-center gap-2 mb-2">
-                            <Heart className="w-5 h-5 text-amber-400" />
-                            <h5 className="font-semibold text-amber-300">Today's Encouragement</h5>
+                          {/* Guided Reflection */}
+                          {day.reflection && (
+                            <div className="bg-teal-500/10 rounded-lg p-4 border border-teal-500/20">
+                              <div className="flex items-center gap-2 mb-2">
+                                <PenLine className="w-5 h-5 text-teal-400" />
+                                <h5 className="font-semibold text-teal-300">Reflection: {day.reflection.name}</h5>
+                                <Badge variant="outline" className="text-teal-300 border-teal-400/30 text-xs ml-auto">
+                                  {day.reflection.duration}
+                                </Badge>
+                              </div>
+                              <ul className="space-y-3">
+                                {day.reflection.prompts.map((prompt, i) => (
+                                  <li key={i} className="text-sm text-gray-300 flex items-start gap-2">
+                                    <span className="text-teal-400 mt-0.5 flex-shrink-0">•</span>
+                                    <span className="italic">{prompt}</span>
+                                  </li>
+                                ))}
+                              </ul>
+                            </div>
+                          )}
+
+                          {/* Encouragement */}
+                          <div className="bg-amber-500/10 rounded-lg p-4 border border-amber-500/20">
+                            <div className="flex items-center gap-2 mb-2">
+                              <Heart className="w-5 h-5 text-amber-400" />
+                              <h5 className="font-semibold text-amber-300">Today's Encouragement</h5>
+                            </div>
+                            <p className="text-sm text-gray-200 italic">"{day.encouragement}"</p>
                           </div>
-                          <p className="text-sm text-gray-200 italic">"{day.encouragement}"</p>
+
+                          {/* Daily Task */}
+                          <div className="bg-purple-500/10 rounded-lg p-4 border border-purple-500/20">
+                            <div className="flex items-center gap-2 mb-2">
+                              <CheckSquare className="w-5 h-5 text-purple-400" />
+                              <h5 className="font-semibold text-purple-300">Task: {day.task.name}</h5>
+                            </div>
+                            <p className="text-sm text-gray-300">{day.task.description}</p>
+                          </div>
+
+                          {/* Worksheet */}
+                          {day.worksheet && !completed && (
+                            <WorksheetForm
+                              worksheet={day.worksheet}
+                              onComplete={(responses) => {
+                                setWorksheetCompleted(prev => ({ ...prev, [day.day]: responses }));
+                              }}
+                              disabled={!!worksheetCompleted[day.day]}
+                            />
+                          )}
+
+                          {/* Complete Button */}
+                          {!completed && (
+                            <Button
+                              onClick={() => {
+                                onCompleteDay(week.week, day.day, worksheetCompleted[day.day]);
+                                celebrateGoalCompletion();
+                              }}
+                              disabled={day.worksheet && !worksheetCompleted[day.day]}
+                              className="w-full bg-gradient-to-r from-[#D4AF37] to-[#B87333] hover:from-[#E5C5A1] hover:to-[#D4AF37] text-black font-semibold disabled:opacity-50"
+                            >
+                              <Sparkles className="w-4 h-4 mr-2" />
+                              Complete Day {day.day}
+                            </Button>
+                          )}
+
+                          {completed && (
+                            <div className="flex items-center justify-center gap-2 text-green-400 py-2">
+                              <CheckCircle className="w-5 h-5" />
+                              <span className="font-medium">Day completed!</span>
+                            </div>
+                          )}
                         </div>
-
-                        {/* Daily Task */}
-                        <div className="bg-purple-500/10 rounded-lg p-4 border border-purple-500/20">
-                          <div className="flex items-center gap-2 mb-2">
-                            <CheckSquare className="w-5 h-5 text-purple-400" />
-                            <h5 className="font-semibold text-purple-300">Task: {day.task.name}</h5>
-                          </div>
-                          <p className="text-sm text-gray-300">{day.task.description}</p>
-                        </div>
-
-                        {/* Complete Button */}
-                        {!completed && (
-                          <Button
-                            onClick={() => {
-                              onCompleteDay(week.week, day.day);
-                              celebrateGoalCompletion();
-                            }}
-                            className="w-full bg-gradient-to-r from-[#D4AF37] to-[#B87333] hover:from-[#E5C5A1] hover:to-[#D4AF37] text-black font-semibold"
-                          >
-                            <Sparkles className="w-4 h-4 mr-2" />
-                            Complete Day {day.day}
-                          </Button>
-                        )}
-
-                        {completed && (
-                          <div className="flex items-center justify-center gap-2 text-green-400 py-2">
-                            <CheckCircle className="w-5 h-5" />
-                            <span className="font-medium">Day completed!</span>
-                          </div>
-                        )}
-                      </div>
+                      )}
                     </motion.div>
                   )}
                 </AnimatePresence>

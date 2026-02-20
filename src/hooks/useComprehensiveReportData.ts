@@ -800,6 +800,102 @@ export async function fetchComprehensiveReportData(userId: string, userName: str
   // ─── TOTAL POINTS ───
   const totalPoints = activities.length * 10 + badgesEarned.length * 50 + journals.length * 15 + breathingData.length * 5 + binauralData.length * 5 + miniSessionCount * 10 + meditationSessions * 10 + gratitudeEntryCount * 5;
 
+  // ─── LIFE TRANSITION PROGRESSION MATRIX ───
+  let lifeTransitionProgress: ComprehensiveReportData['lifeTransitionProgress'] = [];
+  try {
+    const { data: enrollments } = await supabase
+      .from('user_transition_progress')
+      .select('*, program:life_transition_programs(*)')
+      .eq('user_id', userId);
+
+    if (enrollments && enrollments.length > 0) {
+      const { data: worksheetData } = await supabase
+        .from('transition_worksheet_responses' as any)
+        .select('*')
+        .eq('user_id', userId);
+
+      const worksheets = (worksheetData || []) as any[];
+
+      lifeTransitionProgress = enrollments.map((enrollment: any) => {
+        const prog = enrollment.program;
+        const progWorksheets = worksheets.filter((w: any) => w.program_id === enrollment.program_id);
+        const notes = enrollment.notes as any || {};
+        const completedDays = notes.completedDays || {};
+        let totalCompleted = 0;
+        for (const weekKey in completedDays) {
+          totalCompleted += (completedDays[weekKey] || []).length;
+        }
+        const totalDays = 42; // 6 weeks * 7 days
+        const completionRate = Math.round((totalCompleted / totalDays) * 100);
+
+        // Wellbeing scores from scale questions
+        const wellbeingScores: { week: number; score: number }[] = [];
+        progWorksheets.forEach((ws: any) => {
+          const responses = ws.responses || {};
+          for (const key in responses) {
+            if (key.includes('_wellbeing') && typeof responses[key] === 'number') {
+              wellbeingScores.push({ week: ws.week_number, score: responses[key] });
+            }
+          }
+        });
+
+        const avgWellbeing = wellbeingScores.length > 0
+          ? wellbeingScores.reduce((s, w) => s + w.score, 0) / wellbeingScores.length
+          : 0;
+
+        // Wellbeing trend
+        let wellbeingTrend: 'improving' | 'stable' | 'declining' = 'stable';
+        if (wellbeingScores.length >= 4) {
+          const half = Math.floor(wellbeingScores.length / 2);
+          const firstAvg = wellbeingScores.slice(0, half).reduce((s, w) => s + w.score, 0) / half;
+          const secondAvg = wellbeingScores.slice(half).reduce((s, w) => s + w.score, 0) / (wellbeingScores.length - half);
+          if (secondAvg - firstAvg > 0.5) wellbeingTrend = 'improving';
+          else if (firstAvg - secondAvg > 0.5) wellbeingTrend = 'declining';
+        }
+
+        // Reflection word count
+        let totalWords = 0;
+        let textCount = 0;
+        progWorksheets.forEach((ws: any) => {
+          const responses = ws.responses || {};
+          for (const key in responses) {
+            if (typeof responses[key] === 'string' && responses[key].trim().length > 0) {
+              totalWords += responses[key].trim().split(/\s+/).length;
+              textCount++;
+            }
+          }
+        });
+        const reflectionWordCount = textCount > 0 ? Math.round(totalWords / textCount) : 0;
+
+        // Engagement gaps
+        const completionDates = progWorksheets
+          .map((ws: any) => new Date(ws.completed_at).toISOString().split('T')[0])
+          .sort();
+        let gaps = 0;
+        for (let i = 1; i < completionDates.length; i++) {
+          const diff = (new Date(completionDates[i]).getTime() - new Date(completionDates[i - 1]).getTime()) / (1000 * 60 * 60 * 24);
+          if (diff > 2) gaps++;
+        }
+
+        return {
+          programName: prog?.title || 'Unknown Program',
+          enrolledDate: new Date(enrollment.created_at).toLocaleDateString('en-US', { month: 'short', day: 'numeric' }),
+          completionRate,
+          currentWeek: enrollment.current_week || 1,
+          totalWeeks: 6,
+          daysCompleted: totalCompleted,
+          totalDays,
+          avgWellbeingScore: Number(avgWellbeing.toFixed(1)),
+          wellbeingTrend,
+          reflectionWordCount,
+          engagementGaps: gaps,
+        };
+      });
+    }
+  } catch (e) {
+    console.warn('Life transition progress fetch failed:', e);
+  }
+
   const result: ComprehensiveReportData = {
     userName,
     reportDate: now,
@@ -865,6 +961,7 @@ export async function fetchComprehensiveReportData(userId: string, userName: str
     sleepActivityCorrelation,
     performanceTriad,
     hrsFlags,
+    lifeTransitionProgress,
   };
 
   console.log('Report generated successfully:', { userId, totalFields: Object.keys(result).length });

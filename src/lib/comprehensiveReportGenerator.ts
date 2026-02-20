@@ -154,6 +154,21 @@ export interface ComprehensiveReportData {
     indirectWarnings: { category: string; term: string; context: string }[];
     riskLevel: 'none' | 'indirect-only' | 'elevated';
   };
+
+  // Life Transition Program Progress
+  lifeTransitionProgress?: {
+    programName: string;
+    enrolledDate: string;
+    completionRate: number;
+    currentWeek: number;
+    totalWeeks: number;
+    daysCompleted: number;
+    totalDays: number;
+    avgWellbeingScore: number;
+    wellbeingTrend: 'improving' | 'stable' | 'declining';
+    reflectionWordCount: number;
+    engagementGaps: number;
+  }[];
 }
 
 export function generateComprehensiveReport(data: ComprehensiveReportData, mode: 'download' | 'view' = 'download') {
@@ -1065,6 +1080,27 @@ export function generateComprehensiveReport(data: ComprehensiveReportData, mode:
 
   if (data.sleepActivityCorrelation) {
     bodyText(`Sleep-Activity Correlation: ${data.sleepActivityCorrelation}`);
+  }
+
+  // ─── SECTION 16: LIFE TRANSITION PROGRAM PROGRESS ───
+  if ((data.lifeTransitionProgress || []).length > 0) {
+    checkPage(40);
+    sectionTitle('16. Life Transition Program Progress');
+    data.lifeTransitionProgress!.forEach(prog => {
+      checkPage(35);
+      bodyText(`Program: ${prog.programName} (Enrolled ${prog.enrolledDate})`);
+      statBox('Completion', `${prog.completionRate}%`, ml, y, box4W, prog.completionRate >= 50 ? BRAND.green : BRAND.amber);
+      statBox('Wellbeing', `${prog.avgWellbeingScore}/10`, ml + box4W + 4, y, box4W, prog.wellbeingTrend === 'declining' ? BRAND.red : BRAND.green);
+      statBox('Trend', `${trendArrow(prog.wellbeingTrend)} ${prog.wellbeingTrend}`, ml + (box4W + 4) * 2, y, box4W, trendColor(prog.wellbeingTrend));
+      statBox('Reflection', `${prog.reflectionWordCount} wds`, ml + (box4W + 4) * 3, y, box4W);
+      y += 28;
+      bullet(`Week ${prog.currentWeek} of ${prog.totalWeeks} — ${prog.daysCompleted}/${prog.totalDays} days completed`, 3);
+      bullet(`Engagement gaps (>2 days between sessions): ${prog.engagementGaps}`, 3);
+      if (prog.wellbeingTrend === 'declining') {
+        bullet('ATTENTION: Declining wellbeing trend detected — clinician follow-up recommended', 3);
+      }
+      y += 5;
+    });
   }
 
   // ─── CLOSING ───

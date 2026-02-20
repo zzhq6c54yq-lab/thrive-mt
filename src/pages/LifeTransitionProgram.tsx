@@ -55,6 +55,27 @@ const LifeTransitionProgram = () => {
     enabled: !!user?.id && !!program?.id,
   });
 
+  // Fetch worksheet completion timestamps for 12-hour time lock
+  const { data: worksheetTimestamps } = useQuery({
+    queryKey: ['worksheet-timestamps', program?.id, user?.id],
+    queryFn: async () => {
+      if (!user?.id || !program?.id) return [];
+      const { data, error } = await supabase
+        .from('transition_worksheet_responses' as any)
+        .select('week_number, day_number, completed_at')
+        .eq('user_id', user.id)
+        .eq('program_id', program.id)
+        .order('completed_at', { ascending: true });
+      if (error) throw error;
+      return (data || []).map((r: any) => ({
+        weekNum: r.week_number,
+        dayNum: r.day_number,
+        completedAt: r.completed_at,
+      }));
+    },
+    enabled: !!user?.id && !!program?.id,
+  });
+
   const enrollMutation = useMutation({
     mutationFn: async () => {
       if (!user?.id) throw new Error("Please log in to enroll");
@@ -80,8 +101,8 @@ const LifeTransitionProgram = () => {
   });
 
   const updateProgressMutation = useMutation({
-    mutationFn: async ({ weekNum, dayNum }: { weekNum: number; dayNum: number }) => {
-      if (!enrollment?.id) return;
+    mutationFn: async ({ weekNum, dayNum, worksheetResponses }: { weekNum: number; dayNum: number; worksheetResponses?: Record<string, any> }) => {
+      if (!enrollment?.id || !user?.id || !program?.id) return;
       
       const currentNotes = (enrollment.notes as any) || { completedDays: {} };
       const completedDays = currentNotes.completedDays || {};
@@ -99,6 +120,21 @@ const LifeTransitionProgram = () => {
         newCurrentWeek = weekNum + 1;
       }
 
+      // Save worksheet responses to dedicated table
+      if (worksheetResponses && Object.keys(worksheetResponses).length > 0) {
+        const { error: wsError } = await supabase
+          .from('transition_worksheet_responses' as any)
+          .upsert({
+            user_id: user.id,
+            program_id: program.id,
+            week_number: weekNum,
+            day_number: dayNum,
+            responses: worksheetResponses,
+            completed_at: new Date().toISOString(),
+          } as any);
+        if (wsError) console.error('Worksheet save error:', wsError);
+      }
+
       const { error } = await supabase
         .from('user_transition_progress')
         .update({ 
@@ -109,8 +145,9 @@ const LifeTransitionProgram = () => {
       if (error) throw error;
     },
     onSuccess: () => {
-      toast({ title: "Day completed! 🎉", description: "Keep up the amazing work!" });
+      toast({ title: "Day completed!", description: "Keep up the amazing work!" });
       queryClient.invalidateQueries({ queryKey: ['transition-enrollment', slug] });
+      queryClient.invalidateQueries({ queryKey: ['worksheet-timestamps'] });
     },
   });
 
@@ -186,8 +223,11 @@ const LifeTransitionProgram = () => {
               week={week}
               completedDays={getCompletedDaysForWeek(selectedWeek)}
               currentDay={getCurrentDayForWeek(selectedWeek)}
-              onCompleteDay={(weekNum, dayNum) => updateProgressMutation.mutate({ weekNum, dayNum })}
+              onCompleteDay={(weekNum, dayNum, worksheetResponses) => 
+                updateProgressMutation.mutate({ weekNum, dayNum, worksheetResponses })
+              }
               onBack={() => setSelectedWeek(null)}
+              completionTimestamps={worksheetTimestamps || []}
             />
           </div>
         </div>
