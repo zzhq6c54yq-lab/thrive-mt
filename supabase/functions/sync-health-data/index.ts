@@ -76,6 +76,6 @@ Deno.serve(async (req) => {
     return new Response(JSON.stringify({ success: true, recordsSynced: healthData.length, lastSyncAt: new Date().toISOString() }), { headers: { ...corsHeaders, 'Content-Type': 'application/json' } });
   } catch (error) {
     console.error('Error in sync-health-data function:', error);
-    return new Response(JSON.stringify({ error: error.message }), { status: 500, headers: { ...corsHeaders, 'Content-Type': 'application/json' } });
+    return new Response(JSON.stringify({ error: 'An unexpected error occurred' }), { status: 500, headers: { ...corsHeaders, 'Content-Type': 'application/json' } });
   }
 });

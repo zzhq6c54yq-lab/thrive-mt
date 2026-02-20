@@ -1,10 +1,11 @@
 import "https://deno.land/x/xhr@0.1.0/mod.ts";
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
+import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
 import { z } from "https://deno.land/x/zod@v3.22.4/mod.ts";
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
-  'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
+  'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type, x-supabase-client-platform, x-supabase-client-platform-version, x-supabase-client-runtime, x-supabase-client-runtime-version',
 };
 
 // Zod schema for input validation
@@ -25,7 +26,6 @@ async function callMixtral(userMessage: string, conversationContext: string[] = 
     throw new Error('TOGETHER_API_KEY not configured');
   }
 
-  // Build conversation history from context
   const messages: ChatMessage[] = [
     { 
       role: "system", 
@@ -45,7 +45,6 @@ Rules:
     }
   ];
 
-  // Add conversation context
   conversationContext.forEach(contextItem => {
     const [role, content] = contextItem.split(': ', 2);
     if (role === 'User') {
@@ -55,7 +54,6 @@ Rules:
     }
   });
 
-  // Add current user message
   messages.push({ role: 'user', content: userMessage });
 
   const response = await fetch("https://api.together.xyz/v1/chat/completions", {
@@ -89,9 +87,35 @@ serve(async (req) => {
   }
 
   try {
+    // JWT Authentication
+    const authHeader = req.headers.get('Authorization');
+    if (!authHeader?.startsWith('Bearer ')) {
+      return new Response(
+        JSON.stringify({ error: 'Unauthorized' }),
+        { status: 401, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+      );
+    }
+
+    const supabase = createClient(
+      Deno.env.get('SUPABASE_URL')!,
+      Deno.env.get('SUPABASE_ANON_KEY')!,
+      { global: { headers: { Authorization: authHeader } } }
+    );
+
+    const token = authHeader.replace('Bearer ', '');
+    const { data: claimsData, error: claimsError } = await supabase.auth.getClaims(token);
+    if (claimsError || !claimsData?.claims) {
+      return new Response(
+        JSON.stringify({ error: 'Unauthorized' }),
+        { status: 401, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+      );
+    }
+
+    const userId = claimsData.claims.sub;
+    console.log('Authenticated user:', userId);
+
     const rawBody = await req.json();
     
-    // Validate input with Zod
     const parseResult = RequestSchema.safeParse(rawBody);
     if (!parseResult.success) {
       console.error('Validation error:', parseResult.error.errors);
@@ -106,18 +130,13 @@ serve(async (req) => {
 
     const { message, conversationContext } = parseResult.data;
 
-    console.log('henry-ai-chat processing message:', message.substring(0, 100) + '...');
+    console.log('henry-ai-chat processing message for user:', userId);
 
     const response = await callMixtral(message, conversationContext || []);
 
     return new Response(
       JSON.stringify({ response }),
-      { 
-        headers: { 
-          ...corsHeaders, 
-          'Content-Type': 'application/json' 
-        } 
-      }
+      { headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
     );
 
   } catch (error) {
@@ -125,7 +144,7 @@ serve(async (req) => {
     
     return new Response(
       JSON.stringify({ 
-        error: error.message,
+        error: 'An unexpected error occurred',
         response: "I'm experiencing some technical difficulties. Please try again, or if this persists, consider reaching out to a mental health professional directly."
       }),
       {

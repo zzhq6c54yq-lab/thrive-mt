@@ -57,5 +57,8 @@ verify_jwt = false
 [functions.smart-therapist-match]
 verify_jwt = false
 
+[functions.henry-ai-chat]
+verify_jwt = false
+
 [functions.check-license-expiry]
 verify_jwt = false

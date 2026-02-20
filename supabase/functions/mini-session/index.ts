@@ -148,7 +148,7 @@ serve(async (req) => {
     
     return new Response(
       JSON.stringify({ 
-        error: error.message,
+        error: 'An unexpected error occurred',
         coaching: "I'm experiencing technical difficulties. Please try again, or reach out to your therapist if you need immediate support."
       }),
       {

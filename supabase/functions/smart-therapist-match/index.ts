@@ -3,14 +3,14 @@ import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
-  'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
+  'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type, x-supabase-client-platform, x-supabase-client-platform-version, x-supabase-client-runtime, x-supabase-client-runtime-version',
 };
 
 interface MatchRequest {
   state: string;
   insurance?: string;
-  sessionType: string; // 'Individual', 'Group', 'Family'
-  sessionDuration: number; // 30, 45, 60
+  sessionType: string;
+  sessionDuration: number;
   preferredTime?: string;
   concerns?: string[];
   selfPayAllowed?: boolean;
@@ -27,12 +27,39 @@ interface TherapistMatch {
 }
 
 serve(async (req) => {
-  // Handle CORS preflight
   if (req.method === 'OPTIONS') {
     return new Response(null, { headers: corsHeaders });
   }
 
   try {
+    // JWT Authentication
+    const authHeader = req.headers.get('Authorization');
+    if (!authHeader?.startsWith('Bearer ')) {
+      return new Response(
+        JSON.stringify({ error: 'Unauthorized' }),
+        { status: 401, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+      );
+    }
+
+    const authClient = createClient(
+      Deno.env.get('SUPABASE_URL')!,
+      Deno.env.get('SUPABASE_ANON_KEY')!,
+      { global: { headers: { Authorization: authHeader } } }
+    );
+
+    const token = authHeader.replace('Bearer ', '');
+    const { data: claimsData, error: claimsError } = await authClient.auth.getClaims(token);
+    if (claimsError || !claimsData?.claims) {
+      return new Response(
+        JSON.stringify({ error: 'Unauthorized' }),
+        { status: 401, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+      );
+    }
+
+    const userId = claimsData.claims.sub;
+    console.log('Authenticated user for therapist match:', userId);
+
+    // Use service role for data access
     const supabaseUrl = Deno.env.get('SUPABASE_URL')!;
     const supabaseServiceKey = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!;
     const supabase = createClient(supabaseUrl, supabaseServiceKey);
@@ -42,7 +69,6 @@ serve(async (req) => {
 
     console.log('Smart Match Request:', { state, insurance, sessionType, sessionDuration, selfPayAllowed });
 
-    // Validate required fields
     if (!state || !sessionType || !sessionDuration) {
       return new Response(
         JSON.stringify({ error: 'Missing required fields: state, sessionType, sessionDuration' }),
@@ -83,7 +109,6 @@ serve(async (req) => {
       const matchReasons: string[] = [];
       let eligible = true;
 
-      // Step 1: Filter by State License
       const statesLicensed = therapist.states_licensed || [];
       if (statesLicensed.length > 0 && !statesLicensed.includes(state)) {
         eligible = false;
@@ -91,7 +116,6 @@ serve(async (req) => {
         matchReasons.push(`Licensed in ${state}`);
       }
 
-      // Step 2: Check Insurance Match
       const insurancePanels = therapist.insurance_panels || [];
       let insuranceMatch = false;
       
@@ -108,13 +132,10 @@ serve(async (req) => {
         matchReasons.push('Self-pay');
       }
 
-      // Step 3: Filter by Session Type
       const sessionTypesOffered = therapist.session_types_offered || ['60-Individual'];
       if (!sessionTypesOffered.includes(sessionKey) && !sessionTypesOffered.includes(`${sessionDuration}-${sessionType}`)) {
-        // Check if therapist offers general session type
         const hasSessionType = sessionTypesOffered.some((t: string) => t.includes(sessionType));
         if (!hasSessionType && sessionTypesOffered.length > 0) {
-          // Allow if no specific session types configured (default)
           if (sessionTypesOffered.length === 1 && sessionTypesOffered[0] === '60-Individual') {
             matchReasons.push('Standard session available');
           }
@@ -125,7 +146,6 @@ serve(async (req) => {
         matchReasons.push(`Offers ${sessionDuration}-minute ${sessionType} sessions`);
       }
 
-      // Step 4: Check Availability (if provided)
       if (preferredTime && therapist.availability_schedule) {
         const schedule = therapist.availability_schedule;
         if (Object.keys(schedule).length > 0) {
@@ -133,7 +153,6 @@ serve(async (req) => {
         }
       }
 
-      // Step 5: Check Specialty Match (if concerns provided)
       if (concerns && concerns.length > 0) {
         const specialties = therapist.specialties || [];
         const matchedSpecialties = concerns.filter((c: string) => 
@@ -144,7 +163,6 @@ serve(async (req) => {
         }
       }
 
-      // Step 6: Calculate Financials
       let sessionRate: number;
       if (insuranceMatch && cptCodes) {
         sessionRate = cptCodes.max_insurance_reimbursement;
@@ -189,19 +207,17 @@ serve(async (req) => {
       }
     }
 
-    // Sort by rating and match reasons count
     matchedTherapists.sort((a, b) => {
       const ratingDiff = (b.therapist.rating || 0) - (a.therapist.rating || 0);
       if (ratingDiff !== 0) return ratingDiff;
       return b.matchReasons.length - a.matchReasons.length;
     });
 
-    // Calculate totals for admin dashboard
     const totalPotentialRevenue = matchedTherapists.reduce((sum, m) => sum + m.sessionRate, 0);
     const totalTherapistPayout = matchedTherapists.reduce((sum, m) => sum + m.therapistPayout, 0);
     const totalPlatformRevenue = matchedTherapists.reduce((sum, m) => sum + m.platformRevenue, 0);
 
-    console.log(`Found ${matchedTherapists.length} matched therapists`);
+    console.log(`Found ${matchedTherapists.length} matched therapists for user ${userId}`);
 
     return new Response(
       JSON.stringify({
@@ -230,7 +246,7 @@ serve(async (req) => {
   } catch (error) {
     console.error('Smart Match Error:', error);
     return new Response(
-      JSON.stringify({ error: error.message || 'Internal server error' }),
+      JSON.stringify({ error: 'An unexpected error occurred' }),
       { status: 500, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
     );
   }
