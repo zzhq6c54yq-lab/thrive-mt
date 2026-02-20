@@ -1,6 +1,22 @@
 // Daily content for Life Transition programs
 // Each week has 7 days, each day has an exercise, encouragement, and task
 
+export interface WorksheetQuestion {
+  id: string;
+  prompt: string;
+  type: 'text' | 'scale' | 'multiChoice';
+  options?: string[];
+  scaleMin?: number;
+  scaleMax?: number;
+  scaleLabels?: { min: string; max: string };
+}
+
+export interface Worksheet {
+  title: string;
+  instructions: string;
+  questions: WorksheetQuestion[];
+}
+
 export interface DayContent {
   day: number;
   title: string;
@@ -26,6 +42,7 @@ export interface DayContent {
     description: string;
     steps: string[];
   };
+  worksheet?: Worksheet;
 }
 
 export interface WeekContent {
@@ -412,41 +429,100 @@ function generateGenericProgram(programName: string, weeks: { title: string; des
   }));
 }
 
-// Enrich every day in every program with reflection and deepDive if not already present
-function enrichDay(day: DayContent, weekTitle: string): DayContent {
-  if (day.reflection && day.deepDive) return day;
-
-  const reflectionPromptsByTheme: string[] = [
-    `Sit quietly for a moment after completing today's exercise ("${day.exercise.name}"). What emotions, memories, or insights surfaced? Write freely for 5 minutes without editing.`,
-    `How does today's theme of "${day.title}" connect to patterns in your life? Are there recurring feelings or situations this brings up?`,
-    `Imagine explaining today's experience to someone who deeply cares about you. What would you want them to understand about where you are right now?`,
-    `What is one thing you discovered about yourself through today's practice that you didn't expect? How might this change how you move through tomorrow?`,
-  ];
-
-  const deepDiveSteps: string[] = [
-    `Find a comfortable, quiet space and set a timer for 10 minutes`,
-    `Begin by rereading or recalling the core of today's exercise: "${day.exercise.description}"`,
-    `Close your eyes and take 5 slow breaths. With each exhale, release one worry or distraction`,
-    `Visualize yourself fully embodying today's lesson—what does that look like in your daily life? Be specific about one situation`,
-    `Notice any resistance, doubt, or fear that arises. Instead of pushing it away, write it down and ask: "What are you trying to protect me from?"`,
-    `Write a specific, actionable commitment related to today's theme. Start with: "Tomorrow I will..."`,
-    `Read your commitment aloud, take 3 more deep breaths, and close by placing your hand over your heart for 30 seconds`,
-  ];
-
+// Generate a worksheet based on the day's content
+function generateWorksheet(day: DayContent, weekTitle: string, programSlug: string): Worksheet {
+  const dayId = `${programSlug}_w${weekTitle}_d${day.day}`;
+  
   return {
-    ...day,
-    reflection: day.reflection || {
+    title: `Daily Worksheet: ${day.title}`,
+    instructions: `Complete this worksheet to process today's learning and track your progress. Your responses are saved and contribute to your clinical progression report.`,
+    questions: [
+      {
+        id: `${dayId}_wellbeing`,
+        prompt: 'How would you rate your overall wellbeing right now?',
+        type: 'scale' as const,
+        scaleMin: 1,
+        scaleMax: 10,
+        scaleLabels: { min: 'Very low', max: 'Excellent' },
+      },
+      {
+        id: `${dayId}_reflection`,
+        prompt: `After completing today's exercise ("${day.exercise.name}"), what came up for you? Describe your thoughts, feelings, or any insights.`,
+        type: 'text' as const,
+      },
+      {
+        id: `${dayId}_coping`,
+        prompt: 'Which coping strategies did you use today? (Select all that apply)',
+        type: 'multiChoice' as const,
+        options: [
+          'Deep breathing',
+          'Journaling',
+          'Physical movement',
+          'Talking to someone',
+          'Meditation or mindfulness',
+          'Creative expression',
+          'Self-compassion practice',
+          'None today',
+        ],
+      },
+      {
+        id: `${dayId}_takeaway`,
+        prompt: 'What is your key takeaway from today? Write one thing you want to remember.',
+        type: 'text' as const,
+      },
+      {
+        id: `${dayId}_readiness`,
+        prompt: 'How ready do you feel to move forward with tomorrow\'s work?',
+        type: 'scale' as const,
+        scaleMin: 1,
+        scaleMax: 10,
+        scaleLabels: { min: 'Not ready', max: 'Very ready' },
+      },
+    ],
+  };
+}
+
+// Enrich every day in every program with reflection, deepDive, and worksheet
+function enrichDay(day: DayContent, weekTitle: string, programSlug: string = ''): DayContent {
+  const enriched = { ...day };
+
+  if (!enriched.reflection) {
+    const reflectionPromptsByTheme: string[] = [
+      `Sit quietly for a moment after completing today's exercise ("${day.exercise.name}"). What emotions, memories, or insights surfaced? Write freely for 5 minutes without editing.`,
+      `How does today's theme of "${day.title}" connect to patterns in your life? Are there recurring feelings or situations this brings up?`,
+      `Imagine explaining today's experience to someone who deeply cares about you. What would you want them to understand about where you are right now?`,
+      `What is one thing you discovered about yourself through today's practice that you didn't expect? How might this change how you move through tomorrow?`,
+    ];
+    enriched.reflection = {
       name: 'Guided Reflection',
       duration: '10 min',
       prompts: reflectionPromptsByTheme,
-    },
-    deepDive: day.deepDive || {
+    };
+  }
+
+  if (!enriched.deepDive) {
+    const deepDiveSteps: string[] = [
+      `Find a comfortable, quiet space and set a timer for 10 minutes`,
+      `Begin by rereading or recalling the core of today's exercise: "${day.exercise.description}"`,
+      `Close your eyes and take 5 slow breaths. With each exhale, release one worry or distraction`,
+      `Visualize yourself fully embodying today's lesson—what does that look like in your daily life? Be specific about one situation`,
+      `Notice any resistance, doubt, or fear that arises. Instead of pushing it away, write it down and ask: "What are you trying to protect me from?"`,
+      `Write a specific, actionable commitment related to today's theme. Start with: "Tomorrow I will..."`,
+      `Read your commitment aloud, take 3 more deep breaths, and close by placing your hand over your heart for 30 seconds`,
+    ];
+    enriched.deepDive = {
       name: `Deep Dive: ${weekTitle}`,
       duration: '10 min',
       description: `A deeper, contemplative practice building on today's exercise to strengthen understanding of ${weekTitle.toLowerCase()}.`,
       steps: deepDiveSteps,
-    },
-  };
+    };
+  }
+
+  if (!enriched.worksheet) {
+    enriched.worksheet = generateWorksheet(day, weekTitle, programSlug);
+  }
+
+  return enriched;
 }
 
 // Apply enrichment to all programs
@@ -456,7 +532,7 @@ for (const [key, program] of Object.entries(rawProgramContent)) {
     ...program,
     weeks: program.weeks.map(week => ({
       ...week,
-      days: week.days.map(day => enrichDay(day, week.title)),
+      days: week.days.map(day => enrichDay(day, week.title, program.slug)),
     })),
   };
 }
