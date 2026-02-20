@@ -60,138 +60,130 @@ const AdminEngagementMetrics: React.FC = () => {
 
   const fetchEngagementData = async () => {
     try {
-      // Get total users
-      const { count: totalUsers } = await supabase
-        .from('profiles')
-        .select('*', { count: 'exact', head: true });
-
-      // Get active users today
       const today = new Date().toISOString().split('T')[0];
-      const { count: activeToday } = await supabase
-        .from('daily_check_ins')
-        .select('user_id', { count: 'exact', head: true })
-        .gte('created_at', today);
-
-      // Get active users this week
       const weekAgo = new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString();
-      const { data: weeklyUsers } = await supabase
-        .from('daily_check_ins')
-        .select('user_id')
-        .gte('created_at', weekAgo);
-      const uniqueWeeklyUsers = new Set(weeklyUsers?.map(u => u.user_id) || []).size;
-
-      // Get active users this month
       const monthAgo = new Date(Date.now() - 30 * 24 * 60 * 60 * 1000).toISOString();
-      const { data: monthlyUsers } = await supabase
-        .from('daily_check_ins')
-        .select('user_id')
-        .gte('created_at', monthAgo);
-      const uniqueMonthlyUsers = new Set(monthlyUsers?.map(u => u.user_id) || []).size;
 
-      // Get total check-ins
-      const { count: totalCheckIns } = await supabase
-        .from('daily_check_ins')
-        .select('*', { count: 'exact', head: true });
+      // Fetch everything in parallel
+      const [
+        totalUsersRes,
+        activeTodayRes,
+        weeklyUsersRes,
+        monthlyUsersRes,
+        totalCheckInsRes,
+        totalConversationsRes,
+        breathingSessionsRes,
+        binauralSessionsRes,
+        meditationSessionsRes,
+        journalEntriesRes,
+        assessmentsRes,
+        crisisTodayRes,
+        henryUsersRes,
+        breathingUsersRes,
+        binauralUsersRes,
+        meditationUsersRes,
+        journalUsersRes,
+        assessmentUsersRes,
+        communityUsersRes,
+        breathingMinutesRes,
+        binauralMinutesRes,
+        meditationMinutesRes,
+      ] = await Promise.all([
+        supabase.from('profiles').select('*', { count: 'exact', head: true }),
+        supabase.from('daily_check_ins').select('user_id', { count: 'exact', head: true }).gte('created_at', today),
+        supabase.from('daily_check_ins').select('user_id, created_at').gte('created_at', weekAgo),
+        supabase.from('daily_check_ins').select('user_id').gte('created_at', monthAgo),
+        supabase.from('daily_check_ins').select('*', { count: 'exact', head: true }),
+        supabase.from('henry_conversations').select('*', { count: 'exact', head: true }),
+        supabase.from('breathing_sessions').select('*', { count: 'exact', head: true }),
+        supabase.from('binaural_sessions').select('*', { count: 'exact', head: true }),
+        supabase.from('meditation_sessions').select('*', { count: 'exact', head: true }),
+        supabase.from('journal_entries').select('*', { count: 'exact', head: true }),
+        supabase.from('assessment_results').select('*', { count: 'exact', head: true }),
+        supabase.from('crisis_events').select('*', { count: 'exact', head: true }).gte('created_at', today),
+        supabase.from('henry_conversations').select('user_id').gte('created_at', monthAgo),
+        supabase.from('breathing_sessions').select('user_id').gte('created_at', monthAgo),
+        supabase.from('binaural_sessions').select('user_id').gte('created_at', monthAgo),
+        supabase.from('meditation_sessions').select('user_id').gte('created_at', monthAgo),
+        supabase.from('journal_entries').select('user_id').gte('created_at', monthAgo),
+        supabase.from('assessment_results').select('user_id').gte('created_at', monthAgo),
+        supabase.from('community_group_messages').select('user_id').gte('created_at', monthAgo),
+        supabase.from('breathing_sessions').select('duration_seconds').gte('created_at', monthAgo),
+        supabase.from('binaural_sessions').select('duration_minutes').gte('created_at', monthAgo),
+        supabase.from('meditation_sessions').select('duration_seconds').gte('created_at', monthAgo),
+      ]);
 
-      // Get Henry conversations
-      const { count: totalConversations } = await supabase
-        .from('henry_conversations')
-        .select('*', { count: 'exact', head: true });
+      const total = totalUsersRes.count || 1;
+      const uniqueWeeklyUsers = new Set(weeklyUsersRes.data?.map(u => u.user_id) || []).size;
+      const uniqueMonthlyUsers = new Set(monthlyUsersRes.data?.map(u => u.user_id) || []).size;
 
-      // Get breathing sessions
-      const { count: breathingSessions } = await supabase
-        .from('breathing_sessions')
-        .select('*', { count: 'exact', head: true });
+      const uniqueHenryUsers = new Set(henryUsersRes.data?.map(u => u.user_id) || []).size;
+      const uniqueBreathingUsers = new Set(breathingUsersRes.data?.map(u => u.user_id) || []).size;
+      const uniqueBinauralUsers = new Set(binauralUsersRes.data?.map(u => u.user_id) || []).size;
+      const uniqueMeditationUsers = new Set(meditationUsersRes.data?.map(u => u.user_id) || []).size;
+      const uniqueJournalUsers = new Set(journalUsersRes.data?.map(u => u.user_id) || []).size;
+      const uniqueAssessmentUsers = new Set(assessmentUsersRes.data?.map(u => u.user_id) || []).size;
+      const uniqueCommunityUsers = new Set(communityUsersRes.data?.map(u => u.user_id) || []).size;
 
-      // Get journal entries
-      const { count: journalEntries } = await supabase
-        .from('journal_entries')
-        .select('*', { count: 'exact', head: true });
+      // Calculate total platform minutes
+      const breathingMins = (breathingMinutesRes.data || []).reduce((s, b) => s + Math.round((b.duration_seconds || 0) / 60), 0);
+      const binauralMins = (binauralMinutesRes.data || []).reduce((s, b) => s + (b.duration_minutes || 0), 0);
+      const meditationMins = (meditationMinutesRes.data || []).reduce((s, b) => s + Math.round((b.duration_seconds || 0) / 60), 0);
+      const totalPlatformMinutes = breathingMins + binauralMins + meditationMins;
 
-      // Get assessments
-      const { count: assessments } = await supabase
-        .from('assessment_results')
-        .select('*', { count: 'exact', head: true });
-
-      // Get crisis events today
-      const { count: crisisToday } = await supabase
-        .from('crisis_events')
-        .select('*', { count: 'exact', head: true })
-        .gte('created_at', today);
-
-      // Feature usage - users who used each feature in last 30 days
-      const { data: henryUsers } = await supabase
-        .from('henry_conversations')
-        .select('user_id')
-        .gte('created_at', monthAgo);
-      const uniqueHenryUsers = new Set(henryUsers?.map(u => u.user_id) || []).size;
-
-      const { data: breathingUsers } = await supabase
-        .from('breathing_sessions')
-        .select('user_id')
-        .gte('created_at', monthAgo);
-      const uniqueBreathingUsers = new Set(breathingUsers?.map(u => u.user_id) || []).size;
-
-      const { data: journalUsers } = await supabase
-        .from('journal_entries')
-        .select('user_id')
-        .gte('created_at', monthAgo);
-      const uniqueJournalUsers = new Set(journalUsers?.map(u => u.user_id) || []).size;
-
-      const { data: assessmentUsers } = await supabase
-        .from('assessment_results')
-        .select('user_id')
-        .gte('created_at', monthAgo);
-      const uniqueAssessmentUsers = new Set(assessmentUsers?.map(u => u.user_id) || []).size;
-
-      const { data: communityUsers } = await supabase
-        .from('community_group_messages')
-        .select('user_id')
-        .gte('created_at', monthAgo);
-      const uniqueCommunityUsers = new Set(communityUsers?.map(u => u.user_id) || []).size;
-
-      const total = totalUsers || 1;
-      
-      // Calculate retention rates
       const retentionRate7Day = total > 0 ? Math.round((uniqueWeeklyUsers / total) * 100) : 0;
       const retentionRate30Day = total > 0 ? Math.round((uniqueMonthlyUsers / total) * 100) : 0;
 
-      // Top features
       const topFeatures = [
         { name: 'Daily Check-ins', users: uniqueMonthlyUsers, percentage: Math.round((uniqueMonthlyUsers / total) * 100) },
         { name: 'Henry AI', users: uniqueHenryUsers, percentage: Math.round((uniqueHenryUsers / total) * 100) },
         { name: 'Breathing', users: uniqueBreathingUsers, percentage: Math.round((uniqueBreathingUsers / total) * 100) },
+        { name: 'Binaural Beats', users: uniqueBinauralUsers, percentage: Math.round((uniqueBinauralUsers / total) * 100) },
+        { name: 'Meditation', users: uniqueMeditationUsers, percentage: Math.round((uniqueMeditationUsers / total) * 100) },
         { name: 'Journaling', users: uniqueJournalUsers, percentage: Math.round((uniqueJournalUsers / total) * 100) },
         { name: 'Assessments', users: uniqueAssessmentUsers, percentage: Math.round((uniqueAssessmentUsers / total) * 100) },
         { name: 'Community', users: uniqueCommunityUsers, percentage: Math.round((uniqueCommunityUsers / total) * 100) },
       ].sort((a, b) => b.users - a.users);
 
+      // Build 7-day engagement trend
+      const engagementTrend: { date: string; users: number }[] = [];
+      const allWeeklyCheckIns = weeklyUsersRes.data || [];
+      for (let i = 6; i >= 0; i--) {
+        const d = new Date(Date.now() - i * 24 * 60 * 60 * 1000);
+        const dateStr = d.toISOString().split('T')[0];
+        // This is approximate — check-in created_at starts with dateStr
+        const dayUsers = new Set(
+          allWeeklyCheckIns.filter(c => (c as any).created_at?.startsWith(dateStr)).map(c => c.user_id)
+        ).size;
+        engagementTrend.push({ date: dateStr, users: dayUsers });
+      }
+
       setData({
-        totalUsers: totalUsers || 0,
-        activeUsersToday: activeToday || 0,
+        totalUsers: totalUsersRes.count || 0,
+        activeUsersToday: activeTodayRes.count || 0,
         activeUsersWeek: uniqueWeeklyUsers,
         activeUsersMonth: uniqueMonthlyUsers,
-        totalCheckIns: totalCheckIns || 0,
-        avgCheckInsPerUser: total > 0 ? Math.round((totalCheckIns || 0) / total * 10) / 10 : 0,
-        totalConversations: totalConversations || 0,
-        totalBreathingSessions: breathingSessions || 0,
-        totalMeditations: 0, // Would need meditation_sessions table
-        totalJournalEntries: journalEntries || 0,
-        totalAssessments: assessments || 0,
-        crisisEventsToday: crisisToday || 0,
+        totalCheckIns: totalCheckInsRes.count || 0,
+        avgCheckInsPerUser: total > 0 ? Math.round((totalCheckInsRes.count || 0) / total * 10) / 10 : 0,
+        totalConversations: totalConversationsRes.count || 0,
+        totalBreathingSessions: (breathingSessionsRes.count || 0) + (binauralSessionsRes.count || 0),
+        totalMeditations: meditationSessionsRes.count || 0,
+        totalJournalEntries: journalEntriesRes.count || 0,
+        totalAssessments: assessmentsRes.count || 0,
+        crisisEventsToday: crisisTodayRes.count || 0,
         retentionRate7Day,
         retentionRate30Day,
         featureUsage: {
           henry: uniqueHenryUsers,
           breathing: uniqueBreathingUsers,
-          meditation: 0,
+          meditation: uniqueMeditationUsers,
           journaling: uniqueJournalUsers,
           assessments: uniqueAssessmentUsers,
           community: uniqueCommunityUsers,
-          workshops: 0,
+          workshops: uniqueBinauralUsers,
         },
         topFeatures,
-        engagementTrend: [], // Would need time-series query
+        engagementTrend,
       });
     } catch (error) {
       console.error('Error fetching engagement data:', error);
@@ -357,7 +349,7 @@ const AdminEngagementMetrics: React.FC = () => {
       </Card>
 
       {/* Activity Totals */}
-      <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
+      <div className="grid grid-cols-2 md:grid-cols-6 gap-4">
         <Card className="bg-background/50 border-border/50">
           <CardContent className="p-4 text-center">
             <Smile className="h-5 w-5 mx-auto mb-2 text-yellow-500" />
@@ -376,7 +368,14 @@ const AdminEngagementMetrics: React.FC = () => {
           <CardContent className="p-4 text-center">
             <Heart className="h-5 w-5 mx-auto mb-2 text-red-500" />
             <div className="text-2xl font-bold">{data.totalBreathingSessions.toLocaleString()}</div>
-            <div className="text-xs text-muted-foreground">Breathing Sessions</div>
+            <div className="text-xs text-muted-foreground">Breathing + Binaural</div>
+          </CardContent>
+        </Card>
+        <Card className="bg-background/50 border-border/50">
+          <CardContent className="p-4 text-center">
+            <Zap className="h-5 w-5 mx-auto mb-2 text-indigo-500" />
+            <div className="text-2xl font-bold">{data.totalMeditations.toLocaleString()}</div>
+            <div className="text-xs text-muted-foreground">Meditations</div>
           </CardContent>
         </Card>
         <Card className="bg-background/50 border-border/50">
