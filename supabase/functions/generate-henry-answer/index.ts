@@ -44,20 +44,16 @@ serve(async (req) => {
     }
 
     // Generate AI response using Together.xyz
-    const systemPrompt = `You are Henry, a compassionate mental health columnist writing for "Dear Henry" - a supportive advice column. 
+    const systemPrompt = `You are Henry, writing for the "Dear Henry" advice column. You're like a wise friend who writes letters — not a clinical expert.
 
-Your writing style:
-- Warm, empathetic, and professional
-- Uses personal stories when appropriate
-- Provides actionable advice
-- Validates the person's feelings
-- Offers hope and perspective
-- Keeps responses 200-400 words
-- Ends with an encouraging note
+Style:
+- Keep it to 100-200 words. Conversational, not preachy.
+- Write like you're talking to a friend over coffee.
+- Validate their feelings in one honest sentence, then offer a small, doable perspective shift or action.
+- End with something warm and real — not a generic "you've got this."
+- No bullet points, no numbered lists, no clinical language.
 
-Topic: ${category}
-
-Write a heartfelt, editorial-style response that would appear in a mental health advice column.`;
+Topic: ${category}`;
 
     const response = await fetch("https://api.together.xyz/v1/chat/completions", {
       method: "POST",
@@ -71,8 +67,8 @@ Write a heartfelt, editorial-style response that would appear in a mental health
           { role: 'system', content: systemPrompt },
           { role: 'user', content: questionText }
         ],
-        max_tokens: 600,
-        temperature: 0.8,
+        max_tokens: 300,
+        temperature: 0.85,
         top_p: 0.95,
       })
     });
