@@ -40,7 +40,7 @@ const EngagementMetricsWidget: React.FC = () => {
       const weekAgo = new Date(now.getTime() - 7 * 24 * 60 * 60 * 1000);
 
       // Fetch all data in parallel
-      const [checkInResult, planResult, breathingResult, binauralResult, journalResult, badgeResult, messageResult, streakResult] = await Promise.allSettled([
+      const [checkInResult, planResult, breathingResult, binauralResult, journalResult, badgeResult, messageResult, streakResult, meditationResult] = await Promise.allSettled([
         supabase.from('daily_check_ins').select('*', { count: 'exact', head: true }).eq('user_id', user.id).gte('created_at', weekAgo.toISOString()),
         supabase.from('daily_plans').select('activities').eq('user_id', user.id).order('plan_date', { ascending: false }).limit(7),
         supabase.from('breathing_sessions').select('duration_seconds').eq('user_id', user.id).gte('created_at', weekAgo.toISOString()),
@@ -49,6 +49,7 @@ const EngagementMetricsWidget: React.FC = () => {
         supabase.from('user_earned_badges').select('id').eq('user_id', user.id),
         supabase.from('henry_messages').select('id').eq('role', 'user').limit(200),
         supabase.from('user_streaks').select('current_streak').eq('user_id', user.id).eq('streak_type', 'check_in').maybeSingle(),
+        supabase.from('meditation_sessions').select('duration_seconds').eq('user_id', user.id).gte('created_at', weekAgo.toISOString()),
       ]);
 
       const checkInCount = checkInResult.status === 'fulfilled' ? (checkInResult.value.count || 0) : 0;
@@ -83,11 +84,19 @@ const EngagementMetricsWidget: React.FC = () => {
         });
       }
 
+      // Add meditation minutes
+      if (meditationResult.status === 'fulfilled' && meditationResult.value.data) {
+        meditationResult.value.data.forEach((s: any) => {
+          totalMinutes += Math.round((s.duration_seconds || 0) / 60);
+          activitiesCompleted++;
+        });
+      }
+
       // Add journal entries as activities
       if (journalResult.status === 'fulfilled') {
         const journalCount = journalResult.value.count || 0;
         activitiesCompleted += journalCount;
-        totalMinutes += journalCount * 10; // Est. 10 min per journal entry
+        totalMinutes += journalCount * 10;
       }
 
       const badgeCount = badgeResult.status === 'fulfilled' ? (badgeResult.value.data?.length || 0) : 0;

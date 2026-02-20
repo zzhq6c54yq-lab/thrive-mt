@@ -42,47 +42,35 @@ const OperationsAnalytics: React.FC = () => {
       const today = new Date();
       const weekAgo = subDays(today, 7);
 
-      // Daily Active Users (checked in today)
-      const { count: dailyActive } = await supabase
-        .from('daily_check_ins')
-        .select('*', { count: 'exact', head: true })
-        .gte('created_at', format(today, 'yyyy-MM-dd'));
+      const [dailyActiveRes, totalSessionsRes, completedSessionsRes, bookingsRes, newUsersRes, breathingRes, binauralRes, meditationRes] = await Promise.all([
+        supabase.from('daily_check_ins').select('*', { count: 'exact', head: true }).gte('created_at', format(today, 'yyyy-MM-dd')),
+        supabase.from('therapy_bookings').select('*', { count: 'exact', head: true }),
+        supabase.from('therapy_bookings').select('*', { count: 'exact', head: true }).eq('status', 'completed'),
+        supabase.from('therapy_bookings').select('payment_amount').eq('payment_status', 'paid'),
+        supabase.from('profiles').select('*', { count: 'exact', head: true }).gte('created_at', weekAgo.toISOString()),
+        supabase.from('breathing_sessions').select('duration_seconds').gte('created_at', weekAgo.toISOString()),
+        supabase.from('binaural_sessions').select('duration_minutes').gte('created_at', weekAgo.toISOString()),
+        supabase.from('meditation_sessions').select('duration_seconds').gte('created_at', weekAgo.toISOString()),
+      ]);
 
-      // Total therapy sessions
-      const { count: totalSessions } = await supabase
-        .from('therapy_bookings')
-        .select('*', { count: 'exact', head: true });
+      const revenue = bookingsRes.data?.reduce((sum, b) => sum + (b.payment_amount || 0), 0) || 0;
 
-      // Completed sessions
-      const { count: completedSessions } = await supabase
-        .from('therapy_bookings')
-        .select('*', { count: 'exact', head: true })
-        .eq('status', 'completed');
+      // Calculate real avg session duration from breathing + binaural + meditation
+      const allDurations: number[] = [];
+      (breathingRes.data || []).forEach(s => allDurations.push(Math.round((s.duration_seconds || 0) / 60)));
+      (binauralRes.data || []).forEach(s => allDurations.push(s.duration_minutes || 0));
+      (meditationRes.data || []).forEach(s => allDurations.push(Math.round((s.duration_seconds || 0) / 60)));
+      const avgDuration = allDurations.length > 0 ? Math.round(allDurations.reduce((a, b) => a + b, 0) / allDurations.length) : 0;
 
-      // Revenue calculation
-      const { data: bookings } = await supabase
-        .from('therapy_bookings')
-        .select('payment_amount')
-        .eq('payment_status', 'paid');
-
-      const revenue = bookings?.reduce((sum, b) => sum + (b.payment_amount || 0), 0) || 0;
-
-      // New users this week
-      const { count: newUsers } = await supabase
-        .from('profiles')
-        .select('*', { count: 'exact', head: true })
-        .gte('created_at', weekAgo.toISOString());
-
-      // Avg session duration (mock for now)
-      const avgDuration = 45;
+      const totalSessions = totalSessionsRes.count || 0;
 
       setAnalytics({
-        dailyActiveUsers: dailyActive || 0,
-        totalSessions: totalSessions || 0,
-        completionRate: totalSessions ? Math.round((completedSessions || 0) / totalSessions * 100) : 0,
+        dailyActiveUsers: dailyActiveRes.count || 0,
+        totalSessions,
+        completionRate: totalSessions ? Math.round((completedSessionsRes.count || 0) / totalSessions * 100) : 0,
         avgSessionDuration: avgDuration,
-        revenue: revenue,
-        newUsers: newUsers || 0
+        revenue,
+        newUsers: newUsersRes.count || 0
       });
     } catch (error) {
       console.error('Error fetching analytics:', error);
