@@ -1,7 +1,8 @@
 import React from 'react';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
-import { Sparkles, BookOpen } from 'lucide-react';
+import { BookOpen } from 'lucide-react';
+import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar';
 import { motion } from 'framer-motion';
 
 interface DailyWisdomDialogProps {
@@ -30,10 +31,13 @@ const DailyWisdomDialog: React.FC<DailyWisdomDialogProps> = ({ open, onClose, me
           >
             <div className="flex justify-center">
               <motion.div
-                animate={{ scale: [1, 1.1, 1] }}
+                animate={{ scale: [1, 1.05, 1] }}
                 transition={{ duration: 3, repeat: Infinity }}
               >
-                <Sparkles className="w-16 h-16 text-[#D4AF37]" />
+                <Avatar className="h-16 w-16 border-2 border-[#D4AF37]/50">
+                  <AvatarImage src="/lovable-uploads/f3c84972-8f58-42d7-b86f-82ff2d823b30.png" alt="Henry" />
+                  <AvatarFallback className="bg-gradient-to-br from-[#D4AF37] to-[#B8941F] text-black text-2xl font-bold">H</AvatarFallback>
+                </Avatar>
               </motion.div>
             </div>
             
@@ -49,7 +53,7 @@ const DailyWisdomDialog: React.FC<DailyWisdomDialogProps> = ({ open, onClose, me
           onClick={onClose}
           className="w-full bg-gradient-to-r from-[#D4AF37] to-[#B8941F] hover:from-[#E5C5A1] hover:to-[#D4AF37] text-black font-semibold"
         >
-          I'll remember this 🙏
+          I'll remember this
         </Button>
       </DialogContent>
     </Dialog>

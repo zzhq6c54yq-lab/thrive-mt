@@ -15,21 +15,20 @@ interface HenryCompanionSectionProps {
 }
 
 const funMessages = [
-  "Hey there! 🌟 I've been thinking about you!",
-  "Good to see you! How's your day treating you? 😊",
-  "You know what? You're doing amazing just by showing up today. 💪",
-  "Psst... want to hear something cool I learned today? 🤔",
-  "I'm here whenever you need me - no pressure, just presence. 🫂",
-  "You seem like you could use a pick-me-up. Want to chat? ☕",
-  "Fun fact: You're stronger than you think. Need proof? Let's talk! 🌱",
-  "I've got some wisdom to share... or we could just hang out. Your call! 🦉",
+  "Hey, I've been thinking about you. How's it going?",
+  "Good to see you! How's your day treating you?",
+  "You're doing amazing just by showing up today.",
+  "I'm here whenever you need me - no pressure, just presence.",
+  "You seem like you could use a pick-me-up. Want to chat?",
+  "You're stronger than you think. Want to talk?",
+  "I've got some wisdom to share... or we could just hang out. Your call.",
 ];
 
 const timeBasedGreetings = {
-  morning: ["Good morning sunshine! ☀️ Ready to make today great?", "Rise and shine! 🌅 How are you feeling this morning?"],
-  afternoon: ["Good afternoon! 🌤️ How's the day going so far?", "Hey there! ⛅ Need a mid-day boost?"],
-  evening: ["Good evening! 🌆 How was your day?", "Evening vibes! 🌇 Want to unwind and chat?"],
-  night: ["Night owl mode? 🦉 I'm here for late-night chats!", "Still up? 🌙 Let's talk if you need company."],
+  morning: ["Good morning! Ready to make today great?", "Rise and shine! How are you feeling this morning?"],
+  afternoon: ["Good afternoon! How's the day going so far?", "Hey there! Need a mid-day boost?"],
+  evening: ["Good evening! How was your day?", "Evening! Want to unwind and chat?"],
+  night: ["Still up? I'm here for late-night chats.", "Can't sleep? Let's talk if you need company."],
 };
 
 const getTimeBasedGreeting = () => {
@@ -71,11 +70,11 @@ export const HenryCompanionSection: React.FC<HenryCompanionSectionProps> = ({
   const handleMoodBoost = () => {
     trackClick?.('henry-companion-boost', { action: 'mood_boost' });
     const boosts = [
-      "You're doing better than you think! 💫",
-      "Remember: progress isn't always linear, and that's okay! 🌈",
-      "I believe in you, and I'm not the only one! 🌟",
-      "You've overcome 100% of your worst days. That's pretty incredible! 💪",
-      "Your presence here matters more than you know. 💙",
+      "You're doing better than you think.",
+      "Remember: progress isn't always linear, and that's okay.",
+      "I believe in you, and I'm not the only one.",
+      "You've overcome 100% of your worst days. That's pretty incredible.",
+      "Your presence here matters more than you know.",
     ];
     const message = boosts[Math.floor(Math.random() * boosts.length)];
     setDialogMessage(message);
@@ -85,13 +84,13 @@ export const HenryCompanionSection: React.FC<HenryCompanionSectionProps> = ({
   const handleDailyWisdom = () => {
     trackClick?.('henry-companion-wisdom', { action: 'daily_wisdom' });
     const wisdoms = [
-      "Your struggles don't define you - how you respond to them does. 🌱",
-      "Every small step forward is still progress. Keep going! 🦋",
-      "You don't have to have it all figured out today. 🌅",
-      "Healing isn't linear, and that's perfectly okay. 💫",
-      "The bravest thing you can do is ask for help when you need it. 🤝",
-      "You're writing your own story, one day at a time. 📖",
-      "Rest is not weakness. It's how you recharge for tomorrow. 🌙",
+      "Your struggles don't define you - how you respond to them does.",
+      "Every small step forward is still progress. Keep going.",
+      "You don't have to have it all figured out today.",
+      "Healing isn't linear, and that's perfectly okay.",
+      "The bravest thing you can do is ask for help when you need it.",
+      "You're writing your own story, one day at a time.",
+      "Rest is not weakness. It's how you recharge for tomorrow.",
     ];
     const message = wisdoms[Math.floor(Math.random() * wisdoms.length)];
     setDialogMessage(message);

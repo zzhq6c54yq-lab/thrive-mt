@@ -331,50 +331,46 @@ export const useMessageProcessor = (
     
     if (/^(hi|hello|hey|greetings|howdy|good (morning|afternoon|evening))(\s|$|!)/i.test(lowerMessage)) {
       const userName = userProfile.name ? `, ${userProfile.name}` : "";
-      return `${getContextualGreeting()}${userName}! How are you feeling today? I'm here to support your mental wellbeing.`;
+      return `Hey${userName}! How are you doing today?`;
     }
     
     if (/how are you|how('s| is) it going|how('re| are) you doing/i.test(lowerMessage)) {
       const response = [
-        "I'm here and ready to help you! As your mental wellness companion, I'm focused on supporting your wellbeing. What's on your mind today?",
-        "I'm doing well, thanks for asking! More importantly, how are you feeling today?",
-        "I'm here and fully present for our conversation. What would you like to talk about?"
+        "I'm good, thanks for asking! More importantly, how are you?",
+        "Doing well! What's on your mind today?",
+        "I'm here and ready. What's going on with you?"
       ];
       return response[Math.floor(Math.random() * response.length)];
     }
     
     if (/thank(s| you)|appreciate it/i.test(lowerMessage)) {
       const response = [
-        "You're very welcome! I'm glad I could help. Is there anything else you'd like to talk about regarding your mental wellness journey?",
-        "It's my pleasure to support you. Remember I'm here whenever you need to talk.",
-        "I'm glad our conversation was helpful. Your mental wellbeing matters, and I'm here to support you."
+        "Of course! Anything else on your mind?",
+        "Anytime. I'm here if you need me.",
+        "Glad I could help. What else is going on?"
       ];
       return response[Math.floor(Math.random() * response.length)];
     }
     
     if (/what('s| is) your name|who are you/i.test(lowerMessage)) {
-      return "I'm Henry, your mental wellness companion. My name stands for Hope, Empathy, Nurturing, Resilience, and You - the core values that guide our conversations. How can I support your wellbeing today?";
-    }
-    
-    if (/weather|rain|sunny|cold|hot|temperature/i.test(lowerMessage) && lowerMessage.length < 30) {
-      return "While I can't check the weather outside, I'm more interested in your internal climate. How are you feeling today? Sometimes our emotional weather can affect our wellbeing more than what's happening outside.";
+      return "I'm Henry, your wellness companion here at ThriveMT. What can I help you with?";
     }
     
     if (/bye|goodbye|see you|talk (to you )?later/i.test(lowerMessage)) {
       const userName = userProfile.name ? `, ${userProfile.name}` : "";
-      return `Take care${userName}! Remember that I'm here whenever you need support. Be gentle with yourself until we talk again.`;
+      return `Take care${userName}! I'm here whenever you need me.`;
     }
     
     if (/help( me)?|can you help|need (some )?advice|feeling (bad|down|sad|depressed|anxious|overwhelmed)/i.test(lowerMessage)) {
-      return "I'm here to help. Could you tell me a bit more about what you're experiencing? The more specific you can be, the better I can support you.";
+      return null; // Let the AI handle these with proper context
     }
     
     if (/what (can|do) you do|how (can|do) you (help|work)|what are you for/i.test(lowerMessage)) {
-      return "I'm designed to support your mental wellbeing in several ways. I can provide resources for stress management, anxiety, and depression, guide you through exercises for mindfulness and relaxation, help you track your mood patterns, and connect you with professional help when needed. What area of mental wellness are you interested in exploring?";
+      return "I'm here to chat about whatever's on your mind, help with stress, or just be a sounding board. What would you like to talk about?";
     }
     
     if (/are you (a bot|an ai|real|human|a person)/i.test(lowerMessage)) {
-      return "I'm Henry, an AI mental wellness companion. While I'm not human, I'm designed to provide supportive conversations about mental health. I use research-based approaches to help you navigate your mental wellness journey, though I'm not a replacement for professional therapy.";
+      return "I'm Henry, an AI companion. Not human, but I genuinely care about how you're doing. What's on your mind?";
     }
     
     return null;
