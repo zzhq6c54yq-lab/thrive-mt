@@ -79,7 +79,7 @@ const MentalWellnessExercise = () => {
       <div className="max-w-6xl mx-auto">
         <Button
           variant="ghost"
-          onClick={() => navigate("/mental-wellness-tools")}
+          onClick={() => navigate("/app/mental-wellness-tools")}
           className="mb-6"
         >
           <ArrowLeft className="h-4 w-4 mr-2" />

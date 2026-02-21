@@ -127,7 +127,7 @@ const CorporateWellnessProgram = () => {
     });
     
     setTimeout(() => {
-      navigate("/corporate-wellness", { 
+      navigate("/app/workshops", { 
         state: { 
           workshop: workshopName,
           showWorkshopContent: true 
@@ -157,7 +157,7 @@ const CorporateWellnessProgram = () => {
             <Button
               variant="ghost"
               className="mr-4"
-              onClick={() => navigate("/corporate-portal")}
+              onClick={() => navigate("/app/dashboard")}
             >
               <ArrowLeft className="mr-2 h-4 w-4" />
               Back to Portal
@@ -725,7 +725,7 @@ const CorporateWellnessProgram = () => {
             <Button
               variant="ghost"
               className="mr-4"
-              onClick={() => navigate("/corporate-portal")}
+              onClick={() => navigate("/app/dashboard")}
             >
               <ArrowLeft className="mr-2 h-4 w-4" />
               Back to Portal
@@ -886,7 +886,7 @@ const CorporateWellnessProgram = () => {
               <Button 
                 variant="outline" 
                 className="w-full text-[#3B82F6] border-[#3B82F6]"
-                onClick={() => navigate("/corporate-portal", { state: { tab: "support" }})}
+                onClick={() => navigate("/app/crisis-support")}
               >
                 View All Support Options
               </Button>

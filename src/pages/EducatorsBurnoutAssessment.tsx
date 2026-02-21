@@ -241,7 +241,7 @@ const EducatorsBurnoutAssessment: React.FC = () => {
 
   const handleBack = () => {
     if (showResults) {
-      navigate("/educators-portal", { 
+      navigate("/app/educators-portal", { 
         state: { 
           tab: "assessments",
           stayInPortal: true,
@@ -377,7 +377,7 @@ const EducatorsBurnoutAssessment: React.FC = () => {
             </CardContent>
             <CardFooter className="flex gap-4 pt-6 border-t border-gray-700/50">
               <Button 
-                onClick={() => navigate("/educators-portal", { 
+                onClick={() => navigate("/app/educators-portal", { 
                   state: { 
                     tab: "workshops",
                     stayInPortal: true,
@@ -389,7 +389,7 @@ const EducatorsBurnoutAssessment: React.FC = () => {
                 Explore Workshops <ArrowRight className="ml-2 h-4 w-4" />
               </Button>
               <Button 
-                onClick={() => navigate("/educators-portal", {
+                onClick={() => navigate("/app/educators-portal", {
                   state: { 
                     tab: "resources",
                     stayInPortal: true,

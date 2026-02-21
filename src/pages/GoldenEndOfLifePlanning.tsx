@@ -87,7 +87,7 @@ const GoldenEndOfLifePlanning: React.FC = () => {
           
           <div className="text-center">
             <Button 
-              onClick={() => navigate('/golden-years-portal', { 
+              onClick={() => navigate('/app/golden-years-portal', { 
                 state: { 
                   stayInPortal: true,
                   preventTutorial: true

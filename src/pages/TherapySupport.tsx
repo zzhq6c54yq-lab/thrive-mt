@@ -69,7 +69,7 @@ const TherapySupport = () => {
       <div className="max-w-6xl mx-auto">
         <Button
           variant="ghost"
-          onClick={() => navigate("/mental-wellness-tools")}
+          onClick={() => navigate("/app/mental-wellness-tools")}
           className="mb-6"
         >
           <ArrowLeft className="h-4 w-4 mr-2" />
@@ -161,7 +161,7 @@ const TherapySupport = () => {
               <p className="text-muted-foreground max-w-2xl mx-auto">
                 Not currently in therapy? Find a qualified mental health professional
               </p>
-              <Button size="lg" onClick={() => navigate("/real-time-therapy")}>
+              <Button size="lg" onClick={() => navigate("/app/real-time-therapy")}>
                 Search Therapists
               </Button>
             </div>

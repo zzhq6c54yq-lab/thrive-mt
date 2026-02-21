@@ -298,7 +298,7 @@ const TransportWorkLifeBalanceAssessment: React.FC = () => {
   };
   
   const handleBackToPortal = () => {
-    navigate("/transport-portal", { 
+    navigate("/app/transport-portal", { 
       state: { 
         tab: "assessments",
         stayInPortal: true,
@@ -439,7 +439,7 @@ const TransportWorkLifeBalanceAssessment: React.FC = () => {
                   <Button 
                     variant="outline" 
                     className="h-auto p-4 flex flex-col items-center text-center border-green-200 hover:border-green-500 hover:bg-green-50"
-                    onClick={() => navigate("/transport-workshops/family-connections", {
+                    onClick={() => navigate("/app/transport-portal", {
                       state: { 
                         stayInPortal: true,
                         preventTutorial: true,
@@ -453,7 +453,7 @@ const TransportWorkLifeBalanceAssessment: React.FC = () => {
                   <Button 
                     variant="outline" 
                     className="h-auto p-4 flex flex-col items-center text-center border-green-200 hover:border-green-500 hover:bg-green-50"
-                    onClick={() => navigate("/transport-resources/work-life-balance", {
+                    onClick={() => navigate("/app/transport-portal", {
                       state: { 
                         stayInPortal: true,
                         preventTutorial: true,

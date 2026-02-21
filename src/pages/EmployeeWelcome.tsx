@@ -24,7 +24,7 @@ const EmployeeWelcome: React.FC = () => {
       });
       
       setTimeout(() => {
-        navigate("/employee-dashboard", { 
+        navigate("/app/employee-dashboard", { 
           state: { 
             fromWelcome: true,
             preventTutorial: true,

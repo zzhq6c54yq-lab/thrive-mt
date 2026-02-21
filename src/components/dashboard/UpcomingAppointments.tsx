@@ -129,7 +129,7 @@ const UpcomingAppointments = () => {
             variant="ghost"
             size="sm"
             className="text-xs text-[#B87333] hover:text-[#B87333] hover:bg-white/10"
-            onClick={() => navigate("/app/scheduling")}
+            onClick={() => navigate("/app/virtual-meetings")}
           >
             {translations.viewAll}
             <ArrowRight className="ml-2 h-3 w-3" />
@@ -192,7 +192,7 @@ const UpcomingAppointments = () => {
               variant="outline"
               size="sm"
               className="border-[#B87333]/20 bg-[#B87333]/10 text-[#B87333] hover:border-[#B87333]/60 hover:bg-[#B87333]/20"
-              onClick={() => navigate("/app/scheduling")}
+              onClick={() => navigate("/app/virtual-meetings")}
             >
               {translations.scheduleNow}
             </Button>

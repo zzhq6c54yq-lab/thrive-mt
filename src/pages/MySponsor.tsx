@@ -56,7 +56,7 @@ const MySponsor = () => {
   };
   
   const handleJoinVirtualMeeting = () => {
-    navigate("/virtual-meetings");
+    navigate("/app/virtual-meetings");
   };
 
   const handleNextStep = () => {

@@ -60,7 +60,7 @@ const HospitalityDashboard: React.FC = () => {
       description: "Connect with others in the hospitality industry",
       icon: <Users className="h-5 w-5 text-blue-500" />,
       action: () => {
-        navigate("/app/hospitality-community", {
+        navigate("/app/community-support", {
           state: {
             stayInPortal: true,
             preventTutorial: true,
@@ -161,7 +161,7 @@ const HospitalityDashboard: React.FC = () => {
                 variant="ghost" 
                 size="sm" 
                 className="text-purple-600 dark:text-purple-400"
-                onClick={() => navigate("/app/hospitality-resources", { 
+                onClick={() => navigate("/app/resource-library", { 
                   state: { 
                     stayInPortal: true, 
                     preventTutorial: true,
@@ -183,7 +183,7 @@ const HospitalityDashboard: React.FC = () => {
                 variant="ghost" 
                 size="sm" 
                 className="text-purple-600 dark:text-purple-400"
-                onClick={() => navigate("/app/hospitality-resources", { 
+                onClick={() => navigate("/app/resource-library", { 
                   state: { 
                     stayInPortal: true, 
                     preventTutorial: true,
@@ -215,7 +215,7 @@ const HospitalityDashboard: React.FC = () => {
                 variant="ghost" 
                 size="sm" 
                 className="text-purple-600 dark:text-purple-400"
-                onClick={() => navigate("/app/hospitality-workshops", { 
+                onClick={() => navigate("/app/workshops", { 
                   state: { 
                     stayInPortal: true, 
                     preventTutorial: true,
@@ -237,7 +237,7 @@ const HospitalityDashboard: React.FC = () => {
                 variant="ghost" 
                 size="sm" 
                 className="text-purple-600 dark:text-purple-400"
-                onClick={() => navigate("/app/hospitality-workshops", { 
+                onClick={() => navigate("/app/workshops", { 
                   state: { 
                     stayInPortal: true, 
                     preventTutorial: true,

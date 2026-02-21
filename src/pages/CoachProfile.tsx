@@ -42,7 +42,7 @@ const CoachProfile = () => {
       <div className="min-h-screen bg-background py-12 px-4">
         <div className="max-w-5xl mx-auto text-center">
           <h2 className="text-2xl font-bold mb-4">Coach Not Found</h2>
-          <Button onClick={() => navigate("/coach-questionnaire")}>
+          <Button onClick={() => navigate("/app/coach-questionnaire")}>
             Find a Coach
           </Button>
         </div>

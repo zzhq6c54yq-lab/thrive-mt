@@ -29,18 +29,18 @@ const SpecializedPrograms: React.FC = () => {
   const handleFeatureClick = (path: string) => {
     // Map paths to existing routes to prevent 404 errors
     const pathMapping: Record<string, string> = {
-      "/dod-welcome": "/dod-welcome",
-      "/college-welcome": "/college-welcome", 
-      "/small-business-welcome": "/small-business-welcome",
-      "/golden-years-welcome": "/golden-years-welcome",
-      "/adolescent-welcome": "/adolescent-welcome",
-      "/first-responders-welcome": "/first-responders-welcome",
-      "/hospitality-welcome": "/hospitality-welcome",
-      "/transport-welcome": "/transport-welcome",
-      "/law-enforcement-welcome": "/law-enforcement-welcome",
-      "/educators-welcome": "/educators-welcome",
-      "/chronic-illness-welcome": "/chronic-illness-welcome",
-      "/cancer-support-welcome": "/cancer-support-welcome"
+      "/app/dod-welcome": "/app/dod-welcome",
+      "/app/college-welcome": "/app/college-welcome", 
+      "/app/small-business-welcome": "/app/small-business-welcome",
+      "/app/golden-years-welcome": "/app/golden-years-welcome",
+      "/app/adolescent-welcome": "/app/adolescent-welcome",
+      "/app/first-responders-welcome": "/app/first-responders-welcome",
+      "/app/hospitality-welcome": "/app/hospitality-welcome",
+      "/app/transport-welcome": "/app/transport-welcome",
+      "/app/law-enforcement-welcome": "/app/law-enforcement-welcome",
+      "/app/educators-welcome": "/app/educators-welcome",
+      "/app/chronic-illness-welcome": "/app/chronic-illness-welcome",
+      "/app/cancer-support-welcome": "/app/cancer-support-welcome"
     };
 
     const finalPath = pathMapping[path] || path;

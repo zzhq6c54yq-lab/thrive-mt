@@ -50,7 +50,7 @@ const CoPayCredits = () => {
       return;
     }
     
-    navigate("/subscription-plans", { state: { plan, credits } });
+    navigate("/app/subscription-plans", { state: { plan, credits } });
   };
 
   const handleRedeemPoints = () => {

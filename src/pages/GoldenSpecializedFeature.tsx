@@ -94,7 +94,7 @@ const GoldenSpecializedFeature: React.FC = () => {
   const content = getFeatureContent();
   
   const handleBackToPortal = () => {
-    navigate('/golden-years-portal', { 
+    navigate('/app/golden-years-portal', { 
       state: { 
         stayInPortal: true,
         preventTutorial: true
@@ -108,7 +108,7 @@ const GoldenSpecializedFeature: React.FC = () => {
     
     if (!fromPortal) {
       // If not coming from the portal, redirect to welcome page
-      navigate('/golden-years-welcome');
+      navigate('/app/golden-years-welcome');
     }
   }, [location.state, navigate]);
 

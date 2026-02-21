@@ -5,7 +5,7 @@ export default function CrisisResources() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    navigate('/crisis-support', { replace: true });
+    navigate('/app/crisis-support', { replace: true });
   }, [navigate]);
 
   return null;

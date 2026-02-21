@@ -177,11 +177,11 @@ const DoDResources = () => {
 
     setTimeout(() => {
       if (resource.title.toLowerCase().includes("assessment")) {
-        navigate("/mental-wellness/assessments", { 
+        navigate("/app/mental-wellness/assessments", { 
           state: { 
             fromSpecializedProgram: true,
             preventTutorial: true,
-            returnToPortal: "/dod-portal"
+            returnToPortal: "/app/dod-portal"
           }
         });
       } else {
@@ -189,7 +189,7 @@ const DoDResources = () => {
           state: { 
             fromSpecializedProgram: true,
             preventTutorial: true,
-            returnToPortal: "/dod-portal",
+            returnToPortal: "/app/dod-portal",
             resourceTitle: resource.title
           }
         });
@@ -298,7 +298,7 @@ const DoDResources = () => {
                   });
                   
                   setTimeout(() => {
-                    navigate('/resource-library', {
+                    navigate('/app/resource-library', {
                       state: {
                         fromSpecializedProgram: true,
                         preventTutorial: true,
@@ -328,7 +328,7 @@ const DoDResources = () => {
                 <Button 
                   className="bg-red-700 hover:bg-red-800 text-white"
                   onClick={() => {
-                    navigate("/crisis-support", {
+                    navigate("/app/crisis-support", {
                       state: {
                         fromSpecializedProgram: true,
                         preventTutorial: true,
@@ -350,7 +350,7 @@ const DoDResources = () => {
                     });
                     
                     setTimeout(() => {
-                      navigate("/resource-library", {
+                      navigate("/app/resource-library", {
                         state: {
                           fromSpecializedProgram: true,
                           preventTutorial: true,

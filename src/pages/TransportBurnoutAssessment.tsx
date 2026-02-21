@@ -281,7 +281,7 @@ const TransportBurnoutAssessment: React.FC = () => {
   };
   
   const handleBackToPortal = () => {
-    navigate("/transport-portal", { 
+    navigate("/app/transport-portal", { 
       state: { 
         tab: "assessments",
         stayInPortal: true,
@@ -422,7 +422,7 @@ const TransportBurnoutAssessment: React.FC = () => {
                   <Button 
                     variant="outline" 
                     className="h-auto p-4 flex flex-col items-center text-center border-red-200 hover:border-red-500 hover:bg-red-50"
-                    onClick={() => navigate("/transport-community/burnout", {
+                    onClick={() => navigate("/app/transport-portal", {
                       state: { 
                         stayInPortal: true,
                         preventTutorial: true,
@@ -436,7 +436,7 @@ const TransportBurnoutAssessment: React.FC = () => {
                   <Button 
                     variant="outline" 
                     className="h-auto p-4 flex flex-col items-center text-center border-red-200 hover:border-red-500 hover:bg-red-50"
-                    onClick={() => navigate("/transport-resources/burnout-recovery", {
+                    onClick={() => navigate("/app/transport-portal", {
                       state: { 
                         stayInPortal: true,
                         preventTutorial: true,

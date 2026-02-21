@@ -112,7 +112,7 @@ const MiniSessionHistory: React.FC = () => {
             <h1 className="text-3xl font-bold text-foreground mb-2">Session History</h1>
             <p className="text-muted-foreground">Review your past sessions</p>
           </div>
-          <Button onClick={() => navigate('/mini-session')}>
+          <Button onClick={() => navigate('/app/mini-session')}>
             New Session
           </Button>
         </div>

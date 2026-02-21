@@ -38,7 +38,7 @@ const PaymentSuccessPage: React.FC = () => {
   };
 
   const handleManageSubscription = async () => {
-    navigate("/subscription-plans");
+    navigate("/app/subscription-plans");
   };
 
   return (

@@ -385,7 +385,7 @@ const WorkshopDetail = () => {
                 <Button 
                   variant="outline" 
                   className="w-full"
-                  onClick={() => navigate("/contact")}
+                  onClick={() => navigate("/app/contact")}
                 >
                   Contact Support
                 </Button>
