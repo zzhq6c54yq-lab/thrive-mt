@@ -112,7 +112,7 @@ const VideoDetail: React.FC<VideoDetailProps> = ({ videoId, currentVideo, onBack
                     description: "Your video has been removed",
                     duration: 1500
                   });
-                  navigate("/video-diary");
+                  navigate("/app/video-diary");
                 }}
               >
                 <Trash2 className="h-5 w-5 mr-2" />

@@ -188,14 +188,14 @@ const MilitarySupport: React.FC = () => {
             <Button 
               variant="gold-outline" 
               className="mx-2"
-              onClick={() => navigate("/military-blog")}
+              onClick={() => navigate("/app/resource-library")}
             >
               View Military Blog
             </Button>
             <Button 
               variant="gold" 
               className="mx-2"
-              onClick={() => navigate("/virtual-meetings")}
+              onClick={() => navigate("/app/virtual-meetings")}
             >
               Join Virtual AA/NA Meeting
             </Button>

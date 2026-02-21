@@ -30,7 +30,7 @@ const CosmicGames = () => {
   };
   
   const handleViewAllGames = () => {
-    navigate("/games-and-quizzes");
+    navigate("/app/games-and-quizzes");
   };
 
   // Game images mapping

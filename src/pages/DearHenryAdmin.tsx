@@ -44,7 +44,7 @@ const DearHenryAdmin: React.FC = () => {
         description: "Please log in to access the admin dashboard.",
         variant: "destructive" 
       });
-      navigate('/auth');
+      navigate('/app/auth');
       return;
     }
 

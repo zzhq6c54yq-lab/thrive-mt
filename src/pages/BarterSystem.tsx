@@ -37,7 +37,7 @@ const BarterSystem = () => {
 
   // This function properly navigates to the contact support page  
   const handleContactSupport = () => {
-    navigate("/contact");
+    navigate("/app/contact");
   };
 
   return (

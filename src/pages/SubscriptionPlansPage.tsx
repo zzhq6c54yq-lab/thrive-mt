@@ -121,7 +121,7 @@ const SubscriptionPlansPage: React.FC = () => {
         description: "Please log in to subscribe to a plan.",
         variant: "destructive"
       });
-      navigate("/auth");
+      navigate("/app/auth");
       return;
     }
 

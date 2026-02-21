@@ -13,7 +13,7 @@ const QUARTER_FEATURES = [
     titleEs: "Seguimiento del Sueño",
     description: "Track and improve your sleep patterns.",
     descriptionEs: "Rastrea y mejora tus patrones de sueño.",
-    route: "/sleep-tracker",
+    route: "/app/sleep-tracker",
     color: "from-indigo-100 to-indigo-200",
     icon: <MoonStar className="w-8 h-8 text-indigo-600 mb-2" />,
     image: "https://images.unsplash.com/photo-1520206183501-b80df61043c2?auto=format&fit=crop&w=500&q=80"
@@ -24,7 +24,7 @@ const QUARTER_FEATURES = [
     titleEs: "Estudio de Meditación",
     description: "Comprehensive meditation studio with guided practices.",
     descriptionEs: "Estudio de meditación con prácticas guiadas.",
-    route: "/meditation-studio",
+    route: "/app/meditation",
     color: "from-cyan-100 to-cyan-200",
     icon: <Sparkles className="w-8 h-8 text-cyan-600 mb-2" />,
     image: "https://images.unsplash.com/photo-1508672019048-805c876b67e2?auto=format&fit=crop&w=500&q=80"
@@ -35,7 +35,7 @@ const QUARTER_FEATURES = [
     titleEs: "Orientación Profesional",
     description: "Professional guidance and career development.",
     descriptionEs: "Orientación profesional y desarrollo de carrera.",
-    route: "/career-coaching",
+    route: "/app/career-coaching",
     color: "from-slate-100 to-slate-200",
     icon: <Award className="w-8 h-8 text-slate-600 mb-2" />,
     image: "https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?auto=format&fit=crop&w=500&q=80"

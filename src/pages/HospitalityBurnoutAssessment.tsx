@@ -284,7 +284,7 @@ const HospitalityBurnoutAssessment: React.FC = () => {
 
   const handleBack = () => {
     if (showResults) {
-      navigate("/hospitality-portal", { 
+      navigate("/app/hospitality-portal", { 
         state: { 
           tab: "assessments",
           stayInPortal: true,

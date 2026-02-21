@@ -503,7 +503,7 @@ const FamilySupport: React.FC = () => {
                   <div className="mt-6 text-center">
                     <Button 
                       className="bg-pink-500 hover:bg-pink-600 text-white"
-                      onClick={() => navigate('/community-support', { 
+                      onClick={() => navigate('/app/community-support', { 
                         state: { 
                           joinGroup: 'family',
                           preventTutorial: true 
@@ -718,7 +718,7 @@ const FamilySupport: React.FC = () => {
                         <p className="text-sm text-gray-400 mb-3">Talk one-on-one with a specialist</p>
                         <Button 
                           className="bg-pink-500 hover:bg-pink-600 w-full"
-                          onClick={() => navigate('/virtual-meetings', { 
+                          onClick={() => navigate('/app/virtual-meetings', { 
                             state: { 
                               supportType: 'phone',
                               preventTutorial: true 
@@ -737,7 +737,7 @@ const FamilySupport: React.FC = () => {
                         <p className="text-sm text-gray-400 mb-3">Face-to-face virtual support</p>
                         <Button 
                           className="bg-pink-500 hover:bg-pink-600 w-full"
-                          onClick={() => navigate('/virtual-meetings', { 
+                          onClick={() => navigate('/app/virtual-meetings', { 
                             state: { 
                               supportType: 'video',
                               preventTutorial: true 
@@ -756,7 +756,7 @@ const FamilySupport: React.FC = () => {
                         <p className="text-sm text-gray-400 mb-3">Message with a support specialist</p>
                         <Button 
                           className="bg-pink-500 hover:bg-pink-600 w-full"
-                          onClick={() => navigate('/virtual-meetings', { 
+                          onClick={() => navigate('/app/virtual-meetings', { 
                             state: { 
                               supportType: 'chat',
                               preventTutorial: true 

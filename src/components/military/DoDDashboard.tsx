@@ -41,11 +41,11 @@ const DoDDashboard = () => {
     });
     
     // Navigate directly to the assessment instead of the general page
-    navigate("/mental-wellness/assessments", {
+    navigate("/app/mental-wellness/assessments", {
       state: {
         preventTutorial: true,
         returnToMain: false,
-        returnToPortal: "/dod-portal",
+        returnToPortal: "/app/dod-portal",
         assessmentType,
         startAssessment: true,
         directToAssessment: true
@@ -60,11 +60,11 @@ const DoDDashboard = () => {
       duration: 3000,
     });
     // Navigate to workshops with specific workshop highlighted
-    navigate("/workshops", {
+    navigate("/app/workshops", {
       state: {
         preventTutorial: true,
         returnToMain: false,
-        returnToPortal: "/dod-portal",
+        returnToPortal: "/app/dod-portal",
         highlightWorkshop: eventName
       }
     });

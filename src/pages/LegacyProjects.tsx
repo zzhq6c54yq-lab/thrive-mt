@@ -233,7 +233,7 @@ const LegacyProjects: React.FC = () => {
                   variant="outline"
                   size="sm"
                   className="w-full"
-                  onClick={() => navigate("/cancer-support/legacy-consultation")}
+                  onClick={() => navigate("/app/cancer-support-portal")}
                 >
                   {isSpanish ? "Agendar Consulta" : "Schedule Consultation"}
                 </Button>
@@ -356,7 +356,7 @@ const LegacyProjects: React.FC = () => {
           </p>
           <Button 
             className="bg-indigo-600 hover:bg-indigo-700 text-white"
-            onClick={() => navigate("/cancer-support/share-legacy")}
+            onClick={() => navigate("/app/cancer-support-portal")}
           >
             {isSpanish ? "Compartir Mi Proyecto" : "Share My Project"}
             <Heart className="h-4 w-4 ml-2" />

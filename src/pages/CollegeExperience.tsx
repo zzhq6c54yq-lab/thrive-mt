@@ -431,7 +431,7 @@ const CollegeExperience: React.FC = () => {
                             <div className="mt-3">
                               <Button 
                                 className="bg-[#8B5CF6] hover:bg-[#8B5CF6]/80 text-white shadow-md transition-all duration-300 group"
-                                onClick={() => navigate("/contact")}
+                                onClick={() => navigate("/app/contact")}
                               >
                                 <span>Connect Now</span>
                                 <Plus className="ml-1 h-4 w-4 group-hover:rotate-90 transition-transform" />
@@ -443,7 +443,7 @@ const CollegeExperience: React.FC = () => {
                       
                       <Button 
                         className="mt-6 w-full bg-gradient-to-r from-[#8B5CF6]/80 to-[#6E59A5]/80 hover:from-[#8B5CF6] hover:to-[#6E59A5] text-white font-medium shadow-md transition-all duration-300 border-none"
-                        onClick={() => navigate("/resource-library")}
+                        onClick={() => navigate("/app/resource-library")}
                       >
                         <span>View All Campus Services</span>
                         <Building className="ml-2 h-4 w-4" />
@@ -467,7 +467,7 @@ const CollegeExperience: React.FC = () => {
                           
                           <Button 
                             className="mt-3 bg-white text-[#F87171] hover:bg-white/90 font-medium shadow-md transition-all duration-300 group border-none"
-                            onClick={() => navigate("/crisis-support")}
+                            onClick={() => navigate("/app/crisis-support")}
                           >
                             <span>Call Now</span>
                             <ArrowRight className="ml-1 h-4 w-4 group-hover:translate-x-1 transition-transform" />
@@ -480,7 +480,7 @@ const CollegeExperience: React.FC = () => {
                           
                           <Button 
                             className="mt-3 bg-[#F87171]/80 hover:bg-[#F87171] text-white font-medium shadow-md transition-all duration-300 group border-none"
-                            onClick={() => navigate("/crisis-support")}
+                            onClick={() => navigate("/app/crisis-support")}
                           >
                             <span>Text Now</span>
                             <ArrowRight className="ml-1 h-4 w-4 group-hover:translate-x-1 transition-transform" />
@@ -493,7 +493,7 @@ const CollegeExperience: React.FC = () => {
                           
                           <Button 
                             className="mt-3 bg-[#F87171]/80 hover:bg-[#F87171] text-white font-medium shadow-md transition-all duration-300 group border-none"
-                            onClick={() => navigate("/crisis-support")}
+                            onClick={() => navigate("/app/crisis-support")}
                           >
                             <span>Call Lifeline</span>
                             <ArrowRight className="ml-1 h-4 w-4 group-hover:translate-x-1 transition-transform" />
@@ -506,7 +506,7 @@ const CollegeExperience: React.FC = () => {
                           
                           <Button 
                             className="mt-3 bg-[#F87171]/80 hover:bg-[#F87171] text-white font-medium shadow-md transition-all duration-300 group border-none"
-                            onClick={() => navigate("/crisis-support")}
+                            onClick={() => navigate("/app/crisis-support")}
                           >
                             <span>Emergency Services</span>
                             <ArrowRight className="ml-1 h-4 w-4 group-hover:translate-x-1 transition-transform" />
@@ -522,7 +522,7 @@ const CollegeExperience: React.FC = () => {
                         
                         <Button 
                           className="mt-4 w-full bg-white/10 hover:bg-white/20 text-white font-medium shadow-md transition-all duration-300 border border-white/30"
-                          onClick={() => navigate("/scheduling")}
+                          onClick={() => navigate("/app/virtual-meetings")}
                         >
                           <span>Schedule Counseling Appointment</span>
                           <Calendar className="ml-2 h-4 w-4" />
@@ -567,7 +567,7 @@ const CollegeExperience: React.FC = () => {
             <Button 
               variant="outline" 
               className="border-[#8B5CF6]/40 bg-[#1A1F2C]/50 hover:bg-[#8B5CF6]/30 h-auto py-4 flex flex-col gap-2 text-white transition-all duration-300 hover:scale-105"
-              onClick={() => navigate("/resource-library")}
+              onClick={() => navigate("/app/resource-library")}
             >
               <Backpack className="h-5 w-5" />
               <span>Student Resources</span>
@@ -577,7 +577,7 @@ const CollegeExperience: React.FC = () => {
             <Button 
               variant="outline" 
               className="border-[#D946EF]/40 bg-[#1A1F2C]/50 hover:bg-[#D946EF]/30 h-auto py-4 flex flex-col gap-2 text-white transition-all duration-300 hover:scale-105"
-              onClick={() => navigate("/self-help-resources")}
+              onClick={() => navigate("/app/resource-library")}
             >
               <Sparkles className="h-5 w-5" />
               <span>Self-Care Ideas</span>
@@ -601,7 +601,7 @@ const CollegeExperience: React.FC = () => {
           
           <Button 
             className="mt-5 bg-[#8B5CF6]/30 hover:bg-[#8B5CF6]/50 text-white font-medium border border-[#8B5CF6]/50 transition-all duration-300 group"
-            onClick={() => navigate("/community-support")}
+            onClick={() => navigate("/app/community-support")}
           >
             <span>Share Your Story</span>
             <Plus className="ml-1 h-4 w-4 group-hover:rotate-90 transition-transform" />

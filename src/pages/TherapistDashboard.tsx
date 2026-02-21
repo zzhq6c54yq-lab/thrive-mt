@@ -172,7 +172,7 @@ export default function TherapistDashboard() {
         variant: "destructive",
       });
     } else {
-      navigate("/auth");
+      navigate("/app/auth");
     }
   };
 
@@ -180,7 +180,7 @@ export default function TherapistDashboard() {
     const checkAuth = async () => {
       const { data: { user } } = await supabase.auth.getUser();
       if (!user) {
-        navigate("/auth");
+        navigate("/app/auth");
       }
     };
     checkAuth();

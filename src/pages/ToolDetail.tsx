@@ -318,7 +318,7 @@ const ToolDetail = () => {
                     variant="outline" 
                     className="w-full mt-4 border-[#B87333] text-[#B87333] hover:bg-[#B87333]/10"
                     onClick={() => {
-                      navigate("/therapist-matches");
+                      navigate("/app/therapist-matches");
                       toast({
                         title: "Therapist Matching",
                         description: "Finding mental health professionals who can help",
@@ -348,7 +348,7 @@ const ToolDetail = () => {
                     variant="outline" 
                     className="border-[#B87333] text-[#B87333] hover:bg-[#B87333]/10"
                     onClick={() => {
-                      navigate("/virtual-meetings");
+                      navigate("/app/virtual-meetings");
                       toast({
                         title: "Virtual Meetings",
                         description: "Connect with others on similar journeys",

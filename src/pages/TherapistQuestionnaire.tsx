@@ -246,7 +246,7 @@ const TherapistQuestionnaire = () => {
     
     // Simulate API call/matching process with timeout
     setTimeout(() => {
-      navigate("/therapist-matches", { 
+      navigate("/app/therapist-matches", { 
         state: { 
           answers,
           personalAnswers,

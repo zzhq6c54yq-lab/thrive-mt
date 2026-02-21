@@ -48,7 +48,7 @@ const ResourcesTabContent = () => {
       <div className="mt-6">
         <Button 
           className="w-full bg-[#4A3F36] hover:bg-[#5D4C3B] text-white border border-[#D4AF37]/20"
-          onClick={() => navigate('/golden-years-journal', { 
+          onClick={() => navigate('/app/golden-years-journal', { 
             state: { 
               stayInPortal: true,
               preventTutorial: true,

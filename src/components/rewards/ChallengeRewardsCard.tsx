@@ -32,7 +32,7 @@ const ChallengeRewardsCard: React.FC<ChallengeRewardsCardProps> = ({
   const progressPercentage = (points % 100);
   
   const handleViewChallenges = () => {
-    navigate("/wellness-challenges");
+    navigate("/app/wellness-challenges");
   };
   
   const handleRedeemPoints = () => {

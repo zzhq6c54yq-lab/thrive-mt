@@ -47,7 +47,7 @@ const ConfirmEmail = () => {
           setMessage('This confirmation link has expired. Please request a new one.');
         } else if (error.message.includes('already been used')) {
           setMessage('This email has already been confirmed. You can now log in.');
-          setTimeout(() => navigate('/auth'), 2000);
+          setTimeout(() => navigate('/app/auth'), 2000);
         } else {
           setMessage(error.message || 'Failed to confirm email. Please try again.');
         }
@@ -113,7 +113,7 @@ const ConfirmEmail = () => {
                 <h1 className="text-2xl font-bold text-foreground">Confirmation Failed</h1>
                 <p className="text-muted-foreground">{message}</p>
                 <div className="flex flex-col gap-3 w-full">
-                  <Button onClick={() => navigate('/auth')} className="w-full">
+                  <Button onClick={() => navigate('/app/auth')} className="w-full">
                     Go to Login
                   </Button>
                   <Button

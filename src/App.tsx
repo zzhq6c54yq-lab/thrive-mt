@@ -395,6 +395,8 @@ function App() {
                   <Route path="/app/coach-questionnaire" element={<CoachQuestionnaire />} />
                   <Route path="/app/coach-matches" element={<CoachMatches />} />
                   <Route path="/app/coach/:coachId" element={<CoachProfile />} />
+                  <Route path="/app/therapist-questionnaire" element={<TherapistQuestionnaire />} />
+                  <Route path="/app/therapist-matches" element={<TherapistMatches />} />
                   
                   {/* Admin */}
                   <Route path="/app/admin" element={<AdminPortal />} />
@@ -403,6 +405,9 @@ function App() {
                   
                   <Route path="/app/holistic-wellness" element={<HolisticWellness />} />
                   <Route path="/app/badges" element={<BadgesPage />} />
+                  <Route path="/app/success-stories" element={<SuccessStories />} />
+                  <Route path="/app/family-support" element={<FamilySupport />} />
+                  <Route path="/app/meditation-studio" element={<MeditationStudio />} />
                   
                   <Route path="/app/life-transitions" element={<LifeTransitions />} />
                   <Route path="/app/life-transitions/:slug" element={<LifeTransitionProgram />} />

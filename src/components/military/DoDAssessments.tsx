@@ -248,7 +248,7 @@ const DoDAssessments = () => {
               </div>
               <Button 
                 className="bg-blue-700 hover:bg-blue-800 text-white sm:self-center"
-                onClick={() => navigate('/progress-analytics')}
+                onClick={() => navigate('/app/progress-analytics')}
               >
                 View Assessment History
               </Button>

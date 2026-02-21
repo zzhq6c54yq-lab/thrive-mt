@@ -559,7 +559,7 @@ const MentalWellnessTools: React.FC = () => {
               <div className="flex flex-col sm:flex-row gap-4">
                 <Button 
                   className="bg-white text-gray-900 hover:bg-white/90"
-                  onClick={() => navigate("/crisis-support")}
+                  onClick={() => navigate("/app/crisis-support")}
                 >
                   <Heart className="mr-2 h-4 w-4 text-red-500" />
                   Crisis Resources
@@ -567,7 +567,7 @@ const MentalWellnessTools: React.FC = () => {
                 <Button 
                   variant="outline" 
                   className="border-white/50 text-white hover:bg-white/10"
-                  onClick={() => navigate("/real-time-therapy")}
+                  onClick={() => navigate("/app/real-time-therapy")}
                 >
                   <MessageSquare className="mr-2 h-4 w-4" />
                   Find a Therapist

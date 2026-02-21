@@ -42,7 +42,7 @@ export default function QuickAccessSection() {
         </div>
         <Button
           variant="outline"
-          onClick={() => navigate('/all-features')}
+          onClick={() => navigate('/app/all-features')}
           className="border-[#D4AF37] text-[#D4AF37] hover:bg-[#D4AF37]/10 hidden md:flex"
         >
           View All Features
@@ -105,7 +105,7 @@ export default function QuickAccessSection() {
       <div className="md:hidden">
         <Button
           variant="outline"
-          onClick={() => navigate('/all-features')}
+          onClick={() => navigate('/app/all-features')}
           className="w-full border-[#D4AF37] text-[#D4AF37] hover:bg-[#D4AF37]/10"
         >
           View All Features

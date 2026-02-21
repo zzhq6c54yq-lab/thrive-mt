@@ -48,7 +48,7 @@ const CareerAssessment = () => {
         title: "Assessment Complete!",
         description: "Your results are being processed.",
       });
-      navigate("/career-coaching");
+      navigate("/app/career-coaching");
     }
   };
 
@@ -62,7 +62,7 @@ const CareerAssessment = () => {
     <div className="min-h-screen bg-gradient-to-br from-background via-background to-primary/5 p-4">
       <div className="max-w-2xl mx-auto space-y-6">
         <div className="flex items-center justify-between">
-          <BackButton onCustomBack={() => navigate("/career-coaching")} />
+          <BackButton onCustomBack={() => navigate("/app/career-coaching")} />
         </div>
 
         <Card>

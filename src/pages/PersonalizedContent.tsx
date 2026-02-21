@@ -39,7 +39,7 @@ const PersonalizedContent: React.FC = () => {
               </p>
               <Button 
                 className="w-full bg-[#B87333] hover:bg-[#A56625] text-white"
-                onClick={() => handleExploreFeature("/mental-wellness-tools")}
+                onClick={() => handleExploreFeature("/app/mental-wellness-tools")}
               >
                 Explore Tools
               </Button>
@@ -59,7 +59,7 @@ const PersonalizedContent: React.FC = () => {
               </p>
               <Button 
                 className="w-full bg-[#B87333] hover:bg-[#A56625] text-white"
-                onClick={() => handleExploreFeature("/wellness-challenges")}
+                onClick={() => handleExploreFeature("/app/wellness-challenges")}
               >
                 View Activities
               </Button>
@@ -79,7 +79,7 @@ const PersonalizedContent: React.FC = () => {
               </p>
               <Button 
                 className="w-full bg-[#B87333] hover:bg-[#A56625] text-white"
-                onClick={() => handleExploreFeature("/resource-library")}
+                onClick={() => handleExploreFeature("/app/resource-library")}
               >
                 Browse Resources
               </Button>
@@ -99,7 +99,7 @@ const PersonalizedContent: React.FC = () => {
               </p>
               <Button 
                 className="w-full bg-[#B87333] hover:bg-[#A56625] text-white"
-                onClick={() => handleExploreFeature("/workshops")}
+                onClick={() => handleExploreFeature("/app/workshops")}
               >
                 View Programs
               </Button>

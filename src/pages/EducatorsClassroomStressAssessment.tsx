@@ -221,7 +221,7 @@ const EducatorsClassroomStressAssessment: React.FC = () => {
 
   const handleBack = () => {
     if (showResults) {
-      navigate("/educators-portal", { 
+      navigate("/app/educators-portal", { 
         state: { 
           tab: "assessments",
           stayInPortal: true,

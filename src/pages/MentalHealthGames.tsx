@@ -185,7 +185,7 @@ const MentalHealthGames = () => {
             </h2>
             <Button 
               variant="ghost" 
-              onClick={() => navigate('/games-and-quizzes')}
+              onClick={() => navigate('/app/games-and-quizzes')}
               className="text-[#9b87f5] hover:text-[#9b87f5]/80 hover:bg-[#9b87f5]/10"
             >
               Back to Games Hub
@@ -263,7 +263,7 @@ const MentalHealthGames = () => {
           </div>
           
           <Button 
-            onClick={() => navigate('/games-and-quizzes')} 
+            onClick={() => navigate('/app/games-and-quizzes')} 
             className="bg-[#9b87f5] hover:bg-[#9b87f5]/90"
           >
             <CheckCircle className="mr-2 h-4 w-4" />

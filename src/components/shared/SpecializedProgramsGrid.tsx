@@ -23,7 +23,7 @@ const SpecializedProgramsGrid: React.FC<SpecializedProgramsGridProps> = ({ onPro
       description: isSpanish 
         ? "Apoyo especializado para veteranos y personal militar activo."
         : "Specialized support for veterans and active military personnel.",
-      path: "/dod-welcome",
+      path: "/app/dod-welcome",
       image: militaryVeterans,
       gradient: "from-green-600 to-emerald-800"
     },
@@ -33,7 +33,7 @@ const SpecializedProgramsGrid: React.FC<SpecializedProgramsGridProps> = ({ onPro
       description: isSpanish 
         ? "Recursos para estudiantes universitarios y transiciones académicas."
         : "Resources for college students and academic transitions.",
-      path: "/college-welcome",
+      path: "/app/college-welcome",
       image: "https://images.unsplash.com/photo-1541339907198-e08756dedf3f?auto=format&fit=crop&w=500&q=80",
       gradient: "from-blue-600 to-indigo-800"
     },
@@ -43,7 +43,7 @@ const SpecializedProgramsGrid: React.FC<SpecializedProgramsGridProps> = ({ onPro
       description: isSpanish 
         ? "Bienestar y apoyo para propietarios y empleados de pequeñas empresas."
         : "Wellness and support for small business owners and employees.",
-      path: "/small-business-welcome",
+      path: "/app/small-business-welcome",
       image: "https://images.unsplash.com/photo-1556761175-5973dc0f32e7?auto=format&fit=crop&w=500&q=80",
       gradient: "from-amber-600 to-orange-800"
     },
@@ -53,7 +53,7 @@ const SpecializedProgramsGrid: React.FC<SpecializedProgramsGridProps> = ({ onPro
       description: isSpanish 
         ? "Bienestar especializado para adultos mayores y sus familias."
         : "Specialized wellness for older adults and their families.",
-      path: "/golden-years-welcome",
+      path: "/app/golden-years-welcome",
       image: goldenYears,
       gradient: "from-amber-500 to-yellow-700"
     },
@@ -63,7 +63,7 @@ const SpecializedProgramsGrid: React.FC<SpecializedProgramsGridProps> = ({ onPro
       description: isSpanish 
         ? "Apoyo integral para adolescentes y sus familias."
         : "Comprehensive support for adolescents and their families.",
-      path: "/adolescent-welcome",
+      path: "/app/adolescent-welcome",
       image: adolescentExperience,
       gradient: "from-purple-600 to-pink-800"
     },
@@ -73,7 +73,7 @@ const SpecializedProgramsGrid: React.FC<SpecializedProgramsGridProps> = ({ onPro
       description: isSpanish 
         ? "Recursos para bomberos, paramédicos y personal de emergencia."
         : "Resources for firefighters, paramedics, and emergency personnel.",
-      path: "/first-responders-welcome",
+      path: "/app/first-responders-welcome",
       image: "https://images.unsplash.com/photo-1551601651-2a8555f1a136?auto=format&fit=crop&w=500&q=80",
       gradient: "from-red-600 to-orange-800"
     },
@@ -83,7 +83,7 @@ const SpecializedProgramsGrid: React.FC<SpecializedProgramsGridProps> = ({ onPro
       description: isSpanish 
         ? "Apoyo para trabajadores de hoteles, restaurantes y turismo."
         : "Support for hotel, restaurant, and tourism workers.",
-      path: "/hospitality-welcome",
+      path: "/app/hospitality-welcome",
       image: "https://images.unsplash.com/photo-1571896349842-33c89424de2d?auto=format&fit=crop&w=500&q=80",
       gradient: "from-teal-600 to-cyan-800"
     },
@@ -93,7 +93,7 @@ const SpecializedProgramsGrid: React.FC<SpecializedProgramsGridProps> = ({ onPro
       description: isSpanish 
         ? "Apoyo para conductores, pilotos y trabajadores del transporte."
         : "Support for drivers, pilots, and transportation workers.",
-      path: "/transport-welcome",
+      path: "/app/transport-welcome",
       image: "https://images.unsplash.com/photo-1544620347-c4fd4a3d5957?auto=format&fit=crop&w=500&q=80",
       gradient: "from-gray-600 to-slate-800"
     },
@@ -103,7 +103,7 @@ const SpecializedProgramsGrid: React.FC<SpecializedProgramsGridProps> = ({ onPro
       description: isSpanish 
         ? "Apoyo integral para oficiales de policía y personal de seguridad."
         : "Comprehensive support for police officers and security personnel.",
-      path: "/law-enforcement-welcome",
+      path: "/app/law-enforcement-welcome",
       image: lawEnforcement,
       gradient: "from-blue-700 to-indigo-900"
     },
@@ -113,7 +113,7 @@ const SpecializedProgramsGrid: React.FC<SpecializedProgramsGridProps> = ({ onPro
       description: isSpanish 
         ? "Recursos para maestros, profesores y personal educativo."
         : "Resources for teachers, professors, and educational staff.",
-      path: "/educators-welcome",
+      path: "/app/educators-welcome",
       image: "https://images.unsplash.com/photo-1580582932707-520aed937b7b?auto=format&fit=crop&w=500&q=80",
       gradient: "from-indigo-600 to-purple-800"
     },
@@ -123,7 +123,7 @@ const SpecializedProgramsGrid: React.FC<SpecializedProgramsGridProps> = ({ onPro
       description: isSpanish 
         ? "Apoyo para pacientes con enfermedades crónicas y sus familias."
         : "Support for patients with chronic illnesses and their families.",
-      path: "/chronic-illness-welcome",
+      path: "/app/chronic-illness-welcome",
       image: "https://images.unsplash.com/photo-1584308666744-24d5c474f2ae?auto=format&fit=crop&w=500&q=80",
       gradient: "from-purple-600 to-violet-800"
     },
@@ -133,7 +133,7 @@ const SpecializedProgramsGrid: React.FC<SpecializedProgramsGridProps> = ({ onPro
       description: isSpanish 
         ? "Apoyo especializado para pacientes con cáncer y sus familias."
         : "Specialized support for cancer patients and their families.",
-      path: "/cancer-support-welcome",
+      path: "/app/cancer-support-welcome",
       image: cancerSupport,
       gradient: "from-pink-600 to-rose-800"
     },
@@ -143,7 +143,7 @@ const SpecializedProgramsGrid: React.FC<SpecializedProgramsGridProps> = ({ onPro
       description: isSpanish 
         ? "Apoyo integral para padres solteros que equilibran familia y bienestar."
         : "Comprehensive support for single parents balancing family and wellbeing.",
-      path: "/single-parents-welcome",
+      path: "/app/single-parents-welcome",
       image: "https://images.unsplash.com/photo-1476703993599-0035a21b17a9?auto=format&fit=crop&w=500&q=80",
       gradient: "from-rose-600 to-pink-800"
     }

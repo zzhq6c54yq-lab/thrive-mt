@@ -61,7 +61,7 @@ const SleepImprovement = () => {
       <div className="max-w-6xl mx-auto">
         <Button
           variant="ghost"
-          onClick={() => navigate("/mental-wellness-tools")}
+          onClick={() => navigate("/app/mental-wellness-tools")}
           className="mb-6"
         >
           <ArrowLeft className="h-4 w-4 mr-2" />
@@ -133,7 +133,7 @@ const SleepImprovement = () => {
                           </li>
                         ))}
                       </ol>
-                      <Button className="w-full mt-6" onClick={() => navigate("/mindfulness-sleep")}>
+                      <Button className="w-full mt-6" onClick={() => navigate("/app/mindfulness-sleep")}>
                         Try This Exercise
                       </Button>
                     </Card>
@@ -149,7 +149,7 @@ const SleepImprovement = () => {
               <p className="text-muted-foreground max-w-2xl mx-auto">
                 Monitor your sleep patterns to identify what works best for you
               </p>
-              <Button size="lg" onClick={() => navigate("/sleep-tracker")}>
+              <Button size="lg" onClick={() => navigate("/app/sleep-tracker")}>
                 Open Sleep Tracker
               </Button>
             </div>
