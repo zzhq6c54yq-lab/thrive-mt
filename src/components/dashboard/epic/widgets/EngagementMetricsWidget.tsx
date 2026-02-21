@@ -40,7 +40,7 @@ const EngagementMetricsWidget: React.FC = () => {
       const weekAgo = new Date(now.getTime() - 7 * 24 * 60 * 60 * 1000);
 
       // Fetch all data in parallel
-      const [checkInResult, planResult, breathingResult, binauralResult, journalResult, badgeResult, messageResult, streakResult, meditationResult] = await Promise.allSettled([
+      const [checkInResult, planResult, breathingResult, binauralResult, journalResult, badgeResult, messageResult, streakResult, meditationResult, transitionResult, toolkitResult, assessmentResult] = await Promise.allSettled([
         supabase.from('daily_check_ins').select('*', { count: 'exact', head: true }).eq('user_id', user.id).gte('created_at', weekAgo.toISOString()),
         supabase.from('daily_plans').select('activities').eq('user_id', user.id).order('plan_date', { ascending: false }).limit(7),
         supabase.from('breathing_sessions').select('duration_seconds').eq('user_id', user.id).gte('created_at', weekAgo.toISOString()),
@@ -50,6 +50,12 @@ const EngagementMetricsWidget: React.FC = () => {
         supabase.from('henry_messages').select('id').eq('role', 'user').limit(200),
         supabase.from('user_streaks').select('current_streak').eq('user_id', user.id).eq('streak_type', 'check_in').maybeSingle(),
         supabase.from('meditation_sessions').select('duration_seconds').eq('user_id', user.id).gte('created_at', weekAgo.toISOString()),
+        // Life transitions completed worksheets
+        supabase.from('transition_worksheet_responses').select('id').eq('user_id', user.id).gte('completed_at', weekAgo.toISOString()),
+        // Toolkit interactions
+        supabase.from('toolkit_category_interactions').select('id').eq('user_id', user.id).gte('created_at', weekAgo.toISOString()),
+        // Assessments completed
+        supabase.from('assessment_results').select('id').eq('user_id', user.id).gte('created_at', weekAgo.toISOString()),
       ]);
 
       const checkInCount = checkInResult.status === 'fulfilled' ? (checkInResult.value.count || 0) : 0;
@@ -97,6 +103,25 @@ const EngagementMetricsWidget: React.FC = () => {
         const journalCount = journalResult.value.count || 0;
         activitiesCompleted += journalCount;
         totalMinutes += journalCount * 10;
+      }
+
+      // Add life transition worksheet completions
+      if (transitionResult.status === 'fulfilled' && transitionResult.value.data) {
+        const count = transitionResult.value.data.length;
+        activitiesCompleted += count;
+        totalMinutes += count * 30; // ~30 min per daily transition content
+      }
+
+      // Add toolkit interactions
+      if (toolkitResult.status === 'fulfilled' && toolkitResult.value.data) {
+        activitiesCompleted += toolkitResult.value.data.length;
+        totalMinutes += toolkitResult.value.data.length * 5;
+      }
+
+      // Add assessment completions
+      if (assessmentResult.status === 'fulfilled' && assessmentResult.value.data) {
+        activitiesCompleted += assessmentResult.value.data.length;
+        totalMinutes += assessmentResult.value.data.length * 10;
       }
 
       const badgeCount = badgeResult.status === 'fulfilled' ? (badgeResult.value.data?.length || 0) : 0;
