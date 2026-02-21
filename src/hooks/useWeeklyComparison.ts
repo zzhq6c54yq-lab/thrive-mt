@@ -64,6 +64,16 @@ export const useWeeklyComparison = (): WeeklyComparisonData => {
         binauralLast,
         activitiesThis,
         activitiesLast,
+        transitionsThis,
+        transitionsLast,
+        toolkitThis,
+        toolkitLast,
+        assessmentsThis,
+        assessmentsLast,
+        journalsThis,
+        journalsLast,
+        meditationsThis,
+        meditationsLast,
       ] = await Promise.all([
         // Check-ins this week
         supabase
@@ -113,7 +123,7 @@ export const useWeeklyComparison = (): WeeklyComparisonData => {
           .gte("created_at", lastWeekStart)
           .lt("created_at", lastWeekEnd),
 
-        // User activities this week (distinct tool types)
+        // User activities this week
         supabase
           .from("user_activities")
           .select("activity_type, duration_minutes")
@@ -128,6 +138,86 @@ export const useWeeklyComparison = (): WeeklyComparisonData => {
           .eq("user_id", uid)
           .gte("completed_at", lastWeekStart)
           .lt("completed_at", lastWeekEnd),
+
+        // Life transition worksheets this week
+        supabase
+          .from("transition_worksheet_responses")
+          .select("id")
+          .eq("user_id", uid)
+          .gte("completed_at", thisWeekStart)
+          .lte("completed_at", nowIso),
+
+        // Life transition worksheets last week
+        supabase
+          .from("transition_worksheet_responses")
+          .select("id")
+          .eq("user_id", uid)
+          .gte("completed_at", lastWeekStart)
+          .lt("completed_at", lastWeekEnd),
+
+        // Toolkit interactions this week
+        supabase
+          .from("toolkit_category_interactions")
+          .select("id")
+          .eq("user_id", uid)
+          .gte("created_at", thisWeekStart)
+          .lte("created_at", nowIso),
+
+        // Toolkit interactions last week
+        supabase
+          .from("toolkit_category_interactions")
+          .select("id")
+          .eq("user_id", uid)
+          .gte("created_at", lastWeekStart)
+          .lt("created_at", lastWeekEnd),
+
+        // Assessments this week
+        supabase
+          .from("assessment_results")
+          .select("id")
+          .eq("user_id", uid)
+          .gte("created_at", thisWeekStart)
+          .lte("created_at", nowIso),
+
+        // Assessments last week
+        supabase
+          .from("assessment_results")
+          .select("id")
+          .eq("user_id", uid)
+          .gte("created_at", lastWeekStart)
+          .lt("created_at", lastWeekEnd),
+
+        // Journal entries this week
+        supabase
+          .from("journal_entries")
+          .select("id")
+          .eq("user_id", uid)
+          .gte("created_at", thisWeekStart)
+          .lte("created_at", nowIso),
+
+        // Journal entries last week
+        supabase
+          .from("journal_entries")
+          .select("id")
+          .eq("user_id", uid)
+          .gte("created_at", lastWeekStart)
+          .lt("created_at", lastWeekEnd),
+
+        // Meditation sessions this week
+        supabase
+          .from("meditation_sessions")
+          .select("duration_seconds")
+          .eq("user_id", uid)
+          .gte("created_at", thisWeekStart)
+          .lte("created_at", nowIso),
+
+        // Meditation sessions last week
+        supabase
+          .from("meditation_sessions")
+          .select("duration_seconds")
+          .eq("user_id", uid)
+          .gte("created_at", lastWeekStart)
+          .lt("created_at", lastWeekEnd),
       ]);
 
       // --- THIS WEEK ---
@@ -148,20 +238,50 @@ export const useWeeklyComparison = (): WeeklyComparisonData => {
       const thisCheckInDays = new Set(thisCheckIns.map(c => new Date(c.created_at).toDateString())).size;
       const lastCheckInDays = new Set(lastCheckIns.map(c => new Date(c.created_at).toDateString())).size;
 
-      // Activity minutes: breathing + binaural + user_activities
+      // Activity minutes: breathing + binaural + user_activities + meditation
       const breathThisMins = (breathingThis.data ?? []).reduce((s, b) => s + Math.round((b.duration_seconds ?? 0) / 60), 0);
       const breathLastMins = (breathingLast.data ?? []).reduce((s, b) => s + Math.round((b.duration_seconds ?? 0) / 60), 0);
       const binauralThisMins = (binauralThis.data ?? []).reduce((s, b) => s + (b.duration_minutes ?? 0), 0);
       const binauralLastMins = (binauralLast.data ?? []).reduce((s, b) => s + (b.duration_minutes ?? 0), 0);
       const userActThisMins = (activitiesThis.data ?? []).reduce((s, a) => s + (a.duration_minutes ?? 0), 0);
       const userActLastMins = (activitiesLast.data ?? []).reduce((s, a) => s + (a.duration_minutes ?? 0), 0);
+      const meditationThisMins = (meditationsThis.data ?? []).reduce((s, m) => s + Math.round(((m as any).duration_seconds ?? 0) / 60), 0);
+      const meditationLastMins = (meditationsLast.data ?? []).reduce((s, m) => s + Math.round(((m as any).duration_seconds ?? 0) / 60), 0);
+      const transitionThisMins = (transitionsThis.data ?? []).length * 30;
+      const transitionLastMins = (transitionsLast.data ?? []).length * 30;
+      const journalThisMins = (journalsThis.data ?? []).length * 10;
+      const journalLastMins = (journalsLast.data ?? []).length * 10;
+      const toolkitThisMins = (toolkitThis.data ?? []).length * 5;
+      const toolkitLastMins = (toolkitLast.data ?? []).length * 5;
+      const assessmentThisMins = (assessmentsThis.data ?? []).length * 10;
+      const assessmentLastMins = (assessmentsLast.data ?? []).length * 10;
 
-      const actMinsThis = breathThisMins + binauralThisMins + userActThisMins;
-      const actMinsLast = breathLastMins + binauralLastMins + userActLastMins;
+      const actMinsThis = breathThisMins + binauralThisMins + userActThisMins + meditationThisMins + transitionThisMins + journalThisMins + toolkitThisMins + assessmentThisMins;
+      const actMinsLast = breathLastMins + binauralLastMins + userActLastMins + meditationLastMins + transitionLastMins + journalLastMins + toolkitLastMins + assessmentLastMins;
 
-      // Tools used (distinct activity_type values)
-      const toolsThis = new Set((activitiesThis.data ?? []).map(a => a.activity_type).filter(Boolean)).size;
-      const toolsLast = new Set((activitiesLast.data ?? []).map(a => a.activity_type).filter(Boolean)).size;
+      // Tools used: count distinct activity sources that had any usage
+      const toolSourcesThis = [
+        (breathingThis.data ?? []).length > 0 ? 'breathing' : null,
+        (binauralThis.data ?? []).length > 0 ? 'binaural' : null,
+        (meditationsThis.data ?? []).length > 0 ? 'meditation' : null,
+        (journalsThis.data ?? []).length > 0 ? 'journaling' : null,
+        (transitionsThis.data ?? []).length > 0 ? 'life_transitions' : null,
+        (toolkitThis.data ?? []).length > 0 ? 'toolkit' : null,
+        (assessmentsThis.data ?? []).length > 0 ? 'assessments' : null,
+        ...new Set((activitiesThis.data ?? []).map(a => a.activity_type).filter(Boolean)),
+      ].filter(Boolean);
+      const toolSourcesLast = [
+        (breathingLast.data ?? []).length > 0 ? 'breathing' : null,
+        (binauralLast.data ?? []).length > 0 ? 'binaural' : null,
+        (meditationsLast.data ?? []).length > 0 ? 'meditation' : null,
+        (journalsLast.data ?? []).length > 0 ? 'journaling' : null,
+        (transitionsLast.data ?? []).length > 0 ? 'life_transitions' : null,
+        (toolkitLast.data ?? []).length > 0 ? 'toolkit' : null,
+        (assessmentsLast.data ?? []).length > 0 ? 'assessments' : null,
+        ...new Set((activitiesLast.data ?? []).map(a => a.activity_type).filter(Boolean)),
+      ].filter(Boolean);
+      const toolsThis = new Set(toolSourcesThis).size;
+      const toolsLast = new Set(toolSourcesLast).size;
 
       return {
         thisWeek: {
