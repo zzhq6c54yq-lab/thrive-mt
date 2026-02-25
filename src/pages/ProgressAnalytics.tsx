@@ -323,10 +323,10 @@ const ProgressAnalytics = () => {
                 : `You've checked in ${trendsData.daysActive} days this month. Every check-in builds the foundation for lasting change.`
               : "Start your first check-in today to begin tracking your wellness journey. Your data will appear here as you engage with the platform."
           }
-          metric={{
-            label: trendsData?.moodChangePercent !== null ? "Mood Change" : "Days Active",
-            value: trendsData?.moodChangePercent !== null
-              ? `${trendsData.moodChangePercent! >= 0 ? '+' : ''}${trendsData.moodChangePercent}%`
+           metric={{
+            label: trendsData?.moodChangePercent != null ? "Mood Change" : "Days Active",
+            value: trendsData?.moodChangePercent != null
+              ? `${trendsData.moodChangePercent >= 0 ? '+' : ''}${trendsData.moodChangePercent}%`
               : `${trendsData?.daysActive ?? 0}`,
             trend: (trendsData?.moodChangePercent ?? 0) >= 0 ? "up" : "down"
           }}
