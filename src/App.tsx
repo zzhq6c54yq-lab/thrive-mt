@@ -387,7 +387,9 @@ function App() {
                   <Route path="/app/therapist-dashboard" element={<TherapistDashboard />} />
                   <Route path="/app/coach-dashboard" element={<CoachDashboard />} />
                   <Route path="/app/therapist-video-session" element={<TherapistVideoSession />} />
+                  <Route path="/app/therapist-video-session/:sessionId" element={<TherapistVideoSession />} />
                   <Route path="/app/client-video-session" element={<ClientVideoSession />} />
+                  <Route path="/app/client-video-session/:sessionId" element={<ClientVideoSession />} />
                   <Route path="/app/signature-moments" element={<SignatureMoments />} />
                   <Route path="/app/therapist/:therapistId" element={<TherapistProfile />} />
                   <Route path="/app/therapist-reset" element={<TherapistReset />} />
