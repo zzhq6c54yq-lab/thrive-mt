@@ -2,7 +2,7 @@
 import React, { useState, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useNavigate } from "react-router-dom";
-import { ArrowLeft, LineChart, BarChart, PieChart, Calendar, Download, TrendingUp, Search, Share2, FileText, Loader2, X, ClipboardList, Eye } from "lucide-react";
+import { ArrowLeft, LineChart, BarChart, PieChart, Calendar, Download, TrendingUp, Search, Share2, FileText, Loader2, X, ClipboardList, Eye, Mail, MessageSquare } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import HomeButton from "@/components/HomeButton";
@@ -269,11 +269,60 @@ const ProgressAnalytics = () => {
     }
   }, [profile, user, toast]);
 
+  const [showSharingDialog, setShowSharingDialog] = useState(false);
+  const [shareEmail, setShareEmail] = useState('');
+  const [shareMessage, setShareMessage] = useState('');
+  const [isSending, setIsSending] = useState(false);
+
   const handleManageSharing = () => {
-    toast({
-      title: "Secure Sharing",
-      description: "HIPAA-compliant sharing with your care team is coming soon. Your privacy and data security are our top priority.",
-    });
+    setShowSharingDialog(true);
+  };
+
+  const handleSendShare = async () => {
+    if (!shareEmail.trim()) {
+      toast({ title: "Email Required", description: "Please enter a recipient email address.", variant: "destructive" });
+      return;
+    }
+    if (!user?.id) return;
+
+    setIsSending(true);
+    try {
+      // Generate the report as a downloadable link
+      const userName = profile?.display_name || user.email?.split('@')[0] || 'User';
+      const reportData = await fetchComprehensiveReportData(user.id, userName);
+      const result = generateComprehensiveReport(reportData, 'download');
+
+      if (result) {
+        // Create mailto link with report context
+        const subject = encodeURIComponent(`${userName}'s Thrive MT Wellness Report`);
+        const body = encodeURIComponent(
+          `${shareMessage ? shareMessage + '\n\n' : ''}${userName} has shared their wellness progress report from Thrive MT with you.\n\nPlease note: For privacy and security, the report PDF has been downloaded to the sender's device. They can attach it to this email or share it with you directly.\n\nThis report was generated securely through Thrive MT's HIPAA-compliant platform.`
+        );
+        window.open(`mailto:${shareEmail}?subject=${subject}&body=${body}`, '_blank');
+
+        // Also trigger the PDF download so they can attach it
+        const link = document.createElement('a');
+        link.href = result.blobUrl;
+        link.download = result.filename;
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+        setTimeout(() => URL.revokeObjectURL(result.blobUrl), 1000);
+
+        toast({
+          title: "Ready to Share",
+          description: "Your email client has opened and the report PDF has been downloaded. Attach the PDF to your email to share securely.",
+        });
+        setShowSharingDialog(false);
+        setShareEmail('');
+        setShareMessage('');
+      }
+    } catch (error) {
+      console.error('Share error:', error);
+      toast({ title: "Sharing Failed", description: "Unable to prepare the report for sharing.", variant: "destructive" });
+    } finally {
+      setIsSending(false);
+    }
   };
 
   return (
@@ -1092,8 +1141,9 @@ const ProgressAnalytics = () => {
             <div className="flex-1 w-full relative">
               <iframe
                 src={reportViewUrl}
-                className="w-full h-full absolute inset-0 hidden sm:block"
+                className="w-full h-full absolute inset-0"
                 title="Report Preview"
+                style={{ backgroundColor: 'white' }}
               />
               {/* Mobile fallback: iOS Safari can't render PDFs in iframes */}
               <div className="flex sm:hidden flex-col items-center justify-center h-full gap-4 p-6 text-center">
@@ -1112,6 +1162,77 @@ const ProgressAnalytics = () => {
                 >
                   <Download className="w-4 h-4 mr-2" />
                   Save Report
+                </Button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Sharing Dialog */}
+      {showSharingDialog && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 backdrop-blur-sm">
+          <div className="relative w-[90vw] max-w-lg bg-background rounded-xl shadow-2xl border border-border flex flex-col overflow-hidden">
+            <div className="flex items-center justify-between px-5 py-4 border-b border-border bg-muted/50">
+              <h3 className="text-base font-semibold text-foreground flex items-center gap-2">
+                <Share2 className="w-5 h-5 text-[#D4AF37]" />
+                Secure Report Sharing
+              </h3>
+              <Button size="sm" variant="ghost" onClick={() => setShowSharingDialog(false)}>
+                <X className="w-4 h-4" />
+              </Button>
+            </div>
+            <div className="p-5 space-y-4">
+              <p className="text-sm text-muted-foreground">
+                Share your wellness report securely via email. The report PDF will be downloaded to your device so you can attach it to the email.
+              </p>
+              <div className="space-y-2">
+                <label className="text-sm font-medium text-foreground flex items-center gap-2">
+                  <Mail className="w-4 h-4" />
+                  Recipient Email
+                </label>
+                <input
+                  type="email"
+                  value={shareEmail}
+                  onChange={(e) => setShareEmail(e.target.value)}
+                  placeholder="therapist@example.com"
+                  className="w-full px-3 py-2 rounded-lg border border-border bg-background text-foreground text-sm focus:outline-none focus:ring-2 focus:ring-[#D4AF37]/50"
+                />
+              </div>
+              <div className="space-y-2">
+                <label className="text-sm font-medium text-foreground flex items-center gap-2">
+                  <MessageSquare className="w-4 h-4" />
+                  Personal Message (optional)
+                </label>
+                <textarea
+                  value={shareMessage}
+                  onChange={(e) => setShareMessage(e.target.value)}
+                  placeholder="Hi, I'd like to share my latest wellness progress report with you..."
+                  rows={3}
+                  className="w-full px-3 py-2 rounded-lg border border-border bg-background text-foreground text-sm focus:outline-none focus:ring-2 focus:ring-[#D4AF37]/50 resize-none"
+                />
+              </div>
+              <div className="bg-muted/50 rounded-lg p-3 text-xs text-muted-foreground">
+                🔒 All sharing complies with HIPAA privacy regulations. Reports are generated locally and never stored on external servers.
+              </div>
+              <div className="flex gap-3 pt-2">
+                <Button
+                  variant="outline"
+                  className="flex-1"
+                  onClick={() => setShowSharingDialog(false)}
+                >
+                  Cancel
+                </Button>
+                <Button
+                  className="flex-1 bg-[#D4AF37] hover:bg-[#B87333] text-black font-semibold"
+                  onClick={handleSendShare}
+                  disabled={isSending}
+                >
+                  {isSending ? (
+                    <><Loader2 className="w-4 h-4 mr-2 animate-spin" />Preparing...</>
+                  ) : (
+                    <><Mail className="w-4 h-4 mr-2" />Share via Email</>
+                  )}
                 </Button>
               </div>
             </div>

@@ -68,7 +68,7 @@ const MentalWellnessMenu: React.FC<MentalWellnessMenuProps> = ({
       id: "mindfulness",
       name: isSpanish ? "Meditación y Mindfulness" : "Meditation & Mindfulness",
       icon: <Brain className="h-5 w-5 text-violet-500" />,
-      path: "/mindfulness-sleep",
+      path: "/app/mindfulness-sleep",
       color: "from-violet-200/80 to-violet-100 hover:from-violet-300/80 hover:to-violet-200",
       textColor: "text-violet-800"
     },
@@ -76,7 +76,7 @@ const MentalWellnessMenu: React.FC<MentalWellnessMenuProps> = ({
       id: "binaural",
       name: isSpanish ? "Tonos Binaurales" : "Binaural Beats",
       icon: <Headphones className="h-5 w-5 text-indigo-500" />,
-      path: "/binaural-beats",
+      path: "/app/binaural-beats",
       color: "from-indigo-200/80 to-indigo-100 hover:from-indigo-300/80 hover:to-indigo-200",
       textColor: "text-indigo-800"
     },
@@ -84,7 +84,7 @@ const MentalWellnessMenu: React.FC<MentalWellnessMenuProps> = ({
       id: "journaling",
       name: isSpanish ? "Diario Personal" : "Journaling",
       icon: <Book className="h-5 w-5 text-emerald-500" />,
-      path: "/journaling",
+      path: "/app/journaling",
       color: "from-emerald-200/80 to-emerald-100 hover:from-emerald-300/80 hover:to-emerald-200",
       textColor: "text-emerald-800"
     },
@@ -92,7 +92,7 @@ const MentalWellnessMenu: React.FC<MentalWellnessMenuProps> = ({
       id: "alternative",
       name: isSpanish ? "Terapias Alternativas" : "Alternative Therapies",
       icon: <Leaf className="h-5 w-5 text-green-500" />,
-      path: "/alternative-therapies",
+      path: "/app/alternative-therapies",
       color: "from-green-200/80 to-green-100 hover:from-green-300/80 hover:to-green-200",
       textColor: "text-green-800"
     },
@@ -100,7 +100,7 @@ const MentalWellnessMenu: React.FC<MentalWellnessMenuProps> = ({
       id: "sleep",
       name: isSpanish ? "Ayuda para Dormir" : "Sleep Support",
       icon: <Moon className="h-5 w-5 text-blue-500" />,
-      path: "/mindfulness-sleep",
+      path: "/app/mindfulness-sleep",
       color: "from-blue-200/80 to-blue-100 hover:from-blue-300/80 hover:to-blue-200",
       textColor: "text-blue-800"
     },
@@ -108,7 +108,7 @@ const MentalWellnessMenu: React.FC<MentalWellnessMenuProps> = ({
       id: "video",
       name: isSpanish ? "Diario en Video" : "Video Diary",
       icon: <MessageSquare className="h-5 w-5 text-amber-500" />,
-      path: "/video-diary",
+      path: "/app/video-diary",
       color: "from-amber-200/80 to-amber-100 hover:from-amber-300/80 hover:to-amber-200",
       textColor: "text-amber-800"
     }
@@ -154,7 +154,7 @@ const MentalWellnessMenu: React.FC<MentalWellnessMenuProps> = ({
       id: "wellness-challenge",
       name: isSpanish ? "Desafíos de Bienestar" : "Wellness Challenges",
       icon: <CheckCircle className="h-5 w-5 text-green-500" />,
-      path: "/wellness-challenges",
+      path: "/app/wellness-challenges",
       color: "from-green-200/80 to-green-100 hover:from-green-300/80 hover:to-green-200",
       textColor: "text-green-800"
     },
@@ -162,7 +162,7 @@ const MentalWellnessMenu: React.FC<MentalWellnessMenuProps> = ({
       id: "community-support",
       name: isSpanish ? "Grupos de Apoyo" : "Support Groups",
       icon: <Users className="h-5 w-5 text-purple-500" />,
-      path: "/community-support",
+      path: "/app/community",
       color: "from-purple-200/80 to-purple-100 hover:from-purple-300/80 hover:to-purple-200",
       textColor: "text-purple-800"
     },
@@ -170,7 +170,7 @@ const MentalWellnessMenu: React.FC<MentalWellnessMenuProps> = ({
       id: "workshops",
       name: isSpanish ? "Talleres de Bienestar" : "Wellness Workshops",
       icon: <CalendarDays className="h-5 w-5 text-blue-500" />,
-      path: "/workshops",
+      path: "/app/workshops",
       color: "from-blue-200/80 to-blue-100 hover:from-blue-300/80 hover:to-blue-200",
       textColor: "text-blue-800"
     },
@@ -178,7 +178,7 @@ const MentalWellnessMenu: React.FC<MentalWellnessMenuProps> = ({
       id: "resources",
       name: isSpanish ? "Biblioteca de Recursos" : "Resource Library",
       icon: <FileText className="h-5 w-5 text-indigo-500" />,
-      path: "/resource-library",
+      path: "/app/resource-library",
       color: "from-indigo-200/80 to-indigo-100 hover:from-indigo-300/80 hover:to-indigo-200",
       textColor: "text-indigo-800"
     }
