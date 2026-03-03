@@ -1,18 +1,17 @@
 import React, { useState, useEffect } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import Page from '@/components/Page';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { BookOpen, Play } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
+import { BookOpen, Play, Clock, ArrowRight, ChevronLeft } from 'lucide-react';
 import AIWorkshopPlayer from '@/components/workshop/AIWorkshopPlayer';
 import { workshopData } from '@/data/workshopData';
+import { motion } from 'framer-motion';
 
 const AIWorkshopStudio = () => {
   const [searchParams] = useSearchParams();
   const [selectedWorkshop, setSelectedWorkshop] = useState<string | null>(null);
 
-  // Support URL parameter for workshop selection
   useEffect(() => {
     const workshopIdFromUrl = searchParams.get('selected');
     if (workshopIdFromUrl) {
@@ -27,7 +26,6 @@ const AIWorkshopStudio = () => {
       return null;
     }
 
-    // Convert workshopData format to AIWorkshopPlayer format
     const sections = workshop.sections.map(section => ({
       title: section.title,
       description: section.content,
@@ -40,13 +38,14 @@ const AIWorkshopStudio = () => {
 
     return (
       <Page title="AI Workshop Studio" showBackButton={true}>
-        <div className="container mx-auto px-4 py-8">
+        <div className="container mx-auto px-4 py-8 max-w-6xl">
           <Button
             variant="ghost"
             onClick={() => setSelectedWorkshop(null)}
-            className="mb-6"
+            className="mb-6 text-muted-foreground hover:text-foreground gap-2"
           >
-            ← Back to Workshops
+            <ChevronLeft className="h-4 w-4" />
+            Back to Workshops
           </Button>
           <AIWorkshopPlayer
             workshopId={selectedWorkshop}
@@ -63,73 +62,130 @@ const AIWorkshopStudio = () => {
 
   return (
     <Page title="AI Workshop Studio" showBackButton={true}>
-      <div className="container mx-auto px-4 py-8">
-        <div className="text-center mb-12">
-          <h1 className="text-5xl font-bold mb-4 text-foreground" style={{ textShadow: '0 2px 10px rgba(212, 175, 55, 0.3)' }}>
-            AI Workshop Studio
+      <div className="container mx-auto px-4 py-8 max-w-7xl">
+        {/* Hero Header */}
+        <motion.div 
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6 }}
+          className="text-center mb-16"
+        >
+          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-[#B87333]/10 border border-[#B87333]/20 mb-6">
+            <BookOpen className="h-4 w-4 text-[#B87333]" />
+            <span className="text-sm text-[#E5C5A1] tracking-wide uppercase">Evidence-Based Programs</span>
+          </div>
+          <h1 className="text-4xl md:text-6xl font-light mb-5 text-foreground tracking-tight">
+            Workshop <span className="bg-gradient-to-r from-[#B87333] to-[#D4AF37] bg-clip-text text-transparent font-medium">Studio</span>
           </h1>
-          <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
-            Experience interactive workshops with AI narration, guided exercises, and downloadable materials
+          <p className="text-lg text-muted-foreground max-w-2xl mx-auto leading-relaxed font-light">
+            Immersive, AI-narrated workshops designed by clinical experts. 
+            Each session includes guided exercises and downloadable materials.
           </p>
-        </div>
+        </motion.div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {workshopData.map((workshop) => {
+        {/* Workshop Grid */}
+        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6 mb-16">
+          {workshopData.map((workshop, index) => {
             const Icon = workshop.icon;
             return (
-              <Card
+              <motion.div
                 key={workshop.id}
-                className="group hover:shadow-2xl transition-all duration-300 cursor-pointer overflow-hidden border-primary/20"
-                onClick={() => setSelectedWorkshop(workshop.id)}
+                initial={{ opacity: 0, y: 30 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: index * 0.06, duration: 0.5 }}
               >
-                <div className={`relative h-48 overflow-hidden ${workshop.color}`}>
-                  <div className="absolute inset-0 bg-gradient-to-br from-[#D4AF37]/20 to-transparent" />
-                  <div className="absolute inset-0 flex items-center justify-center">
-                    <Icon className="h-16 w-16 text-[#D4AF37]" />
+                <div
+                  className="group cursor-pointer rounded-2xl overflow-hidden border border-white/[0.06] bg-[#0f1419] hover:border-[#B87333]/30 transition-all duration-500 h-full flex flex-col"
+                  onClick={() => setSelectedWorkshop(workshop.id)}
+                >
+                  {/* Cover Image */}
+                  <div className="relative h-52 overflow-hidden">
+                    <img 
+                      src={workshop.coverImage} 
+                      alt={workshop.title}
+                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-out"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-[#0f1419] via-[#0f1419]/40 to-transparent" />
+                    
+                    {/* Floating badges */}
+                    <div className="absolute top-4 left-4 flex gap-2">
+                      <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-black/60 backdrop-blur-md text-xs text-white/80 border border-white/10">
+                        <Clock className="h-3 w-3" />
+                        {workshop.duration}
+                      </span>
+                    </div>
+                    
+                    {/* Clinical framework tag */}
+                    <div className="absolute top-4 right-4">
+                      <span className="px-3 py-1 rounded-full bg-[#B87333]/20 backdrop-blur-md text-xs text-[#E5C5A1] border border-[#B87333]/20">
+                        {workshop.clinicalContext.framework.length > 40 
+                          ? workshop.clinicalContext.framework.substring(0, 40) + '...'
+                          : workshop.clinicalContext.framework}
+                      </span>
+                    </div>
+                    
+                    {/* Icon overlay */}
+                    <div className="absolute bottom-4 left-4">
+                      <div className="p-3 rounded-xl bg-[#B87333]/15 backdrop-blur-sm border border-[#B87333]/20 group-hover:bg-[#B87333]/25 transition-colors">
+                        <Icon className="h-6 w-6 text-[#D4AF37]" />
+                      </div>
+                    </div>
                   </div>
-                  <div className="absolute top-4 left-4 flex gap-2">
-                    <Badge variant="secondary" className="bg-background/80 backdrop-blur-sm">
-                      {workshop.duration}
-                    </Badge>
-                    <Badge variant="secondary" className="bg-[#D4AF37]/20 text-[#D4AF37] backdrop-blur-sm">
-                      {workshop.clinicalContext.framework}
-                    </Badge>
+                  
+                  {/* Content */}
+                  <div className="p-6 flex-1 flex flex-col">
+                    <h3 className="text-xl font-semibold text-foreground mb-2 group-hover:text-[#E5C5A1] transition-colors duration-300">
+                      {workshop.title}
+                    </h3>
+                    <p className="text-sm text-muted-foreground line-clamp-3 mb-6 flex-1 leading-relaxed">
+                      {workshop.description}
+                    </p>
+
+                    {/* CTA */}
+                    <button className="w-full flex items-center justify-center gap-2 py-3 rounded-xl bg-gradient-to-r from-[#B87333]/15 to-[#D4AF37]/10 border border-[#B87333]/25 text-[#E5C5A1] text-sm font-medium hover:from-[#B87333]/25 hover:to-[#D4AF37]/20 hover:border-[#B87333]/40 transition-all duration-300 group-hover:shadow-[0_0_20px_rgba(184,115,51,0.1)]">
+                      <Play className="h-4 w-4" />
+                      Start Workshop
+                      <ArrowRight className="h-3.5 w-3.5 opacity-0 -ml-2 group-hover:opacity-100 group-hover:ml-0 transition-all duration-300" />
+                    </button>
                   </div>
                 </div>
-                
-                <CardHeader>
-                  <CardTitle className="text-xl">{workshop.title}</CardTitle>
-                  <CardDescription className="text-base">
-                    {workshop.description}
-                  </CardDescription>
-                </CardHeader>
-
-                <CardContent>
-                  <Button className="w-full gap-2 bg-primary hover:bg-primary/90">
-                    <Play className="h-4 w-4" />
-                    Start Workshop
-                  </Button>
-                </CardContent>
-              </Card>
+              </motion.div>
             );
           })}
         </div>
 
-        <div className="mt-12 p-6 bg-card/50 backdrop-blur-sm rounded-lg border border-border">
-          <div className="flex items-start gap-4">
-            <BookOpen className="h-6 w-6 text-primary flex-shrink-0 mt-1" />
+        {/* How It Works */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.4, duration: 0.6 }}
+          className="rounded-2xl bg-[#0f1419] border border-white/[0.06] p-8 md:p-10"
+        >
+          <div className="flex items-start gap-5">
+            <div className="p-3 rounded-xl bg-[#B87333]/10 border border-[#B87333]/20 flex-shrink-0">
+              <BookOpen className="h-6 w-6 text-[#D4AF37]" />
+            </div>
             <div>
-              <h3 className="text-lg font-semibold mb-2 text-foreground">How It Works</h3>
-              <ul className="space-y-2 text-muted-foreground">
-                <li>• <strong>AI Narration:</strong> Professional voice guides you through each section</li>
-                <li>• <strong>Interactive Exercises:</strong> Pause points for reflection and practice</li>
-                <li>• <strong>Customizable Experience:</strong> Adjust playback speed and voice selection</li>
-                <li>• <strong>Downloadable Worksheets:</strong> Take your learning offline with PDF materials</li>
-                <li>• <strong>100% Free:</strong> Uses your browser's built-in speech synthesis</li>
-              </ul>
+              <h3 className="text-xl font-semibold mb-4 text-foreground">How It Works</h3>
+              <div className="grid sm:grid-cols-2 gap-4">
+                {[
+                  { label: 'AI Narration', desc: 'Professional voice guides you through each section' },
+                  { label: 'Interactive Exercises', desc: 'Pause points for reflection and practice' },
+                  { label: 'Customizable Pace', desc: 'Adjust playback speed and voice selection' },
+                  { label: 'Downloadable Materials', desc: 'Take your learning offline with PDF worksheets' },
+                ].map((item, i) => (
+                  <div key={i} className="flex items-start gap-3 p-3 rounded-lg bg-white/[0.02]">
+                    <div className="w-1.5 h-1.5 rounded-full bg-[#B87333] mt-2 flex-shrink-0" />
+                    <div>
+                      <span className="text-sm font-medium text-foreground">{item.label}</span>
+                      <p className="text-xs text-muted-foreground mt-0.5">{item.desc}</p>
+                    </div>
+                  </div>
+                ))}
+              </div>
             </div>
           </div>
-        </div>
+        </motion.div>
       </div>
     </Page>
   );
