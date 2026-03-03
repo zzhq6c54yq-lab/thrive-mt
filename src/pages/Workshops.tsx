@@ -1,23 +1,13 @@
-
-import React, { useState } from "react";
+import React from "react";
 import { useNavigate } from "react-router-dom";
 import { workshopData } from "@/data/workshopData";
 import Page from "@/components/Page";
-import { 
-  Card, 
-  CardContent, 
-  CardDescription, 
-  CardHeader, 
-  CardTitle,
-  CardFooter
-} from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { ChevronDown, ChevronUp, Play, Clock } from "lucide-react";
+import { Play, Clock, ArrowRight, BookOpen } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
-import { handleImageError } from "@/utils/imageUtils";
+import { motion } from "framer-motion";
 
 const Workshops = () => {
-  const [isExpanded, setIsExpanded] = useState(true); // Default to expanded
   const navigate = useNavigate();
   const { toast } = useToast();
   
@@ -28,133 +18,85 @@ const Workshops = () => {
   const handleJoinWorkshop = (workshopId: string, workshopTitle: string) => {
     toast({
       title: "Joining Workshop",
-      description: "Taking you to the workshop content",
+      description: workshopTitle,
       duration: 1500,
     });
-    
-    // Navigate directly to the workshop content tab
-    navigate(`/app/workshop/${workshopId}`, { state: { activeTab: "workshop", workshopTitle } });
-  };
-
-  // Workshop cover images mapped to topics with direct links
-  const getWorkshopImage = (workshopId: string) => {
-    const imageMap: {[key: string]: string} = {
-      'mindful-communication': 'https://images.unsplash.com/photo-1581091226825-a6a2a5aee158',
-      'emotional-regulation': 'https://images.unsplash.com/photo-1649972904349-6e44c42644a7',
-      'stress-management': 'https://images.unsplash.com/photo-1488590528505-98d2b5aba04b',
-      'better-sleep': 'https://images.unsplash.com/photo-1465146344425-f00d5f5c8f07',
-      'cognitive-reframing': 'https://images.unsplash.com/photo-1506744038136-46273834b3fb',
-      'gratitude-practice': 'https://images.unsplash.com/photo-1509316975850-ff9c5deb0cd9',
-      'self-compassion': 'https://images.unsplash.com/photo-1500673922987-e212871fec22',
-      'social-connection': 'https://images.unsplash.com/photo-1523712999610-f77fbcfc3843',
-      'anxiety-management': 'https://images.unsplash.com/photo-1501854140801-50d01698950b',
-      'boundary-setting': 'https://images.unsplash.com/photo-1615729947596-a598e5de0ab3',
-      'values-alignment': 'https://images.unsplash.com/photo-1543618903355-efbc3e8e9284',
-      'habit-formation': 'https://images.unsplash.com/photo-1517048676732-d65bc937f952'
-    };
-    
-    // Return the full URL directly without modification
-    return imageMap[workshopId] || 'https://images.unsplash.com/photo-1486312338219-ce68d2c6f44d';
+    navigate(`/app/ai-workshop-studio?selected=${workshopId}`);
   };
 
   return (
-    <Page title="Thrive MT Mental Health Workshops" showBackButton={true} onBackClick={handleBack}>
-      <div className="space-y-6">
-        <Card className="border border-gray-200/20 bg-gray-800/50 backdrop-blur-sm">
-          <CardHeader className="cursor-pointer" onClick={() => setIsExpanded(!isExpanded)}>
-            <div className="flex justify-between items-center">
-              <div>
-                <CardTitle className="text-xl text-white">Current Workshops Available</CardTitle>
-                <CardDescription className="text-blue-200">
-                  Guided 45-minute sessions with Henry to improve your mental wellbeing
-                </CardDescription>
-              </div>
-              <Button variant="ghost" size="sm" className="text-gray-400">
-                {isExpanded ? <ChevronUp className="h-5 w-5" /> : <ChevronDown className="h-5 w-5" />}
-              </Button>
-            </div>
-          </CardHeader>
-          
-          {isExpanded && (
-            <CardContent>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-2">
-                {workshopData.map((workshop) => {
-                  // Extract color code for styling
-                  const colorClass = workshop.color.split(' ')[0];
-                  const accentColor = colorClass.includes('bg-[#') 
-                    ? colorClass.replace('bg-[', '').replace(']/10', '') 
-                    : '#9b87f5';
-                  
-                  // Get the workshop image directly
-                  const workshopImage = getWorkshopImage(workshop.id);
-                    
-                  return (
-                    <div 
-                      key={workshop.id}
-                      className="relative rounded-xl overflow-hidden shadow-md transition-all duration-300 hover:shadow-xl transform hover:scale-[1.01] group cursor-pointer"
-                      style={{
-                        background: `linear-gradient(135deg, #252535 0%, #1e1e2a 100%)`,
-                        borderLeft: `4px solid ${accentColor}`
-                      }}
-                      onClick={() => handleJoinWorkshop(workshop.id, workshop.title)}
-                    >
-                      <div className="aspect-video overflow-hidden">
-                        <img 
-                          src={workshopImage}
-                          alt={workshop.title} 
-                          className="w-full h-full object-cover opacity-50 group-hover:opacity-60 transition-opacity"
-                          onError={(e) => {
-                            const target = e.target as HTMLImageElement;
-                            target.src = handleImageError(e, `workshop-${workshop.id}`, 'https://images.unsplash.com/photo-1486312338219-ce68d2c6f44d');
-                          }}
-                        />
-                        <div className="absolute inset-0 bg-gradient-to-t from-[#1e1e2a] to-transparent"></div>
-                      </div>
-                      
-                      <div className="p-6 relative z-10">
-                        <div className="flex justify-between items-start mb-3">
-                          <div 
-                            className="p-3 rounded-full"
-                            style={{ background: `${accentColor}25` }}
-                          >
-                            <workshop.icon className="h-6 w-6" style={{ color: accentColor }} />
-                          </div>
-                          <div className="flex items-center text-gray-400 text-sm">
-                            <Clock className="h-4 w-4 mr-1" />
-                            <span>{workshop.duration}</span>
-                          </div>
-                        </div>
-                        
-                        <h3 className="text-xl font-semibold mb-2 text-white group-hover:text-[#E5C5A1] transition-colors">
-                          {workshop.title}
-                        </h3>
-                        
-                        <p className="text-gray-300 mb-6 text-sm line-clamp-2">
-                          {workshop.description}
-                        </p>
-                        
-                        <Button 
-                          className="w-full flex items-center justify-center gap-2 hover:shadow-md"
-                          style={{ 
-                            backgroundColor: accentColor,
-                            color: '#fff'
-                          }}
-                          onClick={(e) => {
-                            e.stopPropagation(); // Prevent triggering the parent onClick
-                            handleJoinWorkshop(workshop.id, workshop.title);
-                          }}
-                        >
-                          Join Now
-                          <Play className="h-4 w-4 ml-1" />
-                        </Button>
-                      </div>
+    <Page title="Workshops" showBackButton={true} onBackClick={handleBack}>
+      <div className="container mx-auto px-4 py-8 max-w-7xl space-y-10">
+        {/* Header */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="text-center"
+        >
+          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-[#B87333]/10 border border-[#B87333]/20 mb-5">
+            <BookOpen className="h-4 w-4 text-[#B87333]" />
+            <span className="text-sm text-[#E5C5A1] tracking-wide uppercase">Guided Sessions</span>
+          </div>
+          <h1 className="text-3xl md:text-5xl font-light text-foreground tracking-tight mb-3">
+            Mental Health <span className="bg-gradient-to-r from-[#B87333] to-[#D4AF37] bg-clip-text text-transparent font-medium">Workshops</span>
+          </h1>
+          <p className="text-base text-muted-foreground max-w-xl mx-auto">
+            AI-narrated sessions designed to build lasting mental wellness skills
+          </p>
+        </motion.div>
+
+        {/* Workshop Grid */}
+        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-5">
+          {workshopData.map((workshop, index) => {
+            const Icon = workshop.icon;
+            return (
+              <motion.div
+                key={workshop.id}
+                initial={{ opacity: 0, y: 24 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: index * 0.05, duration: 0.45 }}
+                className="group cursor-pointer rounded-2xl overflow-hidden border border-white/[0.06] bg-[#0f1419] hover:border-[#B87333]/30 transition-all duration-500 flex flex-col"
+                onClick={() => handleJoinWorkshop(workshop.id, workshop.title)}
+              >
+                {/* Cover */}
+                <div className="relative h-44 overflow-hidden">
+                  <img
+                    src={workshop.coverImage}
+                    alt={workshop.title}
+                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-[#0f1419] via-[#0f1419]/30 to-transparent" />
+                  <div className="absolute top-3 left-3">
+                    <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-black/60 backdrop-blur-md text-xs text-white/80 border border-white/10">
+                      <Clock className="h-3 w-3" />
+                      {workshop.duration}
+                    </span>
+                  </div>
+                  <div className="absolute bottom-3 left-3">
+                    <div className="p-2.5 rounded-lg bg-[#B87333]/15 backdrop-blur-sm border border-[#B87333]/20">
+                      <Icon className="h-5 w-5 text-[#D4AF37]" />
                     </div>
-                  );
-                })}
-              </div>
-            </CardContent>
-          )}
-        </Card>
+                  </div>
+                </div>
+
+                {/* Content */}
+                <div className="p-5 flex-1 flex flex-col">
+                  <h3 className="text-lg font-semibold text-foreground mb-1.5 group-hover:text-[#E5C5A1] transition-colors">
+                    {workshop.title}
+                  </h3>
+                  <p className="text-sm text-muted-foreground line-clamp-2 mb-5 flex-1">
+                    {workshop.description}
+                  </p>
+                  <button className="w-full flex items-center justify-center gap-2 py-2.5 rounded-xl bg-gradient-to-r from-[#B87333]/15 to-[#D4AF37]/10 border border-[#B87333]/25 text-[#E5C5A1] text-sm font-medium hover:from-[#B87333]/25 hover:to-[#D4AF37]/20 transition-all">
+                    <Play className="h-4 w-4" />
+                    Start Workshop
+                    <ArrowRight className="h-3.5 w-3.5 opacity-0 -ml-2 group-hover:opacity-100 group-hover:ml-0 transition-all duration-300" />
+                  </button>
+                </div>
+              </motion.div>
+            );
+          })}
+        </div>
       </div>
     </Page>
   );
