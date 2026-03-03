@@ -10,7 +10,7 @@ export const DashboardFooter: React.FC = () => {
   const quickLinks = [
     { label: 'Help & Support', icon: HelpCircle, onClick: () => navigate('/app/help') },
     { label: 'Settings', icon: Settings, onClick: () => navigate('/app/settings') },
-    { label: 'Crisis Resources', icon: Phone, onClick: () => navigate('/app/crisis-resources') },
+    { label: 'Crisis Resources', icon: Phone, onClick: () => navigate('/app/crisis-support') },
   ];
 
   return (

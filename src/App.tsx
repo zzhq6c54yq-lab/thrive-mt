@@ -218,6 +218,7 @@ const SubstanceAbuseSponsor = lazy(() => import("./pages/SubstanceAbuseSponsor")
 const MemorialGarden = lazy(() => import("./pages/MemorialGarden"));
 const GriefResources = lazy(() => import("./pages/GriefResources"));
 const LegacyBuilder = lazy(() => import("./pages/LegacyBuilder"));
+const UserSettings = lazy(() => import("./pages/UserSettings"));
 
 // Marketing / Public pages
 const PrivacyPolicy = lazy(() => import("./pages/PrivacyPolicy"));
@@ -465,6 +466,10 @@ function App() {
                   <Route path="/app/dear-henry-admin" element={<DearHenryAdmin />} />
                   <Route path="/app/all-workshops" element={<AllWorkshopsPage />} />
                   <Route path="/app/ai-workshop-studio" element={<AIWorkshopStudio />} />
+
+                  {/* Settings & Help */}
+                  <Route path="/app/settings" element={<UserSettings />} />
+                  <Route path="/app/help" element={<Navigate to="/app/contact" replace />} />
 
                   {/* Not Found */}
                   <Route path="/app/not-found" element={<NotFound />} />
