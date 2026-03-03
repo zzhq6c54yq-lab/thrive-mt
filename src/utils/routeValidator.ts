@@ -172,6 +172,8 @@ export const APP_ROUTES = [
   '/app/dear-henry-admin',
   '/app/all-workshops',
   '/app/ai-workshop-studio',
+  '/app/settings',
+  '/app/help',
 ];
 
 // Marketing routes (public) — served from root
