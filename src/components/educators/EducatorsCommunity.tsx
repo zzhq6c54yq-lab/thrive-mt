@@ -314,14 +314,10 @@ const EducatorsCommunity: React.FC = () => {
                   variant="default" 
                   className="bg-purple-700 hover:bg-purple-800 text-white"
                   onClick={() => {
-                    toast({
-                      title: "Feature Activated",
-                      description: "Real-time video chat is now available for this group",
-                      duration: 3000,
-                    });
+                    navigate("/app/community");
                   }}
                 >
-                  Start Video Chat
+                  Join Community Chat
                 </Button>
               </CardFooter>
             </Card>

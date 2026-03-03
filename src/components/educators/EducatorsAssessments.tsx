@@ -5,11 +5,9 @@ import { Badge } from "@/components/ui/badge";
 import { Brain, BookOpen, ClipboardList, Users, Heart } from "lucide-react";
 import ActionButton from "@/components/navigation/ActionButton";
 import { useNavigate } from "react-router-dom";
-import { useToast } from "@/hooks/use-toast";
 
 const EducatorsAssessments: React.FC = () => {
   const navigate = useNavigate();
-  const { toast } = useToast();
   
   const assessments = [
     {
@@ -20,7 +18,7 @@ const EducatorsAssessments: React.FC = () => {
       icon: Brain,
       category: "Professional Well-being",
       recommended: true,
-      path: "/educators-assessments/educator-burnout"
+      path: "/app/educators-burnout-assessment"
     },
     {
       id: "classroom-stress",
@@ -30,7 +28,7 @@ const EducatorsAssessments: React.FC = () => {
       icon: BookOpen,
       category: "Classroom Management",
       recommended: false,
-      path: "/educators-assessments/classroom-stress"
+      path: "/app/educators-classroom-stress-assessment"
     },
     {
       id: "work-life-balance",
@@ -40,7 +38,7 @@ const EducatorsAssessments: React.FC = () => {
       icon: ClipboardList,
       category: "Life Balance",
       recommended: false,
-      path: "/educators-assessments/work-life-balance"
+      path: "/app/educators-work-life-balance-assessment"
     },
     {
       id: "collegial-relationships",
@@ -50,7 +48,7 @@ const EducatorsAssessments: React.FC = () => {
       icon: Users,
       category: "Workplace Dynamics",
       recommended: false,
-      path: "/educators-assessments/collegial-relationships"
+      path: "/app/mental-wellness-assessments"
     },
     {
       id: "selfcare-habits",
@@ -60,25 +58,17 @@ const EducatorsAssessments: React.FC = () => {
       icon: Heart,
       category: "Self-Care",
       recommended: false,
-      path: "/educators-assessments/selfcare-habits"
+      path: "/app/mental-wellness-assessments"
     }
   ];
 
   const handleStartAssessment = (assessment: any) => {
-    if (assessment.path) {
-      navigate(assessment.path, { 
-        state: { 
-          stayInPortal: true,
-          preventTutorial: true
-        }
-      });
-    } else {
-      toast({
-        title: "Coming Soon",
-        description: "This assessment will be available in the next update",
-        duration: 3000,
-      });
-    }
+    navigate(assessment.path, { 
+      state: { 
+        stayInPortal: true,
+        preventTutorial: true
+      }
+    });
   };
 
   return (
