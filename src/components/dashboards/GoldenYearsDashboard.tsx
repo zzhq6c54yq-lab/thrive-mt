@@ -4,9 +4,11 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Heart, Users, Calendar, Book, Phone, Smile } from 'lucide-react';
 import { useUser } from '@/contexts/UserContext';
+import { useNavigate } from 'react-router-dom';
 
 const GoldenYearsDashboard: React.FC = () => {
   const { user } = useUser();
+  const navigate = useNavigate();
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-amber-900 via-orange-800 to-red-900 p-6">
@@ -30,7 +32,10 @@ const GoldenYearsDashboard: React.FC = () => {
               <p className="text-slate-300 text-sm mb-4">
                 Gentle activities designed for mental and emotional wellness.
               </p>
-              <Button className="w-full bg-amber-600 hover:bg-amber-700 text-black font-semibold">
+              <Button 
+                className="w-full bg-amber-600 hover:bg-amber-700 text-black font-semibold"
+                onClick={() => navigate('/app/dashboard')}
+              >
                 Today's Activities
               </Button>
             </CardContent>
@@ -45,7 +50,11 @@ const GoldenYearsDashboard: React.FC = () => {
               <p className="text-slate-300 text-sm mb-4">
                 Connect with peers and participate in community activities.
               </p>
-              <Button variant="outline" className="w-full border-blue-500 text-blue-400 hover:bg-blue-500/10">
+              <Button 
+                variant="outline" 
+                className="w-full border-blue-500 text-blue-400 hover:bg-blue-500/10"
+                onClick={() => navigate('/app/community')}
+              >
                 Join Groups
               </Button>
             </CardContent>
@@ -60,7 +69,11 @@ const GoldenYearsDashboard: React.FC = () => {
               <p className="text-slate-300 text-sm mb-4">
                 Gentle exercises to keep your mind sharp and engaged.
               </p>
-              <Button variant="outline" className="w-full border-green-500 text-green-400 hover:bg-green-500/10">
+              <Button 
+                variant="outline" 
+                className="w-full border-green-500 text-green-400 hover:bg-green-500/10"
+                onClick={() => navigate('/app/dashboard')}
+              >
                 Brain Games
               </Button>
             </CardContent>
@@ -79,7 +92,10 @@ const GoldenYearsDashboard: React.FC = () => {
               <p className="text-slate-300 mb-4">
                 Share your wisdom and reflect on your rich life experiences.
               </p>
-              <Button className="w-full bg-purple-600 hover:bg-purple-700">
+              <Button 
+                className="w-full bg-purple-600 hover:bg-purple-700"
+                onClick={() => navigate('/app/journal')}
+              >
                 Write Memories
               </Button>
             </CardContent>
@@ -97,11 +113,12 @@ const GoldenYearsDashboard: React.FC = () => {
                 Stay connected with loved ones and share your journey.
               </p>
               <div className="space-y-2">
-                <Button variant="outline" className="w-full text-pink-400 border-pink-500 hover:bg-pink-500/10">
-                  Video Call Family
-                </Button>
-                <Button variant="outline" className="w-full text-pink-400 border-pink-500 hover:bg-pink-500/10">
-                  Share Photos
+                <Button 
+                  variant="outline" 
+                  className="w-full text-pink-400 border-pink-500 hover:bg-pink-500/10"
+                  onClick={() => navigate('/app/community')}
+                >
+                  Connect with Community
                 </Button>
               </div>
             </CardContent>

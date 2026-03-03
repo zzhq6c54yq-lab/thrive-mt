@@ -4,26 +4,36 @@ import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }
 import { Button } from "@/components/ui/button";
 import { MessageCircle, Users, Calendar, ExternalLink, MessagesSquare, UserRoundPlus } from "lucide-react";
 import { useNavigate } from "react-router-dom";
+import { useUser } from "@/contexts/UserContext";
 import { useToast } from "@/hooks/use-toast";
 
 const HospitalityCommunity: React.FC = () => {
   const navigate = useNavigate();
+  const { user } = useUser();
   const { toast } = useToast();
   
-  const handleJoinGroup = (groupName: string) => {
-    toast({
-      title: "Joining Community Group",
-      description: `You've been added to ${groupName}`,
-      duration: 2000,
-    });
+  const handleJoinGroup = () => {
+    if (!user?.id) {
+      toast({
+        title: "Please Log In",
+        description: "You need to be logged in to join groups.",
+        variant: "destructive",
+      });
+      return;
+    }
+    navigate("/app/community");
   };
   
-  const handleJoinEvent = (eventName: string) => {
-    toast({
-      title: "RSVP Confirmed",
-      description: `You're registered for ${eventName}`,
-      duration: 2000,
-    });
+  const handleJoinEvent = () => {
+    if (!user?.id) {
+      toast({
+        title: "Please Log In",
+        description: "You need to be logged in to register for events.",
+        variant: "destructive",
+      });
+      return;
+    }
+    navigate("/app/community");
   };
 
   return (
@@ -43,92 +53,38 @@ const HospitalityCommunity: React.FC = () => {
             Discussion Groups
           </h3>
           
-          <Card className="bg-white/10">
-            <CardHeader>
-              <CardTitle className="text-lg">Restaurant Staff Support Circle</CardTitle>
-              <CardDescription>
-                Front-of-house staff sharing experiences and support
-              </CardDescription>
-            </CardHeader>
-            <CardContent>
-              <div className="flex items-center text-sm text-white/70 mb-3">
-                <Users className="h-4 w-4 mr-2" />
-                <span>247 members</span>
-                <span className="mx-2">•</span>
-                <MessagesSquare className="h-4 w-4 mr-2" />
-                <span>Very active</span>
-              </div>
-              <p className="text-sm text-white/70">
-                A supportive community for servers, hosts, and other front-of-house staff to discuss mental health challenges in customer-facing roles.
-              </p>
-            </CardContent>
-            <CardFooter>
-              <Button 
-                className="w-full"
-                onClick={() => handleJoinGroup("Restaurant Staff Support Circle")}
-              >
-                <UserRoundPlus className="mr-2 h-4 w-4" /> Join Group
-              </Button>
-            </CardFooter>
-          </Card>
-          
-          <Card className="bg-white/10">
-            <CardHeader>
-              <CardTitle className="text-lg">Kitchen Crew Conversations</CardTitle>
-              <CardDescription>
-                Back-of-house staff discussing kitchen stress management
-              </CardDescription>
-            </CardHeader>
-            <CardContent>
-              <div className="flex items-center text-sm text-white/70 mb-3">
-                <Users className="h-4 w-4 mr-2" />
-                <span>189 members</span>
-                <span className="mx-2">•</span>
-                <MessagesSquare className="h-4 w-4 mr-2" />
-                <span>Active</span>
-              </div>
-              <p className="text-sm text-white/70">
-                A space for chefs, line cooks, and kitchen staff to share strategies for managing the high-pressure environments of professional kitchens.
-              </p>
-            </CardContent>
-            <CardFooter>
-              <Button 
-                className="w-full"
-                onClick={() => handleJoinGroup("Kitchen Crew Conversations")}
-              >
-                <UserRoundPlus className="mr-2 h-4 w-4" /> Join Group
-              </Button>
-            </CardFooter>
-          </Card>
-          
-          <Card className="bg-white/10">
-            <CardHeader>
-              <CardTitle className="text-lg">Management & Leadership</CardTitle>
-              <CardDescription>
-                For restaurant managers and leaders
-              </CardDescription>
-            </CardHeader>
-            <CardContent>
-              <div className="flex items-center text-sm text-white/70 mb-3">
-                <Users className="h-4 w-4 mr-2" />
-                <span>104 members</span>
-                <span className="mx-2">•</span>
-                <MessagesSquare className="h-4 w-4 mr-2" />
-                <span>Moderately active</span>
-              </div>
-              <p className="text-sm text-white/70">
-                For those in leadership roles to discuss creating mentally healthy work environments and supporting staff wellbeing while managing their own stress.
-              </p>
-            </CardContent>
-            <CardFooter>
-              <Button 
-                className="w-full"
-                onClick={() => handleJoinGroup("Management & Leadership Group")}
-              >
-                <UserRoundPlus className="mr-2 h-4 w-4" /> Join Group
-              </Button>
-            </CardFooter>
-          </Card>
+          {[
+            { name: "Restaurant Staff Support Circle", members: 247, activity: "Very active", desc: "A supportive community for servers, hosts, and other front-of-house staff to discuss mental health challenges in customer-facing roles." },
+            { name: "Kitchen Crew Conversations", members: 189, activity: "Active", desc: "A space for chefs, line cooks, and kitchen staff to share strategies for managing the high-pressure environments of professional kitchens." },
+            { name: "Management & Leadership", members: 104, activity: "Moderately active", desc: "For those in leadership roles to discuss creating mentally healthy work environments and supporting staff wellbeing while managing their own stress." },
+          ].map((group) => (
+            <Card key={group.name} className="bg-white/10">
+              <CardHeader>
+                <CardTitle className="text-lg">{group.name}</CardTitle>
+                <CardDescription>
+                  {group.desc.substring(0, 60)}...
+                </CardDescription>
+              </CardHeader>
+              <CardContent>
+                <div className="flex items-center text-sm text-white/70 mb-3">
+                  <Users className="h-4 w-4 mr-2" />
+                  <span>{group.members} members</span>
+                  <span className="mx-2">•</span>
+                  <MessagesSquare className="h-4 w-4 mr-2" />
+                  <span>{group.activity}</span>
+                </div>
+                <p className="text-sm text-white/70">{group.desc}</p>
+              </CardContent>
+              <CardFooter>
+                <Button 
+                  className="w-full"
+                  onClick={handleJoinGroup}
+                >
+                  <UserRoundPlus className="mr-2 h-4 w-4" /> Join Group
+                </Button>
+              </CardFooter>
+            </Card>
+          ))}
         </div>
         
         {/* Community Events */}
@@ -138,95 +94,37 @@ const HospitalityCommunity: React.FC = () => {
             Community Events
           </h3>
           
-          <Card className="bg-white/10">
-            <CardHeader>
-              <div className="flex justify-between items-start">
-                <div>
-                  <CardTitle className="text-lg">Virtual Coffee Hour</CardTitle>
-                  <CardDescription>
-                    Casual conversation with industry peers
-                  </CardDescription>
+          {[
+            { name: "Virtual Coffee Hour", desc: "Casual conversation with industry peers", time: "Tomorrow, 10 AM", color: "purple", detail: "Join us for a casual virtual coffee hour to connect with others in the hospitality industry. Share experiences, challenges, and wellness tips." },
+            { name: "Industry Mental Health Panel", desc: "Expert discussion on hospitality wellness", time: "Next Tuesday, 7 PM", color: "blue", detail: "A panel of mental health experts and industry veterans discuss the unique challenges of hospitality work and strategies for maintaining wellbeing." },
+            { name: "Peer Support Training", desc: "Learn to support colleagues in crisis", time: "Next Friday, 3 PM", color: "green", detail: "This workshop will teach you how to recognize signs of mental health struggles in colleagues and provide appropriate support in the workplace." },
+          ].map((event) => (
+            <Card key={event.name} className="bg-white/10">
+              <CardHeader>
+                <div className="flex justify-between items-start">
+                  <div>
+                    <CardTitle className="text-lg">{event.name}</CardTitle>
+                    <CardDescription>{event.desc}</CardDescription>
+                  </div>
+                  <div className={`bg-${event.color}-100 text-${event.color}-800 text-xs font-medium px-2.5 py-0.5 rounded dark:bg-${event.color}-900 dark:text-${event.color}-300`}>
+                    {event.time}
+                  </div>
                 </div>
-                <div className="bg-purple-100 text-purple-800 text-xs font-medium px-2.5 py-0.5 rounded dark:bg-purple-900 dark:text-purple-300">
-                  Tomorrow, 10 AM
-                </div>
-              </div>
-            </CardHeader>
-            <CardContent>
-              <p className="text-sm text-white/70">
-                Join us for a casual virtual coffee hour to connect with others in the hospitality industry. Share experiences, challenges, and wellness tips.
-              </p>
-            </CardContent>
-            <CardFooter>
-              <Button 
-                variant="outline" 
-                className="w-full"
-                onClick={() => handleJoinEvent("Virtual Coffee Hour")}
-              >
-                RSVP
-              </Button>
-            </CardFooter>
-          </Card>
-          
-          <Card className="bg-white/10">
-            <CardHeader>
-              <div className="flex justify-between items-start">
-                <div>
-                  <CardTitle className="text-lg">Industry Mental Health Panel</CardTitle>
-                  <CardDescription>
-                    Expert discussion on hospitality wellness
-                  </CardDescription>
-                </div>
-                <div className="bg-blue-100 text-blue-800 text-xs font-medium px-2.5 py-0.5 rounded dark:bg-blue-900 dark:text-blue-300">
-                  Next Tuesday, 7 PM
-                </div>
-              </div>
-            </CardHeader>
-            <CardContent>
-              <p className="text-sm text-white/70">
-                A panel of mental health experts and industry veterans discuss the unique challenges of hospitality work and strategies for maintaining wellbeing.
-              </p>
-            </CardContent>
-            <CardFooter>
-              <Button 
-                variant="outline" 
-                className="w-full"
-                onClick={() => handleJoinEvent("Industry Mental Health Panel")}
-              >
-                RSVP
-              </Button>
-            </CardFooter>
-          </Card>
-          
-          <Card className="bg-white/10">
-            <CardHeader>
-              <div className="flex justify-between items-start">
-                <div>
-                  <CardTitle className="text-lg">Peer Support Training</CardTitle>
-                  <CardDescription>
-                    Learn to support colleagues in crisis
-                  </CardDescription>
-                </div>
-                <div className="bg-green-100 text-green-800 text-xs font-medium px-2.5 py-0.5 rounded dark:bg-green-900 dark:text-green-300">
-                  Next Friday, 3 PM
-                </div>
-              </div>
-            </CardHeader>
-            <CardContent>
-              <p className="text-sm text-white/70">
-                This workshop will teach you how to recognize signs of mental health struggles in colleagues and provide appropriate support in the workplace.
-              </p>
-            </CardContent>
-            <CardFooter>
-              <Button 
-                variant="outline" 
-                className="w-full"
-                onClick={() => handleJoinEvent("Peer Support Training")}
-              >
-                RSVP
-              </Button>
-            </CardFooter>
-          </Card>
+              </CardHeader>
+              <CardContent>
+                <p className="text-sm text-white/70">{event.detail}</p>
+              </CardContent>
+              <CardFooter>
+                <Button 
+                  variant="outline" 
+                  className="w-full"
+                  onClick={handleJoinEvent}
+                >
+                  RSVP
+                </Button>
+              </CardFooter>
+            </Card>
+          ))}
         </div>
       </div>
       

@@ -6,27 +6,25 @@ import { Users, MessageCircle, Calendar, MapPin, ArrowRight, Clock, User } from 
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { useNavigate } from "react-router-dom";
+import { useUser } from "@/contexts/UserContext";
 import { useToast } from "@/hooks/use-toast";
 
 const TransportCommunity: React.FC = () => {
   const navigate = useNavigate();
+  const { user } = useUser();
   const { toast } = useToast();
   const [activeConversation, setActiveConversation] = useState<number | null>(null);
 
-  const handleCommunityAction = (path: string, title: string) => {
-    toast({
-      title: "Navigating",
-      description: `Opening ${title}...`,
-      duration: 1500,
-    });
-    navigate(path, {
-      state: {
-        stayInPortal: true,
-        preventTutorial: true,
-        portalPath: "/transport-portal",
-        fromPortal: true
-      }
-    });
+  const handleJoinGroup = () => {
+    if (!user?.id) {
+      toast({
+        title: "Please Log In",
+        description: "You need to be logged in to join groups.",
+        variant: "destructive",
+      });
+      return;
+    }
+    navigate("/app/community");
   };
 
   // Sample community support groups
@@ -36,28 +34,24 @@ const TransportCommunity: React.FC = () => {
       members: 248,
       description: "A community for long-distance drivers to share experiences and support",
       meetingTime: "Thursdays @ 8:00 PM EST",
-      path: "/transport-community/long-haul"
     },
     {
       title: "Transportation Mental Health",
       members: 176,
       description: "Discussions about mental wellness in transportation roles",
       meetingTime: "Mondays @ 7:30 PM EST",
-      path: "/transport-community/mental-health"
     },
     {
       title: "Family Connection on the Road",
       members: 132,
       description: "Strategies for maintaining family relationships while traveling",
       meetingTime: "Sundays @ 3:00 PM EST",
-      path: "/transport-community/family"
     },
     {
       title: "Stress Management for Drivers",
       members: 204,
       description: "Techniques for managing stress in high-pressure transportation roles",
       meetingTime: "Tuesdays @ 9:00 PM EST",
-      path: "/transport-community/stress"
     }
   ];
 
@@ -69,7 +63,6 @@ const TransportCommunity: React.FC = () => {
       date: "May 20, 2025",
       time: "6:00 PM - 8:00 PM EST",
       attendees: 18,
-      path: "/transport-community/meetup-northeast"
     },
     {
       title: "Midwest Mental Health Check-In",
@@ -77,7 +70,6 @@ const TransportCommunity: React.FC = () => {
       date: "May 22, 2025",
       time: "5:30 PM - 7:30 PM CST",
       attendees: 12,
-      path: "/transport-community/meetup-midwest"
     },
     {
       title: "West Coast Drivers Support Circle",
@@ -85,66 +77,22 @@ const TransportCommunity: React.FC = () => {
       date: "May 25, 2025",
       time: "4:00 PM - 6:00 PM PST",
       attendees: 15,
-      path: "/transport-community/meetup-west"
     }
   ];
 
   // Sample forum discussions
   const forumDiscussions = [
-    {
-      id: 1,
-      title: "How do you deal with sleep schedule disruptions?",
-      author: "RoadRunner45",
-      authorAvatar: "RR",
-      replies: 28,
-      lastActive: "2 hours ago",
-      path: "/transport-community/forum/sleep"
-    },
-    {
-      id: 2,
-      title: "Tips for staying connected with kids while on the road",
-      author: "FamilyMan",
-      authorAvatar: "FM",
-      replies: 42,
-      lastActive: "5 hours ago",
-      path: "/transport-community/forum/family"
-    },
-    {
-      id: 3,
-      title: "Best apps for finding healthy food options?",
-      author: "HealthyHauler",
-      authorAvatar: "HH",
-      replies: 36,
-      lastActive: "1 day ago",
-      path: "/transport-community/forum/food"
-    },
-    {
-      id: 4,
-      title: "How to deal with difficult dispatchers?",
-      author: "PatientOne",
-      authorAvatar: "PO",
-      replies: 53,
-      lastActive: "3 hours ago", 
-      path: "/transport-community/forum/work"
-    },
-    {
-      id: 5,
-      title: "Exercises you can do in your cab during breaks",
-      author: "FitTrucker",
-      authorAvatar: "FT",
-      replies: 31,
-      lastActive: "12 hours ago",
-      path: "/transport-community/forum/exercise"
-    }
+    { id: 1, title: "How do you deal with sleep schedule disruptions?", author: "RoadRunner45", authorAvatar: "RR", replies: 28, lastActive: "2 hours ago" },
+    { id: 2, title: "Tips for staying connected with kids while on the road", author: "FamilyMan", authorAvatar: "FM", replies: 42, lastActive: "5 hours ago" },
+    { id: 3, title: "Best apps for finding healthy food options?", author: "HealthyHauler", authorAvatar: "HH", replies: 36, lastActive: "1 day ago" },
+    { id: 4, title: "How to deal with difficult dispatchers?", author: "PatientOne", authorAvatar: "PO", replies: 53, lastActive: "3 hours ago" },
+    { id: 5, title: "Exercises you can do in your cab during breaks", author: "FitTrucker", authorAvatar: "FT", replies: 31, lastActive: "12 hours ago" }
   ];
 
   // Sample chat messages for conversations
   const chatConversations = [
     {
-      id: 1,
-      name: "Driver Support",
-      members: 12,
-      avatar: "DS",
+      id: 1, name: "Driver Support", members: 12, avatar: "DS",
       messages: [
         { sender: "Moderator", message: "Welcome to today's support session! How's everyone doing on the road?", time: "10:23 AM" },
         { sender: "RoadRunner45", message: "Just finished a long haul. Feeling pretty tired but good.", time: "10:25 AM" },
@@ -153,10 +101,7 @@ const TransportCommunity: React.FC = () => {
       ]
     },
     {
-      id: 2,
-      name: "Wellness Chat",
-      members: 8,
-      avatar: "WC",
+      id: 2, name: "Wellness Chat", members: 8, avatar: "WC",
       messages: [
         { sender: "HealthCoach", message: "Today's topic: Healthy eating at truck stops. What are your go-to options?", time: "9:05 AM" },
         { sender: "HealthyHauler", message: "I always look for places with salad bars or fresh fruit options.", time: "9:08 AM" },
@@ -221,12 +166,12 @@ const TransportCommunity: React.FC = () => {
                 <CardFooter className="flex justify-between">
                   <Button 
                     variant="outline"
-                    onClick={() => handleCommunityAction(group.path, group.title)}
+                    onClick={handleJoinGroup}
                   >
                     View Details
                   </Button>
                   <Button 
-                    onClick={() => handleCommunityAction(`${group.path}/join`, "Join Group")}
+                    onClick={handleJoinGroup}
                     className="bg-blue-500 hover:bg-blue-600"
                   >
                     Join Group
@@ -265,12 +210,12 @@ const TransportCommunity: React.FC = () => {
                 <CardFooter className="flex justify-between">
                   <Button 
                     variant="outline"
-                    onClick={() => handleCommunityAction(meetup.path, meetup.title)}
+                    onClick={handleJoinGroup}
                   >
                     View Details
                   </Button>
                   <Button 
-                    onClick={() => handleCommunityAction(`${meetup.path}/rsvp`, "RSVP")}
+                    onClick={handleJoinGroup}
                     className="bg-blue-500 hover:bg-blue-600"
                   >
                     RSVP
@@ -289,7 +234,7 @@ const TransportCommunity: React.FC = () => {
                 <div 
                   key={discussion.id} 
                   className="p-4 hover:bg-gray-50 dark:hover:bg-gray-700 cursor-pointer transition-colors"
-                  onClick={() => handleCommunityAction(discussion.path, discussion.title)}
+                  onClick={handleJoinGroup}
                 >
                   <div className="flex items-start">
                     <Avatar className="h-10 w-10 mr-4">
@@ -322,16 +267,10 @@ const TransportCommunity: React.FC = () => {
               ))}
             </div>
             <div className="p-4 bg-gray-50 dark:bg-gray-700/50 flex justify-between">
-              <Button
-                variant="outline"
-                onClick={() => handleCommunityAction("/transport-community/forum", "Forum")}
-              >
+              <Button variant="outline" onClick={handleJoinGroup}>
                 View All Discussions
               </Button>
-              <Button
-                onClick={() => handleCommunityAction("/transport-community/forum/new", "New Discussion")}
-                className="bg-blue-500 hover:bg-blue-600"
-              >
+              <Button onClick={handleJoinGroup} className="bg-blue-500 hover:bg-blue-600">
                 Start New Discussion
               </Button>
             </div>
@@ -404,20 +343,12 @@ const TransportCommunity: React.FC = () => {
                 )}
               </div>
               <div className="p-3 border-t">
-                <div className="flex">
-                  <input 
-                    type="text" 
-                    placeholder="Type your message..." 
-                    className="flex-1 rounded-l-md border border-r-0 px-3 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-blue-500"
-                    disabled={!activeConversation}
-                  />
-                  <Button 
-                    className="rounded-l-none bg-blue-500 hover:bg-blue-600"
-                    disabled={!activeConversation}
-                  >
-                    Send
-                  </Button>
-                </div>
+                <Button 
+                  className="w-full bg-blue-500 hover:bg-blue-600"
+                  onClick={handleJoinGroup}
+                >
+                  Join Community Groups to Chat
+                </Button>
               </div>
             </div>
           </div>
@@ -427,15 +358,16 @@ const TransportCommunity: React.FC = () => {
       <div className="mt-8 bg-blue-50 dark:bg-blue-900/20 p-6 rounded-lg border border-blue-100 dark:border-blue-800">
         <h3 className="text-lg font-medium text-blue-900 dark:text-blue-300 mb-2">Community Guidelines</h3>
         <p className="text-white/70 text-sm mb-4">
-          Our community is a safe space for transportation workers to share experiences and support each other. 
-          We ask all members to be respectful, maintain privacy, and focus on constructive conversations.
+          Our community is a safe space for all transportation workers. Please follow our guidelines to ensure everyone feels welcome and supported.
         </p>
-        <Button 
-          variant="outline"
-          onClick={() => handleCommunityAction("/transport-community/guidelines", "Community Guidelines")}
-          className="text-blue-600 border-blue-200 hover:bg-blue-50"
-        >
-          View Full Guidelines
+        <ul className="list-disc list-inside text-sm text-white/70 space-y-1 mb-4">
+          <li>Be respectful and supportive of all members</li>
+          <li>Maintain confidentiality of shared experiences</li>
+          <li>No promotion of harmful coping strategies</li>
+          <li>Report any concerning behavior to moderators</li>
+        </ul>
+        <Button variant="outline" onClick={handleJoinGroup}>
+          View Full Community Guidelines
         </Button>
       </div>
     </div>

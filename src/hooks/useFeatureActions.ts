@@ -127,8 +127,8 @@ export const useFeatureActions = () => {
           break;
           
         case 'join':
-          // Join virtual meeting or group - keep in portal context if needed
-          navigationPath = inPortal ? `/${portalPrefix}-meetings` : `/app/virtual-meetings`;
+          // Navigate to real community groups page
+          navigationPath = `/app/community`;
           break;
           
         case 'redeem':
