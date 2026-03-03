@@ -1,4 +1,3 @@
-
 import React from "react";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -6,9 +5,34 @@ import { Badge } from "@/components/ui/badge";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import { useNavigate } from "react-router-dom";
 import { MessageSquare, Users, Calendar, Shield, Medal, Sparkles } from "lucide-react";
+import { useCommunityGroups } from "@/hooks/useCommunityGroups";
+import { useUser } from "@/contexts/UserContext";
+import { useToast } from "@/hooks/use-toast";
 
 const DoDCommunity = () => {
   const navigate = useNavigate();
+  const { user } = useUser();
+  const { joinGroup, memberships } = useCommunityGroups(user?.id);
+  const { toast } = useToast();
+
+  const myGroupIds = memberships?.map(m => m.group_id) || [];
+
+  const handleJoinGroup = (groupName: string) => {
+    if (!user?.id) {
+      toast({
+        title: "Please Log In",
+        description: "You need to be logged in to join groups.",
+        variant: "destructive",
+      });
+      return;
+    }
+    // Navigate to community groups page where real groups exist
+    navigate("/app/community");
+  };
+
+  const handleViewAllGroups = () => {
+    navigate("/app/community");
+  };
 
   const supportGroups = [
     {
@@ -136,7 +160,6 @@ const DoDCommunity = () => {
                 </blockquote>
                 <div className="flex justify-between items-center">
                   <p className="text-blue-400">— {story.author}</p>
-                  <Button variant="link" className="text-blue-400">Read Full Story</Button>
                 </div>
               </div>
             </div>
@@ -148,7 +171,9 @@ const DoDCommunity = () => {
       <div>
         <div className="flex items-center justify-between mb-4">
           <h3 className="text-xl font-semibold text-white">Support Groups</h3>
-          <Button variant="link" className="text-blue-400">See All Groups</Button>
+          <Button variant="link" className="text-blue-400" onClick={handleViewAllGroups}>
+            See All Groups
+          </Button>
         </div>
         
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -185,12 +210,14 @@ const DoDCommunity = () => {
               <CardFooter className="flex justify-between">
                 <Button 
                   className="bg-blue-700 hover:bg-blue-800 text-white"
+                  onClick={() => handleJoinGroup(group.name)}
                 >
                   Join Group
                 </Button>
                 <Button 
                   variant="outline" 
                   className="border-blue-500 text-blue-300 hover:bg-blue-900/50"
+                  onClick={handleViewAllGroups}
                 >
                   Learn More
                 </Button>
@@ -204,7 +231,7 @@ const DoDCommunity = () => {
       <div>
         <div className="flex items-center justify-between mb-4">
           <h3 className="text-xl font-semibold text-white">Community Discussions</h3>
-          <Button variant="link" className="text-blue-400">View All</Button>
+          <Button variant="link" className="text-blue-400" onClick={handleViewAllGroups}>View All</Button>
         </div>
         
         <Card className="bg-[#141921] border-blue-900/30">
@@ -219,17 +246,12 @@ const DoDCommunity = () => {
               </div>
             </div>
             
-            <div className="flex items-center gap-3 px-4 py-3 bg-blue-900/10 rounded-lg border border-blue-900/30">
-              <Avatar className="h-10 w-10 border border-blue-400/30">
-                <AvatarFallback className="bg-blue-900/50 text-blue-200">You</AvatarFallback>
-              </Avatar>
-              <input 
-                type="text" 
-                placeholder="Share your thoughts with the community..." 
-                className="flex-grow bg-transparent border-none text-white placeholder-blue-400/50 focus:outline-none focus:ring-0"
-              />
-              <Button size="sm" className="bg-blue-700 hover:bg-blue-800 text-white">Post</Button>
-            </div>
+            <Button 
+              className="w-full bg-blue-700 hover:bg-blue-800 text-white"
+              onClick={handleViewAllGroups}
+            >
+              Browse Community Groups
+            </Button>
           </div>
           
           <div className="border-t border-blue-900/30">
@@ -260,23 +282,12 @@ const DoDCommunity = () => {
                 </div>
                 
                 <p className="text-white/90 mb-3">{post.content}</p>
-                
-                <div className="flex items-center gap-6">
-                  <Button variant="ghost" size="sm" className="text-blue-400 hover:bg-blue-900/30">
-                    <Shield className="h-4 w-4 mr-1.5" />
-                    Like ({post.likes})
-                  </Button>
-                  <Button variant="ghost" size="sm" className="text-blue-400 hover:bg-blue-900/30">
-                    <MessageSquare className="h-4 w-4 mr-1.5" />
-                    Reply ({post.comments})
-                  </Button>
-                </div>
               </div>
             ))}
           </div>
           
           <CardFooter>
-            <Button variant="link" className="text-blue-400 w-full">
+            <Button variant="link" className="text-blue-400 w-full" onClick={handleViewAllGroups}>
               View More Community Posts
             </Button>
           </CardFooter>
@@ -290,7 +301,6 @@ const DoDCommunity = () => {
             <h3 className="text-xl font-semibold text-white">Success Stories</h3>
             <Badge className="bg-gradient-to-r from-blue-500/50 to-purple-500/50 text-white">Inspiring</Badge>
           </div>
-          <Button variant="link" className="text-blue-400">Share Your Story</Button>
         </div>
         
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -308,14 +318,6 @@ const DoDCommunity = () => {
                 </blockquote>
                 <p className="text-right text-blue-400 text-sm">— {story.author}</p>
               </CardContent>
-              <CardFooter>
-                <Button 
-                  variant="outline" 
-                  className="w-full border-blue-500 text-blue-300 hover:bg-blue-900/50"
-                >
-                  Read Full Story
-                </Button>
-              </CardFooter>
             </Card>
           ))}
         </div>

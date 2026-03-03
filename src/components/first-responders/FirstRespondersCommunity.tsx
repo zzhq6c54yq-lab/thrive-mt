@@ -3,10 +3,14 @@ import React from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Users, Calendar, Video } from "lucide-react";
+import { useNavigate } from "react-router-dom";
+import { useUser } from "@/contexts/UserContext";
 import { useToast } from "@/hooks/use-toast";
 
 const FirstRespondersCommunity: React.FC = () => {
   const { toast } = useToast();
+  const navigate = useNavigate();
+  const { user } = useUser();
 
   const groups = [
     {
@@ -35,20 +39,28 @@ const FirstRespondersCommunity: React.FC = () => {
     { title: "First Responder Family Day", date: "May 22, 2025", time: "2:00 PM Local", type: "in-person" }
   ];
 
-  const handleJoinGroup = (groupName: string) => {
-    toast({
-      title: "Group Joined",
-      description: `You've successfully joined ${groupName}`,
-      duration: 2000
-    });
+  const handleJoinGroup = () => {
+    if (!user?.id) {
+      toast({
+        title: "Please Log In",
+        description: "You need to be logged in to join groups.",
+        variant: "destructive",
+      });
+      return;
+    }
+    navigate("/app/community");
   };
 
-  const handleRegisterEvent = (eventTitle: string) => {
-    toast({
-      title: "Registration Complete",
-      description: `You've registered for ${eventTitle}`,
-      duration: 2000
-    });
+  const handleRegisterEvent = () => {
+    if (!user?.id) {
+      toast({
+        title: "Please Log In",
+        description: "You need to be logged in to register for events.",
+        variant: "destructive",
+      });
+      return;
+    }
+    navigate("/app/community");
   };
 
   return (
@@ -83,7 +95,7 @@ const FirstRespondersCommunity: React.FC = () => {
                 </div>
                 <Button 
                   className="w-full bg-red-700 hover:bg-red-800 text-white"
-                  onClick={() => handleJoinGroup(group.name)}
+                  onClick={handleJoinGroup}
                 >
                   Join Group
                 </Button>
@@ -114,7 +126,7 @@ const FirstRespondersCommunity: React.FC = () => {
                   variant="outline" 
                   size="sm" 
                   className="border-red-500 text-red-300 hover:bg-red-900/50"
-                  onClick={() => handleRegisterEvent(event.title)}
+                  onClick={handleRegisterEvent}
                 >
                   Register
                 </Button>

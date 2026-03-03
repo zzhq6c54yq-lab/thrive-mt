@@ -6,11 +6,15 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import ActionButton from "@/components/navigation/ActionButton";
 import { useToast } from "@/hooks/use-toast";
+import { useNavigate } from "react-router-dom";
+import { useUser } from "@/contexts/UserContext";
 import { Textarea } from "@/components/ui/textarea";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
 const EducatorsCommunity: React.FC = () => {
   const { toast } = useToast();
+  const navigate = useNavigate();
+  const { user } = useUser();
   const [activeChat, setActiveChat] = useState<string | null>(null);
   const [messageInput, setMessageInput] = useState("");
   const [notifications, setNotifications] = useState<string[]>([]);
@@ -104,25 +108,28 @@ const EducatorsCommunity: React.FC = () => {
   
   // Handle joining a discussion group
   const handleJoinDiscussion = (groupId: string, groupName: string) => {
-    setActiveChat(groupId);
-    addNotification(`You've joined the ${groupName} discussion`);
-    
-    toast({
-      title: "Joined Discussion Group",
-      description: `You've been added to the ${groupName} group. The moderator will welcome you shortly.`,
-      duration: 3000,
-    });
+    if (!user?.id) {
+      toast({
+        title: "Please Log In",
+        description: "You need to be logged in to join groups.",
+        variant: "destructive",
+      });
+      return;
+    }
+    navigate("/app/community");
   };
   
   // Handle registering for an event
   const handleRegisterEvent = (eventId: string, eventName: string) => {
-    addNotification(`You've registered for "${eventName}"`);
-    
-    toast({
-      title: "Event Registration Successful",
-      description: `You're registered for ${eventName}. A calendar invitation has been sent to your email.`,
-      duration: 3000,
-    });
+    if (!user?.id) {
+      toast({
+        title: "Please Log In",
+        description: "You need to be logged in to register for events.",
+        variant: "destructive",
+      });
+      return;
+    }
+    navigate("/app/community");
   };
   
   // Handle sending a message
