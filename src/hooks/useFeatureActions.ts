@@ -122,13 +122,13 @@ export const useFeatureActions = () => {
           break;
           
         case 'discussion':
-          // Navigate to real community groups page
-          navigationPath = `/app/community`;
+          // Navigate to community discussions - keep in portal context if needed
+          navigationPath = inPortal ? `/${portalPrefix}-community` : `/app/community-support`;
           break;
           
         case 'join':
-          // Navigate to real community groups page
-          navigationPath = `/app/community`;
+          // Join virtual meeting or group - keep in portal context if needed
+          navigationPath = inPortal ? `/${portalPrefix}-meetings` : `/app/virtual-meetings`;
           break;
           
         case 'redeem':
