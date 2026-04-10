@@ -137,7 +137,7 @@ const ChronicIllnessDashboard: React.FC = () => {
       state: {
         fromChronicIllness: true,
         stayInPortal: true,
-        portalPath: "/chronic-illness-portal",
+        portalPath: "/app/chronic-illness-portal",
         preventTutorial: true,
         title: title
       }

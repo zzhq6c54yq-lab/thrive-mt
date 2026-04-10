@@ -41,7 +41,7 @@ const CancerSupportWelcome: React.FC = () => {
       gradientFrom="purple-500"
       gradientTo="rose-500"
       borderColor="#9b87f5"
-      portalPath="/cancer-support-portal"
+      portalPath="/app/cancer-support-portal"
       icon={<Heart className="h-8 w-8 text-purple-500" />}
       coverImage="/lovable-uploads/f3c84972-8f58-42d7-b86f-82ff2d823b30.png"
       motivationalMessage={motivationalMessage}

@@ -79,7 +79,7 @@ const ChronicIllnessCommunity: React.FC = () => {
       state: {
         fromChronicIllness: true,
         stayInPortal: true,
-        portalPath: "/chronic-illness-portal",
+        portalPath: "/app/chronic-illness-portal",
         preventTutorial: true,
         groupId: group.id,
         groupTitle: group.title
@@ -98,7 +98,7 @@ const ChronicIllnessCommunity: React.FC = () => {
       state: {
         fromChronicIllness: true,
         stayInPortal: true,
-        portalPath: "/chronic-illness-portal",
+        portalPath: "/app/chronic-illness-portal",
         preventTutorial: true,
         forumId: forum.id,
         forumTitle: forum.title

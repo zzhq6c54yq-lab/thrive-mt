@@ -52,7 +52,7 @@ const EarlyChildhoodPortal: React.FC = () => {
         showThriveButton={true}
         title="Feelings & Friends"
         portalMode={true}
-        portalPath="/adolescent-selection"
+        portalPath="/app/adolescent-selection"
       />
       
       <div className="max-w-6xl mx-auto relative z-10 pt-14">
@@ -210,7 +210,7 @@ const MiddleChildhoodPortal: React.FC = () => {
         showThriveButton={true}
         title="Growing Up Strong"
         portalMode={true}
-        portalPath="/adolescent-selection"
+        portalPath="/app/adolescent-selection"
       />
       
       <div className="max-w-6xl mx-auto relative z-10 pt-14">
@@ -364,7 +364,7 @@ const TeenPortal: React.FC = () => {
         showThriveButton={true}
         title="Your Space, Your Journey"
         portalMode={true}
-        portalPath="/adolescent-selection"
+        portalPath="/app/adolescent-selection"
       />
       
       <div className="max-w-6xl mx-auto relative z-10 pt-14">

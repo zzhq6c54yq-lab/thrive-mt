@@ -82,7 +82,7 @@ const ResourcesSection: React.FC<ResourcesSectionProps> = ({ onResourceClick }) 
             state: { 
               stayInPortal: true,
               preventTutorial: true,
-              portalPath: '/golden-years-portal',
+              portalPath: '/app/golden-years-portal',
               featureName: resource.title
             }
           });

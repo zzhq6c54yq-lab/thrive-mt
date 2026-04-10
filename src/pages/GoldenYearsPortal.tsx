@@ -71,7 +71,7 @@ const GoldenYearsPortal: React.FC = () => {
         showThriveButton={true}
         title={getTranslatedText('goldenTitle')}
         portalMode={true}
-        portalPath="/golden-years-welcome"
+        portalPath="/app/golden-years-welcome"
       />
       
       <div className="container mx-auto px-4 py-8 pt-16 relative z-10">

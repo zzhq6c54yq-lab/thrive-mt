@@ -52,12 +52,19 @@ const PortalNavButton: React.FC<PortalNavButtonProps> = ({
       navigationPath = `/${currentPortalType}-${path}`;
     }
     
+    // Ensure path has /app prefix
+    if (!navigationPath.startsWith('/app')) {
+      navigationPath = `/app${navigationPath.startsWith('/') ? navigationPath : '/' + navigationPath}`;
+    }
+    
+    const portalReturnPath = inPortal ? `/app/${currentPortalType}-portal` : undefined;
+    
     navigate(navigationPath, { 
       state: { 
         stayInPortal: inPortal,
         preventTutorial: true,
         portalType: currentPortalType,
-        portalPath: inPortal ? `/${currentPortalType}-portal` : undefined
+        portalPath: portalReturnPath
       } 
     });
   };

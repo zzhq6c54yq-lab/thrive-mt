@@ -20,7 +20,7 @@ const HospitalityAssessments: React.FC = () => {
       state: {
         stayInPortal: true,
         preventTutorial: true,
-        portalPath: "/hospitality-portal",
+        portalPath: "/app/hospitality-portal",
         fromPortal: true,
         portalType: "hospitality",
         startAssessment: true

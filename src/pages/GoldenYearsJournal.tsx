@@ -119,7 +119,7 @@ const GoldenYearsJournal: React.FC = () => {
         showThriveButton={true}
         title="Legacy Journal"
         portalMode={true}
-        portalPath="/golden-years-portal"
+        portalPath="/app/golden-years-portal"
         backButtonAction={handleBack}
       />
       

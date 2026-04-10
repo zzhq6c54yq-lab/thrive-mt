@@ -168,7 +168,7 @@ const LifeTransitionsModule: React.FC = () => {
         showThriveButton={true}
         title="Life Transitions"
         portalMode={true}
-        portalPath="/golden-years-portal"
+        portalPath="/app/golden-years-portal"
       />
 
       <div className="container mx-auto px-4 py-8 pt-24 max-w-4xl">
