@@ -27,7 +27,10 @@ const HomeButton: React.FC<HomeButtonProps> = ({
         description: "Taking you back to the portal dashboard"
       });
       
-      navigate(portalPath, { 
+      // Ensure path has /app prefix
+      const targetPath = portalPath.startsWith('/app') ? portalPath : `/app${portalPath}`;
+      
+      navigate(targetPath, { 
         state: { 
           stayInPortal: true,
           preventTutorial: true 

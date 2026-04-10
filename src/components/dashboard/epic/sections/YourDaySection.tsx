@@ -39,13 +39,13 @@ export default function YourDaySection({ dashboardData, onCheckInComplete }: You
 
   const getPortalPath = (portalKey: string) => {
     const paths: Record<string, string> = {
-      'veteran': '/dod-welcome',
-      'cancer': '/cancer-support-welcome',
-      'single-parent': '/single-parents-welcome',
-      'first-responder': '/first-responders-welcome',
-      'substance-abuse': '/substance-abuse-sponsor',
+      'veteran': '/app/dod-welcome',
+      'cancer': '/app/cancer-support-welcome',
+      'single-parent': '/app/single-parents-welcome',
+      'first-responder': '/app/first-responders-welcome',
+      'substance-abuse': '/app/substance-abuse-sponsor',
     };
-    return paths[portalKey] || '/home';
+    return paths[portalKey] || '/app/home';
   };
 
   return (
