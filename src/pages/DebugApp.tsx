@@ -29,13 +29,13 @@ const CrisisOverlay: React.FC<{ onClose: () => void }> = ({ onClose }) => {
           <MessageCircle className="h-4 w-4" />
           Text Crisis Line (741741)
         </a>
-        <Button
-          onClick={() => alert("Breathing exercise would start here")}
-          className="bg-green-600 hover:bg-green-500 flex items-center gap-2"
+        <a
+          href="/app/breathing-exercise"
+          className="bg-green-600 hover:bg-green-500 flex items-center gap-2 px-4 py-2 rounded text-center font-semibold text-white"
         >
           <Heart className="h-4 w-4" />
           Start Breathing Exercise
-        </Button>
+        </a>
       </div>
 
       <button onClick={onClose} className="underline text-sm">
@@ -47,7 +47,7 @@ const CrisisOverlay: React.FC<{ onClose: () => void }> = ({ onClose }) => {
 
 // Simple Community Support Wall Component
 const CommunitySupportWall: React.FC = () => {
-  const [posts] = useState([
+  const [posts, setPosts] = useState([
     { id: '1', content: 'Today I chose to reach out for help instead of staying silent. Small steps matter.', hearts: 12, created_at: '2024-01-15' },
     { id: '2', content: 'Grateful for this community. Your words last week helped me through a tough moment.', hearts: 8, created_at: '2024-01-14' },
     { id: '3', content: 'Three months clean today. The journey continues, one day at a time.', hearts: 25, created_at: '2024-01-13' }
@@ -57,7 +57,13 @@ const CommunitySupportWall: React.FC = () => {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (newMessage.trim()) {
-      alert('Message would be posted: ' + newMessage);
+      const newPost = {
+        id: String(Date.now()),
+        content: newMessage.trim(),
+        hearts: 0,
+        created_at: new Date().toISOString().split('T')[0]
+      };
+      setPosts(prev => [newPost, ...prev]);
       setNewMessage('');
     }
   };

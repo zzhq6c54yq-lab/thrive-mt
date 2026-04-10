@@ -9,8 +9,16 @@ import { Separator } from "@/components/ui/separator";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Badge as UIBadge } from "@/components/ui/badge";
 import HomeButton from "@/components/HomeButton";
+import { useUser } from "@/contexts/UserContext";
 
 const UserProfile = () => {
+  const { user, profile } = useUser();
+  const displayName = profile?.display_name || user?.user_metadata?.name || 'User';
+  const displayEmail = user?.email || profile?.email || '';
+  const initials = displayName.split(' ').map((n: string) => n[0]).join('').toUpperCase().slice(0, 2);
+  const memberSince = profile?.created_at 
+    ? new Date(profile.created_at).toLocaleDateString('en-US', { month: 'long', year: 'numeric' })
+    : '';
   return (
     <div className="min-h-screen bg-gradient-to-b from-[#f8f9fa] to-[#eef1f5]">
       <div className="bg-gradient-to-r from-[#1a1a1f] to-[#212124] text-white py-12 relative">
@@ -35,7 +43,7 @@ const UserProfile = () => {
               <div className="relative">
                 <Avatar className="h-32 w-32">
                   <AvatarImage src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=256&q=80" />
-                  <AvatarFallback>JP</AvatarFallback>
+                  <AvatarFallback>{initials}</AvatarFallback>
                 </Avatar>
                 <Button size="icon" className="absolute bottom-0 right-0 h-8 w-8 rounded-full bg-[#B87333] hover:bg-[#B87333]/90">
                   <Camera className="h-4 w-4" />
@@ -44,7 +52,7 @@ const UserProfile = () => {
               
               <div className="flex-1 text-center md:text-left">
                 <div className="flex flex-col md:flex-row md:items-center md:justify-between mb-4">
-                  <h2 className="text-2xl font-semibold">Jane Portman</h2>
+                  <h2 className="text-2xl font-semibold">{displayName}</h2>
                   <Button variant="outline" className="mt-2 md:mt-0">
                     <Edit className="mr-2 h-4 w-4" />
                     Edit Profile
@@ -52,18 +60,18 @@ const UserProfile = () => {
                 </div>
                 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
-                  <div className="flex items-center">
-                    <Mail className="h-4 w-4 text-muted-foreground mr-2" />
-                    <span>jane.portman@example.com</span>
-                  </div>
-                  <div className="flex items-center">
-                    <Phone className="h-4 w-4 text-muted-foreground mr-2" />
-                    <span>(555) 123-4567</span>
-                  </div>
-                  <div className="flex items-center">
-                    <Calendar className="h-4 w-4 text-muted-foreground mr-2" />
-                    <span>Member since June 2023</span>
-                  </div>
+                  {displayEmail && (
+                    <div className="flex items-center">
+                      <Mail className="h-4 w-4 text-muted-foreground mr-2" />
+                      <span>{displayEmail}</span>
+                    </div>
+                  )}
+                  {memberSince && (
+                    <div className="flex items-center">
+                      <Calendar className="h-4 w-4 text-muted-foreground mr-2" />
+                      <span>Member since {memberSince}</span>
+                    </div>
+                  )}
                   <div className="flex items-center">
                     <Badge className="h-4 w-4 text-muted-foreground mr-2" />
                     <span>Premium Member</span>
