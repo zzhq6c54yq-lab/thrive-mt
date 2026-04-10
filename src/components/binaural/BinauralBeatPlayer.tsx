@@ -63,7 +63,7 @@ const BinauralBeatPlayer: React.FC<BinauralBeatPlayerProps> = ({ track, onNext, 
       leftOscillator.start();
       rightOscillator.start();
       
-      // Set a dummy duration for demonstration
+      // Parse the track duration string (e.g. "5:00") into seconds
       const durationInSeconds = parseInt(track.duration.split(":")[0]) * 60 + parseInt(track.duration.split(":")[1]);
       setDuration(durationInSeconds);
       
