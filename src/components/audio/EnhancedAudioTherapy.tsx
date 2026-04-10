@@ -379,8 +379,18 @@ const EnhancedAudioTherapy: React.FC = () => {
                       duration: `${customDuration}:00`,
                       category: currentSession.category
                     }}
-                    onNext={() => {}}
-                    onPrevious={() => {}}
+                    onNext={() => {
+                      const currentIndex = audioSessions.findIndex(s => s.id === currentSession.id);
+                      const nextSession = audioSessions[(currentIndex + 1) % audioSessions.length];
+                      stopSession();
+                      startSession(nextSession);
+                    }}
+                    onPrevious={() => {
+                      const currentIndex = audioSessions.findIndex(s => s.id === currentSession.id);
+                      const prevSession = audioSessions[(currentIndex - 1 + audioSessions.length) % audioSessions.length];
+                      stopSession();
+                      startSession(prevSession);
+                    }}
                   />
                 </div>
               )}

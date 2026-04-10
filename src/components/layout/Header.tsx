@@ -4,6 +4,7 @@ import {
   User, Settings, LogOut, Calendar, LineChart, HelpCircle, 
   Moon, Sun, Bell, Lock, MessageSquare, Languages
 } from "lucide-react";
+import { useTheme } from "next-themes";
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -31,29 +32,34 @@ const Header = () => {
   const [showWelcomeTutorial, setShowWelcomeTutorial] = useState(false);
   const { preferredLanguage, setPreferredLanguage, isSpanish, isPortuguese, isFilipino } = useTranslation();
   const { logout } = useLogout();
+  const { theme, setTheme } = useTheme();
 
   const handleThemeToggle = () => {
+    const newTheme = theme === 'dark' ? 'light' : 'dark';
+    setTheme(newTheme);
+
+    const isDark = newTheme === 'dark';
     const themeMessages = {
       'English': {
-        title: "Theme setting",
-        description: "Dark mode is not implemented yet."
+        title: "Theme Changed",
+        description: isDark ? "Dark mode enabled." : "Light mode enabled."
       },
       'Español': {
-        title: "Configuración de tema",
-        description: "El modo oscuro aún no está implementado."
+        title: "Tema cambiado",
+        description: isDark ? "Modo oscuro activado." : "Modo claro activado."
       },
       'Português': {
-        title: "Configuração de tema",
-        description: "O modo escuro ainda não foi implementado."
+        title: "Tema alterado",
+        description: isDark ? "Modo escuro ativado." : "Modo claro ativado."
       },
       'Filipino': {
-        title: "Setting ng tema",
-        description: "Hindi pa naipapatupad ang dark mode."
+        title: "Binago ang tema",
+        description: isDark ? "Dark mode na-enable." : "Light mode na-enable."
       }
     };
-    
+
     const message = themeMessages[preferredLanguage as keyof typeof themeMessages] || themeMessages['English'];
-    
+
     toast({
       title: message.title,
       description: message.description,
@@ -215,12 +221,12 @@ const Header = () => {
               </span>
             </DropdownMenuItem>
             <DropdownMenuItem onClick={handleThemeToggle}>
-              <Moon className="mr-2 h-4 w-4" />
+              {theme === 'dark' ? <Sun className="mr-2 h-4 w-4" /> : <Moon className="mr-2 h-4 w-4" />}
               <span>
-                {isSpanish ? "Modo Oscuro" : 
-                 isPortuguese ? "Modo Escuro" : 
-                 isFilipino ? "Dark Mode" :
-                 "Dark Mode"}
+                {theme === 'dark'
+                  ? (isSpanish ? "Modo Claro" : isPortuguese ? "Modo Claro" : isFilipino ? "Light Mode" : "Light Mode")
+                  : (isSpanish ? "Modo Oscuro" : isPortuguese ? "Modo Escuro" : isFilipino ? "Dark Mode" : "Dark Mode")
+                }
               </span>
             </DropdownMenuItem>
           </DropdownMenuGroup>
