@@ -443,7 +443,7 @@ const TransportWorkLifeBalanceAssessment: React.FC = () => {
                       state: { 
                         stayInPortal: true,
                         preventTutorial: true,
-                        portalPath: "/transport-portal"
+                        portalPath: "/app/transport-portal"
                       }
                     })}
                   >
@@ -457,7 +457,7 @@ const TransportWorkLifeBalanceAssessment: React.FC = () => {
                       state: { 
                         stayInPortal: true,
                         preventTutorial: true,
-                        portalPath: "/transport-portal"
+                        portalPath: "/app/transport-portal"
                       }
                     })}
                   >

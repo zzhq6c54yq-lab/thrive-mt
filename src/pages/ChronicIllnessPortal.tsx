@@ -98,7 +98,7 @@ const ChronicIllnessPortal: React.FC = () => {
         showHomeButton={true}
         title="Chronic Illness Support"
         portalMode={true}
-        portalPath="/chronic-illness-welcome"
+        portalPath="/app/chronic-illness-welcome"
       />
       
       {/* Header Banner */}

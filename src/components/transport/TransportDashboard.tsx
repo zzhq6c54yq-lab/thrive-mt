@@ -61,7 +61,7 @@ const TransportDashboard: React.FC = () => {
       state: {
         stayInPortal: true,
         preventTutorial: true,
-        portalPath: "/transport-portal"
+        portalPath: "/app/transport-portal"
       }
     });
   };

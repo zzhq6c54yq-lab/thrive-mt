@@ -22,7 +22,7 @@ const TransportWorkshops: React.FC = () => {
       state: {
         stayInPortal: true,
         preventTutorial: true,
-        portalPath: "/transport-portal",
+        portalPath: "/app/transport-portal",
         fromPortal: true,
         portalType: "transport"
       }

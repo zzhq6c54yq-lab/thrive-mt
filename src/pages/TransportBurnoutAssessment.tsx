@@ -426,7 +426,7 @@ const TransportBurnoutAssessment: React.FC = () => {
                       state: { 
                         stayInPortal: true,
                         preventTutorial: true,
-                        portalPath: "/transport-portal"
+                        portalPath: "/app/transport-portal"
                       }
                     })}
                   >
@@ -440,7 +440,7 @@ const TransportBurnoutAssessment: React.FC = () => {
                       state: { 
                         stayInPortal: true,
                         preventTutorial: true,
-                        portalPath: "/transport-portal"
+                        portalPath: "/app/transport-portal"
                       }
                     })}
                   >

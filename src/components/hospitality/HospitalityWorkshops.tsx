@@ -21,7 +21,7 @@ const HospitalityWorkshops: React.FC = () => {
       state: {
         stayInPortal: true,
         preventTutorial: true,
-        portalPath: "/hospitality-portal",
+        portalPath: "/app/hospitality-portal",
         tab: "workshops",
         workshopTitle
       }

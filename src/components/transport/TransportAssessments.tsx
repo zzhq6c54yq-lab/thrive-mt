@@ -20,7 +20,7 @@ const TransportAssessments: React.FC = () => {
       state: {
         stayInPortal: true,
         preventTutorial: true,
-        portalPath: "/transport-portal",
+        portalPath: "/app/transport-portal",
         fromPortal: true,
         portalType: "transport",
         startAssessment: true
