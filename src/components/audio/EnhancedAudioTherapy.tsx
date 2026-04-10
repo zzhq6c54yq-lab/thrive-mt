@@ -54,7 +54,7 @@ const EnhancedAudioTherapy: React.FC = () => {
     achievements: []
   });
   const [selectedCategory, setSelectedCategory] = useState<string>('all');
-  const sessionTimerRef = useRef<NodeJS.Timeout>();
+  const sessionTimerRef = useRef<ReturnType<typeof setTimeout>>();
 
   const audioSessions: AudioSession[] = [
     {

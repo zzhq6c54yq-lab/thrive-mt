@@ -38,7 +38,7 @@ const GameMeditationStudio: React.FC = () => {
   const [currentPhase, setCurrentPhase] = useState<'selection' | 'meditation' | 'completion'>('selection');
 
   useEffect(() => {
-    let interval: NodeJS.Timeout;
+    let interval: ReturnType<typeof setInterval>;
     if (isRunning && timeLeft > 0) {
       interval = setInterval(() => {
         setTimeLeft((prev) => {

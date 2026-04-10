@@ -511,7 +511,7 @@ const GuidedPractice = () => {
   }, [practice, currentStepIndex]);
 
   useEffect(() => {
-    let timer: NodeJS.Timeout;
+    let timer: ReturnType<typeof setInterval>;
     
     if (isPlaying && timeRemaining > 0) {
       timer = setInterval(() => {

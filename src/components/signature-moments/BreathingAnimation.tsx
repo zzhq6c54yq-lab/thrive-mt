@@ -19,7 +19,7 @@ export const BreathingAnimation = ({ onComplete, duration = 4 }: BreathingAnimat
     ];
 
     let currentIndex = 0;
-    let timeout: NodeJS.Timeout;
+    let timeout: ReturnType<typeof setTimeout>;
 
     const nextPhase = () => {
       const cycle = breathCycle[currentIndex];

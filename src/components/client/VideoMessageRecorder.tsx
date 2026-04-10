@@ -22,7 +22,7 @@ export const VideoMessageRecorder: React.FC<VideoMessageRecorderProps> = ({ onCo
   const mediaRecorderRef = useRef<MediaRecorder | null>(null);
   const streamRef = useRef<MediaStream | null>(null);
   const chunksRef = useRef<Blob[]>([]);
-  const timerRef = useRef<NodeJS.Timeout | null>(null);
+  const timerRef = useRef<ReturnType<typeof setInterval> | null>(null);
 
   const MAX_DURATION = 300; // 5 minutes in seconds
 
