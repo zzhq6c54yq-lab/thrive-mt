@@ -1,16 +1,28 @@
 
 import React, { useState } from "react";
 import { Button } from "@/components/ui/button";
-import { MoonStar } from "lucide-react";
+import { MoonStar, Loader2 } from "lucide-react";
+import { useSleepTracker } from "@/hooks/useSleepTracker";
+
+const qualityMap: Record<string, number> = { poor: 2, fair: 4, good: 7, excellent: 9 };
 
 const GameSleepTracker: React.FC = () => {
   const [hoursSlept, setHoursSlept] = useState(8);
   const [quality, setQuality] = useState<"poor" | "fair" | "good" | "excellent">("good");
   const [logged, setLogged] = useState(false);
+  const { logSleep, isSaving, entries } = useSleepTracker();
 
-  const handleLogSleep = () => {
-    setLogged(true);
-    // Here you would typically save to a database or local storage
+  const handleLogSleep = async () => {
+    // Derive bed/wake times from hours slept
+    const now = new Date();
+    const wakeTime = `${now.getHours().toString().padStart(2, '0')}:${now.getMinutes().toString().padStart(2, '0')}`;
+    const bedDate = new Date(now.getTime() - hoursSlept * 60 * 60 * 1000);
+    const bedTime = `${bedDate.getHours().toString().padStart(2, '0')}:${bedDate.getMinutes().toString().padStart(2, '0')}`;
+
+    const result = await logSleep(bedTime, wakeTime, qualityMap[quality]);
+    if (result) {
+      setLogged(true);
+    }
   };
 
   const resetLog = () => {
@@ -26,11 +38,9 @@ const GameSleepTracker: React.FC = () => {
       <p className="text-lg text-sky-700 text-center mb-6 max-w-md">
         Track your sleep to improve your rest habits and overall wellbeing.
       </p>
-      <img 
-        src="https://images.unsplash.com/photo-1465146344425-f00d5f5c8f07?auto=format&fit=crop&w=500&q=80"
-        alt="Sleep Tracker illustration"
-        className="rounded-xl shadow mb-6 max-w-full object-cover w-72 h-36"
-      />
+      {entries.length > 0 && (
+        <p className="text-sm text-sky-600 mb-4">{entries.length} nights logged so far</p>
+      )}
       
       {!logged ? (
         <div className="flex flex-col items-center gap-4 w-full max-w-xs">
@@ -50,10 +60,10 @@ const GameSleepTracker: React.FC = () => {
           <div className="w-full">
             <label className="block text-sky-800 font-semibold mb-2">Sleep Quality:</label>
             <div className="grid grid-cols-2 gap-2">
-              {["poor", "fair", "good", "excellent"].map((q) => (
+              {(["poor", "fair", "good", "excellent"] as const).map((q) => (
                 <button
                   key={q}
-                  onClick={() => setQuality(q as any)}
+                  onClick={() => setQuality(q)}
                   className={`px-3 py-2 rounded capitalize ${
                     quality === q ? 'bg-sky-600 text-white' : 'bg-sky-200 text-sky-800'
                   }`}
@@ -64,8 +74,12 @@ const GameSleepTracker: React.FC = () => {
             </div>
           </div>
           
-          <Button onClick={handleLogSleep} className="w-full bg-gradient-to-r from-sky-500 to-cyan-400 text-sky-900 font-bold">
-            Log Sleep
+          <Button 
+            onClick={handleLogSleep} 
+            disabled={isSaving}
+            className="w-full bg-gradient-to-r from-sky-500 to-cyan-400 text-sky-900 font-bold"
+          >
+            {isSaving ? <><Loader2 className="mr-2 h-4 w-4 animate-spin" /> Saving...</> : "Log Sleep"}
           </Button>
         </div>
       ) : (
