@@ -28,7 +28,7 @@ export const useLogout = (onGoodbyeRitual?: () => void) => {
         description: "We'll be here when you're ready to return.",
       });
 
-      navigate('/auth');
+      navigate('/');
     } catch (error) {
       console.error('Logout error:', error);
       toast({
