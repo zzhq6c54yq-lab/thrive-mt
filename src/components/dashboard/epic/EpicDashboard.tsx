@@ -42,6 +42,7 @@ import { BuddySystemSection } from './sections/BuddySystemSection';
 import { CommunityGroupsSection } from './sections/CommunityGroupsSection';
 import GamesShortcutSection from './sections/GamesShortcutSection';
 import LifeChallengesShortcutSection from './sections/LifeChallengesShortcutSection';
+import TrinityWelcome from '@/components/subscription/TrinityWelcome';
 
 interface EpicDashboardProps {
   demoMode?: boolean;
@@ -405,6 +406,9 @@ export default function EpicDashboard({ demoMode = false }: EpicDashboardProps) 
         transition={{ delay: 0.2, duration: 0.8 }}
         className="container mx-auto max-w-7xl px-4 space-y-8 mt-6 relative z-10"
       >
+        {/* Trinity Elite Welcome */}
+        <TrinityWelcome isReturning={true} />
+
         {/* Welcome Home Hero - The Magnetic Focal Point */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}

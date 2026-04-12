@@ -3408,6 +3408,33 @@ export type Database = {
         }
         Relationships: []
       }
+      henry_daily_usage: {
+        Row: {
+          created_at: string
+          id: string
+          message_count: number
+          updated_at: string
+          usage_date: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          message_count?: number
+          updated_at?: string
+          usage_date?: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          message_count?: number
+          updated_at?: string
+          usage_date?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       henry_messages: {
         Row: {
           agent_type: string | null
@@ -8352,6 +8379,7 @@ export type Database = {
         }[]
       }
       get_beta_signup_count: { Args: never; Returns: number }
+      get_henry_daily_count: { Args: { _user_id: string }; Returns: number }
       has_role: {
         Args: {
           _role: Database["public"]["Enums"]["app_role"]

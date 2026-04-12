@@ -431,6 +431,52 @@ serve(async (req) => {
     const { message, conversationId } = parseResult.data;
     const userId = user.id;
     
+    // === DAILY MESSAGE LIMIT ENFORCEMENT ===
+    // Get user's subscription tier
+    const { data: subData } = await supabase.from('subscriptions').select('plan_tier').eq('user_id', userId).maybeSingle();
+    const tier = subData?.plan_tier || 'Basic';
+    
+    // Determine daily limit based on tier
+    const tierLimits: Record<string, number> = { 'Basic': 5, 'Free': 5, 'Gold': 20, 'Platinum': -1, 'Trinity': -1 };
+    const dailyLimit = tierLimits[tier] ?? 5;
+    
+    if (dailyLimit !== -1) {
+      const today = new Date().toISOString().split('T')[0];
+      const { data: usageData } = await supabase
+        .from('henry_daily_usage')
+        .select('id, message_count')
+        .eq('user_id', userId)
+        .eq('usage_date', today)
+        .maybeSingle();
+      
+      const currentCount = usageData?.message_count ?? 0;
+      
+      if (currentCount >= dailyLimit) {
+        const upgradeMsg = tier === 'Basic' || tier === 'Free'
+          ? 'Upgrade to Gold for 20 daily messages, or Platinum for unlimited.'
+          : 'Upgrade to Platinum for unlimited messages.';
+        
+        return new Response(JSON.stringify({
+          error: 'daily_limit_reached',
+          response: `You've used all ${dailyLimit} of your daily Henry messages. ${upgradeMsg} Your messages reset at midnight UTC. 💛`,
+          conversationId: conversationId || null,
+          dailyUsage: currentCount,
+          dailyLimit,
+          tier,
+        }), {
+          status: 429,
+          headers: { ...corsHeaders, 'Content-Type': 'application/json' }
+        });
+      }
+      
+      // Increment usage
+      if (usageData) {
+        await supabase.from('henry_daily_usage').update({ message_count: currentCount + 1 }).eq('id', usageData.id);
+      } else {
+        await supabase.from('henry_daily_usage').insert({ user_id: userId, usage_date: today, message_count: 1 });
+      }
+    }
+    
     // Get or create conversation
     let conversation;
     if (conversationId) {
