@@ -108,7 +108,7 @@ const SubscriptionTiers: React.FC = () => {
   };
 
   const isCurrentTier = (tier: SubscriptionTier) => {
-    if (tier === 'Free' && (currentTier === 'Free' || currentTier === 'Basic')) return true;
+    if (tier === 'Free' && currentTier === 'Free') return true;
     return currentTier === tier;
   };
 
