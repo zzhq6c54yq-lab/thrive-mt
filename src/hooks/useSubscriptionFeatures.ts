@@ -60,6 +60,7 @@ export function useSubscriptionFeatures() {
     if (tier === 'Trinity') return 'Trinity';
     if (tier === 'Platinum') return 'Platinum';
     if (tier === 'Gold') return 'Gold';
+    if (tier === 'Basic') return 'Free';
     return 'Free';
   })();
 
