@@ -161,7 +161,11 @@ serve(async (req) => {
     
     // Determine tier based on price
     let subscriptionTier = "Basic";
-    if (priceAmount >= 900 && priceAmount <= 1500) {
+    if (priceAmount >= 2000 && priceAmount <= 2500) {
+      subscriptionTier = "Trinity"; // ~$23 monthly
+    } else if (priceAmount >= 20000 && priceAmount <= 28000) {
+      subscriptionTier = "Trinity"; // ~$230+ yearly
+    } else if (priceAmount >= 900 && priceAmount <= 1500) {
       subscriptionTier = "Platinum"; // ~$10 monthly
     } else if (priceAmount >= 9000 && priceAmount <= 12000) {
       subscriptionTier = "Platinum"; // ~$96 yearly + add-ons
@@ -169,6 +173,8 @@ serve(async (req) => {
       subscriptionTier = "Gold"; // ~$5 monthly
     } else if (priceAmount >= 4500 && priceAmount <= 6000) {
       subscriptionTier = "Gold"; // ~$48 yearly + add-ons
+    } else if (priceAmount > 2500) {
+      subscriptionTier = "Trinity"; // Higher amounts
     } else if (priceAmount > 1500) {
       subscriptionTier = "Platinum"; // Higher amounts with add-ons
     } else if (priceAmount > 0) {
