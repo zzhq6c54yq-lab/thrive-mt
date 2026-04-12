@@ -7,6 +7,9 @@ import HenryHeader from "./components/HenryHeader";
 import MessageList from "@/components/shared/MessageList";
 import { useMessageProcessor, Message } from "./hooks/useMessageProcessor";
 import { requestHumanSupport } from "@/services/henryMultiAgentService";
+import HenryMessageCounter from "@/components/subscription/HenryMessageCounter";
+import HenryLimitBanner from "@/components/subscription/HenryLimitBanner";
+import { useSubscriptionFeatures } from "@/hooks/useSubscriptionFeatures";
 
 interface HenryDialogProps {
   isOpen: boolean;
@@ -26,6 +29,7 @@ const HenryDialog: React.FC<HenryDialogProps> = ({
   const [requestingTherapist, setRequestingTherapist] = useState(false);
   const { toast } = useToast();
   const conversationIdRef = useRef<string | null>(null);
+  const { canSendHenryMessage, incrementHenryUsage } = useSubscriptionFeatures();
   
   // Add a message to the chat
   const addMessage = (message: Message) => {
@@ -114,10 +118,19 @@ const HenryDialog: React.FC<HenryDialogProps> = ({
     recognition.start();
   };
   
-  const handleSendMessage = (text: string = inputValue) => {
+  const handleSendMessage = async (text: string = inputValue) => {
     if (!text.trim()) return;
+    if (!canSendHenryMessage) {
+      toast({
+        title: "Daily limit reached",
+        description: "Upgrade your plan for more messages with Henry.",
+        variant: "destructive",
+      });
+      return;
+    }
     setInputValue("");
     processMessage(text);
+    await incrementHenryUsage();
   };
 
   const handleInputChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
@@ -168,7 +181,13 @@ const HenryDialog: React.FC<HenryDialogProps> = ({
         }}
       >
         <div className="flex-shrink-0 px-6 pt-6 pb-4">
-          <HenryHeader onClose={() => onOpenChange(false)} />
+          <div className="flex items-center justify-between">
+            <HenryHeader onClose={() => onOpenChange(false)} />
+            <HenryMessageCounter />
+          </div>
+          <div className="mt-2">
+            <HenryLimitBanner />
+          </div>
         </div>
 
         {/* Single scroll control */}
