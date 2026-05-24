@@ -94,15 +94,15 @@ const OnboardingContainer: React.FC = () => {
     goToStep('moodResponse');
   };
 
-  // Redirect to dashboard after onboarding completion
+  // Redirect to dashboard after onboarding completion (only for authenticated users)
   useEffect(() => {
-    if (isOnboardingComplete || currentStep === 'completed') {
+    if ((isOnboardingComplete || currentStep === 'completed') && user) {
       navigate('/app/dashboard');
     }
-  }, [isOnboardingComplete, currentStep, navigate]);
+  }, [isOnboardingComplete, currentStep, navigate, user]);
 
   // Show loading message while redirecting
-  if (isOnboardingComplete || currentStep === 'completed') {
+  if ((isOnboardingComplete || currentStep === 'completed') && user) {
     return (
       <div className="min-h-screen bg-gradient-to-b from-[#1a1a1a] via-[#252525] to-[#1a1a1a] flex items-center justify-center">
         <div className="text-white text-xl">Redirecting to your dashboard...</div>
